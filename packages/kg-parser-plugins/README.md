@@ -1,4 +1,6 @@
-# Kg Parser Plugins
+# Koenig Parser Plugins
+
+Plugins for parsing HTML back into Ghost Mobiledoc Cards
 
 ## Install
 
@@ -10,6 +12,8 @@ or
 
 
 ## Usage
+
+Used as part of the Koenig editor. See also: [html-to-mobiledoc](https://github.com/TryGhost/Ghost-SDK/tree/master/packages/html-to-mobiledoc)
 
 
 ## Develop
@@ -30,8 +34,6 @@ Follow the instructions for the top-level repo.
 
 - `yarn lint` run just eslint
 - `yarn test` run lint and tests
-
-
 
 
 # Copyright & License
