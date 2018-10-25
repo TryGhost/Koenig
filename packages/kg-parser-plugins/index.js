@@ -38,6 +38,8 @@ const figureToImageCard = (node, builder, {addSection, nodeFinished}) => {
 
     let img = node.querySelector('img');
     let figcaption = node.querySelector('figcaption');
+    let kgClass = node.className.match(/kg-width-(wide|full)/);
+    let grafClass = node.className.match(/graf--layout(FillWidth|OutsetCenter)/);
 
     if (!img) {
         return;
@@ -48,6 +50,12 @@ const figureToImageCard = (node, builder, {addSection, nodeFinished}) => {
         alt: img.alt,
         title: img.title
     };
+
+    if (kgClass) {
+        payload.cardWidth = kgClass[1];
+    } else if (grafClass) {
+        payload.cardWidth = grafClass[1] === 'FillWidth' ? 'full' : 'wide';
+    }
 
     if (figcaption) {
         // @TODO: resolve browser vs node env here
