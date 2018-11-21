@@ -1,6 +1,8 @@
 /**
  * Copied from:
  * https://github.com/TryGhost/Ghost-Admin/blob/1f3d77d7230dd47a7eb5f38b90dfa510b2a16801/lib/koenig-editor/addon/options/parser-plugins.js
+ * Which makes use of:
+ * https://github.com/TryGhost/Ghost-Admin/blob/1f3d77d7230dd47a7eb5f38b90dfa510b2a16801/lib/koenig-editor/addon/helpers/clean-basic-html.js
  *
  * These functions are used to proces nodes during parsing from DOM -> mobiledoc
  */
