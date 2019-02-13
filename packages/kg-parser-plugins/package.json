@@ -4,13 +4,16 @@
   "repository": "https://github.com/TryGhost/Ghost-SDK/tree/master/packages/kg-parser-plugins",
   "author": "Ghost Foundation",
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/parser-plugins.js",
   "scripts": {
     "dev": "echo \"Implement me!\"",
     "test": "NODE_ENV=testing mocha './test/**/*.test.js'",
     "lint": "eslint . --ext .js --cache",
     "posttest": "yarn lint"
   },
+  "files": [
+    "lib"
+  ],
   "publishConfig": {
     "access": "public"
   },
