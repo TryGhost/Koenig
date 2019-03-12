@@ -1,0 +1,17 @@
+{
+    "version": "independent",
+    "npmClient": "yarn",
+    "packages": ["packages/*"],
+    "useWorkspaces": true,
+    "command": {
+        "publish": {
+            "allowBranch": "master",
+            "message": "Published new versions"
+        }
+    },
+    "local": {
+        "public": "true",
+        "repo": "https://github.com/TryGhost/Koenig",
+        "scope": ""
+    }
+}

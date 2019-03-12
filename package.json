@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "repository": "https://github.com/TryGhost/Koenig",
+  "author": "Ghost Foundation",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "eslintIgnore": [
+    "**/node_modules/**"
+  ],
+  "scripts": {
+    "dev": "echo \"Implement me!\"",
+    "presetup": "yarn",
+    "setup": "lerna bootstrap",
+    "test:parent": "NODE_ENV=testing mocha './test/**/*.test.js'",
+    "test": "yarn test:parent && lerna run test",
+    "lint": "lerna run lint",
+    "preship": "yarn test",
+    "ship": "lerna publish"
+  },
+  "devDependencies": {
+    "eslint": "5.15.1",
+    "eslint-plugin-ghost": "0.2.0",
+    "mocha": "6.0.2",
+    "should": "13.2.3",
+    "sinon": "7.2.7"
+  }
+}
