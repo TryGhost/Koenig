@@ -12,6 +12,6 @@
     "local": {
         "public": "true",
         "repo": "https://github.com/TryGhost/Koenig",
-        "scope": ""
+        "scope": "@tryghost"
     }
 }
