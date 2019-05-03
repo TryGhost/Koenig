@@ -654,6 +654,14 @@
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
 
+"@tryghost/mobiledoc-kit@0.11.2-ghost.1":
+  version "0.11.2-ghost.1"
+  resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2-ghost.1.tgz#7088eb9eef06b4ccdd6c221613f20d01b106f939"
+  integrity sha512-oc5zAQiEzq0oSUb3NpAXHvfcQ+FOjzQ+1sRNv2QwSJ+JftanpdFvgmc9BwX8dZAlHA/NOnrIeTW1Q2Ip9Nm2Ag==
+  dependencies:
+    mobiledoc-dom-renderer "0.6.5"
+    mobiledoc-text-renderer "0.3.2"
+
 "@types/estree@0.0.39":
   version "0.0.39"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
@@ -2162,6 +2170,16 @@ mkdirp@0.5.1, mkdirp@^0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+mobiledoc-dom-renderer@0.6.5:
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/mobiledoc-dom-renderer/-/mobiledoc-dom-renderer-0.6.5.tgz#56c0302c4f9c30840ab5b9b20dfe905aed1e437b"
+  integrity sha1-VsAwLE+cMIQKtbmyDf6QWu0eQ3s=
+
+mobiledoc-text-renderer@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/mobiledoc-text-renderer/-/mobiledoc-text-renderer-0.3.2.tgz#126a167a6cf8b6cd7e58c85feb18043603834580"
+  integrity sha1-EmoWemz4ts1+WMhf6xgENgODRYA=
 
 mocha@5.2.0:
   version "5.2.0"
