@@ -654,10 +654,10 @@
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz#8da5c6530915653f3a1f38fd5f101d8c3f8079c5"
 
-"@tryghost/mobiledoc-kit@0.11.2-ghost.2":
-  version "0.11.2-ghost.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2-ghost.2.tgz#7e4f484070ba21f24a7f201b06281cfbd38aeaba"
-  integrity sha512-qNKB+MuAI0+rZrlgoo398ClPbpoZHYHPifrZdsTfgOujmEwS7onVAuAUmQqLO4cQtqIPzH3YmNofjP4juQmrtw==
+"@tryghost/mobiledoc-kit@0.11.2-ghost.3":
+  version "0.11.2-ghost.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2-ghost.3.tgz#15d5ad0ce0b2c4322ba5e2fc87f641dcb387e8ff"
+  integrity sha512-R07zG7vLViPt2SmJSQXPTdgakfsra9GcP+O2saa0SYzfdTE/+3+hMo0PgJSwcyCx898mJmQv6L1lgu7N7qjihw==
   dependencies:
     mobiledoc-dom-renderer "0.6.5"
     mobiledoc-text-renderer "0.3.2"
