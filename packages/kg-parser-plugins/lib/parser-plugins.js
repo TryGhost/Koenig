@@ -28,6 +28,17 @@ export function createParserPlugins(_options = {}) {
         };
     }
 
+    // HELPERS -----------------------------------------------------------------
+
+    function _readFigCaptionFromNode(node, payload) {
+        let figcaption = node.querySelector('figcaption');
+
+        if (figcaption) {
+            payload.caption = cleanBasicHtml(figcaption.innerHTML, options);
+            figcaption.remove(); // cleanup this processed element
+        }
+    }
+
     // PLUGINS -----------------------------------------------------------------
 
     // https://github.com/TryGhost/Koenig/issues/1
@@ -88,7 +99,6 @@ export function createParserPlugins(_options = {}) {
         }
 
         let img = node.querySelector('img');
-        let figcaption = node.querySelector('figcaption');
         let kgClass = node.className.match(/kg-width-(wide|full)/);
         let grafClass = node.className.match(/graf--layout(FillWidth|OutsetCenter)/);
 
@@ -108,10 +118,7 @@ export function createParserPlugins(_options = {}) {
             payload.cardWidth = grafClass[1] === 'FillWidth' ? 'full' : 'wide';
         }
 
-        if (figcaption) {
-            let cleanHtml = cleanBasicHtml(figcaption.innerHTML, options);
-            payload.caption = cleanHtml;
-        }
+        _readFigCaptionFromNode(node, payload);
 
         let cardSection = builder.createCardSection('image', payload);
         addSection(cardSection);
@@ -156,7 +163,6 @@ export function createParserPlugins(_options = {}) {
         }
 
         let src = iframe.src;
-        let figcaption = node.querySelector('figcaption');
 
         // If we don't have a src, or it's not an absolute URL, we can't handle this
         if (!src || !src.match(/^https?:\/\//i)) {
@@ -167,10 +173,7 @@ export function createParserPlugins(_options = {}) {
             url: src
         };
 
-        if (figcaption) {
-            payload.caption = cleanBasicHtml(figcaption.innerHTML, options);
-            node.removeChild(figcaption);
-        }
+        _readFigCaptionFromNode(node, payload);
 
         payload.html = node.innerHTML;
 
@@ -191,7 +194,6 @@ export function createParserPlugins(_options = {}) {
             return;
         }
 
-        let figcaption = node.querySelector('figcaption');
         let url = link.href;
 
         // If we don't have a url, or it's not an absolute URL, we can't handle this
@@ -203,10 +205,7 @@ export function createParserPlugins(_options = {}) {
             url: url
         };
 
-        if (figcaption) {
-            payload.caption = cleanBasicHtml(figcaption.innerHTML, options);
-            node.removeChild(figcaption);
-        }
+        _readFigCaptionFromNode(node, payload);
 
         payload.html = node.innerHTML;
 
@@ -236,9 +235,10 @@ export function createParserPlugins(_options = {}) {
         }
 
         let payload = {
-            code: code.textContent,
-            caption: cleanBasicHtml(figcaption.innerHTML, options)
+            code: code.textContent
         };
+
+        _readFigCaptionFromNode(node, payload);
 
         let preClass = pre.getAttribute('class') || '';
         let codeClass = code.getAttribute('class') || '';
