@@ -34,7 +34,8 @@ export function createParserPlugins(_options = {}) {
         let figcaption = node.querySelector('figcaption');
 
         if (figcaption) {
-            payload.caption = cleanBasicHtml(figcaption.innerHTML, options);
+            let cleanHtml = cleanBasicHtml(figcaption.innerHTML, options);
+            payload.caption = payload.caption ? `${payload.caption} / ${cleanHtml}` : cleanHtml;
             figcaption.remove(); // cleanup this processed element
         }
     }
@@ -50,13 +51,13 @@ export function createParserPlugins(_options = {}) {
         if (node.width) {
             image.width = node.width;
         } else if (node.dataset && node.dataset.width) {
-            image.width = node.dataset.width / 2.5;
+            image.width = parseInt(node.dataset.width, 10);
         }
 
         if (node.height) {
             image.height = node.height;
         } else if (node.dataset && node.dataset.height) {
-            image.height = node.dataset.height / 2.5;
+            image.height = parseInt(node.dataset.height, 10);
         }
 
         if (node.alt) {
@@ -164,11 +165,13 @@ export function createParserPlugins(_options = {}) {
             images: []
         };
         let imgs = Array.from(node.querySelectorAll('img'));
+        _readFigCaptionFromNode(node, payload);
 
         let nextNode = node.nextSibling;
         while (nextNode && isGrafGallery(nextNode)) {
             let currentNode = nextNode;
             imgs = imgs.concat(Array.from(currentNode.querySelectorAll('img')));
+            _readFigCaptionFromNode(node, payload);
             nextNode = currentNode.nextSibling;
             // remove nodes as we go so that they don't go through the parser
             currentNode.remove();
@@ -181,8 +184,6 @@ export function createParserPlugins(_options = {}) {
         });
 
         // Otherwise process the end of the gallery
-        _readFigCaptionFromNode(node, payload);
-
         let cardSection = builder.createCardSection('gallery', payload);
         addSection(cardSection);
         nodeFinished();
