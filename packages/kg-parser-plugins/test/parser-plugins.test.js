@@ -6,7 +6,6 @@ const {JSDOM} = require('jsdom');
 const {createParserPlugins} = require('../');
 const PostNodeBuilder = require('@tryghost/mobiledoc-kit/dist/commonjs/mobiledoc-kit/models/post-node-builder').default;
 const DOMParser = require('@tryghost/mobiledoc-kit/dist/commonjs/mobiledoc-kit/parsers/dom').default;
-const mobiledocRenderer = require('@tryghost/mobiledoc-kit/dist/commonjs/mobiledoc-kit/renderers/mobiledoc').default;
 
 const buildDOM = function (html) {
     // the <body> wrapper is needed to retain the first comment if `html` starts
@@ -256,32 +255,16 @@ describe('parser-plugins', function () {
             section.payload.images.should.be.an.Array().with.lengthOf(4);
             section.payload.images.should.deepEqual([
                 {
-                    fileName: 'jklm4567.jpeg',
-                    row: 0,
-                    src: 'http://localhost:2368/content/images/2019/06/jklm4567.jpeg',
-                    width: 1200,
-                    height: 800
+                    fileName: 'jklm4567.jpeg', row: 0, src: 'http://localhost:2368/content/images/2019/06/jklm4567.jpeg', width: 1200, height: 800
                 },
                 {
-                    fileName: 'qurt6789.jpeg',
-                    row: 0,
-                    src: 'http://localhost:2368/content/images/2019/06/qurt6789.jpeg',
-                    width: 1200,
-                    height: 800
+                    fileName: 'qurt6789.jpeg', row: 0, src: 'http://localhost:2368/content/images/2019/06/qurt6789.jpeg', width: 1200, height: 800
                 },
                 {
-                    fileName: 'zyxw3456.jpeg',
-                    row: 0,
-                    src: 'http://localhost:2368/content/images/2019/06/zyxw3456.jpeg',
-                    width: 1600,
-                    height: 1066
+                    fileName: 'zyxw3456.jpeg', row: 0, src: 'http://localhost:2368/content/images/2019/06/zyxw3456.jpeg', width: 1600, height: 1066
                 },
                 {
-                    fileName: '1234abcd.jpeg',
-                    row: 1,
-                    src: 'http://localhost:2368/content/images/2019/06/1234abcd.jpeg',
-                    width: 800,
-                    height: 1200
+                    fileName: '1234abcd.jpeg', row: 1, src: 'http://localhost:2368/content/images/2019/06/1234abcd.jpeg', width: 800, height: 1200
                 }
             ]);
 
@@ -299,32 +282,16 @@ describe('parser-plugins', function () {
             section.payload.images.should.be.an.Array().with.lengthOf(4);
             section.payload.images.should.deepEqual([
                 {
-                    fileName: 'jklm4567.jpeg',
-                    row: 0,
-                    src: 'http://localhost:2368/content/images/2019/06/jklm4567.jpeg',
-                    width: 1200,
-                    height: 800
+                    fileName: 'jklm4567.jpeg', row: 0, src: 'http://localhost:2368/content/images/2019/06/jklm4567.jpeg', width: 1200, height: 800
                 },
                 {
-                    fileName: 'qurt6789.jpeg',
-                    row: 0,
-                    src: 'http://localhost:2368/content/images/2019/06/qurt6789.jpeg',
-                    width: 1200,
-                    height: 800
+                    fileName: 'qurt6789.jpeg', row: 0, src: 'http://localhost:2368/content/images/2019/06/qurt6789.jpeg', width: 1200, height: 800
                 },
                 {
-                    fileName: 'zyxw3456.jpeg',
-                    row: 0,
-                    src: 'http://localhost:2368/content/images/2019/06/zyxw3456.jpeg',
-                    width: 1600,
-                    height: 1066
+                    fileName: 'zyxw3456.jpeg', row: 0, src: 'http://localhost:2368/content/images/2019/06/zyxw3456.jpeg', width: 1600, height: 1066
                 },
                 {
-                    fileName: '1234abcd.jpeg',
-                    row: 1,
-                    src: 'http://localhost:2368/content/images/2019/06/1234abcd.jpeg',
-                    width: 800,
-                    height: 1200
+                    fileName: '1234abcd.jpeg', row: 1, src: 'http://localhost:2368/content/images/2019/06/1234abcd.jpeg', width: 800, height: 1200
                 }
             ]);
 
@@ -332,11 +299,9 @@ describe('parser-plugins', function () {
         });
     });
 
-    describe.only('grafGalleryToCard', function () {
-        // Gallery
-        // Mobiledoc {"version":"0.3.1","atoms":[],"cards":[["gallery",{"images":[{ "fileName": "jklm4567.jpeg", "row": 0, "src": "/content/images/2019/06/jklm4567.jpeg", "width": 1200, "height": 800 }, { "fileName": "qurt6789.jpeg", "row": 0, "width": 1200, "height": 800, "src": "/content/images/2019/06/qurt6789.jpeg" }, { "fileName": "zyxw3456.jpeg", "row": 0, "width": 1600, "height": 1066, "src": "/content/images/2019/06/zyxw3456.jpeg" }, { "fileName": "1234abcd.jpeg", "row": 1, "width": 800, "height": 1200, "src": "/content/images/2019/06/1234abcd.jpeg" }]}]], "markups": [], "sections": [[10, 0], [1, "p", []]]}
-        // Ghost HTML  <!--kg-card-begin: gallery--><figure class="kg-card kg-gallery-card kg-width-wide"><div class="kg-gallery-container"><div class="kg-gallery-row"><div class="kg-gallery-image" style="flex: 1.5 1 0%;"><img src="http://localhost:2368/content/images/2019/06/jklm4567.jpeg" width="1200" height="800"></div> <div class="kg-gallery-image" style="flex: 1.5 1 0%;"><img src="http://localhost:2368/content/images/2019/06/qurt6789.jpeg" width="1200" height="800"></div></div> <div class="kg-gallery-row"><div class="kg-gallery-image" style="flex: 1.50094 1 0%;"><img src="http://localhost:2368/content/images/2019/06/zyxw3456.jpeg" width="1600" height="1066"></div><div class="kg-gallery-image" style="flex: 0.666667 1 0%;"><img src="http://localhost:2368/content/images/2019/06/1234abcd.jpeg" width="800" height="1200"></div></div></div></figure> <!--kg-card-end: gallery-->
+    describe('grafGalleryToCard', function () {
         // Medium Export HTML <div data-paragraph-count="2"><figure class="graf graf--figure graf--layoutOutsetRow is-partialWidth graf-after--p" style="width: 50%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="jklm4567.jpeg" data-width="1200" data-height="800" src="https://cdn-images-1.medium.com/max/600/jklm4567.jpeg"></div></figure><figure class="graf graf--figure graf--layoutOutsetRowContinue is-partialWidth graf-after--figure" style="width: 50%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="qurt6789.jpeg" data-width="1200" data-height="800" src="https://cdn-images-1.medium.com/max/600/qurt6789.jpeg"></div></figure></div><div data-paragraph-count="2"><figure class="graf graf--figure graf--layoutOutsetRow is-partialWidth graf-after--figure" style="width: 69.22%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="zyxw3456.jpeg" data-width="1200" data-height="800" src="https://cdn-images-1.medium.com/max/800/zyxw3456.jpeg"></div></figure><figure class="graf graf--figure graf--layoutOutsetRowContinue is-partialWidth graf-after--figure" style="width: 30.78%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="1234abcd.jpeg" data-width="800" data-height="1200" src="https://cdn-images-1.medium.com/max/400/1234abcd.jpeg"></div></figure></div>
+
         it('parses medium export gallery into gallery card', function () {
             const dom = buildDOM('<div data-paragraph-count="2"><figure class="graf graf--figure graf--layoutOutsetRow is-partialWidth graf-after--p" style="width: 50%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="jklm4567.jpeg" data-width="1200" data-height="800" src="https://cdn-images-1.medium.com/max/600/jklm4567.jpeg"></div></figure><figure class="graf graf--figure graf--layoutOutsetRowContinue is-partialWidth graf-after--figure" style="width: 50%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="qurt6789.jpeg" data-width="1200" data-height="800" src="https://cdn-images-1.medium.com/max/600/qurt6789.jpeg"></div></figure></div><div data-paragraph-count="2"><figure class="graf graf--figure graf--layoutOutsetRow is-partialWidth graf-after--figure" style="width: 69.22%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="zyxw3456.jpeg" data-width="1200" data-height="800" src="https://cdn-images-1.medium.com/max/800/zyxw3456.jpeg"></div></figure><figure class="graf graf--figure graf--layoutOutsetRowContinue is-partialWidth graf-after--figure" style="width: 30.78%;"><div class="aspectRatioPlaceholder is-locked"><img class="graf-image" data-image-id="1234abcd.jpeg" data-width="800" data-height="1200" src="https://cdn-images-1.medium.com/max/400/1234abcd.jpeg"></div></figure></div>');
 

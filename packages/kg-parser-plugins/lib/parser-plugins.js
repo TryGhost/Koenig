@@ -40,11 +40,11 @@ export function createParserPlugins(_options = {}) {
         }
     }
 
-    function _readGalleryImageFromNode(node, row, payload) {
+    function _readGalleryImageFromNode(node, imgNum) {
         let fileName = node.src.match(/[^/]*$/)[0];
         let image = {
             fileName,
-            row,
+            row: Math.floor(imgNum / 3),
             src: node.src
         };
 
@@ -68,7 +68,7 @@ export function createParserPlugins(_options = {}) {
             image.title = node.title;
         }
 
-        payload.images.push(image);
+        return image;
     }
 
     // PLUGINS -----------------------------------------------------------------
@@ -134,16 +134,11 @@ export function createParserPlugins(_options = {}) {
             return;
         }
 
-        let payload = {
-            images: []
-        };
-        let imgs = node.querySelectorAll('img');
+        let payload = {};
+        let imgs = Array.from(node.querySelectorAll('img'));
 
-        imgs.forEach((img, imgNum) => {
-            let rowNum = Math.floor(imgNum / 3);
-
-            _readGalleryImageFromNode(img, rowNum, payload);
-        });
+        // Process nodes into the payload
+        payload.images = imgs.map(_readGalleryImageFromNode);
 
         _readFigCaptionFromNode(node, payload);
 
@@ -161,29 +156,26 @@ export function createParserPlugins(_options = {}) {
             return;
         }
 
-        let payload = {
-            images: []
-        };
+        let payload = {};
+
+        // These galleries exist in multiple divs. Read the images and cation from the first one...
         let imgs = Array.from(node.querySelectorAll('img'));
         _readFigCaptionFromNode(node, payload);
 
+        // ...and then iterate over any remaining divs until we run out of matches
         let nextNode = node.nextSibling;
         while (nextNode && isGrafGallery(nextNode)) {
             let currentNode = nextNode;
             imgs = imgs.concat(Array.from(currentNode.querySelectorAll('img')));
-            _readFigCaptionFromNode(node, payload);
+            _readFigCaptionFromNode(currentNode, payload);
             nextNode = currentNode.nextSibling;
             // remove nodes as we go so that they don't go through the parser
             currentNode.remove();
         }
 
-        imgs.forEach((img, imgNum) => {
-            let rowNum = Math.floor(imgNum / 3);
+        // Process nodes into the payload
+        payload.images = imgs.map(_readGalleryImageFromNode);
 
-            _readGalleryImageFromNode(img, rowNum, payload);
-        });
-
-        // Otherwise process the end of the gallery
         let cardSection = builder.createCardSection('gallery', payload);
         addSection(cardSection);
         nodeFinished();
