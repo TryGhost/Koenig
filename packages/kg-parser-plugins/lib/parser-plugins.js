@@ -39,6 +39,27 @@ export function createParserPlugins(_options = {}) {
         }
     }
 
+    const _readGalleryImageFromNode = (node, row, payload) => {
+        let fileName = node.src.match(/[^/]*$/)[0];
+        let image = {
+            fileName,
+            row,
+            src: node.src,
+            width: node.width,
+            height: node.height
+        };
+
+        if (node.alt) {
+            image.alt = node.alt;
+        }
+
+        if (node.title) {
+            image.title = node.title;
+        }
+
+        payload.images.push(image);
+    };
+
     // PLUGINS -----------------------------------------------------------------
 
     // https://github.com/TryGhost/Koenig/issues/1
@@ -92,6 +113,37 @@ export function createParserPlugins(_options = {}) {
 
         node.nodeValue = node.nodeValue.replace(/^\n/, '');
     }
+
+    const kgGalleryCardToCard = (node, builder, {addSection, nodeFinished}) => {
+        if (node.nodeType !== 1 || node.tagName !== 'FIGURE') {
+            return;
+        }
+
+        if (!node.className.match(/kg-gallery-card/)) {
+            return;
+        }
+
+        let imgs = node.querySelectorAll('img');
+        let payload = {
+            images: []
+        };
+
+        imgs.forEach((img, imgNum) => {
+            if (!img.src) {
+                return;
+            }
+
+            let rowNum = Math.floor(imgNum / 3);
+
+            _readGalleryImageFromNode(img, rowNum, payload);
+        });
+
+        _readFigCaptionFromNode(node, payload);
+
+        let cardSection = builder.createCardSection('gallery', payload);
+        addSection(cardSection);
+        nodeFinished();
+    };
 
     function figureToImageCard(node, builder, {addSection, nodeFinished}) {
         if (node.nodeType !== 1 || node.tagName !== 'FIGURE') {
@@ -281,6 +333,7 @@ export function createParserPlugins(_options = {}) {
         kgHtmlCardToCard,
         brToSoftBreakAtom,
         removeLeadingNewline,
+        kgGalleryCardToCard,
         figureBlockquoteToEmbedCard, // I think these can contain images
         figureToImageCard,
         imgToCard,
