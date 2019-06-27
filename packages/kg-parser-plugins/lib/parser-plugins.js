@@ -39,15 +39,25 @@ export function createParserPlugins(_options = {}) {
         }
     }
 
-    const _readGalleryImageFromNode = (node, row, payload) => {
+    function _readGalleryImageFromNode(node, row, payload) {
         let fileName = node.src.match(/[^/]*$/)[0];
         let image = {
             fileName,
             row,
-            src: node.src,
-            width: node.width,
-            height: node.height
+            src: node.src
         };
+
+        if (node.width) {
+            image.width = node.width;
+        } else if (node.dataset && node.dataset.width) {
+            image.width = node.dataset.width / 2.5;
+        }
+
+        if (node.height) {
+            image.height = node.height;
+        } else if (node.dataset && node.dataset.height) {
+            image.height = node.dataset.height / 2.5;
+        }
 
         if (node.alt) {
             image.alt = node.alt;
@@ -58,7 +68,7 @@ export function createParserPlugins(_options = {}) {
         }
 
         payload.images.push(image);
-    };
+    }
 
     // PLUGINS -----------------------------------------------------------------
 
@@ -123,16 +133,12 @@ export function createParserPlugins(_options = {}) {
             return;
         }
 
-        let imgs = node.querySelectorAll('img');
         let payload = {
             images: []
         };
+        let imgs = node.querySelectorAll('img');
 
         imgs.forEach((img, imgNum) => {
-            if (!img.src) {
-                return;
-            }
-
             let rowNum = Math.floor(imgNum / 3);
 
             _readGalleryImageFromNode(img, rowNum, payload);
@@ -144,6 +150,43 @@ export function createParserPlugins(_options = {}) {
         addSection(cardSection);
         nodeFinished();
     };
+
+    function grafGalleryToCard(node, builder, {addSection, nodeFinished}) {
+        function isGrafGallery(node) {
+            return node.nodeType === 1 && node.tagName === 'DIV' && node.dataset && node.dataset.paragraphCount && node.querySelectorAll('img').length > 0;
+        }
+
+        if (!isGrafGallery(node)) {
+            return;
+        }
+
+        let payload = {
+            images: []
+        };
+        let imgs = Array.from(node.querySelectorAll('img'));
+
+        let nextNode = node.nextSibling;
+        while (nextNode && isGrafGallery(nextNode)) {
+            let currentNode = nextNode;
+            imgs = imgs.concat(Array.from(currentNode.querySelectorAll('img')));
+            nextNode = currentNode.nextSibling;
+            // remove nodes as we go so that they don't go through the parser
+            currentNode.remove();
+        }
+
+        imgs.forEach((img, imgNum) => {
+            let rowNum = Math.floor(imgNum / 3);
+
+            _readGalleryImageFromNode(img, rowNum, payload);
+        });
+
+        // Otherwise process the end of the gallery
+        _readFigCaptionFromNode(node, payload);
+
+        let cardSection = builder.createCardSection('gallery', payload);
+        addSection(cardSection);
+        nodeFinished();
+    }
 
     function figureToImageCard(node, builder, {addSection, nodeFinished}) {
         if (node.nodeType !== 1 || node.tagName !== 'FIGURE') {
@@ -335,6 +378,7 @@ export function createParserPlugins(_options = {}) {
         removeLeadingNewline,
         kgGalleryCardToCard,
         figureBlockquoteToEmbedCard, // I think these can contain images
+        grafGalleryToCard,
         figureToImageCard,
         imgToCard,
         hrToCard,
