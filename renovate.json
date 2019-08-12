@@ -1,5 +1,9 @@
 {
   "extends": [
-    "config:base"
-  ]
+    "@tryghost:quietJS"
+  ],
+  "travis": { "enabled": true },
+  "node": {
+    "supportPolicy": ["lts_latest"]
+   }
 }
