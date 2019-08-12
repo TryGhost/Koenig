@@ -2,6 +2,7 @@
   "extends": [
     "@tryghost:quietJS"
   ],
+  "prHourlyLimit": 0,
   "schedule": "at any time",
   "travis": { "enabled": true },
   "node": {
