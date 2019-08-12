@@ -21,9 +21,9 @@
   },
   "devDependencies": {
     "eslint": "5.15.1",
-    "eslint-plugin-ghost": "0.2.0",
-    "mocha": "6.0.2",
+    "eslint-plugin-ghost": "0.4.0",
+    "mocha": "6.2.0",
     "should": "13.2.3",
-    "sinon": "7.2.7"
+    "sinon": "7.4.1"
   }
 }
