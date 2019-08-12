@@ -2,6 +2,7 @@
   "extends": [
     "@tryghost:quietJS"
   ],
+  "schedule": "at any time",
   "travis": { "enabled": true },
   "node": {
     "supportPolicy": ["lts_latest"]
