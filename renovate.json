@@ -5,7 +5,7 @@
   "schedule": "at any time",
   "travis": { "enabled": true },
   "node": {
-    "supportPolicy": ["lts_active"]
+    "supportPolicy": ["lts"]
    },
   "packageRules": [
     {
