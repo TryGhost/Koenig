@@ -96,7 +96,7 @@ export function createParserPlugins(_options = {}) {
             title: title,
             description: desc,
             thumbnail: imgSrc
-        }
+        };
 
         let payload = {metadata, url: metadata.url, type: 'bookmark'};
         let cardSection = builder.createCardSection('bookmark', payload);
