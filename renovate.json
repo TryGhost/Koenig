@@ -1,7 +1,7 @@
 {
   "extends": [
     "@tryghost:quietJS"
-  ]
+  ],
   "packageRules": [
     {
       "groupName": "rollup + plugins",
