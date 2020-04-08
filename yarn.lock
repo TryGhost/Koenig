@@ -2802,6 +2802,11 @@ mobiledoc-dom-renderer@0.6.5:
   resolved "https://registry.yarnpkg.com/mobiledoc-dom-renderer/-/mobiledoc-dom-renderer-0.6.5.tgz#56c0302c4f9c30840ab5b9b20dfe905aed1e437b"
   integrity sha1-VsAwLE+cMIQKtbmyDf6QWu0eQ3s=
 
+mobiledoc-dom-renderer@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/mobiledoc-dom-renderer/-/mobiledoc-dom-renderer-0.7.0.tgz#53ab5f14dd612b16f03513390e5cbcc2b89f6979"
+  integrity sha512-A+gT6D4Ru3DKY7ZYOBRORmwhRJ7rDj2vy75D2dWuZS5NgX0mCmGs0yN7qs48YlxvfCif8RFpYsaaPg6Kc3MdJg==
+
 mobiledoc-text-renderer@0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/mobiledoc-text-renderer/-/mobiledoc-text-renderer-0.3.2.tgz#126a167a6cf8b6cd7e58c85feb18043603834580"
