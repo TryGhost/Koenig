@@ -40,7 +40,7 @@ class DomModifier {
         let id = text
             .replace(/[<>&"?]/g, '')
             .trim()
-            .replace(/[^\wа-я]/g, '-')
+            .replace(/[^\wА-я]/g, '-')
             .replace(/-{2,}/g, '-')
             .toLowerCase();
 
