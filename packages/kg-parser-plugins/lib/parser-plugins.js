@@ -31,12 +31,14 @@ export function createParserPlugins(_options = {}) {
     // HELPERS -----------------------------------------------------------------
 
     function _readFigCaptionFromNode(node, payload, selector = 'figcaption') {
-        let figcaption = node.querySelector(selector);
+        let figcaption = Array.from(node.querySelectorAll(selector));
 
-        if (figcaption) {
-            let cleanHtml = cleanBasicHtml(figcaption.innerHTML, options);
-            payload.caption = payload.caption ? `${payload.caption} / ${cleanHtml}` : cleanHtml;
-            figcaption.remove(); // cleanup this processed element
+        if (figcaption.length) {
+            figcaption.forEach((caption) => {
+                let cleanHtml = cleanBasicHtml(caption.innerHTML, options);
+                payload.caption = payload.caption ? `${payload.caption} / ${cleanHtml}` : cleanHtml;
+                caption.remove(); // cleanup this processed element
+            });
         }
     }
 
