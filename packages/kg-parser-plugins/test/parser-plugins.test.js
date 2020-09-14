@@ -666,4 +666,62 @@ describe('parser-plugins', function () {
             });
         });
     });
+
+    describe('blockquoteWithChildren', function () {
+        it('adds line breaks between nested paragraphs', function () {
+            const dom = buildDOM('<blockquote><p>My first quote line</p><p>My second quote line</p></blockquote>');
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('markup-section');
+            section.markers.should.have.lengthOf(3);
+
+            const [m1, m2, m3] = section.markers.toArray();
+            m1.value.should.equal('My first quote line');
+            m2.name.should.equal('soft-return');
+            m2.type.should.equal('atom');
+            m3.value.should.equal('My second quote line');
+        });
+
+        it('can handle footer and cite gracefully', function () {
+            const dom = buildDOM('<blockquote cite="https://www.huxley.net/bnw/four.html"><p>Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.</p><footer>—Aldous Huxley, <cite>Brave New World</cite></footer></blockquote>');
+            const [section] = parser.parse(dom).sections.toArray();
+            section.type.should.equal('markup-section');
+            section.markers.should.have.lengthOf(3);
+
+            const [m1, m2, m3] = section.markers.toArray();
+            m1.value.should.equal('Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.');
+            m2.name.should.equal('soft-return');
+            m2.type.should.equal('atom');
+            m3.value.should.equal('—Aldous Huxley, Brave New World');
+        });
+
+        it('ignores blockquotes without multiple children', function () {
+            const dom = buildDOM('<blockquote><p>Single nested blockquote</p></blockquote>');
+            const [section] = parser.parse(dom).sections.toArray();
+            section.type.should.equal('markup-section');
+            section.markers.should.have.lengthOf(1);
+
+            const [m1] = section.markers.toArray();
+            m1.value.should.equal('Single nested blockquote');
+        });
+
+        it('keeps supported markup within blockquotes with nested paragraphs', function () {
+            const dom = buildDOM('<blockquote><p>My first quote lined with a <strong>strong</strong> tag</p><p>My second quote line with an <em>em</em> tag</p></blockquote>');
+            const [section] = parser.parse(dom).sections.toArray();
+            section.type.should.equal('markup-section');
+            section.markers.should.have.lengthOf(7);
+
+            const [m1, m2, m3, m4, m5, m6, m7] = section.markers.toArray();
+            m1.value.should.equal('My first quote lined with a ');
+            m2.value.should.equal('strong');
+            m2.markups.should.have.lengthOf(1);
+            m3.value.should.equal(' tag');
+            m4.name.should.equal('soft-return');
+            m4.type.should.equal('atom');
+            m5.value.should.equal('My second quote line with an ');
+            m6.value.should.equal('em');
+            m6.markups.should.have.lengthOf(1);
+            m7.value.should.equal(' tag');
+        });
+    });
 });

@@ -466,9 +466,37 @@ export function createParserPlugins(_options = {}) {
         nodeFinished();
     }
 
+    // Nested paragraphs in blockquote are currently treated as separate blockquotes,
+    // see [here](https://github.com/bustle/mobiledoc-kit/issues/715). When running migrations,
+    // this is not the desired behaviour and will cause the content to lose the previous semantic.
+    function blockquoteWithChildren(node) {
+        if (node.nodeType !== 1 || node.tagName !== 'BLOCKQUOTE' || node.children.length < 1) {
+            return;
+        }
+
+        const html = [];
+
+        const children = Array.from(node.children);
+        children.forEach((child, index) => {
+            if (index === children.length - 1) {
+                html.push(child.innerHTML);
+            } else if (child.tagName === 'P'){
+                html.push(`${child.innerHTML}<br>`);
+            } else {
+                html.push(`${child.innerHTML} `);
+            }
+            child.remove();
+        });
+
+        node.innerHTML = html.join('').trim();
+
+        return;
+    }
+
     return [
         mixtapeEmbed,
         kgHtmlCardToCard,
+        blockquoteWithChildren,
         brToSoftBreakAtom,
         removeLeadingNewline,
         kgGalleryCardToCard,
