@@ -519,17 +519,22 @@ export function createParserPlugins(_options = {}) {
         }
 
         const html = [];
-
         const children = Array.from(node.children);
-        children.forEach((child, index) => {
-            if (index === children.length - 1) {
+
+        children.forEach((child) => {
+            let nextSibling = child.nextSibling;
+            let previousSibling = child.previousSibling;
+
+            // Only add a soft-break for two sequential paragraphs.
+            // Use the innerHTML only in that case, so Mobiledoc's default behaviour
+            // of creating separate blockquotes doesn't apply.
+            if (child.tagName === 'P' && (nextSibling && nextSibling.tagName === 'P')) {
+                html.push(`${child.innerHTML}<br><br>`);
+            } else if (child.tagName === 'P' && (previousSibling && previousSibling.tagName === 'P')) {
                 html.push(child.innerHTML);
-            } else if (child.tagName === 'P'){
-                html.push(`${child.innerHTML}<br>`);
             } else {
-                html.push(`${child.innerHTML} `);
+                html.push(child.outerHTML);
             }
-            child.remove();
         });
 
         node.innerHTML = html.join('').trim();

@@ -785,29 +785,65 @@ describe('parser-plugins', function () {
             const [section] = parser.parse(dom).sections.toArray();
 
             section.type.should.equal('markup-section');
-            section.markers.should.have.lengthOf(3);
+            section.markers.should.have.lengthOf(4);
 
-            const [m1, m2, m3] = section.markers.toArray();
+            const [m1, m2, m3, m4] = section.markers.toArray();
             m1.value.should.equal('My first quote line');
             m2.name.should.equal('soft-return');
             m2.type.should.equal('atom');
-            m3.value.should.equal('My second quote line');
+            m3.name.should.equal('soft-return');
+            m3.type.should.equal('atom');
+            m4.value.should.equal('My second quote line');
         });
 
-        it('can handle footer and cite gracefully', function () {
-            const dom = buildDOM('<blockquote cite="https://www.huxley.net/bnw/four.html"><p>Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.</p><footer>—Aldous Huxley, <cite>Brave New World</cite></footer></blockquote>');
+        it('adds line breaks for many sequential paragraphs', function () {
+            const dom = buildDOM('<blockquote><p>My first quote line</p><p>My second quote line</p><p>My third quote line</p><p>My fourth quote line</p></blockquote>');
             const [section] = parser.parse(dom).sections.toArray();
-            section.type.should.equal('markup-section');
-            section.markers.should.have.lengthOf(3);
 
-            const [m1, m2, m3] = section.markers.toArray();
-            m1.value.should.equal('Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.');
+            section.type.should.equal('markup-section');
+            section.markers.should.have.lengthOf(10);
+
+            const [m1, m2, m3, m4, m5, m6, m7, m8, m9, m10] = section.markers.toArray();
+            m1.value.should.equal('My first quote line');
             m2.name.should.equal('soft-return');
             m2.type.should.equal('atom');
-            m3.value.should.equal('—Aldous Huxley, Brave New World');
+            m3.name.should.equal('soft-return');
+            m3.type.should.equal('atom');
+            m4.value.should.equal('My second quote line');
+            m5.name.should.equal('soft-return');
+            m5.type.should.equal('atom');
+            m6.name.should.equal('soft-return');
+            m6.type.should.equal('atom');
+            m7.value.should.equal('My third quote line');
+            m8.name.should.equal('soft-return');
+            m8.type.should.equal('atom');
+            m9.name.should.equal('soft-return');
+            m9.type.should.equal('atom');
+            m10.value.should.equal('My fourth quote line');
         });
 
-        it('ignores blockquotes without multiple children', function () {
+        it('keeps supported markup within blockquotes with nested paragraphs', function () {
+            const dom = buildDOM('<blockquote><p>My first quote lined with a <strong>strong</strong> tag</p><p>My second quote line with an <em>em</em> tag</p></blockquote>');
+            const [section] = parser.parse(dom).sections.toArray();
+            section.type.should.equal('markup-section');
+            section.markers.should.have.lengthOf(8);
+
+            const [m1, m2, m3, m4, m5, m6, m7, m8] = section.markers.toArray();
+            m1.value.should.equal('My first quote lined with a ');
+            m2.value.should.equal('strong');
+            m2.markups.should.have.lengthOf(1);
+            m3.value.should.equal(' tag');
+            m4.name.should.equal('soft-return');
+            m4.type.should.equal('atom');
+            m5.name.should.equal('soft-return');
+            m5.type.should.equal('atom');
+            m6.value.should.equal('My second quote line with an ');
+            m7.value.should.equal('em');
+            m7.markups.should.have.lengthOf(1);
+            m8.value.should.equal(' tag');
+        });
+
+        it('ignores blockquotes without multiple parapraphs', function () {
             const dom = buildDOM('<blockquote><p>Single nested blockquote</p></blockquote>');
             const [section] = parser.parse(dom).sections.toArray();
             section.type.should.equal('markup-section');
@@ -817,23 +853,41 @@ describe('parser-plugins', function () {
             m1.value.should.equal('Single nested blockquote');
         });
 
-        it('keeps supported markup within blockquotes with nested paragraphs', function () {
-            const dom = buildDOM('<blockquote><p>My first quote lined with a <strong>strong</strong> tag</p><p>My second quote line with an <em>em</em> tag</p></blockquote>');
-            const [section] = parser.parse(dom).sections.toArray();
-            section.type.should.equal('markup-section');
-            section.markers.should.have.lengthOf(7);
+        it('ignores blockquotes with non sequential parapraphs', function () {
+            const dom = buildDOM('<blockquote><p>Non-sequential paragraph </p><a href="https://test.com">content</a><p>Second paragraph</p></blockquote>');
 
-            const [m1, m2, m3, m4, m5, m6, m7] = section.markers.toArray();
-            m1.value.should.equal('My first quote lined with a ');
-            m2.value.should.equal('strong');
-            m2.markups.should.have.lengthOf(1);
-            m3.value.should.equal(' tag');
-            m4.name.should.equal('soft-return');
-            m4.type.should.equal('atom');
-            m5.value.should.equal('My second quote line with an ');
-            m6.value.should.equal('em');
-            m6.markups.should.have.lengthOf(1);
-            m7.value.should.equal(' tag');
+            // two sections, as Mobiledoc creates two blockquotes from this markup
+            const [section1, section2] = parser.parse(dom).sections.toArray();
+            section1.type.should.equal('markup-section');
+            section1.markers.should.have.lengthOf(2);
+
+            section2.type.should.equal('markup-section');
+            section2.markers.should.have.lengthOf(1);
+
+            const [m1, m2] = section1.markers.toArray();
+            m1.value.should.equal('Non-sequential paragraph ');
+            m2.value.should.equal('content');
+
+            const [m3] = section2.markers.toArray();
+            m3.value.should.equal('Second paragraph');
+        });
+
+        it('ignores blockquotes non-paragraph block-level elements', function () {
+            const dom = buildDOM('<blockquote><h1>Blockquote header</h1><p>followed by a paragraph</p></blockquote>');
+
+            // two sections, as Mobiledoc creates a separate header element
+            const [section1, section2] = parser.parse(dom).sections.toArray();
+            section1.type.should.equal('markup-section');
+            section1.markers.should.have.lengthOf(1);
+
+            section2.type.should.equal('markup-section');
+            section2.markers.should.have.lengthOf(1);
+
+            const [m1] = section1.markers.toArray();
+            m1.value.should.equal('Blockquote header');
+
+            const [m2] = section2.markers.toArray();
+            m2.value.should.equal('followed by a paragraph');
         });
     });
 
