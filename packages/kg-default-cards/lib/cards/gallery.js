@@ -99,7 +99,24 @@ module.exports = {
                     img.setAttribute('title', image.title);
                 }
 
-                // email clients do not have good support for srcset or sizes
+                // images can be resized to max width, if that's the case output
+                // the resized width/height attrs to ensure 3rd party gallery plugins
+                // aren't affected by differing sizes
+                const {canTransformImage} = options;
+                const {defaultMaxWidth} = options.imageOptimization || {};
+                if (
+                    defaultMaxWidth &&
+                    image.width > defaultMaxWidth &&
+                    isLocalContentImage(image.src) &&
+                    canTransformImage &&
+                    canTransformImage(image.src)
+                ) {
+                    const {width, height} = resizeImage(image, {width: defaultMaxWidth});
+                    img.setAttribute('width', width);
+                    img.setAttribute('height', height);
+                }
+
+                // add srcset+sizes except for email clients which do not have good support for either
                 if (options.target !== 'email') {
                     setSrcsetAttribute(img, image, options);
 
@@ -125,7 +142,7 @@ module.exports = {
 
                     if (isLocalContentImage(image.src) && options.canTransformImage && options.canTransformImage(image.src)) {
                         // find available image size next up from 2x600 so we can use it for the "retina" src
-                        const availableImageWidths = getAvailableImageWidths(image, options.contentImageSizes);
+                        const availableImageWidths = getAvailableImageWidths(image, options.imageOptimization.contentImageSizes);
                         const srcWidth = availableImageWidths.find(width => width >= 1200);
 
                         if (!srcWidth || srcWidth === image.width) {

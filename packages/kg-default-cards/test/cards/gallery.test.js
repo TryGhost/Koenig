@@ -187,6 +187,56 @@ describe('Gallery card', function () {
         serializer.serialize(card.render(opts)).should.eql('<figure class="kg-card kg-gallery-card kg-width-wide kg-card-hascaption"><div class="kg-gallery-container"><div class="kg-gallery-row"><div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-9.jpg" width="3200" height="1600" alt></div><div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo03-6.jpg" width="3200" height="1600" alt></div></div></div><figcaption>Test caption</figcaption></figure>');
     });
 
+    it('outputs width/height matching default max image width', function () {
+        let opts = {
+            env: {
+                dom: new SimpleDom.Document()
+            },
+            payload: {
+                images: [
+                    {
+                        row: 0,
+                        fileName: 'NatGeo01.jpg',
+                        src: '/content/images/2018/08/NatGeo01-9.jpg',
+                        width: 3200,
+                        height: 1600
+                    },
+                    {
+                        row: 0,
+                        fileName: 'photo-1591672299888-e16a08b6c7ce',
+                        src: 'https://images.unsplash.com/photo-1591672299888-e16a08b6c7ce?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=2000&fit=max&ixid=eyJhcHBfaWQiOjExNzczfQ',
+                        width: 2500,
+                        height: 1800
+                    }
+                ]
+            },
+            options: {
+                imageOptimization: {
+                    defaultMaxWidth: 2000,
+                    contentImageSizes: {
+                        w600: {width: 600},
+                        w1000: {width: 1000},
+                        w1600: {width: 1600},
+                        w2400: {width: 2400}
+                    }
+                },
+                canTransformImage: () => true
+            }
+        };
+
+        const output = serializer.serialize(card.render(opts));
+
+        // local is resized
+        output.should.match(/width="2000"/);
+        output.should.match(/height="1000"/);
+        output.should.not.match(/width="3200"/);
+        output.should.not.match(/height="1600"/);
+
+        // unsplash is not
+        output.should.match(/width="2500"/);
+        output.should.match(/height="1800"/);
+    });
+
     describe('srcset', function () {
         it('is included when image src is relative or Unsplash', function () {
             let opts = {
@@ -215,11 +265,13 @@ describe('Gallery card', function () {
                     }]
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -243,11 +295,13 @@ describe('Gallery card', function () {
                 },
                 options: {
                     canTransformImage: () => true,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     },
                     target: 'email'
                 }
@@ -291,12 +345,14 @@ describe('Gallery card', function () {
                     }]
                 },
                 options: {
-                    srcsets: false,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        srcsets: false,
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -333,11 +389,13 @@ describe('Gallery card', function () {
                     }]
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -366,11 +424,13 @@ describe('Gallery card', function () {
                     }]
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -393,11 +453,13 @@ describe('Gallery card', function () {
                     }]
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -432,12 +494,14 @@ describe('Gallery card', function () {
                     }]
                 },
                 options: {
-                    srcsets: false,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        srcsets: false,
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -485,11 +549,13 @@ describe('Gallery card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => true,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -532,11 +598,13 @@ describe('Gallery card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => false,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };

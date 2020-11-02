@@ -38,9 +38,27 @@ module.exports = {
 
         // TODO: add back in Ghost 4.0? Adding width/height can be a breaking change
         // for sites that don't specify a height or `height: auto` in their CSS
+        //
         // if (payload.width && payload.height) {
         //     img.setAttribute('width', payload.width);
         //     img.setAttribute('height', payload.height);
+        // }
+
+        // // images can be resized to max width, if that's the case output
+        // // the resized width/height attrs to ensure 3rd party gallery plugins
+        // // aren't affected by differing sizes
+        // const {canTransformImage} = options;
+        // const {defaultMaxWidth} = options.imageOptimization || {};
+        // if (
+        //     defaultMaxWidth &&
+        //     payload.width > defaultMaxWidth &&
+        //     isLocalContentImage(payload.src) &&
+        //     canTransformImage &&
+        //     canTransformImage(payload.src)
+        // ) {
+        //     const {width, height} = resizeImage(payload, {width: defaultMaxWidth});
+        //     img.setAttribute('width', width);
+        //     img.setAttribute('height', height);
         // }
 
         // add srcset unless it's an email, email clients do not have good support for srcset or sizes
@@ -75,7 +93,7 @@ module.exports = {
 
             if (isLocalContentImage(payload.src, options.siteUrl) && options.canTransformImage && options.canTransformImage(payload.src)) {
                 // find available image size next up from 2x600 so we can use it for the "retina" src
-                const availableImageWidths = getAvailableImageWidths(payload, options.contentImageSizes);
+                const availableImageWidths = getAvailableImageWidths(payload, options.imageOptimization.contentImageSizes);
                 const srcWidth = availableImageWidths.find(width => width >= 1200);
 
                 if (!srcWidth || srcWidth === payload.width) {

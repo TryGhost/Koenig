@@ -92,6 +92,30 @@ describe('Image card', function () {
         serializer.serialize(card.render(opts)).should.eql('<figure class="kg-card kg-image-card"><img src="https://www.ghost.org/image.png" class="kg-image" alt title="example image" width="640" height="480"></figure>');
     });
 
+    it.skip('renders an image with resized max default width/height', function () {
+        let opts = {
+            env: {
+                dom: new SimpleDom.Document()
+            },
+            payload: {
+                fileName: 'NatGeo01.jpg',
+                src: '/content/images/2018/08/NatGeo01-9.jpg',
+                width: 3200,
+                height: 1600
+            },
+            options: {
+                imageOptimization: {
+                    defaultMaxWidth: 2000
+                },
+                canTransformImage: () => true
+            }
+        };
+
+        const output = serializer.serialize(card.render(opts));
+        output.should.match(/width="2000"/);
+        output.should.match(/height="1000"/);
+    });
+
     it('renders nothing with no src', function () {
         let opts = {
             env: {
@@ -162,11 +186,13 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -185,11 +211,13 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     },
                     target: 'email'
                 }
@@ -225,12 +253,14 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    srcsets: false,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        srcsets: false,
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -251,11 +281,13 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     },
                     canTransformImage
                 }
@@ -274,11 +306,13 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -297,11 +331,13 @@ describe('Image card', function () {
                     height: 700
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -320,11 +356,13 @@ describe('Image card', function () {
                     height: 300
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -343,11 +381,13 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -366,11 +406,13 @@ describe('Image card', function () {
                     height: 6000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -390,11 +432,13 @@ describe('Image card', function () {
                     height: 300
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -415,11 +459,13 @@ describe('Image card', function () {
                     height: 2000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -439,11 +485,13 @@ describe('Image card', function () {
                     cardWidth: 'wide'
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -462,12 +510,14 @@ describe('Image card', function () {
                     height: 2000
                 },
                 options: {
-                    srcsets: false,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        srcsets: false,
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -486,11 +536,13 @@ describe('Image card', function () {
                     height: 2000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -509,11 +561,13 @@ describe('Image card', function () {
                     // height: 2000
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -532,11 +586,13 @@ describe('Image card', function () {
                     height: 480
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -556,11 +612,13 @@ describe('Image card', function () {
                     cardWidth: 'wide'
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -580,11 +638,13 @@ describe('Image card', function () {
                     cardWidth: 'full'
                 },
                 options: {
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -607,11 +667,13 @@ describe('Image card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => true,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -658,11 +720,13 @@ describe('Image card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => false,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -688,11 +752,13 @@ describe('Image card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => true,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -717,11 +783,13 @@ describe('Image card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => true,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
@@ -744,11 +812,13 @@ describe('Image card', function () {
                 options: {
                     target: 'email',
                     canTransformImage: () => true,
-                    contentImageSizes: {
-                        w600: {width: 600},
-                        w1000: {width: 1000},
-                        w1600: {width: 1600},
-                        w2400: {width: 2400}
+                    imageOptimization: {
+                        contentImageSizes: {
+                            w600: {width: 600},
+                            w1000: {width: 1000},
+                            w1600: {width: 1600},
+                            w2400: {width: 2400}
+                        }
                     }
                 }
             };
