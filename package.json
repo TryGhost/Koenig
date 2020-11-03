@@ -22,7 +22,7 @@
   "devDependencies": {
     "eslint": "7.12.1",
     "eslint-plugin-ghost": "2.0.0",
-    "mocha": "8.2.0",
+    "mocha": "8.2.1",
     "should": "13.2.3",
     "sinon": "9.2.1"
   }
