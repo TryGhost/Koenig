@@ -8,6 +8,7 @@ const markdownIt = new MarkdownIt({
     .use(require('markdown-it-footnote'))
     .use(require('markdown-it-lazy-headers'))
     .use(require('markdown-it-mark'))
+    .use(require('markdown-it-img-lazy'))
     .use(function namedHeaders(md) {
         // match legacy Showdown IDs
         const slugify = function (inputString, usedHeaders) {

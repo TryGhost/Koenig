@@ -69,3 +69,4 @@ typings/
 .DS_Store
 
 # Koenig Custom
+packages/kg-markdown-html-renderer/package-lock.json
