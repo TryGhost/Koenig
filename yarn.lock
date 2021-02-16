@@ -977,10 +977,10 @@
     markdown-it-mark "^3.0.0"
     semver "^7.3.4"
 
-"@tryghost/mobiledoc-kit@~0.11.2-ghost.4":
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2.tgz#0adbafdff63d8b354c72288abda70b5f510e3309"
-  integrity sha512-G6Co/Gze+m80g1aQrQyIQOIff8eISDWPWckrDm34udK+hGYFqzdNVEEh30GOQ8kaGUlR1wcE2Tmx7jeus7P7wQ==
+"@tryghost/mobiledoc-kit@0.11.2-ghost.4":
+  version "0.11.2-ghost.4"
+  resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2-ghost.4.tgz#144189e7e62748b3c56e7b723fa18a5e8c807ccf"
+  integrity sha512-C6FHFodOgxso+pZ6ArjBDRoGuzRHg42r3JJXzUX9ursIC2QLQUPsVDG42KN25x26EzOBUi6umB1CvO5bUryNPw==
   dependencies:
     mobiledoc-dom-renderer "0.6.5"
     mobiledoc-text-renderer "0.3.2"
