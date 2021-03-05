@@ -1004,10 +1004,10 @@
     mobiledoc-dom-renderer "0.6.5"
     mobiledoc-text-renderer "0.3.2"
 
-"@tryghost/url-utils@^0.6.14":
-  version "0.6.26"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-0.6.26.tgz#a73ed9276cc380c180e8032c4b56e10adb6cd381"
-  integrity sha512-+uSUcb0o5mxd8G6lC0r0Dd14cMeboZRgV/Kl3Vp3sJx7UB3Bxa2gVHIE1EIAEw0FkJP5RsPVYrKOBYFHlbgRUQ==
+"@tryghost/url-utils@^1.0.0":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-1.0.2.tgz#05d54dd2f89e254d4379d54d2d877be12ade4635"
+  integrity sha512-YjUefzev1vvpYBFGxfhO4U6Wew2Swgy3zXz0/Zb0f+FWG0sJ13tplaRcN+79vF0x4IROjxOyn3wR8STyAvQ8JA==
   dependencies:
     cheerio "0.22.0"
     moment "2.27.0"
