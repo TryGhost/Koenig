@@ -13,7 +13,7 @@
     "dev": "echo \"Implement me!\"",
     "presetup": "yarn",
     "setup": "lerna bootstrap",
-    "test:parent": "NODE_ENV=testing mocha './test/**/*.test.js'",
+    "test:parent": "NODE_ENV=testing c8 --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:parent && lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
