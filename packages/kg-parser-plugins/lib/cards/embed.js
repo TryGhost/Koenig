@@ -171,8 +171,31 @@ export function fromNFTEmbed() {
             return;
         }
 
+        let nftCardImage = nftCard.querySelector('img');
+        let nftCardTitle = nftCard.querySelector('.kg-nft-metadata .kg-nft-title h4');
+        let nftCardUsername = nftCard.querySelector('.kg-nft-metadata .kg-nft-creator span');
+        let nftCardCollection = nftCard.querySelector('.kg-nft-metadata .kg-nft-creator').childNodes[2];
+        let nftCardDescription = nftCard.querySelector('.kg-nft-metadata p');
+
+        let html = `
+            <a class="kg-nft-card" href="${nftCard.href}">
+                <img src="${nftCardImage.src}">
+                <div class="kg-nft-metadata">
+                    <div class="kg-nft-title">
+                        <h4> ${nftCardTitle.textContent} </h4>
+                    </div>
+                    <div class="kg-nft-creator">
+                        Created by <span>${nftCardUsername.textContent}</span>
+                        ${nftCardCollection ? nftCardCollection.textContent : ''}
+                    </div>
+                    ${(nftCardDescription ? `<p>${nftCardDescription.textContent}</p>` : ``)}
+                </div>
+            </a>
+        `;
+
         let payload = {
-            html: nftCard.outerHTML
+            noIframe: true,
+            html
         };
 
         let cardSection = builder.createCardSection('embed', payload);
