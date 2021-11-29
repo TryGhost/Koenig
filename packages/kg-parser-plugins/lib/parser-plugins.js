@@ -430,6 +430,16 @@ export function createParserPlugins(_options = {}) {
         nodeFinished();
     }
 
+    function membersOnlyCommentToPaywallCard(node, builder, {addSection, nodeFinished}) {
+        if (node.nodeType !== 8 || node.nodeValue !== 'members-only') {
+            return;
+        }
+
+        let cardSection = builder.createCardSection('paywall', {});
+        addSection(cardSection);
+        nodeFinished();
+    }
+
     return [
         embedCard.fromNFTEmbed(),
         embedCard.fromMixtape(options),
@@ -454,6 +464,7 @@ export function createParserPlugins(_options = {}) {
         embedCard.fromFigureIframe(options),
         embedCard.fromIframe(options), // Process iFrames without figures after ones with
         figureScriptToHtmlCard,
-        tableToHtmlCard
+        tableToHtmlCard,
+        membersOnlyCommentToPaywallCard
     ];
 }
