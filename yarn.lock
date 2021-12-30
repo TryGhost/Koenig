@@ -1567,10 +1567,10 @@ builtin-modules@^3.0.0:
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.2.0.tgz#45d5db99e7ee5e6bc4f362e008bf917ab5049887"
   integrity sha512-lGzLKcioL90C7wMczpkY0n/oART3MbBa8R9OFGE1rJxoVI86u4WAGfEk8Wjv10eKSyTHVGkSo3bvBylCEtk7LA==
 
-c8@7.10.0:
-  version "7.10.0"
-  resolved "https://registry.yarnpkg.com/c8/-/c8-7.10.0.tgz#c539ebb15d246b03b0c887165982c49293958a73"
-  integrity sha512-OAwfC5+emvA6R7pkYFVBTOtI5ruf9DahffGmIqUc9l6wEh0h7iAFP6dt/V9Ioqlr2zW5avX9U9/w1I4alTRHkA==
+c8@7.11.0:
+  version "7.11.0"
+  resolved "https://registry.yarnpkg.com/c8/-/c8-7.11.0.tgz#b3ab4e9e03295a102c47ce11d4ef6d735d9a9ac9"
+  integrity sha512-XqPyj1uvlHMr+Y1IeRndC2X5P7iJzJlEJwBpCdBbq2JocXOgJfr+JVfJkyNMGROke5LfKrhSFXGFXnwnRJAUJw==
   dependencies:
     "@bcoe/v8-coverage" "^0.2.3"
     "@istanbuljs/schema" "^0.1.2"
