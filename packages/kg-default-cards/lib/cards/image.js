@@ -35,6 +35,7 @@ module.exports = {
         img.setAttribute('class', 'kg-image');
         img.setAttribute('alt', payload.alt || '');
         img.setAttribute('loading', 'lazy');
+        img.setAttribute('decoding', 'async');
 
         if (payload.title) {
             img.setAttribute('title', payload.title);

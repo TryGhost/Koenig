@@ -97,6 +97,7 @@ module.exports = {
                 img.setAttribute('width', image.width);
                 img.setAttribute('height', image.height);
                 img.setAttribute('loading', 'lazy');
+                img.setAttribute('decoding', 'async');
                 img.setAttribute('alt', image.alt || '');
                 if (image.title) {
                     img.setAttribute('title', image.title);

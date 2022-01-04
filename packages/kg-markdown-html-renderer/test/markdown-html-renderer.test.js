@@ -23,6 +23,12 @@ describe('Markdown HTML renderer', function () {
             const result = renderer.render(markdown, {ghostVersion: '3.0'});
             result.should.containEql('loading="lazy"');
         });
+
+        it('outputs `decoding="async"` on images', function () {
+            const markdown = `![](https://mysite.com/content/images/lazy.png)`;
+            const result = renderer.render(markdown, {ghostVersion: '3.0'});
+            result.should.containEql('decoding="async"');
+        });
     });
 
     describe('<4.x', function () {
@@ -30,6 +36,12 @@ describe('Markdown HTML renderer', function () {
             const markdown = `![](https://mysite.com/content/images/lazy.png)`;
             const result = renderer.render(markdown, {ghostVersion: '3.0'});
             result.should.containEql('loading="lazy"');
+        });
+
+        it('outputs `decoding="async"` on images', function () {
+            const markdown = `![](https://mysite.com/content/images/lazy.png)`;
+            const result = renderer.render(markdown, {ghostVersion: '3.0'});
+            result.should.containEql('decoding="async"');
         });
 
         it('outputs backwards compatible headers', function () {
