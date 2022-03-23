@@ -1,13 +1,13 @@
 {
   "name": "@tryghost/html-to-mobiledoc",
-  "version": "1.8.2",
+  "version": "1.8.5",
   "repository": "https://github.com/TryGhost/SDK/tree/master/packages/html-to-mobiledoc",
   "author": "Ghost Foundation",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
     "dev": "echo \"Implement me!\"",
-    "test": "NODE_ENV=testing c8 --reporter text --reporter cobertura mocha './test/**/*.test.js'",
+    "test": "NODE_ENV=testing c8 --all --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "lint": "eslint . --ext .js --cache",
     "posttest": "yarn lint"
   },
@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "c8": "7.11.0",
-    "mocha": "7.2.0",
+    "mocha": "9.2.0",
     "should": "13.2.3",
-    "sinon": "9.2.4"
+    "sinon": "13.0.1"
   },
   "dependencies": {
-    "@tryghost/kg-parser-plugins": "^2.11.2",
+    "@tryghost/kg-parser-plugins": "^2.11.5",
     "@tryghost/mobiledoc-kit": "^0.12.4-ghost.1",
     "jsdom": "^18.0.0"
   }

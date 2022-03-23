@@ -24,7 +24,7 @@ describe('Header card', function () {
             }
         };
 
-        serializer.serialize(card.render(opts)).should.equal(`<div class="kg-card kg-header-card kg-width-full kg-size-small kg-style-dark" style="" data-kg-background-image="https://example.com/image.jpg"><h2 class="kg-header-card-header">This is the header card</h2><h3 class="kg-header-card-subheader">hi</h3><a href="https://example.com/" class="kg-header-card-button">The button</a></div>`);
+        serializer.serialize(card.render(opts)).should.equal(`<div class="kg-card kg-header-card kg-width-full kg-size-small kg-style-dark" style="" data-kg-background-image="https://example.com/image.jpg"><h2 class="kg-header-card-header" id="this-is-the-header-card">This is the header card</h2><h3 class="kg-header-card-subheader" id="hi">hi</h3><a href="https://example.com/" class="kg-header-card-button">The button</a></div>`);
     });
 
     it('renders nothing when header and subheader is undefined and the button is disabled', function () {
@@ -37,10 +37,10 @@ describe('Header card', function () {
                 buttonEnabled: false,
                 buttonText: 'The button',
                 buttonUrl: 'https://example.com/',
-                header: '',
+                header: null,
                 size: 'small',
                 style: 'dark',
-                subheader: ''
+                subheader: null
             }
         };
 
@@ -60,11 +60,11 @@ describe('Header card', function () {
                 header: 'hi',
                 size: 'small',
                 style: 'dark',
-                subheader: ''
+                subheader: null
             }
         };
 
-        serializer.serialize(card.render(opts)).should.equal(`<div class="kg-card kg-header-card kg-width-full kg-size-small kg-style-dark" style="" data-kg-background-image=""><h2 class="kg-header-card-header">hi</h2></div>`);
+        serializer.serialize(card.render(opts)).should.equal(`<div class="kg-card kg-header-card kg-width-full kg-size-small kg-style-dark" style="" data-kg-background-image=""><h2 class="kg-header-card-header" id="hi">hi</h2></div>`);
     });
 
     it('transforms urls absolute to relative', function () {

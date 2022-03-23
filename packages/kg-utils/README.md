@@ -1,12 +1,12 @@
-# Koenig Card Factory
+# Koenig Utils
 
 ## Install
 
-`npm install @tryghost/kg-card-factory --save`
+`npm install @tryghost/kg-utils --save`
 
 or
 
-`yarn add @tryghost/kg-card-factory`
+`yarn add @tryghost/kg-utils`
 
 
 ## Usage
@@ -34,6 +34,6 @@ Follow the instructions for the top-level repo.
 
 
 
-# Copyright & License
+# Copyright & License 
 
 Copyright (c) 2013-2022 Ghost Foundation - Released under the [MIT license](LICENSE).
