@@ -17,7 +17,7 @@
     "test": "yarn test:parent && lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
-    "ship": "lerna publish"
+    "ship": "lerna publish --git-remote ${GHOST_UPSTREAM:-origin}"
   },
   "devDependencies": {
     "eslint": "8.9.0",
