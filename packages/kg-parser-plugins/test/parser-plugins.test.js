@@ -702,5 +702,86 @@ describe('parser-plugins', function () {
             m4.value.should.equal('Para 2');
         });
     });
+
+    describe('nestedListToHtmlCard', function () {
+        it('can parse a single level unordered list as list card', function () {
+            const dom = buildDOM('<ul><li>Lorem</li><li>Ipsum</li></ul>');
+            const sections = parser.parse(dom).sections.toArray();
+
+            sections[0].type.should.equal('list-section');
+            sections[0]._tagName.should.equal('ul');
+            sections[0].items.length.should.equal(2);
+
+            sections[0].items.head.type.should.equal('list-item');
+            sections[0].items.head._tagName.should.equal('li');
+            sections[0].items.head.markers.head.value.should.equal('Lorem');
+
+            sections[0].items.head.next.type.should.equal('list-item');
+            sections[0].items.head.next._tagName.should.equal('li');
+            sections[0].items.head.next.markers.head.value.should.equal('Ipsum');
+        });
+
+        it('can parse a single level ordered list as list card', function () {
+            const dom = buildDOM('<ol><li>Lorem</li><li>Ipsum</li></ol>');
+            const sections = parser.parse(dom).sections.toArray();
+
+            sections[0].type.should.equal('list-section');
+            sections[0]._tagName.should.equal('ol');
+            sections[0].items.length.should.equal(2);
+
+            sections[0].items.head.type.should.equal('list-item');
+            sections[0].items.head._tagName.should.equal('li');
+            sections[0].items.head.markers.head.value.should.equal('Lorem');
+
+            sections[0].items.head.next.type.should.equal('list-item');
+            sections[0].items.head.next._tagName.should.equal('li');
+            sections[0].items.head.next.markers.head.value.should.equal('Ipsum');
+        });
+
+        it('can parse an unordered list with a nested unordered list as HTML card', function () {
+            const dom = buildDOM('<ul><li>Lorem</li><li>Ipsum<ul><li>Dolor</li><li>Simet</li></ul></li><li>Labore</li><li>Dolore</li></ul>');
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('card-section');
+            section.name.should.equal('html');
+            section.payload.html.should.eql('<ul><li>Lorem</li><li>Ipsum<ul><li>Dolor</li><li>Simet</li></ul></li><li>Labore</li><li>Dolore</li></ul>');
+        });
+
+        it('can parse an ordered list with a nested ordered list as HTML card', function () {
+            const dom = buildDOM('<ol><li>Lorem</li><li>Ipsum<ol><li>Dolor</li><li>Simet</li></ol></li><li>Labore</li><li>Dolore</li></ol>');
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('card-section');
+            section.name.should.equal('html');
+            section.payload.html.should.eql('<ol><li>Lorem</li><li>Ipsum<ol><li>Dolor</li><li>Simet</li></ol></li><li>Labore</li><li>Dolore</li></ol>');
+        });
+
+        it('can parse an ordered list with a nested unordered list as HTML card', function () {
+            const dom = buildDOM('<ol><li>Lorem</li><li>Ipsum<ul><li>Dolor</li><li>Simet</li></ul></li><li>Labore</li><li>Dolore</li></ol>');
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('card-section');
+            section.name.should.equal('html');
+            section.payload.html.should.eql('<ol><li>Lorem</li><li>Ipsum<ul><li>Dolor</li><li>Simet</li></ul></li><li>Labore</li><li>Dolore</li></ol>');
+        });
+
+        it('can parse an unordered list with a nested ordered list as HTML card', function () {
+            const dom = buildDOM('<ul><li>Lorem</li><li>Ipsum<ol><li>Dolor</li><li>Simet</li></ol></li><li>Labore</li><li>Dolore</li></ul>');
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('card-section');
+            section.name.should.equal('html');
+            section.payload.html.should.eql('<ul><li>Lorem</li><li>Ipsum<ol><li>Dolor</li><li>Simet</li></ol></li><li>Labore</li><li>Dolore</li></ul>');
+        });
+
+        it('can parse an unordered list with multiple nested lists as HTML card', function () {
+            const dom = buildDOM('<ul><li>Lorem</li><li>Ipsum<ol><li>Dolor</li><li>Simet<ul><li>Nostrud</li></ul></li></ol></li><li>Labore</li><li>Dolore</li></ul>');
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('card-section');
+            section.name.should.equal('html');
+            section.payload.html.should.eql('<ul><li>Lorem</li><li>Ipsum<ol><li>Dolor</li><li>Simet<ul><li>Nostrud</li></ul></li></ol></li><li>Labore</li><li>Dolore</li></ul>');
+        });
+    });
 });
 

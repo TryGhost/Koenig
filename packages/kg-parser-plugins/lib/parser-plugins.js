@@ -464,6 +464,25 @@ export function createParserPlugins(_options = {}) {
         nodeFinished();
     }
 
+    function nestedListToHtmlCard(node, builder, {addSection, nodeFinished}) {
+        if (node.nodeType !== 1 || (node.tagName !== 'UL' && node.tagName !== 'OL')) {
+            return;
+        }
+
+        // If there's no nested lists, skip
+        let ol = node.querySelector('ol');
+        let ul = node.querySelector('ul');
+
+        if (!ol && !ul) {
+            return;
+        }
+
+        let payload = {html: node.outerHTML};
+        let cardSection = builder.createCardSection('html', payload);
+        addSection(cardSection);
+        nodeFinished();
+    }
+
     return [
         beforeAfterCard.fromKoenigCard(options),
         beforeAfterCard.fromJetpackCard(options),
@@ -496,6 +515,7 @@ export function createParserPlugins(_options = {}) {
         embedCard.fromIframe(options), // Process iFrames without figures after ones with
         figureScriptToHtmlCard,
         altBlockquoteToAside,
-        tableToHtmlCard
+        tableToHtmlCard,
+        nestedListToHtmlCard
     ];
 }
