@@ -5,7 +5,7 @@
   "author": "Ghost Foundation",
   "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "export PORT=1337;react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
