@@ -9,7 +9,8 @@ module.exports = {
     },
     output: {
         filename: 'koenig-react.min.js',
-        path: __dirname + '/dist/umd'
+        path: __dirname + '/dist/umd',
+        libraryTarget: 'umd'
     },
     module: {
         rules: [
