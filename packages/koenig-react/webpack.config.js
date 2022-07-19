@@ -1,6 +1,6 @@
 const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const glob = require('glob');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -8,8 +8,8 @@ module.exports = {
         'bundle.js': glob.sync('build/static/?(js|css)/main.*.?(js|css)').map(f => path.resolve(__dirname, f))
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: 'static/js/bundle.min.js'
+        filename: 'koenig-react.min.js',
+        path: __dirname + '/dist/umd'
     },
     module: {
         rules: [
@@ -19,10 +19,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [ 
-        new CopyPlugin({
-            patterns: [
-                {from: './build/static/js/bundle.min.js', to: './umd/koenig-react.min.js'}
-            ]
-        })]
+    plugins: [new UglifyJsPlugin()]
 };
