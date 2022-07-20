@@ -1,12 +1,9 @@
-const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const glob = require('glob');
+const path = require('path');
 
 module.exports = {
-    mode: 'production',
-    entry: {
-        'bundle.js': glob.sync('build/static/?(js|css)/main.*.?(js|css)').map(f => path.resolve(__dirname, f))
-    },
+    mode: 'development',
+    entry: './src/index.js',
     output: {
         filename: 'koenig-react.min.js',
         path: __dirname + '/dist/umd',
@@ -15,10 +12,25 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                test: /\.css$/i,
+                include: path.resolve(__dirname, 'src'),
+                use: ['style-loader', 'css-loader', 'postcss-loader']
+            },
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
             }
         ]
     },
-    plugins: [new UglifyJsPlugin()]
+    plugins: [new UglifyJsPlugin()],
+    devServer: {
+        compress: true,
+        port: 1337
+    }
 };
