@@ -11,7 +11,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js --cache",
     "posttest": "yarn lint",
-    "build:bundle": "yarn webpack --config webpack.config.js --watch",
+    "build:bundle": "yarn webpack --config webpack.config.js",
     "serve": "yarn webpack serve"
   },
   "publishConfig": {
