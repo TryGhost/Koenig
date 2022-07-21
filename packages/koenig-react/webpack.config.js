@@ -7,6 +7,7 @@ module.exports = {
     output: {
         filename: 'koenig-react.min.js',
         path: __dirname + '/dist/umd',
+        library: 'koenigEditor',
         libraryTarget: 'umd'
     },
     module: {
@@ -31,7 +32,12 @@ module.exports = {
     plugins: [new UglifyJsPlugin()],
     devServer: {
         compress: true,
-        port: 1337
+        port: 1337,
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+            'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+        }
     },
     ignoreWarnings: [
         {message: /source-map-loader/},

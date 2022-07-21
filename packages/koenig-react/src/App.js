@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {Editor, Container, Toolbar} from 'react-mobiledoc-editor';
+import './index.css';
 
-function App() {
+function koenigEditor() {
     return (
         <>
-            <h1 className='text-center'>The Editor</h1>
+            <h1 className='font-bold text-5xl'>The Editor!</h1>
             <Container>
                 <Toolbar className="flex" />
                 <Editor/>
@@ -13,4 +14,4 @@ function App() {
     );
 }
 
-export default App;
+export default koenigEditor;
