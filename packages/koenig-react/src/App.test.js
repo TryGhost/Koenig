@@ -1,8 +1,8 @@
 import {render, screen} from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders The Editor!', () => {
     render(<App />);
-    const linkElement = screen.getByText(/Koenig-React/i);
+    const linkElement = screen.getByText(/The Editor!/i);
     expect(linkElement).toBeInTheDocument();
 });
