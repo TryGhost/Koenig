@@ -3,7 +3,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'development',
-    entry: './src/index.js',
+    entry: './src/app.js',
     output: {
         filename: 'koenig-react.min.js',
         path: __dirname + '/dist/umd',
