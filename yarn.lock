@@ -1816,6 +1816,14 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
+"@tryghost/mobiledoc-kit-experimental@^0.14.1":
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit-experimental/-/mobiledoc-kit-experimental-0.14.1.tgz#d5b016ca9ffad9cfac49f9b2ac260e4225a79ea4"
+  integrity sha512-Sub39Gd6BHdktTfxBkUyUip9TSHwqJxfY25/qu3Aw1gYG2eTorJhk3T17zNs++4O9MZAdq3j43Q+q4UQ9W61mg==
+  dependencies:
+    mobiledoc-dom-renderer "0.7.0"
+    mobiledoc-text-renderer "0.4.1"
+
 "@tryghost/mobiledoc-kit@0.11.2-ghost.4":
   version "0.11.2-ghost.4"
   resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2-ghost.4.tgz#144189e7e62748b3c56e7b723fa18a5e8c807ccf"
@@ -7365,14 +7373,6 @@ mobiledoc-dom-renderer@0.7.0, mobiledoc-dom-renderer@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/mobiledoc-dom-renderer/-/mobiledoc-dom-renderer-0.7.0.tgz#53ab5f14dd612b16f03513390e5cbcc2b89f6979"
   integrity sha512-A+gT6D4Ru3DKY7ZYOBRORmwhRJ7rDj2vy75D2dWuZS5NgX0mCmGs0yN7qs48YlxvfCif8RFpYsaaPg6Kc3MdJg==
-
-mobiledoc-kit@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/mobiledoc-kit/-/mobiledoc-kit-0.14.0.tgz#82873efff7904cad5f299d8109056d75d555e696"
-  integrity sha512-D/wsJmbFs8vMr1FXlTpzc7FnyFCpNcTTrT1BQNcVg2zfDVZsywXKA9det2zf5C9MkuohHhoO94RUUIT9rIZMMQ==
-  dependencies:
-    mobiledoc-dom-renderer "0.7.0"
-    mobiledoc-text-renderer "0.4.1"
 
 mobiledoc-text-renderer@0.3.2:
   version "0.3.2"
