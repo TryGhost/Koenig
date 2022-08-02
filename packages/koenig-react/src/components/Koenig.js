@@ -72,7 +72,8 @@ const Koenig = ({
     const positionStyle = {
         zIndex: '22',
         left: coords.x - '100',
-        top: coords.y - '45'
+        top: coords.y - '45',
+        pointerEvents: 'auto'
     };
 
     return (
@@ -82,7 +83,7 @@ const Koenig = ({
             atoms={atoms}
             onChange={onChange}
             didCreateEditor={_didCreateEditor}
-            pointerEvents="auto"
+
         >  
             { showToolbar ? <Toolbar style={positionStyle} className={`toolbar-temporary absolute`} /> : null }
             <Editor
