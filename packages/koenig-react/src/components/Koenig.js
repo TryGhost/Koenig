@@ -12,10 +12,11 @@ const Koenig = ({
     didCreateEditor,
     onChange
 }) => {
-    const [editorInstance, setEditorInstance] = React.useState();
+    const [editorInstance, setEditorInstance] = React.useState(null);
     const [coords, setCoords] = React.useState({x: 0, y: 0});
-    const [globalCoords, setGlobalCoords] = React.useState({x: 0, y: 0}); //eslint-disable-line
     const [showToolbar, setShowToolbar] = React.useState(false);
+    const [head, setHead] = React.useState(null);
+    const [tail, setTail] = React.useState(null);
 
     function _didCreateEditor(editor) {
         if (keyCommands?.length) {
@@ -36,8 +37,8 @@ const Koenig = ({
             });
         }
 
-        setEditorInstance(editor);
         didCreateEditor?.(editor);
+        setEditorInstance(editor);
     }
 
     React.useEffect(() => {
@@ -46,47 +47,32 @@ const Koenig = ({
                 if (!editorInstance.range.isCollapsed) {
                     return; 
                 }
-                let head = editorInstance?.range?.head;
-                let section = head?.section;
-                if (head.offset > 0) {
-                    setShowToolbar(true);
-                }
-                if (head.offset === 0) {
-                    setShowToolbar(false);
-                }
+                let section = editorInstance?.range?.head?.section;
+                setShowToolbar(editorInstance.hasCursor());
                 if (section?.isBlank) {
+                    editorInstance.deleteRange(editorInstance.range);
                     return; 
                 }
             });
         }
-    }, [editorInstance]);
+    }, [editorInstance, head, tail]);
 
-    const handleMouseMove = (event) => {
+    const handleMouseUpPosition = (event) => {
+        setTail(editorInstance.range?.head);
         setCoords({
             x: event.clientX,
             y: event.clientY
         });
     };
 
-    React.useEffect(() => {
-        const handleWindowMouseMove = (event) => {
-            setGlobalCoords({
-                x: event.screenX,
-                y: event.screenY
-            });
-        };
-        window.addEventListener('mousemove', handleWindowMouseMove);
-      
-        return () => {
-            window.removeEventListener('mousemove', handleWindowMouseMove);
-        };
-    }, [coords]);
+    const handleMouseDownPosition = (event) => {
+        setHead(editorInstance.range?.tail);
+    };
 
     const positionStyle = {
-        position: 'absolute',
         zIndex: '22',
-        left: coords.x - 40,
-        top: coords.y - 20
+        left: coords.x - '100',
+        top: coords.y - '45'
     };
 
     return (
@@ -96,11 +82,13 @@ const Koenig = ({
             atoms={atoms}
             onChange={onChange}
             didCreateEditor={_didCreateEditor}
-        >   
-            <Toolbar style={positionStyle} className={`toolbar-temporary ${showToolbar ? '' : 'invisible'}`} />
+            pointerEvents="auto"
+        >  
+            { showToolbar ? <Toolbar style={positionStyle} className={`toolbar-temporary absolute`} /> : null }
             <Editor
                 className="prose"
-                onMouseUp={handleMouseMove} />
+                onMouseUp={handleMouseUpPosition}
+                onMouseDown={handleMouseDownPosition}/>
         </Container>
     );
 };
