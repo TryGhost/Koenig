@@ -12,8 +12,10 @@ const Koenig = ({
     didCreateEditor,
     onChange
 }) => {
-    const [editorInstance, setEditorInstance] = React.useState({});
-    const [range, setRange] = React.useState({});
+    const [editorInstance, setEditorInstance] = React.useState();
+    const [coords, setCoords] = React.useState({x: 0, y: 0});
+    const [globalCoords, setGlobalCoords] = React.useState({x: 0, y: 0}); //eslint-disable-line
+    const [showToolbar, setShowToolbar] = React.useState(false);
 
     function _didCreateEditor(editor) {
         if (keyCommands?.length) {
@@ -34,17 +36,59 @@ const Koenig = ({
             });
         }
 
-        didCreateEditor?.(editor);
         setEditorInstance(editor);
+        didCreateEditor?.(editor);
     }
 
-    const handleSelection = () => {
-        setRange(editorInstance.range);
+    React.useEffect(() => {
+        if (editorInstance) {
+            editorInstance.cursorDidChange(() => {
+                if (!editorInstance.range.isCollapsed) {
+                    return; 
+                }
+                let head = editorInstance?.range?.head;
+                let section = head?.section;
+                if (head.offset > 0) {
+                    setShowToolbar(true);
+                }
+                if (head.offset === 0) {
+                    setShowToolbar(false);
+                }
+                if (section?.isBlank) {
+                    return; 
+                }
+            });
+        }
+    }, [editorInstance]);
+
+    const handleMouseMove = (event) => {
+        setCoords({
+            x: event.clientX,
+            y: event.clientY
+        });
     };
 
-    const clearRange = () => {
-        setRange({});
+    React.useEffect(() => {
+        const handleWindowMouseMove = (event) => {
+            setGlobalCoords({
+                x: event.screenX,
+                y: event.screenY
+            });
+        };
+        window.addEventListener('mousemove', handleWindowMouseMove);
+      
+        return () => {
+            window.removeEventListener('mousemove', handleWindowMouseMove);
+        };
+    }, [coords]);
+
+    const positionStyle = {
+        position: 'absolute',
+        zIndex: '22',
+        left: coords.x - 40,
+        top: coords.y - 20
     };
+
     return (
         <Container
             className="md:mx-auto md:py-16 max-w-6xl w-full"
@@ -53,11 +97,10 @@ const Koenig = ({
             onChange={onChange}
             didCreateEditor={_didCreateEditor}
         >   
-            <Toolbar className={`toolbar-temporary ${range?.direction ? '' : 'invisible'}`} />
+            <Toolbar style={positionStyle} className={`toolbar-temporary ${showToolbar ? '' : 'invisible'}`} />
             <Editor
                 className="prose"
-                onMouseUp={handleSelection}
-                onMouseDown={clearRange} />
+                onMouseUp={handleMouseMove} />
         </Container>
     );
 };
