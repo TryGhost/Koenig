@@ -78,15 +78,16 @@ const Koenig = ({
 
     return (
         <Container
+            data-testid="mobiledoc-container"
             className="md:mx-auto md:py-16 max-w-2xl w-full"
             mobiledoc={mobiledoc}
             atoms={atoms}
             onChange={onChange}
             didCreateEditor={_didCreateEditor}
-            placeholder="Begin writing your post..."
-            >  
+            placeholder="Begin writing your post...">  
             { showToolbar ? <Toolbar style={positionStyle} className={`toolbar-temporary absolute`} /> : null }
             <Editor
+                data-testid="mobiledoc-editor"
                 className="prose"
                 onMouseUp={handleMouseUpPosition}
                 onMouseDown={handleMouseDownPosition}/>
