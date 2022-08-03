@@ -27,11 +27,12 @@ const KoenigEditor = ({...props}) => {
             initialContent={intialContent}
             className="koenig-react-frame"
             ref={iframeRef}
-        >   
+        >
             <EditorResizeObserver onResize={handleResize}>
                 <Koenig
                     mobiledoc={props.mobiledoc}
                     atoms={props.atoms}
+                    cards={props.cards}
                     keyCommands={props.keyCommands}
                     didCreateEditor={props.didCreateEditor}
                     onChange={props.onChange}

@@ -2,12 +2,14 @@ import * as React from 'react';
 import {Container, Toolbar, Editor} from 'react-mobiledoc-editor';
 import KoenigEditor from '../KoenigEditor';
 import DEFAULT_ATOMS from '../atoms';
+import DEFAULT_CARDS from '../cards';
 import DEFAULT_KEY_COMMANDS from '../key-commands';
 import DEFAULT_TEXT_EXPANSIONS from '../text-expansions';
 
 const Koenig = ({
     mobiledoc,
     atoms = DEFAULT_ATOMS,
+    cards = DEFAULT_CARDS,
     keyCommands = DEFAULT_KEY_COMMANDS,
     textExpansions = DEFAULT_TEXT_EXPANSIONS,
     didCreateEditor,
@@ -21,7 +23,7 @@ const Koenig = ({
     const [tail, setTail] = React.useState(null);
 
     function _didCreateEditor(mobiledocEditor) {
-        const koenig = new KoenigEditor(mobiledocEditor, {atoms, keyCommands, textExpansions});
+        const koenig = new KoenigEditor(mobiledocEditor, {atoms, cards, keyCommands, textExpansions});
 
         setMobiledocInstance(mobiledocEditor);
         setKoenigInstance(koenig);
@@ -70,6 +72,7 @@ const Koenig = ({
             className="w-full max-w-2xl md:mx-auto md:py-16"
             mobiledoc={mobiledoc}
             atoms={atoms}
+            cards={cards}
             onChange={onChange}
             didCreateEditor={_didCreateEditor}
             placeholder="Begin writing your post..."
