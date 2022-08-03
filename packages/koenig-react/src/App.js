@@ -36,6 +36,7 @@ const KoenigEditor = ({...props}) => {
                     didCreateEditor={props.didCreateEditor}
                     onChange={props.onChange}
                     editorRange={props.editorRange}
+                    selectionFrame={iframeRef}
                 />
             </EditorResizeObserver>
         </Frame>
