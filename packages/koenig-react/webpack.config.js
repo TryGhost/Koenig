@@ -22,15 +22,9 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /frame-styles\.css$/i,
-                include: path.resolve(__dirname, 'src'),
-                use: ['style-loader', 'css-loader', 'postcss-loader']
-            },
-            {
                 test: /\.css$/i,
                 include: path.resolve(__dirname, 'src'),
-                exclude: path.resolve(__dirname, 'src', 'frame-styles.css'),
-                use: ['to-string-loader', 'css-loader', 'postcss-loader']
+                use: ['style-loader', 'css-loader', 'postcss-loader']
             },
             {
                 test: /\.m?js$/,
@@ -46,13 +40,15 @@ module.exports = {
     },
     plugins: [new UglifyJsPlugin()],
     devServer: {
+        server: 'https',
         compress: true,
         port: 1338,
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
             'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
-        }
+        },
+        allowedHosts: 'all'
     },
     ignoreWarnings: [
         {message: /source-map-loader/},
