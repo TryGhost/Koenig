@@ -13,7 +13,7 @@ const Koenig = ({
     textExpansions = DEFAULT_TEXT_EXPANSIONS,
     didCreateEditor,
     onChange,
-    TOOLBAR_MARGIN = 15,
+    TOOLBAR_MARGIN = 60,
     TICK_ADJUSTMENT = 8
 }) => {
     const DEFAULTSTYLES = {
@@ -24,12 +24,12 @@ const Koenig = ({
     const editorRef = React.useRef();
     const [showToolbar, setShowToolbar] = React.useState(false);
     const [toolbarPosition, setToolbarPosition] = React.useState(DEFAULTSTYLES);
-    const [koenigInstance, setKoenigInstance] = React.useState(null);
+    const [, setKoenigInstance] = React.useState(null);
     const [mobiledocInstance, setMobiledocInstance] = React.useState(null);
-    const [editorRange, setEditorRange] = React.useState(null);
+    const [, setEditorRange] = React.useState(null);
     const [hasSelectedRange, setHasSelectedRange] = React.useState(false);
     const [onMousemoveHandler, setOnMousemoveHandler] = React.useState(null);
-    const [isMouseDown, setIsMouseDown] = React.useState(false);
+    const [, setIsMouseDown] = React.useState(false);
     const [isMouseUp, setIsMouseUp] = React.useState(false);
 
     function _didCreateEditor(mobiledocEditor) {
@@ -40,13 +40,11 @@ const Koenig = ({
         didCreateEditor?.(mobiledocEditor, koenig);
     }
 
-    function _toggleVisibility() {
-        console.log(hasSelectedRange);
-        console.log('toggle visibility');
-        if (!showToolbar && hasSelectedRange) {
+    function _toggleVisibility(bool) {
+        if (bool) {
             _showToolbar();
         }
-        if (showToolbar){
+        if (!bool) {
             _hideToolbar();
         }
     }
@@ -78,15 +76,12 @@ const Koenig = ({
         if (event.which === 1) {
             setIsMouseUp(true);
             setIsMouseDown(false);
-            _toggleVisibility();
         }
     }, []);
 
     function _showToolbar() {
         _positionToolbar();
-
         setShowToolbar(true);
-
         if (!showToolbar && onMousemoveHandler) {
             // this._onMousemoveHandler = run.bind(this, this._handleMousemove);
             window.addEventListener('mousemove', onMousemoveHandler);
@@ -94,15 +89,8 @@ const Koenig = ({
     }
 
     function _hideToolbar() {
-        if (onMousemoveHandler) {
-            _removeMousemoveHandler();
-            setShowToolbar(false);
-        }
-        // if (!this.isDestroyed || !this.isDestroying) {
-        //     this.set('showToolbar', false);
-        // }
-        // this._lastRange = null;
-        // this._removeMousemoveHandler();
+        _removeMousemoveHandler();
+        setShowToolbar(false);
     }
 
     function _positionToolbar() {
@@ -115,35 +103,35 @@ const Koenig = ({
         // rangeRect is relative to the viewport so we need to subtract the
         // container measurements to get a position relative to the container
         newPosition = {
-            top: rangeRect.top - containerRect.top - height - TOOLBAR_MARGIN,
+            top: rangeRect.top - containerRect.top - TOOLBAR_MARGIN,
             left: rangeRect.left - containerRect.left + rangeRect.width / 2 - width / 2,
             right: null
         };
 
-        let tickPosition = 50;
-        // don't overflow left boundary
-        if (newPosition.left < 0) {
-            newPosition.left = 0;
+        // let tickPosition = 50;
+        // // don't overflow left boundary
+        // if (newPosition.left < 0) {
+        //     newPosition.left = 0;
 
-            // calculate the tick percentage position
-            let absTickPosition = rangeRect.left - containerRect.left + rangeRect.width / 2;
-            tickPosition = absTickPosition / width * 100;
-            if (tickPosition < 5) {
-                tickPosition = 5;
-            }
-        }
+        //     // calculate the tick percentage position
+        //     let absTickPosition = rangeRect.left - containerRect.left + rangeRect.width / 2;
+        //     tickPosition = absTickPosition / width * 100;
+        //     if (tickPosition < 5) {
+        //         tickPosition = 5;
+        //     }
+        // }
         // same for right boundary
-        if (newPosition.left + width > containerRect.width) {
-            newPosition.left = null;
-            newPosition.right = 0;
+        // if (newPosition.left + width > containerRect.width) {
+        //     newPosition.left = null;
+        //     newPosition.right = 0;
 
-            // calculate the tick percentage position
-            let absTickPosition = rangeRect.right - containerRect.right - rangeRect.width / 2;
-            tickPosition = 100 + absTickPosition / width * 100;
-            if (tickPosition > 95) {
-                tickPosition = 95;
-            }
-        }
+        //     // calculate the tick percentage position
+        //     let absTickPosition = rangeRect.right - containerRect.right - rangeRect.width / 2;
+        //     tickPosition = 100 + absTickPosition / width * 100;
+        //     if (tickPosition > 95) {
+        //         tickPosition = 95;
+        //     }
+        // }
 
         // the tick is a pseudo-element so we the only way we can affect it's
         // style is by adding a style element to the head
@@ -181,9 +169,11 @@ const Koenig = ({
             if (mobiledocInstance?.range?.direction){
                 setEditorRange(mobiledocInstance.range);
                 setHasSelectedRange(true);
+                _toggleVisibility(true);
             } else {
                 setHasSelectedRange(false);
                 setEditorRange(null);
+                _toggleVisibility(false);
             }
         }
     }, [isMouseUp, mobiledocInstance]);
