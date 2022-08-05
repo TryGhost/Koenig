@@ -28,6 +28,8 @@ const Koenig = ({
     onChange
 }) => {
     const [, setSelectedRange] = React.useState(null);
+    const [, setActiveMarkupTags] = React.useState({});
+    const [, setActiveSectionTags] = React.useState({});
 
     // Create an instance of KoenigEditor on first render and store a reference.
     // - We need an instance of KoenigEditor immediately because it generates
@@ -41,7 +43,9 @@ const Koenig = ({
             cards,
             keyCommands,
             textExpansions,
-            onSelectedRangeChange: setSelectedRange
+            onSelectedRangeChange: setSelectedRange,
+            onActiveMarkupTagsChange: setActiveMarkupTags,
+            onActiveSectionTagsChange: setActiveSectionTags
         });
 
         koenigEditorRef.current = kgInstance;
