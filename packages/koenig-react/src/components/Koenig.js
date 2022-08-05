@@ -97,7 +97,7 @@ const Koenig = ({
         let containerRect = editorRef.current.editor.element.offsetParent.getBoundingClientRect();
         let range = window.getSelection().getRangeAt(0);
         let rangeRect = range.getBoundingClientRect();
-        let {width, height} = editorRef.current.editor.element.getBoundingClientRect();
+        let {width} = editorRef.current.editor.element.getBoundingClientRect();
         let newPosition = {};
 
         // rangeRect is relative to the viewport so we need to subtract the
