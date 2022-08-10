@@ -10,7 +10,7 @@ const Editor = ({isEditing, payload, Alt, editor, env}) => {
     return (
         <figcaption>
             <div className="wrapper">
-                <div className="cursor-text text-sm caret-inherit" >
+                <div className="caret-inherit cursor-text text-sm" >
                     {
                         Alt ? 
                             <input

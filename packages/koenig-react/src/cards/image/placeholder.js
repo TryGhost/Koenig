@@ -6,7 +6,7 @@ const ImagePlaceholder = ({uploadRef}) => {
     };
 
     return (
-        <figure onClick={handleClick} className='h-80 cursor-pointer bg-gray-200'>
+        <figure onClick={handleClick} className='bg-gray-200 h-80 cursor-pointer'>
             <div className='h-100 flex items-center justify-center'>
                 <p className='text-center'>Click to select an image</p>
             </div>
