@@ -8556,7 +8556,7 @@ prompts@^2.0.1, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -8746,12 +8746,12 @@ react-is@^18.0.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-mobiledoc-editor@0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/react-mobiledoc-editor/-/react-mobiledoc-editor-0.13.0.tgz#17cfcf7549df6640a9e177a4c59d082aa553b9b0"
-  integrity sha512-XHaEf/2C3Qb4uL7gHEWbraAULIV1QMMrbMOab9MZCX5YZq4Ma+zGjH+T2EZsmfaAJwTd3LiliEG93JD5cQjqnQ==
+react-mobiledoc-editor@0.14.2:
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/react-mobiledoc-editor/-/react-mobiledoc-editor-0.14.2.tgz#dd038ea319c463a98eda9b2fffe5eecf95713065"
+  integrity sha512-1aoFd7bm6ywLrYadeKm6NUTkV/yvYIm1RVDDkRcOgb16UCUnQbEPtWoyd2nlYNsUYBW99ubLf+bOKYI/ppmcJg==
   dependencies:
-    prop-types "^15.7.2"
+    prop-types "^15.8.1"
 
 react-refresh@^0.11.0:
   version "0.11.0"
