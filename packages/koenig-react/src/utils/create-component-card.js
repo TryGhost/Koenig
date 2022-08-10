@@ -32,9 +32,11 @@ const createComponentCard = ({name, component: CardComponent, koenigOptions}) =>
 
             didRender(() => {
                 const ComponentWithState = () => {
+                    console.log(card);
                     const {isSelected: _isSelected, isEditing: _isEditing, ...props} = card.props;
                     const [isSelected, setIsSelected] = React.useState(_isSelected);
                     const [isEditing, setIsEditing] = React.useState(_isEditing);
+                    // const [onChange, setOnChange] = React.useState(null);
 
                     // hacky way to allow props to be changed inside KoenigEditor
                     card.setIsSelected = setIsSelected;
