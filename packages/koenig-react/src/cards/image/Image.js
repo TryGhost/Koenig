@@ -34,11 +34,9 @@ const Image = (props) => {
         alt: props?.payload?.alt || '',
         caption: props?.payload?.caption || 'image caption'
     });
-    const [isEditing, setIsEditing] = React.useState(true);
     const [editAlt, setEditAlt] = React.useState(true);
     const uploadRef = React.useRef(null);
     const onUploadChange = (e) => {
-        console.log(e.target.files);
         const formData = new FormData();
         formData.append('file', e.target.files[0]);
         fetch(props.uploadUrl, {
@@ -72,7 +70,7 @@ const Image = (props) => {
                         hidden={true}
                     />
                 </form>
-                <Editor Alt={editAlt} isEditing={isEditing} payload={{payload, setPayload}} env={props.env} />
+                <Editor Alt={editAlt} payload={{payload, setPayload}} env={props.env} />
                 <button onClick={() => setEditAlt(!editAlt)} className={` absolute bottom-0 right-0 cursor-pointer rounded-lg text-sm shadow-[0_0_0_1px] ${editAlt ? 'bg-green-500' : 'shadow-gray-500'} `}>Alt</button>
             </div>
         </div>
