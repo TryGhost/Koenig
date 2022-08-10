@@ -19,7 +19,8 @@ const Koenig = ({
     textExpansions = DEFAULT_TEXT_EXPANSIONS,
     didCreateEditor,
     onChange,
-    onCursorExitAtTop
+    onCursorExitAtTop,
+    uploadUrl
 }) => {
     const [selectedRange, setSelectedRange] = React.useState(null);
     const [activeMarkupTags, setActiveMarkupTags] = React.useState({});
@@ -40,7 +41,8 @@ const Koenig = ({
             onSelectedRangeChange: setSelectedRange,
             onActiveMarkupTagsChange: setActiveMarkupTags,
             onActiveSectionTagsChange: setActiveSectionTags,
-            onCursorExitAtTop
+            onCursorExitAtTop,
+            uploadUrl
         });
 
         koenigEditorRef.current = kgInstance;

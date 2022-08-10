@@ -1,4 +1,5 @@
 import React from 'react';
+import ImagePlaceholder from './placeholder';
 
 const Editor = ({isEditing, payload, Alt, editor, env}) => {
     const handleTextChange = (e) => {
@@ -29,18 +30,48 @@ const Editor = ({isEditing, payload, Alt, editor, env}) => {
 
 const Image = (props) => {
     const [payload, setPayload] = React.useState({
-        src: props?.payload?.src || 'https://images.unsplash.com/photo-1524612219806-a2423c90e45e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+        src: props?.payload?.src || null,
         alt: props?.payload?.alt || '',
         caption: props?.payload?.caption || 'image caption'
     });
     const [isEditing, setIsEditing] = React.useState(true);
     const [editAlt, setEditAlt] = React.useState(true);
-
+    const uploadRef = React.useRef(null);
+    const onUploadChange = (e) => {
+        console.log(e.target.files);
+        const formData = new FormData();
+        formData.append('file', e.target.files[0]);
+        fetch(props.uploadUrl, {
+            method: 'POST',
+            body: formData
+        }).then(res => res.json())
+            .then((data) => {
+                setPayload({...payload, src: data?.images?.[0]?.url});
+                props.env.save({src: data?.images?.[0]?.url});
+            }
+            );
+    };
+    
     return (
         <div>
             <div className="__mobiledoc-card">
-                <div className='relative'><img src={payload?.src || ``} alt={payload?.alt || 'image alt description'} /></div>
-                <div className='hidden'>upload field comes here</div>
+                <div className='relative'>
+                    {
+                        payload.src ?
+                            <img src={payload?.src || ``} alt={payload?.alt || 'image alt description'} />
+                            :
+                            <ImagePlaceholder uploadRef={uploadRef} />
+                    }
+                </div>
+                <form onChange={onUploadChange}>
+                    <input
+                        type='file'
+                        accept='image/*'
+                        name="image"
+                        ref={uploadRef}
+                        hidden={true}
+                    />
+                </form>
                 <Editor Alt={editAlt} isEditing={isEditing} payload={{payload, setPayload}} env={props.env} />
                 <button onClick={() => setEditAlt(!editAlt)} className={` absolute bottom-0 right-0 cursor-pointer rounded-lg text-sm shadow-[0_0_0_1px] ${editAlt ? 'bg-green-500' : 'shadow-gray-500'} `}>Alt</button>
             </div>
