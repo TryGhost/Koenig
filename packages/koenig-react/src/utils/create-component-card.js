@@ -38,12 +38,22 @@ const createComponentCard = ({name, component: CardComponent, koenigOptions}) =>
                     // const [onChange, setOnChange] = React.useState(null);
 
                     // hacky way to allow props to be changed inside KoenigEditor
+                    // - setting card.props.* ensures that it's updated each time the component re-renders
+                    // - setting card.set* exposes the re-render causing state fns to the rest of the system
+                    card.props.isSelected = isSelected;
+                    card.props.isEditing = isEditing;
                     card.setIsSelected = setIsSelected;
                     card.setIsEditing = setIsEditing;
 
                     return <CardComponent isSelected={isSelected} isEditing={isEditing} {...props} />;
                 };
 
+                // This is async, the component won't be rendered immediately
+                // meaning the `setIsSelected` etc methods won't be available
+                // to any code running immediately after `didRender()`.
+                //
+                // If required we can use `flushSync(() => root.render())` to
+                // get full synchronous rendering
                 root.render(<ComponentWithState />);
             });
 
