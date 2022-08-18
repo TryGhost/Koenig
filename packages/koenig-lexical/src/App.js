@@ -1,10 +1,10 @@
+import React from 'react';
 import './index.css';
 import {$getRoot, $getSelection} from 'lexical';
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
 import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
-import {AutoFocusPlugin} from '@lexical/react/LexicalAutoFocusPlugin';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {CodeHighlightNode, CodeNode} from '@lexical/code';
@@ -15,7 +15,7 @@ import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlug
 import {TRANSFORMERS} from '@lexical/markdown';
 import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 
-export default function Editor() {
+export default function Editor({contentJson}) {
     const editorConfig = {
         // The editor theme
         // Handling of errors during update
@@ -32,31 +32,29 @@ export default function Editor() {
             CodeHighlightNode,
             AutoLinkNode,
             LinkNode
-        ]
+        ],
+        editorState: contentJson
     };
-    const onChange = (editorState) => {
-        editorState.read(() => {
-            const root = $getRoot();
-            const selection = $getSelection();
-      
-            console.log(root, selection); // eslint-disable-line no-console
-        });
+
+    const lexicalInstance = React.useRef();
+
+    const handleChange = (editorState) => {
+        lexicalInstance.current = editorState;
+        console.log(editorState);
     };
 
     return (
         <LexicalComposer initialConfig={editorConfig}>
             <div className="koenig-react">
-
-                <div className="editor-inner">
+                <div className="kg-prose">
                     <RichTextPlugin
                         contentEditable={<ContentEditable />}
                         placeholder={<div>Enter some rich text...</div>}
                     />
                     <HistoryPlugin />
-                    <AutoFocusPlugin />
                     <ListPlugin />
                     <LinkPlugin />
-                    <OnChangePlugin onChange={onChange} />
+                    <OnChangePlugin onChange={handleChange} />
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
                 </div>
             </div>
