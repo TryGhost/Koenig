@@ -3,7 +3,7 @@ import {KoenigEditor} from './lib';
 function App() {
     return (
         <div>
-            <KoenigEditor />
+            <KoenigEditor autoFocus={true} />
         </div>
     );
 }

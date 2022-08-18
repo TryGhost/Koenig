@@ -14,7 +14,7 @@ function onError(error) {
     console.error(error); // eslint-disable-line
 }
 
-const KoenigEditor = ({onChange}) => {
+const KoenigEditor = ({onChange, autoFocus}) => {
     const initialConfig = {
         namespace: 'KoenigEditor',
         onError
@@ -34,7 +34,7 @@ const KoenigEditor = ({onChange}) => {
             />
             <OnChangePlugin onChange={_onChange} />
             <HistoryPlugin />
-            <AutofocusPlugin />
+            {autoFocus && <AutofocusPlugin />}
         </LexicalComposer>
     );
 };
