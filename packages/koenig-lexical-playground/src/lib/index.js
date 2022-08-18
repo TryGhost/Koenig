@@ -1,3 +1,3 @@
-import MyButton from './components/MyButton';
+import KoenigEditor from './components/KoenigEditor';
 
-export {MyButton};
+export {KoenigEditor};

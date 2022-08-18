@@ -21,6 +21,8 @@
     "lint": "eslint src --ext .js,.jsx --cache"
   },
   "dependencies": {
+    "@lexical/react": "^0.3.11",
+    "lexical": "^0.3.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

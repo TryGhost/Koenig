@@ -1,9 +1,9 @@
-import {MyButton} from './lib';
+import {KoenigEditor} from './lib';
 
 function App() {
     return (
         <div>
-            <MyButton />
+            <KoenigEditor />
         </div>
     );
 }
