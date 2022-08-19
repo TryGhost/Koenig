@@ -1,11 +1,11 @@
 import {KoenigEditor} from './lib';
 
-function App() {
+function DemoApp() {
     return (
-        <div>
+        <div className="demo-container">
             <KoenigEditor autoFocus={true} />
         </div>
     );
 }
 
-export default App;
+export default DemoApp;

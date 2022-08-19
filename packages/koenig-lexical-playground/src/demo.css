@@ -1,0 +1,9 @@
+.demo-container {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6.4rem;
+    margin-bottom: 6.4rem;
+    width: 100%;
+    max-width: 67.2rem;
+}

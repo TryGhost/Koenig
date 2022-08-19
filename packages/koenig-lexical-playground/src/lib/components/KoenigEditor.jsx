@@ -14,7 +14,7 @@ function onError(error) {
     console.error(error); // eslint-disable-line
 }
 
-const KoenigEditor = ({onChange, autoFocus}) => {
+const KoenigEditor = ({onChange, autoFocus, ...props}) => {
     const initialConfig = {
         namespace: 'KoenigEditor',
         onError
