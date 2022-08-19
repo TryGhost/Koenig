@@ -26,6 +26,7 @@ import {
     mergeRegister
 } from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {$createAsideNode} from '../nodes/aside';
 import {getSelectedNode} from '../utils/getSelectedNode';
 import {setFloatingElemPosition} from '../utils/setFloatingElemPosition';
 import {getDOMRangeRect} from '../utils/getDOMRangeRect';
@@ -36,6 +37,7 @@ import {ReactComponent as ItalicIcon} from '../assets/icons/kg-italic.svg';
 import {ReactComponent as HeadingOneIcon} from '../assets/icons/kg-heading-1.svg';
 import {ReactComponent as HeadingTwoIcon} from '../assets/icons/kg-heading-2.svg';
 import {ReactComponent as QuoteOneIcon} from '../assets/icons/kg-quote-1.svg';
+import {ReactComponent as QuoteTwoIcon} from '../assets/icons/kg-quote-2.svg';
 
 const blockTypeToBlockName = {
     bullet: 'Bulleted List',
@@ -49,7 +51,8 @@ const blockTypeToBlockName = {
     h6: 'Heading 6',
     number: 'Numbered List',
     paragraph: 'Normal',
-    quote: 'Quote'
+    quote: 'Quote',
+    aside: 'Aside'
 };
 
 function MenuItem({label, isActive, onClick, Icon}) {
@@ -73,7 +76,7 @@ function MenuSeparator() {
     );
 }
 
-function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic, isH2, isH3}) {
+function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic}) {
     const toolbarRef = React.useRef(null);
 
     const formatParagraph = () => {
@@ -101,15 +104,19 @@ function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic,
     };
 
     const formatQuote = () => {
-        if (blockType !== 'quote') {
-            editor.update(() => {
-                const selection = $getSelection();
+        editor.update(() => {
+            const selection = $getSelection();
 
-                if ($isRangeSelection(selection)) {
+            if ($isRangeSelection(selection)) {
+                if (blockType === 'quote') {
+                    $wrapLeafNodesInElements(selection, () => $createAsideNode());
+                } else if (blockType === 'aside') {
+                    $wrapLeafNodesInElements(selection, () => $createParagraphNode());
+                } else {
                     $wrapLeafNodesInElements(selection, () => $createQuoteNode());
                 }
-            });
-        }
+            }
+        });
     };
 
     const updateFloatingToolbar = React.useCallback(() => {
@@ -188,7 +195,7 @@ function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic,
                 <MenuItem label="Toggle heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} />
                 <MenuItem label="Toggle heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} />
                 <MenuSeparator />
-                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote'} Icon={QuoteOneIcon} onClick={() => (blockType === 'quote' ? formatParagraph() : formatQuote())} />
+                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote' || blockType === 'aside'} Icon={blockType === 'aside' ? QuoteTwoIcon : QuoteOneIcon} onClick={() => (formatQuote())} />
             </ul>
         </div>
     );
