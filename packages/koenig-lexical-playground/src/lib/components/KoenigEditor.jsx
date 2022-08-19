@@ -4,6 +4,7 @@ import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
+import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {TRANSFORMERS as defaultMarkdownTransformers} from '@lexical/markdown';
 import AutofocusPlugin from '../plugins/autofocus';
 import '../styles/index.css';
@@ -28,6 +29,7 @@ const KoenigEditor = ({
             <OnChangePlugin onChange={_onChange} />
             <HistoryPlugin />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
+            <ListPlugin /> {/* adds indent/outdent/remove etc support */}
             {autoFocus && <AutofocusPlugin />}
         </div>
     );
