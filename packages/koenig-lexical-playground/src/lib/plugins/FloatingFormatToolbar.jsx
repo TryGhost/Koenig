@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {createPortal} from 'react-dom';
 import {
+    $createParagraphNode,
     $getSelection,
     $isRangeSelection,
     $isTextNode,
@@ -8,7 +9,21 @@ import {
     FORMAT_TEXT_COMMAND,
     SELECTION_CHANGE_COMMAND
 } from 'lexical';
-import {mergeRegister} from '@lexical/utils';
+import {
+    $wrapLeafNodesInElements
+} from '@lexical/selection';
+import {
+    $createHeadingNode,
+    $isHeadingNode
+} from '@lexical/rich-text';
+import {
+    $isListNode,
+    ListNode
+} from '@lexical/list';
+import {
+    $getNearestNodeOfType,
+    mergeRegister
+} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {getSelectedNode} from '../utils/getSelectedNode';
 import {setFloatingElemPosition} from '../utils/setFloatingElemPosition';
@@ -17,9 +32,65 @@ import {getScrollParent} from '../utils/getScrollParent';
 
 import {ReactComponent as BoldIcon} from '../assets/icons/kg-bold.svg';
 import {ReactComponent as ItalicIcon} from '../assets/icons/kg-italic.svg';
+import {ReactComponent as HeadingOneIcon} from '../assets/icons/kg-heading-1.svg';
+import {ReactComponent as HeadingTwoIcon} from '../assets/icons/kg-heading-2.svg';
 
-function FloatingFormatToolbar({editor, anchorElem, isBold, isItalic}) {
+const blockTypeToBlockName = {
+    bullet: 'Bulleted List',
+    check: 'Check List',
+    code: 'Code Block',
+    h1: 'Heading 1',
+    h2: 'Heading 2',
+    h3: 'Heading 3',
+    h4: 'Heading 4',
+    h5: 'Heading 5',
+    h6: 'Heading 6',
+    number: 'Numbered List',
+    paragraph: 'Normal',
+    quote: 'Quote'
+};
+
+function MenuItem({label, isActive, onClick, Icon}) {
+    return (
+        <li className="m-0 flex p-0 first:m-0">
+            <button
+                type="button"
+                className="flex h-9 w-9 items-center justify-center"
+                onClick={onClick}
+                aria-label={label}
+            >
+                <Icon className={isActive ? 'fill-green' : 'fill-white'} />
+            </button>
+        </li>
+    );
+}
+
+function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic, isH2, isH3}) {
     const toolbarRef = React.useRef(null);
+
+    const formatParagraph = () => {
+        if (blockType !== 'paragraph') {
+            editor.update(() => {
+                const selection = $getSelection();
+
+                if ($isRangeSelection(selection)) {
+                    $wrapLeafNodesInElements(selection, () => $createParagraphNode());
+                }
+            });
+        }
+    };
+
+    const formatHeading = (headingSize) => {
+        if (blockType !== headingSize) {
+            editor.update(() => {
+                const selection = $getSelection();
+
+                if ($isRangeSelection(selection)) {
+                    $wrapLeafNodesInElements(selection, () => $createHeadingNode(headingSize));
+                }
+            });
+        }
+    };
 
     const updateFloatingToolbar = React.useCallback(() => {
         const toolbarElement = toolbarRef.current;
@@ -92,35 +163,20 @@ function FloatingFormatToolbar({editor, anchorElem, isBold, isItalic}) {
     return (
         <div className="absolute" ref={toolbarRef}>
             <ul className="text-md m-0 flex items-center justify-evenly rounded bg-black px-1 py-0 font-sans font-normal text-white">
-                <li className="m-0 flex p-0 first:m-0">
-                    <button
-                        type="button"
-                        className="flex h-9 w-9 items-center justify-center"
-                        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
-                        aria-label="Format text as bold"
-                    >
-                        <BoldIcon className={isBold ? 'fill-green' : 'fill-white'} />
-                    </button>
-                </li>
-                <li className="m-0 flex p-0 first:m-0">
-                    <button
-                        type="button"
-                        className="flex h-9 w-9 items-center justify-center"
-                        onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
-                        aria-label="Format text as italics"
-                    >
-                        <ItalicIcon className={isItalic ? 'fill-green' : 'fill-white'} />
-                    </button>
-                </li>
+                <MenuItem label="Format text as bold" isActive={isBold} Icon={BoldIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')} />
+                <MenuItem label="Format text as italics" isActive={isItalic} Icon={ItalicIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')} />
+                <MenuItem label="Change to heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} />
+                <MenuItem label="Change to heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} />
             </ul>
         </div>
     );
 }
 
 function useFloatingFormatToolbar(editor, anchorElem) {
-    const [isText, setIsText] = React.useState(false); // eslint-disable-line
-    const [isBold, setIsBold] = React.useState(false); // eslint-disable-line
-    const [isItalic, setIsItalic] = React.useState(false); // eslint-disable-line
+    const [isText, setIsText] = React.useState(false);
+    const [isBold, setIsBold] = React.useState(false);
+    const [isItalic, setIsItalic] = React.useState(false);
+    const [blockType, setBlockType] = React.useState('paragraph');
 
     const updatePopup = React.useCallback(() => {
         editor.getEditorState().read(() => {
@@ -145,18 +201,40 @@ function useFloatingFormatToolbar(editor, anchorElem) {
             }
 
             if (!$isRangeSelection(selection)) {
-                // TODO: what is RangeSelection?
                 return;
             }
 
-            const node = getSelectedNode(selection);
+            const anchorNode = getSelectedNode(selection);
+            const element = anchorNode.getKey() === 'root'
+                ? anchorNode
+                : anchorNode.getTopLevelElementOrThrow();
+            const elementKey = element.getKey();
+            const elementDOM = editor.getElementByKey(elementKey);
 
             // update text format
             setIsBold(selection.hasFormat('bold'));
             setIsItalic(selection.hasFormat('italic'));
 
+            if (elementDOM !== null) {
+                if ($isListNode(element)) {
+                    const parentList = $getNearestNodeOfType(anchorNode, ListNode);
+                    const type = parentList
+                        ? parentList.getListType()
+                        : element.getListType();
+                    setBlockType(type);
+                } else {
+                    const type = $isHeadingNode(element)
+                        ? element.getTag()
+                        : element.getType();
+
+                    if (type in blockTypeToBlockName) {
+                        setBlockType(type);
+                    }
+                }
+            }
+
             if (selection.getTextContent() !== '') {
-                setIsText($isTextNode(node));
+                setIsText($isTextNode(anchorNode));
             } else {
                 setIsText(false);
             }
@@ -184,6 +262,7 @@ function useFloatingFormatToolbar(editor, anchorElem) {
         <FloatingFormatToolbar
             editor={editor}
             anchorElem={anchorElem}
+            blockType={blockType}
             isBold={isBold}
             isItalic={isItalic}
         />,
