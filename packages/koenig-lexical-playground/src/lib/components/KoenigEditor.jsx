@@ -6,7 +6,7 @@ import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import {TRANSFORMERS as defaultMarkdownTransformers} from '@lexical/markdown';
 import AutofocusPlugin from '../plugins/autofocus';
-import '../index.css';
+import '../styles/index.css';
 
 const KoenigEditor = ({
     onChange,
@@ -20,16 +20,16 @@ const KoenigEditor = ({
     }, [onChange]);
 
     return (
-        <>
+        <div className="koenig-react">
             <RichTextPlugin
-                contentEditable={<ContentEditable />}
+                contentEditable={<ContentEditable className="kg-prose" />}
                 placeholder={<div className="pointer-events-none absolute top-0 left-0 min-w-full cursor-text">Enter some text...</div>}
             />
             <OnChangePlugin onChange={_onChange} />
             <HistoryPlugin />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
             {autoFocus && <AutofocusPlugin />}
-        </>
+        </div>
     );
 };
 
