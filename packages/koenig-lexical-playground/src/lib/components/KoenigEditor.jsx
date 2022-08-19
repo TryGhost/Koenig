@@ -7,6 +7,7 @@ import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlug
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {TRANSFORMERS as defaultMarkdownTransformers} from '@lexical/markdown';
 import AutofocusPlugin from '../plugins/autofocus';
+import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbar';
 import '../styles/index.css';
 
 const KoenigEditor = ({
@@ -20,10 +21,21 @@ const KoenigEditor = ({
         onChange?.(json);
     }, [onChange]);
 
+    const [floatingAnchorElem, setFloatingAnchorElem] = React.useState(null);
+    const onRef = (_floatingAnchorElem) => {
+        if (_floatingAnchorElem !== null) {
+            setFloatingAnchorElem(_floatingAnchorElem);
+        }
+    };
+
     return (
         <div className="koenig-react">
             <RichTextPlugin
-                contentEditable={<ContentEditable className="kg-prose" />}
+                contentEditable={
+                    <div ref={onRef}>
+                        <ContentEditable className="kg-prose" />
+                    </div>
+                }
                 placeholder={<div className="pointer-events-none absolute top-0 left-0 min-w-full cursor-text">Enter some text...</div>}
             />
             <OnChangePlugin onChange={_onChange} />
@@ -31,6 +43,11 @@ const KoenigEditor = ({
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
             <ListPlugin /> {/* adds indent/outdent/remove etc support */}
             {autoFocus && <AutofocusPlugin />}
+            {floatingAnchorElem && (
+                <>
+                    <FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />
+                </>
+            )}
         </div>
     );
 };

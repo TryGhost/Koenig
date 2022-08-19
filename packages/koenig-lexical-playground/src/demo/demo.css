@@ -19,5 +19,6 @@ html {
 }
 
 .demo-tree {
+    max-width: 20%;
     margin-top: 2rem;
 }
