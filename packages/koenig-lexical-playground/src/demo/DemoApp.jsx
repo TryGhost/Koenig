@@ -1,5 +1,5 @@
-import {KoenigComposer, KoenigEditor} from './lib';
-import TreeViewPlugin from './demo/TreeViewPlugin';
+import {KoenigComposer, KoenigEditor} from '../lib';
+import TreeViewPlugin from './TreeViewPlugin';
 
 function DemoApp() {
     return (
