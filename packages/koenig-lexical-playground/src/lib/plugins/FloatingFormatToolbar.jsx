@@ -14,7 +14,8 @@ import {
 } from '@lexical/selection';
 import {
     $createHeadingNode,
-    $isHeadingNode
+    $isHeadingNode,
+    $createQuoteNode
 } from '@lexical/rich-text';
 import {
     $isListNode,
@@ -34,6 +35,7 @@ import {ReactComponent as BoldIcon} from '../assets/icons/kg-bold.svg';
 import {ReactComponent as ItalicIcon} from '../assets/icons/kg-italic.svg';
 import {ReactComponent as HeadingOneIcon} from '../assets/icons/kg-heading-1.svg';
 import {ReactComponent as HeadingTwoIcon} from '../assets/icons/kg-heading-2.svg';
+import {ReactComponent as QuoteOneIcon} from '../assets/icons/kg-quote-1.svg';
 
 const blockTypeToBlockName = {
     bullet: 'Bulleted List',
@@ -65,6 +67,12 @@ function MenuItem({label, isActive, onClick, Icon}) {
     );
 }
 
+function MenuSeparator() {
+    return (
+        <li className="bg-grey-900 m-0 mx-1 h-5 w-px"></li>
+    );
+}
+
 function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic, isH2, isH3}) {
     const toolbarRef = React.useRef(null);
 
@@ -87,6 +95,18 @@ function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic,
 
                 if ($isRangeSelection(selection)) {
                     $wrapLeafNodesInElements(selection, () => $createHeadingNode(headingSize));
+                }
+            });
+        }
+    };
+
+    const formatQuote = () => {
+        if (blockType !== 'quote') {
+            editor.update(() => {
+                const selection = $getSelection();
+
+                if ($isRangeSelection(selection)) {
+                    $wrapLeafNodesInElements(selection, () => $createQuoteNode());
                 }
             });
         }
@@ -165,8 +185,10 @@ function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic,
             <ul className="text-md m-0 flex items-center justify-evenly rounded bg-black px-1 py-0 font-sans font-normal text-white">
                 <MenuItem label="Format text as bold" isActive={isBold} Icon={BoldIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')} />
                 <MenuItem label="Format text as italics" isActive={isItalic} Icon={ItalicIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')} />
-                <MenuItem label="Change to heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} />
-                <MenuItem label="Change to heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} />
+                <MenuItem label="Toggle heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} />
+                <MenuItem label="Toggle heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} />
+                <MenuSeparator />
+                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote'} Icon={QuoteOneIcon} onClick={() => (blockType === 'quote' ? formatParagraph() : formatQuote())} />
             </ul>
         </div>
     );
