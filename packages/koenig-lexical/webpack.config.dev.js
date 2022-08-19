@@ -38,7 +38,8 @@ module.exports = {
     },
     plugins: [new UglifyJsPlugin(), new HtmlWebPackPlugin({
         template: './public/index.html',
-        filename: 'index.html'
+        filename: 'index.html',
+        title: 'Koenig Editor Lexical'
     })],
     devServer: {
         compress: true,
@@ -48,7 +49,8 @@ module.exports = {
             'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
             'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
         },
-        allowedHosts: 'all'
+        allowedHosts: 'all',
+        hot: true
     },
     ignoreWarnings: [
         {message: /source-map-loader/},

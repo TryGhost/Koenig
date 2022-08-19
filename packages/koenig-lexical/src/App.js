@@ -14,6 +14,7 @@ import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import {TRANSFORMERS} from '@lexical/markdown';
 import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
+import Toolbar from './toolbar/Toolbar';
 
 export default function Editor({contentJson}) {
     const editorConfig = {
@@ -37,16 +38,17 @@ export default function Editor({contentJson}) {
     };
 
     const lexicalInstance = React.useRef();
+    const [instance, setInstance] = React.useState(null);
 
     const handleChange = (editorState) => {
-        lexicalInstance.current = editorState;
-        console.log(editorState);
+        setInstance(editorState);
     };
 
     return (
         <LexicalComposer initialConfig={editorConfig}>
             <div className="koenig-react">
                 <div className="kg-prose">
+                    <Toolbar />
                     <RichTextPlugin
                         contentEditable={<ContentEditable />}
                         placeholder={<div>Enter some rich text...</div>}
