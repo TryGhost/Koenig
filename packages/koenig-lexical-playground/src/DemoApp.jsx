@@ -1,9 +1,18 @@
-import {KoenigEditor} from './lib';
+import {KoenigComposer, KoenigEditor} from './lib';
+import TreeViewPlugin from './demo/TreeViewPlugin';
 
 function DemoApp() {
     return (
         <div className="demo-container">
-            <KoenigEditor autoFocus={true} />
+            <KoenigComposer>
+                <div className="demo-editor">
+                    <KoenigEditor autoFocus={true}>
+                    </KoenigEditor>
+                </div>
+                <div className="demo-tree">
+                    <TreeViewPlugin />
+                </div>
+            </KoenigComposer>
         </div>
     );
 }

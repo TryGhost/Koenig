@@ -1,9 +1,17 @@
 .demo-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.demo-editor {
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 6.4rem;
-    margin-bottom: 6.4rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
     width: 100%;
     max-width: 67.2rem;
+}
+
+.demo-tree {
+    margin-top: 2rem;
 }
