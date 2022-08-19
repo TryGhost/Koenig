@@ -3,10 +3,16 @@ import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
 import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
+import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
+import {TRANSFORMERS as defaultMarkdownTransformers} from '@lexical/markdown';
 import AutofocusPlugin from '../plugins/autofocus';
 import '../index.css';
 
-const KoenigEditor = ({onChange, autoFocus}) => {
+const KoenigEditor = ({
+    onChange,
+    autoFocus,
+    markdownTransformers = defaultMarkdownTransformers
+}) => {
     const _onChange = React.useCallback((editorState) => {
         const json = editorState.toJSON();
         // console.log(json); // eslint-disable-line
@@ -21,6 +27,7 @@ const KoenigEditor = ({onChange, autoFocus}) => {
             />
             <OnChangePlugin onChange={_onChange} />
             <HistoryPlugin />
+            <MarkdownShortcutPlugin transformers={markdownTransformers} />
             {autoFocus && <AutofocusPlugin />}
         </>
     );
