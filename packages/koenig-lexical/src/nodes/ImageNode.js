@@ -1,13 +1,21 @@
 import React from 'react';
 import {DecoratorNode} from 'lexical';
+import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
+import {LexicalComposer} from '@lexical/react/LexicalComposer';
+import {ContentEditable} from '@lexical/react/LexicalContentEditable';
+import {editorConfig} from '../App';
 
-const ImageComponent = () => {
+const ImageComponent = ({JsonContent}) => {
     return (
         <React.Fragment>
             <img src="https://images.unsplash.com/photo-1538485399081-7191377e8241?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1274&q=80" alt=""/>
             <figcaption>
-                <h3>Image Title</h3>
-                <p>Image description</p>
+                <LexicalComposer initialConfig={editorConfig(JsonContent || {})}>
+                    <RichTextPlugin
+                        placeholder="Caption comes here"
+                        contentEditable={<ContentEditable/>} />
+                    
+                </LexicalComposer>
             </figcaption>
         </React.Fragment>
     );

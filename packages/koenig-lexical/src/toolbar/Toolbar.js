@@ -11,13 +11,6 @@ const Toolbar = ({instance}) => {
         editor.dispatchCommand(FORMAT_TEXT_COMMAND, event.target.dataset.cmd);
     };
 
-    // React.useEffect(() => {
-    //     instance?.read(() => {
-    //         const selection = $getSelection();
-    //         const root = $getRoot(selection);
-    //     });
-    // }, [instance]);
-
     const handleImageClick = (event) => {
         event.preventDefault();
         editor.update(() => {

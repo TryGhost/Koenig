@@ -12,8 +12,8 @@ import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 import Toolbar from './toolbar/Toolbar';
 import DefaultNodes from './nodes/DefaultNodes';
 
-export default function Editor({contentJson}) {
-    const editorConfig = {
+export const editorConfig = ({contentJson}) => {
+    return {
         // The editor theme
         // Handling of errors during update
         onError(error) {
@@ -24,7 +24,9 @@ export default function Editor({contentJson}) {
         editorState: contentJson,
         readOnly: false
     };
+};
 
+export default function Editor({contentJson}) {
     const [instance, setInstance] = React.useState(null);
 
     const handleChange = (editorState) => {
@@ -32,7 +34,7 @@ export default function Editor({contentJson}) {
     };
 
     return (
-        <LexicalComposer initialConfig={{...editorConfig, readOnly: false}}>
+        <LexicalComposer initialConfig={{...editorConfig({contentJson}), readOnly: false}}>
             <div className="koenig-react">
                 <div className="kg-prose">
                     <Toolbar instance={instance} />
