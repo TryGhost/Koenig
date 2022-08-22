@@ -17,7 +17,13 @@ export default defineConfig({
         lib: {
             entry: resolve(__dirname, 'src/lib/index.js'),
             name: 'KoenigLexical',
-            fileName: 'koenig-lexical'
+            fileName(format) {
+                if (format === 'umd') {
+                    return 'koenig-lexical.umd.js'
+                }
+
+                return 'koenig-lexical.js';
+            }
         },
         rollupOptions: {
             external: ['react', 'react-dom'],
