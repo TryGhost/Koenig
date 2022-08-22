@@ -19,7 +19,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.jsx --cache",
-    "prepare": "yarn build"
+    "prepare": "NODE_ENV=production yarn build"
   },
   "dependencies": {
     "@lexical/react": "^0.3.11",

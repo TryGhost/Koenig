@@ -2,7 +2,7 @@ import {resolve} from 'path';
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
-import cssInjectedByJs from 'vite-plugin-css-injected-by-js'
+import cssInjectedByJs from 'vite-plugin-css-injected-by-js';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -11,6 +11,9 @@ export default defineConfig({
         cssInjectedByJs({styleId: 'koenig-lexical-style'}),
         react()
     ],
+    define: {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    },
     build: {
         minify: true,
         sourcemap: true,
@@ -19,7 +22,7 @@ export default defineConfig({
             name: 'KoenigLexical',
             fileName(format) {
                 if (format === 'umd') {
-                    return 'koenig-lexical.umd.js'
+                    return 'koenig-lexical.umd.js';
                 }
 
                 return 'koenig-lexical.js';
