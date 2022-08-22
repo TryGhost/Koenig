@@ -1,21 +1,20 @@
 import React from 'react';
-import {DecoratorNode} from 'lexical';
 import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
-import {LexicalComposer} from '@lexical/react/LexicalComposer';
+import {LexicalNestedComposer} from '@lexical/react/LexicalNestedComposer';
 import {ContentEditable} from '@lexical/react/LexicalContentEditable';
-import {editorConfig} from '../App';
+// import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {DecoratorNode, createEditor} from 'lexical';
 
-const ImageComponent = ({JsonContent}) => {
+const ImageComponent = ({_key, caption}) => {
     return (
-        <React.Fragment>
+        <React.Fragment key={_key}>
             <img src="https://images.unsplash.com/photo-1538485399081-7191377e8241?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1274&q=80" alt=""/>
             <figcaption>
-                <LexicalComposer initialConfig={editorConfig(JsonContent || {})}>
+                <LexicalNestedComposer initialEditor={caption}>
                     <RichTextPlugin
                         placeholder="Caption comes here"
                         contentEditable={<ContentEditable/>} />
-                    
-                </LexicalComposer>
+                </LexicalNestedComposer>
             </figcaption>
         </React.Fragment>
     );
@@ -29,8 +28,9 @@ export class ImageNode extends DecoratorNode {
         return new ImageNode(node.__key);
     }
 
-    constructor(key) {
+    constructor(key, caption) {
         super(key);
+        this.__caption = caption || createEditor();
         this.key = key;
     }
 
@@ -43,7 +43,13 @@ export class ImageNode extends DecoratorNode {
     }
 
     static importJSON(serializedNode) {
+        const {caption} = serializedNode;
         const node = $createImageNode();
+        const nestedEditor = node.__caption;
+        const editorState = nestedEditor.parseEditorState(caption.editorState);
+        if (!editorState.isEmpty()) {
+            nestedEditor.setEditorState(editorState);
+        }
         return node;
     }
 
@@ -54,12 +60,12 @@ export class ImageNode extends DecoratorNode {
         };
     }
     decorate() {
-        return <ImageComponent key={this.__key}/>;
+        return <ImageComponent _key={this.__key} caption={this.__caption}/>;
     }
 }
 
-export const $createImageNode = (key) => {
-    const node = new ImageNode(key);
+export const $createImageNode = (key, caption) => {
+    const node = new ImageNode(key, caption);
     return node;
 };
 
