@@ -1,5 +1,5 @@
 {
-  "name": "koenig-lexical",
+  "name": "koenig-lexical-experiment",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -19,6 +19,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.jsx --cache",
+    "prepare": "yarn build"
   },
   "dependencies": {
     "@lexical/react": "^0.3.11",
