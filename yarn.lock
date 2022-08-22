@@ -10799,11 +10799,6 @@ vfile@^4.0.0:
     unist-util-stringify-position "^2.0.0"
     vfile-message "^2.0.0"
 
-vite-plugin-css-injected-by-js@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-2.0.3.tgz#b8e9c9a9164da467089d174d9c6c3dab3420c33e"
-  integrity sha512-4d/gc5DnyiSYdQT96Ol4FLnkaGXPx5d9fh50nAOeTxGO2CwWpE8Bd4gIyIpbLZmG4gKKxRCFw17FtunzKJsYiw==
-
 vite-plugin-svgr@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/vite-plugin-svgr/-/vite-plugin-svgr-2.2.1.tgz#6e1132a3b66f71e1d69e8c5fe989393260184ac3"
