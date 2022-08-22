@@ -52,7 +52,6 @@ export class ImageNode extends DecoratorNode {
 
 export const $createImageNode = (key) => {
     const node = new ImageNode(key);
-    console.log(node);
     return node;
 };
 

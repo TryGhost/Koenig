@@ -1,5 +1,5 @@
 import React from 'react';
-import {FORMAT_TEXT_COMMAND, $getSelection, $getRoot} from 'lexical';
+import {FORMAT_TEXT_COMMAND, $getRoot} from 'lexical';
 import {$createParagraphNode} from 'lexical';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$createImageNode} from '../nodes/ImageNode';
@@ -11,14 +11,12 @@ const Toolbar = ({instance}) => {
         editor.dispatchCommand(FORMAT_TEXT_COMMAND, event.target.dataset.cmd);
     };
 
-    React.useEffect(() => {
-        instance?.read(() => {
-            const selection = $getSelection();
-            const anchor = selection.anchor;
-            const node = anchor.getNode();
-            console.log(node.getFormat()); // eslint-disable-line no-console
-        });
-    }, [instance]);
+    // React.useEffect(() => {
+    //     instance?.read(() => {
+    //         const selection = $getSelection();
+    //         const root = $getRoot(selection);
+    //     });
+    // }, [instance]);
 
     const handleImageClick = (event) => {
         event.preventDefault();

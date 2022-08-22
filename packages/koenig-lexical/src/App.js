@@ -28,7 +28,6 @@ export default function Editor({contentJson}) {
     const [instance, setInstance] = React.useState(null);
 
     const handleChange = (editorState) => {
-        console.log(editorState);
         setInstance(editorState);
     };
 
