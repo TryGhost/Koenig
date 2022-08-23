@@ -5,7 +5,6 @@ import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
-import {TRANSFORMERS as defaultMarkdownTransformers} from '@lexical/markdown';
 import AutofocusPlugin from '../plugins/autofocus';
 import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbar';
 import ImagePlugin from '../plugins/ImagePlugin';
@@ -14,7 +13,7 @@ import '../styles/index.css';
 const KoenigEditor = ({
     onChange,
     autoFocus,
-    markdownTransformers = defaultMarkdownTransformers
+    markdownTransformers
 }) => {
     const _onChange = React.useCallback((editorState) => {
         const json = editorState.toJSON();
@@ -44,11 +43,7 @@ const KoenigEditor = ({
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
             <ListPlugin /> {/* adds indent/outdent/remove etc support */}
             {autoFocus && <AutofocusPlugin />}
-            {floatingAnchorElem && (
-                <>
-                    <FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />
-                </>
-            )}
+            {floatingAnchorElem && (<FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />)}
             <ImagePlugin />
         </div>
     );
