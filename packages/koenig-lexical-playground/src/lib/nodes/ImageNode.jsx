@@ -3,19 +3,22 @@ import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
 import {LexicalNestedComposer} from '@lexical/react/LexicalNestedComposer';
 import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {DecoratorNode, createEditor} from 'lexical';
+import KoenigCardWrapper from '../components/KoenigCardWrapper';
 
 const ImageComponent = ({_key, caption, src}) => {
     return (
-        <figure key={_key}>
-            <img src={src} alt=""/>
-            <figcaption>
-                <LexicalNestedComposer initialEditor={caption}>
-                    <RichTextPlugin
-                        placeholder="Caption comes here"
-                        contentEditable={<ContentEditable/>} />
-                </LexicalNestedComposer>
-            </figcaption>
-        </figure>
+        <KoenigCardWrapper>
+            <figure key={_key}>
+                <img src={src} alt=""/>
+                <figcaption>
+                    <LexicalNestedComposer initialEditor={caption}>
+                        <RichTextPlugin
+                            placeholder="Caption comes here"
+                            contentEditable={<ContentEditable/>} />
+                    </LexicalNestedComposer>
+                </figcaption>
+            </figure>
+        </KoenigCardWrapper>
     );
 };
 

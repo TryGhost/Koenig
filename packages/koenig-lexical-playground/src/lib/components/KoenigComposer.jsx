@@ -5,7 +5,7 @@ import {ListItemNode, ListNode} from '@lexical/list';
 import {CodeNode} from '@lexical/code';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {LinkNode} from '@lexical/link';
-import {HorizontalRuleNode} from '@lexical/react/LexicalHorizontalRuleNode';
+import {HorizontalRuleNode} from '../nodes/HorizontalRuleNode';
 import {AsideNode} from '../nodes/AsideNode';
 import {ImageNode} from '../nodes/ImageNode';
 
