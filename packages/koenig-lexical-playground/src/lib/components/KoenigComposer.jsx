@@ -1,6 +1,25 @@
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import DefaultNodes from '../nodes/DefaultNodes';
 import defaultTheme from '../themes/default';
+
+import {ListItemNode, ListNode} from '@lexical/list';
+import {CodeNode} from '@lexical/code';
+import {HeadingNode, QuoteNode} from '@lexical/rich-text';
+import {LinkNode} from '@lexical/link';
+import {HorizontalRuleNode} from '@lexical/react/LexicalHorizontalRuleNode';
+import {AsideNode} from '../nodes/AsideNode';
+import {ImageNode} from '../nodes/ImageNode';
+
+export const DEFAULT_NODES = [
+    HeadingNode,
+    ListNode,
+    ListItemNode,
+    QuoteNode,
+    AsideNode,
+    CodeNode,
+    LinkNode,
+    ImageNode,
+    HorizontalRuleNode
+];
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -11,7 +30,7 @@ function onError(error) {
 
 const initialConfig = {
     namespace: 'KoenigEditor',
-    nodes: [...DefaultNodes],
+    nodes: [...DEFAULT_NODES],
     theme: defaultTheme,
     onError
 };

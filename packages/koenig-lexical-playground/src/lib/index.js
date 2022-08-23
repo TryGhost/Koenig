@@ -1,7 +1,8 @@
-import KoenigComposer from './components/KoenigComposer';
+import KoenigComposer, {DEFAULT_NODES} from './components/KoenigComposer';
 import KoenigEditor from './components/KoenigEditor';
 
 export {
     KoenigComposer,
-    KoenigEditor
+    KoenigEditor,
+    DEFAULT_NODES
 };

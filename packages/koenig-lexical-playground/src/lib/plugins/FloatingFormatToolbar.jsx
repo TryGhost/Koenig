@@ -26,7 +26,7 @@ import {
     mergeRegister
 } from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {$createAsideNode} from '../nodes/aside';
+import {$createAsideNode} from '../nodes/AsideNode';
 import {getSelectedNode} from '../utils/getSelectedNode';
 import {setFloatingElemPosition} from '../utils/setFloatingElemPosition';
 import {getDOMRangeRect} from '../utils/getDOMRangeRect';
