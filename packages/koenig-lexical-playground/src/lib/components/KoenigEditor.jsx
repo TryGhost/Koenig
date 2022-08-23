@@ -8,6 +8,7 @@ import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {TRANSFORMERS as defaultMarkdownTransformers} from '@lexical/markdown';
 import AutofocusPlugin from '../plugins/autofocus';
 import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbar';
+import ImagePlugin from '../plugins/ImagePlugin';
 import '../styles/index.css';
 
 const KoenigEditor = ({
@@ -48,6 +49,7 @@ const KoenigEditor = ({
                     <FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />
                 </>
             )}
+            <ImagePlugin />
         </div>
     );
 };
