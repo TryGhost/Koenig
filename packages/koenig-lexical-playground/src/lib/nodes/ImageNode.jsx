@@ -10,11 +10,11 @@ const ImageComponent = ({_key, caption, src, alt}) => {
         <KoenigCardWrapper>
             <figure key={_key}>
                 <img src={src} alt={alt}/>
-                <figcaption>
+                <figcaption className="w-100 relative text-center font-sans text-sm">
                     <LexicalNestedComposer initialEditor={caption}>
                         <RichTextPlugin
-                            placeholder="Caption comes here"
-                            contentEditable={<ContentEditable/>} />
+                            placeholder={<div className="pointer-events-none absolute left-0 -mt-8 min-w-full cursor-text">Type caption for image (optional)</div>}
+                            contentEditable={<div><ContentEditable/></div>} />
                     </LexicalNestedComposer>
                 </figcaption>
             </figure>
