@@ -5,11 +5,11 @@ import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {DecoratorNode, createEditor} from 'lexical';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 
-const ImageComponent = ({_key, caption, src}) => {
+const ImageComponent = ({_key, caption, src, alt}) => {
     return (
         <KoenigCardWrapper>
             <figure key={_key}>
-                <img src={src} alt=""/>
+                <img src={src} alt={alt}/>
                 <figcaption>
                     <LexicalNestedComposer initialEditor={caption}>
                         <RichTextPlugin
@@ -64,7 +64,7 @@ export class ImageNode extends DecoratorNode {
         };
     }
     decorate() {
-        return <ImageComponent src={this.__src} _key={this.__key} caption={this.__caption}/>;
+        return <ImageComponent src={this.__src} _key={this.__key} caption={this.__caption} alt={this.__alt}/>;
     }
 }
 
