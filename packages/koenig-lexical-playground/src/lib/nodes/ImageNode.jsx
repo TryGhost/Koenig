@@ -6,12 +6,26 @@ import {DecoratorNode, createEditor, $getNodeByKey} from 'lexical';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {$generateHtmlFromNodes} from '@lexical/html';
+import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
 
 const ImageTextEditor = ({editAlt, nodeKey, payload}) => {
     const [editor] = useLexicalComposerContext();
     const [alt, setAltText] = React.useState(payload.__altText || '');
+    const [html, setHtml] = React.useState('');
 
-    const onChange = (event) => {
+    const _onChange = (e) => {
+        payload.__caption.update(() => {
+            const htmlString = $generateHtmlFromNodes(payload.__caption, null);
+            setHtml(htmlString);
+        });
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setCaptionHtml(html);
+        });
+    };
+
+    const handleAltChange = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setAlt(event.target.value);
@@ -26,6 +40,7 @@ const ImageTextEditor = ({editAlt, nodeKey, payload}) => {
                     placeholder={<div className="pointer-events-none absolute left-0 -mt-8 min-w-full cursor-text">Type caption for image (optional)</div>}
                     contentEditable={<div><ContentEditable/></div>} />
                 <HistoryPlugin />
+                <OnChangePlugin onChange={_onChange} />
             </LexicalNestedComposer>
         );
     }
@@ -35,7 +50,7 @@ const ImageTextEditor = ({editAlt, nodeKey, payload}) => {
             className="w-100 text-center font-sans text-sm"
             type="text"
             value={alt}
-            onChange={onChange}
+            onChange={handleAltChange }
         />
     );
 };
@@ -75,10 +90,6 @@ function convertImageElement(domNode) {
 }
 
 export class ImageNode extends DecoratorNode {
-    __caption;
-    __altText;
-    __src;
-
     static getType() {
         return 'image';
     }
@@ -107,9 +118,14 @@ export class ImageNode extends DecoratorNode {
     }
 
     exportDOM(){
-        const element = document.createElement('img');
-        element.setAttribute('src', this.__src);
-        element.setAttribute('alt', this.__altText);
+        const element = document.createElement('figure');
+        const img = document.createElement('img');
+        const figcaption = document.createElement('figcaption');
+        img.src = this.getSrc();
+        img.alt = this.getAlt();
+        figcaption.innerHTML = this.getCaptionHtml();
+        element.appendChild(img);
+        element.appendChild(figcaption);
         return {element};
     }
 
@@ -127,6 +143,7 @@ export class ImageNode extends DecoratorNode {
         this.__caption = caption || createEditor();
         this.__altText = altText || '';
         this.__src = src || '';
+        this.__captionHtml = '';
     }
 
     exportJSON() {
@@ -152,6 +169,16 @@ export class ImageNode extends DecoratorNode {
 
     getSrc() {
         return this.__src;
+    }
+
+    setCaptionHtml(html) {
+        const self = this.getWritable();
+        self.__captionHtml = html;
+    }
+
+    getCaptionHtml() {
+        const self = this.getLatest();
+        return self.__captionHtml;
     }
 
     getPayload() {
