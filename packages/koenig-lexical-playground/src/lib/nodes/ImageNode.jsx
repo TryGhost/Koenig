@@ -46,7 +46,8 @@ const ImageComponent = ({nodeKey}) => {
     const [editor] = useLexicalComposerContext();
     const [payload, setPayload] = React.useState({});
     React.useEffect(() => {
-        editor.update(() => {
+        const editorState = editor.getEditorState();
+        editorState.read(() => {
             const node = $getNodeByKey(nodeKey);
             setPayload(node.getPayload());
         });
@@ -93,6 +94,10 @@ export class ImageNode extends DecoratorNode {
         return self.__altText;
     }
 
+    getSrc() {
+        return this.__src;
+    }
+
     getPayload() {
         return this.getLatest();
     }
@@ -118,7 +123,9 @@ export class ImageNode extends DecoratorNode {
 
     exportJSON() {
         return {
-            ...super.exportJSON(),
+            altText: this.getAlt(),
+            caption: this.__caption.toJSON(),
+            src: this.__src,
             type: 'image'
         };
     }

@@ -1,10 +1,12 @@
 import {KoenigComposer, KoenigEditor} from '../lib';
 import TreeViewPlugin from './TreeViewPlugin';
+import Preview from './preview';
 
 function DemoApp() {
     return (
-        <div className="demo-container">
-            <KoenigComposer>
+        <KoenigComposer>
+            <div className="demo-container">
+            
                 <div className="demo-editor">
                     <KoenigEditor autoFocus={true}>
                     </KoenigEditor>
@@ -12,8 +14,9 @@ function DemoApp() {
                 <div className="demo-tree">
                     <TreeViewPlugin />
                 </div>
-            </KoenigComposer>
-        </div>
+            </div>
+            <Preview />
+        </KoenigComposer>
     );
 }
 
