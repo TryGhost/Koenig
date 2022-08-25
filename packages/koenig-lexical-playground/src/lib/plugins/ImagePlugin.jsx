@@ -67,8 +67,7 @@ const onDragDrop = async (event, editor = LexicalEditor) => {
         reader.readAsDataURL(file);
         reader.onload = () => {
             const dataset = {
-                src: reader.result,
-                alt: file.name
+                src: reader.result
             };
             editor.dispatchCommand(INSERT_IMAGE_CMD, dataset);
             return dataset;
