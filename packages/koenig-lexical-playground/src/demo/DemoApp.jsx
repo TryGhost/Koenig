@@ -6,7 +6,6 @@ function DemoApp() {
     return (
         <KoenigComposer>
             <div className="demo-container">
-            
                 <div className="demo-editor">
                     <KoenigEditor autoFocus={true}>
                     </KoenigEditor>

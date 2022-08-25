@@ -8,7 +8,6 @@ import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const ImageTextEditor = ({editAlt, nodeKey, payload}) => {
-    // console.log(payload);
     const [editor] = useLexicalComposerContext();
     const [alt, setAltText] = React.useState(payload.__altText || '');
 
@@ -45,6 +44,7 @@ const ImageComponent = ({nodeKey}) => {
     const [editAlt, setEditAlt] = React.useState(false);
     const [editor] = useLexicalComposerContext();
     const [payload, setPayload] = React.useState({});
+
     React.useEffect(() => {
         const editorState = editor.getEditorState();
         editorState.read(() => {
@@ -65,7 +65,20 @@ const ImageComponent = ({nodeKey}) => {
     );
 };
 
+function convertImageElement(domNode) {
+    if (domNode instanceof HTMLImageElement) {
+        const {altText, src} = domNode;
+        const node = $createImageNode({altText, src});
+        return {node};
+    }
+    return null;
+}
+
 export class ImageNode extends DecoratorNode {
+    __caption;
+    __altText;
+    __src;
+
     static getType() {
         return 'image';
     }
@@ -73,15 +86,58 @@ export class ImageNode extends DecoratorNode {
         return new ImageNode(
             node.__src,
             node.__caption,
-            node.__altText
+            node.__altText,
+            node.__key,
         );
     }
 
-    constructor(dataset, key) {
+    static importJSON(serializedNode) {
+        const {caption, altText, src} = serializedNode;
+        const node = $createImageNode({
+            altText,
+            caption,
+            src
+        });
+        const nestedEditor = node.__caption;
+        const editorState = nestedEditor.parseEditorState(caption.editorState);
+        if (!editorState.isEmpty()) {
+            nestedEditor.setEditorState(editorState);
+        }
+        return node;
+    }
+
+    exportDOM(){
+        const element = document.createElement('img');
+        element.setAttribute('src', this.__src);
+        element.setAttribute('alt', this.__altText);
+        return {element};
+    }
+
+    static importDom() {
+        return {
+            img: (node = Node) => ({
+                conversion: convertImageElement,
+                priority: 1
+            })
+        };
+    }
+
+    constructor(src, caption, altText, key) {
         super(key);
-        this.__caption = dataset?.caption || createEditor();
-        this.__altText = dataset?.alt || '';
-        this.__src = dataset?.src;
+        this.__caption = caption || createEditor();
+        this.__altText = altText || '';
+        this.__src = src || '';
+    }
+
+    exportJSON() {
+        const dataset = {
+            altText: this.getAlt(),
+            caption: this.__caption.toJSON(),
+            src: this.getSrc(),
+            key: this.getKey(),
+            type: 'image'
+        };
+        return dataset;
     }
 
     setAlt(alt) {
@@ -110,34 +166,15 @@ export class ImageNode extends DecoratorNode {
         return false;
     }
 
-    static importJSON(serializedNode) {
-        const {caption} = serializedNode;
-        const node = $createImageNode(serializedNode);
-        const nestedEditor = node.__caption;
-        const editorState = nestedEditor.parseEditorState(caption.editorState);
-        if (!editorState.isEmpty()) {
-            nestedEditor.setEditorState(editorState);
-        }
-        return node;
-    }
-
-    exportJSON() {
-        return {
-            altText: this.getAlt(),
-            caption: this.__caption.toJSON(),
-            src: this.__src,
-            type: 'image'
-        };
-    }
     decorate() {
         return <ImageComponent 
-            nodeKey={this.__key}
+            nodeKey={this.getKey()}
         />;
     }
 }
 
-export const $createImageNode = (dataset) => {
-    const node = new ImageNode(dataset);
+export const $createImageNode = ({src, caption, altText}) => {
+    const node = new ImageNode(src, caption, altText);
     return node;
 };
 
