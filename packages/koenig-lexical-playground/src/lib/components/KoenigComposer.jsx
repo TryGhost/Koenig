@@ -1,13 +1,12 @@
+import React from 'react';
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import defaultTheme from '../themes/default';
-
 import {ListItemNode, ListNode} from '@lexical/list';
-import {CodeNode} from '@lexical/code';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {LinkNode} from '@lexical/link';
 import {HorizontalRuleNode} from '../nodes/HorizontalRuleNode';
 import {AsideNode} from '../nodes/AsideNode';
 import {ImageNode} from '../nodes/ImageNode';
+import defaultTheme from '../themes/default';
 
 export const DEFAULT_NODES = [
     HeadingNode,
@@ -15,7 +14,6 @@ export const DEFAULT_NODES = [
     ListItemNode,
     QuoteNode,
     AsideNode,
-    CodeNode,
     LinkNode,
     ImageNode,
     HorizontalRuleNode
@@ -28,14 +26,15 @@ function onError(error) {
     console.error(error); // eslint-disable-line
 }
 
-const initialConfig = {
+const defaultConfig = {
     namespace: 'KoenigEditor',
-    nodes: [...DEFAULT_NODES],
     theme: defaultTheme,
     onError
 };
 
-const KoenigComposer = ({children}) => {
+const KoenigComposer = ({nodes = [...DEFAULT_NODES], children}) => {
+    const initialConfig = React.useMemo(() => Object.assign({}, defaultConfig, {nodes}), [nodes]);
+
     return (
         <LexicalComposer initialConfig={initialConfig}>
             {children}

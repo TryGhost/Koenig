@@ -1,13 +1,29 @@
-import {KoenigComposer, KoenigEditor} from '../lib';
+import {
+    KoenigComposer,
+    KoenigEditor,
+    CodeBlockNode,
+    DEFAULT_NODES,
+    CODE_BLOCK_TRANSFORMER,
+    DEFAULT_TRANSFORMERS
+} from '../lib';
+import SlashMenuPlugin from '../lib/plugins/SlashMenu';
 import TreeViewPlugin from './TreeViewPlugin';
 import Preview from './preview';
 
+const nodes = [...DEFAULT_NODES, CodeBlockNode];
+
+const transformers = [
+    CODE_BLOCK_TRANSFORMER,
+    ...DEFAULT_TRANSFORMERS
+];
+
 function DemoApp() {
     return (
-        <KoenigComposer>
+        <KoenigComposer nodes={nodes}>
             <div className="demo-container">
                 <div className="demo-editor">
-                    <KoenigEditor autoFocus={true}>
+                    <KoenigEditor autoFocus={true} markdownTransformers={transformers}>
+                        <SlashMenuPlugin />
                     </KoenigEditor>
                 </div>
                 <div className="demo-tree">
