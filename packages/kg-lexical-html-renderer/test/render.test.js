@@ -15,6 +15,16 @@ describe('Rendering', function () {
 <p>Second paragraph</p>`);
     });
 
+    it('can render to email target', function () {
+        const editorState = `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"First paragraph","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1},{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"Second paragraph","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`;
+        const renderer = new Renderer();
+
+        const html = renderer.render(editorState, {target: 'email'});
+
+        html.should.eql(`<p class="for-mail">First paragraph</p>
+<p class="for-mail">Second paragraph</p>`);
+    });
+
     it('can render basic formats');
     it('can render built-in nodes');
     it('can render custom nodes');

@@ -23,7 +23,7 @@ class LexicalHtmlRenderer {
         let html = '';
 
         editor.update(() => {
-            html = $convertToHtmlString(this.transformers, transformOptions);
+            html = $convertToHtmlString(transformOptions);
         });
 
         return html;

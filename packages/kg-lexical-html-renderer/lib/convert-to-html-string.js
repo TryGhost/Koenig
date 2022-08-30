@@ -12,12 +12,12 @@ const {
     // textTransformers
 } = require('./transformers');
 
-function $convertToHtmlString(/*transformers, options*/) {
+function $convertToHtmlString(options = {}) {
     const output = [];
     const children = $getRoot().getChildren();
 
     for (const child of children) {
-        const result = exportTopLevelElementOrDecorator(child);
+        const result = exportTopLevelElementOrDecorator(child, options);
 
         if (result !== null) {
             output.push(result);
@@ -27,10 +27,10 @@ function $convertToHtmlString(/*transformers, options*/) {
     return output.join('\n');
 }
 
-function exportTopLevelElementOrDecorator(node) {
+function exportTopLevelElementOrDecorator(node, options) {
     for (const transformer of elementTransformers) {
         if (transformer.export !== null) {
-            const result = transformer.export(node, _node => exportChildren(_node));
+            const result = transformer.export(node, options, _node => exportChildren(_node, options));
 
             if (result !== null) {
                 return result;
@@ -38,10 +38,10 @@ function exportTopLevelElementOrDecorator(node) {
         }
     }
 
-    return $isElementNode(node) ? exportChildren(node) : null;
+    return $isElementNode(node) ? exportChildren(node, options) : null;
 }
 
-function exportChildren(node) {
+function exportChildren(node, options) {
     const output = [];
     const children = node.getChildren();
 
@@ -49,18 +49,18 @@ function exportChildren(node) {
         if ($isLineBreakNode(child)) {
             output.push('<br>');
         } else if ($isTextNode(child)) {
-            output.push(exportTextNode(child, child.getTextContent(), node));
+            output.push(exportTextNode(child, child.getTextContent(), node, options));
         } else if ($isLinkNode(child)) {
             output.push('TODO: add link rendering');
         } else if ($isElementNode(child)) {
-            output.push(exportChildren(child));
+            output.push(exportChildren(child, options));
         }
     }
 
     return output.join('');
 }
 
-function exportTextNode(node, textContent/*, parentNode*/) {
+function exportTextNode(node, textContent/*, parentNode, options*/) {
     let output = textContent;
 
     // TODO: render formats
