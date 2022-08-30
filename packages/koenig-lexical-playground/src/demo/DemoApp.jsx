@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     KoenigComposer,
     KoenigEditor,
@@ -14,6 +15,7 @@ import {
 import SlashMenuPlugin from '../lib/plugins/SlashMenu';
 import TreeViewPlugin from './TreeViewPlugin';
 import Preview from './preview';
+import SerializedJSON from './SerializedJson';
 
 const nodes = [...DEFAULT_NODES, IframeLoadTestNode, CodeBlockNode];
 
@@ -44,6 +46,8 @@ const transformers = [
 ];
 
 function DemoApp() {
+    const [outputType, setOutputType] = React.useState('html');
+
     return (
         <KoenigComposer nodes={nodes}>
             <div className="demo-container">
@@ -56,7 +60,15 @@ function DemoApp() {
                     <TreeViewPlugin />
                 </div>
             </div>
-            <Preview />
+            <hr />
+            <div>
+                <input type="radio" name="preview-type" value='html' checked={outputType === 'html'} onChange={() => setOutputType('html')} /> HTML
+                <input type="radio" name="preview-type" value='json' checked={outputType === 'json'} onChange={() => setOutputType('json')} /> Serialized JSON
+            </div>
+            <div className='koenig-react mt-6'>
+                {outputType === 'html' && <Preview />}
+                {outputType === 'json' && <SerializedJSON />}
+            </div>
         </KoenigComposer>
     );
 }

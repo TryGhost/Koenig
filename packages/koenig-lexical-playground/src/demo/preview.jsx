@@ -13,11 +13,10 @@ const Preview = () => {
         });
     };
     return (
-        <div className='koenig-react mt-6'>
-            <hr/>
+        <>
             <div className='kg-prose' dangerouslySetInnerHTML={{__html: html}}></div>
             <OnChangePlugin onChange={onChange} />
-        </div>
+        </>
     );
 };
 
