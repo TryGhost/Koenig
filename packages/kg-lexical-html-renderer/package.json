@@ -26,5 +26,9 @@
     "should": "13.2.3",
     "sinon": "14.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@lexical/headless": "^0.3.11",
+    "@lexical/link": "^0.3.11",
+    "lexical": "^0.3.11"
+  }
 }
