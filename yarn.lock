@@ -3743,13 +3743,21 @@ css-tree@1.0.0-alpha.37:
     mdn-data "2.0.4"
     source-map "^0.6.1"
 
-css-tree@^1.0.0-alpha.39, css-tree@^1.1.2, css-tree@^1.1.3:
+css-tree@^1.1.2, css-tree@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/css-tree/-/css-tree-1.1.3.tgz#eb4870fb6fd7707327ec95c2ff2ab09b5e8db91d"
   integrity sha512-tRpdppF7TRazZrjJ6v3stzv93qxRcSsFmW6cX0Zm2NVKpxE1WV1HblnghVv9TreireHkqI/VDEsfolRF1p6y7Q==
   dependencies:
     mdn-data "2.0.14"
     source-map "^0.6.1"
+
+css-tree@^2.0.4:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/css-tree/-/css-tree-2.2.1.tgz#36115d382d60afd271e377f9c5f67d02bd48c032"
+  integrity sha512-OA0mILzGc1kCOCSJerOeqDxDQ4HOh+G8NbOJFOTgOCzpw7fCBubk0fEyxp8AgOL/jvLgYA/uV0cMbe43ElF1JA==
+  dependencies:
+    mdn-data "2.0.28"
+    source-map-js "^1.0.1"
 
 css-what@2.1:
   version "2.1.3"
@@ -4469,13 +4477,13 @@ eslint-module-utils@^2.7.3:
     debug "^3.2.7"
     find-up "^2.1.0"
 
-eslint-plugin-ember@10.5.8:
-  version "10.5.8"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-10.5.8.tgz#87e004a5ebed88f94008364554daf57df2c9c718"
-  integrity sha512-d21mJ+F+htgi6HhrjwbOfllJojF4ZWGruW13HkBoGS2SaHqKUyvIH/8j3EjSxlsGFiNfhTEUWkNaUSLJxgbtWg==
+eslint-plugin-ember@11.0.5:
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ember/-/eslint-plugin-ember-11.0.5.tgz#b4a1ce7df123e6b2d18c148b9340e62d32bc6b98"
+  integrity sha512-Hc6aQ6lsdjf9xPrgO0rRY5EjTSIssUEJ4IJZU+idtexead0DX1C5hZDgG9XTKYQIYwRR3JFFC5R4h6KOPCcQRQ==
   dependencies:
     "@ember-data/rfc395-data" "^0.0.4"
-    css-tree "^1.0.0-alpha.39"
+    css-tree "^2.0.4"
     ember-rfc176-data "^0.3.15"
     eslint-utils "^3.0.0"
     estraverse "^5.2.0"
@@ -4509,18 +4517,18 @@ eslint-plugin-flowtype@^8.0.3:
     lodash "^4.17.21"
     string-natural-compare "^3.0.1"
 
-eslint-plugin-ghost@2.12.0:
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ghost/-/eslint-plugin-ghost-2.12.0.tgz#108c86be40eae12f8839131e30fa2cb57195a279"
-  integrity sha512-YyAmG2RVlYkf66/R9IG/UoCl0nvo3HKVleqzs4Ba/YcKK6gnmYgfRrpOt1k9a3klXEQkxSY1BKesEKTCS60KQw==
+eslint-plugin-ghost@2.15.1:
+  version "2.15.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ghost/-/eslint-plugin-ghost-2.15.1.tgz#fef07109ef99c344e5400bded638824e3c02ecec"
+  integrity sha512-ou8YgfnM0aJhfonjzLnKJSdqm9tYxoY6ZBA9dMS//PV1JEp4YDvCPSvkyRNcjx2nuVpglYEL6EKnXKHnmR2mHw==
   dependencies:
     "@kapouer/eslint-plugin-no-return-in-loop" "1.0.0"
-    eslint-plugin-ember "10.5.8"
+    eslint-plugin-ember "11.0.5"
     eslint-plugin-filenames "1.3.2"
     eslint-plugin-mocha "7.0.1"
     eslint-plugin-node "11.1.0"
     eslint-plugin-sort-imports-es6-autofix "0.6.0"
-    eslint-plugin-unicorn "40.1.0"
+    eslint-plugin-unicorn "42.0.0"
 
 eslint-plugin-import@^2.25.3:
   version "2.26.0"
@@ -4633,10 +4641,10 @@ eslint-plugin-testing-library@^5.0.1:
   dependencies:
     "@typescript-eslint/utils" "^5.13.0"
 
-eslint-plugin-unicorn@40.1.0:
-  version "40.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-unicorn/-/eslint-plugin-unicorn-40.1.0.tgz#48975360e39d23df726e4b33e8dd5d650e184832"
-  integrity sha512-y5doK2DF9Sr5AqKEHbHxjFllJ167nKDRU01HDcWyv4Tnmaoe9iNxMrBnaybZvWZUaE3OC5Unu0lNIevYamloig==
+eslint-plugin-unicorn@42.0.0:
+  version "42.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-unicorn/-/eslint-plugin-unicorn-42.0.0.tgz#47d60c00c263ad743403b052db689e39acbacff1"
+  integrity sha512-ixBsbhgWuxVaNlPTT8AyfJMlhyC5flCJFjyK3oKE8TRrwBnaHvUbuIkCM1lqg8ryYrFStL/T557zfKzX4GKSlg==
   dependencies:
     "@babel/helper-validator-identifier" "^7.15.7"
     ci-info "^3.3.0"
@@ -7103,6 +7111,11 @@ mdn-data@2.0.14:
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.14.tgz#7113fc4281917d63ce29b43446f701e68c25ba50"
   integrity sha512-dn6wd0uw5GsdswPFfsgMp5NSB0/aDe6fK94YJV/AJDYXL6HVLWBsxeq7js7Ad+mU2K9LAlwpk6kN2D5mwCPVow==
+
+mdn-data@2.0.28:
+  version "2.0.28"
+  resolved "https://registry.yarnpkg.com/mdn-data/-/mdn-data-2.0.28.tgz#5ec48e7bef120654539069e1ae4ddc81ca490eba"
+  integrity sha512-aylIc7Z9y4yzHYAJNuESG3hfhC+0Ibp/MAMiaOZgNv4pmEdFyfZhhhny4MNiAfWdBQ1RQ2mfDWmM1x8SvGyp8g==
 
 mdn-data@2.0.4:
   version "2.0.4"
