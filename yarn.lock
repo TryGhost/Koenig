@@ -8631,10 +8631,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-mobiledoc-editor@0.14.2:
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/react-mobiledoc-editor/-/react-mobiledoc-editor-0.14.2.tgz#dd038ea319c463a98eda9b2fffe5eecf95713065"
-  integrity sha512-1aoFd7bm6ywLrYadeKm6NUTkV/yvYIm1RVDDkRcOgb16UCUnQbEPtWoyd2nlYNsUYBW99ubLf+bOKYI/ppmcJg==
+react-mobiledoc-editor@0.14.4:
+  version "0.14.4"
+  resolved "https://registry.yarnpkg.com/react-mobiledoc-editor/-/react-mobiledoc-editor-0.14.4.tgz#c351af514dcec2e08ed8ef2e0848a77e733edac9"
+  integrity sha512-bXGzZQVlPWjcUhatv5nYj2L1gPFeG3GAV+X7DyIioyJ2J6dhm46J5MKaJZ7JprcHDTkhrxrKz3oQYBeyWJ68Dg==
   dependencies:
     prop-types "^15.8.1"
 
