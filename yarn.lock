@@ -1972,10 +1972,10 @@
   dependencies:
     unidecode "^0.1.8"
 
-"@tryghost/url-utils@^2.0.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-2.1.0.tgz#5b30921eeb27fdcb9c1fc1360879a0d99304ddf2"
-  integrity sha512-3oID3Pzgew17eZF6YpJvG4Iy8F5CDealvcZ3zRwGFBT/oSUBGHY4nQfAUAH0Uo7dPAEDx9zOcMyNk/cJ/VN3nQ==
+"@tryghost/url-utils@^4.0.0":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.0.3.tgz#a019ecd7b453c456abcac0e6657afcba106cf669"
+  integrity sha512-rbMfsrdGQvgwoXbCwOdPuTYpBfyOSHPQJtN3ulo07gdWvIWyxTA18mkzHH9gyLG4tP/nK0JQsBMshYtvKUm29A==
   dependencies:
     cheerio "^0.22.0"
     moment "^2.27.0"
