@@ -8,5 +8,6 @@
       "groupName": "rollup + plugins",
       "packagePatterns": ["^rollup"]
     }
-   ]
+  ],
+  "ignoreDeps": ["vite"]
 }
