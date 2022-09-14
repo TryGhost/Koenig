@@ -4,7 +4,7 @@ const {
     $isLineBreakNode,
     $isTextNode
 } = require('lexical');
-const TextContent = require('./text-content');
+const TextContent = require('./utils/text-content');
 const {
     elementTransformers
 } = require('./transformers');
