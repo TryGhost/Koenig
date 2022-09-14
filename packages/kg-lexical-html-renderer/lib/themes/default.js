@@ -26,10 +26,10 @@ const defaultTheme = {
         hashtag: undefined,
         underline: 'underline',
         strikethrough: 'strikethrough',
-        underlinestrikethrough: 'underline strikethrough',
+        underlinestrikethrough: undefined,
         code: undefined
     },
     code: undefined
 };
 
-export default defaultTheme;
+module.exports = defaultTheme;
