@@ -4,13 +4,10 @@ const {
     $isLineBreakNode,
     $isTextNode
 } = require('lexical');
+const TextContent = require('./text-content');
 const {
-    elementTransformers,
-    textTransformers
+    elementTransformers
 } = require('./transformers');
-
-const FORWARD = false;
-const BACKWARD = true;
 
 function $convertToHtmlString(options = {}) {
     const output = [];
@@ -45,71 +42,28 @@ function exportChildren(node, options) {
     const output = [];
     const children = node.getChildren();
 
+    const textContent = new TextContent();
+
     for (const child of children) {
+        if (!textContent.isEmpty() && !$isLineBreakNode(child) && !$isTextNode(child)) {
+            output.push(textContent.render());
+            textContent.clear();
+        }
+
         if ($isLineBreakNode(child)) {
-            output.push('<br>');
+            textContent.addLineBreak();
         } else if ($isTextNode(child)) {
-            output.push(exportTextNode(child, child.getTextContent(), node, options));
+            textContent.addTextNode(child, node, options);
         } else if ($isElementNode(child)) {
             output.push(exportChildren(child, options));
         }
     }
 
+    if (!textContent.isEmpty()) {
+        output.push(textContent.render());
+    }
+
     return output.join('');
-}
-
-function exportTextNode(node, textContent/*, parentNode, options*/) {
-    let output = textContent;
-
-    for (const transformer of textTransformers) {
-        const {
-            format,
-            tag,
-            tagClose
-        } = transformer;
-
-        if (
-            hasFormat(node, format)
-        ) {
-            // Prevent adding extra wrapping tags if it's already
-            // added by a previous sibling (or will be closed by the next one)
-            const previousNode = getTextSibling(node, BACKWARD);
-
-            if (!hasFormat(previousNode, format)) {
-                output = tag + output;
-            }
-
-            const nextNode = getTextSibling(node, FORWARD);
-
-            if (!hasFormat(nextNode, format)) {
-                output = output + tagClose;
-            }
-        }
-    }
-
-    return output;
-}
-
-function getTextSibling(node, backward) {
-    let sibling = backward ? node.getPreviousSibling() : node.getNextSibling();
-
-    while (sibling) {
-        if ($isLineBreakNode(sibling)) {
-            sibling = backward
-                ? sibling.getPreviousSibling()
-                : sibling.getNextSibling();
-        }
-
-        if ($isTextNode(sibling)) {
-            return sibling;
-        }
-    }
-
-    return null;
-}
-
-function hasFormat(node, format) {
-    return $isTextNode(node) && node.hasFormat(format);
 }
 
 module.exports = {
