@@ -2,9 +2,7 @@ const elementTransformers = [
     require('./element/paragraph')
 ];
 
-const textTransformers = [
-
-];
+const textTransformers = require('./text');
 
 module.exports = {
     elementTransformers,

@@ -5,9 +5,12 @@ const {
     $isTextNode
 } = require('lexical');
 const {
-    elementTransformers
-    // textTransformers
+    elementTransformers,
+    textTransformers
 } = require('./transformers');
+
+const FORWARD = false;
+const BACKWARD = true;
 
 function $convertToHtmlString(options = {}) {
     const output = [];
@@ -58,9 +61,55 @@ function exportChildren(node, options) {
 function exportTextNode(node, textContent/*, parentNode, options*/) {
     let output = textContent;
 
-    // TODO: render formats
+    for (const transformer of textTransformers) {
+        const {
+            format,
+            tag,
+            tagClose
+        } = transformer;
+
+        if (
+            hasFormat(node, format)
+        ) {
+            // Prevent adding extra wrapping tags if it's already
+            // added by a previous sibling (or will be closed by the next one)
+            const previousNode = getTextSibling(node, BACKWARD);
+
+            if (!hasFormat(previousNode, format)) {
+                output = tag + output;
+            }
+
+            const nextNode = getTextSibling(node, FORWARD);
+
+            if (!hasFormat(nextNode, format)) {
+                output = output + tagClose;
+            }
+        }
+    }
 
     return output;
+}
+
+function getTextSibling(node, backward) {
+    let sibling = backward ? node.getPreviousSibling() : node.getNextSibling();
+
+    while (sibling) {
+        if ($isLineBreakNode(sibling)) {
+            sibling = backward
+                ? sibling.getPreviousSibling()
+                : sibling.getNextSibling();
+        }
+
+        if ($isTextNode(sibling)) {
+            return sibling;
+        }
+    }
+
+    return null;
+}
+
+function hasFormat(node, format) {
+    return $isTextNode(node) && node.hasFormat(format);
 }
 
 module.exports = {
