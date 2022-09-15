@@ -1280,7 +1280,7 @@
     "@lexical/utils" "0.4.1"
     "@lexical/yjs" "0.4.1"
 
-"@lexical/rich-text@0.4.1":
+"@lexical/rich-text@0.4.1", "@lexical/rich-text@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/rich-text/-/rich-text-0.4.1.tgz#3a980917f994f31befa40bb50a4f6dd679fe0a36"
   integrity sha512-EI4ul3y1hqMp0VS/4D8aOyR41ysz1KaYgkm6PyrRXEMyK8uKmVubJP83RkOU2fWkTVtdrMjM6aeT1qX849LetA==
