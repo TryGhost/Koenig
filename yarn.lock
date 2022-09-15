@@ -1170,7 +1170,7 @@
     "@lexical/selection" "0.4.1"
     "@lexical/utils" "0.4.1"
 
-"@lexical/code@0.4.1":
+"@lexical/code@0.4.1", "@lexical/code@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/code/-/code-0.4.1.tgz#4ba0ec1a471ae4b7cf24ee1a8c87aeabcea01102"
   integrity sha512-Bf6MiPrP7rrbYIXOOFKN/+HuZbdSWt0Dy/1gLJ3cLl4CTNiOUPJo2+iKvr3T0LCiSkQLHW+u4ygDs9G0eeDjdg==
@@ -1209,14 +1209,14 @@
   dependencies:
     "@lexical/selection" "0.4.1"
 
-"@lexical/link@0.4.1":
+"@lexical/link@0.4.1", "@lexical/link@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/link/-/link-0.4.1.tgz#af3744942dd79bc6af34d9502fecd5cd4c635b3b"
   integrity sha512-566lQymmuBe3Y7UDyaaTs+VDlElbu1WhnjT9lVDk0BXag7MA8tv/f60XptWnTK1pv/Dobm/CyLmyLae55OuflQ==
   dependencies:
     "@lexical/utils" "0.4.1"
 
-"@lexical/list@0.4.1":
+"@lexical/list@0.4.1", "@lexical/list@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/list/-/list-0.4.1.tgz#5d764d7ed82cd3e710bc42619e1134e1968ec617"
   integrity sha512-dP6i18qm1UhUoG6FvqLMn7hoj4htE0jYcmMPYqFyH+f1ir9Ybvr87pV3aFhqH6hdHjQ5tMyM0kURSL1t89GesQ==
