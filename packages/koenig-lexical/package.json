@@ -26,7 +26,7 @@
     "prepare": "NODE_ENV=production yarn build",
     "pretest": "yarn build",
     "posttest": "yarn lint",
-    "builddemo": "vite build --config vite.config.demo.js"
+    "build:demo": "vite build --config vite.config.demo.js"
   },
   "dependencies": {
     "@lexical/react": "^0.4.1",
