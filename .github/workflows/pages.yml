@@ -1,54 +1,50 @@
-name: Deploy Koenig-Lexical demo app
+name: Deploy
 
 on:
-  # Runs on pushes targeting the default branch
   push:
     branches: ["main", "lexical-demo"]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
 jobs:
-  # Build job
   build:
+    name: Build
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-      - uses: borales/actions-yarn@v3.0.0
-        with:
-          working-directory: ./packages/koenig-lexical
-          cmd: install && yarn
-      - name: Build
-	working-directory: ./packages/koenig-lexical
-	cmd: yarn build:demo
-        with:
-          destination: ./packages/koenig-lexical/dist
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
 
-  # Deployment job
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        uses: borales/actions-yarn@v3.0.0
+
+      - name: Build project
+        run: cd ./packages/koenig-lexical && yarn && yarn build:demo
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v2
+        with:
+          name: production-files
+          path: ./packages/koenig-lexical/dist
+
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    name: Deploy
     needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: production-files
+          path: ./packages/koenig-lexical/dist
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages/koenig-lexical/dist
