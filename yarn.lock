@@ -1160,7 +1160,7 @@
   resolved "https://registry.yarnpkg.com/@kapouer/eslint-plugin-no-return-in-loop/-/eslint-plugin-no-return-in-loop-1.0.0.tgz#9fdbe83deca12156c0b5fcbfae1f387e9f2baff5"
   integrity sha512-IXQp8N68L2fkk7p7RckBBhT/KwAX04GooIGjwzmY5THQanQvsmJpYgwC7A1Io2XDXBJzlGelQkP/C1SRM/aq8w==
 
-"@lexical/clipboard@0.4.1":
+"@lexical/clipboard@0.4.1", "@lexical/clipboard@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/clipboard/-/clipboard-0.4.1.tgz#67811f940756ba17b52538718db9650b44d433a9"
   integrity sha512-/BHeh+LaYhNbBbzNcVPcYgSZtNp6HT5z/iHFKJMfhikE+4KKFf3DbLDO5b92AUDyT3s8QQC04Na5ZeRUbK/Jzw==
