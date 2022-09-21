@@ -24,6 +24,9 @@ jobs:
       - name: Build project
         run: cd ./packages/koenig-lexical && yarn && yarn build:demo
 
+      - name: Copy CNAME to build
+        run: mkdir ./packages/koenig-lexical/public && cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
+
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
         with:
