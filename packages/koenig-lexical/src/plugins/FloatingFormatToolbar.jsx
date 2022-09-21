@@ -55,14 +55,15 @@ const blockTypeToBlockName = {
     aside: 'Aside'
 };
 
-function MenuItem({label, isActive, onClick, Icon}) {
+function MenuItem({label, isActive, onClick, Icon, ...props}) {
     return (
-        <li className="m-0 flex p-0 first:m-0">
+        <li className="m-0 flex p-0 first:m-0" {...props}>
             <button
                 type="button"
                 className="flex h-9 w-9 items-center justify-center"
                 onClick={onClick}
                 aria-label={label}
+                data-kg-active={isActive}
             >
                 <Icon className={isActive ? 'fill-green' : 'fill-white'} />
             </button>
@@ -188,14 +189,14 @@ function FloatingFormatToolbar({editor, anchorElem, blockType, isBold, isItalic}
     }, [editor, updateFloatingToolbar]);
 
     return (
-        <div className="absolute" ref={toolbarRef}>
+        <div className="absolute" ref={toolbarRef} data-kg-floating-toolbar>
             <ul className="text-md m-0 flex items-center justify-evenly rounded bg-black px-1 py-0 font-sans font-normal text-white">
-                <MenuItem label="Format text as bold" isActive={isBold} Icon={BoldIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')} />
-                <MenuItem label="Format text as italics" isActive={isItalic} Icon={ItalicIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')} />
-                <MenuItem label="Toggle heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} />
-                <MenuItem label="Toggle heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} />
+                <MenuItem label="Format text as bold" isActive={isBold} Icon={BoldIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')} data-kg-toolbar-button="bold" />
+                <MenuItem label="Format text as italics" isActive={isItalic} Icon={ItalicIcon} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')} data-kg-toolbar-button="italic" />
+                <MenuItem label="Toggle heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} data-kg-toolbar-button="h2" />
+                <MenuItem label="Toggle heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} data-kg-toolbar-button="h3" />
                 <MenuSeparator />
-                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote' || blockType === 'aside'} Icon={blockType === 'aside' ? QuoteTwoIcon : QuoteOneIcon} onClick={() => (formatQuote())} />
+                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote' || blockType === 'aside'} Icon={blockType === 'aside' ? QuoteTwoIcon : QuoteOneIcon} onClick={() => (formatQuote())} data-kg-toolbar-button="quote" />
             </ul>
         </div>
     );
