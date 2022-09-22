@@ -17,7 +17,7 @@ function CodeBlockComponent({className, code, language, nodeKey}) {
 
     return (
         <KoenigCardWrapper className={className} nodeKey={nodeKey}>
-            <textarea value={code} onChange={updateCode} />
+            <textarea className='bg-grey-50 min-h-170 w-full' value={code} onChange={updateCode} />
         </KoenigCardWrapper>
     );
 }
@@ -31,7 +31,7 @@ export class CodeBlockNode extends DecoratorNode {
     }
 
     static clone(node) {
-        return new CodeBlockNode(node.__key);
+        return new CodeBlockNode(node.__key, node.__code);
     }
 
     static importJSON(serializedNode) {
@@ -40,6 +40,7 @@ export class CodeBlockNode extends DecoratorNode {
 
     exportJSON() {
         return {
+            ...super.exportJSON(),
             type: 'codeblock',
             version: 1,
             code: this.__code,
