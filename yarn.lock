@@ -1202,10 +1202,10 @@
   dependencies:
     "@lexical/utils" "0.4.1"
 
-"@lexical/headless@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@lexical/headless/-/headless-0.4.1.tgz#b8d1dc5476c7fcdae672140fe3bdc273c51e3112"
-  integrity sha512-1US/sub+8YQizmx1JE5U0TbrjmkvIjkNQK3rRzCdkRSuKjfxkvwfOg0R38yGXozMLVJTg6zvaDiNtdt3hXXHTA==
+"@lexical/headless@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@lexical/headless/-/headless-0.5.0.tgz#a857e50eac242d0aabdc524ac9b6a1c52af81777"
+  integrity sha512-diIfSdbAZ/yDH6wUPod4m4vc0O7bTnpei53b+mlU7Q+g9ZROoS5q2XQWXDsMSpyag5EOuYhgTM75BT2DvtJbCA==
 
 "@lexical/history@0.4.1":
   version "0.4.1"
