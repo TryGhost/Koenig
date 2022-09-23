@@ -1292,10 +1292,15 @@
     "@lexical/utils" "0.4.1"
     "@lexical/yjs" "0.4.1"
 
-"@lexical/rich-text@0.4.1", "@lexical/rich-text@^0.4.1":
+"@lexical/rich-text@0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/rich-text/-/rich-text-0.4.1.tgz#3a980917f994f31befa40bb50a4f6dd679fe0a36"
   integrity sha512-EI4ul3y1hqMp0VS/4D8aOyR41ysz1KaYgkm6PyrRXEMyK8uKmVubJP83RkOU2fWkTVtdrMjM6aeT1qX849LetA==
+
+"@lexical/rich-text@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@lexical/rich-text/-/rich-text-0.5.0.tgz#9b7ddacdd74a49761f15486ed2846c5117a55d14"
+  integrity sha512-JhgMn70K410j3T/2WefPpEswZ+hWF3aJMNu7zkrCf2wB+KdrrGYoeNSZUzg2r4e6BuJgS117KlD99+MDnokCuw==
 
 "@lexical/selection@0.4.1", "@lexical/selection@^0.4.1":
   version "0.4.1"
