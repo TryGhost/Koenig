@@ -4502,10 +4502,10 @@ levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-lexical@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/lexical/-/lexical-0.4.1.tgz#6780f949f8478590b33cc6e8374368bbffbd6180"
-  integrity sha512-EXcLh/6LbEuwqXlnPkk8MXZXO16yBzznFqklKva91DF+KU8utX2PLoeRSOtWC8P2YbRdiGQewwKjUVeXqxxOaQ==
+lexical@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/lexical/-/lexical-0.5.0.tgz#03a8abc816f6d922384ecd01bd14ed36a1ea4d63"
+  integrity sha512-J0cFuNPQQY5P9W5XW2/xgqp5W0eEQ2rxShLf8eevLvxFWsPSY3zjg3RCzTHyheSiGBBjKDIaM4gxtO8eNeJr2A==
 
 lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
