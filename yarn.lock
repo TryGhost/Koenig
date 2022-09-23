@@ -1297,10 +1297,15 @@
   resolved "https://registry.yarnpkg.com/@lexical/rich-text/-/rich-text-0.4.1.tgz#3a980917f994f31befa40bb50a4f6dd679fe0a36"
   integrity sha512-EI4ul3y1hqMp0VS/4D8aOyR41ysz1KaYgkm6PyrRXEMyK8uKmVubJP83RkOU2fWkTVtdrMjM6aeT1qX849LetA==
 
-"@lexical/selection@0.4.1", "@lexical/selection@^0.4.1":
+"@lexical/selection@0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.4.1.tgz#88c709a2b9813077dd91b89990646f1d9b80e16c"
   integrity sha512-lrPaBtdWYp5FGpLA/mw8vVxQx8XM/GGVXFGam68B7mgMbY9xxKy3/MtvS94J+oRPtzNHEW3SyhkDEm9356r73g==
+
+"@lexical/selection@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@lexical/selection/-/selection-0.5.0.tgz#fe94f06fb17d9f5848921a0bbce10774398d3486"
+  integrity sha512-6I5qlqkYDIbDZPGwSOuvpWQUrqMY6URaKwrWsijQZMnNNKscGpC7IKb7sSDKn6YkLm7tuqig3hf2p+6hshkyWg==
 
 "@lexical/table@0.4.1":
   version "0.4.1"
