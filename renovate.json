@@ -7,6 +7,10 @@
     {
       "groupName": "rollup + plugins",
       "packagePatterns": ["^rollup"]
+    },
+    {
+      "groupName": "lexical",
+      "packagePatterns": ["^lexical", "^@lexical"]
     }
   ],
   "ignoreDeps": ["vite"]
