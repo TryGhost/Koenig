@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/koenig-lexical",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "repository": "https://github.com/TryGhost/Koenig/tree/master/packages/koenig-lexical",
   "author": "Ghost Foundation",
   "license": "MIT",
@@ -37,12 +37,13 @@
     "@lexical/react": "^0.4.1",
     "@lexical/selection": "^0.4.1",
     "@lexical/utils": "^0.4.1",
+    "@uiw/react-textarea-code-editor": "^2.0.3",
     "lexical": "^0.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "18.0.20",
+    "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react": "2.1.0",
     "@vitest/coverage-c8": "0.23.4",
@@ -54,7 +55,7 @@
     "postcss": "8.4.16",
     "postcss-import": "15.0.0",
     "prettier": "2.7.1",
-    "puppeteer": "18.0.3",
+    "puppeteer": "18.0.5",
     "tailwindcss": "3.1.8",
     "vite": "3.0.8",
     "vite-plugin-svgr": "2.2.1",
