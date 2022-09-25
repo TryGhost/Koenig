@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {$getNodeByKey, createCommand, DecoratorNode, $createParagraphNode} from 'lexical';
+import {$getNodeByKey, createCommand, DecoratorNode} from 'lexical';
 // import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 
