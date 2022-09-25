@@ -1,13 +1,11 @@
 import * as React from 'react';
-import {$getNodeByKey, createCommand, DecoratorNode} from 'lexical';
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {$getNodeByKey, createCommand, DecoratorNode, $createParagraphNode} from 'lexical';
+// import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 
 export const INSERT_HORIZONTAL_RULE_COMMAND = createCommand();
 
-function CodeBlockComponent({className, code, language, nodeKey}) {
-    const [editor] = useLexicalComposerContext();
-
+function CodeBlockComponent({className, code, language, nodeKey, editor}) {
     const updateCode = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -16,8 +14,15 @@ function CodeBlockComponent({className, code, language, nodeKey}) {
     };
 
     return (
-        <KoenigCardWrapper className={className} nodeKey={nodeKey}>
-            <textarea className='bg-grey-50 min-h-170 w-full' value={code} onChange={updateCode} />
+        <KoenigCardWrapper className={className} nodeKey={nodeKey} >
+            <textarea 
+                autoCorrect="off" 
+                autoCapitalize="off" 
+                spellCheck="false" 
+                tabIndex="0" 
+                className='bg-grey-50 min-h-170 w-full p-3' 
+                value={code} 
+                onChange={updateCode} />
         </KoenigCardWrapper>
     );
 }
@@ -40,7 +45,6 @@ export class CodeBlockNode extends DecoratorNode {
 
     exportJSON() {
         return {
-            ...super.exportJSON(),
             type: 'codeblock',
             version: 1,
             code: this.__code,
@@ -53,8 +57,8 @@ export class CodeBlockNode extends DecoratorNode {
         this.__language = language;
     }
 
-    createDOM() {
-        return document.createElement('div');
+    createDOM(config) {
+        return document.createElement('code');
     }
 
     updateDOM() {
@@ -92,12 +96,14 @@ export class CodeBlockNode extends DecoratorNode {
             base: codeBlockTheme.base || '',
             focus: codeBlockTheme.focus || ''
         };
+        this.insertAfter(this.getKey());
         return (
             <CodeBlockComponent
                 className={className}
                 code={this.__code}
                 language={this.__language}
                 nodeKey={this.getKey()}
+                editor={editor}
             />
         );
     }
@@ -105,6 +111,11 @@ export class CodeBlockNode extends DecoratorNode {
     isTopLevel() {
         return true;
     }
+    // insertAfter(nodeKey) {
+    //     console.log(nodeKey);
+    //     // create empty node if doesn't exist
+    //     const node = $getNodeByKey(nodeKey);
+    // }
 }
 
 export function $createCodeBlockNode(code) {
