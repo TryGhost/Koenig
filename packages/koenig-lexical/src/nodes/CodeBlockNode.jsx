@@ -96,7 +96,6 @@ export class CodeBlockNode extends DecoratorNode {
             base: codeBlockTheme.base || '',
             focus: codeBlockTheme.focus || ''
         };
-        this.insertAfter(this.getKey());
         return (
             <CodeBlockComponent
                 className={className}
@@ -111,11 +110,6 @@ export class CodeBlockNode extends DecoratorNode {
     isTopLevel() {
         return true;
     }
-    // insertAfter(nodeKey) {
-    //     console.log(nodeKey);
-    //     // create empty node if doesn't exist
-    //     const node = $getNodeByKey(nodeKey);
-    // }
 }
 
 export function $createCodeBlockNode(code) {
