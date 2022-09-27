@@ -24,9 +24,6 @@ jobs:
       - name: Copy CNAME to build
         run: mkdir ./packages/koenig-lexical/public && cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
       
-      - name: Testing
-        run: cd ./packages/koenig-lexical && yarn && yarn test
-      
       - name: Build project
         run: cd ./packages/koenig-lexical && yarn && yarn build:demo
 
