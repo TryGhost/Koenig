@@ -7,8 +7,6 @@ on:
       - 'renovate/*'
 jobs:
   test:
-    with:
-      ref: ${{ github.sha }}
     name: Testing
     uses: tryghost/actions/.github/workflows/test.yml@main
     secrets:
