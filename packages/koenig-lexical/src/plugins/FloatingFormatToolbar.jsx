@@ -164,7 +164,6 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
         editor.getEditorState().read(() => {
             updateFloatingToolbar();
         });
-        // get event listener for shift button up
         const shiftUp = (e) => {
             if (e.key === 'Shift') {
                 toggleVis();
