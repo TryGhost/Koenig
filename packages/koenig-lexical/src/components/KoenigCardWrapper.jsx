@@ -6,7 +6,7 @@ import {$getSelection, $isNodeSelection, CLICK_COMMAND, COMMAND_PRIORITY_LOW} fr
 
 const KoenigCardWrapperComponent = ({nodeKey, children}) => {
     const [editor] = useLexicalComposerContext();
-    const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
+    const [isSelected, setSelected] = useLexicalNodeSelection(nodeKey);
     const [selection, setSelection] = React.useState(null);
     const ref = React.useRef(null);
 
@@ -18,14 +18,13 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
             editor.registerCommand(
                 CLICK_COMMAND,
                 (event) => {
-                    console.log(event.target, ref.current, ref.current.contains(event.target));
-                    (ref.current.contains(event.target)) ? setSelected(true) : clearSelection();
-                    return true;
+                    setSelected(ref.current.contains(event.target));
+                    return false;
                 },
                 COMMAND_PRIORITY_LOW
             )
         );
-    }, [editor, isSelected, setSelected, clearSelection, nodeKey]);
+    }, [editor, isSelected, setSelected, nodeKey]);
 
     const isFocused = $isNodeSelection(selection) && isSelected;
 
