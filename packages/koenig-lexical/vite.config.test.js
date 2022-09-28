@@ -19,5 +19,8 @@ export default defineConfig({
             }
         }
     },
-    test: {}
+    test: {
+        minThreads: 2,
+        maxThreads: 3
+    }
 });

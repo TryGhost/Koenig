@@ -1,18 +1,16 @@
 import {afterAll, beforeAll, beforeEach, describe, expect, it, test} from 'vitest';
-import {initialize, focusEditor, assertHTML, html} from '../utils/e2e';
-import puppeteer from 'puppeteer';
+import {start, initialize, focusEditor, assertHTML, html} from '../utils/e2e';
 
 describe('Floating format toolbar', async () => {
-    let browser;
+    let app;
     let page;
 
     beforeAll(async () => {
-        browser = await puppeteer.launch();
-        page = await browser.newPage();
+        ({app, page} = await start());
     });
 
     afterAll(async () => {
-        await browser.close();
+        await app.stop();
     });
 
     beforeEach(async () => {
