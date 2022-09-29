@@ -2,7 +2,7 @@ import React from 'react';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalNodeSelection} from '@lexical/react/useLexicalNodeSelection';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {$getSelection, $isNodeSelection, BLUR_COMMAND, CLICK_COMMAND, COMMAND_PRIORITY_LOW} from 'lexical';
+import {$createParagraphNode, $getNodeByKey, $getSelection, $isNodeSelection, BLUR_COMMAND, CLICK_COMMAND, COMMAND_PRIORITY_EDITOR, COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND, KEY_ENTER_COMMAND} from 'lexical';
 
 const KoenigCardWrapperComponent = ({nodeKey, children}) => {
     const [editor] = useLexicalComposerContext();
@@ -37,6 +37,28 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
                     return false;
                 },
                 COMMAND_PRIORITY_LOW
+            ),
+            editor.registerCommand(
+                KEY_ENTER_COMMAND,
+                (event) => {
+                    // TODO: test if this is needed when code card is working again
+                    // we don't want to insert paragraphs if Enter is pressed inside card's form element
+                    // if (event.target.matches('input textarea select option')) {
+                    //     return false;
+                    // }
+
+                    const latestSelection = $getSelection();
+                    if (isSelected && $isNodeSelection(latestSelection) && latestSelection.getNodes().length === 1) {
+                        event.preventDefault();
+                        const cardNode = $getNodeByKey(nodeKey);
+                        const paragraphNode = $createParagraphNode();
+                        cardNode.getTopLevelElementOrThrow().insertAfter(paragraphNode);
+                        paragraphNode.select();
+                        return true;
+                    }
+                    return false;
+                },
+                COMMAND_PRIORITY_EDITOR
             )
         );
     }, [editor, isSelected, setSelected, clearSelected, nodeKey]);
