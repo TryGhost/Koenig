@@ -1,8 +1,18 @@
 import React from 'react';
+import {
+    $createParagraphNode,
+    $getNodeByKey,
+    $getSelection,
+    $isNodeSelection,
+    BLUR_COMMAND,
+    CLICK_COMMAND,
+    COMMAND_PRIORITY_EDITOR,
+    COMMAND_PRIORITY_LOW,
+    KEY_ENTER_COMMAND
+} from 'lexical';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalNodeSelection} from '@lexical/react/useLexicalNodeSelection';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {$createParagraphNode, $getNodeByKey, $getSelection, $isNodeSelection, BLUR_COMMAND, CLICK_COMMAND, COMMAND_PRIORITY_EDITOR, COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND, KEY_ENTER_COMMAND} from 'lexical';
 
 const KoenigCardWrapperComponent = ({nodeKey, children}) => {
     const [editor] = useLexicalComposerContext();
