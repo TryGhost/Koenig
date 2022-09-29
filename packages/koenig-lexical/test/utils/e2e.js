@@ -9,6 +9,8 @@ export async function start() {
     const server = await preview({preview: {port: E2E_PORT}});
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+    const version = await page.browser().version();
+    console.log(version); // eslint-disable-line no-console
 
     return {
         app: {
