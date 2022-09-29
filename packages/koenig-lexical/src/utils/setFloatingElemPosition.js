@@ -7,16 +7,16 @@ export function setFloatingElemPosition(
     options = {}
 ) {
     options = Object.assign({
-        verticalGap: VERTICAL_GAP,
-        controlOpacity: true
+        verticalGap: VERTICAL_GAP
+        // controlOpacity: true
     }, options);
 
     const scrollerElem = anchorElem.parentElement;
 
     if (targetRect === null || !scrollerElem) {
-        if (options.controlOpacity) {
-            floatingElem.style.opacity = '0';
-        }
+        // if (options.controlOpacity) {
+        //     floatingElem.style.opacity = '0';
+        // }
         floatingElem.style.top = '-10000px';
         floatingElem.style.left = '-10000px';
 
@@ -41,9 +41,9 @@ export function setFloatingElemPosition(
     top -= anchorElementRect.top;
     left -= anchorElementRect.left;
 
-    if (options.controlOpacity) {
-        floatingElem.style.opacity = '1';
-    }
+    // if (options.controlOpacity) {
+    //     floatingElem.style.opacity = '1';
+    // }
     floatingElem.style.top = `${top}px`;
     floatingElem.style.left = `${left}px`;
 }
