@@ -32,7 +32,7 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
                         clearSelected();
                         setSelected(true);
                     } else if (isSelected) {
-                        clearSelected();
+                        setSelected(false);
                     }
                     return false;
                 },
@@ -80,6 +80,7 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
             className={`relative caret-grey-800 hover:shadow-[0_0_0_1px] hover:shadow-green ${isFocused ? 'shadow-[0_0_0_1px] shadow-green' : ''}`}
             ref={ref}
             data-kg-card
+            data-kg-card-selected={isFocused}
         >
             {children}
         </div>
