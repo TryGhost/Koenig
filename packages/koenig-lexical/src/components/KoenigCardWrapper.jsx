@@ -42,7 +42,7 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
                 BLUR_COMMAND,
                 (event) => {
                     if (isSelected && !ref.current.contains(event.relatedTarget)) {
-                        setSelected(false);
+                        clearSelected();
                     }
                     return false;
                 },
