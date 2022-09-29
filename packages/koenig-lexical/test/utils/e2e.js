@@ -25,9 +25,9 @@ export async function start() {
 }
 
 export async function initialize({page}) {
-    const url = `http://127.0.0.1:${E2E_PORT}`;
+    const url = `http://127.0.0.1:${E2E_PORT}/`;
 
-    page.setViewport({width: 1000, height: 1000});
+    await page.setViewport({width: 1000, height: 1000});
     await page.goto(url);
     await page.waitForSelector('.koenig-lexical');
 }
