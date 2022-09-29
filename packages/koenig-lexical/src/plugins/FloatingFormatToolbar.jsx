@@ -234,10 +234,19 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
                     setStickyToolbar(true);
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
                 }} data-kg-toolbar-button="italic" />
-                <MenuItem label="Toggle heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))} data-kg-toolbar-button="h2" />
-                <MenuItem label="Toggle heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))} data-kg-toolbar-button="h3" />
+                <MenuItem label="Toggle heading 1" isActive={blockType === 'h2'} Icon={HeadingOneIcon} onClick={() => {
+                    (blockType === 'h2' ? formatParagraph() : formatHeading('h2'));
+                    setStickyToolbar(true);
+                }} data-kg-toolbar-button="h2" />
+                <MenuItem label="Toggle heading 2" isActive={blockType === 'h3'} Icon={HeadingTwoIcon} onClick={() => {
+                    (blockType === 'h3' ? formatParagraph() : formatHeading('h3'));
+                    setStickyToolbar(true);
+                }} data-kg-toolbar-button="h3" />
                 <MenuSeparator />
-                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote' || blockType === 'aside'} Icon={blockType === 'aside' ? QuoteTwoIcon : QuoteOneIcon} onClick={() => (formatQuote())} data-kg-toolbar-button="quote" />
+                <MenuItem label="Toggle blockquote" isActive={blockType === 'quote' || blockType === 'aside'} Icon={blockType === 'aside' ? QuoteTwoIcon : QuoteOneIcon} onClick={() => {
+                    (formatQuote());
+                    setStickyToolbar(true);
+                }} data-kg-toolbar-button="quote" />
             </ul>
         </div>
     );
