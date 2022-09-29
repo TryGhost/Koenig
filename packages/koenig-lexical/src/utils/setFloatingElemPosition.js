@@ -7,7 +7,8 @@ export function setFloatingElemPosition(
     options = {}
 ) {
     options = Object.assign({
-        verticalGap: VERTICAL_GAP
+        verticalGap: VERTICAL_GAP,
+        controlOpacity: true
     }, options);
 
     const scrollerElem = anchorElem.parentElement;
