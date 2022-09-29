@@ -5,6 +5,11 @@ import {ReactComponent as HeadingOneIcon} from '../assets/icons/kg-heading-1.svg
 import {ReactComponent as HeadingTwoIcon} from '../assets/icons/kg-heading-2.svg';
 import {ReactComponent as LinkIcon} from '../assets/icons/kg-link.svg';
 import {ReactComponent as QuoteIcon} from '../assets/icons/kg-quote.svg';
+import {ReactComponent as ImgRegularIcon} from '../assets/icons/kg-img-regular.svg';
+import {ReactComponent as ImgWideIcon} from '../assets/icons/kg-img-wide.svg';
+import {ReactComponent as ImgFullIcon} from '../assets/icons/kg-img-full.svg';
+import {ReactComponent as ReplaceIcon} from '../assets/icons/kg-replace.svg';
+import {ReactComponent as AddIcon} from '../assets/icons/kg-add.svg';
 import {ReactComponent as SnippetIcon} from '../assets/icons/kg-snippet.svg';
 import {ReactComponent as PlusIcon} from '../assets/icons/plus.svg';
 import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-image.svg';
@@ -35,18 +40,30 @@ import {ReactComponent as SoundcloudCardIcon} from '../assets/icons/kg-card-type
 import {ReactComponent as NftCardIcon} from '../assets/icons/kg-card-type-nft.svg';
 import {ReactComponent as OtherCardIcon} from '../assets/icons/kg-card-type-other.svg';
 import {ReactComponent as SnippetCardIcon} from '../assets/icons/kg-card-type-snippet.svg';
+import {ReactComponent as ImgPlaceholderIcon} from '../assets/icons/kg-img-placeholder.svg';
 
 const DesignSandbox = () => {
     return (
         <div className="koenig-lexical">
-            <ComponentTitle label="Floating toolbar" />
-            <FloatingToolbar />
+            <ComponentTitle label="Text toolbar" />
+            <TextToolbar />
+
+            <ComponentTitle label="Image toolbar" />
+            <ImageToolbar />
+
+            <ComponentTitle label="Gallery toolbar" />
+            <GalleryToolbar />
 
             <ComponentTitle label="Plus menu" />
             <PlusButton />
 
             <ComponentTitle label="Card menu" />
             <CardMenu />
+
+            <ComponentTitle label="Image card" />
+            <div className="relative max-w-[740px]">
+                <ImageCard />
+            </div>
         </div>
     );
 
@@ -64,7 +81,7 @@ const DesignSandbox = () => {
     /* Floating toolbar
     /* ---------------------------------------------------------- */
 
-    function FloatingToolbar() {
+    function TextToolbar() {
         return (
             <div className="max-w-fit">
                 <ul className="m-0 flex items-center justify-evenly rounded bg-black px-1 py-0 font-sans text-md font-normal text-white">
@@ -75,6 +92,35 @@ const DesignSandbox = () => {
                     <MenuSeparator />
                     <MenuItem label="Toggle blockquote" Icon={QuoteIcon} />
                     <MenuItem label="Insert link" Icon={LinkIcon} />
+                    <MenuSeparator />
+                    <MenuItem label="Save as snippet" Icon={SnippetIcon} />
+                </ul>
+            </div>  
+        );
+    }
+
+    function ImageToolbar() {
+        return (
+            <div className="max-w-fit">
+                <ul className="m-0 flex items-center justify-evenly rounded bg-black px-1 py-0 font-sans text-md font-normal text-white">
+                    <MenuItem label="Set image to regular" Icon={ImgRegularIcon} />
+                    <MenuItem label="Set image to wide" Icon={ImgWideIcon} />
+                    <MenuItem label="Set image to full" Icon={ImgFullIcon} />
+                    <MenuSeparator />
+                    <MenuItem label="Insert link" Icon={LinkIcon} />
+                    <MenuItem label="Replace image" Icon={ReplaceIcon} />
+                    <MenuSeparator />
+                    <MenuItem label="Save as snippet" Icon={SnippetIcon} />
+                </ul>
+            </div>  
+        );
+    }
+
+    function GalleryToolbar() {
+        return (
+            <div className="max-w-fit">
+                <ul className="m-0 flex items-center justify-evenly rounded bg-black px-1 py-0 font-sans text-md font-normal text-white">
+                    <MenuItem label="Add image" Icon={AddIcon} />
                     <MenuSeparator />
                     <MenuItem label="Save as snippet" Icon={SnippetIcon} />
                 </ul>
@@ -189,6 +235,51 @@ const DesignSandbox = () => {
                     <div className="m-0 ml-4 truncate text-[1.3rem] font-normal leading-[1.333em] tracking-[.02rem] text-grey-900">{label}</div>
                 </div>
             </div>
+        );
+    }
+
+    /* Image card
+    /* ---------------------------------------------------------- */
+
+    function ImageCard() {
+        return (
+            <div className="border-2 border-green">
+                <div className='relative'>
+                    <ImageHolder />
+                </div>
+                <form>
+                    <input
+                        type='file'
+                        accept='image/*'
+                        name="image"
+                        hidden={true}
+                    />
+                </form>
+                <CaptionEditor />
+                <button className="absolute bottom-0 right-0 m-3 cursor-pointer rounded border border-grey px-1 text-sm font-normal leading-6 text-grey">Alt</button>            
+            </div>
+        );
+    }
+
+    function ImageHolder() {
+        return (
+            <figure className="cursor-pointer border border-transparent">
+                <div className="h-100 relative flex items-center justify-center border border-grey-100 bg-grey-50">
+                    <button className="group my-16 flex flex-col items-center justify-center p-20">
+                        <ImgPlaceholderIcon className="h-28 w-28 opacity-80 transition-all ease-linear group-hover:scale-105 group-hover:opacity-100" />
+                        <p className="mt-2 text-sm font-normal text-grey-700 group-hover:text-grey-800">Click to select an image</p>
+                    </button>
+                </div>
+            </figure>
+        );
+    }
+
+    function CaptionEditor() {
+        return (
+            <input 
+                className="not-kg-prose w-full p-2 text-center font-sans text-sm font-normal text-grey-900"
+                placeholder="Type caption for image (optional)" 
+            />
         );
     }
 };
