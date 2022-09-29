@@ -1,4 +1,4 @@
-import {beforeAll, afterAll, beforeEach, describe, expect, test} from 'vitest';
+import {beforeAll, afterAll, beforeEach, describe, test} from 'vitest';
 import {start, initialize, focusEditor, assertHTML, html} from '../utils/e2e';
 
 describe('Card behaviour', async () => {
