@@ -8,6 +8,7 @@ import KoenigBehaviourPlugin from '../plugins/KoenigBehaviourPlugin';
 import MarkdownShortcutPlugin from '../plugins/MarkdownShortcutPlugin';
 import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbar';
 import '../styles/index.css';
+import ImagePlugin from '../plugins/ImagePlugin';
 
 const KoenigEditor = ({
     onChange,
@@ -45,6 +46,7 @@ const KoenigEditor = ({
             <KoenigBehaviourPlugin containerElem={containerRef} />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
             {floatingAnchorElem && (<FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />)}
+            <ImagePlugin />
         </div>
     );
 };
