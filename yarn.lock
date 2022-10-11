@@ -12381,7 +12381,7 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
-tinybench@^2.2.1, tinybench@^2.3.0:
+tinybench@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/tinybench/-/tinybench-2.3.0.tgz#febb2e697c735c0cdb8eb1e43cb1d2fa1821f983"
   integrity sha512-zs1gMVBwyyG2QbVchYIbnabRhMOCGvrwZz/q+SV+LIMa9q5YDQZi2kkI6ZRqV2Bz7ba1uvrc7ieUoE4KWnGeKg==
@@ -13101,23 +13101,6 @@ vite@^3.0.0:
     rollup "~2.78.0"
   optionalDependencies:
     fsevents "~2.3.2"
-
-vitest@0.24.0:
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.24.0.tgz#61555b7b56e07f04a1692352de7d4803de0f5c88"
-  integrity sha512-k5j3FPTor+MJx2x0pDW2gtVk+s9VC6nSHT3SoqOIk9Je5fFpPgict+Xy2eAVXUogvSixs45Ya1oZk+oK93BO0w==
-  dependencies:
-    "@types/chai" "^4.3.3"
-    "@types/chai-subset" "^1.3.3"
-    "@types/node" "*"
-    chai "^4.3.6"
-    debug "^4.3.4"
-    local-pkg "^0.4.2"
-    strip-literal "^0.4.2"
-    tinybench "^2.2.1"
-    tinypool "^0.3.0"
-    tinyspy "^1.0.2"
-    vite "^3.0.0"
 
 vitest@0.24.1:
   version "0.24.1"
