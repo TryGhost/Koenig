@@ -37,6 +37,8 @@ describe('Image card', async () => {
             <input type="file" accept="image/*" name="image" hidden="">
             </form>
             </div>
+            <input placeholder="Type caption for image (optional)" />
+            <button>Alt</button>
             </div>
             </div>
             </div>

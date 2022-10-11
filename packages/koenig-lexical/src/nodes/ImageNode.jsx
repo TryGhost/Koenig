@@ -1,22 +1,30 @@
 import React, {useState} from 'react';
-// import {PlainTextPlugin} from '@lexical/react/LexicalPlainTextPlugin';
-// import {LexicalNestedComposer} from '@lexical/react/LexicalNestedComposer';
-// import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {DecoratorNode, createEditor, $getNodeByKey} from 'lexical';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {ReactComponent as ImgPlaceholderIcon} from '../assets/icons/kg-img-placeholder.svg';
-
-// import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-// import {$generateHtmlFromNodes} from '@lexical/html';
-// import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
+
+function MediaCard({payload, uploadImage}) {
+    if (payload?.__src) {
+        return (
+            <figure className="kg-card kg-image-card">
+                <img src={payload?.__src} alt={payload?.__altText} />
+                <figcaption className="kg-image-card-caption"></figcaption>
+            </figure>
+        );
+    } else {
+        return (
+            <MediaPlaceholder onClick={uploadImage} desc="Click to select an image" Icon={ImgPlaceholderIcon} /> 
+        );
+    }
+}
 
 function ImageCard({nodeKey}) {
     const [isActive, setActive] = useState(false);
     const [altText, setAltText] = useState(false);
     // const [editAlt, setEditAlt] = React.useState(false);
     const [editor] = useLexicalComposerContext();
-    const [, setPayload] = React.useState({});
+    const [payload, setPayload] = React.useState({});
 
     React.useEffect(() => {
         const editorState = editor.getEditorState();
@@ -35,26 +43,25 @@ function ImageCard({nodeKey}) {
         setAltText(!altText);
     };
 
-    if (isActive) {
-        return (
-            <div 
-                className={`border border-transparent ${isActive ? 'shadow-[0_0_0_2px_#30cf43]' : 'hover:shadow-[0_0_0_1px_#30cf43]'}`}
-                onClick={toggleActive}>
-                <MediaPlaceholder desc="Click to select an image" Icon={ImgPlaceholderIcon} />
-                <CaptionEditor placeholder="Type caption for image (optional)" />
-                <button 
-                    className={`absolute bottom-0 right-0 m-3 cursor-pointer rounded border px-1 text-[1.3rem] font-normal leading-7 tracking-wide transition-all duration-100 ${altText ? 'border-green bg-green text-white' : 'border-grey text-grey' } `}
-                    onClick={e => toggleAltText(e)}>
-                        Alt
-                </button>           
-            </div>
-        );
-    } 
+    const staticImage = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80';
+    const uploadImage = () => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setSrc(staticImage);
+            setPayload(node.getPayload());
+        });
+    };
     return (
         <div 
             className={`border border-transparent ${isActive ? 'shadow-[0_0_0_2px_#30cf43]' : 'hover:shadow-[0_0_0_1px_#30cf43]'}`}
             onClick={toggleActive}>
-            <MediaPlaceholder desc="Click to select an image" Icon={ImgPlaceholderIcon} />        
+            <MediaCard payload={payload} editor={editor} uploadImage={uploadImage} />
+            <CaptionEditor placeholder="Type caption for image (optional)" />     
+            <button 
+                className={`absolute bottom-0 right-0 m-3 cursor-pointer rounded border px-1 text-[1.3rem] font-normal leading-7 tracking-wide transition-all duration-100 ${altText ? 'border-green bg-green text-white' : 'border-grey text-grey' } `}
+                onClick={e => toggleAltText(e)}>
+                        Alt
+            </button>      
         </div>
     );
 }
@@ -204,8 +211,17 @@ export class ImageNode extends DecoratorNode {
         return false;
     }
 
+    setSrc(src) {
+        const self = this.getWritable();
+        return self.__src = src;
+    }
+
     decorate() {
-        return <KoenigCardWrapper><ImageCard nodeKey={this.getKey()} /></KoenigCardWrapper>;
+        return (
+            <KoenigCardWrapper>
+                <ImageCard nodeKey={this.getKey()} />
+            </KoenigCardWrapper>
+        );
     }
 }
 
