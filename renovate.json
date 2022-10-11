@@ -11,6 +11,10 @@
     {
       "groupName": "lexical",
       "packagePatterns": ["^lexical", "^@lexical"]
+    },
+    {
+      "groupName": "vitest",
+      "packagePatterns": ["^vitest", "^@vitest"]
     }
   ],
   "ignoreDeps": ["vite"]
