@@ -73,13 +73,13 @@ describe('Plus button', async () => {
 
     it('is shown after deleting all paragraph contents', async function () {
         await focusEditor(page);
-        await page.keyboard.type('testing');
+        await page.keyboard.type('t');
 
         expect(await page.$('[data-kg-plus-button]')).toBeNull();
 
-        await page.evaluate(() => document.execCommand('selectAll', false, null));
         await page.keyboard.press('Backspace');
-        await assertHTML(page, html`<p><br /></p>`);
-        await page.waitForSelector('[data-kg-plus-button]');
+        await page.waitForSelector('p > br');
+
+        expect(await page.$('[data-kg-plus-button]')).not.toBeNull();
     });
 });
