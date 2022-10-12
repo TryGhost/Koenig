@@ -13,7 +13,8 @@ import ImagePlugin from '../plugins/ImagePlugin';
 
 const KoenigEditor = ({
     onChange,
-    markdownTransformers
+    markdownTransformers,
+    imageUploadFunc
 }) => {
     const _onChange = React.useCallback((editorState) => {
         const json = editorState.toJSON();
@@ -45,10 +46,12 @@ const KoenigEditor = ({
             <HistoryPlugin /> {/* adds undo/redo */}
             <ListPlugin /> {/* adds indent/outdent/remove etc support */}
             <KoenigBehaviourPlugin containerElem={containerRef} />
-            <MarkdownShortcutPlugin transformers={markdownTransformers} />
+            <MarkdownShortcutPlugin transformers={markdownTransformers} imageUploadFunc={imageUploadFunc} />
             <PlusCardMenuPlugin />
             {floatingAnchorElem && (<FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />)}
-            <ImagePlugin />
+            <ImagePlugin 
+                imageUploadFunc={imageUploadFunc}
+            />
         </div>
     );
 };
