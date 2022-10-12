@@ -11,6 +11,8 @@ import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbarPlugin'
 import '../styles/index.css';
 import ImagePlugin from '../plugins/ImagePlugin';
 
+export let imageUploader;
+
 const KoenigEditor = ({
     onChange,
     markdownTransformers,
@@ -22,6 +24,7 @@ const KoenigEditor = ({
     }, [onChange]);
 
     const containerRef = React.useRef(null);
+    imageUploader = imageUploadFunc || '';
 
     // we need an element reference for the container element that
     // any floating elements in plugins will be rendered inside

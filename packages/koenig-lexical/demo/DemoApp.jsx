@@ -4,34 +4,12 @@ import FloatingButton from './components/FloatingButton';
 import SerializedStateTextarea from './components/SerializedStateTextarea';
 import {useState} from 'react';
 import Watermark from './components/Watermark';
+import {imageUploader} from './utils/imageUploader';
 
 function DemoApp() {
     const [sidebarState, setSidebarState] = useState(false);
     function openSidebar() {
         setSidebarState(!sidebarState);
-    }
-
-    async function imageUploader(event) {
-        event.preventDefault();
-        function convertToURL(file) {
-            return new Promise((resolve, reject) => {
-                const fileReader = new FileReader();
-                fileReader.readAsDataURL(file);
-                fileReader.onload = () => {
-                    resolve(fileReader.result);
-                };
-                fileReader.onerror = (error) => {
-                    reject(error);
-                };
-            });
-        }
-        if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-            const file = event.dataTransfer.files[0];
-            const url = await convertToURL(file);
-            return {
-                src: url
-            };
-        }
     }
 
     return (

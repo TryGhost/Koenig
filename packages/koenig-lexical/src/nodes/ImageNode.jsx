@@ -3,20 +3,25 @@ import {DecoratorNode, createEditor, $getNodeByKey} from 'lexical';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {ReactComponent as ImgPlaceholderIcon} from '../assets/icons/kg-img-placeholder.svg';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {imageUploader} from '../components/KoenigEditor';
 
 function MediaCard({dataset, editor, nodeKey}) {
     const {payload, setPayload} = dataset;
-    const staticImage = 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2370&q=80';
-    
-    const uploadEl = useRef(null);
-
-    const uploadImage = () => {
+    const uploadRef = useRef(null);
+    const onUploadChange = async (e) => {
+        const fls = e.target.files;
+        const files = await imageUploader(fls);
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setSrc(staticImage);
+            node.setSrc(files.src);
             setPayload(node.getPayload());
         });
+    }; 
+
+    const openUpload = () => {
+        uploadRef.current.click();
     };
+
     if (payload?.__src) {
         return (
             <figure className="kg-card kg-image-card">
@@ -27,9 +32,14 @@ function MediaCard({dataset, editor, nodeKey}) {
     } else {
         return (
             <>
-                <MediaPlaceholder onClick={uploadImage} desc="Click to select an image" Icon={ImgPlaceholderIcon} />
-                <form>
-                    <input type="file" hidden ref={uploadEl} />
+                <MediaPlaceholder onClick={openUpload} desc="Click to select an image" Icon={ImgPlaceholderIcon} />
+                <form onChange={onUploadChange}>
+                    <input
+                        type='file'
+                        accept='image/*'
+                        ref={uploadRef}
+                        hidden={true}
+                    />
                 </form>
             </>
         );

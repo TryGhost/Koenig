@@ -60,7 +60,8 @@ const onDragOver = (event) => {
 
 const onDragDrop = async (event, editor = LexicalEditor, imageUploadFunc) => {
     event.preventDefault();
-    const files = await imageUploadFunc(event);
+    const fls = event.dataTransfer.files;
+    const files = await imageUploadFunc(fls);
     if (files) {
         editor.dispatchCommand(INSERT_IMAGE_CMD, files);
     }
