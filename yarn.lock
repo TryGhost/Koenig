@@ -3223,7 +3223,7 @@
     "@typescript-eslint/types" "5.38.0"
     eslint-visitor-keys "^3.3.0"
 
-"@uiw/react-textarea-code-editor@^2.0.3":
+"@uiw/react-textarea-code-editor@2.0.3":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@uiw/react-textarea-code-editor/-/react-textarea-code-editor-2.0.3.tgz#105a3ccaa957ec1aee77d9cea6b255db71d38ede"
   integrity sha512-m1M7taYD30KFutdqP1PC2Nep6bwfcL5rDkzIM4C/pZB1tRlpXdkG1KrZ2voYBB2TdtJUUUIlkXpPeh6I084Ybw==
