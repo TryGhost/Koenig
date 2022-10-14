@@ -21,10 +21,10 @@ describe('Images', function () {
           }`,
         output: `
         <figure>
-        <img src="https://example.com/image.png" alt="This is Alt" /> 
-        <figcaption>
-            This is a caption
-        </figcaption>
+            <img src="https://example.com/image.png" alt="This is Alt" /> 
+                <figcaption>
+                This is a caption
+                </figcaption>
         </figure>
         `
     }));

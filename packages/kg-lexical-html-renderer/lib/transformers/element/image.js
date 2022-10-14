@@ -7,10 +7,10 @@ module.exports = {
         }
         return (`
         <figure>
-        <img src="${node.src}" alt="${node.altText}" /> 
-        <figcaption>
-            ${node.caption}
-        </figcaption>
+            <img src="${node.src}" alt="${node.altText}" /> 
+                <figcaption>
+                ${node.caption}
+                </figcaption>
         </figure>
         `);
     }
