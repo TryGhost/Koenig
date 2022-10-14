@@ -15,14 +15,6 @@ class ImageNode extends DecoratorNode {
     static importJSON(serializedNode) {
         return $createImageNode(serializedNode);
     }
-
-    static getSrc() {
-        return this.src;
-    }
-
-    static getCaption() {
-        return this.caption;
-    }
 }
 
 const $createImageNode = (serializedNode) => {
