@@ -21,17 +21,15 @@ function ImageCard({
                 nodeKey={nodeKey}
                 onUploadChange={onUploadChange}
             />
-            <div className="w-full p-2">
-                <CardCaptionEditor
-                    altText={payload.__altText || ''}
-                    updateAltText={updateAltText}
-                    altTextPlaceholder="Type alt text for image (optional)"
-                    caption={payload.__caption || ''}
-                    updateCaption={updateCaption}
-                    captionPlaceholder="Type caption for image (optional)"
-                    isSelected={isSelected}
-                />
-            </div>
+            <CardCaptionEditor
+                altText={payload.__altText || ''}
+                updateAltText={updateAltText}
+                altTextPlaceholder="Type alt text for image (optional)"
+                caption={payload.__caption || ''}
+                updateCaption={updateCaption}
+                captionPlaceholder="Type caption for image (optional)"
+                isSelected={isSelected}
+            />
         </div>
     );
 }

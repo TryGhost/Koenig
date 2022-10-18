@@ -67,12 +67,12 @@ export function CardCaptionEditor({
 
     if (isSelected || caption) {
         return (
-            <>
+            <div className="w-full p-2">
                 {isEditingAlt
                     ? <AltTextInput value={altText} placeholder={altTextPlaceholder} onChange={updateAltText} />
                     : <CaptionInput value={caption} placeholder={captionPlaceholder} onChange={updateCaption} /> }
                 {updateAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
-            </>
+            </div>
         );
     }
 }
