@@ -45,10 +45,10 @@ function AltToggleButton({isEditingAlt, onClick}) {
 export function CardCaptionEditor({
     altText,
     altTextPlaceholder,
-    updateAltText,
+    setAltText,
     caption,
     captionPlaceholder,
-    updateCaption,
+    setCaption,
     isSelected
 }) {
     const [isEditingAlt, setIsEditingAlt] = React.useState(false);
@@ -67,12 +67,12 @@ export function CardCaptionEditor({
 
     if (isSelected || caption) {
         return (
-            <div className="w-full p-2">
+            <figcaption className="w-full p-2">
                 {isEditingAlt
-                    ? <AltTextInput value={altText} placeholder={altTextPlaceholder} onChange={updateAltText} />
-                    : <CaptionInput value={caption} placeholder={captionPlaceholder} onChange={updateCaption} /> }
-                {updateAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
-            </div>
+                    ? <AltTextInput value={altText} placeholder={altTextPlaceholder} onChange={setAltText} />
+                    : <CaptionInput value={caption} placeholder={captionPlaceholder} onChange={setCaption} /> }
+                {setAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
+            </figcaption>
         );
     }
 }
