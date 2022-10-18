@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {ReactComponent as ImgPlaceholderIcon} from '../../../assets/icons/kg-img-placeholder.svg';
-import MediaPlaceholder from './MediaPlaceholder';
+import {MediaPlaceholder} from '../../ui/MediaPlaceholder';
 
 function MediaCard({payload, onUploadChange}) {
     const uploadRef = useRef(null);
@@ -17,10 +17,10 @@ function MediaCard({payload, onUploadChange}) {
     } else {
         return (
             <>
-                <MediaPlaceholder 
-                    onClick={openUpload} 
-                    desc="Click to select an image" 
-                    Icon={ImgPlaceholderIcon} 
+                <MediaPlaceholder
+                    onClick={openUpload}
+                    desc="Click to select an image"
+                    Icon={ImgPlaceholderIcon}
                 />
                 <form onChange={onUploadChange}>
                     <input

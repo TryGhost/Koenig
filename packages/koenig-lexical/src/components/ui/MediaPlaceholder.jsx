@@ -1,6 +1,4 @@
-import React from 'react';
-
-function MediaPlaceholder({desc, Icon, ...props}) {
+export function MediaPlaceholder({desc, Icon, ...props}) {
     return (
         <div className="relative">
             <figure className="cursor-pointer border border-transparent" {...props}>
@@ -14,5 +12,3 @@ function MediaPlaceholder({desc, Icon, ...props}) {
         </div>
     );
 }
-
-export default MediaPlaceholder;
