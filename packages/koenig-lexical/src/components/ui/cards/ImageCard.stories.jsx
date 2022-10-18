@@ -1,9 +1,12 @@
 import React from 'react';
-import ImageCard from '../../components/Cards/ImageCard/ImageCard';
+import {ImageCard} from './ImageCard';
 
 const story = {
-    title: 'Image Node',
-    component: ImageCard
+    title: 'Cards/Image Card',
+    component: ImageCard,
+    argTypes: {
+        isSelected: {control: 'boolean'}
+    }
 };
 export default story;
 

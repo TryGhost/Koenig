@@ -3,7 +3,7 @@ import {$getNodeByKey} from 'lexical';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext';
-import ImageCard from '../components/ui/cards/ImageCard';
+import {ImageCard} from '../components/ui/cards/ImageCard';
 
 export function ImageNodeComponent({nodeKey, src, altText, caption}) {
     const [editor] = useLexicalComposerContext();

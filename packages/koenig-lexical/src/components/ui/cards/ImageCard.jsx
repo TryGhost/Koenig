@@ -36,7 +36,7 @@ function EmptyImageCard({onFileChange}) {
     );
 }
 
-function ImageCard({
+export function ImageCard({
     isSelected,
     src,
     onFileChange,
@@ -63,5 +63,3 @@ function ImageCard({
         </figure>
     );
 }
-
-export default ImageCard;
