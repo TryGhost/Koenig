@@ -42,7 +42,7 @@ function AltToggleButton({isEditingAlt, onClick}) {
     );
 }
 
-function CaptionEditor({
+export function CardCaptionEditor({
     altText,
     altTextPlaceholder,
     updateAltText,
@@ -76,5 +76,3 @@ function CaptionEditor({
         );
     }
 }
-
-export default CaptionEditor;

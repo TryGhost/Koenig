@@ -2,7 +2,7 @@ import React from 'react';
 // import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 // import CardContext from '../../../context/CardContext';
 import MediaCard from './MediaCard';
-import CaptionEditor from './CaptionEditor';
+import {CardCaptionEditor} from '../../ui/CardCaptionEditor';
 
 function ImageCard({
     payload,
@@ -22,7 +22,7 @@ function ImageCard({
                 onUploadChange={onUploadChange}
             />
             <div className="w-full p-2">
-                <CaptionEditor
+                <CardCaptionEditor
                     altText={payload.__altText || ''}
                     updateAltText={updateAltText}
                     altTextPlaceholder="Type alt text for image (optional)"
