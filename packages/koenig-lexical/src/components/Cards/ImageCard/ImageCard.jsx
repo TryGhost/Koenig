@@ -11,38 +11,25 @@ function ImageCard({
     isSelected,
     onUploadChange,
     updateCaption,
-    updateAltText,
-    toggleAltText,
-    handleCapInput
+    updateAltText
 }) {
-    const [altText, setAltText] = React.useState(false);
-
-    const placeHolderText = (toggle) => {
-        if (toggle) {
-            return 'Type alt text for image (optional)';
-        } else {
-            return 'Type caption for image (optional)';
-        }
-    };
-
     return (
         <div>
-            <MediaCard 
-                payload={payload} 
-                editor={editor} 
+            <MediaCard
+                payload={payload}
+                editor={editor}
                 nodeKey={nodeKey}
                 onUploadChange={onUploadChange}
             />
             <div className="w-full p-2">
                 <CaptionEditor
-                    handleCapInput={handleCapInput}
-                    toggleAltText={toggleAltText || {altText, setAltText}}
-                    payload={payload}
+                    altText={payload.__altText || ''}
                     updateAltText={updateAltText}
+                    altTextPlaceholder="Type alt text for image (optional)"
+                    caption={payload.__caption || ''}
                     updateCaption={updateCaption}
-                    selected={isSelected} 
-                    nodeKey={nodeKey} 
-                    placeholder={placeHolderText(toggleAltText?.altText || altText)}
+                    captionPlaceholder="Type caption for image (optional)"
+                    isSelected={isSelected}
                 />
             </div>
         </div>

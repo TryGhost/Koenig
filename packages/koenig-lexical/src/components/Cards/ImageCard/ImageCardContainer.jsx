@@ -10,7 +10,6 @@ function ImageCardContainer({nodeKey}) {
     const [payload, setPayload] = React.useState({});
     const {isSelected} = React.useContext(CardContext);
     const {imageUploader} = React.useContext(KoenigComposerContext);
-    const [altText, setAltText] = React.useState(true);
 
     const onUploadChange = async (e) => {
         const fls = e.target.files;
@@ -46,16 +45,6 @@ function ImageCardContainer({nodeKey}) {
         });
     };
 
-    const handleCapInput = (e) => {
-        if (!altText) {
-            const cap = e.target.value;
-            updateCaption(cap);
-        } else {
-            const alt = e.target.value;
-            updateAltText(alt);
-        }
-    };
-
     return (
         <ImageCard
             payload={payload}
@@ -65,8 +54,6 @@ function ImageCardContainer({nodeKey}) {
             onUploadChange={onUploadChange}
             updateCaption={updateCaption}
             updateAltText={updateAltText}
-            handleCapInput={handleCapInput}
-            toggleAltText={{altText, setAltText}}
         />
     );
 }
