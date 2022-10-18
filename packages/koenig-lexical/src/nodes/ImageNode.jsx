@@ -2,7 +2,7 @@ import React from 'react';
 import {DecoratorNode, createCommand} from 'lexical';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-image.svg';
-import ImageCard from '../components/Cards/ImageCard';
+import ImageCardContainer from '../components/Cards/ImageCard/ImageCardContainer';
 export const INSERT_IMAGE_COMMAND = createCommand();
 
 function convertImageElement(domNode) {
@@ -50,7 +50,6 @@ export class ImageNode extends DecoratorNode {
         const img = document.createElement('img');
         const figcaption = document.createElement('figcaption');
         img.src = this.getSrc();
-        // img.alt = this.getAlt();
         figcaption.innerHTML = this.getCaption();
         element.appendChild(img);
         element.appendChild(figcaption);
@@ -133,7 +132,7 @@ export class ImageNode extends DecoratorNode {
     decorate() {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()}>
-                <ImageCard nodeKey={this.getKey()} />
+                <ImageCardContainer nodeKey={this.getKey()} />
             </KoenigCardWrapper>
         );
     }
