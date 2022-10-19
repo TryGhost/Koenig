@@ -4,6 +4,7 @@ import {ReactComponent as HeadingOneIcon} from '../../assets/icons/kg-heading-1.
 import {ReactComponent as HeadingTwoIcon} from '../../assets/icons/kg-heading-2.svg';
 import {ReactComponent as QuoteOneIcon} from '../../assets/icons/kg-quote-1.svg';
 import {ReactComponent as QuoteTwoIcon} from '../../assets/icons/kg-quote-2.svg';
+import {ReactComponent as ImageRegular} from '../../assets/icons/kg-img-regular.svg';
 
 export const TOOLBAR_ICONS = {
     bold: BoldIcon,
@@ -11,7 +12,8 @@ export const TOOLBAR_ICONS = {
     headingOne: HeadingOneIcon,
     headingTwo: HeadingTwoIcon,
     quoteOne: QuoteOneIcon,
-    quoteTwo: QuoteTwoIcon
+    quoteTwo: QuoteTwoIcon,
+    imageRegular: ImageRegular
 };
 
 export function ToolbarMenu({children, ...props}) {
