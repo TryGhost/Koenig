@@ -34,7 +34,7 @@ const KoenigEditor = ({
     };
 
     return (
-        <div className="koenig-lexical" ref={containerRef}>
+        <div id="koenig" className="koenig-lexical" ref={containerRef}>
             <RichTextPlugin
                 contentEditable={
                     <div ref={onRef}>

@@ -65,6 +65,7 @@ export function ImageCard({
                 src ?
                     <>
                         <ImageCardToolbar
+                            figureRef={figureRef}
                             filePicker={() => openFilePicker({fileInputRef})} 
                             isSelected={isSelected} 
                             fileInputRef={fileInputRef} 
