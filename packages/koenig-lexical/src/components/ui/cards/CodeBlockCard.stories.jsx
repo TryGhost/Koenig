@@ -1,10 +1,10 @@
 import React from 'react';
-import {ImageCard} from './ImageCard';
+import {CodeBlockCard} from './CodeBlockCard';
 import {CardWrapper} from './../CardWrapper';
 
 const story = {
-    title: 'Cards/Image Card',
-    component: ImageCard,
+    title: 'Cards/Code Card',
+    component: CodeBlockCard,
     subcomponent: {CardWrapper},
     argTypes: {
         isSelected: {control: 'boolean'}
@@ -15,7 +15,7 @@ export default story;
 const Template = args => (
     <div className="w-[740px]">
         <CardWrapper {...args}>
-            <ImageCard {...args} />
+            <CodeBlockCard {...args} />
         </CardWrapper>
     </div>
 );
@@ -23,8 +23,6 @@ const Template = args => (
 export const Default = Template.bind({});
 Default.args = {
     isSelected: false,
-    setAltText: true,
-    caption: '',
-    altText: ''
+    code: ''
 };
 
