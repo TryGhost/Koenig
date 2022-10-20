@@ -10,29 +10,39 @@ function PopulatedImageCard({src, alt}) {
     );
 }
 
+function openFilePicker({fileInputRef}) {
+    fileInputRef.current.click();
+}
+
+export function ImageUploadForm({onFileChange, fileInputRef}) {
+    return (
+        <form onChange={onFileChange}>
+            <input
+                name="image-input"
+                type='file'
+                accept='image/*'
+                ref={fileInputRef}
+                hidden={true}
+            />
+        </form>
+    );
+}
+
 function EmptyImageCard({onFileChange}) {
     const fileInputRef = React.useRef(null);
-
-    const openFilePicker = () => {
-        fileInputRef.current.click();
-    };
 
     return (
         <>
             <MediaPlaceholder
-                filePicker={openFilePicker}
+                filePicker={() => openFilePicker({fileInputRef})}
                 desc="Click to select an image"
                 Icon={ImgPlaceholderIcon}
             />
-            <form onChange={onFileChange}>
-                <input
-                    name="image-input"
-                    type='file'
-                    accept='image/*'
-                    ref={fileInputRef}
-                    hidden={true}
-                />
-            </form>
+            <ImageUploadForm
+                filePicker={() => openFilePicker({fileInputRef})}
+                onFileChange={onFileChange}
+                fileInputRef={fileInputRef}
+            />
         </>
     );
 }
@@ -47,11 +57,20 @@ export function ImageCard({
     setAltText
 }) {
     const figureRef = React.useRef(null);
+    const fileInputRef = React.useRef(null);
 
     return (
         <>
             {
-                src ? <ImageCardToolbar isSelected={isSelected} figureRef={figureRef} /> : <></>
+                src ?
+                    <>
+                        <ImageCardToolbar
+                            filePicker={() => openFilePicker({fileInputRef})} 
+                            isSelected={isSelected} 
+                            fileInputRef={fileInputRef} 
+                            onFileChange={onFileChange} />
+                    </>
+                    : <></>
             }
             <figure ref={figureRef}>
                 {src

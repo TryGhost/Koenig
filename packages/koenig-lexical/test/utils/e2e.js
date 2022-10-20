@@ -100,7 +100,6 @@ export function prettifyHTML(string, options = {}) {
     }
 
     if (options.ignoreImageToolbar) {
-        // remove the image toolbar
         output = output.replace(/<span data-kg-image-toolbar="true"[^>]*>.*<\/span>/g, '');
     }
 
