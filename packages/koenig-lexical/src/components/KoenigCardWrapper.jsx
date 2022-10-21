@@ -7,7 +7,7 @@ import {
     $isDecoratorNode,
     $isNodeSelection,
     $setSelection,
-    BLUR_COMMAND,
+    // BLUR_COMMAND,
     CLICK_COMMAND,
     COMMAND_PRIORITY_EDITOR,
     COMMAND_PRIORITY_LOW,
@@ -56,18 +56,16 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
                 },
                 COMMAND_PRIORITY_LOW
             ),
-            editor.registerCommand(
-                BLUR_COMMAND,
-                (event) => {
-                    // commented out for now as it breaks the card toolbar's behaviour
-
-                    // if (isSelected && !ref.current.contains(event.relatedTarget)) {
-                    //     clearSelected();
-                    // }
-                    return false;
-                },
-                COMMAND_PRIORITY_LOW
-            ),
+            // editor.registerCommand(
+            //     BLUR_COMMAND,
+            //     (event) => {
+            //         if (isSelected && !ref.current.contains(event.relatedTarget)) {
+            //             clearSelected();
+            //         }
+            //         return false;
+            //     },
+            //     COMMAND_PRIORITY_LOW
+            // ),
             editor.registerCommand(
                 KEY_ENTER_COMMAND,
                 (event) => {
@@ -175,7 +173,7 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
     }, [editor, isSelected, setSelected, clearSelected, nodeKey]);
 
     return (
-        <WrapperContext.Provider value={{isSelected, selection, setSelected}}>
+        <WrapperContext.Provider value={{isSelected, selection}}>
             <CardWrapper
                 isSelected={isSelected}
                 cardType={cardType}
