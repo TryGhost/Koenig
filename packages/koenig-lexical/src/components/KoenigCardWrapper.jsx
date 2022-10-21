@@ -173,7 +173,7 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
     }, [editor, isSelected, setSelected, clearSelected, nodeKey]);
 
     return (
-        <WrapperContext.Provider value={{isSelected, selection}}>
+        <WrapperContext.Provider value={{isSelected, selection, setSelected}}>
             <CardWrapper
                 isSelected={isSelected}
                 cardType={cardType}
