@@ -8822,10 +8822,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-linkedom@0.14.17:
-  version "0.14.17"
-  resolved "https://registry.npmjs.org/linkedom/-/linkedom-0.14.17.tgz"
-  integrity sha512-PD6GQKvZ4s6Ai4/WkpyHc8MhiZdCz4hWmMOWJk+MO3/kl1QvPUbo4nQWS9+VHO7lRBk1ucIa9ONS9qzCUcBAmQ==
+linkedom@0.14.18:
+  version "0.14.18"
+  resolved "https://registry.yarnpkg.com/linkedom/-/linkedom-0.14.18.tgz#b857efad61de5c5ed300aa84102611ed29b418ee"
+  integrity sha512-5eV85zCEME1WLPJJ5R+Un8PAQM9RZLt+tKyoZKB0xNHysV3M/0YLI5SP5MvwZrkFC5TE+YRZexxMptB6JS2uow==
   dependencies:
     css-select "^5.1.0"
     cssom "^0.5.0"
