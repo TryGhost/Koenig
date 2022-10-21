@@ -2,44 +2,18 @@ import React from 'react';
 import {ToolbarMenu, ToolbarMenuItem} from './ToolbarMenu';
 import ImageUploadForm from './ImageUploadForm';
 import {createPortal} from 'react-dom';
-import CardContext from '../../context/CardContext';
 
 function ImageCardToolbar({isSelected, fileInputRef, onFileChange, filePicker, figureRef, src}) {
-    const {setSelected} = React.useContext(CardContext);
     const element = document.querySelector('#koenig') || document.body;
     const toolbarRef = React.useRef(null);
-    const [showToolbar, setShowToolbar] = React.useState(false);
     const [rect, setRect] = React.useState({
         top: 0,
         left: 0,
         right: 0
     });
     
-    const handleClickOnToolbar = React.useCallback((e) => {
-        e.stopPropagation();
-        if (isSelected) {
-            setShowToolbar(true);
-            return;
-        }
-        if ((toolbarRef.current && toolbarRef.current.contains(e.target) && !isSelected)) {
-            setSelected(true);
-            setShowToolbar(true);
-            return;
-        } else {
-            setShowToolbar(false);
-        }
-    }, [toolbarRef, setSelected, isSelected]);
-
-    React.useEffect(() => {
-        document.addEventListener('click', handleClickOnToolbar);
-        return () => {
-            document.removeEventListener('click', handleClickOnToolbar);
-        };
-    }, [handleClickOnToolbar]);
-    
     React.useEffect(() => {
         if (figureRef && isSelected) {
-            setShowToolbar(true);
             const figureRect = figureRef.current.getBoundingClientRect();
             const top = figureRect.top - element.getBoundingClientRect().top;
             setRect({
@@ -56,11 +30,10 @@ function ImageCardToolbar({isSelected, fileInputRef, onFileChange, filePicker, f
         left: (rect?.right - rect?.left) / 2,
         transform: 'translate(-50%, 0)',
         top: rect?.top - 44,
-        zIndex: 1000,
-        opacity: showToolbar ? 1 : 0 || isSelected ? 1 : 0
+        zIndex: 1000
     };
 
-    if (src) {
+    if (src && isSelected) {
         return createPortal(
             <div ref={toolbarRef} data-kg-card-toolbar="image" style={toolbarPosition}>
                 <ImageUploadForm 

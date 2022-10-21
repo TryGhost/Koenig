@@ -59,9 +59,11 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
             editor.registerCommand(
                 BLUR_COMMAND,
                 (event) => {
-                    if (isSelected && !ref.current.contains(event.relatedTarget)) {
-                        clearSelected();
-                    }
+                    // commented out for now as it breaks the card toolbar's behaviour
+
+                    // if (isSelected && !ref.current.contains(event.relatedTarget)) {
+                    //     clearSelected();
+                    // }
                     return false;
                 },
                 COMMAND_PRIORITY_LOW
