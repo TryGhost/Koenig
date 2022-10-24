@@ -47,7 +47,8 @@ export async function assertHTML(
         ignoreInlineStyles = true,
         ignoreInnerSVG = true,
         getBase64FileFormat = true,
-        ignoreCardContents = false
+        ignoreCardContents = false,
+        ignoreOuterHTML = false
     } = {}
 ) {
     const actualHtml = await page.$eval('div[contenteditable="true"]', e => e.innerHTML);
@@ -56,14 +57,16 @@ export async function assertHTML(
         ignoreInlineStyles,
         ignoreInnerSVG,
         getBase64FileFormat,
-        ignoreCardContents
+        ignoreCardContents,
+        ignoreOuterHTML
     });
     const expected = prettifyHTML(expectedHtml.replace(/\n/gm, ''), {
         ignoreClasses,
         ignoreInlineStyles,
         ignoreInnerSVG,
         getBase64FileFormat,
-        ignoreCardContents
+        ignoreCardContents,
+        ignoreOuterHTML
     });
     expect(actual).toEqual(expected);
 }
@@ -94,6 +97,11 @@ export function prettifyHTML(string, options = {}) {
             }
         });
         output = document.body.innerHTML;
+    }
+
+    if (options.ignoreOuterHTML) {
+        // ignore outer paragraph tags
+        output = output.replace(/<p>(.*)<\/p>/g, '$1');
     }
 
     return prettier

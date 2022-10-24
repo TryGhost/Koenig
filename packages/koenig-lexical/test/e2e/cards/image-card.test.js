@@ -18,13 +18,15 @@ describe('Image card', async () => {
         await initialize({page});
     });
 
-    test('renders image card node', async function () {
+    test('renders empty image card node', async function () {
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-selected="false" data-kg-card="image">
+                <div data-kg-card-selected="true" data-kg-card="image">
                     <figure>
                         <div>
                             <div>
@@ -35,9 +37,14 @@ describe('Image card', async () => {
                             </div>
                         </div>
                         <form><input name="image-input" type="file" accept="image/*" hidden="" /></form>
+                        <figcaption>
+                            <input placeholder="Type caption for image (optional)" value="" />
+                            <button name="alt-toggle-button">Alt</button>
+                        </figcaption>
                     </figure>
                 </div>
             </div>
+            <p><br></p>
         `);
     });
 
@@ -45,7 +52,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -65,6 +74,7 @@ describe('Image card', async () => {
                     </figure>
                 </div>
             </div>
+            <p><br></p>
         `);
     });
 
@@ -72,7 +82,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -94,6 +106,7 @@ describe('Image card', async () => {
                     </figure>
                 </div>
             </div>
+            <p><br></p>
         `);
     });
 
@@ -101,7 +114,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -124,6 +139,7 @@ describe('Image card', async () => {
                     </figure>
                 </div>
             </div>
+            <p><br></p>
         `);
     });
 
@@ -131,7 +147,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -146,7 +164,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -161,7 +181,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -176,7 +198,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -191,7 +215,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -206,7 +232,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -221,7 +249,9 @@ describe('Image card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -237,7 +267,9 @@ describe('Image card', async () => {
         const filePath2 = path.relative(process.cwd(), __dirname + '/assets/large.jpeg');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
@@ -264,14 +296,38 @@ describe('Image card', async () => {
                     </figure>
                 </div>
             </div>
+            <p><br></p>
         `);
+    });
+
+    test('can transform image markdown to image card', async function () {
+        await focusEditor(page);
+        await page.hover('.koenig-lexical');
+        await page.keyboard.type('![caption text](https://ghost.org/image.png)');
+
+        await assertHTML(page, html`
+            <div data-lexical-decorator="true" contenteditable="false">
+                <div data-kg-card-selected="false" data-kg-card="image">
+                    <figure>
+                        <img src="https://ghost.org/image.png" alt="" />
+                        <figcaption>
+                            <input placeholder="Type caption for image (optional)" value="caption text" />
+                            <button name="alt-toggle-button">Alt</button>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <br/>
+        `, {ignoreOuterHTML: true});
     });
 
     test('toolbar does not disappear on click', async function () {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
         await focusEditor(page);
-        await page.keyboard.type('image! ');
+        await page.hover('.koenig-lexical');
+        await page.click('[data-kg-plus-button="true"]');
+        await page.click('[data-kg-card-menu-item="Image"]');
 
         const [fileChooser] = await Promise.all([
             page.waitForFileChooser(),
