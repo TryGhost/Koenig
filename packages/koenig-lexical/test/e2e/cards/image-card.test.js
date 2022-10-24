@@ -318,7 +318,7 @@ describe('Image card', async () => {
                 </div>
             </div>
             <br/>
-        `, {ignoreOuterParagraph: true}); // Why this is needed for now: 
+        `, {ignoreOuterParagraph: true}); // Why this is needed for now: https://github.com/TryGhost/Koenig/pull/384
     });
 
     test('toolbar does not disappear on click', async function () {
