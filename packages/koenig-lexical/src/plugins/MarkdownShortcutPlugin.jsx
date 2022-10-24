@@ -70,14 +70,14 @@ export const IMAGE = {
             return `![${alt}](${src})`;
         }
     },
-    regExp: /^image! $/,
-    replace: (parentNode, match, text) => {
-        const alt = '';
-        const src = '';
-        const imageNode = $createImageNode({altText: alt, src});
-        parentNode.replace(imageNode);
+    regExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))$/,
+    replace: (textNode, match) => {
+        const [, caption, src] = match;
+        const imageNode = $createImageNode({caption, src});
+        textNode.replace(imageNode);
     },
-    type: 'element'
+    trigger: ')',
+    type: 'text-match'
 };
 
 export const ELEMENT_TRANSFORMERS = [
