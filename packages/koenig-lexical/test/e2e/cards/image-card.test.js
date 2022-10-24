@@ -318,7 +318,7 @@ describe('Image card', async () => {
                 </div>
             </div>
             <br/>
-        `, {ignoreOuterHTML: true});
+        `, {ignoreOuterParagraph: true}); // Why this is needed for now: 
     });
 
     test('toolbar does not disappear on click', async function () {
