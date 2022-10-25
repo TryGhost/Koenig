@@ -37,7 +37,6 @@ export const LINK = {
             return linkContent;
         }
     },
-    // regex for link markdown syntax [text](url) and make sure it ignores don't fires if it starts with ! (for images)
     
     importRegExp: /(?:[^!]|^)(?:\[([^[]+)\])(?:\(([^(]+)\))/,
     regExp: /(?:[^!]|^)(?:\[([^[]+)\])(?:\(([^(]+)\))/,
