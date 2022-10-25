@@ -1,10 +1,10 @@
 import React from 'react';
-import {CodeBlockCard} from './CodeBlockCard';
+import {FileCard} from './FileCard';
 import {CardWrapper} from './../CardWrapper';
 
 const story = {
-    title: 'Cards/Code Card',
-    component: CodeBlockCard,
+    title: 'Cards/File Card',
+    component: FileCard,
     subcomponent: {CardWrapper},
     argTypes: {
         isSelected: {control: 'boolean'}
@@ -15,7 +15,7 @@ export default story;
 const Template = args => (
     <div className="w-[740px]">
         <CardWrapper {...args}>
-            <CodeBlockCard {...args} />
+            <FileCard {...args} />
         </CardWrapper>
     </div>
 );
@@ -23,11 +23,18 @@ const Template = args => (
 export const Empty = Template.bind({});
 Empty.args = {
     isSelected: true,
-    code: ''
+    isPopulated: false
 };
 
 export const Populated = Template.bind({});
 Populated.args = {
     isSelected: true,
-    code: '<script></script>'
+    isPopulated: true,
+    fileTitle: 'Example file',
+    fileTitlePlaceholder: 'File title',
+    fileDesc: '',
+    fileDescPlaceholder: 'Add optional file description',
+    fileName: 'Example-file.pdf',
+    fileSize: '165 KB'
 };
+

@@ -4,12 +4,6 @@ import {CardCaptionEditor} from '../CardCaptionEditor';
 import {MediaPlaceholder} from '../MediaPlaceholder';
 import {ReactComponent as GalleryPlaceholderIcon} from '../../../assets/icons/kg-gallery-placeholder.svg';
 
-function PopulatedGalleryCard({src}) {
-    return (
-        <img src={src} />
-    );
-}
-
 function EmptyGalleryCard({onFileChange}) {
     const fileInputRef = React.useRef(null);
 
@@ -23,6 +17,7 @@ function EmptyGalleryCard({onFileChange}) {
                 filePicker={openFilePicker}
                 desc="Click to select up to 9 images"
                 Icon={GalleryPlaceholderIcon}
+                size='large'
             />
             <form onChange={onFileChange}>
                 <input
@@ -39,17 +34,13 @@ function EmptyGalleryCard({onFileChange}) {
 
 export function GalleryCard({
     isSelected,
-    src,
     onFileChange,
     caption,
     setCaption
 }) {
     return (
         <figure>
-            {src
-                ? <PopulatedGalleryCard src={src} />
-                : <EmptyGalleryCard onFileChange={onFileChange} />
-            }
+            <EmptyGalleryCard onFileChange={onFileChange} />
             <CardCaptionEditor
                 caption={caption || ''}
                 setCaption={setCaption}

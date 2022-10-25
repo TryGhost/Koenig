@@ -32,8 +32,8 @@ Empty.args = {
     bookmarkThumbnail: true
 };
 
-export const Value = Template.bind({});
-Value.args = {
+export const Populated = Template.bind({});
+Populated.args = {
     isSelected: true,
     urlValue: 'https://ghost.org/',
     urlPlaceholder: 'Paste URL to add bookmark content...',

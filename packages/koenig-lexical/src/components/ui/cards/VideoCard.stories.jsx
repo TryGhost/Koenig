@@ -1,10 +1,10 @@
 import React from 'react';
-import {ImageCard} from './ImageCard';
+import {VideoCard} from './VideoCard';
 import {CardWrapper} from './../CardWrapper';
 
 const story = {
-    title: 'Cards/Image Card',
-    component: ImageCard,
+    title: 'Cards/Video Card',
+    component: VideoCard,
     subcomponent: {CardWrapper},
     argTypes: {
         isSelected: {control: 'boolean'}
@@ -15,7 +15,7 @@ export default story;
 const Template = args => (
     <div className="w-[740px]">
         <CardWrapper {...args}>
-            <ImageCard {...args} />
+            <VideoCard {...args} />
         </CardWrapper>
     </div>
 );
@@ -23,8 +23,6 @@ const Template = args => (
 export const Empty = Template.bind({});
 Empty.args = {
     isSelected: true,
-    setAltText: true,
-    caption: '',
-    altText: ''
+    caption: ''
 };
 
