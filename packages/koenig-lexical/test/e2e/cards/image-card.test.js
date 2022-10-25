@@ -303,21 +303,22 @@ describe('Image card', async () => {
     test('can transform image markdown to image card', async function () {
         await focusEditor(page);
         await page.hover('.koenig-lexical');
-        await page.keyboard.type('![alt](https://ghost.org/image.png)');
+        await page.keyboard.type('![alt](https://ghost.org/image.png) ');
+        await page.click('[data-kg-card="image"]');
+        await page.click('[data-kg-card="image"] button[name="alt-toggle-button"]');
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-selected="false" data-kg-card="image">
+                <div data-kg-card-selected="true" data-kg-card="image">
                     <figure>
                         <img src="https://ghost.org/image.png" alt="alt" />
                         <figcaption>
-                            <input placeholder="Type caption for image (optional)" value="alt" />
+                            <input placeholder="Type alt text for image (optional)" value="alt" />
                             <button name="alt-toggle-button">Alt</button>
                         </figcaption>
                     </figure>
                 </div>
             </div>
-            <br/>
         `, {ignoreOuterParagraph: true}); // Why this is needed for now: https://github.com/TryGhost/Koenig/pull/384
     });
 

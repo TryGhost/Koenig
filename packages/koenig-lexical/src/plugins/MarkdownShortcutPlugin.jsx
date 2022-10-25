@@ -37,8 +37,10 @@ export const LINK = {
             return linkContent;
         }
     },
-    importRegExp: /(?:\[([^[]+)\])(?:\(([^(]+)\))/,
-    regExp: /(?:\[([^[]+)\])(?:\(([^(]+)\))$/,
+    // regex for link markdown syntax [text](url) and make sure it ignores don't fires if it starts with ! (for images)
+    
+    importRegExp: /(?:[^!]|^)(?:\[([^[]+)\])(?:\(([^(]+)\))/,
+    regExp: /(?:[^!]|^)(?:\[([^[]+)\])(?:\(([^(]+)\))/,
     replace: (textNode, match) => {
         const [, linkText, linkUrl] = match;
         const linkNode = $createLinkNode(linkUrl);
@@ -107,8 +109,8 @@ export const IMAGE = {
             return `![${alt}](${src})`;
         }
     },
-    importRexExp: /\[(.*?)\]\((.*?)\)/,
-    regExp: /!\[(.*?)\]\((.*?)\)$/,
+    importRexExp: /(?:!\[(.*?)\]\((.*?)\))/,
+    regExp: /(?:!\[(.*?)\]\((.*?)\)) /,
     replace: (textNode, match, text) => {
         const [, altText, src] = text;
         const imageNode = $createImageNode({altText, src});
