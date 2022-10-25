@@ -303,15 +303,15 @@ describe('Image card', async () => {
     test('can transform image markdown to image card', async function () {
         await focusEditor(page);
         await page.hover('.koenig-lexical');
-        await page.keyboard.type('![caption text](https://ghost.org/image.png)');
+        await page.keyboard.type('![alt](https://ghost.org/image.png)');
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="false" data-kg-card="image">
                     <figure>
-                        <img src="https://ghost.org/image.png" alt="" />
+                        <img src="https://ghost.org/image.png" alt="alt" />
                         <figcaption>
-                            <input placeholder="Type caption for image (optional)" value="caption text" />
+                            <input placeholder="Type caption for image (optional)" value="alt" />
                             <button name="alt-toggle-button">Alt</button>
                         </figcaption>
                     </figure>

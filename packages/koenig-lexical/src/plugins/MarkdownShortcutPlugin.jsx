@@ -3,13 +3,53 @@ import {
     ORDERED_LIST,
     QUOTE,
     UNORDERED_LIST,
-    TEXT_FORMAT_TRANSFORMERS,
-    TEXT_MATCH_TRANSFORMERS
+    BOLD_ITALIC_STAR,
+    BOLD_ITALIC_UNDERSCORE,
+    BOLD_STAR,
+    BOLD_UNDERSCORE,
+    INLINE_CODE,
+    ITALIC_STAR,
+    ITALIC_UNDERSCORE,
+    STRIKETHROUGH
+    // LINK
 } from '@lexical/markdown';
+import {$createLinkNode, $isLinkNode, LinkNode} from '@lexical/link';
+import {$isTextNode, $createTextNode} from 'lexical';
 import {MarkdownShortcutPlugin as LexicalMarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import {$createHorizontalRuleNode, $isHorizontalRuleNode, HorizontalRuleNode} from '../nodes/HorizontalRuleNode';
 import {$isCodeBlockNode, $createCodeBlockNode, CodeBlockNode} from '../nodes/CodeBlockNode';
 import {$isImageNode, $createImageNode, ImageNode} from '../nodes/ImageNode';
+
+// from https://github.com/facebook/lexical/blob/505641fa11ce2955ae94eeb8dcb4a8be14db23b0/packages/lexical-markdown/src/MarkdownTransformers.ts#L321
+export const LINK = {
+    dependencies: [LinkNode],
+    export: (node, exportChildren, exportFormat) => {
+        if (!$isLinkNode(node)) {
+            return null;
+        }
+        const linkContent = `[${node.getTextContent()}](${node.getURL()})`;
+        const firstChild = node.getFirstChild();
+        // Add text styles only if link has single text node inside. If it's more
+        // then one we ignore it as markdown does not support nested styles for links
+        if (node.getChildrenSize() === 1 && $isTextNode(firstChild)) {
+            return exportFormat(firstChild, linkContent);
+        } else {
+            return linkContent;
+        }
+    },
+    importRegExp: /(?:\[([^[]+)\])(?:\(([^(]+)\))/,
+    regExp: /(?:\[([^[]+)\])(?:\(([^(]+)\))$/,
+    replace: (textNode, match) => {
+        const [, linkText, linkUrl] = match;
+        const linkNode = $createLinkNode(linkUrl);
+        const linkTextNode = $createTextNode(linkText);
+        linkTextNode.setFormat(textNode.getFormat());
+        linkNode.append(linkTextNode);
+        textNode.replace(linkNode);
+    },
+    trigger: ')',
+    type: 'text-match'
+};
 
 export const HR = {
     dependencies: [HorizontalRuleNode],
@@ -57,9 +97,6 @@ export const CODE_BLOCK = {
     type: 'element'
 };
 
-// render imageNode when writing image!
-// regex that detects exactly the string 'image!'
-
 export const IMAGE = {
     dependencies: [ImageNode],
     export: (node) => {
@@ -70,30 +107,37 @@ export const IMAGE = {
             return `![${alt}](${src})`;
         }
     },
-    regExp: /!(?:\[([^[]*)\])(?:\(([^(]+)\))$/,
-    replace: (textNode, match) => {
-        const [, caption, src] = match;
-        const imageNode = $createImageNode({caption, src});
+    importRexExp: /\[(.*?)\]\((.*?)\)/,
+    regExp: /!\[(.*?)\]\((.*?)\)$/,
+    replace: (textNode, match, text) => {
+        const [, altText, src] = text;
+        const imageNode = $createImageNode({altText, src});
         textNode.replace(imageNode);
     },
-    trigger: ')',
-    type: 'text-match'
+    type: 'element'
 };
 
 export const ELEMENT_TRANSFORMERS = [
-    HEADING,
-    QUOTE,
-    UNORDERED_LIST,
-    ORDERED_LIST,
     HR,
     CODE_BLOCK,
-    IMAGE
+    IMAGE,
+    LINK
 ];
 
 export const DEFAULT_TRANSFORMERS = [
     ...ELEMENT_TRANSFORMERS,
-    ...TEXT_FORMAT_TRANSFORMERS,
-    ...TEXT_MATCH_TRANSFORMERS
+    HEADING,
+    QUOTE,
+    UNORDERED_LIST,
+    ORDERED_LIST,
+    BOLD_ITALIC_STAR,
+    BOLD_ITALIC_UNDERSCORE,
+    BOLD_STAR,
+    BOLD_UNDERSCORE,
+    INLINE_CODE,
+    ITALIC_STAR,
+    ITALIC_UNDERSCORE,
+    STRIKETHROUGH
 ];
 
 export default function MarkdownShortcutPlugin({transformers = DEFAULT_TRANSFORMERS} = {}) {
