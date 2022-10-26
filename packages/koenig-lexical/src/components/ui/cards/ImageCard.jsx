@@ -98,5 +98,8 @@ ImageCard.propTypes = {
     isSelected: PropTypes.bool,
     setAltText: PropTypes.func,
     caption: PropTypes.string,
-    altText: PropTypes.string
+    altText: PropTypes.string,
+    setCaption: PropTypes.func,
+    src: PropTypes.string,
+    hasDragOver: PropTypes.bool
 };
