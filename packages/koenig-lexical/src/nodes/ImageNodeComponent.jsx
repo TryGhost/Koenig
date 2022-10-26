@@ -13,6 +13,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
     const [editor] = useLexicalComposerContext();
     const {editorContainerRef, imageUploader} = React.useContext(KoenigComposerContext);
     const {cardContainerRef, isSelected} = React.useContext(CardContext);
+    const [dragOver, setDragOver] = React.useState(false);
     const fileInputRef = React.useRef();
     const toolbarFileInputRef = React.useRef();
 
@@ -65,6 +66,32 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         });
     });
 
+    const handleDrag = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === 'dragenter' || e.type === 'dragover') {
+            setDragOver(true);
+        } else if (e.type === 'dragleave') {
+            setDragOver(false);
+        }
+        return;
+    };
+
+    const handleDrop = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const files = await imageUploader.imageUploader(e.dataTransfer.files);
+            if (files) {
+                editor.update(() => {
+                    const node = $getNodeByKey(nodeKey);
+                    node.setSrc(files.src);
+                });
+                setDragOver(false);
+            }
+        }
+    };
+
     return (
         <>
             <ImageCard
@@ -76,6 +103,9 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
                 setAltText={setAltText}
                 caption={caption}
                 setCaption={setCaption}
+                handleDrag={handleDrag}
+                handleDrop={handleDrop}
+                hasDragOver={dragOver}
             />
             <ActionToolbar
                 isVisible={src && isSelected}

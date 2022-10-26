@@ -12,7 +12,7 @@ function PopulatedImageCard({src, alt}) {
     );
 }
 
-function EmptyImageCard({onFileChange, setFileInputRef}) {
+function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, hasDragOver}) {
     const fileInputRef = React.useRef(null);
 
     const onFileInputRef = (element) => {
@@ -23,9 +23,12 @@ function EmptyImageCard({onFileChange, setFileInputRef}) {
     return (
         <>
             <MediaPlaceholder
+                handleDrag={handleDrag}
+                handleDrop={handleDrop}
                 filePicker={() => openFileSelection({fileInputRef})}
                 desc="Click to select an image"
                 Icon={ImgPlaceholderIcon}
+                hasDragOver={hasDragOver}
             />
             <ImageUploadForm
                 filePicker={() => openFileSelection({fileInputRef})}
@@ -45,7 +48,10 @@ export function ImageCard({
     altText,
     setAltText,
     setFigureRef,
-    fileInputRef
+    fileInputRef,
+    handleDrag,
+    handleDrop,
+    hasDragOver
 }) {
     const figureRef = React.useRef(null);
 
@@ -66,7 +72,13 @@ export function ImageCard({
             <figure ref={figureRef}>
                 {src
                     ? <PopulatedImageCard src={src} alt={altText} />
-                    : <EmptyImageCard onFileChange={onFileChange} setFileInputRef={setFileInputRef} />
+                    : <EmptyImageCard
+                        handleDrag={handleDrag} 
+                        onFileChange={onFileChange} 
+                        setFileInputRef={setFileInputRef}
+                        handleDrop={handleDrop}
+                        hasDragOver={hasDragOver}
+                    />
                 }
                 <CardCaptionEditor
                     altText={altText || ''}

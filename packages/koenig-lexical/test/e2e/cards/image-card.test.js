@@ -68,6 +68,8 @@ describe('Image card', async () => {
         `);
     });
 
+    test.todo('can drag and drop an image');
+
     test('can toggle to alt text', async function () {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
 
