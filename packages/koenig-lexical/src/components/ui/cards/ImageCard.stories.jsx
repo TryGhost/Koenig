@@ -26,6 +26,6 @@ Empty.args = {
     setAltText: true,
     caption: '',
     altText: '',
-    hasDragOver: false
+    isDraggedOver: false
 };
 

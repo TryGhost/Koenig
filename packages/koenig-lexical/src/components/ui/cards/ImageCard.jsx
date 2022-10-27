@@ -12,7 +12,7 @@ function PopulatedImageCard({src, alt}) {
     );
 }
 
-function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, hasDragOver}) {
+function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, isDraggedOver}) {
     const fileInputRef = React.useRef(null);
 
     const onFileInputRef = (element) => {
@@ -28,7 +28,7 @@ function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, 
                 filePicker={() => openFileSelection({fileInputRef})}
                 desc="Click to select an image"
                 Icon={ImgPlaceholderIcon}
-                hasDragOver={hasDragOver}
+                isDraggedOver={isDraggedOver}
             />
             <ImageUploadForm
                 filePicker={() => openFileSelection({fileInputRef})}
@@ -51,7 +51,7 @@ export function ImageCard({
     fileInputRef,
     handleDrag,
     handleDrop,
-    hasDragOver
+    isDraggedOver
 }) {
     const figureRef = React.useRef(null);
 
@@ -77,7 +77,7 @@ export function ImageCard({
                         onFileChange={onFileChange} 
                         setFileInputRef={setFileInputRef}
                         handleDrop={handleDrop}
-                        hasDragOver={hasDragOver}
+                        isDraggedOver={isDraggedOver}
                     />
                 }
                 <CardCaptionEditor
@@ -101,5 +101,5 @@ ImageCard.propTypes = {
     altText: PropTypes.string,
     setCaption: PropTypes.func,
     src: PropTypes.string,
-    hasDragOver: PropTypes.bool
+    isDraggedOver: PropTypes.bool
 };

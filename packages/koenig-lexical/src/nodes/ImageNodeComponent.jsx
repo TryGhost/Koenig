@@ -105,7 +105,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
                 setCaption={setCaption}
                 handleDrag={handleDrag}
                 handleDrop={handleDrop}
-                hasDragOver={dragOver}
+                isDraggedOver={dragOver}
             />
             <ActionToolbar
                 isVisible={src && isSelected}

@@ -4,7 +4,7 @@ const CardText = ({text}) => {
     );
 };
 
-export function MediaPlaceholder({desc, Icon, filePicker, size, handleDrag, handleDrop, hasDragOver, ...props}) {
+export function MediaPlaceholder({desc, Icon, filePicker, size, handleDrag, handleDrop, isDraggedOver, ...props}) {
     return (
         <div
             onDragEnter={handleDrag} 
@@ -14,7 +14,7 @@ export function MediaPlaceholder({desc, Icon, filePicker, size, handleDrag, hand
             className="border border-transparent" {...props}>
             <div className={`h-100 relative flex items-center justify-center border border-grey/20 bg-grey-50 ${size === 'xsmall' ? 'before:pb-[12.5%]' : 'before:pb-[62.5%]'}`}>
                 {
-                    hasDragOver ?
+                    isDraggedOver ?
                         <CardText text="Drop it like it's hot 🔥" />
                         :
                         <button onClick={filePicker} name="placeholder-button" className={`group flex cursor-pointer items-center justify-center ${size === 'xsmall' ? 'p-4' : 'p-20 flex-col'}`}>
