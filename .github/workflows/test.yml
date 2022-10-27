@@ -31,7 +31,7 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
           DEBCONF_NONINTERACTIVE_SEEN: "true"
-        run: echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+        run: echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
 
       - name: "Check if repository is a Lerna monorepo"
         id: check_files
