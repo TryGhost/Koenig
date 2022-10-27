@@ -8,6 +8,13 @@ on:
 jobs:
   test:
     name: Testing
-    uses: tryghost/actions/.github/workflows/test.yml@main
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    steps:
+      - name: Install required fonts for consistent tests
+        env:
+          DEBIAN_FRONTEND: noninteractive
+          DEBCONF_NONINTERACTIVE_SEEN: "true"
+        run: echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+      - uses: tryghost/actions/.github/workflows/test.yml@main
+
