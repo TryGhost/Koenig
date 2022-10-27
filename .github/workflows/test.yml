@@ -7,14 +7,52 @@ on:
       - 'renovate/*'
 jobs:
   test:
-    name: Testing
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    strategy:
+      matrix:
+        node: [ 14, 16 ]
+    env:
+      FORCE_COLOR: 1
+    name: Node ${{ matrix.node }}
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v2
+        env:
+          FORCE_COLOR: 0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+
       - name: Install required fonts for consistent tests
         env:
           DEBIAN_FRONTEND: noninteractive
           DEBCONF_NONINTERACTIVE_SEEN: "true"
         run: echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
-      - uses: tryghost/actions/.github/workflows/test.yml@main
+
+      - name: "Check if repository is a Lerna monorepo"
+        id: check_files
+        uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
+        with:
+          files: "lerna.json"
+
+      - run: yarn global add lerna@^4
+        if: steps.check_files.outputs.files_exists == 'true'
+
+      - run: yarn
+      - run: yarn test
+
+      - uses: codecov/codecov-action@v2
+
+      - uses: daniellockyer/action-slack-build@master
+        if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
