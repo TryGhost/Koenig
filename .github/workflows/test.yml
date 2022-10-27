@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     name: Testing
+    runs-on: ubuntu-latest
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
