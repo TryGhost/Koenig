@@ -24,8 +24,6 @@ jobs:
 
       - name: Install dependencies
         uses: borales/actions-yarn@v3.0.0
-        with:
-          node-version: 16
 
       - name: Copy CNAME to build
         run: mkdir ./packages/koenig-lexical/public && cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
