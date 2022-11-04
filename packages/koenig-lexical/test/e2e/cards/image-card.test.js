@@ -25,7 +25,7 @@ describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="false" data-kg-card="image">
-                    <figure>
+                    <figure data-card-width="regular">
                         <div>
                             <div>
                                 <button name="placeholder-button">
@@ -56,7 +56,7 @@ describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure>
+                    <figure data-card-width="regular">
                         <img src="data:image/png;base64,BASE64DATA" alt="" />
                         <figcaption>
                             <input placeholder="Type caption for image (optional)" value="" />
@@ -86,7 +86,7 @@ describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure>
+                    <figure data-card-width="regular">
                         <img src="data:image/png;base64,BASE64DATA" alt="" />
                         <figcaption>
                             <input placeholder="Type alt text for image (optional)" value=""/>
@@ -117,7 +117,7 @@ describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure>
+                    <figure data-card-width="regular">
                         <img src="data:image/png;base64,BASE64DATA" alt="" />
                         <figcaption>
                             <input placeholder="Type caption for image (optional)" value="This is a caption" />
@@ -258,7 +258,7 @@ describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure>
+                    <figure data-card-width="regular">
                         <img src="data:image/jpeg;base64,BASE64DATA" alt="" />
                         <figcaption>
                             <input placeholder="Type caption for image (optional)" value="" />
@@ -270,6 +270,34 @@ describe('Image card', async () => {
             </div>
         `, {ignoreCardToolbarContents: true});
     });
+
+    // test('can toggle between wide, full and regular image from image toolbar button', async function () {
+    //     const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+
+    //     await focusEditor(page);
+    //     await page.keyboard.type('image! ');
+    //     const [fileChooser] = await Promise.all([
+    //         page.waitForFileChooser(),
+    //         await page.click('button[name="placeholder-button"]')
+    //     ]);
+    //     await fileChooser.accept([filePath]);
+    //     await page.click('figure');
+    //     await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular"]');
+    //     await assertHTML(page, html`
+    //         <div data-lexical-decorator="true" contenteditable="false">
+    //             <div data-kg-card-selected="true" data-kg-card="image">
+    //                 <figure data-card-width="regular">
+    //                     <img src="data:image/png;base64,BASE64DATA" alt="" />
+    //                     <figcaption>
+    //                         <input placeholder="Type caption for image (optional)" value="" />
+    //                         <button name="alt-toggle-button">Alt</button>
+    //                     </figcaption>
+    //                 </figure>
+    //                 <div data-kg-card-toolbar="image"></div>
+    //             </div>
+    //         </div>
+    //     `, {ignoreCardToolbarContents: true});
+    // });
 
     test('toolbar does not disappear on click', async function () {
         const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
