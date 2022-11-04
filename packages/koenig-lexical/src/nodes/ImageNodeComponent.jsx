@@ -13,7 +13,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
     const [editor] = useLexicalComposerContext();
     const [dragOver, setDragOver] = React.useState(false);
     const {imageUploader} = React.useContext(KoenigComposerContext);
-    const {isSelected} = React.useContext(CardContext);
+    const {isSelected, cardWidth, setCardWidth} = React.useContext(CardContext);
     const fileInputRef = React.useRef();
     const toolbarFileInputRef = React.useRef();
 
@@ -92,6 +92,14 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         }
     };
 
+    const handleImageResize = (newWidth) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setCardWidth(newWidth);
+            setCardWidth(newWidth);
+        });
+    };
+
     return (
         <>
             <ImageCard
@@ -106,6 +114,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
                 handleDrag={handleDrag}
                 handleDrop={handleDrop}
                 isDraggedOver={dragOver}
+                cardWidth={cardWidth}
             />
             <ActionToolbar
                 isVisible={src && isSelected}
@@ -116,9 +125,9 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
                     fileInputRef={toolbarFileInputRef}
                 />
                 <ToolbarMenu>
-                    <ToolbarMenuItem label="Regular" icon="imageRegular" isActive={true} />
-                    <ToolbarMenuItem label="Wide" icon="imageWide" isActive={false} />
-                    <ToolbarMenuItem label="Full" icon="imageFull" isActive={false} />
+                    <ToolbarMenuItem label="Regular" icon="imageRegular" isActive={cardWidth === 'regular' ? true : false} onClick={() => handleImageResize('regular')} />
+                    <ToolbarMenuItem label="Wide" icon="imageWide" isActive={cardWidth === 'wide' ? true : false} onClick={() => handleImageResize('wide')}/>
+                    <ToolbarMenuItem label="Full" icon="imageFull" isActive={cardWidth === 'full' ? true : false} onClick={() => handleImageResize('full')} />
                     <ToolbarMenuSeparator />
                     <ToolbarMenuItem label="Link" icon="link" isActive={false} />
                     <ToolbarMenuItem label="Replace" icon="imageReplace" isActive={false} onClick={() => openFileSelection({fileInputRef: toolbarFileInputRef})} />
