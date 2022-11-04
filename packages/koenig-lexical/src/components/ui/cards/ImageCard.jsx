@@ -51,8 +51,7 @@ export function ImageCard({
     fileInputRef,
     handleDrag,
     handleDrop,
-    isDraggedOver,
-    cardWidth
+    isDraggedOver
 }) {
     const figureRef = React.useRef(null);
 
@@ -70,7 +69,7 @@ export function ImageCard({
 
     return (
         <>
-            <figure data-card-width={cardWidth} ref={figureRef}>
+            <figure ref={figureRef}>
                 {src
                     ? <PopulatedImageCard src={src} alt={altText} />
                     : <EmptyImageCard

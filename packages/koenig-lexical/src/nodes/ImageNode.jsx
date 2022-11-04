@@ -21,9 +21,8 @@ export class ImageNode extends DecoratorNode {
     __caption;
     __altText;
     // TODO:
-    __width;
-    __height;
-    __cardWidth;
+    // __width;
+    // __height;
 
     // TODO: does this belong on the node? If we're storing progress here because
     // the node might be re-created whilst uploading then wouldn't we need file
@@ -91,12 +90,11 @@ export class ImageNode extends DecoratorNode {
         };
     }
 
-    constructor({src, caption, altText, cardWidth, uploadProgress, triggerFileDialog} = {}, key) {
+    constructor({src, caption, altText, uploadProgress, triggerFileDialog} = {}, key) {
         super(key);
         this.__caption = caption || '';
         this.__altText = altText || '';
         this.__src = src || '';
-        this.__cardWidth = cardWidth || 'regular';
         this.__uploadProgress = uploadProgress;
         this.__triggerFileDialog = triggerFileDialog || false;
     }
@@ -109,8 +107,7 @@ export class ImageNode extends DecoratorNode {
             altText: this.getAltText(),
             caption: this.getCaption(),
             src: isBlob ? '<base64String>' : this.getSrc(),
-            type: 'image',
-            cardWidth: this.getCardWidth()
+            type: 'image'
         };
         return dataset;
     }
@@ -163,15 +160,6 @@ export class ImageNode extends DecoratorNode {
     setTriggerFileDialog(shouldTrigger) {
         const writable = this.getWritable();
         return writable.__triggerFileDialog = shouldTrigger;
-    }
-
-    getCardWidth() {
-        return this.__cardWidth;
-    }
-
-    setCardWidth(cardWidth) {
-        const writable = this.getWritable();
-        return writable.__cardWidth = cardWidth;
     }
 
     decorate() {
