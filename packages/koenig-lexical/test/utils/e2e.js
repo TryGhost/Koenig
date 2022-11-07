@@ -48,8 +48,7 @@ export async function assertHTML(
         ignoreInnerSVG = true,
         getBase64FileFormat = true,
         ignoreCardContents = false,
-        ignoreCardToolbarContents = false,
-        ignoreDataCardWidth = true
+        ignoreCardToolbarContents = false
     } = {}
 ) {
     const actualHtml = await page.$eval('div[contenteditable="true"]', e => e.innerHTML);
@@ -59,8 +58,7 @@ export async function assertHTML(
         ignoreInnerSVG,
         getBase64FileFormat,
         ignoreCardContents,
-        ignoreCardToolbarContents,
-        ignoreDataCardWidth
+        ignoreCardToolbarContents
     });
     const expected = prettifyHTML(expectedHtml.replace(/\n/gm, ''), {
         ignoreClasses,
@@ -68,8 +66,7 @@ export async function assertHTML(
         ignoreInnerSVG,
         getBase64FileFormat,
         ignoreCardContents,
-        ignoreCardToolbarContents,
-        ignoreDataCardWidth
+        ignoreCardToolbarContents
     });
     expect(actual).toEqual(expected);
 }
@@ -109,10 +106,6 @@ export function prettifyHTML(string, options = {}) {
             }
         });
         output = document.body.innerHTML;
-    }
-
-    if (options.ignoreDataCardWidth) {
-        output = output.replace(/data-card-width="[^"]*"/g, '');
     }
 
     return prettier

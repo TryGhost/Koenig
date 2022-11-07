@@ -70,7 +70,7 @@ export function ImageCard({
 
     return (
         <>
-            <figure data-card-width={cardWidth} ref={figureRef}>
+            <figure data-kg-card-width={cardWidth} ref={figureRef}>
                 {src
                     ? <PopulatedImageCard src={src} alt={altText} />
                     : <EmptyImageCard

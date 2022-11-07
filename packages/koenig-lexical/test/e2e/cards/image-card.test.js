@@ -25,7 +25,7 @@ describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="false" data-kg-card="image">
-                    <figure>
+                    <figure data-kg-card-width="regular">
                         <div>
                             <div>
                                 <button name="placeholder-button">
@@ -286,13 +286,13 @@ describe('Image card', async () => {
         expect(await page.$('[data-kg-card-toolbar="image"]')).not.toBeNull();
 
         await page.click('[data-kg-card-toolbar="image"] button[aria-label="Wide"]');
-        expect (await page.$('[data-card-width="wide"]')).not.toBeNull();
+        expect (await page.$('[data-kg-card-width="wide"]')).not.toBeNull();
 
         await page.click('[data-kg-card-toolbar="image"] button[aria-label="Full"]');
-        expect (await page.$('[data-card-width="full"]')).not.toBeNull();
+        expect (await page.$('[data-kg-card-width="full"]')).not.toBeNull();
 
         await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular"]');
-        expect (await page.$('[data-card-width="regular"]')).not.toBeNull();
+        expect (await page.$('[data-kg-card-width="regular"]')).not.toBeNull();
     });
 
     test('toolbar does not disappear on click', async function () {
