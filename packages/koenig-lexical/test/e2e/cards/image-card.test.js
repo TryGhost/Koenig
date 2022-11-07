@@ -286,52 +286,13 @@ describe('Image card', async () => {
         expect(await page.$('[data-kg-card-toolbar="image"]')).not.toBeNull();
 
         await page.click('[data-kg-card-toolbar="image"] button[aria-label="Wide"]');
-        await assertHTML(page, html`
-            <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-card-width="wide">
-                        <img src="data:image/png;base64,BASE64DATA" alt="" />
-                        <figcaption>
-                            <input placeholder="Type caption for image (optional)" value="" />
-                            <button name="alt-toggle-button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
-                </div>
-            </div>
-        `, {ignoreCardToolbarContents: true, ignoreDataCardWidth: false});
+        expect (await page.$('[data-card-width="wide"]')).not.toBeNull();
 
         await page.click('[data-kg-card-toolbar="image"] button[aria-label="Full"]');
-        await assertHTML(page, html`
-            <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-card-width="full">
-                        <img src="data:image/png;base64,BASE64DATA" alt="" />
-                        <figcaption>
-                            <input placeholder="Type caption for image (optional)" value="" />
-                            <button name="alt-toggle-button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
-                </div>
-            </div>
-        `, {ignoreCardToolbarContents: true, ignoreDataCardWidth: false});
+        expect (await page.$('[data-card-width="full"]')).not.toBeNull();
 
         await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular"]');
-        await assertHTML(page, html`
-            <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-card-width="regular">
-                        <img src="data:image/png;base64,BASE64DATA" alt="" />
-                        <figcaption>
-                            <input placeholder="Type caption for image (optional)" value="" />
-                            <button name="alt-toggle-button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
-                </div>
-            </div>
-        `, {ignoreCardToolbarContents: true, ignoreDataCardWidth: false});
+        expect (await page.$('[data-card-width="regular"]')).not.toBeNull();
     });
 
     test('toolbar does not disappear on click', async function () {
