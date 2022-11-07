@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function ActionToolbar({isVisible, children, ...props}) {
+export function ActionToolbar({isVisible, children, cardWidth, ...props}) {
     const toolbarRef = React.useRef(null);
 
     const [rect, setRect] = React.useState({
@@ -18,7 +18,7 @@ export function ActionToolbar({isVisible, children, ...props}) {
                 right: containerRect.right
             });
         }
-    }, [isVisible]);
+    }, [isVisible, cardWidth]);
 
     const toolbarStyle = {
         position: 'absolute',

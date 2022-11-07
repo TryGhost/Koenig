@@ -66,6 +66,14 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         });
     });
 
+    const handleImageResize = (newWidth) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setCardWidth(newWidth);
+            setCardWidth(newWidth); // sets the state of the toolbar component
+        });
+    };
+
     const handleDrag = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -92,14 +100,6 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         }
     };
 
-    const handleImageResize = (newWidth) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setCardWidth(newWidth);
-            setCardWidth(newWidth);
-        });
-    };
-
     return (
         <>
             <ImageCard
@@ -119,6 +119,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
             <ActionToolbar
                 isVisible={src && isSelected}
                 data-kg-card-toolbar="image"
+                cardWidth={cardWidth}
             >
                 <ImageUploadForm
                     onFileChange={onFileChange}
