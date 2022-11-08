@@ -24,6 +24,6 @@
     "eslint-plugin-ghost": "2.16.0",
     "mocha": "10.1.0",
     "should": "13.2.3",
-    "sinon": "14.0.1"
+    "sinon": "14.0.2"
   }
 }
