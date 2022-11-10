@@ -20,11 +20,12 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import WrapperContext from '../context/CardContext';
 import {CardWrapper} from './ui/CardWrapper';
 
-const KoenigCardWrapperComponent = ({nodeKey, children}) => {
+const KoenigCardWrapperComponent = ({nodeKey, children, width}) => {
     const [editor] = useLexicalComposerContext();
     const [isSelected, setSelected, clearSelected] = useLexicalNodeSelection(nodeKey);
     const [selection, setSelection] = React.useState(null);
     const [cardType, setCardType] = React.useState(null);
+    const [cardWidth, setCardWidth] = React.useState(width || 'regular');
     const containerRef = React.useRef(null);
 
     React.useLayoutEffect(() => {
@@ -162,11 +163,12 @@ const KoenigCardWrapperComponent = ({nodeKey, children}) => {
     }, [editor, isSelected, setSelected, clearSelected, nodeKey]);
 
     return (
-        <WrapperContext.Provider value={{isSelected, selection, cardContainerRef: containerRef}}>
+        <WrapperContext.Provider value={{isSelected, cardWidth, setCardWidth, selection, cardContainerRef: containerRef}}>
             <CardWrapper
                 isSelected={isSelected}
                 cardType={cardType}
                 ref={containerRef}
+                cardWidth={cardWidth}
             >
                 {children}
             </CardWrapper>
