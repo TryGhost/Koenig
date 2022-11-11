@@ -23,15 +23,23 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         if (!fileSrc) {
             return;
         }
-        getImageDimensionsFromUrl(fileSrc).then(({width, height}) => {
-            editor.update(() => {
-                const node = $getNodeByKey(nodeKey);
-                node.setSrc(fileSrc);
-                node.setImgWidth(width);
-                node.setImgHeight(height);
-            });
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setSrc(fileSrc);
         });
     };
+
+    React.useEffect(() => {
+        if (src) {
+            getImageDimensionsFromUrl(src).then(({width, height}) => {
+                editor.update(() => {
+                    const node = $getNodeByKey(nodeKey);
+                    node.setImgWidth(width);
+                    node.setImgHeight(height);
+                });
+            });
+        }
+    }, [src, nodeKey, editor]);
 
     const onFileChange = async (e) => {
         const fls = e.target.files;
