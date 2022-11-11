@@ -23,12 +23,13 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         if (!fileSrc) {
             return;
         }
-        const {width, height} = await getImageDimensionsFromUrl(fileSrc);
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setSrc(fileSrc);
-            node.setImgWidth(width);
-            node.setImgHeight(height);
+        getImageDimensionsFromUrl(fileSrc).then(({width, height}) => {
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.setSrc(fileSrc);
+                node.setImgWidth(width);
+                node.setImgHeight(height);
+            });
         });
     };
 
