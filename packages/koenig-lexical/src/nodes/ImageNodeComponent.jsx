@@ -8,7 +8,7 @@ import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/
 import {ActionToolbar} from '../components/ui/ActionToolbar';
 import {ImageUploadForm} from '../components/ui/ImageUploadForm';
 import {openFileSelection} from '../utils/openFileSelection';
-import {getImageDimensionsFromUrl} from '../utils/getImageDimensionsFromUrl';
+import {getImageDimensions} from '../utils/getImageDimensions';
 
 export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileDialog}) {
     const [editor] = useLexicalComposerContext();
@@ -19,7 +19,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
     const toolbarFileInputRef = React.useRef();
 
     // Removed the editor update from the onFileChange function so that we can reuse it when adding the Link toolbar button.
-    const updateImageNode = async ({fileSrc}) => {
+    const updateImageNode = async ({fileSrc, file}) => {
         if (!fileSrc) {
             return;
         }
@@ -27,25 +27,23 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
             const node = $getNodeByKey(nodeKey);
             node.setSrc(fileSrc);
         });
-    };
-
-    React.useEffect(() => {
-        if (src) {
-            getImageDimensionsFromUrl(src).then(({width, height}) => {
-                editor.update(() => {
-                    const node = $getNodeByKey(nodeKey);
-                    node.setImgWidth(width);
-                    node.setImgHeight(height);
-                });
+        if (file) {
+            let url = URL.createObjectURL(file);
+            const {width, height} = await getImageDimensions(url);
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.setImgWidth(width);
+                node.setImgHeight(height);
             });
         }
-    }, [src, nodeKey, editor]);
+    };
 
     const onFileChange = async (e) => {
         const fls = e.target.files;
+
         const files = await imageUploader.imageUploader(fls); // idea here is to have something like imageUploader.uploadProgressPercentage to pass to the progress bar.
         if (files) {
-            updateImageNode({fileSrc: files.src});
+            updateImageNode({fileSrc: files.src, file: fls[0]});
         }
     };
 
