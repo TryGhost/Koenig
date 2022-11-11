@@ -36,7 +36,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         const fls = e.target.files;
         const files = await imageUploader.imageUploader(fls); // idea here is to have something like imageUploader.uploadProgressPercentage to pass to the progress bar.
         if (files) {
-            return updateImageNode({fileSrc: files.src});
+            updateImageNode({fileSrc: files.src});
         }
     };
 
