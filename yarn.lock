@@ -3371,10 +3371,10 @@
     "@typescript-eslint/types" "5.42.1"
     eslint-visitor-keys "^3.3.0"
 
-"@uiw/react-textarea-code-editor@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@uiw/react-textarea-code-editor/-/react-textarea-code-editor-2.0.4.tgz#5bf51b1ff57b779a1088e216ddf118d9c3239abd"
-  integrity sha512-ENM30TElpILlSK4TN/TNDeI80ayk0gF59wfQ2xuT7zvvIbyWvcdmRnL/rJGdpJ5Xt5pEKtUbpAL434rw6ac3iQ==
+"@uiw/react-textarea-code-editor@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/@uiw/react-textarea-code-editor/-/react-textarea-code-editor-2.0.6.tgz#aaaa57ac5c3f01288c11ccbe9457947d979d5627"
+  integrity sha512-qJrRj97ITwNW8C1noATlbGYpkInAhgM6ICxn9LdSYO2o1rSwCLZJdRt5wQ7nZSwOtV1r6yEpW1/0aKunW9UM5w==
   dependencies:
     "@babel/runtime" "^7.18.6"
     rehype "~12.0.1"
