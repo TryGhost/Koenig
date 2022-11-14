@@ -12,6 +12,8 @@ import PlusCardMenuPlugin from '../plugins/PlusCardMenuPlugin';
 import SlashCardMenuPlugin from '../plugins/SlashCardMenuPlugin';
 import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbarPlugin';
 import ImagePlugin from '../plugins/ImagePlugin';
+import DragDropPlugin from '../plugins/DragDropPlugin';
+
 import HorizontalRulePlugin from '../plugins/HorizontalRulePlugin';
 import {EditorPlaceholder} from './ui/EditorPlaceholder';
 import '../styles/index.css';
@@ -38,6 +40,7 @@ const KoenigEditor = ({
 
     return (
         <div className="koenig-lexical" ref={editorContainerRef}>
+            <DragDropPlugin />
             <RichTextPlugin
                 contentEditable={
                     <div ref={onRef}>
