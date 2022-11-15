@@ -12,22 +12,20 @@ import {UPLOAD_IMAGE_COMMAND} from '../nodes/ImageNode';
 // source https://github.com/facebook/lexical/blob/main/packages/lexical-utils/src/index.ts
 
 function isMimeType(file, acceptableMimeTypes) {
-    for (const acceptableType of acceptableMimeTypes) {
-        if (file.type.startsWith(acceptableType)) {
-            return true;
-        }
-    }
-    return false;
+    const mimeType = file.type;
+    let key = Object.keys(acceptableMimeTypes).find(k => acceptableMimeTypes[k].includes(mimeType));
+    return key;
 }
   
 function mediaFileReader(files, acceptableMimeTypes) {
     const filesIterator = files[Symbol.iterator]();
     return new Promise((resolve, reject) => {
         const processed = [];
+        let node;
         const handleNextFile = () => {
             const {done, value: file} = filesIterator.next();
             if (done) {
-                return resolve(processed);
+                return resolve({processed, node});
             }
             const fileReader = new FileReader();
             fileReader.addEventListener('error', reject);
@@ -38,8 +36,10 @@ function mediaFileReader(files, acceptableMimeTypes) {
                 }
                 handleNextFile();
             });
-            if (isMimeType(file, acceptableMimeTypes)) {
+            const nodeType = isMimeType(file, acceptableMimeTypes);
+            if (nodeType) {
                 fileReader.readAsDataURL(file);
+                node = nodeType;
             } else {
                 console.error('unsupported file type'); // eslint-disable-line no-console
                 handleNextFile();
@@ -51,23 +51,14 @@ function mediaFileReader(files, acceptableMimeTypes) {
 
 async function getListofAcceptableMimeTypes(editor) {
     const nodes = getEditorCardNodes(editor);
-
-    const acceptableMimeTypes = [];
-    let nodeType;
-    nodes.map((node) => {
-        nodeType = node[0];
-        const extensionTypes = node[1]?.extensionTypes || null;
-        if (!extensionTypes && extensionTypes === null) {
-            return null;
+    let acceptableMimeTypes = {};
+    for (const [nodeType, node] of nodes) {
+        if (nodeType && node.mimeTypes) {
+            acceptableMimeTypes[nodeType] = node.mimeTypes;
         }
-        return extensionTypes.map((extensionType) => {
-            const mimeType = `${nodeType}/${extensionType}`;
-            return acceptableMimeTypes.push(mimeType);
-        });
-    });
+    }
     return {
-        acceptableMimeTypes,
-        nodeType
+        acceptableMimeTypes
     };
 }
 
@@ -103,11 +94,11 @@ function DragDropPastePlugin() {
         return editor.registerCommand(
             DRAG_DROP_PASTE,
             async (files) => {
-                const {acceptableMimeTypes, nodeType} = await getListofAcceptableMimeTypes(editor);
-                const res = await mediaFileReader(files, acceptableMimeTypes);
-                if (res && nodeType) {
-                    if (nodeType === 'image') {
-                        editor.dispatchCommand(UPLOAD_IMAGE_COMMAND, res);
+                const {acceptableMimeTypes} = await getListofAcceptableMimeTypes(editor);
+                const {processed, node} = await mediaFileReader(files, acceptableMimeTypes);
+                if (processed && node) {
+                    if (node === 'image') {
+                        editor.dispatchCommand(UPLOAD_IMAGE_COMMAND, processed);
                     }
                 }
             },
