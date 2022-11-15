@@ -73,6 +73,32 @@ async function getListofAcceptableMimeTypes(editor) {
 
 function DragDropPastePlugin() {
     const [editor] = useLexicalComposerContext();
+
+    const handleDrag = React.useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    }, []);
+
+    const handleDrop = React.useCallback(async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.dataTransfer.files) {
+            editor.dispatchCommand(DRAG_DROP_PASTE, e.dataTransfer.files);
+        }
+    }, [editor]);
+
+    React.useEffect(() => {
+        // TODO: consuming app should be able to configure the element where they want to listen to the drag and drop events
+        const dropTarget = document.querySelector('.gh-koenig-editor') || document;
+        dropTarget.addEventListener('dragover', handleDrag);
+        dropTarget.addEventListener('drop', handleDrop);
+
+        return () => {
+            dropTarget.removeEventListener('dragover', handleDrag);
+            dropTarget.removeEventListener('drop', handleDrop);
+        };
+    }, [handleDrag, handleDrop]);
+
     React.useEffect(() => {
         return editor.registerCommand(
             DRAG_DROP_PASTE,
