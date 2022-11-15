@@ -9,6 +9,7 @@ import {UPLOAD_IMAGE_COMMAND} from '../nodes/ImageNode';
 // TODO - replace the next 2 isMimeType and mediaFileReader with  @lexical/utils library when released in next `not nightly` version of Lexical - currently not available in latest published Lexical version.
 // NB added minor adjustment to mediaFileReader to adapt to existing uploaders, 
 // both on Ghost and Demo - we should adapt those functions to meet Lexicals output which is an array like [{file: fileData, result: base64 String}] )
+// source https://github.com/facebook/lexical/blob/main/packages/lexical-utils/src/index.ts
 
 function isMimeType(file, acceptableMimeTypes) {
     for (const acceptableType of acceptableMimeTypes) {
@@ -70,7 +71,7 @@ async function getListofAcceptableMimeTypes(editor) {
     };
 }
 
-function DragDropPlugin() {
+function DragDropPastePlugin() {
     const [editor] = useLexicalComposerContext();
     React.useEffect(() => {
         return editor.registerCommand(
@@ -90,4 +91,4 @@ function DragDropPlugin() {
     return null;
 }
 
-export default DragDropPlugin;
+export default DragDropPastePlugin;

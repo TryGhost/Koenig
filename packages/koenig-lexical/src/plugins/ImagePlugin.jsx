@@ -71,7 +71,8 @@ export const ImagePlugin = () => {
                     editor.dispatchCommand(INSERT_IMAGE_COMMAND, dataset);
                 },
                 COMMAND_PRIORITY_HIGH
-            )
+            ),
+            // todo: create another command to handle more of the upload logic to allow us to be able to keep the image uploader more "dry / generic"
         );
     }, [editor, imageUploader]);
 
