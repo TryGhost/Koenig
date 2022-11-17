@@ -14,10 +14,6 @@ import {
     PASTE_COMMAND
 } from 'lexical';
 
-import {
-    $wrapNodes
-} from '@lexical/selection';
-
 import {$createLinkNode} from '@lexical/link';
 import {mergeRegister} from '@lexical/utils';
 

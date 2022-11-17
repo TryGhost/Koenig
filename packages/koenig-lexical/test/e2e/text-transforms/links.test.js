@@ -35,4 +35,21 @@ describe('Links', async () => {
             </p>
         `);
     });
+
+    test('does not convert text to link if pasting a non-url', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('link');
+        await page.keyboard.down('Shift');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.up('Shift');
+        await pasteText(page, 'Hello Koenig');
+        await assertHTML(page, html`
+            <p dir="ltr">
+                <span data-lexical-text="true">Hello Koenig</span>
+            </p>
+        `);
+    });
 });
