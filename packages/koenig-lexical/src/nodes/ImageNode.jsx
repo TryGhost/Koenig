@@ -58,7 +58,6 @@ export class ImageNode extends DecoratorNode {
                 caption: node.__caption,
                 altText: node.__altText,
                 cardWidth: node.__cardWidth,
-                // uploadProgress: node.__uploadProgress,
                 width: node.__width,
                 height: node.__height
             },
@@ -220,7 +219,6 @@ export class ImageNode extends DecoratorNode {
                     src={this.__src}
                     altText={this.__altText}
                     caption={this.__caption}
-                    // uploadProgress={this.__uploadProgress}
                     triggerFileDialog={this.__triggerFileDialog}
                     previewSrc={this.getPreviewSrc()}
                 />

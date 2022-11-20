@@ -58,20 +58,30 @@ const ImageCardHolder = ({
     handleDrag,
     handleDrop,
     isDraggedOver
-
 }) => {
     if (previewSrc) {
-        return <ImageProgressCard previewSrc={previewSrc} progress={uploadProgress} />;
+        return (
+            <ImageProgressCard 
+                previewSrc={previewSrc} 
+                progress={uploadProgress} />
+        );
     } else if (src && !previewSrc) {
-        return <PopulatedImageCard src={src} alt={altText} />;
+        return (
+            <PopulatedImageCard 
+                src={src} 
+                alt={altText} 
+            />
+        );
     } else {
-        return <EmptyImageCard
-            handleDrag={handleDrag} 
-            onFileChange={onFileChange} 
-            setFileInputRef={setFileInputRef}
-            handleDrop={handleDrop}
-            isDraggedOver={isDraggedOver}
-        />;
+        return (
+            <EmptyImageCard
+                handleDrag={handleDrag} 
+                onFileChange={onFileChange} 
+                setFileInputRef={setFileInputRef}
+                handleDrop={handleDrop}
+                isDraggedOver={isDraggedOver}
+            />
+        );
     }
 };
 
@@ -140,5 +150,7 @@ ImageCard.propTypes = {
     altText: PropTypes.string,
     setCaption: PropTypes.func,
     src: PropTypes.string,
-    isDraggedOver: PropTypes.bool
+    isDraggedOver: PropTypes.bool,
+    previewSrc: PropTypes.string,
+    uploadProgress: PropTypes.number
 };
