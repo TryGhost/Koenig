@@ -4,7 +4,9 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 // import {isMimeType, mediaFileReader} from '@lexical/utils'; // not yet available in stable version of lexical
 import {COMMAND_PRIORITY_LOW} from 'lexical';
 import {getEditorCardNodes} from '../utils/getEditorCardNodes';
-import {UPLOAD_IMAGE_COMMAND} from '../nodes/ImageNode';
+// import {imageUploadHandler} from '../utils/imageUploadHandler';
+// import {UPLOAD_IMAGE_COMMAND} from './ImagePlugin';
+import {INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
 
 // TODO - replace the next 2 isMimeType and mediaFileReader with  @lexical/utils library when released in next `not nightly` version of Lexical - currently not available in latest published Lexical version.
 // NB added minor adjustment to mediaFileReader to adapt to existing uploaders, 
@@ -98,7 +100,7 @@ function DragDropPastePlugin() {
                 const {processed, node} = await mediaFileReader(files, acceptableMimeTypes);
                 if (processed && node) {
                     if (node === 'image') {
-                        editor.dispatchCommand(UPLOAD_IMAGE_COMMAND, processed);
+                        editor.dispatchCommand(INSERT_IMAGE_COMMAND, processed);
                     }
                 }
             },

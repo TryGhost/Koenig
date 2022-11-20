@@ -39,6 +39,42 @@ function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, 
     );
 }
 
+function ImageProgressCard({previewSrc, progress}) {
+    return (
+        <div>
+            <img src={previewSrc} alt={`upload in progress, ${progress} `} />
+            <div>{progress}</div>
+        </div>
+    );
+}
+
+const ImageCardHolder = ({
+    src,
+    altText,
+    previewSrc,
+    uploadProgress,
+    onFileChange,
+    setFileInputRef,
+    handleDrag,
+    handleDrop,
+    isDraggedOver
+
+}) => {
+    if (previewSrc) {
+        return <ImageProgressCard previewSrc={previewSrc} progress={uploadProgress} />;
+    } else if (src && !previewSrc) {
+        return <PopulatedImageCard src={src} alt={altText} />;
+    } else {
+        return <EmptyImageCard
+            handleDrag={handleDrag} 
+            onFileChange={onFileChange} 
+            setFileInputRef={setFileInputRef}
+            handleDrop={handleDrop}
+            isDraggedOver={isDraggedOver}
+        />;
+    }
+};
+
 export function ImageCard({
     isSelected,
     src,
@@ -52,7 +88,9 @@ export function ImageCard({
     handleDrag,
     handleDrop,
     isDraggedOver,
-    cardWidth
+    cardWidth,
+    previewSrc,
+    uploadProgress
 }) {
     const figureRef = React.useRef(null);
 
@@ -67,20 +105,20 @@ export function ImageCard({
             fileInputRef.current = ref.current;
         }
     };
-
     return (
         <>
             <figure data-kg-card-width={cardWidth} ref={figureRef}>
-                {src
-                    ? <PopulatedImageCard src={src} alt={altText} />
-                    : <EmptyImageCard
-                        handleDrag={handleDrag} 
-                        onFileChange={onFileChange} 
-                        setFileInputRef={setFileInputRef}
-                        handleDrop={handleDrop}
-                        isDraggedOver={isDraggedOver}
-                    />
-                }
+                <ImageCardHolder
+                    src={src}
+                    altText={altText}
+                    previewSrc={previewSrc}
+                    uploadProgress={uploadProgress}
+                    onFileChange={onFileChange}
+                    setFileInputRef={setFileInputRef}
+                    handleDrag={handleDrag}
+                    handleDrop={handleDrop}
+                    isDraggedOver={isDraggedOver}
+                />
                 <CardCaptionEditor
                     altText={altText || ''}
                     setAltText={setAltText}
