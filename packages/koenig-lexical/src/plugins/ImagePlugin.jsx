@@ -42,10 +42,15 @@ export const ImagePlugin = () => {
 
                     if (focusNode !== null) {
                         const imageNode = $createImageNode(dataset);
+
                         if (!dataset.src) {
                             const imageNodeKey = imageNode.getKey();
                             handleImageUpload(dataset, imageNodeKey);
                         }
+                        // insert a paragraph if this will be the last card and
+                        // we're not already on a blank paragraph so we always
+                        // have a trailing paragraph in the doc
+                        
                         const selectedNode = selection.focus.getNode();
                         const selectedIsBlankParagraph = $isParagraphNode(selectedNode) && selectedNode.getTextContent() === '';
                         const nextNode = selectedNode.getTopLevelElementOrThrow().getNextSibling();
