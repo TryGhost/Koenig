@@ -37,11 +37,10 @@ const KoenigComposer = ({
         console.error('requires imageUploadFunction to be passed to KoenigComposer component, eg <KoenigComposer imageUploadFunction={function} />'); // eslint-disable-line no-console
         return;
     };
-    const [previewSrc, setPreviewSrc] = React.useState(null);
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            <KoenigComposerContext.Provider value={{imageUploader, editorContainerRef, setPreviewSrc, previewSrc}}>
+            <KoenigComposerContext.Provider value={{imageUploader, editorContainerRef}}>
                 {children}
             </KoenigComposerContext.Provider>
         </LexicalComposer>

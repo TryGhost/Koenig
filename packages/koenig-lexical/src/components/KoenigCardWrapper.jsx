@@ -26,7 +26,6 @@ const KoenigCardWrapperComponent = ({nodeKey, children, width}) => {
     const [selection, setSelection] = React.useState(null);
     const [cardType, setCardType] = React.useState(null);
     const [cardWidth, setCardWidth] = React.useState(width || 'regular');
-    const [previewSrc, setPreviewSrc] = React.useState(null);
     const containerRef = React.useRef(null);
 
     React.useLayoutEffect(() => {
@@ -164,7 +163,7 @@ const KoenigCardWrapperComponent = ({nodeKey, children, width}) => {
     }, [editor, isSelected, setSelected, clearSelected, nodeKey]);
 
     return (
-        <WrapperContext.Provider value={{isSelected, cardWidth, setCardWidth, selection, cardContainerRef: containerRef, previewSrc, setPreviewSrc}}>
+        <WrapperContext.Provider value={{isSelected, cardWidth, setCardWidth, selection, cardContainerRef: containerRef}}>
             <CardWrapper
                 isSelected={isSelected}
                 cardType={cardType}

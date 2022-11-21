@@ -16,7 +16,6 @@ import {imageUploadHandler} from '../utils/imageUploadHandler';
 export const ImagePlugin = () => {
     const [editor] = useLexicalComposerContext();
     const {imageUploader} = React.useContext(KoenigComposerContext);
-    // const [data, setData] = React.useState(null);
 
     const handleImageUpload = React.useCallback(async (files, imageNodeKey) => {
         if (files?.length > 0) {

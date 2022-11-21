@@ -12,6 +12,15 @@ function PopulatedImageCard({src, alt}) {
     );
 }
 
+function ImageProgressCard({previewSrc, progress}) {
+    return (
+        <div>
+            <img src={previewSrc} alt={`upload in progress, ${progress} `} />
+            <div>{progress}</div>
+        </div>
+    );
+}
+
 function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, isDraggedOver}) {
     const fileInputRef = React.useRef(null);
 
@@ -39,16 +48,7 @@ function EmptyImageCard({onFileChange, setFileInputRef, handleDrag, handleDrop, 
     );
 }
 
-function ImageProgressCard({previewSrc, progress}) {
-    return (
-        <div>
-            <img src={previewSrc} alt={`upload in progress, ${progress} `} />
-            <div>{progress}</div>
-        </div>
-    );
-}
-
-const ImageCardHolder = ({
+const ImageHolder = ({
     src,
     altText,
     previewSrc,
@@ -59,7 +59,7 @@ const ImageCardHolder = ({
     handleDrop,
     isDraggedOver
 }) => {
-    if (previewSrc) {
+    if (previewSrc && !src) {
         return (
             <ImageProgressCard 
                 previewSrc={previewSrc} 
@@ -118,7 +118,7 @@ export function ImageCard({
     return (
         <>
             <figure data-kg-card-width={cardWidth} ref={figureRef}>
-                <ImageCardHolder
+                <ImageHolder
                     src={src}
                     altText={altText}
                     previewSrc={previewSrc}
