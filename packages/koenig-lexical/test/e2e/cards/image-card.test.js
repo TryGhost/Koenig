@@ -48,10 +48,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
@@ -78,10 +78,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
 
         await page.click('button[name="alt-toggle-button"]');
 
@@ -108,10 +108,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
 
         await page.click('input[placeholder="Type caption for image (optional)"]');
         await page.keyboard.type('This is a caption');
@@ -139,10 +139,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"]')).not.toBeNull();
@@ -155,10 +155,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"] button[aria-label="Regular"]')).not.toBeNull();
@@ -171,10 +171,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"] button[aria-label="Wide"]')).not.toBeNull();
@@ -187,10 +187,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"] button[aria-label="Full"]')).not.toBeNull();
@@ -203,10 +203,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"] button[aria-label="Link"]')).not.toBeNull();
@@ -219,10 +219,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"] button[aria-label="Replace"]')).not.toBeNull();
@@ -235,10 +235,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"] button[aria-label="Snippet"]')).not.toBeNull();
@@ -252,19 +252,19 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"]')).not.toBeNull();
 
         const [replacefileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('[data-kg-card-toolbar="image"] button[aria-label="Replace"]')
         ]);
-        await replacefileChooser.accept([filePath2]);
+        await replacefileChooser.setFiles([filePath2]);
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="true" data-kg-card="image">
@@ -288,10 +288,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
         await page.click('[data-kg-card="image"]');
 
         expect(await page.$('[data-kg-card-toolbar="image"]')).not.toBeNull();
@@ -313,10 +313,10 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
 
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             await page.click('button[name="placeholder-button"]')
         ]);
-        await fileChooser.accept([filePath]);
+        await fileChooser.setFiles([filePath]);
 
         await page.click('figure');
 
@@ -329,12 +329,11 @@ describe('Image card', async () => {
         await focusEditor(page);
         await page.click('[data-kg-plus-button]');
         const [fileChooser] = await Promise.all([
-            page.waitForFileChooser(),
+            page.waitForEvent('filechooser'),
             page.click('[data-kg-card-menu-item="Image"]')
         ]);
 
         expect(fileChooser).not.toBeNull();
-        await fileChooser.cancel();
     });
 
     test('can handle drag over', async function () {
@@ -342,12 +341,18 @@ describe('Image card', async () => {
         await page.keyboard.type('image! ');
         const imageCard = await page.$('[data-kg-card="image"]');
         expect(imageCard).not.toBeNull();
-        await imageCard.dragEnter(this, {dataTransfer: {
-            files: []
-        }});
+
+        const dataTransfer = await page.evaluateHandle(() => {
+            const dt = new DataTransfer();
+            const file = new File([''], 'image.png', {type: 'image/png'});
+            dt.items.add(file);
+            return dt;
+        });
+        await imageCard.dispatchEvent('dragenter', {dataTransfer});
+
         expect(await page.$('[data-kg-card-drag-text="true"]')).not.toBeNull();
     });
-    
+
     test.todo('can handle drag leave');
     test.todo('can handle image drop');
 });

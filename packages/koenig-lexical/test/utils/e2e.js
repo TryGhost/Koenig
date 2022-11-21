@@ -1,14 +1,15 @@
 import {preview} from 'vite';
 import {expect} from 'vitest';
-import puppeteer from 'puppeteer';
+import {chromium, webkit, firefox} from 'playwright';
 import {parseHTML} from 'linkedom';
 import prettier from 'prettier';
 
+const BROWSER_NAME = process.env.browser || 'chromium';
 export const E2E_PORT = process.env.E2E_PORT || 3000;
 
 export async function startApp() {
     const server = await preview({preview: {port: E2E_PORT}});
-    const browser = await puppeteer.launch();
+    const browser = await {chromium, webkit, firefox}[BROWSER_NAME].launch();
     const page = await browser.newPage();
 
     return {
@@ -28,7 +29,7 @@ export async function startApp() {
 export async function initialize({page}) {
     const url = `http://127.0.0.1:${E2E_PORT}/`;
 
-    page.setViewport({width: 1000, height: 1000});
+    page.setViewportSize({width: 1000, height: 1000});
 
     await page.goto(url);
     await page.waitForSelector('.koenig-lexical');
