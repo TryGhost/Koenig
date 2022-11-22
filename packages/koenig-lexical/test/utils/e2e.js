@@ -90,6 +90,9 @@ export function prettifyHTML(string, options = {}) {
         output = output.replace(/(^|[\s">])data:([^;]*);([^"]*),([^"]*)/g, '$1data:$2;$3,BASE64DATA');
     }
 
+    // always ignore `blob:` urls because they are randomly generated and won't be consistent between tests
+    output = output.replace(/"blob:(.*?)"/, '"blob:..."');
+
     if (options.ignoreCardContents || options.ignoreCardToolbarContents) {
         const {document} = parseHTML(output);
 

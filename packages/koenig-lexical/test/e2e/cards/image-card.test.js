@@ -1,6 +1,7 @@
 import {afterAll, beforeAll, beforeEach, describe, test, expect} from 'vitest';
 import {startApp, initialize, focusEditor, assertHTML, html} from '../../utils/e2e';
 import path from 'path';
+import {readFile, readFileSync} from 'fs';
 
 describe('Image card', async () => {
     let app;
@@ -42,7 +43,7 @@ describe('Image card', async () => {
     });
 
     test('can upload an image', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -72,7 +73,7 @@ describe('Image card', async () => {
     test.todo('can get image width and height');
 
     test('can toggle to alt text', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -102,7 +103,7 @@ describe('Image card', async () => {
     });
 
     test('renders caption if present', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -133,7 +134,7 @@ describe('Image card', async () => {
     });
 
     test('renders image card toolbar', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -149,7 +150,7 @@ describe('Image card', async () => {
     });
 
     test('image card toolbar has Regular button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -165,7 +166,7 @@ describe('Image card', async () => {
     });
 
     test('image card toolbar has Wide button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -181,7 +182,7 @@ describe('Image card', async () => {
     });
 
     test('image card toolbar has Full button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -197,7 +198,7 @@ describe('Image card', async () => {
     });
 
     test('image card toolbar has Link button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -213,7 +214,7 @@ describe('Image card', async () => {
     });
 
     test('image card toolbar has Replace button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -229,7 +230,7 @@ describe('Image card', async () => {
     });
 
     test('image card toolbar has Snippet button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -245,8 +246,8 @@ describe('Image card', async () => {
     });
 
     test('can replace image from image toolbar button', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
-        const filePath2 = path.relative(process.cwd(), __dirname + '/assets/large.jpeg');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
+        const filePath2 = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.jpeg');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -282,7 +283,7 @@ describe('Image card', async () => {
     });
 
     test('toolbar can toggle image sizes', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -307,7 +308,7 @@ describe('Image card', async () => {
     });
 
     test('toolbar does not disappear on click', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + '/assets/large.png');
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
         await page.keyboard.type('image! ');
@@ -366,5 +367,46 @@ describe('Image card', async () => {
         expect(await page.$('[data-kg-card-drag-text="true"]')).toBeNull();
     });
 
-    test.todo('can handle image drop');
+    test('can handle image drop', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('image! ');
+
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
+        const buffer = readFileSync(filePath);
+
+        const dataTransfer = await page.evaluateHandle((data) => {
+            const dt = new DataTransfer();
+            const file = new File([data.toString('hex')], 'large-image.png', {type: 'image/png'});
+            dt.items.add(file);
+            return dt;
+        }, buffer);
+
+        await page.dispatchEvent(
+            '[data-kg-card="image"] [data-testid="media-placeholder"]',
+            'dragenter',
+            {dataTransfer}
+        );
+        await page.dispatchEvent(
+            '[data-kg-card="image"] [data-testid="media-placeholder"]',
+            'drop',
+            {dataTransfer}
+        );
+
+        // placeholder is replaced with uploading image
+        await assertHTML(page, html`
+            <div data-lexical-decorator="true" contenteditable="false">
+                <div data-kg-card-selected="false" data-kg-card="image">
+                    <figure data-kg-card-width="regular">
+                        <div>
+                            <img
+                                src="blob:..."
+                                alt="upload in progress, 0 " />
+                        </div>
+                    </figure>
+                </div>
+            </div>
+        `);
+
+        // TODO: test upload progress and final result
+    });
 });
