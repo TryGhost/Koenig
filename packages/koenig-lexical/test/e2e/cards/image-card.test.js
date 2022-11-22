@@ -26,7 +26,7 @@ describe('Image card', async () => {
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="false" data-kg-card="image">
                     <figure data-kg-card-width="regular">
-                        <div>
+                        <div data-testid="media-placeholder">
                             <div>
                                 <button name="placeholder-button">
                                     <svg width="134" height="135" viewBox="0 0 134 135" xmlns="http://www.w3.org/2000/svg"></svg>
@@ -339,6 +339,7 @@ describe('Image card', async () => {
     test('can handle drag over', async function () {
         await focusEditor(page);
         await page.keyboard.type('image! ');
+
         const imageCard = await page.$('[data-kg-card="image"]');
         expect(imageCard).not.toBeNull();
 
@@ -348,7 +349,11 @@ describe('Image card', async () => {
             dt.items.add(file);
             return dt;
         });
-        await imageCard.dispatchEvent('dragenter', {dataTransfer});
+        await page.dispatchEvent(
+            '[data-kg-card="image"] [data-testid="media-placeholder"]',
+            'dragenter',
+            {dataTransfer}
+        );
 
         expect(await page.$('[data-kg-card-drag-text="true"]')).not.toBeNull();
     });
