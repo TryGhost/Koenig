@@ -336,7 +336,7 @@ describe('Image card', async () => {
         expect(fileChooser).not.toBeNull();
     });
 
-    test('can handle drag over', async function () {
+    test('can handle drag over & leave', async function () {
         await focusEditor(page);
         await page.keyboard.type('image! ');
 
@@ -356,8 +356,15 @@ describe('Image card', async () => {
         );
 
         expect(await page.$('[data-kg-card-drag-text="true"]')).not.toBeNull();
+
+        await page.dispatchEvent(
+            '[data-kg-card="image"] [data-testid="media-placeholder"]',
+            'dragleave',
+            {dataTransfer}
+        );
+
+        expect(await page.$('[data-kg-card-drag-text="true"]')).toBeNull();
     });
 
-    test.todo('can handle drag leave');
     test.todo('can handle image drop');
 });
