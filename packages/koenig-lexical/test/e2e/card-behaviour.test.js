@@ -690,7 +690,10 @@ describe('Card behaviour', async () => {
             await page.keyboard.press('Enter');
             await page.keyboard.type('--- ');
             await page.keyboard.type('Second paragraph');
-            await page.keyboard.press('Control+KeyA');
+            for (let i = 0; i < 'Second paragraph'.length; i++) {
+                await page.keyboard.press('ArrowLeft');
+            }
+            // await page.keyboard.press('Control+KeyA');
 
             await assertHTML(page, html`
                 <p dir="ltr"><span data-lexical-text="true">First paragraph</span></p>
