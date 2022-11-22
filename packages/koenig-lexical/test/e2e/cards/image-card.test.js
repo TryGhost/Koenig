@@ -1,7 +1,7 @@
 import {afterAll, beforeAll, beforeEach, describe, test, expect} from 'vitest';
 import {startApp, initialize, focusEditor, assertHTML, html} from '../../utils/e2e';
 import path from 'path';
-import {readFile, readFileSync} from 'fs';
+import {readFileSync} from 'fs';
 
 describe('Image card', async () => {
     let app;
