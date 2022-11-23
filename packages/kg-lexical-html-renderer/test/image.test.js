@@ -243,6 +243,51 @@ describe('Images', function () {
           </figure>
           `
     }));
+    it('adds sizes attribute for regular images', shouldAssertHtml({input: `{
+          "root": {
+            "children": [
+              {
+                "altText": "This is Alt",
+                "caption": "This is a caption",
+                "src": "/content/images/2022/11/koenig-lexical.jpg",
+                "type": "image",
+                "width": 3000,
+                "height": 2000
+              }
+            ],
+            "direction": null,
+            "format": "",
+            "indent": 0,
+            "type": "root",
+            "version": 1
+          }
+        }`,
+    options: {
+        imageOptimization: {
+            contentImageSizes: {
+                w600: {width: 600},
+                w1000: {width: 1000},
+                w1600: {width: 1600},
+                w2400: {width: 2400}
+            }
+        }
+    },
+    output: `
+        <figure class="kg-card kg-image-card">
+            <img
+              src="/content/images/2022/11/koenig-lexical.jpg"
+              alt="This is Alt"
+              loading="lazy"
+              width="3000"
+              height="2000"
+              srcset="/content/images/size/w600/2022/11/koenig-lexical.jpg   600w, /content/images/size/w1000/2022/11/koenig-lexical.jpg 1000w, /content/images/size/w1600/2022/11/koenig-lexical.jpg 1600w, /content/images/size/w2400/2022/11/koenig-lexical.jpg 2400w"
+              sizes="(min-width: 720px) 720px"
+              />
+            <figcaption>
+            This is a caption
+            </figcaption>
+        </figure>
+      `}));
     it('should ommit srcset when target is email', shouldAssertHtml({
         input: `{
           "root": {

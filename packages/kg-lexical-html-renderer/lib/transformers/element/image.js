@@ -68,10 +68,9 @@ module.exports = {
 
         if (options.target !== 'email') {
             setSrcsetAttribute(img, node, options);
-
             if (img.getAttribute('srcset') && node.width && node.width >= 720) {
                 // standard size
-                if (!node.cardWidth) {
+                if (!node.cardWidth || node.cardWidth === 'regular') {
                     img.setAttribute('sizes', '(min-width: 720px) 720px');
                 }
 
