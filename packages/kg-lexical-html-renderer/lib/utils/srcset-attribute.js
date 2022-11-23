@@ -14,6 +14,7 @@ const getSrcsetAttribute = function ({src, width, options}) {
     }
 
     const srcsetWidths = getAvailableImageWidths({width}, options.imageOptimization.contentImageSizes);
+
     // apply srcset if this is a relative image that matches Ghost's image url structure
     if (isLocalContentImage(src, options.siteUrl)) {
         const [, imagesPath, filename] = src.match(/(.*\/content\/images)\/(.*)/);
@@ -28,6 +29,7 @@ const getSrcsetAttribute = function ({src, width, options}) {
                 srcs.push(`${imagesPath}/size/w${srcsetWidth}/${filename} ${srcsetWidth}w`);
             }
         });
+
         if (srcs.length) {
             return srcs.join(', ');
         }
@@ -47,15 +49,16 @@ const getSrcsetAttribute = function ({src, width, options}) {
     }
 };
 
-const setSrcsetAttribute = function (srcSet, image, options) {
-    // if (!elem || !['IMG', 'SOURCE'].includes(elem.tagName) || !elem.getAttribute('src') || !image) {
-    //     return;
-    // }
+const setSrcsetAttribute = function (elem, image, options) {
+    if (!elem || !['IMG', 'SOURCE'].includes(elem.tagName) || !elem.getAttribute('src') || !image) {
+        return;
+    }
+
     const {src, width} = image;
     const srcset = getSrcsetAttribute({src, width, options});
 
     if (srcset) {
-        return srcSet = srcset;
+        elem.setAttribute('srcset', srcset);
     }
 };
 
