@@ -13,7 +13,12 @@ const Template = args => (
     </div>
 );
 
-export const Default = Template.bind({});
-Default.args = {
-    isSelected: true
+export const Gallery = Template.bind({});
+Gallery.args = {
+    isZoomed: false
+};
+
+export const Zoomed = Template.bind({});
+Zoomed.args = {
+    isZoomed: true
 };

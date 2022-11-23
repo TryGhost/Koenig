@@ -4,18 +4,26 @@ import {
     $createNodeSelection,
     $getSelection,
     $isDecoratorNode,
+    $isElementNode,
+    $isParagraphNode,
     $isNodeSelection,
     $isRangeSelection,
     $setSelection,
     $createTextNode,
+    $createParagraphNode,
     COMMAND_PRIORITY_HIGH,
     KEY_ARROW_DOWN_COMMAND,
     KEY_ARROW_UP_COMMAND,
-    PASTE_COMMAND
+    KEY_ARROW_LEFT_COMMAND,
+    KEY_ARROW_RIGHT_COMMAND,
+    KEY_BACKSPACE_COMMAND,
+    KEY_DELETE_COMMAND,
+    PASTE_COMMAND,
+    INSERT_PARAGRAPH_COMMAND
 } from 'lexical';
-
 import {$createLinkNode} from '@lexical/link';
 import {mergeRegister} from '@lexical/utils';
+import {$isListItemNode} from '@lexical/list';
 
 const RANGE_TO_ELEMENT_BOUNDARY_THRESHOLD_PX = 10;
 
@@ -196,7 +204,172 @@ function useKoenigBehaviour({editor, containerElem}) {
                 },
                 COMMAND_PRIORITY_HIGH
             ),
-            editor.registerCommand (
+            editor.registerCommand(
+                KEY_ARROW_LEFT_COMMAND,
+                (event) => {
+                    const selection = $getSelection();
+
+                    if (!$isNodeSelection(selection)) {
+                        return false;
+                    }
+
+                    const firstNode = selection.getNodes()[0];
+                    const topLevelElement = firstNode.getTopLevelElement();
+                    const previousSibling = topLevelElement.getPreviousSibling();
+
+                    if ($isDecoratorNode(previousSibling)) {
+                        event.preventDefault();
+                        $selectDecoratorNode(previousSibling);
+                        return true;
+                    }
+
+                    return false;
+                },
+                COMMAND_PRIORITY_HIGH
+            ),
+            editor.registerCommand(
+                KEY_ARROW_RIGHT_COMMAND,
+                (event) => {
+                    const selection = $getSelection();
+
+                    if (!$isNodeSelection(selection)) {
+                        return false;
+                    }
+
+                    const selectedNodes = selection.getNodes();
+                    const lastNode = selectedNodes[selectedNodes.length - 1];
+                    const topLevelElement = lastNode.getTopLevelElement();
+                    const nextSibling = topLevelElement.getNextSibling();
+
+                    if ($isDecoratorNode(nextSibling)) {
+                        event.preventDefault();
+                        $selectDecoratorNode(nextSibling);
+                        return true;
+                    }
+
+                    return false;
+                },
+                COMMAND_PRIORITY_HIGH
+            ),
+            editor.registerCommand(
+                KEY_BACKSPACE_COMMAND,
+                (event) => {
+                    const selection = $getSelection();
+
+                    // <KoenigCardWrapper> currently handles the behaviour for
+                    // backspace on a selected card
+                    if ($isNodeSelection(selection)) {
+                        return false;
+                    }
+
+                    if ($isRangeSelection(selection)) {
+                        if (selection.isCollapsed) {
+                            const anchor = selection.anchor;
+                            const anchorNode = anchor.getNode();
+                            const topLevelElement = anchorNode.getTopLevelElement();
+                            const previousSibling = topLevelElement.getPreviousSibling();
+
+                            const atStartOfElement =
+                                selection.anchor.offset === 0 &&
+                                selection.focus.offset === 0;
+
+                            // convert empty top level list items to paragraphs
+                            if (
+                                atStartOfElement &&
+                                $isListItemNode(anchorNode) &&
+                                anchorNode.getIndent() === 0 &&
+                                anchorNode.isEmpty()
+                            ) {
+                                event.preventDefault();
+                                editor.dispatchCommand(INSERT_PARAGRAPH_COMMAND);
+                                return true;
+                            }
+
+                            // delete empty paragraphs and select card if preceded by card
+                            if ($isParagraphNode(anchorNode) && anchorNode.isEmpty() && $isDecoratorNode(previousSibling)) {
+                                topLevelElement.remove();
+                                $selectDecoratorNode(previousSibling);
+                                return true;
+                            }
+
+                            // convert populated top level list items to paragraphs when cursor is at beginning
+                            if (atStartOfElement && $isListItemNode(anchorNode.getParent())) {
+                                const listItemNode = anchorNode.getParent();
+                                if (listItemNode.getIndent() === 0) {
+                                    event.preventDefault();
+                                    const paragraphNode = $createParagraphNode();
+                                    paragraphNode.append(...listItemNode.getChildren());
+                                    listItemNode.replace(paragraphNode);
+                                    return true;
+                                }
+                            }
+
+                            // delete any previous card keeping caret in place
+                            if (atStartOfElement && $isDecoratorNode(previousSibling)) {
+                                event.preventDefault();
+                                previousSibling.remove();
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+                },
+                COMMAND_PRIORITY_HIGH
+            ),
+            editor.registerCommand(
+                KEY_DELETE_COMMAND,
+                (event) => {
+                    const selection = $getSelection();
+
+                    // <KoenigCardWrapper> currently handles the behaviour for
+                    // delete on a selected card
+                    if ($isNodeSelection(selection)) {
+                        return false;
+                    }
+
+                    if ($isRangeSelection(selection)) {
+                        if (selection.isCollapsed) {
+                            const anchor = selection.anchor;
+                            const anchorNode = anchor.getNode();
+                            const topLevelElement = anchorNode.getTopLevelElement();
+                            const nextSibling = topLevelElement.getNextSibling();
+
+                            const onEmptyNode =
+                                topLevelElement?.getTextContent().trim() === '' &&
+                                selection.anchor.offset === 0;
+
+                            if (onEmptyNode && $isDecoratorNode(nextSibling)) {
+                                // delete the empty node and select the previous card
+                                event.preventDefault();
+                                topLevelElement.remove();
+                                $selectDecoratorNode(nextSibling);
+                                return true;
+                            }
+
+                            const atEndOfNode = ((
+                                anchor.type === 'element' &&
+                                $isElementNode(anchorNode) &&
+                                anchor.offset === anchorNode.getChildrenSize()
+                            ) || (
+                                anchor.type === 'text' &&
+                                anchor.offset === anchorNode.getTextContentSize()
+                            ));
+
+                            if (atEndOfNode && $isDecoratorNode(nextSibling)) {
+                                // delete the card, keeping selection in place
+                                event.preventDefault();
+                                nextSibling.remove();
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+                },
+                COMMAND_PRIORITY_HIGH
+            ),
+            editor.registerCommand(
                 PASTE_COMMAND,
                 (clipboard) => {
                     const clipboardDataset = clipboard?.clipboardData?.getData('text');
@@ -217,7 +390,8 @@ function useKoenigBehaviour({editor, containerElem}) {
                     }
                 },
                 COMMAND_PRIORITY_HIGH
-            ));
+            )
+        );
     });
 
     return null;

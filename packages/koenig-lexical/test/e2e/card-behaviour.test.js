@@ -147,7 +147,43 @@ describe('Card behaviour', async () => {
         });
 
         // moves selection to previous card
-        test.todo('when selected card after card');
+        test('when selected card is after card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('--- ');
+            await page.keyboard.type('--- ');
+
+            await page.keyboard.press('ArrowLeft');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+
+            await page.keyboard.press('ArrowLeft');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+        });
 
         // triggers "caret left at top" prop fn
         test.todo('when selected card is first section');
@@ -184,6 +220,67 @@ describe('Card behaviour', async () => {
                 anchorPath: [1],
                 focusOffset: 0,
                 focusPath: [1]
+            });
+        });
+
+        // moves selection to previous card
+        test('when selected card is before card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('--- ');
+            await page.keyboard.type('--- ');
+            await page.click('hr');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+
+            await page.keyboard.press('ArrowRight');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+
+            await page.keyboard.press('ArrowRight');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [2],
+                focusOffset: 0,
+                focusPath: [2]
             });
         });
     });
@@ -647,12 +744,85 @@ describe('Card behaviour', async () => {
 
             await assertHTML(page, html`
                 <div data-lexical-decorator="true" contenteditable="false">
-                        <div data-kg-card-selected="true" data-kg-card="horizontalrule">
-                            <hr>
-                        </div>
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
                 </div>
                 <p><br></p>
             `);
+        });
+
+        // deletes empty paragraph, selects card
+        test('on empty paragraph after card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('--- ');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('Populated paragraph after empty paragraph');
+            await page.keyboard.press('ArrowUp');
+
+            // sanity check - cursor is on empty paragraph
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [1],
+                focusOffset: 0,
+                focusPath: [1]
+            });
+
+            await page.keyboard.press('Backspace');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p dir="ltr"><span data-lexical-text="true">Populated paragraph after empty paragraph</span></p>
+            `);
+        });
+
+        // deletes card, keeps selection at beginning of paragraph
+        test('at beginning of paragraph after card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('First paragraph');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('--- ');
+            await page.keyboard.type('Second paragraph');
+            for (let i = 0; i < 'Second paragraph'.length; i++) {
+                await page.keyboard.press('ArrowLeft');
+            }
+            // await page.keyboard.press('Control+KeyA');
+
+            await assertHTML(page, html`
+                <p dir="ltr"><span data-lexical-text="true">First paragraph</span></p>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><span data-lexical-text="true">Second paragraph</span></p>
+            `);
+
+            // sanity check - cursor is at beginning of second paragraph
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [2, 0, 0],
+                focusOffset: 0,
+                focusPath: [2, 0, 0]
+            });
+
+            await page.keyboard.press('Backspace');
+
+            await assertHTML(page, html`
+                <p dir="ltr"><span data-lexical-text="true">First paragraph</span></p>
+                <p><span data-lexical-text="true">Second paragraph</span></p>
+            `);
+
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [1, 0, 0],
+                focusOffset: 0,
+                focusPath: [1, 0, 0]
+            });
         });
     });
 
@@ -704,8 +874,91 @@ describe('Card behaviour', async () => {
             `);
         });
 
-        // general BACKSPACE behaviour needed to delete trailing
-        // paragraph after HR card without also deleting the card
-        test.todo('with selected card as last section');
+        // deletes paragraph and selects card
+        test('on empty paragraph before card', async function () {
+            await focusEditor(page);
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('--- ');
+            await page.keyboard.press('ArrowUp');
+            await page.keyboard.press('ArrowUp');
+
+            await assertHTML(page, html`
+                <p><br></p>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [0],
+                focusOffset: 0,
+                focusPath: [0]
+            });
+
+            await page.keyboard.press('Delete');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <p><br></p>
+            `);
+
+            await page.keyboard.press('Delete');
+
+            await assertHTML(page, html`
+                <p><br></p>
+            `);
+
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [0],
+                focusOffset: 0,
+                focusPath: [0]
+            });
+        });
+
+        // deletes card, keeping caret at end of paragraph
+        test('at end of paragraph before card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('First paragraph');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('--- ');
+            await page.keyboard.type('Second paragraph');
+            await page.click('p:nth-of-type(1)');
+
+            await assertSelection(page, {
+                anchorOffset: 15,
+                anchorPath: [0, 0, 0],
+                focusOffset: 15,
+                focusPath: [0, 0, 0]
+            });
+
+            await page.keyboard.press('Delete');
+
+            await assertHTML(page, html`
+                <p dir="ltr"><span data-lexical-text="true">First paragraph</span></p>
+                <p><span data-lexical-text="true">Second paragraph</span></p>
+            `);
+
+            await assertSelection(page, {
+                anchorOffset: 15,
+                anchorPath: [0, 0, 0],
+                focusOffset: 15,
+                focusPath: [0, 0, 0]
+            });
+
+            await page.keyboard.press('Delete');
+
+            await assertHTML(page, html`
+                <p dir="ltr"><span data-lexical-text="true">First paragraphSecond paragraph</span></p>
+            `);
+        });
     });
 });
