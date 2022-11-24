@@ -2,7 +2,7 @@
 import {createPortal} from 'react-dom';
 
 const ModalContainer = ({component, container}) => {
-    const portalContainer = container || null;
+    const portalContainer = container || document.querySelector('.koenig-lexical');
 
     if (!portalContainer) {
         return null;

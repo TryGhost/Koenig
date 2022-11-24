@@ -12,16 +12,30 @@ import {mergeRegister} from '@lexical/utils';
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import {$createImageNode, ImageNode, INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
+import {UnsplashSelector} from '../components/ui/file-selectors/UnsplashSelector';
+import ModalContainer from '../components/ModalContainer';
 
 export const ImagePlugin = () => {
     const [editor] = useLexicalComposerContext();
     const {imageUploader} = React.useContext(KoenigComposerContext);
+    const [showUnsplash, setShowUnsplash] = React.useState(false);
+    const [imgNode, setImgNode] = React.useState(null);
 
     const handleImageUpload = React.useCallback(async (files, imageNodeKey) => {
         if (files?.length > 0) {
             return await imageUploadHandler(files, imageNodeKey, editor, imageUploader);
         }
     }, [imageUploader, editor]);
+
+    const handleModalClose = () => {
+        setShowUnsplash(false);
+        // remove the image node from the editor
+        if (imgNode) {
+            editor.update(() => {
+                imgNode.remove();
+            });
+        }
+    };
 
     React.useEffect(() => {
         if (!editor.hasNodes([ImageNode])){
@@ -42,6 +56,10 @@ export const ImagePlugin = () => {
 
                     if (focusNode !== null) {
                         const imageNode = $createImageNode(dataset);
+                        if (dataset.imageType === 'unsplash') {
+                            setShowUnsplash(true);
+                            setImgNode(imageNode);
+                        }
 
                         if (!dataset.src) {
                             const imageNodeKey = imageNode.getKey();
@@ -88,6 +106,14 @@ export const ImagePlugin = () => {
             // eg: the progress bar, error states, temp image, etc
         );
     }, [editor, imageUploader, handleImageUpload]);
+
+    if (showUnsplash) {
+        return (
+            <ModalContainer
+                component={<UnsplashSelector toggle={handleModalClose} />} 
+            />
+        );
+    }
 
     return null;
 };
