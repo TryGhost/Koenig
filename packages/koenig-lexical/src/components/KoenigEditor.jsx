@@ -13,7 +13,7 @@ import SlashCardMenuPlugin from '../plugins/SlashCardMenuPlugin';
 import FloatingFormatToolbarPlugin from '../plugins/FloatingFormatToolbarPlugin';
 import ImagePlugin from '../plugins/ImagePlugin';
 import DragDropPastePlugin from '../plugins/DragDropPastePlugin';
-
+import UnsplashEmbedPlugin from '../plugins/UnsplashEmbedPlugin';
 import HorizontalRulePlugin from '../plugins/HorizontalRulePlugin';
 import {EditorPlaceholder} from './ui/EditorPlaceholder';
 import '../styles/index.css';
@@ -60,6 +60,7 @@ const KoenigEditor = ({
             <ImagePlugin />
             <DragDropPastePlugin />
             <HorizontalRulePlugin />
+            <UnsplashEmbedPlugin />
         </div>
     );
 };
