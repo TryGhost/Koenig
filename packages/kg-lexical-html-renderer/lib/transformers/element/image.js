@@ -4,7 +4,6 @@ const {isLocalContentImage} = require('../../utils/is-local-content-image');
 const {setSrcsetAttribute} = require('../../utils/srcset-attribute');
 const {resizeImage} = require('../../utils/resize-image');
 const jsdom = require('jsdom');
-const Prettier = require('prettier');
 
 module.exports = {
     export(node, options) {
@@ -114,6 +113,6 @@ module.exports = {
             caption.innerHTML = node.caption;
             figure.appendChild(caption);
         }
-        return Prettier.format(figure.outerHTML, {parser: 'html'});
+        return figure.outerHTML;
     }
 };
