@@ -8,8 +8,6 @@ describe('Images', function () {
 
     beforeEach(async function () {
         imageState = {
-            altText: 'This is Alt',
-            caption: 'This is a caption',
             src: '/content/images/2022/11/koenig-lexical.jpg',
             type: 'image',
             cardWidth: 'regular'
@@ -42,15 +40,28 @@ describe('Images', function () {
         const output = Prettier.format((new Renderer()).render(JSON.stringify(lexicalState), options), {parser: 'html'});
         const expected = 
 `<figure class="kg-card kg-image-card">
-  <img
-    src="/content/images/2022/11/koenig-lexical.jpg"
-    alt="This is Alt"
-    loading="lazy"
-  />
+  <img src="/content/images/2022/11/koenig-lexical.jpg" alt="" loading="lazy" />
+</figure>
+`;
+        output.should.equal(expected);
+    });
+    
+    it('renders an image with caption and blank alt', function () {
+        imageState.caption = 'This is a caption';
+        const output = Prettier.format((new Renderer()).render(JSON.stringify(lexicalState), options), {parser: 'html'});
+        const expected = 
+`<figure class="kg-card kg-image-card">
+  <img src="/content/images/2022/11/koenig-lexical.jpg" alt="" loading="lazy" />
   <figcaption>This is a caption</figcaption>
 </figure>
 `;
         output.should.equal(expected);
+    });
+
+    it('renders an image with alt text', function () {
+        imageState.altText = 'This is Alt';
+        const output = Prettier.format((new Renderer()).render(JSON.stringify(lexicalState), options), {parser: 'html'});
+        output.should.containEql('alt="This is Alt"');
     });
 
     it('renders a wide image', function () {
@@ -121,10 +132,14 @@ describe('Images', function () {
     });
 
     it('should ommit srcset when target is email', function () {
-        imageState.width = 3000;
-        imageState.height = 6000;
         options.target = 'email';
         const output = (new Renderer()).render(JSON.stringify(lexicalState), options);
         output.should.not.containEql('srcset');
+    });
+
+    it('renders image with title attribute', function () {
+        imageState.title = 'Test title';
+        const output = (new Renderer()).render(JSON.stringify(lexicalState), options);
+        output.should.containEql('title="Test title"');
     });
 });

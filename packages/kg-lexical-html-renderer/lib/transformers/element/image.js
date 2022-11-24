@@ -28,6 +28,10 @@ module.exports = {
         img.setAttribute('alt', node.altText);
         img.setAttribute('loading', 'lazy');
 
+        if (node.title) {
+            img.setAttribute('title', node.title);
+        }
+
         if (node.width && node.height) {
             img.setAttribute('width', node.width);
             img.setAttribute('height', node.height);

@@ -1,7 +1,7 @@
 const {DecoratorNode} = require('lexical');
 
 class ImageNode extends DecoratorNode {
-    constructor({src, caption, altText,cardWidth, width, height}) {
+    constructor({src, caption, altText,cardWidth, width, height, title}) {
         super();
         this.src = src || '';
         this.caption = caption || '';
@@ -9,6 +9,7 @@ class ImageNode extends DecoratorNode {
         this.cardWidth = cardWidth || 'regular';
         this.width = width || null;
         this.height = height || null;
+        this.title = title || '';
     }
 
     static getType() {
