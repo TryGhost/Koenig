@@ -6,13 +6,13 @@ import {ReactComponent as CloseIcon} from '../../../assets/icons/kg-close.svg';
 import {ReactComponent as UnsplashHeartIcon} from '../../../assets/icons/kg-unsplash-heart.svg';
 import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.svg';
 
-export function UnsplashSelector({isZoomed}) {
+export function UnsplashSelector({isZoomed, toggle}) {
     return (
         <>
             <div className="bg-black opacity-60 inset-0 h-[100vh]"></div>
             <div className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
-                <button className="absolute top-6 right-6">
-                    <CloseIcon className="w-4 h-4 text-grey-400 stroke-2" />
+                <button className="absolute top-6 right-6 cursor-pointer">
+                    <CloseIcon onClick={() => toggle()} className="w-4 h-4 text-grey-400 stroke-2" />
                 </button>
                 <div className="flex flex-col h-full">
                     <header className="flex shrink-0 justify-between py-10 px-20 items-center">

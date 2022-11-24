@@ -28,6 +28,8 @@ const KoenigEditor = ({
     }, [onChange]);
 
     const {editorContainerRef} = React.useContext(KoenigComposerContext);
+    // get .koenig-lexical .top container
+    const container = document.querySelector('.koenig-lexical');
 
     // we need an element reference for the container element that
     // any floating elements in plugins will be rendered inside
@@ -60,7 +62,7 @@ const KoenigEditor = ({
             <ImagePlugin />
             <DragDropPastePlugin />
             <HorizontalRulePlugin />
-            <UnsplashEmbedPlugin />
+            <UnsplashEmbedPlugin container={container} />
         </div>
     );
 };
