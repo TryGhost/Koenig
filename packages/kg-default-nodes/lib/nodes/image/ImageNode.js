@@ -27,15 +27,23 @@ export class ImageNode extends KoenigDecoratorNode {
         );
     }
 
+    // used by `@tryghost/url-utils` to transform URLs contained in the serialized JSON
+    static get urlTransformMap() {
+        return {
+            src: 'url',
+            caption: 'html'
+        };
+    }
+
     getDataset() {
         return {
             src: this.__src,
             caption: this.__caption,
             title: this.__title,
             altText: this.__altText,
-            cardWidth: this.__cardWidth,
             width: this.__width,
-            height: this.__height
+            height: this.__height,
+            cardWidth: this.__cardWidth
         };
     }
 
