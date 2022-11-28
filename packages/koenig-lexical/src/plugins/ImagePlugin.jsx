@@ -11,12 +11,15 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {mergeRegister} from '@lexical/utils';
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import {$createImageNode, ImageNode, INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
-import {INSERT_UNSPLASH_EMBED_COMMAND} from '../nodes/EmbedNode';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
+import ModalComponent from '../components/ModalComponent';
 
 export const ImagePlugin = () => {
     const [editor] = useLexicalComposerContext();
     const {imageUploader} = React.useContext(KoenigComposerContext);
+    const [selector, setSelector] = React.useState(null);
+    const [selectedKey, setSelectedKey] = React.useState(null);
+    const [showModal, setShowModal] = React.useState(false);
 
     const handleImageUpload = React.useCallback(async (files, imageNodeKey) => {
         if (files?.length > 0) {
@@ -44,17 +47,18 @@ export const ImagePlugin = () => {
                     if (focusNode !== null) {
                         const imageNode = $createImageNode(dataset);
 
+                        // fires the unsplash selector
+                        if (dataset?.triggerFileSelector === 'unsplash') {
+                            setSelectedKey(imageNode.getKey());
+                            setShowModal(true);
+                            setSelector('unsplash');
+                        }
+
                         if (!dataset.src) {
                             const imageNodeKey = imageNode.getKey();
                             handleImageUpload(dataset, imageNodeKey);
                         }
 
-                        if (dataset?.service) {
-                            if (dataset.service === 'unsplash') {
-                                editor.dispatchCommand(INSERT_UNSPLASH_EMBED_COMMAND, imageNode);
-                            }
-                            // TODO: add more services?
-                        }
                         // insert a paragraph if this will be the last card and
                         // we're not already on a blank paragraph so we always
                         // have a trailing paragraph in the doc
@@ -76,8 +80,6 @@ export const ImagePlugin = () => {
                         const nodeSelection = $createNodeSelection();
                         nodeSelection.add(imageNode.getKey());
                         $setSelection(nodeSelection);
-
-                        // TODO: trigger file selector?
                     }
 
                     return true;
@@ -86,6 +88,14 @@ export const ImagePlugin = () => {
             )
         );
     }, [editor, imageUploader, handleImageUpload]);
+
+    if (showModal && selector) {
+        return (<ModalComponent 
+            service={selector} 
+            nodeKey={selectedKey}
+            handleModalClose={setShowModal}
+        />);
+    }
 
     return null;
 };

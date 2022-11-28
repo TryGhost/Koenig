@@ -5,7 +5,6 @@ import {AsideNode} from './AsideNode';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
 import {CodeBlockNode} from './CodeBlockNode';
 import {ImageNode} from './ImageNode';
-import {EmbedNode} from './EmbedNode';
 
 const DEFAULT_NODES = [
     HeadingNode,
@@ -16,8 +15,7 @@ const DEFAULT_NODES = [
     LinkNode,
     CodeBlockNode,
     HorizontalRuleNode,
-    ImageNode,
-    EmbedNode
+    ImageNode
 ];
 
 export default DEFAULT_NODES;

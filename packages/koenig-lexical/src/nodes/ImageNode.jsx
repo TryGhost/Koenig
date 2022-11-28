@@ -3,9 +3,11 @@ import {DecoratorNode, createCommand} from 'lexical';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 // import KoenigComposerContext from '../context/KoenigComposerContext';
 import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-image.svg';
+import {ReactComponent as UnsplashIcon} from '../assets/icons/kg-card-type-unsplash.svg';
 import {ImageNodeComponent} from './ImageNodeComponent';
 export const INSERT_IMAGE_COMMAND = createCommand();
 export const UPLOAD_IMAGE_COMMAND = createCommand();
+export const INSERT_UNSPLASH_EMBED_COMMAND = createCommand();
 
 function convertImageElement(domNode) {
     if (domNode instanceof HTMLImageElement) {
@@ -39,7 +41,7 @@ export class ImageNode extends DecoratorNode {
         return 'image';
     }
 
-    static kgMenu = {
+    static kgMenu = [{
         label: 'Image',
         desc: 'Upload, or embed with /image [url]',
         Icon: ImageCardIcon,
@@ -49,7 +51,20 @@ export class ImageNode extends DecoratorNode {
         },
         matches: ['image', 'img'],
         queryParams: ['src']
-    };
+    },
+    {
+        section: 'Embed',
+        label: 'Unsplash',
+        desc: '/unsplash [search term or url]',
+        Icon: UnsplashIcon,
+        insertCommand: INSERT_IMAGE_COMMAND,
+        insertParams: {
+            triggerFileDialog: false,
+            triggerFileSelector: 'unsplash'
+        },
+        matches: ['unsplash', 'uns'],
+        queryParams: ['src']
+    }];
 
     static clone(node) {
         return new ImageNode(

@@ -72,7 +72,7 @@ const divideArray = (arr, n) => {
     return out;
 };
 
-export function UnsplashSelector({toggle, insertImage, zoomedUrl}) {
+export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
     const [zoomedImg, setZoomedImg] = React.useState(zoomedUrl || null);
     const selectImg = (imgUrl) => {
         setZoomedImg(imgUrl);
@@ -84,7 +84,7 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl}) {
                 <button className="absolute top-6 right-6 cursor-pointer">
                     <CloseIcon 
                         data-kg-modal-close-button 
-                        onClick={() => toggle({removeImage: true})} 
+                        onClick={() => closeModal()} 
                         className="w-4 h-4 text-grey-400 stroke-2" 
                     />
                 </button>
@@ -125,10 +125,10 @@ function UnsplashGallery({insertImage, selectImg, dataset}) {
     ));
 }
 
-function UnsplashZoomed({imgUrl, setZoomedImg, insertImage}) {
+function UnsplashZoomed({imgUrl, setZoomedImg, insertImage, selectImg}) {
     return (
         <div data-kg-unsplash-zoomed onClick={() => setZoomedImg(null)} className="flex justify-center grow basis-0 h-full">
-            <UnsplashImg zoomed="true" imgUrl={imgUrl} insertImage={insertImage} />
+            <UnsplashImg zoomed="true" imgUrl={imgUrl} insertImage={insertImage} selectImg={selectImg} />
         </div>
     );
 }
