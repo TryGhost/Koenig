@@ -3,7 +3,11 @@ module.exports = {
     extends: [
         'plugin:ghost/node'
     ],
-    parseOptions: {
+    parserOptions: {
         sourceType: 'module'
+    },
+    env: {
+        browser: true,
+        node: true
     }
 };

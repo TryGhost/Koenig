@@ -1,6 +1,4 @@
-// Switch these lines once there are useful utils
-// const testUtils = require('./utils');
-require('./utils');
+import * as testUtils from './utils/index.js'; // eslint-disable-line
 
 describe('Hello world', function () {
     it('Runs a test', function () {

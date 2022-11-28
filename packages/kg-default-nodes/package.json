@@ -12,7 +12,7 @@
     "test": "yarn test:unit",
     "lint:code": "eslint *.js lib/ --ext .js --cache",
     "lint": "yarn lint:code && yarn lint:test",
-    "lint:test": "eslint -c test/.eslintrc.js test/ --ext .js --cache"
+    "lint:test": "eslint -c test/.eslintrc.cjs test/ --ext .js --cache"
   },
   "files": [
     "index.js",

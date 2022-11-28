@@ -11,9 +11,9 @@ export function convertImageElement(domNode) {
 }
 
 export const convertImageDom = {
-    img: (node = Node) => ({
+    img: () => ({
         conversion: convertImageElement,
         priority: 1
     })
     // TODO: add <figure> and other handling from kg-parser-plugins
-}
+};
