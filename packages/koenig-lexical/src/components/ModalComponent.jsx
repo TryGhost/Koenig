@@ -2,14 +2,19 @@
 import {createPortal} from 'react-dom';
 import {UnsplashSelector} from '../components/ui/file-selectors/UnsplashSelector';
 
-const ModalComponent = ({container, handleModalClose, insertImageToNode}) => {
+const ModalComponent = ({service, container, handleModalClose, insertImageToNode}) => {
     const portalContainer = container || document.querySelector('.koenig-lexical');
 
     if (!portalContainer) {
         return null;
     }
 
-    return createPortal(<UnsplashSelector toggle={handleModalClose} insertImage={insertImageToNode} />, portalContainer);
+    const ModalService = () => {
+        if (service === 'unsplash') {
+            return <UnsplashSelector toggle={handleModalClose} insertImage={insertImageToNode} />;
+        }
+    };
+    return createPortal(<ModalService/>, portalContainer);
 };
 
 export default ModalComponent;
