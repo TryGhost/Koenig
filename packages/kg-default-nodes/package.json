@@ -6,8 +6,15 @@
   "license": "MIT",
   "main": "index.js",
   "type": "module",
+  "exports": {
+    "require": "./cjs/index.cjs",
+    "import": "./index.js"
+  },
   "scripts": {
-    "dev": "echo \"Implement me!\"",
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
+    "prepare": "NODE_ENV=production yarn build",
+    "pretest": "yarn build",
     "test:unit": "NODE_ENV=testing c8 --all --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
     "lint:code": "eslint *.js lib/ --ext .js --cache",
@@ -16,7 +23,8 @@
   },
   "files": [
     "index.js",
-    "lib"
+    "lib",
+    "cjs"
   ],
   "publishConfig": {
     "access": "public"
@@ -24,10 +32,12 @@
   "devDependencies": {
     "c8": "7.12.0",
     "mocha": "10.1.0",
+    "rollup": "^3.5.0",
     "should": "13.2.3",
     "sinon": "14.0.2"
   },
   "dependencies": {
+    "jsdom": "^20.0.3",
     "lexical": "^0.6.0"
   }
 }

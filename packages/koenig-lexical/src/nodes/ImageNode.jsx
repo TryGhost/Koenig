@@ -1,5 +1,5 @@
 import React from 'react';
-import {ImageNode as BaseImageNode, INSERT_IMAGE_COMMAND} from '@tryghost/kg-default-nodes';
+import {ImageNode as BaseImageNode, INSERT_IMAGE_COMMAND, ImageParser} from '@tryghost/kg-default-nodes';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-image.svg';
 import {ImageNodeComponent} from './ImageNodeComponent';
@@ -40,6 +40,11 @@ export class ImageNode extends BaseImageNode {
             dataset,
             node.__key
         );
+    }
+
+    static importDom() {
+        const parser = new ImageParser($createImageNode);
+        return parser.DOMMap;
     }
 
     getDataset() {

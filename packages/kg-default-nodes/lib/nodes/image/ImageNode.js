@@ -1,13 +1,16 @@
-import {DecoratorNode, createCommand} from 'lexical';
-import {convertImageDom} from './ImageDOMImporter';
+import {createCommand} from 'lexical';
+import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
+import {ImageParser} from './ImageParser';
+import {renderImageNodeToDOM} from './ImageRenderer';
 
 export const INSERT_IMAGE_COMMAND = createCommand();
 export const UPLOAD_IMAGE_COMMAND = createCommand();
 
-export class ImageNode extends DecoratorNode {
+export class ImageNode extends KoenigDecoratorNode {
     // payload properties
     __src;
     __caption;
+    __title;
     __altText;
     __cardWidth;
     __width;
@@ -28,6 +31,7 @@ export class ImageNode extends DecoratorNode {
         return {
             src: this.__src,
             caption: this.__caption,
+            title: this.__title,
             altText: this.__altText,
             cardWidth: this.__cardWidth,
             width: this.__width,
@@ -39,25 +43,27 @@ export class ImageNode extends DecoratorNode {
     static extensionTypes = ['gif', 'jpg', 'jpeg', 'png', 'svg', 'svgz', 'webp'];
     static mimeTypes = ['image/gif', 'image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
 
-    constructor({src, caption, altText, cardWidth, width, height} = {}, key) {
+    constructor({src, caption, title, altText, cardWidth, width, height} = {}, key) {
         super(key);
+        this.__src = src || '';
+        this.__title = title || '';
         this.__caption = caption || '';
         this.__altText = altText || '';
-        this.__src = src || '';
-        this.__cardWidth = cardWidth || 'regular';
         this.__width = width || null;
         this.__height = height || null;
+        this.__cardWidth = cardWidth || 'regular';
     }
 
     static importJSON(serializedNode) {
-        const {caption, altText, src, cardWidth, width, height} = serializedNode;
+        const {src, caption, title, altText, width, height, cardWidth} = serializedNode;
         const node = $createImageNode({
-            altText,
-            caption,
             src,
-            cardWidth,
+            caption,
+            title,
+            altText,
             width,
-            height
+            height,
+            cardWidth
         });
         return node;
     }
@@ -67,29 +73,25 @@ export class ImageNode extends DecoratorNode {
         const src = this.getSrc();
         const isBlob = src.startsWith('data:');
         const dataset = {
+            type: 'image',
+            src: isBlob ? '<base64String>' : this.getSrc(),
+            width: this.getImgWidth(),
+            height: this.getImgHeight(),
+            title: this.getTitle(),
             altText: this.getAltText(),
             caption: this.getCaption(),
-            src: isBlob ? '<base64String>' : this.getSrc(),
-            type: 'image',
-            cardWidth: this.getCardWidth(),
-            width: this.getImgWidth(),
-            height: this.getImgHeight()
+            cardWidth: this.getCardWidth()
         };
         return dataset;
     }
 
     static importDom() {
-        return convertImageDom;
+        const parser = new ImageParser($createImageNode);
+        return parser.DOMMap;
     }
 
-    exportDOM() {
-        const element = document.createElement('figure');
-        const img = document.createElement('img');
-        const figcaption = document.createElement('figcaption');
-        img.src = this.getSrc();
-        figcaption.innerHTML = this.getCaption();
-        element.appendChild(img);
-        element.appendChild(figcaption);
+    exportDOM(options) {
+        const element = renderImageNodeToDOM(this, options);
         return {element};
     }
 
@@ -113,6 +115,15 @@ export class ImageNode extends DecoratorNode {
     setSrc(src) {
         const writable = this.getWritable();
         return writable.__src = src;
+    }
+
+    getTitle() {
+        return this.__title;
+    }
+
+    setTitle(title) {
+        const writable = this.getWritable();
+        return writable.__title = title;
     }
 
     setCardWidth(cardWidth) {
