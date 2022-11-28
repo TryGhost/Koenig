@@ -9,8 +9,8 @@ import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.
 export function UnsplashSelector({isZoomed, toggle, insertImage}) {
     return (
         <>
-            <div data-kg-modal="unsplash" className="bg-black opacity-60 inset-0 h-[100vh]"></div>
-            <div className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
+            <div className="bg-black opacity-60 inset-0 h-[100vh] absolute"></div>
+            <div data-kg-modal="unsplash" className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
                 <button className="absolute top-6 right-6 cursor-pointer">
                     <CloseIcon data-kg-modal-close-button onClick={() => toggle({removeImage: true})} className="w-4 h-4 text-grey-400 stroke-2" />
                 </button>
