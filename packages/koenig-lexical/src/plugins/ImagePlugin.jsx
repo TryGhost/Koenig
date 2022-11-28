@@ -13,7 +13,7 @@ import KoenigComposerContext from '../context/KoenigComposerContext';
 import {$createImageNode, ImageNode, INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
 import {UnsplashSelector} from '../components/ui/file-selectors/UnsplashSelector';
-import ModalContainer from '../components/ModalContainer';
+import ModalComponent from '../components/ModalComponent';
 
 export const ImagePlugin = () => {
     const [editor] = useLexicalComposerContext();
@@ -27,13 +27,24 @@ export const ImagePlugin = () => {
         }
     }, [imageUploader, editor]);
 
-    const handleModalClose = () => {
+    const handleModalClose = (args) => {
         setShowUnsplash(false);
         // remove the image node from the editor
-        if (imgNode) {
+        if (imgNode && args?.removeImage === true) { // probably not needed if insertNode removes modal
             editor.update(() => {
                 imgNode.remove();
             });
+        }
+    };
+
+    const insertImageToNode = (image) => {
+        if (image.src) {
+            editor.update(() => {
+                const node = imgNode;
+                node.setSrc(image.src);
+            //
+            });
+            setShowUnsplash(false);
         }
     };
 
@@ -94,23 +105,13 @@ export const ImagePlugin = () => {
                 },
                 COMMAND_PRIORITY_HIGH
             )
-            // editor.registerCommand(
-            //     UPLOAD_IMAGE_COMMAND,
-            //     async (files) => {
-            //         // const dataset = await imageUploader.imageUploader(files);
-            //         editor.dispatchCommand(INSERT_IMAGE_COMMAND, dataset);
-            //     },
-            //     COMMAND_PRIORITY_HIGH
-            // ),
-            // todo: create another command to handle more of the upload logic to allow us to be able to keep the image uploader more "dry / generic" as it needs to handle multiple states of the upload,
-            // eg: the progress bar, error states, temp image, etc
         );
     }, [editor, imageUploader, handleImageUpload]);
 
     if (showUnsplash) {
         return (
-            <ModalContainer
-                component={<UnsplashSelector toggle={handleModalClose} />} 
+            <ModalComponent
+                component={<UnsplashSelector toggle={handleModalClose} insertImage={insertImageToNode} />} 
             />
         );
     }

@@ -1,7 +1,7 @@
 // Portal container that can be used to render floating elements, outside of the editor
 import {createPortal} from 'react-dom';
 
-const ModalContainer = ({component, container}) => {
+const ModalComponent = ({component, container}) => {
     const portalContainer = container || document.querySelector('.koenig-lexical');
 
     if (!portalContainer) {
@@ -11,4 +11,4 @@ const ModalContainer = ({component, container}) => {
     return createPortal(component, portalContainer);
 };
 
-export default ModalContainer;
+export default ModalComponent;
