@@ -54,4 +54,24 @@ describe('Modals', async () => {
         expect(await page.$('[data-kg-modal="unsplash"]')).toBeNull();
         expect(await page.$('[data-kg-card="image"]')).toBeNull();
     });
+
+    test('renders unsplash images', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+    });
+
+    test('can select image', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        await page.click('[data-kg-unsplash-gallery-item]');
+        expect(await page.$('[data-kg-unsplash-zoomed]')).not.toBeNull();
+    });
 });

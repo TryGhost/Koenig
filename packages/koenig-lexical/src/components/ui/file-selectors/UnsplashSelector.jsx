@@ -74,8 +74,8 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl}) {
     };
     return (
         <>
-            <div data-kg-modal="unsplash" className="bg-black opacity-60 inset-0 h-[100vh]"></div>
-            <div className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
+            <div className="bg-black opacity-60 inset-0 h-[100vh] absolute"></div>
+            <div data-kg-modal="unsplash" className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
                 <button className="absolute top-6 right-6 cursor-pointer">
                     <CloseIcon 
                         data-kg-modal-close-button 
@@ -112,7 +112,7 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl}) {
 function UnsplashGallery({insertImage, selectImg, dataset}) {
     const newArray = divideArray(dataset, 3);
     return newArray.map((array, index) => (
-        <div key={index} className="flex flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
+        <div data-kg-unsplash-gallery key={index} className="flex flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
             {array.map(item => (
                 <UnsplashImg key={item.id} imgUrl={item.imgUrl} caption={item.caption} selectImg={selectImg} insertImage={insertImage} />
             ))}
@@ -122,7 +122,7 @@ function UnsplashGallery({insertImage, selectImg, dataset}) {
 
 function UnsplashZoomed({imgUrl, setZoomedImg, insertImage}) {
     return (
-        <div onClick={() => setZoomedImg(null)} className="flex justify-center grow basis-0 h-full">
+        <div data-kg-unsplash-zoomed onClick={() => setZoomedImg(null)} className="flex justify-center grow basis-0 h-full">
             <UnsplashImg zoomed="true" imgUrl={imgUrl} insertImage={insertImage} />
         </div>
     );
@@ -130,7 +130,7 @@ function UnsplashZoomed({imgUrl, setZoomedImg, insertImage}) {
 
 function UnsplashImg({imgUrl, zoomed, insertImage, selectImg}) {
     return (
-        <div onClick={() => selectImg(imgUrl)} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
+        <div data-kg-unsplash-gallery-item onClick={() => selectImg(imgUrl)} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
             <img src={imgUrl} alt="Unsplash" className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} />
             <div className="absolute inset-0 flex flex-col justify-between p-5 transition-all ease-in-out bg-gradient-to-b from-black/5 via-black/5 to-black/30 opacity-0 hover:opacity-100">
                 <div className="flex items-center justify-end">
@@ -142,7 +142,7 @@ function UnsplashImg({imgUrl, zoomed, insertImage, selectImg}) {
                         <img className="w-8 h-8 rounded-full mr-2" src="https://images.unsplash.com/profile-1562493255799-d28c159b565e?auto=format&fit=crop&w=32&h=32&q=60&crop=faces&bg=fff" alt="author" />
                         <div className="mr-2 font-sans text-white text-sm font-medium truncate">Richard de Ruijter</div>
                     </div>
-                    <UnsplashButton onClick={() => {
+                    <UnsplashButton data-kg-unsplash-insert-button onClick={() => {
                         insertImage({
                             src: imgUrl
                         });
