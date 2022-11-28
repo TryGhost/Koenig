@@ -34,17 +34,19 @@ export class ImageNode extends BaseImageNode {
     }
 
     static clone(node) {
+        const dataset = node.getDataset();
+
         return new ImageNode(
-            {
-                src: node.__src,
-                caption: node.__caption,
-                altText: node.__altText,
-                cardWidth: node.__cardWidth,
-                width: node.__width,
-                height: node.__height
-            },
+            dataset,
             node.__key
         );
+    }
+
+    getDataset() {
+        const dataset = super.getDataset();
+
+        dataset.__previewSrc = this.__previewSrc;
+        dataset.__triggerFileDialog = this.__triggerFileDialog;
     }
 
     getPreviewSrc() {

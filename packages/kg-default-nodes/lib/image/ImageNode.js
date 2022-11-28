@@ -19,16 +19,20 @@ export class ImageNode extends DecoratorNode {
 
     static clone(node) {
         return new ImageNode(
-            {
-                src: node.__src,
-                caption: node.__caption,
-                altText: node.__altText,
-                cardWidth: node.__cardWidth,
-                width: node.__width,
-                height: node.__height
-            },
+            node.getDataset(),
             node.__key
         );
+    }
+
+    getDataset() {
+        return {
+            src: this.__src,
+            caption: this.__caption,
+            altText: this.__altText,
+            cardWidth: this.__cardWidth,
+            width: this.__width,
+            height: this.__height
+        };
     }
 
     // from https://github.com/TryGhost/Ghost/blob/main/ghost/admin/app/components/gh-image-uploader.js#L18
