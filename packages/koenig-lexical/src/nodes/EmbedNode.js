@@ -1,6 +1,8 @@
-import {ElementNode} from 'lexical';
+import {ElementNode, createCommand} from 'lexical';
 import {INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
 import {ReactComponent as UnsplashIcon} from '../assets/icons/kg-card-type-unsplash.svg';
+
+export const INSERT_UNSPLASH_EMBED_COMMAND = createCommand();
 
 // Parent node for embed nodes
 export class EmbedNode extends ElementNode {
@@ -23,9 +25,9 @@ export class EmbedNode extends ElementNode {
         insertCommand: INSERT_IMAGE_COMMAND,
         insertParams: {
             triggerFileDialog: false,
-            imageType: 'unsplash'
+            service: 'unsplash'
         },
-        matches: ['unsplash'],
+        matches: ['/unsplash'],
         queryParams: ['src']
     }];
     constructor() {

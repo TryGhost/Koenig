@@ -6,11 +6,76 @@ import {ReactComponent as CloseIcon} from '../../../assets/icons/kg-close.svg';
 import {ReactComponent as UnsplashHeartIcon} from '../../../assets/icons/kg-unsplash-heart.svg';
 import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.svg';
 
+const demoDataset = [
+    {
+        id: 1,
+        imgUrl: 'https://images.unsplash.com/photo-1574948495680-f67aab1ec3ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDMyMXx8c3VtbWVyfGVufDB8fHx8MTY2OTEwNDUwNw&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 1'
+    },
+    {
+        id: 2,
+        imgUrl: 'https://images.unsplash.com/photo-1595905710073-c5bf3611d945?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDIzfHxzZWElMjBncmVlbnxlbnwwfHx8fDE2NjkxMDU3MTA&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 2'
+    },
+    {
+        id: 3,
+        imgUrl: 'https://images.unsplash.com/photo-1526676537331-7747bf8278fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEyfHxhdGhsZXRpY3MlMjB0cmFja3xlbnwwfHx8fDE2NjkxMDU1MTA&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 3'
+    },
+    {
+        id: 4,
+        imgUrl: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE0MHx8cnVubmluZ3xlbnwwfHx8fDE2NjkxMDM3MTE&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 4'
+    },
+    {
+        id: 5,
+        imgUrl: 'https://images.unsplash.com/photo-1668584054035-f5ba7d426401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDI3Mnx8fHx8fDJ8fDE2NjkxMDUxNTA&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 5'
+    },
+    {
+        id: 6,
+        imgUrl: 'https://images.unsplash.com/photo-1668656690938-bbb5ec240ad1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDMwNHx8fHx8fDJ8fDE2NjkxMDUyMTQ&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 6'
+    },
+    {
+        id: 7,
+        imgUrl: 'https://images.unsplash.com/photo-1668952410266-e86775275752?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDExN3x8fHx8fDJ8fDE2NjkxMDQ2Nzk&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 7'
+    },
+    {
+        id: 8,
+        imgUrl: 'https://images.unsplash.com/photo-1597305877032-0668b3c6413a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDR8fHBsYW50fGVufDB8fHx8MTY2OTEwNjIwOA&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 8'
+    },
+    {
+        id: 9,
+        imgUrl: 'https://images.unsplash.com/photo-1591087068118-0e6b440716c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE4OXx8b3JhbmdlfGVufDB8fHx8MTY2OTEwNTM4NQ&ixlib=rb-4.0.3&q=80&w=1200',
+        caption: 'Caption 9'
+    }
+];
+
+// todo replace with better algo
+const divideArray = (arr, n) => {
+    const len = arr.length;
+    const out = [];
+    let i = 0;
+    while (i < len) {
+        // eslint-disable-next-line no-plusplus
+        const size = Math.ceil((len - i) / n--);
+        out.push(arr.slice(i, i += size));
+    }
+    return out;
+};
+
 export function UnsplashSelector({isZoomed, toggle, insertImage}) {
+    const [zoomedImg, setZoomedImg] = React.useState(null);
+    const selectImg = (imgUrl) => {
+        setZoomedImg(imgUrl);
+    };
     return (
         <>
-            <div className="bg-black opacity-60 inset-0 h-[100vh] absolute"></div>
-            <div data-kg-modal="unsplash" className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
+            <div data-kg-modal="unsplash" className="bg-black opacity-60 inset-0 h-[100vh]"></div>
+            <div className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
                 <button className="absolute top-6 right-6 cursor-pointer">
                     <CloseIcon data-kg-modal-close-button onClick={() => toggle({removeImage: true})} className="w-4 h-4 text-grey-400 stroke-2" />
                 </button>
@@ -27,10 +92,10 @@ export function UnsplashSelector({isZoomed, toggle, insertImage}) {
                     </header>
                     <div className="relative h-full overflow-hidden">
                         <div className={`overflow-auto w-full h-full px-20 flex justify-center ${isZoomed ? 'pb-10' : ''}`}>
-                            {isZoomed ?
-                                <UnsplashZoomed />
+                            {zoomedImg || isZoomed ?
+                                <UnsplashZoomed imgUrl={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
                                 :
-                                <UnsplashGallery insertImage={insertImage} />
+                                <UnsplashGallery selectImg={selectImg} insertImage={insertImage} dataset={demoDataset} />
                             }
                         </div>
                     </div>
@@ -40,40 +105,28 @@ export function UnsplashSelector({isZoomed, toggle, insertImage}) {
     );
 }
 
-function UnsplashGallery({insertImage}) {
-    return (
-        <>
-            <div className="flex  flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1574948495680-f67aab1ec3ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDMyMXx8c3VtbWVyfGVufDB8fHx8MTY2OTEwNDUwNw&ixlib=rb-4.0.3&q=80&w=1200" />
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1595905710073-c5bf3611d945?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDIzfHxzZWElMjBncmVlbnxlbnwwfHx8fDE2NjkxMDU3MTA&ixlib=rb-4.0.3&q=80&w=1200" />
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1526676537331-7747bf8278fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEyfHxhdGhsZXRpY3MlMjB0cmFja3xlbnwwfHx8fDE2NjkxMDU1MTA&ixlib=rb-4.0.3&q=80&w=1200" />
-            </div>
-            <div className="flex  flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE0MHx8cnVubmluZ3xlbnwwfHx8fDE2NjkxMDM3MTE&ixlib=rb-4.0.3&q=80&w=1200" />
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1668584054035-f5ba7d426401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDI3Mnx8fHx8fDJ8fDE2NjkxMDUxNTA&ixlib=rb-4.0.3&q=80&w=1200" />
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1668656690938-bbb5ec240ad1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDMwNHx8fHx8fDJ8fDE2NjkxMDUyMTQ&ixlib=rb-4.0.3&q=80&w=1200" />
-            </div>
-            <div className="flex  flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1668952410266-e86775275752?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDExN3x8fHx8fDJ8fDE2NjkxMDQ2Nzk&ixlib=rb-4.0.3&q=80&w=1200" />
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1597305877032-0668b3c6413a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDR8fHBsYW50fGVufDB8fHx8MTY2OTEwNjIwOA&ixlib=rb-4.0.3&q=80&w=1200" />
-                <UnsplashImg insertImage={insertImage} imgUrl="https://images.unsplash.com/photo-1591087068118-0e6b440716c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE4OXx8b3JhbmdlfGVufDB8fHx8MTY2OTEwNTM4NQ&ixlib=rb-4.0.3&q=80&w=1200" />
-            </div>
-            
-        </>
-    );
+function UnsplashGallery({insertImage, selectImg, dataset}) {
+    const newArray = divideArray(dataset, 3);
+    return newArray.map((array, index) => (
+        <div key={index} className="flex flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
+            {array.map(item => (
+                <UnsplashImg key={item.id} imgUrl={item.imgUrl} caption={item.caption} selectImg={selectImg} insertImage={insertImage} />
+            ))}
+        </div>
+    ));
 }
 
-function UnsplashZoomed() {
+function UnsplashZoomed({imgUrl, setZoomedImg, insertImage}) {
     return (
-        <div className="flex justify-center grow basis-0 h-full">
-            <UnsplashImg zoomed="true" imgUrl="https://images.unsplash.com/photo-1574948495680-f67aab1ec3ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDMyMXx8c3VtbWVyfGVufDB8fHx8MTY2OTEwNDUwNw&ixlib=rb-4.0.3&q=80&w=1200" />
+        <div onClick={() => setZoomedImg(null)} className="flex justify-center grow basis-0 h-full">
+            <UnsplashImg zoomed="true" imgUrl={imgUrl} insertImage={insertImage} />
         </div>
     );
 }
 
-function UnsplashImg({imgUrl, zoomed, insertImage}) {
+function UnsplashImg({imgUrl, zoomed, insertImage, selectImg}) {
     return (
-        <div className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
+        <div onClick={() => selectImg(imgUrl)} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
             <img src={imgUrl} alt="Unsplash" className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} />
             <div className="absolute inset-0 flex flex-col justify-between p-5 transition-all ease-in-out bg-gradient-to-b from-black/5 via-black/5 to-black/30 opacity-0 hover:opacity-100">
                 <div className="flex items-center justify-end">
@@ -117,5 +170,7 @@ function UnsplashButton({icon, label, ...props}) {
 }
 
 UnsplashSelector.propTypes = {
-    isZoomed: PropTypes.bool
+    isZoomed: PropTypes.bool,
+    selectImg: PropTypes.func,
+    insertImage: PropTypes.func
 };
