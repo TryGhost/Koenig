@@ -39,6 +39,16 @@ export class ImageNode extends DecoratorNode {
     static extensionTypes = ['gif', 'jpg', 'jpeg', 'png', 'svg', 'svgz', 'webp'];
     static mimeTypes = ['image/gif', 'image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'];
 
+    constructor({src, caption, altText, cardWidth, width, height} = {}, key) {
+        super(key);
+        this.__caption = caption || '';
+        this.__altText = altText || '';
+        this.__src = src || '';
+        this.__cardWidth = cardWidth || 'regular';
+        this.__width = width || null;
+        this.__height = height || null;
+    }
+
     static importJSON(serializedNode) {
         const {caption, altText, src, cardWidth, width, height} = serializedNode;
         const node = $createImageNode({
@@ -50,31 +60,6 @@ export class ImageNode extends DecoratorNode {
             height
         });
         return node;
-    }
-
-    exportDOM() {
-        const element = document.createElement('figure');
-        const img = document.createElement('img');
-        const figcaption = document.createElement('figcaption');
-        img.src = this.getSrc();
-        figcaption.innerHTML = this.getCaption();
-        element.appendChild(img);
-        element.appendChild(figcaption);
-        return {element};
-    }
-
-    static importDom() {
-        return convertImageDom;
-    }
-
-    constructor({src, caption, altText, cardWidth, width, height} = {}, key) {
-        super(key);
-        this.__caption = caption || '';
-        this.__altText = altText || '';
-        this.__src = src || '';
-        this.__cardWidth = cardWidth || 'regular';
-        this.__width = width || null;
-        this.__height = height || null;
     }
 
     exportJSON() {
@@ -91,6 +76,21 @@ export class ImageNode extends DecoratorNode {
             height: this.getImgHeight()
         };
         return dataset;
+    }
+
+    static importDom() {
+        return convertImageDom;
+    }
+
+    exportDOM() {
+        const element = document.createElement('figure');
+        const img = document.createElement('img');
+        const figcaption = document.createElement('figcaption');
+        img.src = this.getSrc();
+        figcaption.innerHTML = this.getCaption();
+        element.appendChild(img);
+        element.appendChild(figcaption);
+        return {element};
     }
 
     createDOM() {
