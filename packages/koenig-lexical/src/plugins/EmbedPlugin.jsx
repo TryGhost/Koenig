@@ -12,6 +12,7 @@ import {imageUploadHandler} from '../utils/imageUploadHandler';
 // import {UnsplashSelector} from '../components/ui/file-selectors/UnsplashSelector';
 import ModalComponent from '../components/ModalComponent';
 import {INSERT_UNSPLASH_EMBED_COMMAND} from '../nodes/EmbedNode';
+import {getImageDimensions} from '../utils/getImageDimensions';
 
 export const EmbedPlugin = () => {
     const [editor] = useLexicalComposerContext();
@@ -37,11 +38,14 @@ export const EmbedPlugin = () => {
         setEmbedType(null);
     };
 
-    const insertImageToNode = (image) => {
+    const insertImageToNode = async (image) => {
+        const {height, width} = await getImageDimensions(image.src);
         if (image.src) {
             editor.update(() => {
                 const node = createdNode;
                 node.setSrc(image.src);
+                node.setImgHeight(height);
+                node.setImgWidth(width);
                 const nodeSelection = $createNodeSelection();
                 nodeSelection.add(node.getKey());
                 $setSelection(nodeSelection);
