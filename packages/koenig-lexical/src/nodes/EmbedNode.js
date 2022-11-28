@@ -17,6 +17,7 @@ export class EmbedNode extends ElementNode {
         return false;
     }
     // collection of embed cards
+    
     static kgMenu = [{
         section: 'Embed',
         label: 'Unsplash',
@@ -27,7 +28,7 @@ export class EmbedNode extends ElementNode {
             triggerFileDialog: false,
             service: 'unsplash'
         },
-        matches: ['/unsplash'],
+        matches: ['unsplash', 'uns'],
         queryParams: ['src']
     }];
     constructor() {

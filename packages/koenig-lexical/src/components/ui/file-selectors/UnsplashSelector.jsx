@@ -67,8 +67,8 @@ const divideArray = (arr, n) => {
     return out;
 };
 
-export function UnsplashSelector({isZoomed, toggle, insertImage}) {
-    const [zoomedImg, setZoomedImg] = React.useState(null);
+export function UnsplashSelector({toggle, insertImage, zoomedUrl}) {
+    const [zoomedImg, setZoomedImg] = React.useState(zoomedUrl || null);
     const selectImg = (imgUrl) => {
         setZoomedImg(imgUrl);
     };
@@ -77,7 +77,11 @@ export function UnsplashSelector({isZoomed, toggle, insertImage}) {
             <div data-kg-modal="unsplash" className="bg-black opacity-60 inset-0 h-[100vh]"></div>
             <div className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
                 <button className="absolute top-6 right-6 cursor-pointer">
-                    <CloseIcon data-kg-modal-close-button onClick={() => toggle({removeImage: true})} className="w-4 h-4 text-grey-400 stroke-2" />
+                    <CloseIcon 
+                        data-kg-modal-close-button 
+                        onClick={() => toggle({removeImage: true})} 
+                        className="w-4 h-4 text-grey-400 stroke-2" 
+                    />
                 </button>
                 <div className="flex flex-col h-full">
                     <header className="flex shrink-0 justify-between py-10 px-20 items-center">
@@ -91,8 +95,8 @@ export function UnsplashSelector({isZoomed, toggle, insertImage}) {
                         </div>
                     </header>
                     <div className="relative h-full overflow-hidden">
-                        <div className={`overflow-auto w-full h-full px-20 flex justify-center ${isZoomed ? 'pb-10' : ''}`}>
-                            {zoomedImg || isZoomed ?
+                        <div className={`overflow-auto w-full h-full px-20 flex justify-center ${zoomedImg ? 'pb-10' : ''}`}>
+                            {zoomedImg ?
                                 <UnsplashZoomed imgUrl={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
                                 :
                                 <UnsplashGallery selectImg={selectImg} insertImage={insertImage} dataset={demoDataset} />
@@ -170,7 +174,11 @@ function UnsplashButton({icon, label, ...props}) {
 }
 
 UnsplashSelector.propTypes = {
-    isZoomed: PropTypes.bool,
     selectImg: PropTypes.func,
-    insertImage: PropTypes.func
+    insertImage: PropTypes.func,
+    zoomedUrl: PropTypes.string
+};
+
+UnsplashZoomed.propTypes = {
+    imgUrl: PropTypes.string
 };
