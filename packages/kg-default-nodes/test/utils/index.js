@@ -5,7 +5,7 @@
  */
 
 // Require overrides - these add globals for tests
-export * from './overrides.js';
+require('./overrides');
 
 // Require assertions - adds custom should assertions
-// require('./assertions');
+require('./assertions');
