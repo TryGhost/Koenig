@@ -17,6 +17,11 @@ export function renderImageNodeToDOM(node, options = {}) {
     }
 
     const document = options.createDocument();
+
+    if (!node.getSrc() || node.getSrc().trim() === '') {
+        return document.createTextNode('');
+    }
+
     const figure = document.createElement('figure');
 
     let figureClasses = 'kg-card kg-image-card';
