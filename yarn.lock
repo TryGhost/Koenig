@@ -1485,7 +1485,7 @@
   dependencies:
     "@lexical/utils" "0.6.3"
 
-"@lexical/headless@^0.6.0":
+"@lexical/headless@^0.6.0", "@lexical/headless@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@lexical/headless/-/headless-0.6.3.tgz#7980e2cd3bc3608f0c67696e78141852f545ddd7"
   integrity sha512-MScupRNCYbD49IraYDbjDrE5pHh/8k9H0dxBI8nuXyotUqkXO+rcV7zfj9ICXBT+qc1e3TBISOjsei+A/eG+0g==
@@ -1497,7 +1497,7 @@
   dependencies:
     "@lexical/utils" "0.6.3"
 
-"@lexical/html@0.6.3":
+"@lexical/html@0.6.3", "@lexical/html@^0.6.3":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@lexical/html/-/html-0.6.3.tgz#818fd3c384589e050352477c3c531e3b043db303"
   integrity sha512-S1GikZFWJb/dHqbgGgtqEZBcSLX9oBfQvdt/MQfEi1TSraC6mevnVBvDNB4aBGCBN97uUzYqsVLFEtYiliCDVw==

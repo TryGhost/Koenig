@@ -1,16 +1,23 @@
-require('../utils'); // eslint-disable-line
-const jsdom = require('jsdom');
-const {ImageNode} = require('../../cjs/kg-default-nodes');
+const {html} = require('../utils');
+const {createHeadlessEditor} = require('@lexical/headless');
+const {$generateNodesFromDOM} = require('@lexical/html');
+const {JSDOM} = require('jsdom');
+const {ImageNode, $createImageNode, $isImageNode} = require('../../');
+
+const editorNodes = [ImageNode];
 
 describe('ImageNode', function () {
+    let editor;
     let dataset;
     let exportOptions;
 
     beforeEach(function () {
+        editor = createHeadlessEditor({nodes: editorNodes});
+
         dataset = {
             src: '/content/images/2022/11/koenig-lexical.jpg',
-            width: 1080,
-            height: 1024,
+            width: 3840,
+            height: 2160,
             title: 'This is a title',
             altText: 'This is some alt text',
             caption: 'This is a <b>caption</b>'
@@ -26,34 +33,116 @@ describe('ImageNode', function () {
                 }
             },
             createDocument() {
-                return (new jsdom()).window.document;
+                return (new JSDOM()).window.document;
             }
         };
     });
 
+    it('matches node with $isImageNode', function () {
+        editor.update(() => {
+            const imageNode = $createImageNode(dataset);
+            $isImageNode(imageNode).should.be.true;
+        });
+    });
+
     describe('data access', function () {
         it('has getters for all properties', function () {
-            const imageNode = new ImageNode(dataset);
+            editor.update(() => {
+                const imageNode = $createImageNode(dataset);
 
-            imageNode.getSrc().should.equal('/content/images/2022/11/koenig-lexical.jpg');
-            imageNode.getWidth().should.equal('');
-            imageNode.getHeight().should.equal('');
-            imageNode.getTitle().should.equal('');
-            imageNode.getAltText().should.equal('');
-            imageNode.getCaption().should.equal('');
+                imageNode.getSrc().should.equal('/content/images/2022/11/koenig-lexical.jpg');
+                imageNode.getImgWidth().should.equal(3840);
+                imageNode.getImgHeight().should.equal(2160);
+                imageNode.getTitle().should.equal('This is a title');
+                imageNode.getAltText().should.equal('This is some alt text');
+                imageNode.getCaption().should.equal('This is a <b>caption</b>');
+                imageNode.getCardWidth().should.equal('regular');
+            });
+        });
+
+        it('has setters for all properties', function () {
+            let imageNode;
+
+            editor.update(() => {
+                imageNode = $createImageNode();
+
+                imageNode.getSrc().should.equal('');
+                imageNode.setSrc('/content/images/2022/11/koenig-lexical.jpg');
+                imageNode.getSrc().should.equal('/content/images/2022/11/koenig-lexical.jpg');
+
+                should(imageNode.getImgWidth()).equal(null);
+                imageNode.setImgWidth(3840);
+                imageNode.getImgWidth().should.equal(3840);
+
+                should(imageNode.getImgHeight()).equal(null);
+                imageNode.setImgHeight(2160);
+                imageNode.getImgHeight().should.equal(2160);
+
+                imageNode.getTitle().should.equal('');
+                imageNode.setTitle('I am a title');
+                imageNode.getTitle().should.equal('I am a title');
+
+                imageNode.getAltText().should.equal('');
+                imageNode.setAltText('I am alt text');
+                imageNode.getAltText().should.equal('I am alt text');
+
+                imageNode.getCaption().should.equal('');
+                imageNode.setCaption('I am a <b>Caption</b>');
+                imageNode.getCaption().should.equal('I am a <b>Caption</b>');
+
+                imageNode.getCardWidth().should.equal('regular');
+                imageNode.setCardWidth('wide');
+                imageNode.getCardWidth().should.equal('wide');
+            });
         });
     });
 
     describe('exportDOM', function () {
         it('creates an image element', function () {
-            const imageNode = new ImageNode(dataset);
-            const {element} = imageNode.exportDOM();
+            editor.update(() => {
+                const imageNode = $createImageNode(dataset);
+                const {element} = imageNode.exportDOM(exportOptions);
 
-            element.outerHTML.should.equal('');
+                element.outerHTML.should.prettifyTo(html`
+                    <figure class="kg-card kg-image-card">
+                        <img
+                            src="/content/images/2022/11/koenig-lexical.jpg"
+                            alt="This is some alt text"
+                            loading="lazy"
+                            title="This is a title"
+                            width="3840"
+                            height="2160"
+                            srcset="/content/images/size/w600/2022/11/koenig-lexical.jpg 600w, /content/images/size/w1000/2022/11/koenig-lexical.jpg 1000w, /content/images/size/w1600/2022/11/koenig-lexical.jpg 1600w, /content/images/size/w2400/2022/11/koenig-lexical.jpg 2400w" sizes="(min-width: 720px) 720px"
+                        >
+                        <figcaption>This is a <b>caption</b></figcaption>
+                    </figure>
+                `);
+            });
         });
     });
 
     describe('importDOM', function () {
-        it('parses an img element');
+        it('parses an img element', function () {
+            const dom = (new JSDOM(html`
+                <img
+                    src="/image.png"
+                    alt="Alt text"
+                    title="Title text"
+                    width="3000"
+                    height="2000"
+                />
+            `)).window.document;
+
+            editor.update(() => {
+                const nodes = $generateNodesFromDOM(editor, dom);
+
+                nodes.length.should.equal(1);
+                nodes[0].getSrc().should.equal('/image.png');
+                nodes[0].getAltText().should.equal('Alt text');
+                nodes[0].getTitle().should.equal('Title text');
+                nodes[0].getImgWidth().should.equal(3000);
+                nodes[0].getImgHeight().should.equal(2000);
+            });
+        });
     });
 });

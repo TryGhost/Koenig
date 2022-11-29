@@ -3,7 +3,7 @@ import {isLocalContentImage} from '../../utils/is-local-content-image';
 import {setSrcsetAttribute} from '../../utils/srcset-attribute';
 import {resizeImage} from '../../utils/resize-image';
 
-export function renderImageNodeToDOM(node, options) {
+export function renderImageNodeToDOM(node, options = {}) {
     if (!options.createDocument) {
         let document = typeof window !== 'undefined' && window.document;
 

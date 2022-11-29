@@ -93,12 +93,12 @@ export class ImageNode extends KoenigDecoratorNode {
         return dataset;
     }
 
-    static importDom() {
+    static importDOM() {
         const parser = new ImageParser($createImageNode);
-        return parser.DOMMap;
+        return parser.DOMConversionMap;
     }
 
-    exportDOM(options) {
+    exportDOM(options = {}) {
         const element = renderImageNodeToDOM(this, options);
         return {element};
     }

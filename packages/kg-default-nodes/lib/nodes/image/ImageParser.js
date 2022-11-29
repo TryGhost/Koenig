@@ -3,13 +3,15 @@ export class ImageParser {
         this.$createNode = $createNode;
     }
 
-    get DOMMap() {
+    get DOMConversionMap() {
+        const self = this;
+
         return {
             img: () => ({
                 conversion(domNode) {
-                    if (domNode instanceof HTMLImageElement) {
-                        const {alt: altText, src, title} = domNode;
-                        const node = this.$createNode({altText, src, title});
+                    if (domNode.tagName === 'IMG') {
+                        const {alt: altText, src, title, width, height} = domNode;
+                        const node = self.$createNode({altText, src, title, width, height});
                         return {node};
                     }
 
