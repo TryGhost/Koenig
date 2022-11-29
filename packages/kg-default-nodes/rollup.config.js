@@ -38,7 +38,7 @@ export default [
                         ].join(', ')
                     }]
                 ],
-                exclude: ['node_modues/**', '../../node_modules/**']
+                exclude: ['node_modules/**', '../../node_modules/**']
             })
         ],
         external: dependencies
