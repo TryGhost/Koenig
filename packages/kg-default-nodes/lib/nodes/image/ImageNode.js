@@ -103,6 +103,7 @@ export class ImageNode extends KoenigDecoratorNode {
         return {element};
     }
 
+    /* c8 ignore start */
     createDOM() {
         const element = document.createElement('div');
         return element;
@@ -115,6 +116,7 @@ export class ImageNode extends KoenigDecoratorNode {
     isInline() {
         return false;
     }
+    /* c8 ignore stop */
 
     getSrc() {
         return this.__src;
@@ -180,6 +182,7 @@ export class ImageNode extends KoenigDecoratorNode {
     }
 
     // should be overridden
+    /* c8 ignore next 3 */
     decorate() {
         return '';
     }

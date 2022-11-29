@@ -4,6 +4,7 @@ import {setSrcsetAttribute} from '../../utils/srcset-attribute';
 import {resizeImage} from '../../utils/resize-image';
 
 export function renderImageNodeToDOM(node, options = {}) {
+    /* c8 ignore start */
     if (!options.createDocument) {
         let document = typeof window !== 'undefined' && window.document;
 
@@ -15,6 +16,7 @@ export function renderImageNodeToDOM(node, options = {}) {
             return document;
         };
     }
+    /* c8 ignore stop */
 
     const document = options.createDocument();
 
@@ -76,11 +78,11 @@ export function renderImageNodeToDOM(node, options = {}) {
 
         if (img.getAttribute('srcset') && node.getImgWidth() && node.getImgWidth() >= 720) {
             // standard size
-            if (!node.cardWidth || node.cardWidth === 'regular') {
+            if (!node.getCardWidth() || node.getCardWidth() === 'regular') {
                 img.setAttribute('sizes', '(min-width: 720px) 720px');
             }
 
-            if (node.cardWidth === 'wide' && node.getImgWidth() >= 1200) {
+            if (node.getCardWidth() === 'wide' && node.getImgWidth() >= 1200) {
                 img.setAttribute('sizes', '(min-width: 1200px) 1200px');
             }
         }
@@ -100,7 +102,7 @@ export function renderImageNodeToDOM(node, options = {}) {
         img.setAttribute('width', imageDimensions.width);
         img.setAttribute('height', imageDimensions.height);
 
-        if (isLocalContentImage(node.getSrc(), options.siteUrl) && options.canTransformImage && options.canTransformImage(node.getSrc())) {
+        if (isLocalContentImage(node.getSrc(), options.siteUrl) && options.canTransformImage?.(node.getSrc())) {
             // find available image size next up from 2x600 so we can use it for the "retina" src
             const availableImageWidths = getAvailableImageWidths(node, options.imageOptimization.contentImageSizes);
             const srcWidth = availableImageWidths.find(width => width >= 1200);
