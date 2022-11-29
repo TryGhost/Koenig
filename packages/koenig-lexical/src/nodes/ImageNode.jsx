@@ -52,6 +52,8 @@ export class ImageNode extends BaseImageNode {
 
         dataset.__previewSrc = this.__previewSrc;
         dataset.__triggerFileDialog = this.__triggerFileDialog;
+
+        return dataset;
     }
 
     getPreviewSrc() {
