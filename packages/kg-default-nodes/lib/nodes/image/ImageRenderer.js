@@ -1,18 +1,22 @@
-import jsdom from 'jsdom';
 import {getAvailableImageWidths} from '../../utils/get-available-image-widths';
 import {isLocalContentImage} from '../../utils/is-local-content-image';
 import {setSrcsetAttribute} from '../../utils/srcset-attribute';
 import {resizeImage} from '../../utils/resize-image';
 
 export function renderImageNodeToDOM(node, options) {
-    let document = typeof window !== 'undefined' && window.document;
+    if (!options.createDocument) {
+        let document = typeof window !== 'undefined' && window.document;
 
-    if (!document) {
-        const {JSDOM} = jsdom;
-        const dom = new JSDOM();
-        document = dom.window.document;
+        if (!document) {
+            throw new Error('renderImageNodeToDOM() must be passed a `createDocument` function as an option when used in a non-browser environment'); // eslint-disable-line
+        }
+
+        options.createDocument = function () {
+            return document;
+        };
     }
 
+    const document = options.createDocument();
     const figure = document.createElement('figure');
 
     let figureClasses = 'kg-card kg-image-card';
