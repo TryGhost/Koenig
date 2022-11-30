@@ -1,11 +1,11 @@
 // Portal container that can be used to render floating elements, outside of the editor
 import {createPortal} from 'react-dom';
 import {$getNodeByKey, $createNodeSelection, $setSelection} from 'lexical';
-import {UnsplashSelector} from '../components/ui/file-selectors/UnsplashSelector';
+import {UnsplashSelector} from './file-selectors/UnsplashSelector';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {getImageDimensions} from '../utils/getImageDimensions';
+import {getImageDimensions} from '../../utils/getImageDimensions';
 
-const ModalComponent = ({service, container, nodeKey, handleModalClose}) => {
+const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
     const [editor] = useLexicalComposerContext();
     const portalContainer = container || document.querySelector('.koenig-lexical');
 
@@ -49,4 +49,4 @@ const ModalComponent = ({service, container, nodeKey, handleModalClose}) => {
     return createPortal(<ModalService/>, portalContainer);
 };
 
-export default ModalComponent;
+export default UnsplashModal;

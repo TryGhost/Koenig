@@ -12,7 +12,7 @@ import {mergeRegister} from '@lexical/utils';
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import {$createImageNode, ImageNode, INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
-import ModalComponent from '../components/ModalComponent';
+import UnsplashModal from '../components/ui/UnsplashModal';
 
 export const ImagePlugin = () => {
     const [editor] = useLexicalComposerContext();
@@ -90,7 +90,7 @@ export const ImagePlugin = () => {
     }, [editor, imageUploader, handleImageUpload]);
 
     if (showModal && selector) {
-        return (<ModalComponent 
+        return (<UnsplashModal
             service={selector} 
             nodeKey={selectedKey}
             handleModalClose={setShowModal}
