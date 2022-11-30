@@ -27,6 +27,24 @@ export const ImagePlugin = () => {
         }
     }, [imageUploader, editor]);
 
+    const setNodeSelection = ({selection, selectedNode, imageNode}) => {
+        // insert a paragraph if this will be the last card and
+        // we're not already on a blank paragraph so we always
+        // have a trailing paragraph in the doc
+        const selectedIsBlankParagraph = $isParagraphNode(selectedNode) && selectedNode.getTextContent() === '';
+        const nextNode = selectedNode.getTopLevelElementOrThrow().getNextSibling();
+        if (!selectedIsBlankParagraph && !nextNode) {
+            selection.insertParagraph();
+        }
+        selection.focus
+            .getNode()
+            .getTopLevelElementOrThrow()
+            .insertBefore(imageNode);
+        const nodeSelection = $createNodeSelection();
+        nodeSelection.add(imageNode.getKey());
+        $setSelection(nodeSelection);
+    };
+
     React.useEffect(() => {
         if (!editor.hasNodes([ImageNode])){
             console.error('ImagePlugin: ImageNode not registered'); // eslint-disable-line no-console
@@ -50,40 +68,20 @@ export const ImagePlugin = () => {
                             dataset.forEach((file) => {
                                 const imageNode = $createImageNode(file);
                                 handleImageUpload([file], imageNode.getKey());
-                                // insert a paragraph if this will be the last card and
-                                // we're not already on a blank paragraph so we always
-                                // have a trailing paragraph in the doc
                                 const selectedNode = selection.focus.getNode();
-                                const selectedIsBlankParagraph = $isParagraphNode(selectedNode) && selectedNode.getTextContent() === '';
-                                const nextNode = selectedNode.getTopLevelElementOrThrow().getNextSibling();
-                                if (!selectedIsBlankParagraph && !nextNode) {
-                                    selection.insertParagraph();
-                                }
-    
-                                selection.focus
-                                    .getNode()
-                                    .getTopLevelElementOrThrow()
-                                    .insertBefore(imageNode);
-                                const nodeSelection = $createNodeSelection();
-                                nodeSelection.add(imageNode.getKey());
-                                $setSelection(nodeSelection);
+                                setNodeSelection({selection, selectedNode, imageNode});
                             });
                         }
-                        if ((!dataset.src && dataset.triggerFileDialog) || dataset.src) {
+                        if ((!dataset.src && dataset.triggerFileDialog) || dataset.src || dataset.triggerFileSelector) {
                             const imageNode = $createImageNode(dataset);
                             const selectedNode = selection.focus.getNode();
-                            const selectedIsBlankParagraph = $isParagraphNode(selectedNode) && selectedNode.getTextContent() === '';
-                            const nextNode = selectedNode.getTopLevelElementOrThrow().getNextSibling();
-                            if (!selectedIsBlankParagraph && !nextNode) {
-                                selection.insertParagraph();
+                            // fires the unsplash selector
+                            if (dataset?.triggerFileSelector === 'unsplash') {
+                                setSelectedKey(imageNode.getKey());
+                                setShowModal(true);
+                                setSelector('unsplash');
                             }
-                            selection.focus
-                                .getNode()
-                                .getTopLevelElementOrThrow()
-                                .insertBefore(imageNode);
-                            const nodeSelection = $createNodeSelection();
-                            nodeSelection.add(imageNode.getKey());
-                            $setSelection(nodeSelection);
+                            setNodeSelection({selection, selectedNode, imageNode});
                         }
                     }
 
