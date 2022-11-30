@@ -46,7 +46,8 @@ const TitleTextBox = ({title, setTitle, editorAPI}) => {
             onKeyDown={handleTitleKeyDown}
             value={title}
             className="w-full min-w-[auto] mb-3 pb-1 text-black font-sans text-5xl font-bold resize-none overflow-hidden focus-visible:outline-none"
-            placeholder="Post title" />
+            placeholder="Post title"
+            data-testid="post-title" />
     );
 };
 
