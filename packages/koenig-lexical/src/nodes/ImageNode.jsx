@@ -5,8 +5,6 @@ import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-imag
 import {ReactComponent as UnsplashIcon} from '../assets/icons/kg-card-type-unsplash.svg';
 import {ImageNodeComponent} from './ImageNodeComponent';
 
-export const INSERT_UNSPLASH_EMBED_COMMAND = createCommand(); // move to @tryghost/kg-default-nodes
-
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_IMAGE_COMMAND} from '@tryghost/kg-default-nodes';
 
@@ -14,6 +12,10 @@ export class ImageNode extends BaseImageNode {
     // transient properties used to control node behaviour
     __triggerFileDialog = false;
     __previewSrc = null;
+
+    static get type() {
+        return 'image';
+    }
 
     static kgMenu = [{
         label: 'Image',
