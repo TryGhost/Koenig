@@ -12,10 +12,14 @@ import {mergeRegister} from '@lexical/utils';
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import {$createImageNode, ImageNode, INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
+import UnsplashModal from '../components/ui/UnsplashModal';
 
 export const ImagePlugin = () => {
     const [editor] = useLexicalComposerContext();
     const {imageUploader} = React.useContext(KoenigComposerContext);
+    const [selector, setSelector] = React.useState(null);
+    const [selectedKey, setSelectedKey] = React.useState(null);
+    const [showModal, setShowModal] = React.useState(false);
 
     const handleImageUpload = React.useCallback(async (files, imageNodeKey) => {
         if (files?.length > 0) {
@@ -73,7 +77,6 @@ export const ImagePlugin = () => {
                             if (!selectedIsBlankParagraph && !nextNode) {
                                 selection.insertParagraph();
                             }
-
                             selection.focus
                                 .getNode()
                                 .getTopLevelElementOrThrow()
@@ -88,10 +91,16 @@ export const ImagePlugin = () => {
                 },
                 COMMAND_PRIORITY_HIGH
             )
-            // todo: create another command to handle more of the upload logic to allow us to be able to keep the image uploader more "dry / generic" as it needs to handle multiple states of the upload,
-            // eg: the progress bar, error states, temp image, etc
         );
     }, [editor, imageUploader, handleImageUpload]);
+
+    if (showModal && selector) {
+        return (<UnsplashModal
+            service={selector} 
+            nodeKey={selectedKey}
+            handleModalClose={setShowModal}
+        />);
+    }
 
     return null;
 };
