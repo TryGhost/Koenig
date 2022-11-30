@@ -6,7 +6,7 @@ const dependencies = Object.keys(pkg.dependencies);
 
 export default [
     // Node build.
-    // No transpilation or bundling other than converstion from es modules to cjs
+    // No transpilation or bundling other than conversion from es modules to cjs
     {
         input: pkg.source,
         output: {
@@ -38,7 +38,7 @@ export default [
                         ].join(', ')
                     }]
                 ],
-                exclude: ['node_modues/**', '../../node_modules/**']
+                exclude: ['node_modules/**', '../../node_modules/**']
             })
         ],
         external: dependencies
