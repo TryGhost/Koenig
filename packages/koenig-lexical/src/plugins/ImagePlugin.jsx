@@ -65,7 +65,7 @@ export const ImagePlugin = () => {
                                 $setSelection(nodeSelection);
                             });
                         }
-                        if (!dataset.src && dataset.triggerFileDialog) {
+                        if ((!dataset.src && dataset.triggerFileDialog) || dataset.src) {
                             const imageNode = $createImageNode(dataset);
                             const selectedNode = selection.focus.getNode();
                             const selectedIsBlankParagraph = $isParagraphNode(selectedNode) && selectedNode.getTextContent() === '';
