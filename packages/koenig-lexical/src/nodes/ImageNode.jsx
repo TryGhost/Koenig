@@ -5,7 +5,6 @@ import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-image.svg';
 import {ImageNodeComponent} from './ImageNodeComponent';
 export const INSERT_IMAGE_COMMAND = createCommand();
-export const UPLOAD_IMAGE_COMMAND = createCommand();
 
 function convertImageElement(domNode) {
     if (domNode instanceof HTMLImageElement) {
