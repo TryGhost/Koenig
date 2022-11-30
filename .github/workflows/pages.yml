@@ -24,6 +24,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn
+        
+      - name: Install default nodes
+        run: cd ./packages/kg-default-nodes && yarn
 
       - name: Copy CNAME to build
         run: cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
