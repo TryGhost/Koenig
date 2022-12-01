@@ -6,7 +6,6 @@ import {UnsplashSelector} from './file-selectors/UnsplashSelector';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import KoenigComposerContext from '../../context/KoenigComposerContext';
 import UnsplashService from '../../utils/services/unsplash';
-import MasonryLayout from '../../utils/masonry';
 
 const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
     const [editor] = useLexicalComposerContext();
@@ -18,8 +17,6 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
         API_URL,
         unsplashConf
     );
-
-    const masonry = new MasonryLayout(3);
 
     const portalContainer = container || document.querySelector('.koenig-lexical');
 
@@ -58,7 +55,7 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
 
     const ModalService = () => {
         if (service === 'unsplash') {
-            return <UnsplashSelector Masonry={masonry} UnsplashLib={unsplashApi} closeModal={closeModalHandler} insertImage={insertImageToNode} />;
+            return <UnsplashSelector UnsplashLib={unsplashApi} closeModal={closeModalHandler} insertImage={insertImageToNode} />;
         }
     };
     return createPortal(<ModalService/>, portalContainer);

@@ -26,16 +26,10 @@ class MasonryLayout {
         }
     }
 
-    addPhotos(photos) {
+    addPhotoToColumns(photo) {
         if (!this.columns) {
             this.reset();
         }
-        for (let photo of photos) {
-            this.addPhotoToColumns(photo);
-        }
-    }
-
-    addPhotoToColumns(photo) {
         let min = Math.min(...this.columnHeights);
         let columnIndex = this.columnHeights.indexOf(min);
 
@@ -47,6 +41,13 @@ class MasonryLayout {
 
     getColumns() {
         return this.columns;
+    }
+
+    changeColumnCount(newColumnCount) {
+        if (newColumnCount !== this.columnCount) {
+            this.columnCount = newColumnCount;
+            this.reset();
+        }
     }
 }
 

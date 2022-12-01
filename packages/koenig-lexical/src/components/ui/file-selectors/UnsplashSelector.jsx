@@ -6,7 +6,7 @@ import {ReactComponent as CloseIcon} from '../../../assets/icons/kg-close.svg';
 import {ReactComponent as UnsplashHeartIcon} from '../../../assets/icons/kg-unsplash-heart.svg';
 import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.svg';
 
-export function UnsplashSelector({insertImage, closeModal, UnsplashLib, Masonry}) {
+export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
     const galleryRef = React.useRef();
     const initLoadRef = React.useRef(false);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -16,25 +16,57 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib, Masonry}
         setZoomedImg(payload);
     };
 
-    const loadData = React.useCallback(async () => {
+    const loadInitPhotos = React.useCallback(async () => {
         if (initLoadRef.current === false) {
+            UnsplashLib.clearPhotos();
             await UnsplashLib.loadNew();
-            const photos = UnsplashLib.getPhotos();
-            Masonry.addPhotos(photos);
-            const newArray = Masonry.getColumns();
-            setDataset(newArray);
+            const photos = UnsplashLib.getColumns();
+            setDataset(photos);
             setIsLoading(false);
         }
-    }, [UnsplashLib, Masonry]);
+    }, [UnsplashLib]);
 
     // TODO add infinite scroll
 
     React.useEffect(() => {
-        loadData();
+        loadInitPhotos();
         return () => {
             initLoadRef.current = true;
         };
-    }, [loadData]);
+    }, [loadInitPhotos]);
+
+    const handleSearch = async (e) => {
+        const query = e.target.value;
+        if (query.length > 0) {
+            setIsLoading(true);
+            UnsplashLib.clearPhotos();
+            await UnsplashLib.search(query);
+            const photos = UnsplashLib.getColumns();
+            setDataset(photos);
+            setIsLoading(false);
+        }
+    };
+
+    // const handleSearch = async (e) => {
+    //     const query = e.target.value;
+    //     setTimeout(async () => {
+    //         if (query.length > 2) {
+    //             setIsLoading(true);
+    //             setZoomedImg(null);
+    //             await UnsplashLib.search(query);
+    //             const photos = UnsplashLib.getPhotos();
+    //             if (photos.length) {
+    //                 Masonry.addPhotos(photos);
+    //                 const newArray = Masonry.getColumns();
+    //                 setDataset(newArray);
+    //                 setIsLoading(false);
+    //             }
+    //         }
+    //         if (query.length === 0) {
+    //             loadInitPhotos();
+    //         }
+    //     }, 300);
+    // };
 
     return (
         <>
@@ -55,7 +87,7 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib, Masonry}
                         </h1>
                         <div className="relative w-full max-w-sm">
                             <SearchIcon className="absolute top-1/2 left-4 w-4 h-4 -translate-y-2 text-grey-700" />
-                            <input className="pr-8 pl-10 border border-grey-300 rounded-full font-sans text-md font-normal text-black h-10 w-full focus:border-grey-400 focus-visible:outline-none" placeholder="Search free high-resolution photos" />
+                            <input onChange={handleSearch} className="pr-8 pl-10 border border-grey-300 rounded-full font-sans text-md font-normal text-black h-10 w-full focus:border-grey-400 focus-visible:outline-none" placeholder="Search free high-resolution photos" />
                         </div>
                     </header>
                     <div className="relative h-full overflow-hidden">
