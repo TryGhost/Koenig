@@ -1,50 +1,16 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {ReactComponent as UnsplashIcon} from '../../../assets/icons/kg-card-type-unsplash.svg';
 import {ReactComponent as SearchIcon} from '../../../assets/icons/kg-search.svg';
 import {ReactComponent as CloseIcon} from '../../../assets/icons/kg-close.svg';
 import {ReactComponent as UnsplashHeartIcon} from '../../../assets/icons/kg-unsplash-heart.svg';
 import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.svg';
-import UnsplashService from '../../../utils/services/unsplash';
 
-// todo replace with masonry library
-const divideArray = (arr, n) => {
-    const len = arr.length;
-    const out = [];
-    let i = 0;
-    while (i < len) {
-        // eslint-disable-next-line no-plusplus
-        const size = Math.ceil((len - i) / n--);
-        out.push(arr.slice(i, i += size));
-    }
-    return out;
-};
-
-// TODO should get this data from consuming app
-const API_URL = 'https://api.unsplash.com';
-const API_VERSION = 'v1';
-// const DEBOUNCE_MS = 600; // for search
-const API_TOKEN = '8672af113b0a8573edae3aa3713886265d9bb741d707f6c01a486cde8c278980';
-
-const defaultHeaders = {
-    Authorization: `Client-ID ${API_TOKEN}`,
-    'Accept-Version': API_VERSION,
-    'Content-Type': 'application/json',
-    'App-Pragma': 'no-cache',
-    'X-Unsplash-Cache': true
-};
-
-const unsplashApi = new UnsplashService(
-    API_URL,
-    API_VERSION,
-    API_TOKEN,
-    defaultHeaders
-);
-
-export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
+export function UnsplashSelector({insertImage, closeModal, UnsplashLib, Masonry}) {
+    const galleryRef = React.useRef();
     const initLoadRef = React.useRef(false);
     const [isLoading, setIsLoading] = React.useState(true);
-    const [zoomedImg, setZoomedImg] = React.useState(zoomedUrl || null);
+    const [zoomedImg, setZoomedImg] = React.useState(null);
     const [dataset, setDataset] = React.useState([]);
     const selectImg = (payload) => {
         setZoomedImg(payload);
@@ -52,12 +18,16 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
 
     const loadData = React.useCallback(async () => {
         if (initLoadRef.current === false) {
-            await unsplashApi.loadNew();
-            const photos = unsplashApi.getPhotos();
-            setDataset(photos);
+            await UnsplashLib.loadNew();
+            const photos = UnsplashLib.getPhotos();
+            Masonry.addPhotos(photos);
+            const newArray = Masonry.getColumns();
+            setDataset(newArray);
             setIsLoading(false);
         }
-    }, []);
+    }, [UnsplashLib, Masonry]);
+
+    // TODO add infinite scroll
 
     React.useEffect(() => {
         loadData();
@@ -89,7 +59,7 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
                         </div>
                     </header>
                     <div className="relative h-full overflow-hidden">
-                        <div className={`overflow-auto w-full h-full px-20 flex justify-center ${zoomedImg ? 'pb-10' : ''}`}>
+                        <div ref={galleryRef} className={`overflow-auto w-full h-full px-20 flex justify-center ${zoomedImg ? 'pb-10' : ''}`}>
                             {zoomedImg ?
                                 <UnsplashZoomed payload={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
                                 :
@@ -107,8 +77,7 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
 }
 
 function UnsplashGallery({insertImage, selectImg, dataset}) {
-    const newArray = divideArray(dataset, 3);
-    return newArray.map((array, index) => (
+    return dataset.map((array, index) => (
         <div data-kg-unsplash-gallery key={index} className="flex flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
             {array.map(item => (
                 <UnsplashImg key={item.id} payload={item} caption={`Photo by ${item.user.name} on Unsplash`} selectImg={selectImg} insertImage={insertImage} />
@@ -134,7 +103,10 @@ function UnsplashImg({payload, zoomed, insertImage, selectImg}) {
                     <UnsplashButton data-kg-unsplash-insert-button onClick={() => {
                         insertImage({
                             src: payload.urls.full,
-                            caption: `Photo by ${payload.user.name} on Unsplash`
+                            caption: `Photo by ${payload.user.name} on Unsplash`,
+                            height: payload.height,
+                            width: payload.width,
+                            alt: payload.alt_description
                         });
                     }} label="Insert image" />
                 </div>

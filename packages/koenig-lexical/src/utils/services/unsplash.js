@@ -1,23 +1,6 @@
 // API Service for Unsplash
 // Reference https://github.com/TryGhost/Ghost/blob/main/ghost/admin/app/services/unsplash.js
 
-// TODO - Add API Service for Unsplash
-// Max 30 images per request
-// Pagination
-// Search
-// Masonry Layout, 3 columns
-// should send notif request to unsplash when user uses an image
-
-// Certain functions, eg headers and token? should be passed in from the consuming app.
-// should this be a class with getters
-
-// should this be in the app or as a separate package?
-
-// const API_URL = 'https://api.unsplash.com';
-// const API_VERSION = 'v1';
-// const DEBOUNCE_MS = 600;
-// const API_TOKEN = '8672af113b0a8573edae3aa3713886265d9bb741d707f6c01a486cde8c278980';
-
 // functions to write
 
 // makeRequest
@@ -28,63 +11,39 @@
 // extractPagination
 // triggerDownload
 
-// const defaultHeaders = {
-//     Authorization: `Client-ID ${API_TOKEN}`,
-//     'Accept-Version': API_VERSION,
-//     'Content-Type': 'application/json',
-//     'App-Pragma': 'no-cache',
-//     'X-Unsplash-Cache': true
-// };
-
-// const baseApiRequest = async (url, options) => {
-//     const response = await fetch(url, options);
-//     return response;
-// };
-
-// const checkStatus = (response) => {
-//     if (response.status >= 200 && response.status < 300) {
-//         return response;
-//     }
-//     const error = new Error(response.statusText);
-//     error.response = response;
-//     throw error;
-// };
-
-// const loadNew = async () => {
-//     const url = `${API_URL}/photos?per_page=30`;
-//     const options = {
-//         method: 'GET',
-//         headers: defaultHeaders
-//     };
-//     const response = await baseApiRequest(url, options);
-//     return response;
-// };
-
-// const loadNextPage = async (page) => {
-//     const url = `${API_URL}/photos?per_page=30&page=${page}`;
-//     const options = {
-//         method: 'GET',
-//         headers: defaultHeaders
-//     };
-//     const response = await baseApiRequest(url, options);
-//     return response;
-// };
-// const API_URL = 'https://api.unsplash.com';
-// const API_VERSION = 'v1';
-// const DEBOUNCE_MS = 600;
-// const API_TOKEN = '8672af113b0a8573edae3aa3713886265d9bb741d707f6c01a486cde8c278980';
-
 class UnsplashService {
-    constructor(API_URL, API_VERSION, API_TOKEN, HEADERS) {
+    constructor(API_URL, HEADERS) {
         this.API_URL = API_URL;
-        this.API_VERSION = API_VERSION;
-        this.API_TOKEN = API_TOKEN;
         this.HEADERS = HEADERS;
-        this.page = 1;
-        this.search_term = '';
     }
 
     photos = [];
+    _pagination = [];
+    page = 1;
+
+    async extractPagination(response) {
+        let pagination = {};
+        let linkRegex = new RegExp('<(.*)>; rel="(.*)"');
+
+        let links = [];
+        for (let entry of response.headers.entries()) {
+            if (entry[0] === 'link') {
+                links.push(entry[1]);
+            }
+        }
+
+        if (links) {
+            links.toString().split(',').forEach((link) => {
+                let [, url, rel] = linkRegex.exec(link);
+
+                pagination[rel] = url;
+            });
+        }
+
+        this._pagination = pagination;
+
+        return response;
+    }
 
     async checkStatus(response) {
         if (response.status >= 200 && response.status < 300) {
@@ -121,6 +80,7 @@ class UnsplashService {
     async makeRequest(url, options) {
         return await fetch(url, options)
             .then(response => this.checkStatus(response))
+            .then(response => this.extractPagination(response))
             .then(response => response.json());
     }
 
@@ -131,17 +91,30 @@ class UnsplashService {
             headers: this.HEADERS
         };
         const response = await this.makeRequest(url, options);
-        this.photos = response;
+        await this.addPhotosFromResponse(response);
     }
 
-    async loadNextPage(page) {
-        const url = `${this.API_URL}/photos?per_page=30&page=${page}`;
+    async addPhoto(photo) {
+        // precalc ratio
+        photo.ratio = photo.width / photo.height;
+        this.photos.push(photo);
+    }
+
+    async addPhotosFromResponse(response) {
+        for (let photo of response) {
+            await this.addPhoto(photo);
+        }
+    }
+
+    async loadNextPage() {
+        const url = `${this._pagination.next}`;
         const options = {
             method: 'GET',
             headers: this.HEADERS
         };
         const response = await this.makeRequest(url, options);
-        return response;
+        this.photos = response;
+        return;
     }
 
     async search(term) {

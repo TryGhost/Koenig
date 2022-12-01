@@ -55,11 +55,12 @@ describe('Modals', async () => {
         expect(await page.$('[data-kg-card="image"]')).toBeNull();
     });
 
-    test('renders unsplash images', async () => {
+    test('renders unsplash gallery', async () => {
         await focusEditor(page);
         await page.click('[data-kg-plus-button]');
         expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
         await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
         expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
         expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
     });
@@ -70,6 +71,7 @@ describe('Modals', async () => {
         expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
         await page.click('button[data-kg-card-menu-item="Unsplash"]');
         expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
         expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
         await page.click('[data-kg-unsplash-gallery-item]');
         expect(await page.$('[data-kg-unsplash-zoomed]')).not.toBeNull();
