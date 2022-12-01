@@ -1,65 +1,13 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import PropTypes from 'prop-types';
 import {ReactComponent as UnsplashIcon} from '../../../assets/icons/kg-card-type-unsplash.svg';
 import {ReactComponent as SearchIcon} from '../../../assets/icons/kg-search.svg';
 import {ReactComponent as CloseIcon} from '../../../assets/icons/kg-close.svg';
 import {ReactComponent as UnsplashHeartIcon} from '../../../assets/icons/kg-unsplash-heart.svg';
 import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.svg';
+import UnsplashService from '../../../utils/services/unsplash';
 
-const demoDataset = [
-    {
-        id: 1,
-        imgUrl: 'https://images.unsplash.com/photo-1574948495680-f67aab1ec3ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDMyMXx8c3VtbWVyfGVufDB8fHx8MTY2OTEwNDUwNw&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 1'
-    },
-    {
-        id: 2,
-        imgUrl: 'https://images.unsplash.com/photo-1595905710073-c5bf3611d945?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDIzfHxzZWElMjBncmVlbnxlbnwwfHx8fDE2NjkxMDU3MTA&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 2'
-    },
-    {
-        id: 3,
-        imgUrl: 'https://images.unsplash.com/photo-1526676537331-7747bf8278fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDEyfHxhdGhsZXRpY3MlMjB0cmFja3xlbnwwfHx8fDE2NjkxMDU1MTA&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 3'
-    },
-    {
-        id: 4,
-        imgUrl: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE0MHx8cnVubmluZ3xlbnwwfHx8fDE2NjkxMDM3MTE&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 4'
-    },
-    {
-        id: 5,
-        imgUrl: 'https://images.unsplash.com/photo-1668584054035-f5ba7d426401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDI3Mnx8fHx8fDJ8fDE2NjkxMDUxNTA&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 5'
-    },
-    {
-        id: 6,
-        imgUrl: 'https://images.unsplash.com/photo-1668656690938-bbb5ec240ad1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDMwNHx8fHx8fDJ8fDE2NjkxMDUyMTQ&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 6'
-    },
-    {
-        id: 7,
-        imgUrl: 'https://images.unsplash.com/photo-1668952410266-e86775275752?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8YWxsfDExN3x8fHx8fDJ8fDE2NjkxMDQ2Nzk&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 7'
-    },
-    {
-        id: 8,
-        imgUrl: 'https://images.unsplash.com/photo-1597305877032-0668b3c6413a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDR8fHBsYW50fGVufDB8fHx8MTY2OTEwNjIwOA&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 8'
-    },
-    {
-        id: 9,
-        imgUrl: 'https://images.unsplash.com/photo-1591087068118-0e6b440716c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDE4OXx8b3JhbmdlfGVufDB8fHx8MTY2OTEwNTM4NQ&ixlib=rb-4.0.3&q=80&w=1200',
-        caption: 'Caption 9'
-    },
-    {
-        id: 10,
-        imgUrl: 'https://images.unsplash.com/photo-1483921020237-2ff51e8e4b22?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3570&q=80',
-        caption: 'Caption 10'
-    }
-];
-
-// todo replace with better algo
+// todo replace with masonry library
 const divideArray = (arr, n) => {
     const len = arr.length;
     const out = [];
@@ -72,11 +20,52 @@ const divideArray = (arr, n) => {
     return out;
 };
 
+// TODO should get this data from consuming app
+const API_URL = 'https://api.unsplash.com';
+const API_VERSION = 'v1';
+// const DEBOUNCE_MS = 600; // for search
+const API_TOKEN = '8672af113b0a8573edae3aa3713886265d9bb741d707f6c01a486cde8c278980';
+
+const defaultHeaders = {
+    Authorization: `Client-ID ${API_TOKEN}`,
+    'Accept-Version': API_VERSION,
+    'Content-Type': 'application/json',
+    'App-Pragma': 'no-cache',
+    'X-Unsplash-Cache': true
+};
+
+const unsplashApi = new UnsplashService(
+    API_URL,
+    API_VERSION,
+    API_TOKEN,
+    defaultHeaders
+);
+
 export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
+    const initLoadRef = React.useRef(false);
+    const [isLoading, setIsLoading] = React.useState(true);
     const [zoomedImg, setZoomedImg] = React.useState(zoomedUrl || null);
-    const selectImg = (imgUrl) => {
-        setZoomedImg(imgUrl);
+    const [dataset, setDataset] = React.useState([]);
+    const selectImg = (payload) => {
+        setZoomedImg(payload);
     };
+
+    const loadData = React.useCallback(async () => {
+        if (initLoadRef.current === false) {
+            await unsplashApi.loadNew();
+            const photos = unsplashApi.getPhotos();
+            setDataset(photos);
+            setIsLoading(false);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        loadData();
+        return () => {
+            initLoadRef.current = true;
+        };
+    }, [loadData]);
+
     return (
         <>
             <div className="bg-black opacity-60 inset-0 h-[100vh] absolute"></div>
@@ -102,9 +91,12 @@ export function UnsplashSelector({toggle, insertImage, zoomedUrl, closeModal}) {
                     <div className="relative h-full overflow-hidden">
                         <div className={`overflow-auto w-full h-full px-20 flex justify-center ${zoomedImg ? 'pb-10' : ''}`}>
                             {zoomedImg ?
-                                <UnsplashZoomed imgUrl={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
+                                <UnsplashZoomed payload={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
                                 :
-                                <UnsplashGallery selectImg={selectImg} insertImage={insertImage} dataset={demoDataset} />
+                                isLoading ?
+                                    <p>Loading...</p>
+                                    :
+                                    <UnsplashGallery selectImg={selectImg} insertImage={insertImage} dataset={dataset} />
                             }
                         </div>
                     </div>
@@ -119,24 +111,16 @@ function UnsplashGallery({insertImage, selectImg, dataset}) {
     return newArray.map((array, index) => (
         <div data-kg-unsplash-gallery key={index} className="flex flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
             {array.map(item => (
-                <UnsplashImg key={item.id} imgUrl={item.imgUrl} caption={item.caption} selectImg={selectImg} insertImage={insertImage} />
+                <UnsplashImg key={item.id} payload={item} caption={`Photo by ${item.user.name} on Unsplash`} selectImg={selectImg} insertImage={insertImage} />
             ))}
         </div>
     ));
 }
 
-function UnsplashZoomed({imgUrl, setZoomedImg, insertImage, selectImg}) {
+function UnsplashImg({payload, zoomed, insertImage, selectImg}) {
     return (
-        <div data-kg-unsplash-zoomed onClick={() => setZoomedImg(null)} className="flex justify-center grow basis-0 h-full">
-            <UnsplashImg zoomed="true" imgUrl={imgUrl} insertImage={insertImage} selectImg={selectImg} />
-        </div>
-    );
-}
-
-function UnsplashImg({imgUrl, zoomed, insertImage, selectImg}) {
-    return (
-        <div data-kg-unsplash-gallery-item onClick={() => selectImg(imgUrl)} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
-            <img src={imgUrl} alt="Unsplash" className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} />
+        <div data-kg-unsplash-gallery-item onClick={() => selectImg(payload)} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
+            <img src={payload.urls.regular} alt="Unsplash" className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} />
             <div className="absolute inset-0 flex flex-col justify-between p-5 transition-all ease-in-out bg-gradient-to-b from-black/5 via-black/5 to-black/30 opacity-0 hover:opacity-100">
                 <div className="flex items-center justify-end">
                     <UnsplashButton icon="heart" label="127" />
@@ -144,16 +128,25 @@ function UnsplashImg({imgUrl, zoomed, insertImage, selectImg}) {
                 </div>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                        <img className="w-8 h-8 rounded-full mr-2" src="https://images.unsplash.com/profile-1562493255799-d28c159b565e?auto=format&fit=crop&w=32&h=32&q=60&crop=faces&bg=fff" alt="author" />
-                        <div className="mr-2 font-sans text-white text-sm font-medium truncate">Richard de Ruijter</div>
+                        <img className="w-8 h-8 rounded-full mr-2" src={payload.user.profile_image.small} alt="author" />
+                        <div className="mr-2 font-sans text-white text-sm font-medium truncate">{payload.user.name}</div>
                     </div>
                     <UnsplashButton data-kg-unsplash-insert-button onClick={() => {
                         insertImage({
-                            src: imgUrl
+                            src: payload.urls.full,
+                            caption: `Photo by ${payload.user.name} on Unsplash`
                         });
                     }} label="Insert image" />
                 </div>
             </div>
+        </div>
+    );
+}
+
+function UnsplashZoomed({payload, setZoomedImg, insertImage, selectImg}) {
+    return (
+        <div data-kg-unsplash-zoomed onClick={() => setZoomedImg(null)} className="flex justify-center grow basis-0 h-full">
+            <UnsplashImg zoomed="true" payload={payload} insertImage={insertImage} selectImg={selectImg} />
         </div>
     );
 }
