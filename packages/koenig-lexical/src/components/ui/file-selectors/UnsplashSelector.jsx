@@ -28,7 +28,7 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
     }, [UnsplashLib, searchTerm]);
 
     // TODO add infinite scroll
-
+    
     const handleSearch = async (e) => {
         const query = e.target.value;
         setSearchTerm(query);
@@ -108,6 +108,14 @@ function UnsplashGallery({insertImage, selectImg, dataset}) {
             ))}
         </div>
     ));
+}
+
+function UnsplashGalleryLoading() {
+    return (
+        <div className="absolute flex items-center justify-center overflow-hidden inset-y-0 left-0 w-full pb-[8vh]">
+            <div className="relative inline-block w-[50px] h-[50px] border border-black/10 rounded-full animate-spin before:block before:w-[7px] before:h-[7px] before:rounded-full before:z-10 before:mt-[7px] before:bg-grey-800"></div>
+        </div>
+    );
 }
 
 function UnsplashImg({payload, zoomed, insertImage, selectImg}) {
@@ -193,7 +201,8 @@ function UnsplashButton({icon, label, ...props}) {
 UnsplashSelector.propTypes = {
     selectImg: PropTypes.func,
     insertImage: PropTypes.func,
-    zoomedUrl: PropTypes.string
+    zoomedUrl: PropTypes.string,
+    isLoading: PropTypes.bool
 };
 
 UnsplashZoomed.propTypes = {
