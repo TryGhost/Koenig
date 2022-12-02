@@ -29,6 +29,7 @@ function DemoApp() {
     const [defaultContent] = useState(query.get('content') !== 'false' ? loadContent() : undefined);
     const [title, setTitle] = useState(defaultContent ? 'Meet the Koenig editor.' : '');
     const [editorAPI, setEditorAPI] = useState(null);
+    const titleRef = React.useRef(null);
 
     function openSidebar(view = 'json') {
         if (isSidebarOpen && sidebarView === view) {
@@ -38,29 +39,36 @@ function DemoApp() {
         setIsSidebarOpen(true);
     }
 
+    function focusTitle() {
+        titleRef.current?.focus();
+    }
+
     return (
         <div className="koenig-lexical top">
             <KoenigComposer 
                 initialEditorState={defaultContent} 
                 imageUploadFunction={{imageUploader}}
                 unsplashConfig={unsplashConfig}>
-
-                <Watermark />
                 <div className="h-full grow relative">
                     {
-                        query.get('content') !== 'false' ?
-                            <ToggleButton setTitle={setTitle} content={defaultContent}/> : null
+                        query.get('content') !== 'false'
+                            ? <ToggleButton setTitle={setTitle} content={defaultContent}/>
+                            : null
                     }
                     <div className="h-full overflow-auto">
-                        <div className="mx-auto max-w-[740px] py-[15vmin]">
-                            <TitleTextBox title={title} setTitle={setTitle} editorAPI={editorAPI} />
-                            <KoenigEditor registerAPI={setEditorAPI} />
+                        <div className="mx-auto max-w-[740px] py-[15vmin] px-6 lg:px-0">
+                            <TitleTextBox title={title} setTitle={setTitle} editorAPI={editorAPI} ref={titleRef} />
+                            <KoenigEditor
+                                registerAPI={setEditorAPI}
+                                cursorDidExitAtTop={focusTitle}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="flex h-full flex-col items-end">
+                <Watermark />
+                <div className="absolute sm:relative flex h-full flex-col items-end z-20">
                     <Sidebar isOpen={isSidebarOpen} view={sidebarView} />
-                    <FloatingButton onClick={openSidebar} />
+                    <FloatingButton isOpen={isSidebarOpen} onClick={openSidebar} />
                 </div>
             </KoenigComposer>
         </div>

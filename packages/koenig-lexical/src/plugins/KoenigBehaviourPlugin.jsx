@@ -1,13 +1,13 @@
 import React from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {
-    $createNodeSelection,
     $getSelection,
     $isDecoratorNode,
     $isElementNode,
     $isParagraphNode,
     $isNodeSelection,
     $isRangeSelection,
+    $isTextNode,
     $setSelection,
     $createTextNode,
     $createParagraphNode,
@@ -18,20 +18,19 @@ import {
     KEY_ARROW_RIGHT_COMMAND,
     KEY_BACKSPACE_COMMAND,
     KEY_DELETE_COMMAND,
+    KEY_TAB_COMMAND,
     PASTE_COMMAND,
     INSERT_PARAGRAPH_COMMAND
 } from 'lexical';
+import {
+    $isAtStartOfDocument,
+    $selectDecoratorNode
+} from '../utils/';
 import {$createLinkNode} from '@lexical/link';
 import {mergeRegister} from '@lexical/utils';
 import {$isListItemNode} from '@lexical/list';
 
 const RANGE_TO_ELEMENT_BOUNDARY_THRESHOLD_PX = 10;
-
-function $selectDecoratorNode(node) {
-    const nodeSelection = $createNodeSelection();
-    nodeSelection.add(node.getKey());
-    $setSelection(nodeSelection);
-}
 
 function getTopLevelNativeElement(node) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -42,7 +41,7 @@ function getTopLevelNativeElement(node) {
     return node.closest(selector);
 }
 
-function useKoenigBehaviour({editor, containerElem}) {
+function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
     // deselect cards on mousedown outside of the editor container
     React.useEffect(() => {
         const onMousedown = (event) => {
@@ -64,13 +63,14 @@ function useKoenigBehaviour({editor, containerElem}) {
         };
     }, [editor, containerElem]);
 
-    // override built-in keyboard movement around card (DecoratorNode) boundaries,
-    // cards should be selected on up/down and when deleting content around them
+    // Override built-in keyboard movement around card (DecoratorNode) boundaries,
+    // cards should be selected on up/down and when deleting content around them.
+    // Trigger `cursorDidExitAtTop` prop if present and cursor at beginning of doc
     React.useEffect(() => {
         return mergeRegister(
             editor.registerCommand(
                 KEY_ARROW_UP_COMMAND,
-                () => {
+                (event) => {
                     const selection = $getSelection();
 
                     if ($isNodeSelection(selection)) {
@@ -78,9 +78,9 @@ function useKoenigBehaviour({editor, containerElem}) {
                         const previousSibling = currentNode.getPreviousSibling();
 
                         // do nothing if decorator node is top of document and selected
-                        // TODO: handle exposing this in some way so consuming app can
-                        //   can control this behaviour
                         if (!previousSibling) {
+                            selection.clear();
+                            cursorDidExitAtTop?.();
                             return true;
                         }
 
@@ -94,6 +94,11 @@ function useKoenigBehaviour({editor, containerElem}) {
                         if (selection.isCollapsed) {
                             const topLevelElement = selection.anchor.getNode().getTopLevelElement();
                             const nativeSelection = window.getSelection();
+
+                            if (cursorDidExitAtTop && $isAtStartOfDocument(selection)) {
+                                cursorDidExitAtTop();
+                                return true;
+                            }
 
                             // empty paragraphs are odd because the native range won't
                             // have a rect to compare positioning
@@ -208,6 +213,26 @@ function useKoenigBehaviour({editor, containerElem}) {
                 KEY_ARROW_LEFT_COMMAND,
                 (event) => {
                     const selection = $getSelection();
+
+                    if (cursorDidExitAtTop) {
+                        if ($isNodeSelection(selection)) {
+                            const currentNode = selection.getNodes()[0];
+                            const previousSibling = currentNode.getPreviousSibling();
+
+                            if (!previousSibling) {
+                                event.preventDefault();
+                                selection.clear();
+                                cursorDidExitAtTop?.();
+                                return true;
+                            }
+                        }
+
+                        if (selection.isCollapsed && $isAtStartOfDocument(selection)) {
+                            event.preventDefault();
+                            cursorDidExitAtTop();
+                            return true;
+                        }
+                    }
 
                     if (!$isNodeSelection(selection)) {
                         return false;
@@ -370,6 +395,42 @@ function useKoenigBehaviour({editor, containerElem}) {
                 COMMAND_PRIORITY_HIGH
             ),
             editor.registerCommand(
+                KEY_TAB_COMMAND,
+                (event) => {
+                    if (event.shiftKey && cursorDidExitAtTop) {
+                        const selection = $getSelection();
+
+                        if ($isNodeSelection(selection)) {
+                            event.preventDefault();
+                            selection.clear();
+                            cursorDidExitAtTop();
+                            return true;
+                        }
+
+                        let nodes;
+                        if (selection.isCollapsed) {
+                            const anchorNode = selection.anchor.getNode();
+                            nodes = $isTextNode(anchorNode) ? [anchorNode.getParent()] : [anchorNode];
+                        } else {
+                            nodes = selection.getNodes();
+                        }
+
+                        const hasIndentedNode = nodes.some((node) => {
+                            return node.getIndent && node.getIndent() > 0;
+                        });
+
+                        if (hasIndentedNode) {
+                            return false;
+                        } else {
+                            event.preventDefault();
+                            cursorDidExitAtTop();
+                            return true;
+                        }
+                    }
+                },
+                COMMAND_PRIORITY_HIGH
+            ),
+            editor.registerCommand(
                 PASTE_COMMAND,
                 (clipboard) => {
                     const clipboardDataset = clipboard?.clipboardData?.getData('text');
@@ -397,7 +458,7 @@ function useKoenigBehaviour({editor, containerElem}) {
     return null;
 }
 
-export default function KoenigBehaviourPlugin({containerElem = document.querySelector('.koenig-editor')}) {
+export default function KoenigBehaviourPlugin({containerElem = document.querySelector('.koenig-editor'), cursorDidExitAtTop}) {
     const [editor] = useLexicalComposerContext();
-    return useKoenigBehaviour({editor, containerElem});
+    return useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop});
 }
