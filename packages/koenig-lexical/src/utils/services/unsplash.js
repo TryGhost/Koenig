@@ -16,14 +16,13 @@ import MasonryLayout from '../masonry';
 const masonry = new MasonryLayout(3);
 
 class UnsplashService {
-    constructor(API_URL, HEADERS) {
-        this.API_URL = API_URL;
+    constructor({API_URL, HEADERS}) {
+        this.API_URL = API_URL || 'https://api.unsplash.com';
         this.HEADERS = HEADERS;
         this.photos = [];
         this._pagination = [];
         this.page = 1;
         this.error = null;
-        this.debounce = 600;
         this.search_is_running = false;
         this.search_term = '';
         this._lastRequestUrl = '';
@@ -132,8 +131,7 @@ class UnsplashService {
         if (this._pagination.next) {
             const url = `${this._pagination.next}`;
             const response = await this.makeRequest(url);
-            this.photos = response;
-            return;
+            this.addPhotosFromResponse(response);
         }
     }
 
@@ -144,9 +142,9 @@ class UnsplashService {
         this.reset();
         this.search_term = term;
         if (term) {
-            return await this.search(term);
+            await this.search(term);
         } else {
-            return await this.loadNew();
+            await this.loadNew();
         }
     }
 

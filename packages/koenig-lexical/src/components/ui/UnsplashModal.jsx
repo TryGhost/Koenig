@@ -13,10 +13,7 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
 
     const API_URL = 'https://api.unsplash.com';
 
-    const unsplashApi = new UnsplashService(
-        API_URL,
-        unsplashConf
-    );
+    const unsplashApi = new UnsplashService({API_URL, HEADERS: unsplashConf});
 
     const portalContainer = container || document.querySelector('.koenig-lexical');
 
