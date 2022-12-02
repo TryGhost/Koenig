@@ -12,42 +12,53 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
     const [isLoading, setIsLoading] = React.useState(true);
     const [zoomedImg, setZoomedImg] = React.useState(null);
     const [dataset, setDataset] = React.useState([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
     const selectImg = (payload) => {
         setZoomedImg(payload);
     };
 
     const loadInitPhotos = React.useCallback(async () => {
-        if (initLoadRef.current === false) {
+        if (initLoadRef.current === false || searchTerm.length === 0) {
             UnsplashLib.clearPhotos();
             await UnsplashLib.loadNew();
             const photos = UnsplashLib.getColumns();
             setDataset(photos);
             setIsLoading(false);
         }
-    }, [UnsplashLib]);
+    }, [UnsplashLib, searchTerm]);
 
     // TODO add infinite scroll
 
-    React.useEffect(() => {
-        loadInitPhotos();
-        return () => {
-            initLoadRef.current = true;
-        };
-    }, [loadInitPhotos]);
-
     const handleSearch = async (e) => {
         const query = e.target.value;
-        if (query.length > 3) {
-            setTimeout(async () => {
-                setIsLoading(true);
-                UnsplashLib.clearPhotos();
-                await UnsplashLib.search(query);
-                const photos = UnsplashLib.getColumns();
-                setDataset(photos);
-                setIsLoading(false);
-            }, 300);
-        }
+        setSearchTerm(query);
     };
+
+    const search = React.useCallback(async () => {
+        if (searchTerm) {
+            setZoomedImg(null);
+            setIsLoading(true);
+            UnsplashLib.clearPhotos();
+            await UnsplashLib.updateSearch(searchTerm);
+            const photos = UnsplashLib.getColumns();
+            setDataset(photos);
+            setIsLoading(false);
+        }
+    }, [searchTerm, UnsplashLib]);
+
+    React.useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchTerm.length > 0) {
+                search();
+            } else {
+                loadInitPhotos();
+            }
+        }, 300);
+        return () => {
+            initLoadRef.current = true;
+            clearTimeout(timeoutId);
+        };
+    }, [searchTerm, search, loadInitPhotos]);
 
     return (
         <>
@@ -68,7 +79,7 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
                         </h1>
                         <div className="relative w-full max-w-sm">
                             <SearchIcon className="absolute top-1/2 left-4 w-4 h-4 -translate-y-2 text-grey-700" />
-                            <input onChange={handleSearch} className="pr-8 pl-10 border border-grey-300 rounded-full font-sans text-md font-normal text-black h-10 w-full focus:border-grey-400 focus-visible:outline-none" placeholder="Search free high-resolution photos" />
+                            <input data-kg-unsplash-search onChange={handleSearch} className="pr-8 pl-10 border border-grey-300 rounded-full font-sans text-md font-normal text-black h-10 w-full focus:border-grey-400 focus-visible:outline-none" placeholder="Search free high-resolution photos" />
                         </div>
                     </header>
                     <div className="relative h-full overflow-hidden">
@@ -77,7 +88,7 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
                                 <UnsplashZoomed payload={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
                                 :
                                 isLoading ?
-                                    <p>Loading...</p>
+                                    <div data-kg-loader>Loading...</div>
                                     :
                                     <UnsplashGallery selectImg={selectImg} insertImage={insertImage} dataset={dataset} />
                             }

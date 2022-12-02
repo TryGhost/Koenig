@@ -103,6 +103,7 @@ class UnsplashService {
     }
 
     async loadNew() {
+        this.reset();
         const url = `${this.API_URL}/photos?per_page=30`;
         const response = await this.makeRequest(url);
         await this.addPhotosFromResponse(response);
@@ -136,16 +137,28 @@ class UnsplashService {
         }
     }
 
-    async search(term) {
+    async updateSearch(term) {
+        if (term === this.search_term) {
+            return;
+        }
         this.reset();
-        // todo set debounce to prevent multiple requests
-        this.search_is_running = true;
-        this.photos = [];
-        const url = `${this.API_URL}/search/photos?query=${term}&per_page=30`;
-        const response = await this.makeRequest(url);
-        if (response) {
-            this.addPhotosFromResponse(response);
-            this.search_is_running = false;
+        this.search_term = term;
+        if (term) {
+            return await this.search(term);
+        } else {
+            return await this.loadNew();
+        }
+    }
+
+    async search(term) {
+        if (this.search_is_running !== true) {
+            this.search_is_running = true;
+            const url = `${this.API_URL}/search/photos?query=${term}&per_page=30`;
+            const response = await this.makeRequest(url);
+            if (response) {
+                this.addPhotosFromResponse(response);
+                this.search_is_running = false;
+            }
         }
     }
 

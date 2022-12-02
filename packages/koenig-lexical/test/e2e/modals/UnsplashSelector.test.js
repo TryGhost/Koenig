@@ -112,4 +112,20 @@ describe('Modals', async () => {
         ]);
         expect(newPage.url()).toContain('unsplash.com');
     });
+
+    test('can search for photos', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        expect(await page.$('[data-kg-unsplash-search]')).not.toBeNull();
+        await page.type('[data-kg-unsplash-search]', 'cats');
+        await page.waitForSelector('[data-kg-loader]');
+        expect(await page.$('[data-kg-loader]')).not.toBeNull(); 
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
+        expect(await page.$('[data-kg-unsplash-gallery-item]')).not.toBeNull();
+    });
 });
