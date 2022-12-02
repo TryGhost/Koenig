@@ -6,6 +6,14 @@ import {ReactComponent as CloseIcon} from '../../../assets/icons/kg-close.svg';
 import {ReactComponent as UnsplashHeartIcon} from '../../../assets/icons/kg-unsplash-heart.svg';
 import {ReactComponent as DownloadIcon} from '../../../assets/icons/kg-download.svg';
 
+function UnsplashGalleryLoading() {
+    return (
+        <div className="absolute flex items-center justify-center overflow-hidden inset-y-0 left-0 w-full pb-[8vh]">
+            <div className="relative inline-block w-[50px] h-[50px] border border-black/10 rounded-full animate-spin before:block before:w-[7px] before:h-[7px] before:rounded-full before:z-10 before:mt-[7px] before:bg-grey-800"></div>
+        </div>
+    );
+}
+
 export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
     const galleryRef = React.useRef();
     const initLoadRef = React.useRef(false);
@@ -88,7 +96,7 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
                                 <UnsplashZoomed payload={zoomedImg} setZoomedImg={setZoomedImg} selectImg={selectImg} insertImage={insertImage} />
                                 :
                                 isLoading ?
-                                    <div data-kg-loader>Loading...</div>
+                                    <div data-kg-loader><UnsplashGalleryLoading/></div>
                                     :
                                     <UnsplashGallery selectImg={selectImg} insertImage={insertImage} dataset={dataset} />
                             }
@@ -108,14 +116,6 @@ function UnsplashGallery({insertImage, selectImg, dataset}) {
             ))}
         </div>
     ));
-}
-
-function UnsplashGalleryLoading() {
-    return (
-        <div className="absolute flex items-center justify-center overflow-hidden inset-y-0 left-0 w-full pb-[8vh]">
-            <div className="relative inline-block w-[50px] h-[50px] border border-black/10 rounded-full animate-spin before:block before:w-[7px] before:h-[7px] before:rounded-full before:z-10 before:mt-[7px] before:bg-grey-800"></div>
-        </div>
-    );
 }
 
 function UnsplashImg({payload, zoomed, insertImage, selectImg}) {
