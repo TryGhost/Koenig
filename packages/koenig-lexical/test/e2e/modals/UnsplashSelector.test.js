@@ -65,7 +65,7 @@ describe('Modals', async () => {
         expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
     });
 
-    test('can select image', async () => {
+    test('can select / zoom image', async () => {
         await focusEditor(page);
         await page.click('[data-kg-plus-button]');
         expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
@@ -73,7 +73,43 @@ describe('Modals', async () => {
         expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
         await page.waitForSelector('[data-kg-unsplash-gallery]');
         expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
         await page.click('[data-kg-unsplash-gallery-item]');
         expect(await page.$('[data-kg-unsplash-zoomed]')).not.toBeNull();
+    });
+
+    test('can download image', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
+        await page.click('[data-kg-unsplash-gallery-item]');
+        const [download] = await Promise.all([
+            page.waitForEvent('download'),
+            page.click('[data-kg-button="unsplash-download"]')
+        ]);
+        expect(download.suggestedFilename()).toContain('unsplash.jpg');
+    });
+
+    test('can click like button, opens in new tab', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
+        await page.click('[data-kg-unsplash-gallery-item]');
+        expect(await page.$('[data-kg-button="unsplash-like"]')).not.toBeNull();
+        const [newPage] = await Promise.all([
+            page.waitForEvent('popup'),
+            page.click('[data-kg-button="unsplash-like"]')
+        ]);
+        expect(newPage.url()).toContain('unsplash.com');
     });
 });
