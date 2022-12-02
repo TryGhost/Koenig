@@ -56,7 +56,7 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
 
     React.useEffect(() => {
         const timeoutId = setTimeout(() => {
-            if (searchTerm.length > 0) {
+            if (searchTerm.length > 2) {
                 search();
             } else {
                 loadInitPhotos();
@@ -127,9 +127,10 @@ function UnsplashImg({payload, zoomed, insertImage, selectImg}) {
                 selectImg(zoomed ? null : payload);
             }} 
             className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
-            <img 
-                src={payload.urls.regular} 
-                alt="Unsplash" 
+            <img
+                data-kg-unsplash-gallery-img
+                src={payload.urls.regular}
+                alt={payload.alt_description}
                 className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} 
             />
             <div className="absolute inset-0 flex flex-col justify-between p-5 transition-all ease-in-out bg-gradient-to-b from-black/5 via-black/5 to-black/30 opacity-0 hover:opacity-100">

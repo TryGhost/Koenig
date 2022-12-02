@@ -113,19 +113,23 @@ describe('Modals', async () => {
         expect(newPage.url()).toContain('unsplash.com');
     });
 
-    test.todo('can search for photos'); // find better to handle search
-    // test('can search for photos', async () => {
-    //     await focusEditor(page);
-    //     await page.click('[data-kg-plus-button]');
-    //     expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
-    //     await page.click('button[data-kg-card-menu-item="Unsplash"]');
-    //     expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
-    //     await page.waitForSelector('[data-kg-unsplash-gallery]');
-    //     expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
-    //     expect(await page.$('[data-kg-unsplash-search]')).not.toBeNull();
-    //     await page.type('[data-kg-unsplash-search]', 'cats');
-    //     await page.waitForSelector('[data-kg-unsplash-gallery-item]');
-    //     // const count = await page.$$('img[data-kg-unsplash-gallery-item]');
-    //     // expect(count.length).toBeGreaterThan(0);
-    // });
+    test('can search for photos', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        expect(await page.$('[data-kg-unsplash-search]')).not.toBeNull();
+        const searchTerm = 'kitten';
+        await page.click('[data-kg-unsplash-search]');
+        await page.type('[data-kg-unsplash-search]', searchTerm);
+        // wait 5 seconds for search results
+        await page.waitForTimeout(5000);
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
+        const images = await page.$$('img[data-kg-unsplash-gallery-img]');
+        const altTexts = await Promise.all(images.map(img => img.getAttribute('alt')));
+        expect(altTexts.some(alt => alt.includes(searchTerm))).toBe(true);
+    });
 });
