@@ -87,8 +87,13 @@ class UnsplashService {
         });
     }
 
-    async makeRequest(url, options) {
+    async makeRequest(url) {
         this._lastRequestUrl = url;
+
+        const options = {
+            method: 'GET',
+            headers: this.HEADERS
+        };
 
         return await fetch(url, options)
             .then(response => this.checkStatus(response))
@@ -99,11 +104,7 @@ class UnsplashService {
 
     async loadNew() {
         const url = `${this.API_URL}/photos?per_page=30`;
-        const options = {
-            method: 'GET',
-            headers: this.HEADERS
-        };
-        const response = await this.makeRequest(url, options);
+        const response = await this.makeRequest(url);
         await this.addPhotosFromResponse(response);
     }
 
@@ -129,11 +130,7 @@ class UnsplashService {
         }
         if (this._pagination.next) {
             const url = `${this._pagination.next}`;
-            const options = {
-                method: 'GET',
-                headers: this.HEADERS
-            };
-            const response = await this.makeRequest(url, options);
+            const response = await this.makeRequest(url);
             this.photos = response;
             return;
         }
@@ -141,18 +138,21 @@ class UnsplashService {
 
     async search(term) {
         this.reset();
-        // set debounce to prevent multiple requests
+        // todo set debounce to prevent multiple requests
         this.search_is_running = true;
         this.photos = [];
         const url = `${this.API_URL}/search/photos?query=${term}&per_page=30`;
-        const options = {
-            method: 'GET',
-            headers: this.HEADERS
-        };
-        const response = await this.makeRequest(url, options);
+        const response = await this.makeRequest(url);
         if (response) {
             this.addPhotosFromResponse(response);
             this.search_is_running = false;
+        }
+    }
+
+    // TODO trigger when inserted
+    triggerDownload(photo) {
+        if (photo.links.download_location) {
+            this.makeRequest(photo.links.download_location);
         }
     }
 

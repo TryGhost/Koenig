@@ -37,36 +37,17 @@ export function UnsplashSelector({insertImage, closeModal, UnsplashLib}) {
 
     const handleSearch = async (e) => {
         const query = e.target.value;
-        if (query.length > 0) {
-            setIsLoading(true);
-            UnsplashLib.clearPhotos();
-            await UnsplashLib.search(query);
-            const photos = UnsplashLib.getColumns();
-            setDataset(photos);
-            setIsLoading(false);
+        if (query.length > 3) {
+            setTimeout(async () => {
+                setIsLoading(true);
+                UnsplashLib.clearPhotos();
+                await UnsplashLib.search(query);
+                const photos = UnsplashLib.getColumns();
+                setDataset(photos);
+                setIsLoading(false);
+            }, 300);
         }
     };
-
-    // const handleSearch = async (e) => {
-    //     const query = e.target.value;
-    //     setTimeout(async () => {
-    //         if (query.length > 2) {
-    //             setIsLoading(true);
-    //             setZoomedImg(null);
-    //             await UnsplashLib.search(query);
-    //             const photos = UnsplashLib.getPhotos();
-    //             if (photos.length) {
-    //                 Masonry.addPhotos(photos);
-    //                 const newArray = Masonry.getColumns();
-    //                 setDataset(newArray);
-    //                 setIsLoading(false);
-    //             }
-    //         }
-    //         if (query.length === 0) {
-    //             loadInitPhotos();
-    //         }
-    //     }, 300);
-    // };
 
     return (
         <>
@@ -120,21 +101,31 @@ function UnsplashGallery({insertImage, selectImg, dataset}) {
 
 function UnsplashImg({payload, zoomed, insertImage, selectImg}) {
     return (
-        <div data-kg-unsplash-gallery-item onClick={() => selectImg(payload)} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
-            <img src={payload.urls.regular} alt="Unsplash" className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} />
+        <div onClick={(e) => {
+            e.stopPropagation();
+            selectImg(zoomed ? null : payload);
+        }} className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
+            <img
+                data-kg-unsplash-gallery-item 
+                src={payload.urls.regular} 
+                alt="Unsplash" 
+                className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} 
+            />
             <div className="absolute inset-0 flex flex-col justify-between p-5 transition-all ease-in-out bg-gradient-to-b from-black/5 via-black/5 to-black/30 opacity-0 hover:opacity-100">
                 <div className="flex items-center justify-end">
-                    <UnsplashButton icon="heart" label="127" />
-                    <UnsplashButton icon="download" />
+                    {/* TODO: we may want to pass in the Ghost referral data from consuming app and parse to the urls */}
+                    <UnsplashButton rel="noopener noreferrer" target="_blank" href={`${payload.links.html}/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit`} icon="heart" label={payload.likes} />
+                    <UnsplashButton href={`${payload.links.download}/?utm_source=ghost&amp;utm_medium=referral&amp;utm_campaign=api-credit&amp;force=true`} icon="download" />
                 </div>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center">
                         <img className="w-8 h-8 rounded-full mr-2" src={payload.user.profile_image.small} alt="author" />
                         <div className="mr-2 font-sans text-white text-sm font-medium truncate">{payload.user.name}</div>
                     </div>
-                    <UnsplashButton data-kg-unsplash-insert-button onClick={() => {
+                    <UnsplashButton data-kg-unsplash-insert-button onClick={(e) => {
+                        e.stopPropagation();
                         insertImage({
-                            src: payload.urls.full,
+                            src: payload.urls.regular.replace(/&w=1080/, '&w=2000'),
                             caption: `Photo by ${payload.user.name} on Unsplash`,
                             height: payload.height,
                             width: payload.width,
@@ -164,14 +155,14 @@ function UnsplashButton({icon, label, ...props}) {
     const Icon = BUTTON_ICONS[icon];
 
     return (
-        <button 
+        <a onClick={e => e.stopPropagation()}
             type="button" 
             className="flex items-center shrink-0 h-8 py-2 px-3 font-sans text-sm text-grey-700 font-medium leading-6 bg-white rounded-md opacity-90 transition-all ease-in-out hover:opacity-100 first-of-type:mr-3 cursor-pointer" 
             {...props}
         >
             {icon && <Icon className={`w-4 h-4 fill-red stroke-[3px] ${label && 'mr-1'}`} />}
             {label && <span>{label}</span>}
-        </button>
+        </a>
     );
 }
 
