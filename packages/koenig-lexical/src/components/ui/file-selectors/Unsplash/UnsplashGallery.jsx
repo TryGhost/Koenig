@@ -50,11 +50,11 @@ export function UnsplashGalleryColumns(props) {
     );
 }
 
-export function GalleryLayout(children, props) {
+export function GalleryLayout(props) {
     return (
         <div data-kg-unsplash-gallery className="relative h-full overflow-hidden">
             <div className={`overflow-auto w-full h-full px-20 flex justify-center ${props?.zoomed ? 'pb-10' : ''}`}>
-                {children}
+                {props.children}
             </div>
         </div>
     );
@@ -66,25 +66,36 @@ function UnsplashGallery({zoomed,
     selectImg, 
     insertImage}) {
     if (isLoading) {
-        return GalleryLayout(<UnsplashGalleryLoading />, {zoomed});
+        return (
+            <GalleryLayout zoomed={zoomed}>
+                <UnsplashGalleryLoading />
+            </GalleryLayout>
+        );
     }
 
     if (zoomed) {
-        return GalleryLayout(
-            <UnsplashZoomed
-                payload={zoomed} 
-                selectImg={selectImg} 
-                insertImage={insertImage}
-                zoomed={zoomed}
-            />, {zoomed});
+        return (
+            <GalleryLayout zoomed={zoomed}>
+                <UnsplashZoomed
+                    payload={zoomed}
+                    insertImage={insertImage}
+                    selectImg={selectImg}
+                    zoomed={zoomed}
+                />
+            </GalleryLayout>
+        );
     }
 
-    return GalleryLayout(<UnsplashGalleryColumns 
-        columns={dataset}
-        selectImg={selectImg}
-        insertImage={insertImage}
-        zoomed={zoomed}
-    />, {zoomed});
+    return (
+        <GalleryLayout zoomed={zoomed}>
+            <UnsplashGalleryColumns
+                columns={dataset}
+                selectImg={selectImg}
+                insertImage={insertImage}
+                zoomed={zoomed}
+            />
+        </GalleryLayout>
+    );
 }
 
 export default UnsplashGallery;
