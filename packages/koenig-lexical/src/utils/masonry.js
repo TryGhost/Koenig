@@ -26,6 +26,26 @@ class MasonryLayout {
         }
     }
 
+    addDatasetToColumns(dataset) {
+        if (!this.columns) {
+            this.reset();
+        }
+
+        dataset.forEach((photo, index) => {
+            let min = Math.min(...this.columnHeights);
+            let columnIndex = this.columnHeights.indexOf(min);
+
+            // use a fixed width when calculating height to compensate for different
+            // overall image sizes
+            
+            // get ratio
+            let ratio = photo.ratio || photo.width / photo.height;
+
+            this.columnHeights[columnIndex] += 300 * ratio;
+            this.columns[columnIndex].push(photo);
+        });
+    }
+
     addPhotoToColumns(photo) {
         if (!this.columns) {
             this.reset();

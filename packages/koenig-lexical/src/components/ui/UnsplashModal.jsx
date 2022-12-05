@@ -2,18 +2,33 @@
 import React from 'react';
 import {createPortal} from 'react-dom';
 import {$getNodeByKey, $createNodeSelection, $setSelection} from 'lexical';
-import {UnsplashSelector} from './file-selectors/UnsplashSelector';
+import UnsplashSelector from './file-selectors/Unsplash/UnsplashSelector';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import KoenigComposerContext from '../../context/KoenigComposerContext';
 import UnsplashService from '../../utils/services/unsplash';
+import UnsplashGallery from './file-selectors/Unsplash/UnsplashGallery';
+import {useMemo} from 'react';
 
 const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
+    const [isLoading, setIsLoading] = React.useState(true);
+    const initLoadRef = React.useRef(false);
+    const [dataset, setDataset] = React.useState([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
     const [editor] = useLexicalComposerContext();
     const {unsplashConf} = React.useContext(KoenigComposerContext);
+    const [zoomedImg, setZoomedImg] = React.useState(null);
+
+    const selectImg = (payload) => {
+        setZoomedImg(payload);
+    };
+
+    React.useEffect(() => {
+        setZoomedImg(null);
+    }, [dataset]);
 
     const API_URL = 'https://api.unsplash.com';
 
-    const unsplashApi = new UnsplashService({API_URL, HEADERS: unsplashConf});
+    const UnsplashLib = useMemo(() => new UnsplashService({API_URL, HEADERS: unsplashConf}), [unsplashConf]);
 
     const portalContainer = container || document.querySelector('.koenig-lexical');
 
@@ -30,6 +45,7 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
 
     const insertImageToNode = async (image) => {
         if (image.src) {
+            UnsplashLib.triggerDownload(image);
             editor.update(() => {
                 const node = $getNodeByKey(nodeKey);
                 node.setSrc(image.src);
@@ -46,16 +62,65 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
         }
     };
 
+    const loadInitPhotos = React.useCallback(async () => {
+        if (initLoadRef.current === false || searchTerm.length === 0) {
+            UnsplashLib.clearPhotos();
+            await UnsplashLib.loadNew();
+            const photos = UnsplashLib.getColumns();
+            setDataset(photos);
+            setIsLoading(false);
+        }
+    }, [UnsplashLib, searchTerm]);
+
+    // TODO add infinite scroll
+    
+    const handleSearch = async (e) => {
+        const query = e.target.value;
+        setSearchTerm(query);
+    };
+
+    const search = React.useCallback(async () => {
+        if (searchTerm) {
+            setIsLoading(true);
+            UnsplashLib.clearPhotos();
+            await UnsplashLib.updateSearch(searchTerm);
+            const photos = UnsplashLib.getColumns();
+            setDataset(photos);
+            setIsLoading(false);
+        }
+    }, [searchTerm, UnsplashLib]);
+
+    React.useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (searchTerm.length > 2) {
+                search();
+            } else {
+                loadInitPhotos();
+            }
+        }, 300);
+        return () => {
+            initLoadRef.current = true;
+            clearTimeout(timeoutId);
+        };
+    }, [searchTerm, search, loadInitPhotos]);
+
     if (!portalContainer) {
         return null;
     }
-
-    const ModalService = () => {
-        if (service === 'unsplash') {
-            return <UnsplashSelector UnsplashLib={unsplashApi} closeModal={closeModalHandler} insertImage={insertImageToNode} />;
-        }
-    };
-    return createPortal(<ModalService/>, portalContainer);
+    return createPortal(
+        <UnsplashSelector
+            closeModal={closeModalHandler}
+            handleSearch={handleSearch}
+        >
+            <UnsplashGallery
+                zoomed={zoomedImg}
+                isLoading={isLoading}
+                dataset={dataset}
+                selectImg={selectImg}
+                insertImage={insertImageToNode} 
+            />
+        </UnsplashSelector>
+        , portalContainer);
 };
 
 export default UnsplashModal;
