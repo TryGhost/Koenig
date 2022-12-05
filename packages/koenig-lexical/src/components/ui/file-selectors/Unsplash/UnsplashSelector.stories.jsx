@@ -1,6 +1,6 @@
 import React from 'react';
 import UnsplashSelector from './UnsplashSelector';
-import {GalleryLayout, MasonryColumn} from '../Unsplash/UnsplashGallery';
+// import {GalleryLayout, MasonryColumn} from '../Unsplash/UnsplashGallery';
 
 const story = {
     title: 'File Selectors/Unsplash',
