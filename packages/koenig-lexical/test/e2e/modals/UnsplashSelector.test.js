@@ -132,4 +132,26 @@ describe('Modals', async () => {
         const altTexts = await Promise.all(images.map(img => img.getAttribute('alt')));
         expect(altTexts.some(alt => alt.includes(searchTerm))).toBe(true);
     });
+
+    test('can infinite scroll', async () => {
+        await focusEditor(page);
+        await page.click('[data-kg-plus-button]');
+        expect(await page.$('[data-kg-plus-menu]')).not.toBeNull();
+        await page.click('button[data-kg-card-menu-item="Unsplash"]');
+        expect(await page.$('[data-kg-modal="unsplash"]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery]');
+        expect(await page.$('[data-kg-unsplash-gallery]')).not.toBeNull();
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
+        const images = await page.$$('img[data-kg-unsplash-gallery-img]');
+        const numberOfImages = images.length;
+        await page.evaluate(() => {
+            const scrollRef = document.querySelector('[data-kg-unsplash-gallery-scrollref]');
+            scrollRef.scrollTop = scrollRef.scrollHeight;
+        });
+        await page.waitForTimeout(5000);
+        await page.waitForSelector('[data-kg-unsplash-gallery-item]');
+        const newImages = await page.$$('img[data-kg-unsplash-gallery-img]');
+        const newNumberOfImages = newImages.length;
+        expect(newNumberOfImages).toBeGreaterThan(numberOfImages);
+    });
 });

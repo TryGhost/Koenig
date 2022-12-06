@@ -52,7 +52,7 @@ export function UnsplashGalleryColumns(props) {
 export function GalleryLayout(props) {
     return (
         <div data-kg-unsplash-gallery className="relative h-full overflow-hidden">
-            <div ref={props.galleryRef} className={`overflow-auto w-full h-full px-20 flex justify-center ${props?.zoomed ? 'pb-10' : ''}`}>
+            <div data-kg-unsplash-gallery-scrollref ref={props.galleryRef} className={`overflow-auto w-full h-full px-20 flex justify-center ${props?.zoomed ? 'pb-10' : ''}`}>
                 {props.children}
                 {props?.isLoading && <UnsplashGalleryLoading />}
             </div>
