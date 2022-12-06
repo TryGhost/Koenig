@@ -21,7 +21,10 @@ function UnsplashImage({payload,
             }} 
             className={`relative block mb-6 bg-grey-100 ${zoomed ? 'cursor-zoom-out w-[max-content] h-full' : 'cursor-zoom-in w-full'}`}>
             <img
+                loading='lazy'
                 data-kg-unsplash-gallery-img
+                width={width}
+                height={height}
                 src={srcUrl}
                 alt={alt}
                 className={`${zoomed ? 'object-contain w-auto h-full' : ''}`} 

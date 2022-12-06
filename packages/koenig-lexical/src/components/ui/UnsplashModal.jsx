@@ -107,8 +107,6 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
         }
     }, [UnsplashLib, searchTerm]);
 
-    // TODO add infinite scroll
-    
     const handleSearch = async (e) => {
         const query = e.target.value;
         setSearchTerm(query);
@@ -138,6 +136,33 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
             clearTimeout(timeoutId);
         };
     }, [searchTerm, search, loadInitPhotos]);
+
+    // add infinite scroll to the gallery
+
+    const loadMorePhotos = React.useCallback(async () => {
+        setIsLoading(true);
+        await UnsplashLib.loadNextPage();
+        const photos = UnsplashLib.getColumns();
+        setDataset(photos);
+        setIsLoading(false);
+    }, [UnsplashLib]);
+
+    React.useEffect(() => {
+        const ref = galleryRef.current;
+        // if the ref is not null loadMorePhotos
+        if (ref) {
+            const handleScroll = () => {
+                // it should load more photos when the user scrolls to the bottom of the gallery, maybe with about 100px offset
+                if (ref.scrollTop + ref.clientHeight >= ref.scrollHeight - 1000) {
+                    loadMorePhotos();
+                }
+            };
+            ref.addEventListener('scroll', handleScroll);
+            return () => {
+                ref.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [galleryRef, loadMorePhotos]);
 
     if (!portalContainer) {
         return null;

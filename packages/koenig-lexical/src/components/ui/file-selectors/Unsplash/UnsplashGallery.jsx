@@ -9,7 +9,6 @@ function UnsplashGalleryLoading() {
     );
 }
 
-// single masonry column
 export function MasonryColumn(props) {
     return (
         <div className="flex flex-col justify-start mr-6 grow basis-0 last-of-type:mr-0">
@@ -69,7 +68,7 @@ function UnsplashGallery({zoomed,
     insertImage}) {
     if (zoomed) {
         return (
-            <GalleryLayout 
+            <GalleryLayout
                 galleryRef={galleryRef}
                 zoomed={zoomed}>
                 <UnsplashZoomed
@@ -84,6 +83,7 @@ function UnsplashGallery({zoomed,
 
     return (
         <GalleryLayout
+            dataset={dataset}
             isLoading={isLoading}
             galleryRef={galleryRef}
             zoomed={zoomed}>
