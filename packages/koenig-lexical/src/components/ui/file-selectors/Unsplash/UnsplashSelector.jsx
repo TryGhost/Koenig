@@ -4,11 +4,11 @@ import {ReactComponent as UnsplashIcon} from '../../../../assets/icons/kg-card-t
 import {ReactComponent as SearchIcon} from '../../../../assets/icons/kg-search.svg';
 import {ReactComponent as CloseIcon} from '../../../../assets/icons/kg-close.svg';
 
-function UnsplashSelector({closeModal, handleSearch, children}) {
+function UnsplashSelector({closeModal, handleSearch, children, galleryRef}) {
     return (
         <>
             <div className="bg-black opacity-60 inset-0 h-[100vh]"></div>
-            <div data-kg-modal="unsplash" className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl">
+            <div data-kg-modal="unsplash" className="bg-white inset-8 rounded z-40 overflow-hidden absolute shadow-xl" ref={galleryRef}>
                 <button className="absolute top-6 right-6 cursor-pointer">
                     <CloseIcon 
                         data-kg-modal-close-button 

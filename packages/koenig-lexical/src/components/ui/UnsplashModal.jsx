@@ -8,8 +8,12 @@ import KoenigComposerContext from '../../context/KoenigComposerContext';
 import UnsplashService from '../../utils/services/unsplash';
 import UnsplashGallery from './file-selectors/Unsplash/UnsplashGallery';
 import {useMemo} from 'react';
+import {useEffect} from 'react';
 
 const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
+    const galleryRef = React.useRef(null);
+    const [scrollPos, setScrollPos] = React.useState(0);
+    const [lastScrollPos, setLastScrollPos] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(true);
     const initLoadRef = React.useRef(false);
     const [dataset, setDataset] = React.useState([]);
@@ -19,12 +23,24 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
     const [zoomedImg, setZoomedImg] = React.useState(null);
 
     const selectImg = (payload) => {
-        setZoomedImg(payload);
+        // set the scroll position to the last position
+        if (payload) {
+            setZoomedImg(payload);
+            setLastScrollPos(scrollPos);
+        }
+
+        if (payload === null) {
+            galleryRef.current.scrollTop = lastScrollPos;
+            setZoomedImg(null);
+        }
     };
 
     React.useEffect(() => {
-        setZoomedImg(null);
-    }, [dataset]);
+        if (zoomedImg === null && lastScrollPos !== 0) {
+            galleryRef.current.scrollTop = lastScrollPos;
+            setLastScrollPos(0);
+        }
+    }, [zoomedImg, scrollPos, lastScrollPos]);
 
     const API_URL = 'https://api.unsplash.com';
 
@@ -42,6 +58,25 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
         }
         handleModalClose(false);
     };
+
+    React.useEffect(() => {
+        const ref = galleryRef.current;
+        if (!zoomedImg) {
+            if (ref) {
+                ref.addEventListener('scroll', () => {
+                    setScrollPos(ref.scrollTop);
+                });
+            }
+            // unmount
+            return () => {
+                if (ref) {
+                    ref.removeEventListener('scroll', () => {
+                        setScrollPos(ref.scrollTop);
+                    });
+                }
+            };
+        }
+    }, [galleryRef, zoomedImg]);
 
     const insertImageToNode = async (image) => {
         if (image.src) {
@@ -107,12 +142,14 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
     if (!portalContainer) {
         return null;
     }
+    
     return createPortal(
         <UnsplashSelector
             closeModal={closeModalHandler}
             handleSearch={handleSearch}
         >
             <UnsplashGallery
+                galleryRef={galleryRef}
                 zoomed={zoomedImg}
                 isLoading={isLoading}
                 dataset={dataset}

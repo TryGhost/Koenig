@@ -53,29 +53,25 @@ export function UnsplashGalleryColumns(props) {
 export function GalleryLayout(props) {
     return (
         <div data-kg-unsplash-gallery className="relative h-full overflow-hidden">
-            <div className={`overflow-auto w-full h-full px-20 flex justify-center ${props?.zoomed ? 'pb-10' : ''}`}>
+            <div ref={props.galleryRef} className={`overflow-auto w-full h-full px-20 flex justify-center ${props?.zoomed ? 'pb-10' : ''}`}>
                 {props.children}
+                {props?.isLoading && <UnsplashGalleryLoading />}
             </div>
         </div>
     );
 }
 
-function UnsplashGallery({zoomed, 
+function UnsplashGallery({zoomed,
+    galleryRef,
     isLoading, 
     dataset, 
     selectImg, 
     insertImage}) {
-    if (isLoading) {
-        return (
-            <GalleryLayout zoomed={zoomed}>
-                <UnsplashGalleryLoading />
-            </GalleryLayout>
-        );
-    }
-
     if (zoomed) {
         return (
-            <GalleryLayout zoomed={zoomed}>
+            <GalleryLayout 
+                galleryRef={galleryRef}
+                zoomed={zoomed}>
                 <UnsplashZoomed
                     payload={zoomed}
                     insertImage={insertImage}
@@ -87,7 +83,10 @@ function UnsplashGallery({zoomed,
     }
 
     return (
-        <GalleryLayout zoomed={zoomed}>
+        <GalleryLayout
+            isLoading={isLoading}
+            galleryRef={galleryRef}
+            zoomed={zoomed}>
             <UnsplashGalleryColumns
                 columns={dataset}
                 selectImg={selectImg}
