@@ -8,7 +8,6 @@ import KoenigComposerContext from '../../context/KoenigComposerContext';
 import UnsplashService from '../../utils/services/unsplash';
 import UnsplashGallery from './file-selectors/Unsplash/UnsplashGallery';
 import {useMemo} from 'react';
-import {useEffect} from 'react';
 
 const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
     const galleryRef = React.useRef(null);
@@ -16,7 +15,6 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
     const [lastScrollPos, setLastScrollPos] = React.useState(0);
     const [isLoading, setIsLoading] = React.useState(true);
     const initLoadRef = React.useRef(false);
-    const [dataset, setDataset] = React.useState([]);
     const [searchTerm, setSearchTerm] = React.useState('');
     const [editor] = useLexicalComposerContext();
     const {unsplashConf} = React.useContext(KoenigComposerContext);
@@ -101,8 +99,6 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
         if (initLoadRef.current === false || searchTerm.length === 0) {
             UnsplashLib.clearPhotos();
             await UnsplashLib.loadNew();
-            const photos = UnsplashLib.getColumns();
-            setDataset(photos);
             setIsLoading(false);
         }
     }, [UnsplashLib, searchTerm]);
@@ -117,14 +113,15 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
             setIsLoading(true);
             UnsplashLib.clearPhotos();
             await UnsplashLib.updateSearch(searchTerm);
-            const photos = UnsplashLib.getColumns();
-            setDataset(photos);
             setIsLoading(false);
         }
     }, [searchTerm, UnsplashLib]);
 
     React.useEffect(() => {
         const timeoutId = setTimeout(() => {
+            if (searchTerm.length > 0 && searchTerm.length < 3) {
+                galleryRef.current.scrollTop = 0;
+            }
             if (searchTerm.length > 2) {
                 search();
             } else {
@@ -137,22 +134,16 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
         };
     }, [searchTerm, search, loadInitPhotos]);
 
-    // add infinite scroll to the gallery
-
     const loadMorePhotos = React.useCallback(async () => {
         setIsLoading(true);
         await UnsplashLib.loadNextPage();
-        const photos = UnsplashLib.getColumns();
-        setDataset(photos);
         setIsLoading(false);
     }, [UnsplashLib]);
 
     React.useEffect(() => {
         const ref = galleryRef.current;
-        // if the ref is not null loadMorePhotos
         if (ref) {
             const handleScroll = () => {
-                // it should load more photos when the user scrolls to the bottom of the gallery, maybe with about 100px offset
                 if (ref.scrollTop + ref.clientHeight >= ref.scrollHeight - 1000) {
                     loadMorePhotos();
                 }
@@ -177,9 +168,10 @@ const UnsplashModal = ({service, container, nodeKey, handleModalClose}) => {
                 galleryRef={galleryRef}
                 zoomed={zoomedImg}
                 isLoading={isLoading}
-                dataset={dataset}
+                dataset={UnsplashLib.getColumns()}
                 selectImg={selectImg}
                 insertImage={insertImageToNode} 
+                error={UnsplashGallery.error}
             />
         </UnsplashSelector>
         , portalContainer);

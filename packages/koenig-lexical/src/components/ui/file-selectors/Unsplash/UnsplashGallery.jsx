@@ -61,6 +61,7 @@ export function GalleryLayout(props) {
 }
 
 function UnsplashGallery({zoomed,
+    error,
     galleryRef,
     isLoading, 
     dataset, 
@@ -77,6 +78,19 @@ function UnsplashGallery({zoomed,
                     selectImg={selectImg}
                     zoomed={zoomed}
                 />
+            </GalleryLayout>
+        );
+    }
+
+    if (error) {
+        return (
+            <GalleryLayout
+                galleryRef={galleryRef}
+                zoomed={zoomed}>
+                <div className="flex flex-col justify-center items-center h-full">
+                    <h1 className="text-2xl font-bold mb-4">Error</h1>
+                    <p className="text-lg font-medium">{error}</p>
+                </div>
             </GalleryLayout>
         );
     }
