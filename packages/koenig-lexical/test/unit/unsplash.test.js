@@ -44,6 +44,16 @@ describe('Unsplash Utility', function () {
         expect(photos.length).toBe(30);
     });
 
+    it('sets and updates pagination', async function () {
+        await unsplash.loadNew();
+        const pagination = unsplash._pagination;
+        const paginationKeys = Object.keys(pagination);
+        expect(paginationKeys.length).toBe(2);
+        await unsplash.loadNextPage();
+        const newPagination = unsplash._pagination;
+        expect(newPagination).not.toBe(pagination);
+    });
+
     it('loads next page of photos', async function () {
         await unsplash.loadNew();
         await unsplash.loadNextPage();
