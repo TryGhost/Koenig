@@ -24,8 +24,10 @@ class UnsplashService {
         this.page = 1;
         this.error = null;
         this.search_is_running = false;
+        this.request_is_running = false;
         this.search_term = '';
         this._lastRequestUrl = '';
+        this.isLoading = false;
     }
 
     extractPagination(response) {
@@ -87,17 +89,24 @@ class UnsplashService {
     }
 
     async makeRequest(url) {
+        if (this.request_is_running) {
+            return;
+        }
         this._lastRequestUrl = url;
 
         const options = {
             method: 'GET',
             headers: this.HEADERS
         };
-
+        this.request_is_running = true;
+        this.isLoading = true;
         return await fetch(url, options)
             .then(response => this.checkStatus(response))
             .then(response => this.extractPagination(response))
-            .then(response => response.json())
+            .then((response) => {
+                this.request_is_running = false;
+                return response.json();
+            })
             .catch(error => this.error = error);
     }
 
@@ -110,9 +119,9 @@ class UnsplashService {
 
     async addPhotosFromResponse(response) {
         let photos = response.results || response;
-        for (let photo of photos) {
-            await this.addPhoto(photo);
-        }
+        photos.forEach((photo) => {
+            this.addPhoto(photo);
+        });
     }
 
     async addPhoto(photo) {
@@ -122,6 +131,9 @@ class UnsplashService {
     }
 
     async loadNextPage() {
+        if (this.request_is_running) {
+            return;
+        }
         if (this.search_is_running) {
             return;
         }
@@ -137,6 +149,9 @@ class UnsplashService {
 
     async updateSearch(term) {
         if (term === this.search_term) {
+            return;
+        }
+        if (this.request_is_running) {
             return;
         }
         this.reset();
@@ -160,7 +175,6 @@ class UnsplashService {
         }
     }
 
-    // TODO trigger when inserted
     triggerDownload(photo) {
         if (photo.links.download_location) {
             this.makeRequest(photo.links.download_location);
