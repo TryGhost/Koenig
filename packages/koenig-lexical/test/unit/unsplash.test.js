@@ -43,4 +43,11 @@ describe('Unsplash Utility', function () {
         const photos = unsplash.getPhotos();
         expect(photos.length).toBe(30);
     });
+
+    it('loads next page of photos', async function () {
+        await unsplash.loadNew();
+        await unsplash.loadNextPage();
+        const photos = unsplash.getPhotos();
+        expect(photos.length).toBeGreaterThan(30);
+    });
 });
