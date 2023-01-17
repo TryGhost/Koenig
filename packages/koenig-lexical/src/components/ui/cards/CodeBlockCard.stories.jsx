@@ -7,6 +7,7 @@ const story = {
     component: CodeBlockCard,
     subcomponent: {CardWrapper},
     argTypes: {
+        isEditing: {control: 'boolean'},
         isSelected: {control: 'boolean'}
     },
     parameters: {
@@ -18,21 +19,23 @@ const story = {
 export default story;
 
 const Template = args => (
-    <div className="w-[740px]">
-        <CardWrapper {...args}>
-            <CodeBlockCard {...args} />
-        </CardWrapper>
-    </div>
+        <div className="w-[740px]">
+            <CardWrapper {...args}>
+                <CodeBlockCard updateCode={() => {}} {...args} />
+            </CardWrapper>
+        </div>
 );
 
 export const Empty = Template.bind({});
 Empty.args = {
+    isEditing: false,
     isSelected: true,
     code: ''
 };
 
 export const Populated = Template.bind({});
 Populated.args = {
+    isEditing: false,
     isSelected: true,
     code: '<script></script>'
 };
