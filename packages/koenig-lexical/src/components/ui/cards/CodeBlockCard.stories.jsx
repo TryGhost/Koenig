@@ -19,11 +19,11 @@ const story = {
 export default story;
 
 const Template = args => (
-        <div className="w-[740px]">
-            <CardWrapper {...args}>
-                <CodeBlockCard updateCode={() => {}} {...args} />
-            </CardWrapper>
-        </div>
+    <div className="w-[740px]">
+        <CardWrapper {...args}>
+            <CodeBlockCard updateCode={() => {}} {...args} />
+        </CardWrapper>
+    </div>
 );
 
 export const Empty = Template.bind({});
