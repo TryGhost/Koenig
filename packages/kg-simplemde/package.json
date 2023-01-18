@@ -46,6 +46,6 @@
   "dependencies": {
     "codemirror": "5.48.0",
     "codemirror-spell-checker": "1.1.2",
-    "marked": "0.3.19"
+    "marked": "4.0.10"
   }
 }
