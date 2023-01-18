@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
-import SimpleMDE from 'simplemde';
-import 'simplemde/dist/simplemde.min.css';
+import SimpleMDE from '@tryghost/kg-simplemde';
+import '@tryghost/kg-simplemde/dist/simplemde.min.css';
 
 export function MarkdownCard({value, onChange, isEditing}) {
     return (
