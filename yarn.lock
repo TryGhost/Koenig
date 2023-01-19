@@ -5591,10 +5591,10 @@ codemirror-spell-checker@1.1.2:
   dependencies:
     typo-js "*"
 
-codemirror@5.48.0:
-  version "5.48.0"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.48.0.tgz#66e6dae6ca79b955e34b322881ebb7b5512f3cc5"
-  integrity sha512-3Ter+tYtRlTNtxtYdYNPxGxBL/b3cMcvPdPm70gvmcOO2Rauv/fUEewWa0tT596Hosv6ea2mtpx28OXBy1mQCg==
+codemirror@5.58.2:
+  version "5.58.2"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.58.2.tgz#ed54a1796de1498688bea1cdd4e9eeb187565d1b"
+  integrity sha512-K/hOh24cCwRutd1Mk3uLtjWzNISOkm4fvXiMO7LucCrqbh6aJDdtqUziim3MZUI6wOY0rvY1SlL1Ork01uMy6w==
 
 codemirror@^6.0.0, codemirror@^6.0.1:
   version "6.0.1"
