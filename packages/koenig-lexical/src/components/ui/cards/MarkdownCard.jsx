@@ -7,7 +7,7 @@ export function MarkdownCard({value, onChange, isEditing}) {
     return (
         <div>
             {isEditing
-                ? <MarkdownEditor value='Initial value' onChange={() => {}} />
+                ? <MarkdownEditor value='Initial value' onBlur={() => {}} onChange={() => {}} />
                 : <div>{value}</div>
             }
         </div>
@@ -23,11 +23,9 @@ MarkdownCard.propTypes = {
 function MarkdownEditor({
     value,
     onChange,
-    onFocus,
     onBlur,
     autofocus = true,
-    placeholder = '',
-    onEditorInit
+    placeholder = ''
 }) {
     const editorRef = useRef(null);
     const editor = useRef(null);
@@ -60,6 +58,7 @@ function MarkdownEditor({
                 {
                     name: 'image',
                     action: () => {
+                        // eslint-disable-next-line no-console
                         console.log('image');
                     },
                     className: 'fa fa-picture-o',
@@ -68,6 +67,7 @@ function MarkdownEditor({
                 {
                     name: 'unsplash',
                     action: () => {
+                        // eslint-disable-next-line no-console
                         console.log('toggleUnsplash');
                     },
                     className: 'fa fa-camera',
@@ -84,6 +84,7 @@ function MarkdownEditor({
                 {
                     name: 'guide',
                     action: () => {
+                        // eslint-disable-next-line no-console
                         console.log('dialog');
                     },
                     className: 'fa fa-question-circle',
@@ -104,14 +105,11 @@ function MarkdownEditor({
             }
         });
 
-//        editorInstance.codemirror.on('focus', () => onFocus());
-//        editorInstance.codemirror.on('blur', () => onBlur());
+        editorInstance.codemirror.on('blur', () => onBlur());
 
         if (autofocus) {
             editorInstance.codemirror.execCommand('goDocEnd');
         }
-
-//        onEditorInit(editorInstance);
 
         // remove editor on unmount
         return () => {
