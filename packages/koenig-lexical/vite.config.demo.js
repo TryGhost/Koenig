@@ -9,8 +9,14 @@ export default defineConfig({
         svgr(),
         react()
     ],
+    optimizeDeps: {
+        include: ['@tryghost/kg-markdown-html-renderer'],
+    },
     base: '/',
     build: {
+        commonjsOptions: {
+            include: [/kg-markdown-html-renderer/, /node_modules/],
+        },
         sourcemap: true,
         rollupOptions: {
             input: {

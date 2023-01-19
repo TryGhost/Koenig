@@ -44,8 +44,8 @@ export default defineConfig({
             }
         },
         commonjsOptions: {
-            include: [/@tryghost/],
-        }
+            include: [/kg-markdown-html-renderer/, /node_modules/],
+        },
     },
     test: {
         globals: true, // required for @testing-library/jest-dom extensions
