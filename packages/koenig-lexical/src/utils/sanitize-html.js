@@ -1,4 +1,4 @@
-import html_sanitize from 'html_sanitize';
+import cajaHtmlSanitize from './caja-sanitizer-bundle';
 import cajaSanitizers from '../utils/caja-sanitizers';
 
 export function sanitizeHtml(html, options = {}) {
@@ -16,5 +16,5 @@ export function sanitizeHtml(html, options = {}) {
     }
 
     // sanitize html
-    return html_sanitize(html, cajaSanitizers.url, cajaSanitizers.id);
+    return cajaHtmlSanitize(html, cajaSanitizers.url, cajaSanitizers.id);
 }
