@@ -6,6 +6,7 @@ import {HorizontalRuleNode} from './HorizontalRuleNode';
 import {CodeBlockNode} from './CodeBlockNode';
 import {ImageNode} from './ImageNode';
 import {MarkdownNode} from './MarkdownNode';
+import {AudioNode} from './AudioNode';
 
 const DEFAULT_NODES = [
     HeadingNode,

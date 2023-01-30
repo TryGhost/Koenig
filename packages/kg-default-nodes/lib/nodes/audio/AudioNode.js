@@ -50,7 +50,7 @@ export class AudioNode extends KoenigDecoratorNode {
         this.__src = src || '';
         this.__title = title || '';
         this.__duration = duration || 0;
-        this.__mimeType = mimeType || null;
+        this.__mimeType = mimeType || '';
         this.__thumbnailSrc = thumbnailSrc || '';
     }
 
@@ -161,6 +161,14 @@ export class AudioNode extends KoenigDecoratorNode {
     /* c8 ignore next 3 */
     decorate() {
         return '';
+    }
+
+    hasEditMode() {
+        return true;
+    }
+
+    isEmpty() {
+        return !this.__src;
     }
 }
 
