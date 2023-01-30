@@ -13,7 +13,7 @@ function guidFor() {
 const useMovable = ({adjustOnResize} = {}) => {
     const ref = useRef(null);
 
-    let moveThreshold = 3;
+    const moveThreshold = 3;
 
     // Use refs to avoid re-renders, see https://reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables
     let active = useRef(false);
