@@ -10,7 +10,19 @@ function guidFor() {
     });
 }
 
-const useMovable = ({adjustOnResize} = {}) => {
+/**
+ * useMovable
+ * @param {Object} options
+ * @param {Boolean} options.adjustOnResize - whether to adjust the position of the movable element when the window is resized
+ * @returns {Object} ref - a ref that should be attached to the element that should be movable
+ *
+ * @description
+ * useMovable is a hook that allows an element to be moved around the screen by dragging it.
+ *
+ * @example
+ * const {ref} = useMovable();
+ */
+export default function useMovable({adjustOnResize} = {}) {
     const ref = useRef(null);
 
     const moveThreshold = 3;
@@ -239,6 +251,4 @@ const useMovable = ({adjustOnResize} = {}) => {
     }, [adjustOnResize, enableSelection, ref, setTranslate, addStartEventListeners, removeEventListeners]);
 
     return {ref};
-};
-
-export default useMovable;
+}
