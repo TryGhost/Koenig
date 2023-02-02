@@ -3566,10 +3566,10 @@
     "@uiw/codemirror-extensions-basic-setup" "4.19.6"
     codemirror "^6.0.0"
 
-"@uiw/react-textarea-code-editor@2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@uiw/react-textarea-code-editor/-/react-textarea-code-editor-2.0.6.tgz#aaaa57ac5c3f01288c11ccbe9457947d979d5627"
-  integrity sha512-qJrRj97ITwNW8C1noATlbGYpkInAhgM6ICxn9LdSYO2o1rSwCLZJdRt5wQ7nZSwOtV1r6yEpW1/0aKunW9UM5w==
+"@uiw/react-textarea-code-editor@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@uiw/react-textarea-code-editor/-/react-textarea-code-editor-2.1.0.tgz#8c4f3624e1ff914a5140830fadb3263a9eec6c70"
+  integrity sha512-3+vfq+C8zI9u1Jm6AaO/keVaiW1Zvzq29tqPnn4hRFK1C2tX/qFn1qksO+sDikHLQ0c/vfWTZLlEk0O3Nys7LA==
   dependencies:
     "@babel/runtime" "^7.18.6"
     rehype "~12.0.1"
