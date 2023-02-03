@@ -84,8 +84,8 @@ PopulatedDraggedOver.args = {
     thumbnailUploader: {}
 };
 
-export const Populated = Template.bind({});
-Populated.args = {
+export const PopulatedWithoutThumbnail = Template.bind({});
+PopulatedWithoutThumbnail.args = {
     display: 'Editing',
     thumbnailSrc: '',
     src: 'audio.mp3',
@@ -125,4 +125,18 @@ UploadingThumbnail.args = {
     title: 'Audio file title',
     titlePlaceholder: 'Add a title...',
     thumbnailUploader: {progress: 50, isLoading: true}
+};
+
+export const UploadingThumbnailErrors = Template.bind({});
+UploadingThumbnailErrors.args = {
+    display: 'Editing',
+    src: 'audio.mp3',
+    duration: 19,
+    title: 'Audio file title',
+    titlePlaceholder: 'Add a title...',
+    thumbnailUploader: {
+        progress: 100,
+        isLoading: false,
+        errors: [{filename: 'audio.mp3', message: 'Thumbnail file is too large'}]
+    }
 };

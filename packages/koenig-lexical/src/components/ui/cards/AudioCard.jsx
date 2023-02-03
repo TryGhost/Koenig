@@ -18,7 +18,7 @@ function AudioUploading({progress}) {
     return (
         <div className="flex rounded border border-grey/30 p-2">
             <div className="absolute inset-0 flex min-w-full items-center justify-center overflow-hidden bg-white/50">
-                <ProgressBar data-testid="progress-bar" style={progressStyle} />
+                <ProgressBar style={progressStyle} />
             </div>
         </div>
     );
@@ -26,7 +26,7 @@ function AudioUploading({progress}) {
 
 function AudioErrors({errors}) {
     return (
-        <span className="h8 pl2 pr2 red sans-serif f6 fw5 flex items-center">
+        <span className="h8 pl2 pr2 red sans-serif f6 fw5 flex items-center" data-testid="audio-upload-errors">
             {errors[0].message}
         </span>
     );
@@ -82,7 +82,8 @@ function AudioThumbnail({
     setFileInputRef,
     onFileChange,
     removeThumbnail,
-    isDraggedOver
+    isDraggedOver,
+    errors
 }) {
     const [showTrash, setShowTrash] = React.useState(false);
 
@@ -114,6 +115,12 @@ function AudioThumbnail({
                     Drop it 🔥
                 </span>
             </div>
+        );
+    } else if (errors && errors.length > 0) {
+        return (
+            <span className="db h8 pl2 pr2 red sans-serif f6 fw6 flex items-center" data-testid="thumbnail-errors">
+                {errors[0].message}
+            </span>
         );
     } else if (src) {
         return (
@@ -170,7 +177,7 @@ function PopulatedAudioCard({
     handleDrop,
     isDraggedOver
 }) {
-    const {isLoading: isUploading, progress} = thumbnailUploader;
+    const {isLoading: isUploading, progress, errors} = thumbnailUploader;
     const formatDuration = (rawDuration) => {
         const minutes = Math.floor(rawDuration / 60);
         const seconds = Math.floor(rawDuration - (minutes * 60));
@@ -200,6 +207,7 @@ function PopulatedAudioCard({
                 setFileInputRef={setFileInputRef}
                 removeThumbnail={removeThumbnail}
                 isDraggedOver={isDraggedOver}
+                errors={errors}
             />
             <div className="flex h-20 w-full flex-col justify-between px-4">
                 {(isEditing || title) && <input value={title} onChange={handleChange} placeholder={placeholder} name="title" className="font-sans text-lg font-bold text-black" />}
