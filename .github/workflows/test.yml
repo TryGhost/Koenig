@@ -46,6 +46,10 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
 
       - run: yarn
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
       - run: yarn test
 
       - uses: codecov/codecov-action@v3
