@@ -1,5 +1,4 @@
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
-import {JSDOM} from 'jsdom';
 
 function readImageAttributesFromNode(node) {
     const attrs = {};
@@ -79,8 +78,8 @@ export class ImageParser {
                 },
                 priority: 1
             }),
-            figure: (node) => {
-                if (!node.querySelector('img')) {
+            figure: (nodeElem) => {
+                if (!nodeElem.querySelector('img')) {
                     return null;
                 }
                 return {
@@ -104,7 +103,9 @@ export class ImageParser {
                             cleanBasicHtml: (html) => {
                                 const cleanedHtml = cleanBasicHtml(html, {
                                     createDocument: (_html) => {
-                                        return (new JSDOM(_html)).window.document;
+                                        const clonedNode = domNode.cloneNode();
+                                        clonedNode.ownerDocument.body.innerHTML = _html;
+                                        return clonedNode.ownerDocument;
                                     }
                                 });
                                 return cleanedHtml;
