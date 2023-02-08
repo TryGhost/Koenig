@@ -1,5 +1,4 @@
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
-import {JSDOM} from 'jsdom';
 
 function readImageAttributesFromNode(node) {
     const attrs = {};
