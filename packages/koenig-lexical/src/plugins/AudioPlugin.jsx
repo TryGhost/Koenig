@@ -11,6 +11,7 @@ import {
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {mergeRegister} from '@lexical/utils';
 import {$createAudioNode, AudioNode, INSERT_AUDIO_COMMAND} from '../nodes/AudioNode';
+import {INSERT_MEDIA_COMMAND} from './DragDropPastePlugin';
 
 export const AudioPlugin = () => {
     const [editor] = useLexicalComposerContext();
@@ -56,6 +57,17 @@ export const AudioPlugin = () => {
                     }
 
                     return true;
+                },
+                COMMAND_PRIORITY_HIGH
+            ),
+            editor.registerCommand(
+                INSERT_MEDIA_COMMAND,
+                async (dataset) => {
+                    if (dataset.type === 'audio') {
+                        editor.dispatchCommand(INSERT_AUDIO_COMMAND, {initialFile: dataset.file});
+                        return true;
+                    }
+                    return false;
                 },
                 COMMAND_PRIORITY_HIGH
             )

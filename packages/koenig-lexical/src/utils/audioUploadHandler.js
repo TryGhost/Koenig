@@ -2,16 +2,16 @@ import {$getNodeByKey} from 'lexical';
 import {getAudioMetadata} from './getAudioMetadata';
 import prettifyFileName from './prettifyFileName';
 
-export const audioUploadHandler = async (files, nodeKey, editor, upload) => {
-    if (!files) {
+export const audioUploadHandler = async (file, nodeKey, editor, upload) => {
+    if (!file) {
         return;
     }
-    let url = URL.createObjectURL(files[0]);
-    let filename = files[0].name;
+    let url = URL.createObjectURL(file);
+    let filename = file.name;
     let title = prettifyFileName(filename);
     
     const {duration, mimeType} = await getAudioMetadata(url);
-    const fileSrc = await upload(files);
+    const fileSrc = await upload([file]);
     await editor.update(() => {
         const node = $getNodeByKey(nodeKey);
         node.setDuration(duration);

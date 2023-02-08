@@ -1,12 +1,11 @@
 import React from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {DRAG_DROP_PASTE} from '@lexical/rich-text';
 import {COMMAND_PRIORITY_LOW} from 'lexical';
 import {getEditorCardNodes} from '../utils/getEditorCardNodes';
-import {INSERT_IMAGE_COMMAND} from '../nodes/ImageNode';
-import {INSERT_AUDIO_COMMAND} from '../nodes/AudioNode';
 import {createCommand} from 'lexical';
 
-const DRAG_DROP_FILES = createCommand();
+export const INSERT_MEDIA_COMMAND = createCommand();
 
 function isMimeType(file, acceptableMimeTypes) {
     const mimeType = file.type;
@@ -29,7 +28,7 @@ function mediaFileReader(files, acceptableMimeTypes) {
                 const result = fileReader.result;
                 const nodeType = isMimeType(file, acceptableMimeTypes);
                 if (typeof result === 'string') {
-                    processed.push({node: nodeType, file: file});
+                    processed.push({type: nodeType, file: file});
                 }
                 handleNextFile();
             });
@@ -61,50 +60,20 @@ async function getListofAcceptableMimeTypes(editor) {
 function DragDropPastePlugin() {
     const [editor] = useLexicalComposerContext();
 
-    const handleDrag = React.useCallback((e) => {
-        e.preventDefault();
-        e.stopPropagation();
-    }, []);
-
-    const handleDrop = 
-    React.useCallback(async (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (e.dataTransfer.files) {
-            editor.dispatchCommand(DRAG_DROP_FILES, e.dataTransfer.files);
-        }
-    }, [editor]);
-
-    React.useEffect(() => {
-        // TODO: consuming app should be able to configure the element where they want to listen to the drag and drop events
-        const dropTarget = document.querySelector('.gh-koenig-editor') || document;
-        dropTarget.addEventListener('dragover', handleDrag);
-        dropTarget.addEventListener('drop', handleDrop);
-
-        return () => {
-            dropTarget.removeEventListener('dragover', handleDrag);
-            dropTarget.removeEventListener('drop', handleDrop);
-        };
-    }, [handleDrop, handleDrag]);
-
     const handleFileUpload = React.useCallback(async (files) => {
         const {acceptableMimeTypes} = await getListofAcceptableMimeTypes(editor);
         const {processed} = await mediaFileReader(files, acceptableMimeTypes);
 
         if (processed.length) {
             processed.forEach((item) => {
-                if (item.node === 'image') {
-                    editor.dispatchCommand(INSERT_IMAGE_COMMAND, [item.file]);
-                } else if (item.node === 'audio') {
-                    editor.dispatchCommand(INSERT_AUDIO_COMMAND, {initialFile: [item.file]});
-                }
+                editor.dispatchCommand(INSERT_MEDIA_COMMAND, item);
             });
         }
     }, [editor]);
 
     React.useEffect(() => {
         return editor.registerCommand(
-            DRAG_DROP_FILES,
+            DRAG_DROP_PASTE,
             async (files) => {
                 try {
                     editor.focus();
