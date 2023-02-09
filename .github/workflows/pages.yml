@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-        
+
       - uses: ahmadnassri/action-workflow-run-wait@v1
 
       - name: Setup Node
@@ -24,13 +24,16 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-        
-      - name: Install default nodes
-        run: cd ./packages/kg-default-nodes && yarn
+
+      - name: Build default nodes
+        run: cd ./packages/kg-default-nodes && yarn build
+
+      - name: Build clean-basic-html
+        run: cd ./packages/kg-clean-basic-html && yarn build
 
       - name: Copy CNAME to build
         run: cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
-      
+
       - name: Build project
         run: cd ./packages/koenig-lexical && yarn && yarn build:demo
 
