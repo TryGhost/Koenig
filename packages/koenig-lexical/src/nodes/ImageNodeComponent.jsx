@@ -11,7 +11,7 @@ import {openFileSelection} from '../utils/openFileSelection';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
 import {LinkInput} from '../components/ui/LinkInput';
 
-export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileDialog, previewSrc, href}) {
+export function ImageNodeComponent({nodeKey, initialFile, src, altText, caption, triggerFileDialog, previewSrc, href}) {
     const [editor] = useLexicalComposerContext();
     const [dragOver, setDragOver] = React.useState(false);
     const [showLink, setShowLink] = React.useState(false);
@@ -20,9 +20,24 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
     const fileInputRef = React.useRef();
     const toolbarFileInputRef = React.useRef();
 
+    const imageUploader = fileUploader.useFileUpload();
+
+    React.useEffect(() => {
+        const uploadInitialFile = async (file) => {
+            if (file && !src) {
+                await imageUploadHandler(file, nodeKey, editor, imageUploader.upload);
+            }
+        };
+
+        uploadInitialFile(initialFile);
+
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const onFileChange = async (e) => {
-        const fls = e.target.files;
-        return await imageUploadHandler(fls, nodeKey, editor, fileUploader);
+        const file = e.target.files[0];
+        return await imageUploadHandler(file, nodeKey, editor, imageUploader.upload);
     };
 
     const setCaption = (newCaption) => {
@@ -105,15 +120,13 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
         e.preventDefault();
         e.stopPropagation();
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            const fls = e.dataTransfer.files;
-            if (fls) {
+            const file = e.dataTransfer.files[0];
+            if (file) {
                 setDragOver(false);
-                await imageUploadHandler(fls, nodeKey, editor, fileUploader);
+                await imageUploadHandler(file, nodeKey, editor, imageUploader.upload);
             }
         }
     };
-
-    const uploadProgress = fileUploader?.uploadProgress || 0;
 
     return (
         <>
@@ -131,7 +144,7 @@ export function ImageNodeComponent({nodeKey, src, altText, caption, triggerFileD
                 isDraggedOver={dragOver}
                 cardWidth={cardWidth}
                 previewSrc={previewSrc}
-                uploadProgress={uploadProgress}
+                imageUploader={imageUploader}
             />
 
             <ActionToolbar

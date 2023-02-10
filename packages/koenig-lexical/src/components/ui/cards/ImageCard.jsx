@@ -6,19 +6,21 @@ import {ProgressBar} from '../ProgressBar';
 import {openFileSelection} from '../../../utils/openFileSelection';
 import ImageUploadForm from '../ImageUploadForm';
 
-function PopulatedImageCard({src, alt, previewSrc, progress}) {
+function PopulatedImageCard({src, alt, previewSrc, imageUploader}) {
     const progressStyle = {
-        width: `${progress?.toFixed(0)}%`
+        width: `${imageUploader.progress?.toFixed(0)}%`
     };
+
+    const altText = alt || imageUploader.progress === 100 ? alt : `upload in progress, ${imageUploader.progress}`;
+
     return (
         <div>
-            <img className={`mx-auto block ${previewSrc ? 'opacity-40' : ''}`} src={previewSrc ? previewSrc : src} alt={alt ? alt : `upload in progress, ${progress} `} />
-            {previewSrc && progress && !src ?
+            <img className={`mx-auto block ${previewSrc ? 'opacity-40' : ''}`} src={previewSrc ? previewSrc : src} alt={altText} />
+            { imageUploader.isLoading && (
                 <div className="absolute inset-0 flex min-w-full items-center justify-center overflow-hidden bg-white/50">
                     <ProgressBar style={progressStyle} />
                 </div>
-                : <></>
-            }
+            )}
         </div>
     );
 }
@@ -55,13 +57,12 @@ const ImageHolder = ({
     src,
     altText,
     previewSrc,
-    uploadProgress,
+    imageUploader,
     onFileChange,
     setFileInputRef,
     handleDrag,
     handleDrop,
-    isDraggedOver,
-    imageUploadErrors
+    isDraggedOver
 }) => {
     if (previewSrc || src) {
         return (
@@ -69,7 +70,7 @@ const ImageHolder = ({
                 src={src} 
                 alt={altText}
                 previewSrc={previewSrc} 
-                progress={uploadProgress} 
+                imageUploader={imageUploader}
             />
         );
     } else {
@@ -80,7 +81,7 @@ const ImageHolder = ({
                 setFileInputRef={setFileInputRef}
                 handleDrop={handleDrop}
                 isDraggedOver={isDraggedOver}
-                errors={imageUploadErrors}
+                errors={imageUploader.errors}
             />
         );
     }
@@ -101,8 +102,7 @@ export function ImageCard({
     isDraggedOver,
     cardWidth,
     previewSrc,
-    uploadProgress,
-    imageUploadErrors
+    imageUploader
 }) {
     const figureRef = React.useRef(null);
 
@@ -124,13 +124,12 @@ export function ImageCard({
                     src={src}
                     altText={altText}
                     previewSrc={previewSrc}
-                    uploadProgress={uploadProgress}
+                    imageUploader={imageUploader}
                     onFileChange={onFileChange}
                     setFileInputRef={setFileInputRef}
                     handleDrag={handleDrag}
                     handleDrop={handleDrop}
                     isDraggedOver={isDraggedOver}
-                    imageUploadErrors={imageUploadErrors}
                 />
                 <CardCaptionEditor
                     altText={altText || ''}

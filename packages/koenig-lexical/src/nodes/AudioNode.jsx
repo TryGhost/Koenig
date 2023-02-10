@@ -41,13 +41,13 @@ function AudioNodeComponent({nodeKey, initialFile, src, thumbnailSrc, title, dur
     }, []);
 
     const onAudioFileChange = async (e) => {
-        const fls = e.target.files;
-        return await audioUploadHandler(fls, nodeKey, editor, audioUploader.upload);
+        const file = e.target.files[0];
+        return await audioUploadHandler(file, nodeKey, editor, audioUploader.upload);
     };
 
     const onThumbnailFileChange = async (e) => {
-        const fls = e.target.files;
-        return await thumbnailUploadHandler(fls, nodeKey, editor, thumbnailUploader.upload);
+        const file = e.target.files[0];
+        return await thumbnailUploadHandler(file, nodeKey, editor, thumbnailUploader.upload);
     };
 
     const setTitle = (newTitle) => {

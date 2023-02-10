@@ -16,18 +16,25 @@ import {INSERT_MEDIA_COMMAND} from './DragDropPastePlugin';
 export const AudioPlugin = () => {
     const [editor] = useLexicalComposerContext();
 
-    const setNodeSelection = ({selection, selectedNode, newNode}) => {
-        // insert a paragraph if this will be the last card and
-        // we're not already on a blank paragraph so we always
-        // have a trailing paragraph in the doc
-        const selectedIsBlankParagraph = $isParagraphNode(selectedNode) && selectedNode.getTextContent() === '';
-        const nextNode = selectedNode.getTopLevelElementOrThrow().getNextSibling();
-        if (!selectedIsBlankParagraph && !nextNode) {
-            selection.insertParagraph();
+    const setNodeSelection = ({selection, selectedNode, newNode, dataset}) => {
+        const selectedIsParagraph = $isParagraphNode(selectedNode);
+        const selectedIsEmpty = selectedNode.getTextContent() === '';
+        if (dataset.initialFile) {
+            // Audio file was dragged/dropped directly into the editor
+            // so we insert the AudioNode after the selected node
+            selectedNode
+                .getTopLevelElementOrThrow()
+                .insertAfter(newNode);
+            if (selectedIsParagraph && selectedIsEmpty) {
+                selectedNode.remove();
+            }
+        } else {
+            // Audio node was added without an initial file (via Slash or Plus menu)
+            // so we insert the AudioNode before the selected node
+            selectedNode
+                .getTopLevelElementOrThrow()
+                .insertBefore(newNode);
         }
-        selectedNode
-            .getTopLevelElementOrThrow()
-            .insertBefore(newNode);
         const nodeSelection = $createNodeSelection();
         nodeSelection.add(newNode.getKey());
         $setSelection(nodeSelection);
@@ -49,11 +56,13 @@ export const AudioPlugin = () => {
                         focusNode = selection.focus.getNode();
                     } else if ($isNodeSelection(selection)) {
                         focusNode = selection.getNodes()[0];
+                    } else {
+                        return false;
                     }
 
                     if (focusNode !== null) {
                         const audioNode = $createAudioNode(dataset);
-                        setNodeSelection({selection, selectedNode: focusNode, newNode: audioNode});
+                        setNodeSelection({selection, selectedNode: focusNode, newNode: audioNode, dataset});
                     }
 
                     return true;
