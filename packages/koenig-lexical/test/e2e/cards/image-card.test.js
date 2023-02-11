@@ -356,6 +356,7 @@ describe('Image card', async () => {
         await replacefileChooser.setFiles([filePath2]);
 
         // wait for upload to complete
+        await page.waitForSelector('[data-testid="upload-progress"]');
         await expect(await page.getByTestId('upload-progress')).not.toBeVisible();
 
         await assertHTML(page, html`
@@ -495,16 +496,12 @@ describe('Image card', async () => {
         await expect(await page.getByTestId('upload-progress')).not.toBeVisible();
 
         // placeholder is replaced with uploading image
-        // TODO: upload-progress should not be visible here
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-selected="false" data-kg-card-editing="false" data-kg-card="image">
                     <figure data-kg-card-width="regular">
                         <div>
                             <img src="blob:..." alt="" />
-                            <div data-testid="upload-progress">
-                                <div data-testid="progress-bar"><div></div></div>
-                            </div>
                         </div>
                     </figure>
                 </div>
