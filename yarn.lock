@@ -2346,14 +2346,14 @@
     ts-dedent "^2.0.0"
     util-deprecate "^1.0.2"
 
-"@storybook/builder-vite@0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@storybook/builder-vite/-/builder-vite-0.4.0.tgz#04c068df2ba33d3a64a05f4b6e8cbcbfe637cc22"
-  integrity sha512-UJQMkbY/IeJooKkTIKskd5D9okRwVDhUnVGYRvJ4QOnjJ8kJroveFgw2Tm10vEoLbqVHufMG55k5Kes4xzQrUQ==
+"@storybook/builder-vite@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@storybook/builder-vite/-/builder-vite-0.4.2.tgz#e4524da1d9fd141ebde3a10cac6c1214de6856eb"
+  integrity sha512-KBBiDdYCK0BCOns8iCVrtzaIiYQF9NjwQ7u3HY/a0bmAuaXPd9m3t6Tvp2jNwmdRAtHOHXnM+d6ROJAI77DCYg==
   dependencies:
     "@joshwooding/vite-plugin-react-docgen-typescript" "0.2.1"
     "@storybook/core-common" "^6.4.3"
-    "@storybook/mdx1-csf" "^1.0.0-next.0"
+    "@storybook/mdx1-csf" "1.0.0-next.0"
     "@storybook/node-logger" "^6.4.3"
     "@storybook/semver" "^7.3.2"
     "@storybook/source-loader" "^6.4.3"
@@ -2740,6 +2740,14 @@
     webpack-dev-middleware "^3.7.3"
     webpack-virtual-modules "^0.2.2"
 
+"@storybook/mdx1-csf@1.0.0-next.0":
+  version "1.0.0-next.0"
+  resolved "https://registry.yarnpkg.com/@storybook/mdx1-csf/-/mdx1-csf-1.0.0-next.0.tgz#6745d974037f5c2d3e1cd38f285d92919e69fda5"
+  integrity sha512-zrv5yRKSOQum69DU+5+wK1VcfmHv8xdqLsACeVOHJp1Mq2eG8s3/WuEA0L3wljoebbuKasZecn2Eu/TQCt+0og==
+  dependencies:
+    "@mdx-js/mdx" "^1.6.22"
+    "@mdx-js/react" "^1.6.22"
+
 "@storybook/mdx1-csf@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@storybook/mdx1-csf/-/mdx1-csf-0.0.1.tgz#d4184e3f6486fade9f7a6bfaf934d9bc07718d5b"
@@ -2756,14 +2764,6 @@
     lodash "^4.17.21"
     prettier ">=2.2.1 <=2.3.0"
     ts-dedent "^2.0.0"
-
-"@storybook/mdx1-csf@^1.0.0-next.0":
-  version "1.0.0-next.0"
-  resolved "https://registry.yarnpkg.com/@storybook/mdx1-csf/-/mdx1-csf-1.0.0-next.0.tgz#6745d974037f5c2d3e1cd38f285d92919e69fda5"
-  integrity sha512-zrv5yRKSOQum69DU+5+wK1VcfmHv8xdqLsACeVOHJp1Mq2eG8s3/WuEA0L3wljoebbuKasZecn2Eu/TQCt+0og==
-  dependencies:
-    "@mdx-js/mdx" "^1.6.22"
-    "@mdx-js/react" "^1.6.22"
 
 "@storybook/node-logger@6.5.16", "@storybook/node-logger@^6.4.3":
   version "6.5.16"
