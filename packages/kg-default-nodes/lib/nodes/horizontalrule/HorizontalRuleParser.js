@@ -1,4 +1,4 @@
-export class AsideParser {
+export class HorizontalRuleParser {
     constructor(NodeClass) {
         this.NodeClass = NodeClass;
     }

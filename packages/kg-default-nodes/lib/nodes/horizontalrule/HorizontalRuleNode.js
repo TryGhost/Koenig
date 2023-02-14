@@ -1,6 +1,7 @@
 import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {renderHorizontalRuleToDOM} from './HorizontalRuleRenderer';
+import {HorizontalRuleParser} from './HorizontalRuleParser';
 
 export const INSERT_HORIZONTAL_RULE_COMMAND = createCommand();
 
@@ -35,6 +36,11 @@ export class HorizontalRuleNode extends KoenigDecoratorNode {
             version: 1
         };
         return dataset;
+    }
+
+    static importDOM() {
+        const parser = new HorizontalRuleParser(this);
+        return parser.DOMConversionMap;
     }
 
     exportDOM(options = {}) {
