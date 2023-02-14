@@ -25,7 +25,7 @@ export class HorizontalRuleNode extends KoenigDecoratorNode {
     }
 
     static importJSON() {
-        const node = new this({});
+        const node = new this();
         return node;
     }
 
