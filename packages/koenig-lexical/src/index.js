@@ -4,6 +4,11 @@ import KoenigComposableEditor from './components/KoenigComposableEditor';
 import KoenigEditor from './components/KoenigEditor';
 import DEFAULT_NODES from './nodes/DefaultNodes';
 import AllDefaultPlugins from './plugins/AllDefaultPlugins';
+import KoenigFullEditor from './components/KoenigFullEditor';
+import KoenigBasicEditor from './components/KoenigBasicEditor';
+import KoenigMinimalEditor from './components/KoenigMinimalEditor';
+import BASIC_NODES from './nodes/BasicNodes';
+import MINIMAL_NODES from './nodes/MinimalNodes';
 import KoenigBehaviourPlugin from './plugins/KoenigBehaviourPlugin';
 import FloatingFormatToolbarPlugin from './plugins/FloatingFormatToolbarPlugin';
 import RestrictContentPlugin from './plugins/RestrictContentPlugin';
@@ -33,6 +38,9 @@ export {
     KoenigComposer,
     KoenigComposableEditor,
     KoenigEditor,
+    KoenigFullEditor,
+    KoenigBasicEditor,
+    KoenigMinimalEditor,
     KoenigBehaviourPlugin,
     FloatingFormatToolbarPlugin,
     PlusCardMenuPlugin,
@@ -51,6 +59,8 @@ export {
     RestrictContentPlugin,
     HtmlOutputPlugin,
     DEFAULT_NODES,
+    BASIC_NODES,
+    MINIMAL_NODES,
     DEFAULT_TRANSFORMERS,
     ELEMENT_TRANSFORMERS,
     HR_TRANSFORMER,
