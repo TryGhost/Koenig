@@ -10,7 +10,6 @@ export function TextInput({initialValue, onChange, ...args}) {
     
     return (
         <input
-            type="text"
             value={value}
             onChange={handleOnChange}
             {...args}
