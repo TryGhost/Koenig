@@ -122,10 +122,29 @@ describe('Restrict Content Plugin', async function () {
         await initialize({page, uri: '/contentrestricted/?paragraphs=1'});
 
         await focusEditor(page);
-        await pasteHtml(page, '<h1><em>Hello World</em></h1><p>Extra</p>');
+        await pasteHtml(page, '<h1><em>Hello World</em></h1>');
 
         await assertHTML(page, html`
             <p dir="ltr"><em data-lexical-text="true">Hello World</em></p>
+        `);
+    });
+
+    test('pasting over a selection does not bypass the restriction', async function () {
+        await initialize({page, uri: '/contentrestricted/?paragraphs=1'});
+
+        await focusEditor(page);
+        await page.keyboard.type('Test');
+        await page.keyboard.down('Shift');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.press('ArrowLeft');
+        await page.keyboard.up('Shift');
+
+        await pasteHtml(page, '<p>Hello World</p><p>Extra</p>');
+
+        await assertHTML(page, html`
+            <p dir="ltr"><span data-lexical-text="true">Hello World</span></p>
         `);
     });
 });
