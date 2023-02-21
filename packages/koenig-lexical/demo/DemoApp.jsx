@@ -1,6 +1,10 @@
 import React from 'react';
 import {useSearchParams} from 'react-router-dom';
-import {KoenigComposer, KoenigEditor, KoenigBasicEditor, KoenigMinimalEditor, BASIC_NODES, MINIMAL_NODES} from '../src';
+import {
+    KoenigComposer, KoenigComposableEditor, KoenigEditor,
+    BASIC_NODES, MINIMAL_NODES, BASIC_TRANSFORMERS, MINIMAL_TRANSFORMERS,
+    RestrictContentPlugin
+} from '../src';
 import FloatingButton from './components/FloatingButton';
 import {useState} from 'react';
 import Watermark from './components/Watermark';
@@ -34,6 +38,35 @@ function getAllowedNodes({editorType}) {
         return MINIMAL_NODES;
     }
     return undefined;
+}
+
+function DemoEditor({editorType, registerAPI, cursorDidExitAtTop}) {
+    if (editorType === 'basic') {
+        return (
+            <KoenigComposableEditor
+                registerAPI={registerAPI}
+                cursorDidExitAtTop={cursorDidExitAtTop}
+                markdownTransformers={BASIC_TRANSFORMERS}
+            />
+        );
+    } else if (editorType === 'minimal') {
+        return (
+            <KoenigComposableEditor
+                registerAPI={registerAPI}
+                cursorDidExitAtTop={cursorDidExitAtTop}
+                markdownTransformers={MINIMAL_TRANSFORMERS}
+            >
+                <RestrictContentPlugin paragraphs={1} />
+            </KoenigComposableEditor>
+        );
+    }
+
+    return (
+        <KoenigEditor
+            registerAPI={registerAPI}
+            cursorDidExitAtTop={cursorDidExitAtTop}
+        />
+    );
 }
 
 function DemoApp({editorType}) {
@@ -121,13 +154,6 @@ function DemoApp({editorType}) {
         };
     }, [editorAPI]);
 
-    let KoenigEditorComponent = KoenigEditor;
-    if (editorType === 'basic') {
-        KoenigEditorComponent = KoenigBasicEditor;
-    } else if (editorType === 'minimal') {
-        KoenigEditorComponent = KoenigMinimalEditor;
-    }
-
     const showTitle = !['basic', 'minimal'].includes(editorType);
 
     return (
@@ -152,7 +178,8 @@ function DemoApp({editorType}) {
                                 ? <TitleTextBox title={title} setTitle={setTitle} editorAPI={editorAPI} ref={titleRef} />
                                 : null
                             }
-                            <KoenigEditorComponent
+                            <DemoEditor
+                                editorType={editorType}
                                 registerAPI={setEditorAPI}
                                 cursorDidExitAtTop={focusTitle}
                             />
