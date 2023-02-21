@@ -1,27 +1,48 @@
 import React from 'react';
 import {useSearchParams} from 'react-router-dom';
-import {KoenigComposer, KoenigEditor} from '../src';
+import {KoenigComposer, KoenigEditor, KoenigBasicEditor, KoenigMinimalEditor, BASIC_NODES, MINIMAL_NODES} from '../src';
 import FloatingButton from './components/FloatingButton';
 import {useState} from 'react';
 import Watermark from './components/Watermark';
 import {useFileUpload, fileTypes} from './utils/useFileUpload';
 import Sidebar from './components/Sidebar';
 import content from './content/content.json';
+import basicContent from './content/basic-content.json';
+import minimalContent from './content/minimal-content.json';
 import InitialContentToggle from './components/InitialContentToggle';
 import TitleTextBox from './components/TitleTextBox';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {$getRoot, $isDecoratorNode} from 'lexical';
 
-const defaultContent = JSON.stringify(content);
-
 const cardConfig = {
     unsplash: {defaultHeaders: defaultUnsplashHeaders}
 };
 
-function DemoApp() {
+function getDefaultContent({editorType}) {
+    if (editorType === 'basic') {
+        return basicContent;
+    } else if (editorType === 'minimal') {
+        return minimalContent;
+    }
+    return content;
+}
+
+function getAllowedNodes({editorType}) {
+    if (editorType === 'basic') {
+        return BASIC_NODES;
+    } else if (editorType === 'minimal') {
+        return MINIMAL_NODES;
+    }
+    return undefined;
+}
+
+function DemoApp({editorType}) {
+    const defaultContent = JSON.stringify(getDefaultContent({editorType}));
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [sidebarView, setSidebarView] = useState('json');
+
     const [initialContent] = useState(searchParams.get('content') === 'false' ? undefined : defaultContent);
     const [title, setTitle] = useState(initialContent ? 'Meet the Koenig editor.' : '');
     const [editorAPI, setEditorAPI] = useState(null);
@@ -100,6 +121,15 @@ function DemoApp() {
         };
     }, [editorAPI]);
 
+    let KoenigEditorComponent = KoenigEditor;
+    if (editorType === 'basic') {
+        KoenigEditorComponent = KoenigBasicEditor;
+    } else if (editorType === 'minimal') {
+        KoenigEditorComponent = KoenigMinimalEditor;
+    }
+
+    const showTitle = !['basic', 'minimal'].includes(editorType);
+
     return (
         <div
             className="koenig-lexical top"
@@ -108,6 +138,7 @@ function DemoApp() {
                 initialEditorState={initialContent}
                 fileUploader={{useFileUpload, fileTypes}}
                 cardConfig={cardConfig}
+                nodes={getAllowedNodes({editorType})}
             >
                 <div className="relative h-full grow">
                     {
@@ -117,8 +148,11 @@ function DemoApp() {
                     }
                     <div className="h-full overflow-auto" ref={containerRef} onClick={focusEditor}>
                         <div className="mx-auto max-w-[740px] py-[15vmin] px-6 lg:px-0">
-                            <TitleTextBox title={title} setTitle={setTitle} editorAPI={editorAPI} ref={titleRef} />
-                            <KoenigEditor
+                            { showTitle
+                                ? <TitleTextBox title={title} setTitle={setTitle} editorAPI={editorAPI} ref={titleRef} />
+                                : null
+                            }
+                            <KoenigEditorComponent
                                 registerAPI={setEditorAPI}
                                 cursorDidExitAtTop={focusTitle}
                             />
