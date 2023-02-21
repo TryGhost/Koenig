@@ -99,7 +99,7 @@ describe.only('Koening Editor with basic nodes', async function () {
             expect(await page.$('[data-kg-floating-toolbar]')).not.toBeNull();
         });
 
-        test('appears on text selection', async function () {
+        test('does not has heading buttons', async function () {
             await focusEditor(page);
             await page.keyboard.type('text for selection');
 
