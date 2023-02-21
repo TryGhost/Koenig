@@ -1,7 +1,9 @@
 import React from 'react';
 
 function CaptionInput({value, placeholder, onChange, readOnly, dataTestId}) {
+    const [caption, setCaption] = React.useState(value);
     const handleOnChange = (e) => {
+        setCaption(e.target.value);
         onChange(e.target.value);
     };
 
@@ -10,7 +12,7 @@ function CaptionInput({value, placeholder, onChange, readOnly, dataTestId}) {
             onChange={handleOnChange}
             className="not-kg-prose w-full px-9 text-center font-sans text-sm font-normal leading-8 tracking-wide text-grey-900"
             placeholder={placeholder}
-            value={value}
+            value={caption}
             readOnly={readOnly}
             data-testid={dataTestId}
         />
@@ -18,7 +20,9 @@ function CaptionInput({value, placeholder, onChange, readOnly, dataTestId}) {
 }
 
 function AltTextInput({value, placeholder, onChange, readOnly, dataTestId}) {
+    const [altText, setAltText] = React.useState(value);
     const handleOnChange = (e) => {
+        setAltText(e.target.value);
         onChange(e.target.value);
     };
 
@@ -27,7 +31,7 @@ function AltTextInput({value, placeholder, onChange, readOnly, dataTestId}) {
             onChange={handleOnChange}
             className="not-kg-prose w-full px-9 text-center font-sans text-sm font-normal leading-8 tracking-wide text-grey-900"
             placeholder={placeholder}
-            value={value}
+            value={altText}
             readOnly={readOnly}
             data-testid={dataTestId}
         />
