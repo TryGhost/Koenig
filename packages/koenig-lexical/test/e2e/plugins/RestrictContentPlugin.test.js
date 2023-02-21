@@ -95,4 +95,37 @@ describe('Restrict Content Plugin', async function () {
             <p dir="ltr"><span data-lexical-text="true">Hello WorldHello World</span></p>
         `);
     });
+
+    test('formats in paragraphs are preserved', async function () {
+        await initialize({page, uri: '/contentrestricted/?paragraphs=1'});
+
+        await focusEditor(page);
+        await pasteHtml(page, '<p><strong>Hello World</strong></p><p>Extra</p>');
+
+        await assertHTML(page, html`
+            <p dir="ltr"><strong data-lexical-text="true">Hello World</strong></p>
+        `);
+    });
+
+    test('formats in first list item are preserved when converting to paragraph', async function () {
+        await initialize({page, uri: '/contentrestricted/?paragraphs=1'});
+
+        await focusEditor(page);
+        await pasteHtml(page, '<ul><li><strong>Hello World</strong></li><li>Extra</li></ul>');
+
+        await assertHTML(page, html`
+            <p dir="ltr"><strong data-lexical-text="true">Hello World</strong></p>
+        `);
+    });
+
+    test('headings are converted to paragraphs', async function () {
+        await initialize({page, uri: '/contentrestricted/?paragraphs=1'});
+
+        await focusEditor(page);
+        await pasteHtml(page, '<h1><em>Hello World</em></h1><p>Extra</p>');
+
+        await assertHTML(page, html`
+            <p dir="ltr"><em data-lexical-text="true">Hello World</em></p>
+        `);
+    });
 });
