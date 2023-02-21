@@ -4,7 +4,6 @@ import KoenigComposableEditor from './components/KoenigComposableEditor';
 import KoenigEditor from './components/KoenigEditor';
 import DEFAULT_NODES from './nodes/DefaultNodes';
 import AllDefaultPlugins from './plugins/AllDefaultPlugins';
-import KoenigFullEditor from './components/KoenigFullEditor';
 import KoenigBasicEditor from './components/KoenigBasicEditor';
 import KoenigMinimalEditor from './components/KoenigMinimalEditor';
 import BASIC_NODES from './nodes/BasicNodes';
@@ -38,7 +37,6 @@ export {
     KoenigComposer,
     KoenigComposableEditor,
     KoenigEditor,
-    KoenigFullEditor,
     KoenigBasicEditor,
     KoenigMinimalEditor,
     KoenigBehaviourPlugin,
