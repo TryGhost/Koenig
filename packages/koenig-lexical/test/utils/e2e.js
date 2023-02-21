@@ -237,39 +237,11 @@ export async function pasteText(page, text, mimeType = 'text/plain') {
 }
 
 export async function pasteHtml(page, content) {
-    const pasteCommand = `
-        const text = ${JSON.stringify(content)};
-        const dataTransfer = new DataTransfer();
-        dataTransfer.setData('text/html', text);
-
-        document.activeElement.dispatchEvent(new ClipboardEvent('paste', {
-            clipboardData: dataTransfer,
-            bubbles: true,
-            cancelable: true
-        }));
-
-        dataTransfer.clearData();
-    `;
-
-    await page.evaluate(pasteCommand);
+    await pasteText(page, content, 'text/html');
 }
 
 export async function pasteLexical(page, content) {
-    const pasteCommand = `
-        const text = ${JSON.stringify(content)};
-        const dataTransfer = new DataTransfer();
-        dataTransfer.setData('application/x-lexical-editor', text);
-
-        document.activeElement.dispatchEvent(new ClipboardEvent('paste', {
-            clipboardData: dataTransfer,
-            bubbles: true,
-            cancelable: true
-        }));
-
-        dataTransfer.clearData();
-    `;
-
-    await page.evaluate(pasteCommand);
+    await pasteText(page, content, 'application/x-lexical-editor');
 }
 
 export async function dragMouse(
