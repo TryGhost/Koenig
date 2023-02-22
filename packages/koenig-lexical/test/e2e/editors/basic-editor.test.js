@@ -1,7 +1,7 @@
 import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {startApp, focusEditor, assertHTML, html, initialize} from '../../utils/e2e';
 
-describe.only('Koening Editor with basic nodes', async function () {
+describe('Koening Editor with basic nodes', async function () {
     let app;
     let page;
 
