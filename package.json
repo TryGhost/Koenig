@@ -20,10 +20,10 @@
     "ship": "lerna publish --git-remote ${GHOST_UPSTREAM:-origin}"
   },
   "devDependencies": {
-    "eslint": "8.35.0",
+    "eslint": "8.36.0",
     "eslint-plugin-ghost": "2.16.0",
     "mocha": "10.2.0",
     "should": "13.2.3",
-    "sinon": "15.0.1"
+    "sinon": "15.0.2"
   }
 }
