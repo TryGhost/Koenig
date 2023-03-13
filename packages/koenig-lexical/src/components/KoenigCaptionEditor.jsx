@@ -1,13 +1,13 @@
-import React, {useCallback, useContext} from 'react';
-import {HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {$setSelection, BLUR_COMMAND, COMMAND_PRIORITY_LOW, FOCUS_COMMAND, KEY_ENTER_COMMAND} from 'lexical';
 import CardContext from '../context/CardContext.jsx';
+import React, {useCallback, useContext} from 'react';
+import {$createParagraphNode, $getNodeByKey, $setSelection, BLUR_COMMAND, COMMAND_PRIORITY_LOW, FOCUS_COMMAND, KEY_ENTER_COMMAND} from 'lexical';
+import {HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
 import {mergeRegister} from '@lexical/utils';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const Placeholder = ({text = 'Type here'}) => {
     return (
-        <div className="pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text font-sans text-sm font-normal tracking-wide text-grey-500 ">
+        <div className="text-grey-500 pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text font-sans text-sm font-normal tracking-wide ">
             {text}
         </div>
     );
@@ -15,7 +15,7 @@ const Placeholder = ({text = 'Type here'}) => {
 
 function CaptionPlugin({parentEditor}) {
     const [editor] = useLexicalComposerContext();
-    const {setCaptionHasFocus, captionHasFocus} = useContext(CardContext);
+    const {setCaptionHasFocus, captionHasFocus, nodeKey} = useContext(CardContext);
 
     // focus on caption editor when something is typed while card is selected
     const handleKeyDown = useCallback((event) => {
@@ -57,15 +57,20 @@ function CaptionPlugin({parentEditor}) {
                 ),
                 editor.registerCommand(
                     KEY_ENTER_COMMAND,
-                    (event) => {
-                        parentEditor?.dispatchCommand(KEY_ENTER_COMMAND, event);
+                    () => {
+                        parentEditor.update(() => {
+                            const cardNode = $getNodeByKey(nodeKey);
+                            const paragraphNode = $createParagraphNode();
+                            cardNode.getTopLevelElementOrThrow().insertAfter(paragraphNode);
+                            paragraphNode.selectStart();
+                        });
                         return false;
                     },
                     COMMAND_PRIORITY_LOW
                 )
             );
         },
-        [editor, setCaptionHasFocus, mainEditor]
+        [editor, setCaptionHasFocus, parentEditor, nodeKey]
     );
 
     return null;

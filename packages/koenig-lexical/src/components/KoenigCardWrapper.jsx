@@ -311,6 +311,7 @@ const KoenigCardWrapperComponent = ({nodeKey, width, wrapperStyle, IndicatorIcon
             setCaptionHasFocus,
             setEditing,
             selection,
+            nodeKey,
             cardContainerRef: containerRef
         }}>
             <CardWrapper
