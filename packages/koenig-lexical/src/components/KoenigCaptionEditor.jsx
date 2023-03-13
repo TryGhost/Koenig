@@ -19,6 +19,11 @@ function CaptionPlugin({parentEditor}) {
 
     // focus on caption editor when something is typed while card is selected
     const handleKeyDown = useCallback((event) => {
+        // don't focus caption input if any other input or textarea is focused
+        if (event.target.matches('input, textarea')) {
+            return;
+        }
+
         // only if key is printable key, focus on editor
         if (!captionHasFocus && event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
             editor.focus();
