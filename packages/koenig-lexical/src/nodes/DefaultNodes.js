@@ -8,6 +8,7 @@ import {ImageNode} from './ImageNode';
 import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {MarkdownNode} from './MarkdownNode';
+import {ToggleNode} from './ToggleNode';
 import {VideoNode} from './VideoNode';
 
 const DEFAULT_NODES = [
@@ -23,7 +24,8 @@ const DEFAULT_NODES = [
     MarkdownNode,
     AudioNode,
     VideoNode,
-    HtmlNode
+    HtmlNode,
+    ToggleNode
 ];
 
 export default DEFAULT_NODES;

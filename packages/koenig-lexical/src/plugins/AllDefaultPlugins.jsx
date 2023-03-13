@@ -7,6 +7,7 @@ import {AudioPlugin} from '../plugins/AudioPlugin';
 import {CardMenuPlugin} from '../plugins/CardMenuPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
+import {TogglePlugin} from '../plugins/TogglePlugin';
 import {VideoPlugin} from '../plugins/VideoPlugin';
 
 export const AllDefaultPlugins = () => {
@@ -26,6 +27,7 @@ export const AllDefaultPlugins = () => {
             <MarkdownPlugin />
             <HorizontalRulePlugin />
             <HtmlPlugin />
+            <TogglePlugin />
         </>
     );
 };

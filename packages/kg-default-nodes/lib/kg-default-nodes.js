@@ -6,6 +6,7 @@ import * as audio from './nodes/audio/AudioNode';
 import * as aside from './nodes/aside/AsideNode';
 import * as horizontalrule from './nodes/horizontalrule/HorizontalRuleNode';
 import * as html from './nodes/html/HtmlNode';
+import * as toggle from './nodes/toggle/ToggleNode';
 
 // re-export everything for easier importing
 export * from './KoenigDecoratorNode';
@@ -18,6 +19,7 @@ export * from './nodes/audio/AudioNode';
 export * from './nodes/aside/AsideNode';
 export * from './nodes/horizontalrule/HorizontalRuleNode';
 export * from './nodes/html/HtmlNode';
+export * from './nodes/toggle/ToggleNode';
 
 // export convenience objects for use elsewhere
 export const DEFAULT_NODES = [
@@ -28,5 +30,6 @@ export const DEFAULT_NODES = [
     audio.AudioNode,
     aside.AsideNode,
     horizontalrule.HorizontalRuleNode,
-    html.HtmlNode
+    html.HtmlNode,
+    toggle.ToggleNode
 ];
