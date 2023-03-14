@@ -58,7 +58,8 @@
     "lodash-es": "^4.17.21",
     "pluralize": "^8.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "vite": "^4.1.4"
   },
   "devDependencies": {
     "@babel/core": "7.21.0",
