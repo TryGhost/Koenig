@@ -4,7 +4,23 @@ Early stage re-write of Ghost's editor, using Lexical as the editor framework in
 
 ## Development
 
+### Pre-requisites
+
+This package makes use of two other built packages in the monorepo, those packages will need to be built before this package's build will succeed.
+
+```
+cd packages/kg-default-nodes && yarn build
+cd ..
+cd packages/kg-clean-basic-html && yarn build
+```
+
+_Note:_ If any changes are made to those packages you'll need to rebuild them before the changes will show up in the demo site.
+
+### Running the development version
+
 Run `yarn dev` to start the development server to test/develop the editor standalone. This will generate a demo site from the `index.html` file which renders the demo app in `demo/demo.jsx` and makes it available on http://localhost:5173
+
+### Running inside Admin
 
 To test/develop inside of Admin you can run `yarn preview` then in Ghost set your `editor.url` value in `config.local.json` to `http://127.0.0.1:4173/koenig-lexical.umd.js` and load Admin as usual.
 
@@ -50,15 +66,15 @@ All imported files are processed/optimised via SVGO (see `svgo.config.js` for op
 
 ## Testing
 
-Tests use [Vitest](https://vitest.dev) as the test runner, with [Puppeteer](https://pptr.dev) used for e2e testing.
+Tests use [Vitest](https://vitest.dev) as the test runner, with [Playwright](https://playwright.dev) used for e2e testing.
 
-- `yarn test run` runs tests and exits
+- `yarn test` runs tests and exits
 - `yarn test:headed` runs tests in browser so you can watch the tests execute
 - `yarn test:slowmo` same as `yarn test:headed` but adds 100ms delay between instructions to make it easier to see what's happening (note that some tests may fail or timeout due to the added delays)
 - `yarn test:watch` runs tests and starts a test watcher that re-runs tests on file changes
 - `yarn test:watch --ui` same as `yarn test:watch` but also opens a browser UI for exploring and re-running tests
 
-Before tests are started we build a version of the demo app that is used for e2e tests. Config for that is located in `vite.config.test.js` and should mostly mirror the main config file in `vite.config.js` except for building a full site rather than a UMD library file.
+Before tests are started we build a version of the demo app that is used for the e2e tests.
 
 ### Editor integration
 
