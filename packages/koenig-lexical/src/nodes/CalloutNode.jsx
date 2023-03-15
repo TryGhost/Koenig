@@ -2,9 +2,11 @@ import CardContext from '../context/CardContext';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
+import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {CalloutNode as BaseCalloutNode, INSERT_CALLOUT_COMMAND} from '@tryghost/kg-default-nodes';
 import {CalloutCard} from '../components/ui/cards/CalloutCard';
 import {ReactComponent as CalloutCardIcon} from '../assets/icons/kg-card-type-callout.svg';
+import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 // re-export here so we don't need to import from multiple places throughout the app
@@ -22,18 +24,52 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor}) {
         });
     };
 
+    const toggleEmoji = () => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setHasEmoji(!hasEmoji);
+        });
+    };
+
+    const handleToolbarEdit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setEditing(true);
+    };
+
+    const handleColorChange = (color) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundColor(color);
+        });
+    };
+
     return (
-        <CalloutCard
-            color={backgroundColor}
-            editor={editor}
-            emoji={hasEmoji}
-            isEditing={true}
-            isSelected={isSelected}
-            nodeKey={nodeKey}
-            setEditing={setEditing}
-            text={text}
-            updateText={setText}
-        />
+        <>
+            <CalloutCard
+                color={backgroundColor}
+                editor={editor}
+                emoji={hasEmoji}
+                handleColorChange={handleColorChange}
+                isEditing={isEditing}
+                isSelected={isSelected}
+                nodeKey={nodeKey}
+                setEditing={setEditing}
+                text={text}
+                toggleEmoji={toggleEmoji}
+                updateText={setText}
+            />
+            <ActionToolbar
+                data-kg-card-toolbar="callout"
+                isVisible={isSelected && !isEditing}
+            >
+                <ToolbarMenu>
+                    <ToolbarMenuItem dataTestId="edit-callout-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
+                    <ToolbarMenuSeparator />
+                    <ToolbarMenuItem icon="snippet" isActive={false} label="Snippet" />
+                </ToolbarMenu>
+            </ActionToolbar>
+        </>
     );
 }
 

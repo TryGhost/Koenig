@@ -26,7 +26,7 @@ export const DEFAULT_NODES = [
     markdown.MarkdownNode,
     video.VideoNode,
     audio.AudioNode,
-    callout.CalloutNode
+    callout.CalloutNode,
     aside.AsideNode,
     horizontalrule.HorizontalRuleNode
 ];

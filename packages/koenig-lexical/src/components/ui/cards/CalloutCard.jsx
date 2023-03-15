@@ -14,7 +14,7 @@ export const CALLOUT_COLORS = {
     purple: 'bg-purple/10 border-transparent'
 };
 
-export function CalloutCard({color, emoji, text, placeholder, isEditing, updateText}) {
+export function CalloutCard({color, emoji, text, placeholder, isEditing, updateText, toggleEmoji, handleColorChange}) {
     const calloutColorPicker = [
         {
             label: 'Grey',
@@ -59,13 +59,24 @@ export function CalloutCard({color, emoji, text, placeholder, isEditing, updateT
         {
             label: 'Accent',
             name: 'accent',
-            color: 'pink'
+            color: 'pink' // TODO: this should be a theme color
         }
     ];
 
+    const cardRef = React.useRef(null);
+
+    const [settingsPanelTransform, setSettingsPanelTransform] = React.useState('translate3d(0, 0, 0)');
+
+    React.useEffect(() => {
+        if (cardRef.current) {
+            const rect = cardRef.current.getBoundingClientRect();
+            setSettingsPanelTransform(`translate3d(${rect.width}px, 0, 0)`);
+        }
+    }, [cardRef]);
+
     return (
         <>
-            <div className={`flex items-center rounded border py-5 px-7 ${CALLOUT_COLORS[color]} `}>
+            <div ref={cardRef} className={`flex items-center rounded border py-5 px-7 ${CALLOUT_COLORS[color]} `}>
                 {emoji && <button className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">&#128161;</button>}
                 <KoenigMiniEditor
                     className="w-full bg-transparent font-serif text-xl font-normal text-black"
@@ -74,19 +85,27 @@ export function CalloutCard({color, emoji, text, placeholder, isEditing, updateT
                     readOnly={!isEditing}
                     setHtml={updateText}
                 />
-                <SettingsPanel>
-                    <ColorPickerSetting
-                        buttons={calloutColorPicker}
-                        label='Background color'
-                        layout='stacked'
-                        selectedName={color}
-                    />
-                    <ToggleSetting
-                        isChecked={emoji}
-                        label='Emoji'
-                    />
-                </SettingsPanel>
             </div>
+            {
+                isEditing && (
+                    <SettingsPanel position={{position: 'absolute', transform: settingsPanelTransform}}>
+                        <ColorPickerSetting
+                            buttons={calloutColorPicker}
+                            dataTestID='callout-color-picker'
+                            label='Background color'
+                            layout='stacked'
+                            selectedName={color}
+                            onClick={handleColorChange}
+                        />
+                        <ToggleSetting
+                            dataTestID='emoji-toggle'
+                            isChecked={emoji}
+                            label='Emoji'
+                            onChange={toggleEmoji}
+                        />
+                    </SettingsPanel>
+                )
+            }
         </>
     );
 }

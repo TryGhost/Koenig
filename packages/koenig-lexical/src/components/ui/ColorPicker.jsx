@@ -26,6 +26,7 @@ export function ColorButton({onClick, label, name, color, selectedName}) {
             <button
                 aria-label={label}
                 className={`flex h-[3rem] w-[3rem] cursor-pointer items-center justify-center rounded-full border-2 ${isActive ? 'border-green' : 'border-white'}`}
+                data-test-id={`color-picker-${color}`}
                 type="button"
                 onClick={() => onClick(name)}
             >
