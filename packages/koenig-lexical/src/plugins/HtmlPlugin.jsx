@@ -1,5 +1,5 @@
 import React from 'react';
-import {$createHtmlNode, INSERT_HTML_COMMAND, HtmlNode} from '../nodes/HtmlNode';
+import {$createHtmlNode, HtmlNode, INSERT_HTML_COMMAND} from '../nodes/HtmlNode';
 import {
     $getSelection,
     $isRangeSelection,
