@@ -1,4 +1,4 @@
-import KoenigMiniEditor from '../../KoenigMiniEditor';
+import KoenigCalloutEditor from '../../KoenigCalloutEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ColorPickerSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
@@ -18,8 +18,7 @@ export const CALLOUT_COLORS = {
 export function CalloutCard({
     color, 
     emoji, 
-    text, 
-    placeholder, 
+    text,
     isEditing, 
     updateText, 
     toggleEmoji, 
@@ -80,44 +79,46 @@ export function CalloutCard({
 
     const memoizedChangeEmoji = React.useCallback(changeEmoji, []); //eslint-disable-line react-hooks/exhaustive-deps
 
-    React.useEffect(() => {
-        if (emoji && cardRef.current) {
-            const triggerButton = emojiButtonRef.current;
-            // Create the picker
-            const picker = createPopup(
-                {},
-                {
-                    triggerElement: triggerButton,
-                    referenceElement: triggerButton,
-                    position: 'right-end'
-                }
-            );
+    const handleEmojiClick = React.useCallback(() => {
+        const picker = createPopup(
+            {},
+            {
+                triggerElement: emojiButtonRef.current,
+                referenceElement: emojiButtonRef.current,
+                position: 'left-end'
+            }
+        );
+    
+        const handleEmojiSelect = (event) => {
+            memoizedChangeEmoji(event.emoji);
+        };
+    
+        picker.addEventListener('emoji:select', handleEmojiSelect);
+    
+        picker.toggle();
+    
+        return () => {
+            picker.removeEventListener('emoji:select', handleEmojiSelect);
+        };
+    }, [memoizedChangeEmoji]);
 
-            triggerButton.addEventListener('click', () => {
-                picker.toggle();
-            });
-      
-            const handleEmojiSelect = (event) => {
-                memoizedChangeEmoji(event.emoji);
-            };
-      
-            picker.addEventListener('emoji:select', handleEmojiSelect);
-      
-            // Clean up the event listener when the component is unmounted
-            return () => {
-                picker.removeEventListener('emoji:select', handleEmojiSelect);
-            };
-        }
-    }, [emoji, memoizedChangeEmoji]);
+    React.useEffect(() => {
+        const triggerButton = emojiButtonRef.current;
+        triggerButton.addEventListener('click', handleEmojiClick);
+    
+        return () => {
+            triggerButton.removeEventListener('click', handleEmojiClick);
+        };
+    }, [handleEmojiClick]);
 
     return (
         <>
             <div ref={cardRef} className={`flex items-center rounded border py-5 px-7 ${CALLOUT_COLORS[color]} `}>
                 {emoji && <button ref={emojiButtonRef} className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">{emojiValue}</button>}
-                <KoenigMiniEditor
+                <KoenigCalloutEditor
                     className="w-full bg-transparent font-serif text-xl font-normal text-black"
                     html={text}
-                    placeholderText={'Add a callout...'}
+                    placeholderText={'Callout text...'}
                     readOnly={!isEditing}
                     setHtml={updateText}
                 />
@@ -125,6 +126,12 @@ export function CalloutCard({
             {
                 isEditing && (
                     <SettingsPanel>
+                        <ToggleSetting
+                            dataTestID='emoji-toggle'
+                            isChecked={emoji}
+                            label='Emoji'
+                            onChange={toggleEmoji}
+                        />
                         <ColorPickerSetting
                             buttons={calloutColorPicker}
                             dataTestID='callout-color-picker'
@@ -132,12 +139,6 @@ export function CalloutCard({
                             layout='stacked'
                             selectedName={color}
                             onClick={handleColorChange}
-                        />
-                        <ToggleSetting
-                            dataTestID='emoji-toggle'
-                            isChecked={emoji}
-                            label='Emoji'
-                            onChange={toggleEmoji}
                         />
                     </SettingsPanel>
                 )

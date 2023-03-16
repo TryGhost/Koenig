@@ -11,7 +11,7 @@ const Placeholder = ({text = 'Type here'}) => {
     );
 };
 
-const KoenigCaptionEditor = ({paragraphs = 1, html, setHtml, placeholderText, readOnly, className}) => {
+const KoenigCalloutEditor = ({paragraphs = 1, html, setHtml, placeholderText, readOnly, className}) => {
     return (
         <KoenigComposer
             nodes={MINIMAL_NODES}
@@ -29,4 +29,4 @@ const KoenigCaptionEditor = ({paragraphs = 1, html, setHtml, placeholderText, re
     );
 };
 
-export default KoenigCaptionEditor;
+export default KoenigCalloutEditor;
