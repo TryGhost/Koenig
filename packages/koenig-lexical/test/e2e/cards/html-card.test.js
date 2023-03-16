@@ -1,5 +1,6 @@
 import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {assertHTML, focusEditor, html, initialize, isMac, startApp} from '../../utils/e2e';
+import {expect} from '@playwright/test';
 
 describe.only('Html card', async () => {
     let app;
@@ -64,7 +65,7 @@ describe.only('Html card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test('renders html when inactive', async function () {
+    test('adds extra paragraph when markdown is inserted at end of document', async function () {
         await focusEditor(page);
         await page.keyboard.type('/html');
         await page.waitForSelector('[data-kg-card-menu-item="HTML"][data-kg-cardmenu-selected="true"]');
@@ -77,13 +78,29 @@ describe.only('Html card', async () => {
             <div data-lexical-decorator="true" contenteditable="false">
                 <div><svg></svg></div>
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="html">
-                    <div>
-                        <p>test</p>
-                        <p></p>
-                    </div>
                 </div>
             </div>
             <p><br /></p>
-        `, {ignoreCardContents: false});
+        `, {ignoreCardContents: true});
+    });
+
+    test('does not add extra paragraph when html is inserted mid-document', async function () {
+        await focusEditor(page);
+        await page.keyboard.press('Enter');
+        await page.keyboard.type('Testing');
+        await page.keyboard.press('ArrowUp');
+        await page.click('[data-kg-plus-button]');
+        await page.click('[data-kg-card-menu-item="HTML"]');
+
+        await expect(page.locator('[data-kg-card="html"][data-kg-card-editing="true"]')).toBeVisible();
+
+        await assertHTML(page, html`
+            <div data-lexical-decorator="true" contenteditable="false">
+                <div><svg></svg></div>
+                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="html">
+                </div>
+            </div>
+            <p dir="ltr"><span data-lexical-text="true">Testing</span></p>
+        `, {ignoreCardContents: true});
     });
 });
