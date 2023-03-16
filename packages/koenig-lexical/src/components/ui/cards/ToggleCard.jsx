@@ -1,3 +1,4 @@
+import KoenigCaptionEditor from '../../KoenigCaptionEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ReactComponent as ArrowDownIcon} from '../../../assets/icons/kg-toggle-arrow.svg';
@@ -22,11 +23,14 @@ export function ToggleCard({
                     <ArrowDownIcon className="text-grey-400 h-4 w-4 stroke-2" />
                 </div>
             </div>
-            { (isEditing || content) &&
             <div className={`text-grey-900 mt-2 w-full font-serif text-xl font-normal leading-relaxed ${content ? 'opacity-100' : 'opacity-40'} `}>
-                {content || contentPlaceholder}
+                <KoenigCaptionEditor
+                    html={content}
+                    placeholderText={contentPlaceholder}
+                    readOnly={!isEditing}
+                    setHtml={setContent}
+                />
             </div>
-            }
         </div>
     );
 }
