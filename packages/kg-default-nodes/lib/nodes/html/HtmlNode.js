@@ -72,7 +72,8 @@ export class HtmlNode extends KoenigDecoratorNode {
     /* c8 ignore stop */
 
     getHtml() {
-        return this.__html;
+        const self = this.getLatest();
+        return self.__html;
     }
 
     setHtml(html) {
