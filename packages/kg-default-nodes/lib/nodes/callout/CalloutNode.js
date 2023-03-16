@@ -3,15 +3,6 @@ import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {renderCalloutNodeToDOM} from './CalloutRenderer';
 import {CalloutParser} from './CalloutParser';
 
-export const AVAILABLECOLOURS = [
-    'blue',
-    'green',
-    'yellow',
-    'red',
-    'purple',
-    'grey'
-];
-
 export const INSERT_CALLOUT_COMMAND = createCommand();
 const NODE_TYPE = 'callout';
 
@@ -56,7 +47,7 @@ export class CalloutNode extends KoenigDecoratorNode {
     constructor({text, hasEmoji, emojiValue, backgroundColor} = {}, key) {
         super(key);
         this.__text = text || '';
-        this.__hasEmoji = hasEmoji || false;
+        this.__hasEmoji = hasEmoji || true;
         this.__emojiValue = emojiValue || '💡';
         this.__backgroundColor = backgroundColor || 'blue';
     }
