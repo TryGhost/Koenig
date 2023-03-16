@@ -2,7 +2,7 @@ import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {assertHTML, focusEditor, html, initialize, isMac, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
 
-describe.only('Html card', async () => {
+describe('Html card', async () => {
     let app;
     let page;
 
@@ -41,12 +41,12 @@ describe.only('Html card', async () => {
         });
 
         await assertHTML(page, html`
-        <div data-lexical-decorator="true" contenteditable="false">
-            <div><svg></svg></div>
-            <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="html">
-                <div><p>test content</p></div>
+            <div data-lexical-decorator="true" contenteditable="false">
+                <div><svg></svg></div>
+                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="html">
+                    <div><p>test content</p></div>
+                </div>
             </div>
-        </div>
         `, {ignoreCardContents: true});
     });
 
