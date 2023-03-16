@@ -2,6 +2,7 @@ import KoenigMiniEditor from '../../KoenigMiniEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ColorPickerSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {createPopup} from '@picmo/popup-picker';
 
 export const CALLOUT_COLORS = {
     grey: 'bg-grey/10 border-transparent',
@@ -14,7 +15,18 @@ export const CALLOUT_COLORS = {
     purple: 'bg-purple/10 border-transparent'
 };
 
-export function CalloutCard({color, emoji, text, placeholder, isEditing, updateText, toggleEmoji, handleColorChange}) {
+export function CalloutCard({
+    color, 
+    emoji, 
+    text, 
+    placeholder, 
+    isEditing, 
+    updateText, 
+    toggleEmoji, 
+    handleColorChange, 
+    changeEmoji,
+    emojiValue
+}) {
     const calloutColorPicker = [
         {
             label: 'Grey',
@@ -64,20 +76,44 @@ export function CalloutCard({color, emoji, text, placeholder, isEditing, updateT
     ];
 
     const cardRef = React.useRef(null);
+    const emojiButtonRef = React.useRef(null);
 
-    const [settingsPanelTransform, setSettingsPanelTransform] = React.useState('translate3d(0, 0, 0)');
+    const memoizedChangeEmoji = React.useCallback(changeEmoji, []); //eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
-        if (cardRef.current) {
-            const rect = cardRef.current.getBoundingClientRect();
-            setSettingsPanelTransform(`translate3d(${rect.width}px, 0, 0)`);
+        if (emoji && cardRef.current) {
+            const triggerButton = emojiButtonRef.current;
+            // Create the picker
+            const picker = createPopup(
+                {},
+                {
+                    triggerElement: triggerButton,
+                    referenceElement: triggerButton,
+                    position: 'right-end'
+                }
+            );
+
+            triggerButton.addEventListener('click', () => {
+                picker.toggle();
+            });
+      
+            const handleEmojiSelect = (event) => {
+                memoizedChangeEmoji(event.emoji);
+            };
+      
+            picker.addEventListener('emoji:select', handleEmojiSelect);
+      
+            // Clean up the event listener when the component is unmounted
+            return () => {
+                picker.removeEventListener('emoji:select', handleEmojiSelect);
+            };
         }
-    }, [cardRef]);
+    }, [emoji, memoizedChangeEmoji]);
 
     return (
         <>
             <div ref={cardRef} className={`flex items-center rounded border py-5 px-7 ${CALLOUT_COLORS[color]} `}>
-                {emoji && <button className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">&#128161;</button>}
+                {emoji && <button ref={emojiButtonRef} className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">{emojiValue}</button>}
                 <KoenigMiniEditor
                     className="w-full bg-transparent font-serif text-xl font-normal text-black"
                     html={text}
@@ -88,7 +124,7 @@ export function CalloutCard({color, emoji, text, placeholder, isEditing, updateT
             </div>
             {
                 isEditing && (
-                    <SettingsPanel position={{position: 'absolute', transform: settingsPanelTransform}}>
+                    <SettingsPanel>
                         <ColorPickerSetting
                             buttons={calloutColorPicker}
                             dataTestID='callout-color-picker'
@@ -116,9 +152,11 @@ CalloutCard.propTypes = {
     placeholder: PropTypes.string,
     isEditing: PropTypes.bool,
     updateText: PropTypes.func,
-    emoji: PropTypes.bool
+    emoji: PropTypes.bool,
+    emojiValue: PropTypes.string
 };
 
 CalloutCard.defaultProps = {
-    color: 'green'
+    color: 'green',
+    emojiValue: '💡'
 };

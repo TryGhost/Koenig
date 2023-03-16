@@ -24,6 +24,7 @@ export class CalloutParser {
                             const payload = {
                                 text: textNode && textNode.innerHTML.trim(),
                                 hasEmoji: emojiNode ? true : false,
+                                emojiValue: emojiNode && emojiNode.innerHTML.trim(),
                                 backgroundColor: color
                             };
 

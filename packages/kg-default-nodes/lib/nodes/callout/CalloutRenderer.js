@@ -20,7 +20,7 @@ export function renderCalloutNodeToDOM(node, options = {}) {
     if (node.getHasEmoji()) {
         const emojiElement = document.createElement('div');
         emojiElement.classList.add('kg-callout-emoji');
-        emojiElement.textContent = '💡';
+        emojiElement.textContent = node.getEmojiValue();
         element.appendChild(emojiElement);
     }
     const textElement = document.createElement('div');

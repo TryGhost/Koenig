@@ -12,7 +12,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_CALLOUT_COMMAND} from '@tryghost/kg-default-nodes';
 
-function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor}) {
+function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiValue}) {
     const [editor] = useLexicalComposerContext();
 
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
@@ -44,12 +44,21 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor}) {
         });
     };
 
+    const handleEmojiChange = (emoji) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setEmojiValue(emoji);
+        });
+    };
+
     return (
         <>
             <CalloutCard
+                changeEmoji={handleEmojiChange}
                 color={backgroundColor}
                 editor={editor}
                 emoji={hasEmoji}
+                emojiValue={emojiValue}
                 handleColorChange={handleColorChange}
                 isEditing={isEditing}
                 isSelected={isSelected}
@@ -107,6 +116,7 @@ export class CalloutNode extends BaseCalloutNode {
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <CalloutNodeComponent
                     backgroundColor={this.__backgroundColor}
+                    emojiValue={this.__emojiValue}
                     hasEmoji={this.__hasEmoji}
                     nodeKey={this.getKey()}
                     text={this.__text}

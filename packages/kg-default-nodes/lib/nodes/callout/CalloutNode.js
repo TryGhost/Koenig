@@ -19,6 +19,7 @@ export class CalloutNode extends KoenigDecoratorNode {
     // payload properties
     __text;
     __hasEmoji;
+    __emojiValue;
     __backgroundColor;
 
     static getType() {
@@ -37,7 +38,8 @@ export class CalloutNode extends KoenigDecoratorNode {
         return {
             text: 'html',
             hasEmoji: 'html',
-            backgroundColor: 'html'
+            backgroundColor: 'html',
+            emojiValue: 'html'
         };
     }
 
@@ -46,22 +48,25 @@ export class CalloutNode extends KoenigDecoratorNode {
         return {
             text: self.__text,
             hasEmoji: self.__hasEmoji,
+            emojiValue: self.__emojiValue,
             backgroundColor: self.__backgroundColor
         };
     }
 
-    constructor({text, hasEmoji, backgroundColor} = {}, key) {
+    constructor({text, hasEmoji, emojiValue, backgroundColor} = {}, key) {
         super(key);
         this.__text = text || '';
         this.__hasEmoji = hasEmoji || false;
+        this.__emojiValue = emojiValue || '💡';
         this.__backgroundColor = backgroundColor || 'blue';
     }
 
     static importJSON(serializedNode) {
-        const {text, hasEmoji, backgroundColor} = serializedNode;
+        const {text, hasEmoji, backgroundColor, emojiValue} = serializedNode;
         return new this({
             text,
             hasEmoji,
+            emojiValue,
             backgroundColor
         });
     }
@@ -72,6 +77,7 @@ export class CalloutNode extends KoenigDecoratorNode {
             version: 1,
             text: this.getText(),
             hasEmoji: this.__hasEmoji,
+            emojiValue: this.__emojiValue,
             backgroundColor: this.__backgroundColor
         };
         return dataset;
@@ -128,6 +134,16 @@ export class CalloutNode extends KoenigDecoratorNode {
     setHasEmoji(hasEmoji) {
         const writeable = this.getWritable();
         writeable.__hasEmoji = hasEmoji;
+    }
+
+    getEmojiValue() {
+        const self = this.getLatest();
+        return self.__emojiValue;
+    }
+
+    setEmojiValue(emojiValue) {
+        const writeable = this.getWritable();
+        writeable.__emojiValue = emojiValue;
     }
 
     decorate() {

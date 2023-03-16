@@ -33,6 +33,7 @@ describe('CalloutNode', function () {
         dataset = {
             text: 'This is a callout',
             hasEmoji: true,
+            emojiValue: '💡',
             backgroundColor: 'blue'
         };
         exportOptions = {
@@ -53,6 +54,7 @@ describe('CalloutNode', function () {
             const node = $createCalloutNode(dataset);
             node.getText().should.equal(dataset.text);
             node.getHasEmoji().should.equal(dataset.hasEmoji);
+            node.getEmojiValue().should.equal(dataset.emojiValue);
             node.getBackgroundColor().should.equal(dataset.backgroundColor);
         }));
 
@@ -64,6 +66,8 @@ describe('CalloutNode', function () {
             node.getHasEmoji().should.be.true;
             node.setBackgroundColor('red');
             node.getBackgroundColor().should.equal('red');
+            node.setEmojiValue('👍');
+            node.getEmojiValue().should.equal('👍');
         }));
 
         it('has getDataset() method', editorTest(function () {
@@ -120,6 +124,7 @@ describe('CalloutNode', function () {
             nodes[0].getBackgroundColor().should.equal('red');
             nodes[0].getHasEmoji().should.be.true;
             nodes[0].getText().should.equal('This is a callout');
+            nodes[0].getEmojiValue().should.equal('💡');
         }));
     });
 });
