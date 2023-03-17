@@ -1,8 +1,7 @@
-import KoenigCalloutEditor from '../../KoenigCalloutEditor';
+import EmojiPickerPortal from '../EmojiPickerPortal';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ColorPickerSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
-import {createPopup} from '@picmo/popup-picker';
 
 export const CALLOUT_COLORS = {
     grey: 'bg-grey/10 border-transparent',
@@ -18,14 +17,13 @@ export const CALLOUT_COLORS = {
 export function CalloutCard({
     color, 
     emoji, 
-    text,
-    isEditing, 
-    updateText, 
+    isEditing,
+    setEditing,
     toggleEmoji, 
     handleColorChange, 
     changeEmoji,
     emojiValue,
-    nodeKey
+    children
 }) {
     const calloutColorPicker = [
         {
@@ -75,61 +73,44 @@ export function CalloutCard({
         }
     ];
 
-    const emojiButtonRef = React.useRef(null);
+    const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
 
-    const memoizedChangeEmoji = React.useCallback(changeEmoji, []); //eslint-disable-line react-hooks/exhaustive-deps
-
-    const handleEmojiClick = React.useCallback(() => {
-        const picker = createPopup(
-            {
-                theme: 'auto'
-            },
-            {
-                triggerElement: emojiButtonRef.current,
-                referenceElement: emojiButtonRef.current,
-                position: 'left-end'
-            }
-        );
-    
-        const handleEmojiSelect = (event) => {
-            memoizedChangeEmoji(event.emoji);
-        };
-    
-        picker.addEventListener('emoji:select', handleEmojiSelect);
-    
-        picker.toggle();
-    
-        return () => {
-            picker.removeEventListener('emoji:select', handleEmojiSelect);
-        };
-    }, [memoizedChangeEmoji]);
-
-    React.useEffect(() => {
-        if (!emoji) {
+    const toggleEmojiPicker = () => {
+        if (!isEditing) {
+            setEditing(true);
             return;
         }
-        const triggerButton = emojiButtonRef.current;
-        triggerButton.addEventListener('click', handleEmojiClick);
-    
-        return () => {
-            triggerButton.removeEventListener('click', handleEmojiClick);
-        };
-    }, [handleEmojiClick, emoji]);
+        setShowEmojiPicker(!showEmojiPicker);
+    };
+
+    const emojiButtonRef = React.useRef(null);
+
+    React.useEffect(() => {
+        if (!isEditing) {
+            setShowEmojiPicker(false);
+        }
+    }, [isEditing]);
 
     return (
         <>
             <div className={`flex items-center rounded border px-7 ${CALLOUT_COLORS[color]} `}>
                 <div>
-                    {emoji && <button ref={emojiButtonRef} className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">{emojiValue}</button>}
+                    {emoji && 
+                    <>
+                        <button 
+                            ref={emojiButtonRef}
+                            className={`mr-2 h-8 cursor-pointer rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button" onClick={toggleEmojiPicker} >{emojiValue}</button>
+                        {
+                            isEditing && showEmojiPicker && (
+                                <EmojiPickerPortal
+                                    buttonRef={emojiButtonRef}
+                                    onEmojiClick={changeEmoji} />
+                            )
+                        }
+                    </>
+                    }
                 </div>
-                <KoenigCalloutEditor
-                    className="w-full bg-transparent font-serif text-xl font-normal text-black"
-                    html={text}
-                    nodeKey={nodeKey}
-                    placeholderText={'Callout text...'}
-                    readOnly={isEditing}
-                    setHtml={updateText}
-                />
+                {children}
             </div>
             {
                 isEditing && (
