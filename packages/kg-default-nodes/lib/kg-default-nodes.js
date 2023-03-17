@@ -6,6 +6,7 @@ import * as audio from './nodes/audio/AudioNode';
 import * as callout from './nodes/callout/CalloutNode';
 import * as aside from './nodes/aside/AsideNode';
 import * as horizontalrule from './nodes/horizontalrule/HorizontalRuleNode';
+import * as html from './nodes/html/HtmlNode';
 
 // re-export everything for easier importing
 export * from './KoenigDecoratorNode';
@@ -18,6 +19,7 @@ export * from './nodes/audio/AudioNode';
 export * from './nodes/callout/CalloutNode';
 export * from './nodes/aside/AsideNode';
 export * from './nodes/horizontalrule/HorizontalRuleNode';
+export * from './nodes/html/HtmlNode';
 
 // export convenience objects for use elsewhere
 export const DEFAULT_NODES = [
@@ -28,5 +30,6 @@ export const DEFAULT_NODES = [
     audio.AudioNode,
     callout.CalloutNode,
     aside.AsideNode,
-    horizontalrule.HorizontalRuleNode
+    horizontalrule.HorizontalRuleNode,
+    html.HtmlNode
 ];

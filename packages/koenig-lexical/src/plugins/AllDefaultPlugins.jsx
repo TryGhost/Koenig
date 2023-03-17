@@ -1,4 +1,5 @@
 import HorizontalRulePlugin from '../plugins/HorizontalRulePlugin';
+import HtmlPlugin from './HtmlPlugin';
 import ImagePlugin from '../plugins/ImagePlugin';
 import MarkdownPlugin from '../plugins/MarkdownPlugin';
 import React from 'react';
@@ -26,6 +27,7 @@ export const AllDefaultPlugins = () => {
             <MarkdownPlugin />
             <HorizontalRulePlugin />
             <CalloutPlugin />
+            <HtmlPlugin />
         </>
     );
 };

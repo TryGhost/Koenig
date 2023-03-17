@@ -4,6 +4,7 @@ import {CalloutNode} from './CalloutNode';
 import {CodeBlockNode} from './CodeBlockNode';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
+import {HtmlNode} from './HtmlNode';
 import {ImageNode} from './ImageNode';
 import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
@@ -23,7 +24,8 @@ const DEFAULT_NODES = [
     MarkdownNode,
     AudioNode,
     VideoNode,
-    CalloutNode
+    CalloutNode,
+    HtmlNode
 ];
 
 export default DEFAULT_NODES;

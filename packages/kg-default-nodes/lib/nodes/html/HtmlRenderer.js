@@ -1,12 +1,11 @@
-import markdownHtmlRenderer from '@tryghost/kg-markdown-html-renderer';
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 
-export function renderMarkdownNodeToDOM(node, options = {}) {
+export function renderHtmlNodeToDOM(node, options = {}) {
     addCreateDocumentOption(options);
 
     const document = options.createDocument();
 
-    const html = markdownHtmlRenderer.render(node.getMarkdown() || '', options);
+    const html = node.getHtml() || '';
 
     const div = document.createElement('div');
 
