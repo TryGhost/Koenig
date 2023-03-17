@@ -24,10 +24,10 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
         });
     };
 
-    const toggleEmoji = () => {
+    const toggleEmoji = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setHasEmoji(!hasEmoji);
+            node.setHasEmoji(event.target.checked);
         });
     };
 

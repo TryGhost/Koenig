@@ -24,7 +24,8 @@ export function CalloutCard({
     toggleEmoji, 
     handleColorChange, 
     changeEmoji,
-    emojiValue
+    emojiValue,
+    nodeKey
 }) {
     const calloutColorPicker = [
         {
@@ -70,18 +71,19 @@ export function CalloutCard({
         {
             label: 'Accent',
             name: 'accent',
-            colorClass: 'bg-pink'
+            colorClass: 'bg-pink' //todo - this should be the theme colour
         }
     ];
 
-    const cardRef = React.useRef(null);
     const emojiButtonRef = React.useRef(null);
 
     const memoizedChangeEmoji = React.useCallback(changeEmoji, []); //eslint-disable-line react-hooks/exhaustive-deps
 
     const handleEmojiClick = React.useCallback(() => {
         const picker = createPopup(
-            {},
+            {
+                theme: 'auto'
+            },
             {
                 triggerElement: emojiButtonRef.current,
                 referenceElement: emojiButtonRef.current,
@@ -103,23 +105,29 @@ export function CalloutCard({
     }, [memoizedChangeEmoji]);
 
     React.useEffect(() => {
+        if (!emoji) {
+            return;
+        }
         const triggerButton = emojiButtonRef.current;
         triggerButton.addEventListener('click', handleEmojiClick);
     
         return () => {
             triggerButton.removeEventListener('click', handleEmojiClick);
         };
-    }, [handleEmojiClick]);
+    }, [handleEmojiClick, emoji]);
 
     return (
         <>
-            <div ref={cardRef} className={`flex items-center rounded border py-5 px-7 ${CALLOUT_COLORS[color]} `}>
-                {emoji && <button ref={emojiButtonRef} className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">{emojiValue}</button>}
+            <div className={`flex items-center rounded border px-7 ${CALLOUT_COLORS[color]} `}>
+                <div>
+                    {emoji && <button ref={emojiButtonRef} className={`mr-2 h-8 rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button">{emojiValue}</button>}
+                </div>
                 <KoenigCalloutEditor
                     className="w-full bg-transparent font-serif text-xl font-normal text-black"
                     html={text}
+                    nodeKey={nodeKey}
                     placeholderText={'Callout text...'}
-                    readOnly={!isEditing}
+                    readOnly={isEditing}
                     setHtml={updateText}
                 />
             </div>
@@ -148,7 +156,7 @@ export function CalloutCard({
 }
 
 CalloutCard.propTypes = {
-    color: PropTypes.oneOf(['grey', 'white', 'blue', 'green', 'yellow', 'red', 'pink', 'purple']),
+    color: PropTypes.oneOf(['grey', 'white', 'blue', 'green', 'yellow', 'red', 'pink', 'purple', 'accent']),
     text: PropTypes.string,
     placeholder: PropTypes.string,
     isEditing: PropTypes.bool,

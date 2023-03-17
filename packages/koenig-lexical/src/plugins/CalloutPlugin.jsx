@@ -27,9 +27,8 @@ export const CalloutPlugin = () => {
                     } else {
                         return false;
                     }
-
                     if (focusNode !== null) {
-                        const calloutNode = $createCalloutNode (dataset);
+                        const calloutNode = $createCalloutNode(dataset);
                         $insertAndSelectNode({selectedNode: focusNode, newNode: calloutNode});
                     }
 

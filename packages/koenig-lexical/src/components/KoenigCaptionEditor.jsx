@@ -81,14 +81,14 @@ function CaptionPlugin({parentEditor}) {
     return null;
 }
 
-const KoenigCaptionEditor = ({paragraphs = 1, html, setHtml, placeholderText, readOnly}) => {
+const KoenigCaptionEditor = ({paragraphs = 1, html, setHtml, placeholderText, readOnly, className = 'koenig-lexical-caption'}) => {
     const [parentEditor] = useLexicalComposerContext();
     return (
         <KoenigComposer
             nodes={MINIMAL_NODES}
         >
             <KoenigComposableEditor
-                className="koenig-lexical-caption"
+                className={className}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 placeholder={<Placeholder text={placeholderText} />}
                 readOnly={readOnly}
