@@ -23,7 +23,8 @@ const KoenigComposableEditor = ({
     placeholder,
     className = '',
     readOnly = false,
-    darkMode = false
+    darkMode = false,
+    isDragEnabled = true
 }) => {
     const _onChange = React.useCallback((editorState) => {
         const json = editorState.toJSON();
@@ -56,9 +57,9 @@ const KoenigComposableEditor = ({
             <KoenigBehaviourPlugin containerElem={editorContainerRef} cursorDidExitAtTop={cursorDidExitAtTop} />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
             {floatingAnchorElem && (<FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />)}
-            <DragDropPastePlugin />
+            {isDragEnabled && <DragDropPastePlugin />}
             <ExternalControlPlugin registerAPI={registerAPI} />
-            <DragDropReorderPlugin containerElem={editorContainerRef} />
+            {isDragEnabled && <DragDropReorderPlugin containerElem={editorContainerRef} />}
             {children}
         </div>
     );
