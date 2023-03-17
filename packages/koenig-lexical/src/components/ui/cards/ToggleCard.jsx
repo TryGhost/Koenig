@@ -14,9 +14,8 @@ export function ToggleCard({
     isSelected
 }) {
     return (
-        <div className="border-grey/40 rounded border py-4 px-6">
-            <div className="w-100 flex justify-between">
-                {/* <div className={`font-sans text-xl font-bold leading-relaxed text-black ${header ? 'opacity-100' : 'opacity-40'}`}> */}
+        <div className="border-grey/40 dark:border-grey/30 rounded border py-4 px-6">
+            <div className="flex items-start justify-between">
                 <KoenigToggleEditor
                     placeholderClassName={'pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text text-black text-xl font-sans font-bold leading-relaxed tracking-wide opacity-40'}
                     placeholderText={headerPlaceholder}
@@ -25,19 +24,18 @@ export function ToggleCard({
                     text={header}
                     textClassName={'mt-2 mb-0 h-auto w-full pb-0 text-black text-xl font-sans font-bold leading-relaxed opacity-100'}
                 />
-                {/* </div> */}
-                <div className="my-2 ml-auto">
-                    <ArrowDownIcon className="text-grey-400 h-4 w-4 stroke-2" />
+                <div className="ml-auto mt-[1px] flex h-8 w-8 shrink-0 items-center justify-center">
+                    <ArrowDownIcon className="text-grey-400 dark:text-grey/30 h-4 w-4 stroke-2" />
                 </div>
             </div>
-            <div className="w-100 mt-2">
+            <div className="mt-2 w-full">
                 <KoenigToggleEditor
-                    placeholderClassName={'text-grey-900 pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text font-serif text-xl font-normal leading-relaxed tracking-wide opacity-40'}
+                    placeholderClassName={'pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-textmt-2 w-full font-serif text-xl font-normal leading-normal text-grey-900 dark:text-grey-100 opacity-40'}
                     placeholderText={contentPlaceholder}
                     readOnly={!isEditing}
                     setText={setContent}
                     text={content}
-                    textClassName={'text-grey-900 mt-2 mb-0 h-auto w-full pb-0 font-serif text-xl font-normal leading-relaxed opacity-100'}
+                    textClassName={'mt-2 w-full font-serif text-xl font-normal leading-normal text-grey-900 dark:text-grey-100 opacity-100'}
                 />
             </div>
         </div>
