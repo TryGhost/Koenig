@@ -1,4 +1,5 @@
 import EmojiPickerPortal from '../EmojiPickerPortal';
+import KoenigCalloutEditor from '../../KoenigCalloutEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ColorPickerSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
@@ -14,6 +15,54 @@ export const CALLOUT_COLORS = {
     purple: 'bg-purple/10 border-transparent'
 };
 
+export const calloutColorPicker = [
+    {
+        label: 'Grey',
+        name: 'grey',
+        colorClass: 'bg-grey-100'
+    },
+    {
+        label: 'White',
+        name: 'white',
+        colorClass: 'bg-white'
+    },
+    {
+        label: 'Blue',
+        name: 'blue',
+        colorClass: 'bg-blue-100'
+    },
+    {
+        label: 'Green',
+        name: 'green',
+        colorClass: 'bg-green-100'
+    },
+    {
+        label: 'Yellow',
+        name: 'yellow',
+        colorClass: 'bg-yellow-100'
+    },
+    {
+        label: 'Red',
+        name: 'red',
+        colorClass: 'bg-red-100'
+    },
+    {
+        label: 'Pink',
+        name: 'pink',
+        colorClass: 'bg-pink-100'
+    },
+    {
+        label: 'Purple',
+        name: 'purple',
+        colorClass: 'bg-purple-100'
+    },
+    {
+        label: 'Accent',
+        name: 'accent',
+        colorClass: 'bg-pink' //todo - this should be the theme colour
+    }
+];
+
 export function CalloutCard({
     color, 
     emoji, 
@@ -23,56 +72,10 @@ export function CalloutCard({
     handleColorChange, 
     changeEmoji,
     emojiValue,
-    children
+    text,
+    setText,
+    nodeKey
 }) {
-    const calloutColorPicker = [
-        {
-            label: 'Grey',
-            name: 'grey',
-            colorClass: 'bg-grey-100'
-        },
-        {
-            label: 'White',
-            name: 'white',
-            colorClass: 'bg-white'
-        },
-        {
-            label: 'Blue',
-            name: 'blue',
-            colorClass: 'bg-blue-100'
-        },
-        {
-            label: 'Green',
-            name: 'green',
-            colorClass: 'bg-green-100'
-        },
-        {
-            label: 'Yellow',
-            name: 'yellow',
-            colorClass: 'bg-yellow-100'
-        },
-        {
-            label: 'Red',
-            name: 'red',
-            colorClass: 'bg-red-100'
-        },
-        {
-            label: 'Pink',
-            name: 'pink',
-            colorClass: 'bg-pink-100'
-        },
-        {
-            label: 'Purple',
-            name: 'purple',
-            colorClass: 'bg-purple-100'
-        },
-        {
-            label: 'Accent',
-            name: 'accent',
-            colorClass: 'bg-pink' //todo - this should be the theme colour
-        }
-    ];
-
     const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
 
     const toggleEmojiPicker = () => {
@@ -93,13 +96,19 @@ export function CalloutCard({
 
     return (
         <>
-            <div className={`flex items-center rounded border px-7 ${CALLOUT_COLORS[color]} `}>
+            <div className={`flex items-center rounded border px-7 ${CALLOUT_COLORS[color]} `} data-testid={`callout-bg-${color}`}>
                 <div>
                     {emoji && 
                     <>
-                        <button 
+                        <button
                             ref={emojiButtonRef}
-                            className={`mr-2 h-8 cursor-pointer rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` } type="button" onClick={toggleEmojiPicker} >{emojiValue}</button>
+                            className={`mr-2 cursor-pointer rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` }
+                            data-testid="emoji-picker-button" 
+                            type="button" 
+                            onClick={toggleEmojiPicker} 
+                        >
+                            {emojiValue}
+                        </button>
                         {
                             isEditing && showEmojiPicker && (
                                 <EmojiPickerPortal
@@ -111,7 +120,14 @@ export function CalloutCard({
                     </>
                     }
                 </div>
-                {children}
+                <KoenigCalloutEditor
+                    className="w-full bg-transparent font-serif text-xl font-normal text-black"
+                    html={text}
+                    nodeKey={nodeKey}
+                    placeholderText={'Callout text...'}
+                    readOnly={isEditing}
+                    setHtml={setText}
+                />
             </div>
             {
                 isEditing && (

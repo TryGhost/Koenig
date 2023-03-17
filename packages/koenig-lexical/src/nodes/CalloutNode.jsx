@@ -1,5 +1,4 @@
 import CardContext from '../context/CardContext';
-import KoenigCalloutEditor from '../components/KoenigCalloutEditor';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
@@ -62,18 +61,12 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
                 emojiValue={emojiValue}
                 handleColorChange={handleColorChange}
                 isEditing={isEditing}
+                nodeKey={nodeKey}
                 setEditing={setEditing}
+                setText={setText}
+                text={text}
                 toggleEmoji={toggleEmoji}
-            >
-                <KoenigCalloutEditor
-                    className="w-full bg-transparent font-serif text-xl font-normal text-black"
-                    html={text}
-                    nodeKey={nodeKey}
-                    placeholderText={'Callout text...'}
-                    readOnly={isEditing}
-                    setHtml={setText}
-                />
-            </CalloutCard>
+            />
             <ActionToolbar
                 data-kg-card-toolbar="callout"
                 isVisible={isSelected && !isEditing}

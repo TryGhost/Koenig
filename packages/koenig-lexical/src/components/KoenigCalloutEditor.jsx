@@ -6,9 +6,10 @@ import {$createParagraphNode, $getNodeByKey, $setSelection, COMMAND_PRIORITY_LOW
 import {HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+
 const Placeholder = ({text = 'Type here'}) => {
     return (
-        <div className="pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text font-sans text-sm font-normal tracking-wide text-grey-500 ">
+        <div className="pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text font-sans text-xl font-normal tracking-wide text-grey-500 ">
             {text}
         </div>
     );

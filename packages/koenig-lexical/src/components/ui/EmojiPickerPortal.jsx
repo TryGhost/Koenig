@@ -26,7 +26,7 @@ const EmojiPickerPortal = ({onEmojiClick, buttonRef, togglePortal}) => {
     };
     return (
         <Portal>
-            <div className='fixed z-10 mr-9 mt-3 rounded-md bg-white' style={{left: x, top: y}} onClick={handleClick}>
+            <div className='fixed z-10 mr-9 mt-3 rounded-md bg-white' data-testid="emoji-picker-container" style={{left: x, top: y}} onClick={handleClick}>
                 <div className='overflow-y-scroll rounded bg-white p-4 shadow-lg'>
                     <EmojiPicker 
                         onEmojiClick={onEmojiClick} 

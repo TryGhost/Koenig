@@ -24,16 +24,6 @@ export class CalloutNode extends KoenigDecoratorNode {
         );
     }
 
-    // used by `@tryghost/url-utils` to transform URLs contained in the serialized JSON]
-    static get urlTransformMap() {
-        return {
-            text: 'html',
-            hasEmoji: 'html',
-            backgroundColor: 'html',
-            emojiValue: 'html'
-        };
-    }
-
     getDataset() {
         const self = this.getLatest();
         return {
@@ -44,10 +34,10 @@ export class CalloutNode extends KoenigDecoratorNode {
         };
     }
 
-    constructor({text, hasEmoji, emojiValue, backgroundColor} = {}, key) {
+    constructor({text, hasEmoji = true, emojiValue, backgroundColor} = {}, key) {
         super(key);
         this.__text = text || '';
-        this.__hasEmoji = hasEmoji || true;
+        this.__hasEmoji = hasEmoji;
         this.__emojiValue = emojiValue || '💡';
         this.__backgroundColor = backgroundColor || 'blue';
     }
