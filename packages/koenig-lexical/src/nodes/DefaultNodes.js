@@ -1,5 +1,6 @@
 import {AsideNode} from './AsideNode';
 import {AudioNode} from './AudioNode';
+import {CalloutNode} from './CalloutNode';
 import {CodeBlockNode} from './CodeBlockNode';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
@@ -24,6 +25,7 @@ const DEFAULT_NODES = [
     MarkdownNode,
     AudioNode,
     VideoNode,
+    CalloutNode,
     HtmlNode,
     ToggleNode
 ];

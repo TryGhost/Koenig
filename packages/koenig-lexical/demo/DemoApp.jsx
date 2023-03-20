@@ -47,7 +47,6 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode}) {
         return (
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
-                darkMode={darkMode}
                 markdownTransformers={BASIC_TRANSFORMERS}
                 registerAPI={registerAPI}
             />
@@ -56,7 +55,6 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode}) {
         return (
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
-                darkMode={darkMode}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 registerAPI={registerAPI}
             >
@@ -185,15 +183,16 @@ function DemoApp({editorType}) {
     return (
         <div
             key={location.key}
-            className={`koenig-lexical top ${darkMode ? 'dark' : ''}`}
+            className={`koenig-lexical top`}
         >
             <KoenigComposer
                 cardConfig={cardConfig}
+                darkMode={darkMode}
                 fileUploader={{useFileUpload, fileTypes}}
                 initialEditorState={initialContent}
                 nodes={getAllowedNodes({editorType})}
             >
-                <div className="relative h-full grow">
+                <div className={`relative h-full grow ${darkMode ? 'dark' : ''}`}>
                     {
                         searchParams !== 'false'
                             ? <InitialContentToggle defaultContent={defaultContent} searchParams={searchParams} setSearchParams={setSearchParams} setTitle={setTitle} />
