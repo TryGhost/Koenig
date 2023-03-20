@@ -19,12 +19,12 @@ export function ToggleCard({
         <div className="border-grey/40 dark:border-grey/30 rounded border py-4 px-6">
             <div className="flex items-start justify-between" onClick={toggleContent}>
                 <KoenigToggleEditor
-                    placeholderClassName={'pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text text-black text-xl font-sans font-bold leading-relaxed tracking-wide opacity-40'}
+                    placeholderClassName={'pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text text-black dark:text-grey-100 text-xl font-sans font-bold leading-relaxed tracking-wide opacity-40'}
                     placeholderText={headerPlaceholder}
                     readOnly={!isEditing}
                     setText={setHeader}
                     text={header}
-                    textClassName={'mt-2 mb-0 h-auto w-full pb-0 text-black text-xl font-sans font-bold leading-relaxed opacity-100'}
+                    textClassName={'mt-2 mb-0 h-auto w-full pb-0 text-black dark:text-grey-100 text-xl font-sans font-bold leading-relaxed opacity-100'}
                 />
                 <div className="ml-auto mt-2 flex h-8 w-8 shrink-0 items-center justify-center">
                     <ArrowDownIcon className={`text-grey-400 dark:text-grey/30 h-4 w-4 stroke-2 ${isContentVisible ? 'rotate-180' : 'rotate-0'}`} />
