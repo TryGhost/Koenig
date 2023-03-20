@@ -1,5 +1,5 @@
 import React from 'react';
-import {HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
+import {BASIC_NODES, BASIC_TRANSFORMERS, HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, RestrictContentPlugin} from '../index.js';
 
 const Placeholder = ({text = 'Type here', className = ''}) => {
     return (
@@ -9,19 +9,18 @@ const Placeholder = ({text = 'Type here', className = ''}) => {
     );
 };
 
-const KoenigToggleEditor = ({paragraphs = 1, text, setText, placeholderText, textClassName, placeholderClassName, readOnly}) => {
+const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, placeholderClassName, readOnly}) => {
     return (
         <KoenigComposer
-            nodes={MINIMAL_NODES}
+            nodes={BASIC_NODES}
         >
             <KoenigComposableEditor
                 className={textClassName}
                 isDragEnabled={false}
-                markdownTransformers={MINIMAL_TRANSFORMERS}
+                markdownTransformers={BASIC_TRANSFORMERS}
                 placeholder={<Placeholder className={placeholderClassName} text={placeholderText} />}
                 readOnly={readOnly}
             >
-                <RestrictContentPlugin paragraphs={paragraphs} />
                 <HtmlOutputPlugin html={text} setHtml={setText} />
             </KoenigComposableEditor>
         </KoenigComposer>
