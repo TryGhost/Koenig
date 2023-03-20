@@ -67,32 +67,24 @@ export function CalloutCard({
     color, 
     emoji, 
     isEditing,
-    setEditing,
+    setShowEmojiPicker,
     toggleEmoji, 
     handleColorChange, 
     changeEmoji,
     emojiValue,
     text,
     setText,
-    nodeKey
+    nodeKey,
+    toggleEmojiPicker,
+    showEmojiPicker
 }) {
-    const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
-
-    const toggleEmojiPicker = () => {
-        if (!isEditing) {
-            setEditing(true);
-            return;
-        }
-        setShowEmojiPicker(!showEmojiPicker);
-    };
-
     const emojiButtonRef = React.useRef(null);
 
     React.useEffect(() => {
         if (!isEditing) {
             setShowEmojiPicker(false);
         }
-    }, [isEditing]);
+    }, [isEditing, setShowEmojiPicker]);
 
     return (
         <>

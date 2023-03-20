@@ -16,6 +16,7 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
     const [editor] = useLexicalComposerContext();
 
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
+    const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
 
     const setText = (newText) => {
         editor.update(() => {
@@ -48,7 +49,16 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setEmojiValue(event.emoji);
+            toggleEmojiPicker();
         });
+    };
+
+    const toggleEmojiPicker = () => {
+        if (!isEditing) {
+            setEditing(true);
+            return;
+        }
+        setShowEmojiPicker(!showEmojiPicker);
     };
 
     return (
@@ -63,9 +73,12 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
                 isEditing={isEditing}
                 nodeKey={nodeKey}
                 setEditing={setEditing}
+                setShowEmojiPicker={setShowEmojiPicker}
                 setText={setText}
+                showEmojiPicker={showEmojiPicker}
                 text={text}
                 toggleEmoji={toggleEmoji}
+                toggleEmojiPicker={toggleEmojiPicker}
             />
             <ActionToolbar
                 data-kg-card-toolbar="callout"

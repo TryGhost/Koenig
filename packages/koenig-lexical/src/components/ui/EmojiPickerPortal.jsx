@@ -2,7 +2,7 @@ import EmojiPicker from 'emoji-picker-react';
 import Portal from './Portal';
 import React from 'react';
 
-const EmojiPickerPortal = ({onEmojiClick, buttonRef, togglePortal}) => {
+const EmojiPickerPortal = ({onEmojiClick, buttonRef}) => {
     const [position, setPosition] = React.useState(null);
 
     React.useEffect(() => {
@@ -22,7 +22,6 @@ const EmojiPickerPortal = ({onEmojiClick, buttonRef, togglePortal}) => {
 
     const handleClick = (e) => {
         e.stopPropagation();
-        togglePortal();
     };
     return (
         <Portal>
