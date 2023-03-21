@@ -1,9 +1,9 @@
 import React from 'react';
-import {BASIC_NODES, BASIC_TRANSFORMERS, HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, RestrictContentPlugin} from '../index.js';
+import {BASIC_NODES, BASIC_TRANSFORMERS, HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer} from '../index.js';
 
 const Placeholder = ({text = 'Type here', className = ''}) => {
     return (
-        <div className={className}>
+        <div className={`pointer-events-none absolute top-0 left-0 min-w-full cursor-text ${className}`}>
             {text}
         </div>
     );
