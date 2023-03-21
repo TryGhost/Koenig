@@ -1,15 +1,15 @@
 import React from 'react';
-import {BASIC_NODES, BASIC_TRANSFORMERS, HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer} from '../index.js';
+import {BASIC_NODES, BASIC_TRANSFORMERS, HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, RestrictContentPlugin} from '../index.js';
 
 const Placeholder = ({text = 'Type here', className = ''}) => {
     return (
-        <div className={`pointer-events-none absolute top-0 left-0 min-w-full cursor-text ${className}`}>
+        <div className={`not-kg-prose pointer-events-none absolute top-0 left-0 min-w-full cursor-text ${className}`}>
             {text}
         </div>
     );
 };
 
-const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, placeholderClassName, readOnly}) => {
+const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, placeholderClassName, readOnly, singleParagraph = false}) => {
     return (
         <KoenigComposer
             nodes={BASIC_NODES}
@@ -21,6 +21,7 @@ const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, plac
                 placeholder={<Placeholder className={placeholderClassName} text={placeholderText} />}
                 readOnly={readOnly}
             >
+                {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
                 <HtmlOutputPlugin html={text} setHtml={setText} />
             </KoenigComposableEditor>
         </KoenigComposer>

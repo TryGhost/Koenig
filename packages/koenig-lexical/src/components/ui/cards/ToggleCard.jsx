@@ -16,17 +16,20 @@ export function ToggleCard({
     toggleContent
 }) {
     return (
-        <div className="border-grey/40 dark:border-grey/30 rounded border py-4 px-6">
-            <div className="flex items-start justify-between" onClick={toggleContent}>
-                <KoenigToggleEditor
-                    placeholderClassName={'kg-toggle-header-placeholder'}
-                    placeholderText={headerPlaceholder}
-                    readOnly={!isEditing}
-                    setText={setHeader}
-                    text={header}
-                    textClassName={'kg-toggle-header-text'}
-                />
-                <div className="ml-auto mt-[-1px] flex h-8 w-8 shrink-0 items-center justify-center">
+        <div className='border-grey/40 dark:border-grey/30 rounded border py-4 px-6'>
+            <div className='flex cursor-text items-start justify-between' onClick={toggleContent}>
+                <div className="mr-2 w-full">
+                    <KoenigToggleEditor
+                        placeholderClassName={'kg-toggle-header-placeholder'}
+                        placeholderText={headerPlaceholder}
+                        readOnly={!isEditing}
+                        setText={setHeader}
+                        singleParagraph={true}
+                        text={header}
+                        textClassName={'kg-toggle-header-text'}
+                    />
+                </div>
+                <div className='ml-auto mt-[-1px] flex h-8 w-8 shrink-0 items-center justify-center'>
                     <ArrowDownIcon className={`text-grey-400 dark:text-grey/30 h-4 w-4 stroke-2 ${isContentVisible ? 'rotate-180' : 'rotate-0'}`} />
                 </div>
             </div>
