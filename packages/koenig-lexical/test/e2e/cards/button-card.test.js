@@ -50,119 +50,63 @@ describe('Button Card', async () => {
 
     test('renders button card', async function () {
         await focusEditor(page);
-        await page.keyboard.type('/callout');
+        await page.keyboard.type('/button');
         await page.keyboard.press('Enter');
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="callout">
+                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="button">
                 </div>
             </div>
             <p><br /></p>
         `, {ignoreCardContents: true});
     });
 
-    // test('has settings panel', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
+    test('has settings panel', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/button');
+        await page.keyboard.press('Enter');
 
-    //     const editButton = await page.locator('[data-testid="edit-callout-card"]');
-    //     await editButton.click();
+        await expect(await page.getByTestId('settings-panel')).toBeVisible();
+        await expect(await page.getByTestId('button-align-left')).toBeVisible();
+        await expect(await page.getByTestId('button-align-center')).toBeVisible();
+        await expect(await page.getByTestId('button-text-input')).toBeVisible();
+        await expect(await page.getByTestId('button-text-url')).toBeVisible();
+    });
 
-    //     // the settings panel consists of emoji-toggle and colour picker
-    //     const emojiToggle = await page.locator('[data-testid="emoji-toggle"]');
-    //     await expect(emojiToggle).toBeVisible();
-    //     const colorPicker = await page.locator('[data-testid="callout-color-picker"]');
-    //     await expect(colorPicker).toBeVisible();
-    // });
+    test('alignment buttons work', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/button');
+        await page.keyboard.press('Enter');
 
-    // test('can edit callout card', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
+        // align center by default
+        const buttonCard = await page.getByTestId('button-card');
+        await expect(buttonCard).toHaveClass(/justify-center/);
 
-    //     await page.keyboard.type('Hello World');
+        const leftAlignButton = await page.getByTestId('button-align-left');
+        leftAlignButton.click();
+        await expect(buttonCard).toHaveClass(/justify-start/);
 
-    //     const calloutCard = await page.locator('[data-kg-card="callout"]');
-    //     await expect(calloutCard).toContainText('💡Hello World ');
-    // });
+        const centerAlignButton = await page.getByTestId('button-align-center');
+        centerAlignButton.click();
+        await expect(buttonCard).toHaveClass(/justify-center/);
+    });
 
-    // test('can toggle emoji', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
+    test('text input field works', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/button');
+        await page.keyboard.press('Enter');
 
-    //     // click <button data-testid="edit-callout-card"
-    //     const editButton = await page.locator('[data-testid="edit-callout-card"]');
-    //     await editButton.click();
+        // blank by default
+        const button = await page.getByTestId('button-card-btn');
+        await expect(button).toHaveAttribute('placeholder','Add button text');
 
-    //     const toggle = await page.locator('[data-testid="emoji-toggle"]');
-    //     await toggle.click();
-    //     // click on data-kg-card="callout"
-    //     await page.click('[data-kg-card="callout"]');
-    //     await page.keyboard.type('Hello World');
+        const buttonTextInput = await page.getByTestId('button-text-input');
+        await expect(button).toHaveAttribute('placeholder','Add button text');
+        await page.keyboard.type('test');
+        await expect(buttonTextInput).toHaveValue('test');
+    });
 
-    //     const calloutCard = await page.locator('[data-kg-card="callout"]');
-    //     await expect(calloutCard).not.toContainText('💡');
-    // });
-
-    // test('can render emoji picker', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
-
-    //     // click <button data-testid="edit-callout-card"
-    //     const editButton = await page.locator('[data-testid="edit-callout-card"]');
-    //     await editButton.click();
-        
-    //     await page.getByRole('button', {name: '💡'}).click();
-    //     const emojiPickerContainer = await page.locator('[data-testid="emoji-picker-container"]');
-    //     await expect(emojiPickerContainer).toBeVisible();
-    // });
-
-    // test('colour picker renders all colours', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
-    //     const editButton = await page.locator('[data-testid="edit-callout-card"]');
-    //     await editButton.click();
-
-    //     await Promise.all(calloutColorPicker.map(async (color) => {
-    //         const colorPicker = await page.locator(`[data-test-id="color-picker-${color.name}"]`);
-    //         await expect(colorPicker).toBeVisible();
-    //     }));
-    // });
-
-    // test('can change background color', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
-
-    //     // click <button data-testid="edit-callout-card"
-    //     const editButton = await page.locator('[data-testid="edit-callout-card"]');
-    //     await editButton.click();
-    //     const colorPicker = await page.locator(`[data-test-id="color-picker-green"]`);
-    //     await colorPicker.click();
-        
-    //     // ensure data-test-id="callout-bg-blue" is visible
-    //     const greenCallout = await page.locator('[data-testid="callout-bg-green"]');
-    //     await expect(greenCallout).toBeVisible();
-    // });
-
-    // it('can select an emoji', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/callout');
-    //     await page.keyboard.press('Enter');
-
-    //     // click <button data-testid="edit-callout-card"
-    //     const editButton = await page.locator('[data-testid="edit-callout-card"]');
-    //     await editButton.click();
-    //     await page.getByRole('button', {name: '💡'}).click();
-    //     const lolEmoji = await page.locator('[data-unified="1f602"]'); // this is the unified code for 😂
-    //     await lolEmoji.click();
-    //     // await page.keyboard.type('Joke of the day');
-    //     const calloutCard = await page.locator('[data-kg-card="callout"]');
-    //     await expect(calloutCard).toContainText('😂');
-    // });
+    // TODO: test for the url input
+    // TODO: test suggested urls
 });
