@@ -38,5 +38,5 @@ export function IconButton({onClick, label, name, selectedName, Icon}) {
 }
 
 ButtonGroup.propTypes = {
-    selectedName: PropTypes.oneOf(['regular', 'wide', 'full'])
+    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'center', 'left'])
 };
