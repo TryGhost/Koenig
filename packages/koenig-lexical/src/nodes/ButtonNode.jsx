@@ -6,27 +6,34 @@ import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {ButtonNode as BaseButtonNode, INSERT_BUTTON_COMMAND} from '@tryghost/kg-default-nodes';
 import {ButtonCard} from '../components/ui/cards/ButtonCard';
 import {ReactComponent as ButtonCardIcon} from '../assets/icons/kg-card-type-button.svg';
-import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
+import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {Input} from '../components/ui/Input.jsx';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_BUTTON_COMMAND} from '@tryghost/kg-default-nodes';
 
-function ButtonNodeComponent({alignment, buttonUrl, nodeKey, buttonText}) {
+function ButtonNodeComponent({alignment, buttonText, buttonUrl, nodeKey}) {
     const [editor] = useLexicalComposerContext();
-    const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
+    const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
 
-    const handleButtonTextChange = (value) => {
+    const handleToolbarEdit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setEditing(true);
+    };
+
+    const handleButtonTextChange = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setButtonText(value);
+            node.setButtonText(event.target.value);
         });
     };
 
-    const handleButtonUrlChange = (value) => {
+    const handleButtonUrlChange = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setButtonUrl(value);
+            node.setButtonUrl(event.target.value);
         });
     };
 
@@ -37,26 +44,25 @@ function ButtonNodeComponent({alignment, buttonUrl, nodeKey, buttonText}) {
         });
     };
 
-    const handleToolbarEdit = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setEditing(true);
-    };
-
     return (
         <>
-            <ButtonCard
+            <ButtonCard 
                 alignment={alignment}
-                buttonUrl={buttonUrl}
-                isEditing={isEditing}
-                nodeKey={nodeKey}
-                setEditing={setEditing}
+                buttonPlaceholder={`Add button text`}
                 buttonText={buttonText}
-                updateAlingment={handleAlignmentChange}
-                updateButtonUrl={handleButtonUrlChange}
-                updateButtonText={handleButtonTextChange}
+                buttonUrl={buttonUrl}
+                handleAlignmentChange={handleAlignmentChange}
+                handleButtonTextChange={handleButtonTextChange}
+                handleButtonUrlChange={handleButtonUrlChange}
+                isEditing={isEditing}
+                setEditing={setEditing}
             />
-            <ActionToolbar 
+            <Input
+                placeholder={`test`}
+                value={buttonText}
+                onChange={handleButtonTextChange}
+            />
+            <ActionToolbar
                 data-kg-card-toolbar="button"
                 isVisible={isSelected && !isEditing}
             >
@@ -74,28 +80,41 @@ export class ButtonNode extends BaseButtonNode {
     static kgMenu = {
         label: 'Button',
         desc: 'Add a button to your post',
+        Icon: ButtonCardIcon,
         insertCommand: INSERT_BUTTON_COMMAND,
         matches: ['button']
     };
 
+    static getType() {
+        return 'button';
+    }
+
+    // transient properties used to control node behaviour
+    __openInEditMode = false;
+
     constructor(dataset = {}, key) {
         super(dataset, key);
+
+        const {_openInEditMode} = dataset;
+        this.__openInEditMode = _openInEditMode || false;
     }
 
     getIcon() {
         return ButtonCardIcon;
     }
 
-    createDOM() {
-        const div = document.createElement('div');
-        return div;
+    clearOpenInEditMode() {
+        const self = this.getWritable();
+        self.__openInEditMode = false;
     }
 
     decorate() {
         return (
             <KoenigCardWrapper
                 nodeKey={this.getKey()}
+                openInEditMode={this.__openInEditMode}
                 width={this.__cardWidth}
+                wrapperStyle="wide"
             >
                 <ButtonNodeComponent
                     alignment={this.__alignment}
