@@ -6,11 +6,14 @@ import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
 
 export function ButtonCard({
-    isEditing, 
+    alignment,
     buttonText, 
     buttonPlaceholder, 
     buttonUrl, 
-    alignment
+    handleAlignmentChange,
+    handleButtonTextChange,
+    handleButtonUrlChange,
+    isEditing
 }) {
     const buttonGroupChildren = [
         {
@@ -38,16 +41,19 @@ export function ButtonCard({
                         buttons={buttonGroupChildren}
                         label="Content alignment"
                         selectedName={alignment}
+                        onClick={handleAlignmentChange}
                     />
                     <InputSetting
                         label='Button text'
                         placeholder='Add button text'
                         value={buttonText}
+                        onChange={handleButtonTextChange}
                     />
                     <InputSetting
                         label='Button URL'
                         placeholder='https://yoursite.com/#/portal/signup/'
                         value={buttonUrl}
+                        onChange={handleButtonUrlChange}
                     />
                 </SettingsPanel>    
             )}
