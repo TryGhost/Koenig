@@ -46,10 +46,10 @@ export class ButtonNode extends KoenigDecoratorNode {
     }
 
     static importJSON(serializedNode) {
-        const {buttonText, alignment, buttonUrl} = serializedNode;
+        const {alignment, buttonText, buttonUrl} = serializedNode;
         const node = new this({
-            buttonText,
             alignment,
+            buttonText,
             buttonUrl
         });
         return node;
