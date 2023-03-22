@@ -10,7 +10,9 @@ function cardTemplate({node}) {
             <div class="kg-toggle-heading">
                 <h4 class="kg-toggle-heading-text">${header}</h4>
                 <button class="kg-toggle-card-icon">
-                    <svg id="Regular" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="cls-1" d="M23.25,7.311,12.53,18.03a.749.749,0,0,1-1.06,0L.75,7.311"/></svg>
+                    <svg id="Regular" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path class="cls-1" d="M23.25,7.311,12.53,18.03a.749.749,0,0,1-1.06,0L.75,7.311"></path>
+                    </svg>
                 </button>
             </div>
             <div class="kg-toggle-content">${content}</div>
