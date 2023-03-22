@@ -6,6 +6,7 @@ import React from 'react';
 import {AudioPlugin} from '../plugins/AudioPlugin';
 import {CalloutPlugin} from '../plugins/CalloutPlugin';
 import {CardMenuPlugin} from '../plugins/CardMenuPlugin';
+import {FilePlugin} from '../plugins/FilePlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
 import {VideoPlugin} from '../plugins/VideoPlugin';
@@ -28,6 +29,7 @@ export const AllDefaultPlugins = () => {
             <HorizontalRulePlugin />
             <CalloutPlugin />
             <HtmlPlugin />
+            <FilePlugin />
         </>
     );
 };
