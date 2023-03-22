@@ -9,9 +9,7 @@ const NODE_TYPE = 'toggle';
 export class ToggleNode extends KoenigDecoratorNode {
     // payload properties
     __content;
-    __contentPlaceholder;
     __header;
-    __headerPlaceholder;
 
     static getType() {
         return NODE_TYPE;
@@ -27,9 +25,7 @@ export class ToggleNode extends KoenigDecoratorNode {
     static get urlTransformMap() {
         return {
             content: 'html',
-            contentPlaceholder: 'html',
-            header: 'html',
-            headerPlaceholder: 'html'
+            header: 'html'
         };
     }
 
@@ -37,27 +33,21 @@ export class ToggleNode extends KoenigDecoratorNode {
         const self = this.getLatest();
         return {
             content: self.__content,
-            contentPlaceholder: self.__contentPlaceholder,
-            header: self.__header,
-            headerPlaceholder: self.__headerPlaceholder
+            header: self.__header
         };
     }
 
-    constructor({content, contentPlaceholder, header, headerPlaceholder} = {}, key) {
+    constructor({content, header} = {}, key) {
         super(key);
         this.__content = content || '';
-        this.__contentPlaceholder = contentPlaceholder || 'Collapsible content';
         this.__header = header || '';
-        this.__headerPlaceholder = headerPlaceholder || 'Toggle header';
     }
 
     static importJSON(serializedNode) {
-        const {content, contentPlaceholder, header, headerPlaceholder} = serializedNode;
+        const {content, header} = serializedNode;
         return new this({
             content,
-            contentPlaceholder,
-            header,
-            headerPlaceholder
+            header
         });
     }
 
@@ -66,9 +56,7 @@ export class ToggleNode extends KoenigDecoratorNode {
             type: NODE_TYPE,
             version: 1,
             content: this.getContent(),
-            contentPlaceholder: this.getContentPlaceholder(),
-            header: this.getHeader(),
-            headerPlaceholder: this.getHeaderPlaceholder()
+            header: this.getHeader()
         };
         return dataset;
     }
@@ -105,16 +93,6 @@ export class ToggleNode extends KoenigDecoratorNode {
         return writable.__content = content;
     }
 
-    getContentPlaceholder() {
-        const self = this.getLatest();
-        return self.__contentPlaceholder;
-    }
-
-    setContentPlaceholder(contentPlaceholder) {
-        const writable = this.getWritable();
-        return writable.__contentPlaceholder = contentPlaceholder;
-    }
-
     getHeader() {
         const self = this.getLatest();
         return self.__header;
@@ -123,16 +101,6 @@ export class ToggleNode extends KoenigDecoratorNode {
     setHeader(header) {
         const writable = this.getWritable();
         return writable.__header = header;
-    }
-
-    getHeaderPlaceholder() {
-        const self = this.getLatest();
-        return self.__headerPlaceholder;
-    }
-
-    setHeaderPlaceholder(headerPlaceholder) {
-        const writable = this.getWritable();
-        return writable.__headerPlaceholder = headerPlaceholder;
     }
 
     // should be overridden

@@ -1,66 +1,47 @@
-function toggleCardTemplate({node}) {
+import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+
+function cardTemplate({node}) {
     const content = node.getContent();
-    const contentPlaceholder = node.getContentPlaceholder();
     const header = node.getHeader();
-    const headerPlaceholder = node.getHeaderPlaceholder();
 
     return (
         `
-        <div class="kg-toggle-card">
-            <div class="kg-toggle-card-header">
-                <div class="kg-toggle-card-heading" data-kg-has-link-toolbar="true"
-                    data-koenig-dnd-disabled="true">
-                    <div class="koenig-basic-html-input__editor-wrappper" style="cursor: text">
-                        <div class="koenig-basic-html-input__editor __mobiledoc-editor __has-no-content" data-kg="editor"
-                            data-kg-allow-clickthrough="" data-placeholder="${headerPlaceholder}" spellcheck="true"
-                            contenteditable="true">
-                            <h4>${header}</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="kg-toggle-card-arrow-container">
-                    <div class="kg-toggle-card-arrow">
-                        <svg viewBox="0 0 24 24">
-                            <title>arrow-down-1</title>
-                            <path d="M23.25 7.311L12.53 18.03a.749.749 0 01-1.06 0L.75 7.311" fill="none" stroke="currentColor"
-                                stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" fill-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                </div>
+        <div class="kg-card kg-toggle-card" data-kg-toggle-state="close">
+            <div class="kg-toggle-heading">
+                <h4 class="kg-toggle-heading-text">${header}</h4>
+                <button class="kg-toggle-card-icon">
+                    <svg id="Regular" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="cls-1" d="M23.25,7.311,12.53,18.03a.749.749,0,0,1-1.06,0L.75,7.311"/></svg>
+                </button>
             </div>
-            <div class="w-100 bn bg-transparent kg-toggle-card-content" data-kg-has-link-toolbar="true"
-                data-koenig-dnd-disabled="true">
-                <div class="koenig-basic-html-textarea__editor-wrappper" style="cursor: text">
-                    <div class="koenig-basic-html-textarea__editor __mobiledoc-editor" data-kg="editor"
-                        data-kg-allow-clickthrough="" data-placeholder="${contentPlaceholder}" spellcheck="true"
-                        contenteditable="true">
-                        <p>${content}</p>
-                    </div>
-                </div>
-            </div>
+            <div class="kg-toggle-content">${content}</div>
+        </div>
+        `
+    );
+}
+
+function emailCardTemplate({node}) {
+    const content = node.getContent();
+    const header = node.getHeader();
+
+    return (
+        `
+        <div style="background: transparent;
+        border: 1px solid rgba(124, 139, 154, 0.25); border-radius: 4px; padding: 20px; margin-bottom: 1.5em;">
+            <h4 style="font-size: 1.375rem; font-weight: 600; margin-bottom: 8px; margin-top:0px">${header}</h4>
+            <div style="font-size: 1rem; line-height: 1.5; margin-bottom: -1.5em;">${content}</div>
         </div>
         `
     );
 }
 
 export function renderToggleNodeToDOM(node, options = {}) {
-    /* c8 ignore start */
-    if (!options.createDocument) {
-        let document = typeof window !== 'undefined' && window.document;
-
-        if (!document) {
-            throw new Error('renderToggleNodeToDOM() must be passed a `createDocument` function as an option when used in a non-browser environment'); // eslint-disable-line
-        }
-
-        options.createDocument = function () {
-            return document;
-        };
-    }
-    /* c8 ignore stop */
+    addCreateDocumentOption(options);
 
     const document = options.createDocument();
 
-    const htmlString = toggleCardTemplate({node});
+    const htmlString = options.target === 'email'
+        ? emailCardTemplate({node})
+        : cardTemplate({node});
 
     const element = document.createElement('div');
     element.innerHTML = htmlString.trim();

@@ -11,15 +11,18 @@ export class ToggleParser {
                 conversion(domNode) {
                     const isKgToggleCard = domNode.classList?.contains('kg-toggle-card');
                     if (domNode.tagName === 'DIV' && isKgToggleCard) {
-                        const headerWrapper = domNode.querySelector('.kg-toggle-card-header > .kg-toggle-card-heading > .koenig-basic-html-input__editor-wrappper > div');
-                        const headerPlaceholder = headerWrapper.getAttribute('data-placeholder');
-                        const header = headerWrapper.textContent;
+                        const headerNode = domNode.querySelector('.kg-toggle-heading-text');
+                        const header = headerNode.textContent;
 
-                        const contentWrapper = domNode.querySelector('.kg-toggle-card-content > .koenig-basic-html-textarea__editor-wrappper > div');
-                        const contentPlaceholder = contentWrapper.getAttribute('data-placeholder');
-                        const content = contentWrapper.textContent;
+                        const contentNode = domNode.querySelector('.kg-toggle-content');
+                        const content = contentNode.textContent;
 
-                        const node = new self.NodeClass({content, contentPlaceholder, header, headerPlaceholder});
+                        const payload = {
+                            header,
+                            content
+                        };
+
+                        const node = new self.NodeClass(payload);
                         return {node};
                     }
 

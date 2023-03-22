@@ -31,9 +31,9 @@ export function ToggleNodeComponent({nodeKey, content, contentPlaceholder, heade
     return (
         <ToggleCard
             content={content}
-            contentPlaceholder={contentPlaceholder}
+            contentPlaceholder={'Collapsible content'}
             header={header}
-            headerPlaceholder={headerPlaceholder}
+            headerPlaceholder={'Toggle header'}
             isContentVisible={isContentVisible}
             isEditing={cardContext.isEditing}
             isSelected={cardContext.isSelected}

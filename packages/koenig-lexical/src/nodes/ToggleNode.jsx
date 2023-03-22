@@ -29,9 +29,7 @@ export class ToggleNode extends BaseToggleNode {
             <KoenigCardWrapper nodeKey={this.getKey()} width={this.__cardWidth}>
                 <ToggleNodeComponent
                     content={this.__content}
-                    contentPlaceholder={this.__contentPlaceholder}
                     header={this.__header}
-                    headerPlaceholder={this.__headerPlaceholder}
                     nodeKey={this.getKey()}
                 />
             </KoenigCardWrapper>
