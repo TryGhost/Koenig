@@ -22,7 +22,7 @@ export function SettingsPanel({children}) {
         <Portal>
             <div ref={ref}
                 className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 overflow-y-auto rounded-lg bg-white bg-clip-padding p-6 font-sans shadow"
-                data-testid="video-settings-panel"
+                data-testid="settings-panel"
             >
                 {children}
             </div>
@@ -36,7 +36,7 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
             <div>
                 <div className="font-bold text-grey-900">{label}</div>
                 {description &&
-                    <p className="w-11/12 text-[1.25rem] font-normal leading-snug text-grey-700   ">{description}</p>
+                    <p className="w-11/12 text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
                 }
             </div>
             <div className="flex shrink-0 pl-2">
@@ -46,11 +46,37 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     );
 }
 
-export function InputSetting({label, description, onChange, value, placeholder}) {
+export function InputSetting({label, description, onChange, value, placeholder, dataTestId}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900">{label}</div>
-            <Input placeholder={placeholder} value={value} onChange={onChange} />
+            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
+            {description &&
+                    <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
+            }
+        </div>
+    );
+}
+
+export function InputListSetting({dataTestId, label, description, onChange, value, placeholder, listKey, listValues}) {
+    return (
+        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
+            <div className="font-bold text-grey-900">{label}</div>
+            <Input dataTestId={dataTestId} list={listKey} placeholder={placeholder} value={value} onChange={onChange} />
+            {/* {listValues.map(({item}) => (
+                <span 
+                    key={`${listKey}-${item}`}
+                    className={`kg-settings-link-title`}
+                    title={item}
+                >
+                    {item}
+                </span>
+            ))} */}
+            <datalist id={listKey}>
+                {listValues.map(({item}) => (
+                    <option key={`${listKey}-${item}`} value={item}>{value}</option>
+                ))}
+            </datalist>
             {description &&
                     <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
