@@ -103,6 +103,10 @@ export class ToggleNode extends KoenigDecoratorNode {
         return writable.__header = header;
     }
 
+    hasEditMode() {
+        return true;
+    }
+
     // should be overridden
     /* c8 ignore next 3 */
     decorate() {

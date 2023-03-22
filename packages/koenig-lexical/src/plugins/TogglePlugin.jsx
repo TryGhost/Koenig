@@ -1,12 +1,7 @@
 import React from 'react';
 import {$createToggleNode, INSERT_TOGGLE_COMMAND, ToggleNode} from '../nodes/ToggleNode';
-import {
-    $getSelection,
-    $isNodeSelection,
-    $isRangeSelection,
-    COMMAND_PRIORITY_HIGH
-} from 'lexical';
-import {$insertAndSelectNode} from '../utils/$insertAndSelectNode';
+import {COMMAND_PRIORITY_LOW} from 'lexical';
+import {INSERT_CARD_COMMAND} from './KoenigBehaviourPlugin';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
@@ -22,25 +17,12 @@ export const TogglePlugin = () => {
             editor.registerCommand(
                 INSERT_TOGGLE_COMMAND,
                 async (dataset) => {
-                    const selection = $getSelection();
-
-                    let focusNode;
-                    if ($isRangeSelection(selection)) {
-                        focusNode = selection.focus.getNode();
-                    } else if ($isNodeSelection(selection)) {
-                        focusNode = selection.getNodes()[0];
-                    } else {
-                        return false;
-                    }
-
-                    if (focusNode !== null) {
-                        const toggleNode = $createToggleNode(dataset);
-                        $insertAndSelectNode({selectedNode: focusNode, newNode: toggleNode});
-                    }
+                    const cardNode = $createToggleNode(dataset);
+                    editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
 
                     return true;
                 },
-                COMMAND_PRIORITY_HIGH
+                COMMAND_PRIORITY_LOW
             )
         );
     }, [editor]);
