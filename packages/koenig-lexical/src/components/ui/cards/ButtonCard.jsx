@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from '../Button';
-import {ButtonGroupSetting, InputSetting, SettingsPanel} from '../SettingsPanel';
+import {ButtonGroupSetting, InputListSetting, InputSetting, SettingsPanel} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
 
@@ -19,20 +19,22 @@ export function ButtonCard({
         {
             label: 'Left',
             name: 'left',
-            Icon: LeftAlignIcon
+            Icon: LeftAlignIcon,
+            dataTestId: 'button-align-left'
         },
         {
             label: 'Center',
             name: 'center',
-            Icon: CenterAlignIcon
+            Icon: CenterAlignIcon,
+            dataTestId: 'button-align-center'
         }
     ];
 
     return (
         <>
             <div className="inline-block w-full">
-                <div className={`my-3 flex h-10 items-center ${isEditing || buttonUrl ? 'opacity-100' : 'opacity-50'} ${alignment === 'left' ? 'justify-start' : 'justify-center'} `}>
-                    <Button placeholder={buttonPlaceholder} value={buttonText} />
+                <div className={`my-3 flex h-10 items-center ${isEditing || buttonUrl ? 'opacity-100' : 'opacity-50'} ${alignment === 'left' ? 'justify-start' : 'justify-center'} `} data-testid="button-card">
+                    <Button dataTestId="button-card-btn" placeholder={buttonPlaceholder} value={buttonText} />
                 </div>
             </div>
             {isEditing && (
@@ -44,13 +46,17 @@ export function ButtonCard({
                         onClick={handleAlignmentChange}
                     />
                     <InputSetting
+                        dataTestId="button-text-input"
                         label='Button text'
                         placeholder='Add button text'
                         value={buttonText}
                         onChange={handleButtonTextChange}
                     />
-                    <InputSetting
+                    <InputListSetting
+                        dataTestId="button-text-url"
                         label='Button URL'
+                        listKey={`suggestedUrls`}
+                        listValues={[{item: 'homepage'},{item: 'signup'}]}
                         placeholder='https://yoursite.com/#/portal/signup/'
                         value={buttonUrl}
                         onChange={handleButtonUrlChange}
