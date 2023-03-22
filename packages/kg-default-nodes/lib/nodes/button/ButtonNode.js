@@ -41,7 +41,7 @@ export class ButtonNode extends KoenigDecoratorNode {
     constructor({buttonText, alignment, buttonUrl} = {}, key) {
         super(key);
         this.__buttonText = buttonText || '';
-        this.__alignment = alignment || '';
+        this.__alignment = alignment || 'center';
         this.__buttonUrl = buttonUrl || '';
     }
 
