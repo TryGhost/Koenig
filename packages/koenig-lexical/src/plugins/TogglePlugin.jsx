@@ -18,7 +18,7 @@ export const TogglePlugin = () => {
                 INSERT_TOGGLE_COMMAND,
                 async (dataset) => {
                     const cardNode = $createToggleNode(dataset);
-                    editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
+                    editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode, openInEditMode: true});
 
                     return true;
                 },

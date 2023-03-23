@@ -40,7 +40,7 @@ describe('Toggle card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="toggle">
+                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="toggle">
                 </div>
             </div>
         `, {ignoreCardContents: true});
@@ -53,7 +53,7 @@ describe('Toggle card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="toggle"></div>
+                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="toggle"></div>
             </div>
             <p><br /></p>
         `, {ignoreCardContents: true});

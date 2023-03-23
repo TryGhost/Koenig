@@ -4,9 +4,10 @@ import {$getNodeByKey} from 'lexical';
 import {ToggleCard} from '../components/ui/cards/ToggleCard';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function ToggleNodeComponent({nodeKey, content, contentPlaceholder, header, headerPlaceholder}) {
+export function ToggleNodeComponent({nodeKey, content, header}) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
+    const {isEditing} = cardContext;
 
     const [isContentVisible, setContentVisible] = useState(false);
     const [isContentFocused, setFocusOnContent] = useState(false);
@@ -38,10 +39,6 @@ export function ToggleNodeComponent({nodeKey, content, contentPlaceholder, heade
     const focusOnHeader = (e) => {
         setFocusOnContent(false);
         setFocusOnHeader(true);
-
-        console.log('isContentVisible', isContentVisible);
-        console.log('isContentFocused', isContentFocused);
-        console.log('isHeaderFocused', isHeaderFocused);
     };
 
     const setHeader = (newHeader) => {
@@ -68,9 +65,8 @@ export function ToggleNodeComponent({nodeKey, content, contentPlaceholder, heade
             headerPlaceholder={'Toggle header'}
             isContentFocused={isContentFocused}
             isContentVisible={isContentVisible}
-            isEditing={cardContext.isEditing}
+            isEditing={isEditing}
             isHeaderFocused={isHeaderFocused}
-            isSelected={cardContext.isSelected}
             setContent={setContent}
             setHeader={setHeader}
             toggleContent={toggleContent}
