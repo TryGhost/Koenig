@@ -48,7 +48,7 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
     const handleEmojiChange = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setEmojiValue(event.emoji);
+            node.setEmojiValue(event.native);
             toggleEmojiPicker();
         });
     };
@@ -72,7 +72,6 @@ function CalloutNodeComponent({nodeKey, text, hasEmoji, backgroundColor, emojiVa
                 handleColorChange={handleColorChange}
                 isEditing={isEditing}
                 nodeKey={nodeKey}
-                setEditing={setEditing}
                 setShowEmojiPicker={setShowEmojiPicker}
                 setText={setText}
                 showEmojiPicker={showEmojiPicker}

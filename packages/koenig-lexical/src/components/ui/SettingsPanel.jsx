@@ -13,7 +13,7 @@ import {ProgressBar} from './ProgressBar';
 import {Toggle} from './Toggle';
 import {openFileSelection} from '../../utils/openFileSelection';
 
-export function SettingsPanel({children}) {
+export function SettingsPanel({children, darkMode}) {
     const {ref} = useSettingsPanelReposition();
 
     return (
@@ -34,7 +34,7 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     return (
         <div className="mt-2 flex min-h-[3rem] w-full items-center justify-between text-[1.3rem] first:mt-0">
             <div>
-                <div className="font-bold text-grey-900">{label}</div>
+                <div className="font-bold text-grey-900 dark:text-grey-300">{label}</div>
                 {description &&
                     <p className="w-11/12 text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
                 }
@@ -114,7 +114,7 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
 export function ColorPickerSetting({label, onClick, selectedName, buttons, layout, dataTestID}) {
     return (
         <div className={`mt-2 flex w-full text-[1.3rem] first:mt-0 ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestID}>
-            <div className="font-bold text-grey-900">{label}</div>
+            <div className="font-bold text-grey-900 dark:text-grey-300">{label}</div>
 
             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
                 <ColorPicker buttons={buttons} selectedName={selectedName} onClick={onClick} />
