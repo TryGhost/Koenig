@@ -8,7 +8,6 @@ import {ButtonCard} from '../components/ui/cards/ButtonCard';
 import {ReactComponent as ButtonCardIcon} from '../assets/icons/kg-card-type-button.svg';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {Input} from '../components/ui/Input.jsx';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_BUTTON_COMMAND} from '@tryghost/kg-default-nodes';
@@ -56,11 +55,6 @@ function ButtonNodeComponent({alignment, buttonText, buttonUrl, nodeKey}) {
                 handleButtonUrlChange={handleButtonUrlChange}
                 isEditing={isEditing}
                 setEditing={setEditing}
-            />
-            <Input
-                placeholder={`test`}
-                value={buttonText}
-                onChange={handleButtonTextChange}
             />
             <ActionToolbar
                 data-kg-card-toolbar="button"
