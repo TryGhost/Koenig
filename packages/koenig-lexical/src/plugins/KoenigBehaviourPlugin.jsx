@@ -405,7 +405,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
                     }
 
                     if ($isRangeSelection(selection)) {
-                        if (selection.isCollapsed) {
+                        if (selection.isCollapsed()) {
                             const topLevelElement = selection.anchor.getNode().getTopLevelElement();
                             const nativeSelection = window.getSelection();
 
@@ -500,7 +500,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
                     }
 
                     if ($isRangeSelection(selection)) {
-                        if (selection.isCollapsed) {
+                        if (selection.isCollapsed()) {
                             const topLevelElement = selection.anchor.getNode().getTopLevelElement();
                             const nativeSelection = window.getSelection();
                             const nativeTopLevelElement = getTopLevelNativeElement(nativeSelection.anchorNode);
@@ -570,7 +570,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
                             }
                         }
 
-                        if (selection.isCollapsed && $isAtStartOfDocument(selection)) {
+                        if (selection.isCollapsed() && $isAtStartOfDocument(selection)) {
                             event.preventDefault();
                             cursorDidExitAtTop();
                             return true;
@@ -692,7 +692,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
                     const selection = $getSelection();
 
                     if ($isRangeSelection(selection)) {
-                        if (selection.isCollapsed) {
+                        if (selection.isCollapsed()) {
                             const anchor = selection.anchor;
                             const anchorNode = anchor.getNode();
                             const topLevelElement = anchorNode.getTopLevelElement();
@@ -764,7 +764,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
                     // handle card selection around card boundaries
                     const selection = $getSelection();
                     if ($isRangeSelection(selection)) {
-                        if (selection.isCollapsed) {
+                        if (selection.isCollapsed()) {
                             const anchor = selection.anchor;
                             const anchorNode = anchor.getNode();
                             const topLevelElement = anchorNode.getTopLevelElement();
@@ -823,7 +823,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop}) {
                         }
 
                         let nodes;
-                        if (selection.isCollapsed) {
+                        if (selection.isCollapsed()) {
                             const anchorNode = selection.anchor.getNode();
                             nodes = $isTextNode(anchorNode) ? [anchorNode.getParent()] : [anchorNode];
                         } else {

@@ -123,7 +123,7 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
         if (
             selection !== null &&
             nativeSelection !== null &&
-            !nativeSelection.isCollapsed &&
+            !nativeSelection.isCollapsed() &&
             rootElement !== null &&
             rootElement.contains(nativeSelection.anchorNode)
         ) {
