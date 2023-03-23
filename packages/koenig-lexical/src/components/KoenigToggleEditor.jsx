@@ -1,4 +1,5 @@
 import React from 'react';
+import {AutoFocusPlugin} from '@lexical/react/LexicalAutoFocusPlugin';
 import {BASIC_NODES, BASIC_TRANSFORMERS, HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, RestrictContentPlugin} from '../index.js';
 
 const Placeholder = ({text = 'Type here', className = ''}) => {
@@ -9,7 +10,7 @@ const Placeholder = ({text = 'Type here', className = ''}) => {
     );
 };
 
-const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, placeholderClassName, readOnly, singleParagraph = false}) => {
+const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, placeholderClassName, readOnly, autoFocus = false, singleParagraph = false}) => {
     return (
         <KoenigComposer
             nodes={BASIC_NODES}
@@ -22,6 +23,7 @@ const KoenigToggleEditor = ({text, setText, placeholderText, textClassName, plac
                 readOnly={readOnly}
             >
                 {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
+                {autoFocus && <AutoFocusPlugin />}
                 <HtmlOutputPlugin html={text} setHtml={setText} />
             </KoenigComposableEditor>
         </KoenigComposer>
