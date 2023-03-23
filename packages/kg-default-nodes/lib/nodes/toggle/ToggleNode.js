@@ -107,6 +107,10 @@ export class ToggleNode extends KoenigDecoratorNode {
         return true;
     }
 
+    isEmpty() {
+        return !this.__header && !this.__content;
+    }
+
     // should be overridden
     /* c8 ignore next 3 */
     decorate() {
