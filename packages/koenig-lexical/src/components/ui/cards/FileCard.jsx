@@ -1,13 +1,15 @@
+import FileUploadForm from '../FileUploadForm';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-file-upload.svg';
 import {MediaPlaceholder} from '../MediaPlaceholder';
 
-function EmptyFileCard() {
+function EmptyFileCard({isDragDropHover}) {
     return (
         <MediaPlaceholder
             desc="Click to upload a file"
             icon='file'
+            isDraggedOver={isDragDropHover}
             size='xsmall'
         />
     );
@@ -31,13 +33,31 @@ function PopulatedFileCard({isEditing, title, titlePlaceholder, desc, descPlaceh
     );
 }
 
-export function FileCard({isPopulated, fileTitle, fileTitlePlaceholder, fileDesc, fileDescPlaceholder, fileName, fileSize, ...args}) {
+export function FileCard(
+    {isPopulated, 
+        fileTitle, 
+        fileTitlePlaceholder, 
+        fileDesc, 
+        fileDescPlaceholder, 
+        fileName, 
+        fileSize, 
+        isDragDropHover, 
+        isEditing,
+        setFileInputRef,
+        ...args}) {
+    const fileInputRef = React.useRef(null);
+
+    const onFileInputRef = (element) => {
+        fileInputRef.current = element;
+        setFileInputRef(fileInputRef);
+    };
     if (isPopulated) {
         return (
             <PopulatedFileCard 
                 desc={fileDesc}
                 descPlaceholder={fileDescPlaceholder}
-                name={fileName} 
+                isEditing={isEditing} 
+                name={fileName}
                 size={fileSize}
                 title={fileTitle}
                 titlePlaceholder={fileTitlePlaceholder}
@@ -46,7 +66,15 @@ export function FileCard({isPopulated, fileTitle, fileTitlePlaceholder, fileDesc
         );
     }
     return (
-        <EmptyFileCard />
+        <>
+            <EmptyFileCard
+                isDragDropHover={isDragDropHover}
+            />
+            <FileUploadForm
+                fileInputRef={fileInputRef}
+                onFileInputRef={onFileInputRef}
+            />
+        </>
     );
 }
 
