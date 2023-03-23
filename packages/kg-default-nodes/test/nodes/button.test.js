@@ -66,9 +66,9 @@ describe('ButtonNode', function () {
             buttonNode.setButtonText('button text');
             buttonNode.getButtonText().should.equal('button text');
 
-            buttonNode.getAlignment().should.equal('');
-            buttonNode.setAlignment('center');
             buttonNode.getAlignment().should.equal('center');
+            buttonNode.setAlignment('left');
+            buttonNode.getAlignment().should.equal('left');
         }));
 
         it('has getDataset() convenience method', editorTest(function () {
