@@ -55,8 +55,6 @@ export function ButtonCard({
                     <InputListSetting
                         dataTestId="button-input-url"
                         label='Button URL'
-                        listKey={`suggestedUrls`}
-                        listValues={[{item: 'homepage'},{item: 'signup'}]}
                         placeholder='https://yoursite.com/#/portal/signup/'
                         value={buttonUrl}
                         onChange={handleButtonUrlChange}

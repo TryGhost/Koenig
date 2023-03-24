@@ -58,25 +58,11 @@ export function InputSetting({label, description, onChange, value, placeholder, 
     );
 }
 
-export function InputListSetting({dataTestId, label, description, onChange, value, placeholder, listKey, listValues}) {
+export function InputListSetting({dataTestId, label, description, onChange, value, placeholder}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900">{label}</div>
-            <Input dataTestId={dataTestId} list={listKey} placeholder={placeholder} value={value} onChange={onChange} />
-            {/* {listValues.map(({item}) => (
-                <span 
-                    key={`${listKey}-${item}`}
-                    className={`kg-settings-link-title`}
-                    title={item}
-                >
-                    {item}
-                </span>
-            ))} */}
-            <datalist id={listKey}>
-                {listValues.map(({item}) => (
-                    <option key={`${listKey}-${item}`} value={item}>{value}</option>
-                ))}
-            </datalist>
+            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
             {description &&
                     <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
