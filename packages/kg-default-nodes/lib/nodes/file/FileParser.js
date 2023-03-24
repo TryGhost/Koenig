@@ -1,20 +1,3 @@
-function sizeToBytes(string) {
-    if (!string || string === '0 Byte') {
-        return 0;
-    }
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    const parts = string.split(' ');
-    const value = parseFloat(parts[0]);
-    const unit = parts[1];
-
-    if (!sizes.includes(unit)) {
-        console.error('Invalid size unit'); // eslint-disable-line
-    }
-
-    const i = sizes.indexOf(unit);
-    return Math.round(value * Math.pow(1024, i));
-}
-
 export class FileParser {
     constructor(NodeClass) {
         this.NodeClass = NodeClass;
@@ -35,9 +18,6 @@ export class FileParser {
                             const description = domNode.querySelector('.kg-file-card-caption')?.textContent || '';
                             const fileName = domNode.querySelector('.kg-file-card-filename')?.textContent || '';
                             let fileSize = domNode.querySelector('.kg-file-card-filesize')?.textContent || '';
-                            if (fileSize) {
-                                fileSize = sizeToBytes(fileSize);
-                            }
                             const payload = {
                                 src,
                                 title,

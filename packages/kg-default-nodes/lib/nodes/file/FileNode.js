@@ -5,6 +5,18 @@ import {createCommand} from 'lexical';
 
 export const INSERT_FILE_COMMAND = createCommand();
 
+export function bytesToSize(bytes) {
+    if (!bytes) {
+        return '0 Byte';
+    }
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) {
+        return '0 Byte';
+    }
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round((bytes / Math.pow(1024, i))) + ' ' + sizes[i];
+}
+
 export class FileNode extends KoenigDecoratorNode {
     // file payload properties
     __src;
@@ -145,7 +157,8 @@ export class FileNode extends KoenigDecoratorNode {
 
     setFileSize(fileSize) {
         const writable = this.getWritable();
-        writable.__fileSize = fileSize;
+        const size = bytesToSize(fileSize);
+        writable.__fileSize = size;
     }
     // c8 ignore stop
     decorate() {

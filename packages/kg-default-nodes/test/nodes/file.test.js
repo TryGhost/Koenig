@@ -33,7 +33,7 @@ describe('FileNode', function () {
         dataset = {
             src: '/content/files/2023/03/IMG_0196.jpeg',
             title: 'Cool image to download',
-            fileSize: 123456,
+            fileSize: '121 KB',
             description: 'This is a description',
             fileName: 'IMG_0196.jpeg'
         };
@@ -69,7 +69,7 @@ describe('FileNode', function () {
             node.setTitle('new title');
             node.getTitle().should.equal('new title');
             node.setFileSize(123456);
-            node.getFileSize().should.equal(123456);
+            node.getFileSize().should.equal('121 KB');
             node.setDescription('new description');
             node.getDescription().should.equal('new description');
             node.setFileName('IMG_0196.jpeg');
@@ -134,7 +134,7 @@ describe('FileNode', function () {
             nodes[0].getTitle().should.equal('Cool image to download');
             nodes[0].getDescription().should.equal('This is a description');
             nodes[0].getFileName().should.equal('IMG_0196.jpeg');
-            nodes[0].getFileSize().should.equal(123904); // ~121 KB
+            nodes[0].getFileSize().should.equal('121 KB'); // ~121 KB
         }));
     });
 
@@ -164,7 +164,7 @@ describe('FileNode', function () {
                     fileNode.getTitle().should.equal('Cool image to download');
                     fileNode.getDescription().should.equal('This is a description');
                     fileNode.getFileName().should.equal('IMG_0196.jpeg');
-                    fileNode.getFileSize().should.equal(123456);
+                    fileNode.getFileSize().should.equal('121 KB');
                     done();
                 } catch (e) {
                     done(e);
@@ -182,7 +182,7 @@ describe('FileNode', function () {
             clonedNode.getTitle().should.equal('Cool image to download');
             clonedNode.getDescription().should.equal('This is a description');
             clonedNode.getFileName().should.equal('IMG_0196.jpeg');
-            clonedNode.getFileSize().should.equal(123456);
+            clonedNode.getFileSize().should.equal('121 KB');
         }));
     });
 
