@@ -34,7 +34,7 @@ export function ButtonCard({
         <>
             <div className="inline-block w-full">
                 <div className={`my-3 flex h-10 items-center ${isEditing || buttonUrl ? 'opacity-100' : 'opacity-50'} ${alignment === 'left' ? 'justify-start' : 'justify-center'} `} data-testid="button-card">
-                    <Button dataTestId="button-card-btn" placeholder={buttonPlaceholder} value={buttonText} />
+                    <Button dataTestId="button-card-btn" href={buttonUrl} placeholder={buttonPlaceholder} value={buttonText} />
                 </div>
             </div>
             {isEditing && (
@@ -46,14 +46,14 @@ export function ButtonCard({
                         onClick={handleAlignmentChange}
                     />
                     <InputSetting
-                        dataTestId="button-text-input"
+                        dataTestId="button-input-text"
                         label='Button text'
                         placeholder='Add button text'
                         value={buttonText}
                         onChange={handleButtonTextChange}
                     />
                     <InputListSetting
-                        dataTestId="button-text-url"
+                        dataTestId="button-input-url"
                         label='Button URL'
                         listKey={`suggestedUrls`}
                         listValues={[{item: 'homepage'},{item: 'signup'}]}

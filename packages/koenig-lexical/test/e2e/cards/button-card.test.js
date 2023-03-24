@@ -70,8 +70,8 @@ describe('Button Card', async () => {
         await expect(await page.getByTestId('settings-panel')).toBeVisible();
         await expect(await page.getByTestId('button-align-left')).toBeVisible();
         await expect(await page.getByTestId('button-align-center')).toBeVisible();
-        await expect(await page.getByTestId('button-text-input')).toBeVisible();
-        await expect(await page.getByTestId('button-text-url')).toBeVisible();
+        await expect(await page.getByTestId('button-input-text')).toBeVisible();
+        await expect(await page.getByTestId('button-input-url')).toBeVisible();
     });
 
     test('alignment buttons work', async function () {
@@ -99,33 +99,42 @@ describe('Button Card', async () => {
 
         const button = await page.getByTestId('button-card-btn');
         await expect(button).toHaveAttribute('placeholder','Add button text');
-        const buttonTextInput = await page.getByTestId('button-text-input');
+        const buttonTextInput = await page.getByTestId('button-input-text');
         await expect(buttonTextInput).toHaveAttribute('placeholder','Add button text');
-        const buttonUrlInput = await page.getByTestId('button-text-url');
+        const buttonUrlInput = await page.getByTestId('button-input-url');
         await expect(buttonUrlInput).toHaveAttribute('placeholder','https://yoursite.com/#/portal/signup/');
     });
 
-    // TODO: debug why .click() doesn't work on the locator
-    // test('text input field works', async function () {
-    //     await focusEditor(page);
-    //     await page.keyboard.type('/button');
-    //     await page.keyboard.press('Enter');
+    test('text input field works', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/button');
+        await page.keyboard.press('Enter');
 
-    //     // verify default values
-    //     const button = await page.getByTestId('button-card-btn');
-    //     await expect(button).toHaveAttribute('value','');
+        // verify default values
+        const button = await page.getByTestId('button-card-btn');
+        await expect(button).toHaveAttribute('value','');
 
-    //     const buttonTextInput = await page.getByTestId('button-text-input');
-    //     await expect(buttonTextInput).toHaveValue('test');
+        const buttonTextInput = await page.getByTestId('button-input-text');
+        await expect(buttonTextInput).toHaveValue('');
 
-    //     // await page.getByTestId('button-text-input').click();
-    //     const box = await page.getByTestId('button-text-input').boundingBox();
-    //     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-    //     await page.keyboard.type('test');
-    //     await expect(buttonTextInput).toHaveValue('test');
-    //     await expect(button).toHaveAttribute('value','test');
-    // });
+        await page.getByTestId('button-input-text').fill('test');
+        await expect(buttonTextInput).toHaveValue('test');
+        await expect(button).toHaveAttribute('value','test');
+    });
 
-    // TODO: test for the url input
+    test('url input field works', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/button');
+        await page.keyboard.press('Enter');
+
+        const buttonTextInput = await page.getByTestId('button-input-url');
+        await expect(buttonTextInput).toBeEmpty();
+
+        await page.getByTestId('button-input-url').fill('https://someblog.com/somepost');
+        await expect(buttonTextInput).toHaveValue('https://someblog.com/somepost');
+        const buttonLink = await page.getByTestId('button-card-btn-link');
+        await expect(buttonLink).toHaveAttribute('href','https://someblog.com/somepost');
+    });
+
     // TODO: test suggested urls
 });
