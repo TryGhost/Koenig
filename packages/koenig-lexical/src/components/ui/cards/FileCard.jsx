@@ -4,23 +4,25 @@ import React from 'react';
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-file-upload.svg';
 import {MediaPlaceholder} from '../MediaPlaceholder';
 
-function EmptyFileCard({isDragDropHover}) {
+function EmptyFileCard({handleSelectorClick, fileDragHandler}) {
     return (
         <MediaPlaceholder
             desc="Click to upload a file"
+            filePicker={() => handleSelectorClick()}
             icon='file'
-            isDraggedOver={isDragDropHover}
+            isDraggedOver={fileDragHandler.isDraggedOver}
+            placeholderRef={fileDragHandler.setRef}
             size='xsmall'
         />
     );
 }
 
-function PopulatedFileCard({isEditing, title, titlePlaceholder, desc, descPlaceholder, name, size, ...args}) {
+function PopulatedFileCard({isEditing, title, titlePlaceholder, desc, descPlaceholder, name, size, handleFileTitle, handleFileDesc, ...args}) {
     return (
         <div className="flex justify-between rounded border border-grey/30 p-2">
             <div className="flex w-full flex-col justify-center px-2 font-sans" {...args}>
-                { (isEditing || title) && <input className="text-lg font-bold tracking-tight text-black" placeholder={titlePlaceholder} value={title} />}
-                { (isEditing || desc) && <input className="pb-1 text-[1.6rem] font-normal text-grey-700" placeholder={descPlaceholder} value={desc} />}
+                { (isEditing || title) && <input className="text-lg font-bold tracking-tight text-black" placeholder={titlePlaceholder} value={title} onChange={handleFileTitle} />}
+                { (isEditing || desc) && <input className="pb-1 text-[1.6rem] font-normal text-grey-700" placeholder={descPlaceholder} value={desc} onChange={handleFileDesc} />}
                 <div className="py-1 text-sm font-medium text-grey-900">
                     {name}
                     <span className="text-grey-700"> • {size}</span>
@@ -41,22 +43,23 @@ export function FileCard(
         fileDescPlaceholder, 
         fileName, 
         fileSize, 
-        isDragDropHover, 
+        fileDragHandler,
         isEditing,
-        setFileInputRef,
+        fileInputRef,
+        onFileInputRef,
+        onFileChange,
+        handleFileTitle,
+        handleFileDesc,
+        handleSelectorClick,
         ...args}) {
-    const fileInputRef = React.useRef(null);
-
-    const onFileInputRef = (element) => {
-        fileInputRef.current = element;
-        setFileInputRef(fileInputRef);
-    };
     if (isPopulated) {
         return (
             <PopulatedFileCard 
                 desc={fileDesc}
                 descPlaceholder={fileDescPlaceholder}
-                isEditing={isEditing} 
+                handleFileDesc={handleFileDesc} 
+                handleFileTitle={handleFileTitle}
+                isEditing={isEditing}
                 name={fileName}
                 size={fileSize}
                 title={fileTitle}
@@ -68,10 +71,12 @@ export function FileCard(
     return (
         <>
             <EmptyFileCard
-                isDragDropHover={isDragDropHover}
+                fileDragHandler={fileDragHandler}
+                handleSelectorClick={handleSelectorClick}
             />
             <FileUploadForm
                 fileInputRef={fileInputRef}
+                onFileChange={onFileChange}
                 onFileInputRef={onFileInputRef}
             />
         </>
