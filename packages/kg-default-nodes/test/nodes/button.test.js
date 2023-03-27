@@ -185,8 +185,8 @@ describe('ButtonNode', function () {
 
     describe('hasEditMode', function () {
         it('returns true', editorTest(function () {
-            const videoNode = $createButtonNode(dataset);
-            videoNode.hasEditMode().should.be.true;
+            const buttonNode = $createButtonNode(dataset);
+            buttonNode.hasEditMode().should.be.true;
         }));
     });
 

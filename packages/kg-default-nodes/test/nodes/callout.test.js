@@ -51,8 +51,8 @@ describe('CalloutNode', function () {
 
     describe('hasEditMode', function () {
         it('returns true', editorTest(function () {
-            const videoNode = $createCalloutNode(dataset);
-            videoNode.hasEditMode().should.be.true;
+            const calloutNode = $createCalloutNode(dataset);
+            calloutNode.hasEditMode().should.be.true;
         }));
     });
 
