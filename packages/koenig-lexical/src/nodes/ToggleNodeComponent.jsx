@@ -83,7 +83,7 @@ export function ToggleNodeComponent({nodeKey, content, header}) {
             />
 
             <ActionToolbar
-                data-kg-card-toolbar="audio"
+                data-kg-card-toolbar="toggle"
                 isVisible={isSelected && !isEditing}
             >
                 <ToolbarMenu>
