@@ -1,28 +1,25 @@
 import {$getNodeByKey} from 'lexical';
-// import {getImageDimensions} from './getImageDimensions';
 
 export const fileUploadHandler = async (files, nodeKey, editor, upload) => {
     if (!files) {
         return;
     }
+    const result = await upload(files);
+    const meta = files;
+    const fileName = meta?.[0].name;
+    const fileSize = meta?.[0].size;
+    const src = result?.[0].url;
 
-    // perform the actual upload
-    const result = files; // replace with real upload function
-    const fileName = result?.[0].name;
-    const fileSize = result?.[0].size;
-    const src = result?.[0].url || `/uploads/${fileName}`;
-
-    // convert fizeSize to human readable format
-    // const size = fileSize / 1024;
-    // const sizeUnit = size > 1024 ? 'MB' : 'KB';
-    // const fileSizeHumanReadable = size > 1024 ? (size / 1024).toFixed(2) : size.toFixed(2);
-
-    // replace preview URL with real URL and set image metadata
+    let dataset = {
+        fileName: fileName,
+        fileSize: fileSize,
+        src: src
+    };
     await editor.update(() => {
         const node = $getNodeByKey(nodeKey);
-        node.setFileName(fileName);
-        node.setFileSize(fileSize);
-        node.setSrc(src);
+        node.setFileName(dataset.fileName);
+        node.setFileSize(dataset.fileSize);
+        node.setSrc(dataset.src);
     });
 
     return;
