@@ -1,12 +1,13 @@
 import EmojiPickerPortal from '../EmojiPickerPortal';
 import KoenigCalloutEditor from '../../KoenigCalloutEditor';
+import KoenigComposerContext from '../../../context/KoenigComposerContext.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ColorPickerSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 
 export const CALLOUT_COLORS = {
     grey: 'bg-grey/10 border-transparent',
-    white: 'bg-white border-grey/30',
+    white: 'bg-transparent border-grey/30',
     blue: 'bg-blue/10 border-transparent',
     green: 'bg-green/10 border-transparent',
     yellow: 'bg-yellow/10 border-transparent',
@@ -19,42 +20,42 @@ export const calloutColorPicker = [
     {
         label: 'Grey',
         name: 'grey',
-        colorClass: 'bg-grey-100'
+        colorClass: 'bg-grey/10 dark:border-white/10'
     },
     {
         label: 'White',
         name: 'white',
-        colorClass: 'bg-white'
+        colorClass: 'bg-transparent dark:border-white/10'
     },
     {
         label: 'Blue',
         name: 'blue',
-        colorClass: 'bg-blue-100'
+        colorClass: 'bg-blue/10 dark:border-white/10'
     },
     {
         label: 'Green',
         name: 'green',
-        colorClass: 'bg-green-100'
+        colorClass: 'bg-green/10 dark:border-white/10'
     },
     {
         label: 'Yellow',
         name: 'yellow',
-        colorClass: 'bg-yellow-100'
+        colorClass: 'bg-yellow/10 dark:border-white/10'
     },
     {
         label: 'Red',
         name: 'red',
-        colorClass: 'bg-red-100'
+        colorClass: 'bg-red/10 dark:border-white/10'
     },
     {
         label: 'Pink',
         name: 'pink',
-        colorClass: 'bg-pink-100'
+        colorClass: 'bg-pink/10 dark:border-white/10'
     },
     {
         label: 'Purple',
         name: 'purple',
-        colorClass: 'bg-purple-100'
+        colorClass: 'bg-purple/10 dark:border-white/10'
     },
     {
         label: 'Accent',
@@ -76,9 +77,11 @@ export function CalloutCard({
     setText,
     nodeKey,
     toggleEmojiPicker,
-    showEmojiPicker
+    showEmojiPicker,
+    sanitizeHtml
 }) {
     const emojiButtonRef = React.useRef(null);
+    const {darkMode} = React.useContext(KoenigComposerContext);
 
     React.useEffect(() => {
         if (!isEditing) {
@@ -88,7 +91,7 @@ export function CalloutCard({
 
     return (
         <>
-            <div className={`flex items-center rounded border px-7 ${CALLOUT_COLORS[color]} `} data-testid={`callout-bg-${color}`}>
+            <div className={`flex rounded border px-7 py-5 ${CALLOUT_COLORS[color]} `} data-testid={`callout-bg-${color}`}>
                 <div>
                     {emoji && 
                     <>
@@ -112,18 +115,25 @@ export function CalloutCard({
                     </>
                     }
                 </div>
-                <KoenigCalloutEditor
-                    className="w-full bg-transparent font-serif text-xl font-normal text-black"
-                    html={text}
-                    nodeKey={nodeKey}
-                    placeholderText={'Callout text...'}
-                    readOnly={isEditing}
-                    setHtml={setText}
-                />
+                {
+                    isEditing ?
+                        <KoenigCalloutEditor
+                            className="my-0 w-full whitespace-normal bg-transparent font-serif text-xl font-normal text-black dark:text-grey-300"
+                            html={text}
+                            nodeKey={nodeKey}
+                            placeholderText={'Callout text...'}
+                            readOnly={isEditing}
+                            setHtml={setText}
+                        />
+                        :
+                        <div dangerouslySetInnerHTML={{__html: sanitizeHtml(text)}} className="my-0 w-full whitespace-normal bg-transparent font-serif text-xl font-normal text-black dark:text-grey-300"/>
+                }
             </div>
             {
                 isEditing && (
-                    <SettingsPanel>
+                    <SettingsPanel
+                        darkMode={darkMode}
+                    >
                         <ToggleSetting
                             dataTestID='emoji-toggle'
                             isChecked={emoji}

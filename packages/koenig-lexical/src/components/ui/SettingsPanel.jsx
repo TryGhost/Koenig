@@ -13,7 +13,7 @@ import {ProgressBar} from './ProgressBar';
 import {Toggle} from './Toggle';
 import {openFileSelection} from '../../utils/openFileSelection';
 
-export function SettingsPanel({children}) {
+export function SettingsPanel({children, darkMode}) {
     const {ref} = useSettingsPanelReposition();
 
     return (
@@ -22,7 +22,7 @@ export function SettingsPanel({children}) {
         <Portal>
             <div ref={ref}
                 className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 overflow-y-auto rounded-lg bg-white bg-clip-padding p-6 font-sans shadow"
-                data-testid="video-settings-panel"
+                data-testid="settings-panel"
             >
                 {children}
             </div>
@@ -34,9 +34,9 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     return (
         <div className="mt-2 flex min-h-[3rem] w-full items-center justify-between text-[1.3rem] first:mt-0">
             <div>
-                <div className="font-bold text-grey-900">{label}</div>
+                <div className="font-bold text-grey-900 dark:text-grey-300">{label}</div>
                 {description &&
-                    <p className="w-11/12 text-[1.25rem] font-normal leading-snug text-grey-700   ">{description}</p>
+                    <p className="w-11/12 text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
                 }
             </div>
             <div className="flex shrink-0 pl-2">
@@ -46,11 +46,23 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     );
 }
 
-export function InputSetting({label, description, value, placeholder}) {
+export function InputSetting({label, description, onChange, value, placeholder, dataTestId}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900">{label}</div>
-            <Input placeholder={placeholder} value={value} />
+            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
+            {description &&
+                    <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
+            }
+        </div>
+    );
+}
+
+export function InputListSetting({dataTestId, label, description, onChange, value, placeholder}) {
+    return (
+        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
+            <div className="font-bold text-grey-900">{label}</div>
+            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
             {description &&
                     <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
@@ -88,7 +100,7 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
 export function ColorPickerSetting({label, onClick, selectedName, buttons, layout, dataTestID}) {
     return (
         <div className={`mt-2 flex w-full text-[1.3rem] first:mt-0 ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestID}>
-            <div className="font-bold text-grey-900">{label}</div>
+            <div className="font-bold text-grey-900 dark:text-grey-300">{label}</div>
 
             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
                 <ColorPicker buttons={buttons} selectedName={selectedName} onClick={onClick} />

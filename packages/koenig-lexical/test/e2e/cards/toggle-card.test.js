@@ -1,7 +1,7 @@
 import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {assertHTML, focusEditor, html, initialize, startApp} from '../../utils/e2e';
 
-describe('Html card', async () => {
+describe('Toggle card', async () => {
     let app;
     let page;
 
@@ -17,13 +17,14 @@ describe('Html card', async () => {
         await initialize({page});
     });
 
-    test('can import serialized html card nodes', async function () {
+    test('can import serialized toggle card nodes', async function () {
         await page.evaluate(() => {
             const serializedState = JSON.stringify({
                 root: {
                     children: [{
-                        type: 'html',
-                        html: '<p>test content</p>'
+                        type: 'toggle',
+                        header: 'Header',
+                        content: 'Content'
                     }],
                     direction: null,
                     format: '',
@@ -39,24 +40,20 @@ describe('Html card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div><svg></svg></div>
-                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="html">
-                    <div><p>test content</p></div>
+                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="toggle">
                 </div>
             </div>
         `, {ignoreCardContents: true});
     });
 
-    test('renders html card node from slash entry', async function () {
+    test('renders toggle card node from slash command', async function () {
         await focusEditor(page);
-        await page.keyboard.type('/html');
-        await page.waitForSelector('[data-kg-card-menu-item="HTML"][data-kg-cardmenu-selected="true"]');
+        await page.keyboard.type('/toggle');
         await page.keyboard.press('Enter');
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div><svg></svg></div>
-                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="html"></div>
+                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="toggle"></div>
             </div>
             <p><br /></p>
         `, {ignoreCardContents: true});

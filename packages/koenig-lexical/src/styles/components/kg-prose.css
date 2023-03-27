@@ -727,7 +727,7 @@
             background: var(--grey-900);
             border: 1px solid var(--grey-900);
             border-radius: 2px;
-            /* color: var(--grey-900); */
+            color: var(--grey-300);
         }
     }
 }

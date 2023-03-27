@@ -1230,7 +1230,7 @@ describe('Card behaviour', async () => {
             expect(await page.$('[data-kg-card-selected="true"]')).not.toBeNull();
             expect(await page.$('[data-kg-card-editing="false"]')).not.toBeNull();
 
-            // card is still able to re-enter edit mode with CMD+ETNER
+            // card is still able to re-enter edit mode with CMD+ENTER
             await page.keyboard.press('Meta+Enter');
 
             expect(await page.$('[data-kg-card-selected="true"]')).not.toBeNull();
@@ -1545,6 +1545,29 @@ describe('Card behaviour', async () => {
                     </div>
                 </div>
             `);
+        });
+    });
+
+    describe('captions', function () {
+        // we had a bug where the caption would steal focus when typing in any
+        // other card, resulting in the typed text being inserted into the caption
+        test('do not steal focus when not selected', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/image https://example.com/image.jpg');
+            await page.waitForSelector('[data-kg-card-menu-item="Image"][data-kg-cardmenu-selected="true"]');
+            await page.keyboard.press('Enter');
+            await page.waitForSelector('[data-kg-card="image"]');
+            await page.keyboard.type('Caption value');
+
+            await expect(page.locator('[data-kg-card="image"] figcaption [data-kg="editor"]')).toHaveText('Caption value');
+
+            await page.keyboard.press('Meta+Enter');
+            await page.keyboard.type('``` ');
+            await page.waitForSelector('[data-kg-card="codeblock"]');
+            await page.keyboard.type('Code content');
+
+            await expect(page.locator('[data-kg-card="image"] figcaption [data-kg="editor"]')).toHaveText('Caption value');
+            await expect(page.locator('[data-kg-card="codeblock"] .cm-line')).toHaveText('Code content');
         });
     });
 });
