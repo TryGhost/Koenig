@@ -40,7 +40,7 @@ export function ToggleCard({
                     }
 
                 </div>
-                <div ref={toggleRef} className='ml-auto mt-[-1px] flex h-8 w-8 shrink-0 items-center justify-center' onClick={toggleContent}>
+                <div ref={toggleRef} className='ml-auto mt-[-1px] flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center' onClick={toggleContent}>
                     <ArrowDownIcon className={`h-4 w-4 stroke-2 text-grey-400 dark:text-grey/30 ${isContentVisible ? 'rotate-180' : 'rotate-0'}`} />
                 </div>
             </div>
