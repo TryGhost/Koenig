@@ -160,6 +160,10 @@ export class FileNode extends KoenigDecoratorNode {
         const size = bytesToSize(fileSize);
         writable.__fileSize = size;
     }
+
+    hasEditMode() {
+        return true;
+    }
     // c8 ignore stop
     decorate() {
         return '';
