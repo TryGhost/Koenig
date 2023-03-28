@@ -1,7 +1,7 @@
 import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
-// import {BookmarkParser} from './BookmarkParser';
-// import {renderBookmarkNodeToDOM} from './BookmarkRenderer';
+import {BookmarkParser} from './BookmarkParser';
+import {renderBookmarkNodeToDOM} from './BookmarkRenderer';
 
 export const INSERT_BOOKMARK_COMMAND = createCommand();
 
@@ -94,17 +94,17 @@ export class BookmarkNode extends KoenigDecoratorNode {
         return dataset;
     }
 
-    // // parser used when pasting html >> node
-    // static importDOM() {
-    //     const parser = new BookmarkParser(this);
-    //     return parser.DOMConversionMap;
-    // }
+    // parser used when pasting html >> node
+    static importDOM() {
+        const parser = new BookmarkParser(this);
+        return parser.DOMConversionMap;
+    }
 
-    // // renderer used when copying node >> html
-    // exportDOM(options = {}) {
-    //     const element = renderBookmarkNodeToDOM(this, options);
-    //     return {element};
-    // }
+    // renderer used when copying node >> html
+    exportDOM(options = {}) {
+        const element = renderBookmarkNodeToDOM(this, options);
+        return {element};
+    }
 
     /* c8 ignore start */
     createDOM() {
