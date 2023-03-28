@@ -1216,9 +1216,9 @@
     "@lezer/css" "^1.0.0"
 
 "@codemirror/lang-html@^6.4.1":
-  version "6.4.2"
-  resolved "https://registry.yarnpkg.com/@codemirror/lang-html/-/lang-html-6.4.2.tgz#3c7117e45bae009bc7bc08eef8a79b5d05930d83"
-  integrity sha512-bqCBASkteKySwtIbiV/WCtGnn/khLRbbiV5TE+d9S9eQJD7BA4c5dTRm2b3bVmSpilff5EYxvB4PQaZzM/7cNw==
+  version "6.4.3"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-html/-/lang-html-6.4.3.tgz#dec78f76d9d0261cbe9f2a3a247a1b546327f700"
+  integrity sha512-VKzQXEC8nL69Jg2hvAFPBwOdZNvL8tMFOrdFwWpU+wc6a6KEkndJ/19R5xSaglNX6v2bttm8uIEFYxdQDcIZVQ==
   dependencies:
     "@codemirror/autocomplete" "^6.0.0"
     "@codemirror/lang-css" "^6.0.0"
