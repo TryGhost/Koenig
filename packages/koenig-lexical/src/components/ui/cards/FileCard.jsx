@@ -3,7 +3,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-file-upload.svg';
 import {MediaPlaceholder} from '../MediaPlaceholder';
+import {ProgressBar} from '../ProgressBar';
 import {openFileSelection} from '../../../utils/openFileSelection';
+
+function FileUploading({progress}) {
+    const progressStyle = {
+        width: `${progress?.toFixed(0)}%`
+    };
+
+    return (
+        <div className="h-full border border-transparent">
+            <div className="relative flex h-full items-center justify-center border border-grey/20 bg-grey-50 before:pb-[12.5%]">
+                <div className="flex w-full items-center justify-center overflow-hidden">
+                    <ProgressBar style={progressStyle} />
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function EmptyFileCard({handleSelectorClick, fileDragHandler}) {
     return (
@@ -52,7 +69,9 @@ export function FileCard(
         onFileChange,
         handleFileTitle,
         handleFileDesc,
+        fileUploader,
         ...args}) {
+    const {isLoading: isUploading, progress} = fileUploader;
     const setFileInputRef = (ref) => {
         if (fileInputRef) {
             fileInputRef.current = ref.current;
@@ -65,6 +84,11 @@ export function FileCard(
     const handleOpenFileSelection = () => {
         openFileSelection({fileInputRef: fileInputRef});
     };
+    if (isUploading) {
+        return (
+            <FileUploading progress={progress} />
+        );
+    }
     if (isPopulated) {
         return (
             <PopulatedFileCard 

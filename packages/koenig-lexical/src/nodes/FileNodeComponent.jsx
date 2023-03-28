@@ -137,6 +137,7 @@ function FileNodeComponent({
                 fileSize={fileSize}
                 fileTitle={fileTitle}
                 fileTitlePlaceholder={fileTitlePlaceholder}
+                fileUploader={uploader}
                 handleFileDesc={handleFileDesc}
                 handleFileTitle={handleFileTitle}
                 isEditing={isEditing}
