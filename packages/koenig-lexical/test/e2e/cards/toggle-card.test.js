@@ -1,4 +1,4 @@
-import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
+import {afterAll, beforeAll, beforeEach, describe} from 'vitest';
 import {assertHTML, focusEditor, html, initialize, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
 
