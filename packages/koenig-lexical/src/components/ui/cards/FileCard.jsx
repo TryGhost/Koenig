@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-file-upload.svg';
 import {MediaPlaceholder} from '../MediaPlaceholder';
+import {openFileSelection} from '../../../utils/openFileSelection';
 
 function EmptyFileCard({handleSelectorClick, fileDragHandler}) {
     return (
@@ -22,10 +23,10 @@ function PopulatedFileCard({isEditing, title, titlePlaceholder, desc, descPlaceh
         <div className="flex justify-between rounded border border-grey/30 p-2">
             <div className="flex w-full flex-col justify-between px-2 font-sans" {...args}>
                 <div className="flex flex-col">
-                    { (isEditing || title) && <input className="h-[30px] bg-transparent text-lg font-bold leading-none tracking-tight text-black dark:text-grey-200" placeholder={titlePlaceholder} value={title} onChange={handleFileTitle} />}
-                    { (isEditing || desc) && <input className="h-[26px] bg-transparent pb-1 text-[1.6rem] font-normal leading-none text-grey-700 placeholder:text-grey-500 dark:text-grey-300 dark:placeholder:text-grey-800" placeholder={descPlaceholder} value={desc} onChange={handleFileDesc} />}
+                    { (isEditing || title) && <input className="h-[30px] bg-transparent text-lg font-bold leading-none tracking-tight text-black dark:text-grey-200" data-kg-file-card="fileTitle" placeholder={titlePlaceholder} value={title} onChange={handleFileTitle} />}
+                    { (isEditing || desc) && <input className="h-[26px] bg-transparent pb-1 text-[1.6rem] font-normal leading-none text-grey-700 placeholder:text-grey-500 dark:text-grey-300 dark:placeholder:text-grey-800" data-kg-file-card="fileDescription" placeholder={descPlaceholder} value={desc} onChange={handleFileDesc} />}
                 </div>
-                <div className="py-1 text-sm font-medium text-grey-900 dark:text-grey-200">
+                <div className="py-1 text-sm font-medium text-grey-900 dark:text-grey-200" data-kg-file-card="dataset">
                     {name}
                     <span className="text-grey-700"> • {size}</span>
                 </div>
@@ -48,12 +49,22 @@ export function FileCard(
         fileDragHandler,
         isEditing,
         fileInputRef,
-        onFileInputRef,
         onFileChange,
         handleFileTitle,
         handleFileDesc,
-        handleSelectorClick,
         ...args}) {
+    const setFileInputRef = (ref) => {
+        if (fileInputRef) {
+            fileInputRef.current = ref.current;
+        }
+    };
+    const onFileInputRef = (element) => {
+        fileInputRef.current = element;
+        setFileInputRef(fileInputRef);
+    };
+    const handleOpenFileSelection = () => {
+        openFileSelection({fileInputRef: fileInputRef});
+    };
     if (isPopulated) {
         return (
             <PopulatedFileCard 
@@ -70,16 +81,17 @@ export function FileCard(
             />
         );
     }
+    
     return (
         <>
             <EmptyFileCard
                 fileDragHandler={fileDragHandler}
-                handleSelectorClick={handleSelectorClick}
+                handleSelectorClick={handleOpenFileSelection}
             />
             <FileUploadForm
-                fileInputRef={fileInputRef}
+                fileInputRef={onFileInputRef}
+                setFileInputRef={setFileInputRef}
                 onFileChange={onFileChange}
-                onFileInputRef={onFileInputRef}
             />
         </>
     );

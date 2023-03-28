@@ -10,43 +10,38 @@ export {INSERT_FILE_COMMAND} from '@tryghost/kg-default-nodes';
 
 export class FileNode extends BaseFileNode {
     __triggerFileDialog = false;
+    __initialFile = null;
 
     static kgMenu = [{
         label: 'File',
         desc: 'Upload a downloadable file',
         Icon: FileCardIcon,
         insertCommand: INSERT_FILE_COMMAND,
-        matches: ['file'],
         insertParams: {
             triggerFileDialog: true
         },
-        queryParams: ['src']
+        matches: ['file']
     }];
+
+    static uploadType = 'file';
 
     constructor(dataset = {}, key) {
         super(dataset, key);
+
         const {triggerFileDialog, initialFile} = dataset;
+
+        // don't trigger the file dialog when rendering if we've already been given a url
         this.__triggerFileDialog = (!dataset.src && triggerFileDialog) || false;
-        // passed via INSERT_MEDIA_COMMAND on drag+drop or paste
         this.__initialFile = initialFile || null;
     }
 
-    getDataset() {
-        const dataset = super.getDataset();
-
-        dataset.__triggerFileDialog = this.__triggerFileDialog;
-        dataset.__previewSrc = this.__previewSrc;
-
-        return dataset;
+    getIcon() {
+        return FileCardIcon;
     }
 
     setTriggerFileDialog(shouldTrigger) {
         const writable = this.getWritable();
         return writable.__triggerFileDialog = shouldTrigger;
-    }
-
-    createDOM() {
-        return document.createElement('div');
     }
 
     decorate() {

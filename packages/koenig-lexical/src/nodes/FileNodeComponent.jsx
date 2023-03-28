@@ -26,17 +26,11 @@ function FileNodeComponent({
     const [editor] = useLexicalComposerContext();
     const [isPopulated, setIsPopulated] = React.useState(false);
     const {fileUploader} = React.useContext(KoenigComposerContext);
-    const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
+    const {isSelected, isEditing} = React.useContext(CardContext);
     const fileInputRef = React.useRef();
-    // const [, setFileInputRef] = React.useState(null);
 
     const uploader = fileUploader.useFileUpload('file');
     const fileDragHandler = useDragAndDrop({handleDrop: handleFileDrop});
-
-    // const isPopulated = () => {
-    //     const bool = checkIfPopulated(fileDesc, fileName, fileSize, fileTitle, fileSrc);
-    //     return bool;
-    // };
 
     React.useEffect(() => {
         const uploadInitialFile = async (file) => {
@@ -63,29 +57,6 @@ function FileNodeComponent({
         return await fileUploadHandler(files, nodeKey, editor, uploader.upload);
     };
 
-    // when card is inserted from the card menu or slash command we want to show the file picker immediately
-    // uses a setTimeout to avoid issues with React rendering the component twice in dev mode 🙈
-    React.useEffect(() => {
-        if (!triggerFileDialog) {
-            return;
-        }
-
-        const renderTimeout = setTimeout(() => {
-            // trigger dialog
-            openFileSelection({fileInputRef});
-
-            // clear the property on the node so we don't accidentally trigger anything with a re-render
-            editor.update(() => {
-                const node = $getNodeByKey(nodeKey);
-                node.setTriggerFileDialog(false);
-            });
-        });
-
-        return (() => {
-            clearTimeout(renderTimeout);
-        });
-    });
-
     React.useEffect(() => {
         // it should always be populated if it has a fileSrc, fileSize and fileName
         if (fileSrc && fileSize && fileName) {
@@ -93,14 +64,15 @@ function FileNodeComponent({
         }
     }, [fileName, fileSize, fileSrc]);
 
-    const onFileInputRef = (element) => {
-        fileInputRef.current = element;
-    };
+    // const onFileInputRef = (element) => {
+    //     fileInputRef.current = element;
+    // };
 
     const enableEditing = (e) => {
+        e.preventDefault();
         // prevent card from propagating click event to the editor
         e.stopPropagation();
-        setEditing(true);
+        // TODO make it go to the first input field in the card
     };
 
     const handleFileTitle = (e) => {
@@ -121,6 +93,35 @@ function FileNodeComponent({
         });
     };
 
+    // when card is inserted from the card menu or slash command we want to show the file picker immediately
+    // uses a setTimeout to avoid issues with React rendering the component twice in dev mode 🙈
+    React.useEffect(() => {
+        if (!triggerFileDialog) {
+            return;
+        }
+
+        const renderTimeout = setTimeout(() => {
+            // trigger dialog
+            openFileSelection({fileInputRef: fileInputRef});
+
+            // clear the property on the node so we don't accidentally trigger anything with a re-render
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.setTriggerFileDialog(false);
+            });
+        });
+
+        return (() => {
+            clearTimeout(renderTimeout);
+        });
+
+        // absolutely no idea why [openFileSelection] is needed here but not
+        // in some other card's dialog trigger useEffects 🤷‍♂️
+        // without it the dialog doesn't open when the card is inserted from the card menu
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openFileSelection]);
+
     async function handleFileDrop(files) {
         await fileUploadHandler(files, nodeKey, editor, uploader.upload);
     }
@@ -138,15 +139,13 @@ function FileNodeComponent({
                 fileTitlePlaceholder={fileTitlePlaceholder}
                 handleFileDesc={handleFileDesc}
                 handleFileTitle={handleFileTitle}
-                handleSelectorClick={() => openFileSelection({fileInputRef})}
                 isEditing={isEditing}
                 isPopulated={isPopulated}
                 onFileChange={onFileChange}
-                onFileInputRef={onFileInputRef}
             />
             <ActionToolbar
                 data-kg-card-toolbar="file-upload"
-                isVisible={isSelected && !isEditing && isPopulated}
+                isVisible={isSelected && isPopulated && !isEditing}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-file-upload-card" icon="edit" isActive={false} label="Edit" onClick={enableEditing} />
