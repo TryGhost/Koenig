@@ -13,15 +13,15 @@ export function HeaderCard({isEditing, size, backgroundColor, heading, headingPl
     const buttonGroupChildren = [
         {
             label: 'S',
-            name: 'S'
+            name: 'small'
         },
         {
             label: 'M',
-            name: 'M'
+            name: 'medium'
         },
         {
             label: 'L',
-            name: 'L'
+            name: 'large'
         }
     ];
 
@@ -45,9 +45,9 @@ export function HeaderCard({isEditing, size, backgroundColor, heading, headingPl
 
     return (
         <>
-            <div className={`flex flex-col items-center justify-center text-center font-sans ${(size === 'S') ? 'min-h-[40vh] py-[14vmin]' : (size === 'M') ? 'min-h-[60vh] py-[12vmin]' : 'min-h-[80vh] py-[18vmin]'} ${HEADER_COLORS[backgroundColor]} `}>
-                { (isEditing || heading) && <h2 className={`font-extrabold leading-tight ${(size === 'S') ? 'text-6xl' : (size === 'M') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} ${heading || 'opacity-50'}`}>{heading || headingPlaceholder}</h2>}
-                { (isEditing || subHeading) && <h3 className={`w-full font-normal ${(size === 'S') ? 'mt-2 text-2xl' : (size === 'M') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} ${subHeading || 'opacity-50'}`}>{subHeading || subHeadingPlaceholder}</h3>}
+            <div className={`flex flex-col items-center justify-center text-center font-sans ${(size === 'small') ? 'min-h-[40vh] py-[14vmin]' : (size === 'medium') ? 'min-h-[60vh] py-[12vmin]' : 'min-h-[80vh] py-[18vmin]'} ${HEADER_COLORS[backgroundColor]} `}>
+                { (isEditing || heading) && <h2 className={`font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} ${heading || 'opacity-50'}`}>{heading || headingPlaceholder}</h2>}
+                { (isEditing || subHeading) && <h3 className={`w-full font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} ${subHeading || 'opacity-50'}`}>{subHeading || subHeadingPlaceholder}</h3>}
                 { (button && (isEditing || (buttonText && buttonUrl))) && 
                 <div className={`${(size === 'S') ? 'mt-6' : (size === 'M') ? 'mt-8' : 'mt-10'}`}>
                     {((button && (backgroundColor === 'light')) && <Button placeholder={buttonPlaceholder} size={size} value={buttonText} />) || (button && <Button color='light' placeholder={buttonPlaceholder} size={size} value={buttonText} />)}
@@ -93,7 +93,7 @@ export function HeaderCard({isEditing, size, backgroundColor, heading, headingPl
 }
 
 HeaderCard.propTypes = {
-    size: PropTypes.oneOf(['S', 'M', 'L']),
+    size: PropTypes.oneOf(['small', 'medium', 'large']),
     backgroundColor: PropTypes.oneOf(['dark', 'light', 'accent']),
     heading: PropTypes.string,
     headingPlaceholder: PropTypes.string,

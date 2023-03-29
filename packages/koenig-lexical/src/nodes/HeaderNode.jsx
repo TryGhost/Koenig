@@ -5,6 +5,8 @@ import {HeaderNode as BaseHeaderNode, INSERT_HEADER_COMMAND} from '@tryghost/kg-
 
 import {ReactComponent as HeaderCardIcon} from '../assets/icons/kg-card-type-header.svg';
 
+import HeaderNodeComponent from './HeaderNodeComponent';
+
 export {INSERT_HEADER_COMMAND} from '@tryghost/kg-default-nodes';
 
 export class HeaderNode extends BaseHeaderNode {
@@ -26,8 +28,18 @@ export class HeaderNode extends BaseHeaderNode {
 
     decorate() {
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()} width={this.__cardWidth}>
-                <h1>Hello header</h1>
+            <KoenigCardWrapper nodeKey={this.getKey()} width={'full'}>
+                <HeaderNodeComponent
+                    backgroundColor={this.getBackgroundImageStyle()}
+                    button={this.getButtonEnabled()}
+                    buttonPlaceholder={'Your button text'}
+                    buttonText={this.getButtonText()}
+                    buttonUrl={this.getButtonUrl()}
+                    heading={this.getHeader()}
+                    size={this.getSize()}
+                    subHeading={this.getSubheader()}
+                    
+                />
             </KoenigCardWrapper>
         );
     }
