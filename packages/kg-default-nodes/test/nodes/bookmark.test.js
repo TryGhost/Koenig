@@ -123,7 +123,7 @@ describe('BookmarkNode', function () {
     });
 
     describe('exportDOM', function () {
-        it.only('creates an bookmark card', editorTest(function () {
+        it('creates an bookmark card', editorTest(function () {
             const bookmarkNode = $createBookmarkNode(dataset);
             const {element} = bookmarkNode.exportDOM(exportOptions);
 
