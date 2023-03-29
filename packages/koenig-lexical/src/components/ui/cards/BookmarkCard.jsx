@@ -3,30 +3,30 @@ import React from 'react';
 import {CardCaptionEditor} from '../CardCaptionEditor';
 
 export function BookmarkCard({
-    urlValue, 
-    urlPlaceholder, 
-    bookmarkThumbnail, 
-    bookmarkTitle, 
-    bookmarkDesc,
-    bookmarkIcon, 
-    bookmarkPublisher, 
+    url, 
+    urlPlaceholder,
+    thumbnail,
+    title,
+    description,
+    icon,
+    publisher,
     caption, 
     setCaption, 
     isSelected
 }) {
-    if (urlValue) {
+    if (url) {
         return (
             <>
                 <div className="flex min-h-[120px] w-full rounded border border-grey/40 bg-white font-sans">
                     <div className="flex flex-col p-5">
-                        <div className="text-[1.5rem] font-semibold leading-9 tracking-normal text-grey-900 line-clamp-1">{bookmarkTitle}</div>
-                        <div className="mt-1 text-sm font-normal leading-9 text-grey-800 line-clamp-2">{bookmarkDesc}</div>
+                        <div className="text-[1.5rem] font-semibold leading-9 tracking-normal text-grey-900 line-clamp-1">{title}</div>
+                        <div className="mt-1 text-sm font-normal leading-9 text-grey-800 line-clamp-2">{description}</div>
                         <div className="mt-2 flex items-center text-sm font-medium leading-9 text-grey-900">
-                            {bookmarkIcon && <BookmarkIcon />}
-                            <span className="line-clamp-1">{bookmarkPublisher}</span>
+                            {icon && <BookmarkIcon />}
+                            <span className="line-clamp-1">{publisher}</span>
                         </div>
                     </div>
-                    <div className={`${bookmarkThumbnail ? 'grow-1 min-w-[33%] rounded-r-[.3rem] bg-grey-300' : ''}`}></div>
+                    <div className={`${thumbnail ? 'grow-1 min-w-[33%] rounded-r-[.3rem] bg-grey-300' : ''}`}></div>
                 </div>
                 <CardCaptionEditor
                     caption={caption || ''}
@@ -38,7 +38,7 @@ export function BookmarkCard({
         );
     }
     return (
-        <input className="w-full rounded border border-grey/60 p-2 font-sans text-sm font-normal text-grey-900" placeholder={urlPlaceholder} value={urlValue} />
+        <input className="w-full rounded border border-grey/60 p-2 font-sans text-sm font-normal text-grey-900" placeholder={urlPlaceholder} value={url} />
     );
 }
 
