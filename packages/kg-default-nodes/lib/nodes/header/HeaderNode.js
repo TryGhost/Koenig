@@ -1,7 +1,6 @@
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
-// import {renderFileNodeToDOM} from './FileRenderer';
 import {renderHeaderNodeToDOM} from './HeaderRenderer';
-// import {FileParser} from './FileParser';
+import {HeaderParser} from './HeaderParser';
 import {createCommand} from 'lexical';
 
 export const INSERT_HEADER_COMMAND = createCommand();
@@ -130,7 +129,8 @@ export class HeaderNode extends KoenigDecoratorNode {
     }
 
     static importDOM() {
-        return null;
+        const parser = new HeaderParser(this);
+        return parser.DOMConversionMap;
     }
 
     exportDOM(options = {}) {

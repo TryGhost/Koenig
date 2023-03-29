@@ -143,4 +143,30 @@ describe('HeaderNode', function () {
             element.outerHTML.should.equal(expectedElement);
         }));
     });
+    describe('importDOM', function () {
+        it('parses a header card', editorTest(function () {
+            const htmlstring = `
+            <div class="kg-card kg-header-card kg-size-large kg-style-image" data-kg-background-image="https://example.com/image.jpg" style="background-image: url(https://example.com/image.jpg)">
+                <h2 class="kg-header-card-header" id="header-slug">Header</h2>
+                <h3 class="kg-header-card-subheader" id="subheader-slug">Subheader</h3>
+                <a class="kg-header-card-button" href="https://example.com">Button</a>
+            </div>`;
+            const dom = new JSDOM(htmlstring).window.document;
+            const nodes = $generateNodesFromDOM(editor, dom);
+            nodes.length.should.equal(1);
+            const node = nodes[0];
+            node.getSize().should.equal('large');
+            node.getStyle().should.equal('image');
+            node.getBackgroundImageSrc().should.equal('https://example.com/image.jpg');
+            node.getHeader().should.equal('Header');
+            node.getHeaderSlug().should.equal('header-slug');
+            node.getSubheader().should.equal('Subheader');
+            node.getSubheaderSlug().should.equal('subheader-slug');
+            node.getButtonEnabled().should.be.true;
+            node.getButtonUrl().should.equal('https://example.com');
+            node.getButtonText().should.equal('Button');
+            node.getHasHeader().should.be.true;
+            node.getHasSubheader().should.be.true;
+        }));
+    });
 });
