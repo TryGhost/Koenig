@@ -4,6 +4,7 @@ import {ButtonNode} from './ButtonNode';
 import {CalloutNode} from './CalloutNode';
 import {CodeBlockNode} from './CodeBlockNode';
 import {FileNode} from './FileNode';
+import {HeaderNode} from './HeaderNode';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
 import {HtmlNode} from './HtmlNode';
@@ -31,7 +32,8 @@ const DEFAULT_NODES = [
     HtmlNode,
     FileNode,
     ButtonNode,
-    ToggleNode
+    ToggleNode,
+    HeaderNode
 ];
 
 export default DEFAULT_NODES;

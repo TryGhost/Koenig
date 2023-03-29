@@ -8,6 +8,7 @@ import {ButtonPlugin} from '../plugins/ButtonPlugin';
 import {CalloutPlugin} from '../plugins/CalloutPlugin';
 import {CardMenuPlugin} from '../plugins/CardMenuPlugin';
 import {FilePlugin} from '../plugins/FilePlugin';
+import {HeaderPlugin} from '../plugins/HeaderPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
 import {TogglePlugin} from '../plugins/TogglePlugin';
@@ -34,6 +35,7 @@ export const AllDefaultPlugins = () => {
             <FilePlugin />
             <ButtonPlugin />
             <TogglePlugin />
+            <HeaderPlugin />
         </>
     );
 };
