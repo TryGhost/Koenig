@@ -1,0 +1,60 @@
+import {slugify} from '@tryghost/kg-utils';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+
+export function renderHeaderNodeToDOM(node, options = {}) {
+    addCreateDocumentOption(options);
+
+    const document = options.createDocument();
+
+    if (!node.getHeader() && !node.getSubheader()) {
+        return document.createTextNode('');
+    }
+    
+    const {ghostVersion} = {options: {ghostVersion: '5.0'}, ...options};
+    const templateData = {
+        size: node.getSize(),
+        style: node.getStyle(),
+        buttonEnabled: node.getButtonEnabled() && Boolean(node.getButtonUrl()) && Boolean(node.getButtonText()),
+        buttonUrl: node.getButtonUrl(),
+        buttonText: node.getButtonText(),
+        header: node.getHeader(),
+        headerSlug: slugify(node.getHeader(), {ghostVersion}),
+        subheader: node.getSubheader(),
+        subheaderSlug: slugify(node.getSubheader(), {ghostVersion}),
+        hasHeader: node.getHasHeader(),
+        hasSubheader: node.getHasSubheader(),
+        backgroundImageStyle: node.getStyle() === 'image' ? `background-image: url(${node.getBackgroundImageSrc()})` : '',
+        backgroundImageSrc: node.getBackgroundImageSrc()
+    };
+
+    const div = document.createElement('div');
+    div.classList.add('kg-card', 'kg-header-card', 'kg-width-full', `kg-size-${templateData.size}`, `kg-style-${templateData.style}`);
+    div.setAttribute('data-kg-background-image', templateData.backgroundImageSrc);
+    div.setAttribute('style', templateData.backgroundImageStyle);
+
+    if (templateData.hasHeader) {
+        const headerElement = document.createElement('h2');
+        headerElement.classList.add('kg-header-card-header');
+        headerElement.setAttribute('id', templateData.headerSlug);
+        headerElement.textContent = templateData.header;
+        div.appendChild(headerElement);
+    }
+
+    if (templateData.hasSubheader) {
+        const subheaderElement = document.createElement('h3');
+        subheaderElement.classList.add('kg-header-card-subheader');
+        subheaderElement.setAttribute('id', templateData.subheaderSlug);
+        subheaderElement.textContent = templateData.subheader;
+        div.appendChild(subheaderElement);
+    }
+
+    if (templateData.buttonEnabled) {
+        const buttonElement = document.createElement('a');
+        buttonElement.classList.add('kg-header-card-button');
+        buttonElement.setAttribute('href', templateData.buttonUrl);
+        buttonElement.textContent = templateData.buttonText;
+        div.appendChild(buttonElement);
+    }
+
+    return div;
+}
