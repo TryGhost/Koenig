@@ -11,6 +11,9 @@
 // });
 
 const Prettier = require('prettier');
+const chai = require('chai');
+const expect = chai.expect;
+const minify = require('html-minifier').minify;
 
 should.Assertion.add('prettifyTo', function (str) {
     this.params = {
@@ -20,6 +23,7 @@ should.Assertion.add('prettifyTo', function (str) {
     };
 
     this.obj.should.be.a.String;
-    const result = Prettier.format(this.obj, {parser: 'html'});
-    result.should.equal(str);
+    const minified = minify(this.obj, {collapseWhitespace: true});
+    const result = Prettier.format(minified, {parser: 'html'});
+    expect(result).to.equal(str);
 }, false);
