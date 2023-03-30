@@ -36,6 +36,7 @@ export class HeaderNode extends BaseHeaderNode {
                     buttonText={this.getButtonText()}
                     buttonUrl={this.getButtonUrl()}
                     heading={this.getHeader()}
+                    nodeKey={this.getKey()}
                     size={this.getSize()}
                     subHeading={this.getSubheader()}
                     

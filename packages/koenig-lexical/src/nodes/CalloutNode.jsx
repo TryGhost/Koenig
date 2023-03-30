@@ -7,7 +7,6 @@ import {CalloutNode as BaseCalloutNode, INSERT_CALLOUT_COMMAND} from '@tryghost/
 import {CalloutCard} from '../components/ui/cards/CalloutCard';
 import {ReactComponent as CalloutCardIcon} from '../assets/icons/kg-card-type-callout.svg';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
-import {sanitizeHtml} from '../utils/sanitize-html';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 // re-export here so we don't need to import from multiple places throughout the app

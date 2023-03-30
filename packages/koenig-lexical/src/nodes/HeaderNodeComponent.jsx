@@ -2,6 +2,7 @@ import CardContext from '../context/CardContext';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {HeaderCard} from '../components/ui/cards/HeaderCard';
+import {sanitizeHtml} from '../utils/sanitize-html';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function HeaderNodeComponent(props) {
@@ -10,10 +11,21 @@ function HeaderNodeComponent(props) {
 
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
 
-    const handleHeadingTextEdit = (event) => {
+    const handleHeadingTextEdit = (text) => {
+        console.log(nodeKey);
+        console.log('handleHeadingTextEdit', text);
+        // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setHeading(event.target.innerText);
+            node.setHeader(text);
+        });
+    };
+
+    const handleSubheadingTextEdit = (text) => {
+        // this text should come from lexical
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setSubheading(text);
         });
     };
 
@@ -25,6 +37,7 @@ function HeaderNodeComponent(props) {
             buttonText={props.buttonText}
             buttonUrl={props.buttonUrl}
             handleHeadingTextEdit={handleHeadingTextEdit}
+            handleSubheadingTextEdit={handleSubheadingTextEdit}
             heading={props.heading}
             headingPlaceholder={props.headingPlaceholder}
             isEditing={isEditing}
