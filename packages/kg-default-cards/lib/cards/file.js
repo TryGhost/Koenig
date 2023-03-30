@@ -81,7 +81,7 @@ module.exports = {
                                         <a href="${escapeHtml(postUrl)}" class="kg-file-meta"><span class="kg-file-name">${escapeHtml(payload.fileName)}</span> &bull; ${bytesToSize(payload.fileSize)}</a>
                                     </td></tr></table>
                                 </td>
-                                <td width="80" valign="middle" style="position: relative; vertical-align: middle; text-align: center; background: #F7F7F7; border-radius: 2px;">
+                                <td width="80" valign="middle" class="kg-file-thumbnail">
                                     <a href="${escapeHtml(postUrl)}" style="position: absolute; display: block; top: 0; right: 0; bottom: 0; left: 0;"></a>
                                     <img src="https://static.ghost.org/v4.0.0/images/download-icon.png" style="${escapeHtml(emailStyles.icon)}">
                                 </td>
