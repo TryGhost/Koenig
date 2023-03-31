@@ -6,6 +6,7 @@ export function BookmarkCard({
     handleUrlChange,
     handleUrlInput,
     url, 
+    urlInputValue,
     urlPlaceholder,
     thumbnail,
     title,
@@ -17,7 +18,6 @@ export function BookmarkCard({
     isSelected
 }) {
     if (url) {
-        console.log(`thumbnail`,thumbnail)
         return (
             <>
                 <div className="flex min-h-[120px] w-full rounded border border-grey/40 bg-white font-sans">
@@ -43,7 +43,7 @@ export function BookmarkCard({
         );
     }
     return (
-        <input className="w-full rounded border border-grey/60 p-2 font-sans text-sm font-normal text-grey-900" placeholder={urlPlaceholder} value={url} onBlur={handleUrlInput} onChange={handleUrlChange} />
+        <input className="w-full rounded border border-grey/60 p-2 font-sans text-sm font-normal text-grey-900" placeholder={urlPlaceholder} value={urlInputValue} onBlur={handleUrlInput} onChange={handleUrlChange} />
     );
 }
 
@@ -59,6 +59,7 @@ BookmarkCard.propTypes = {
     handleUrlChange: PropTypes.func,
     handleUrlInput: PropTypes.func,
     url: PropTypes.string,
+    urlInputValue: PropTypes.string,
     urlPlaceholder: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.string,

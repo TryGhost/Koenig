@@ -16,6 +16,7 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
     const [editor] = useLexicalComposerContext();
 
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
+    const [urlInputValue, setUrlInputValue] = React.useState('');
 
     const setCaption = (value) => {
         editor.update(() => {
@@ -30,22 +31,27 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
     //     setEditing(true);
     // };
 
+    // const handleUrlChange = (event) => {
+    //     editor.update(() => {
+    //         const node = $getNodeByKey(nodeKey);
+    //         node.setUrl(event.target.value);
+    //     });
+    // };
+
     const handleUrlChange = (event) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setUrl(event.target.value);
-        });
+        console.log(`urlInputValue`, event.target.value);
+        setUrlInputValue(event.target.value);
     };
 
     const handleUrlInput = async (event) => {
-        console.log(`fetching... `,event.target.value);
-        let response;
-        try {
-            response = await (await fetch(event.target.value)).text();
-            console.log(response);
-        } catch (e) {
-            console.log(`error`,e);
-        }
+        // console.log(`fetching... `,event.target.value);
+        // let response;
+        // try {
+        //     response = await (await fetch(event.target.value)).text();
+        //     console.log(response);
+        // } catch (e) {
+        //     console.log(`error`,e);
+        // }
         // need to use metascraper to mock this up properly?..
         console.log(`test data`);
         const testData = {
@@ -59,6 +65,8 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
         };
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
+            // console.log(`node`,node);
+            node.setUrl(testData.url);
             node.setIcon(testData.icon);
             node.setTitle(testData.title);
             node.setDescription(testData.description);
@@ -80,8 +88,6 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log(`url`,url)
-
     return (
         <>
             <BookmarkCard
@@ -96,6 +102,7 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
                 thumbnail={thumbnail}
                 title={title}
                 url={url}
+                urlInputValue={urlInputValue}
                 urlPlaceholder={`Paste URL to add bookmark content...`}
             />
             {/* <ActionToolbar
