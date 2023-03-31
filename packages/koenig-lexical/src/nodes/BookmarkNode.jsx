@@ -20,21 +20,75 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
     const setCaption = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setText(value);
+            node.setCaption(value);
         });
     };
 
-    const handleToolbarEdit = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setEditing(true);
+    // const handleToolbarEdit = (event) => {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     setEditing(true);
+    // };
+
+    const handleUrlChange = (event) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setUrl(event.target.value);
+        });
     };
+
+    const handleUrlInput = async (event) => {
+        console.log(`fetching... `,event.target.value);
+        let response;
+        try {
+            response = await (await fetch(event.target.value)).text();
+            console.log(response);
+        } catch (e) {
+            console.log(`error`,e);
+        }
+        // need to use metascraper to mock this up properly?..
+        console.log(`test data`);
+        const testData = {
+            url: 'https://www.ghost.org/',
+            icon: 'https://www.ghost.org/favicon.ico',
+            title: 'Ghost: The Creator Economy Platform',
+            description: 'doing kewl stuff',
+            publisher: 'Ghost - The Professional Publishing Platform',
+            thumbnail: 'https://ghost.org/images/meta/ghost.png',
+            caption: 'caption here'
+        };
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setIcon(testData.icon);
+            node.setTitle(testData.title);
+            node.setDescription(testData.description);
+            node.setPublisher(testData.publisher);
+            node.setThumbnail(testData.thumbnail);
+        });
+    };
+
+    React.useEffect(() => {
+        // console.log(`isEditing`,isEditing);
+        // console.log(`isSelected`,isSelected);
+        // fetchEmbed('test','bookmark');
+        // console.log(fetchEmbed('test', {type: 'bookmark'}));
+        editor.focus();
+        if (!isEditing && isSelected) {
+            setEditing(true);
+        }
+        // only run on mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    console.log(`url`,url)
 
     return (
         <>
             <BookmarkCard
                 caption={caption}
                 description={description}
+                handleUrlChange={handleUrlChange}
+                handleUrlInput={handleUrlInput}
                 icon={icon}
                 isSelected={isSelected}
                 publisher={publisher}
@@ -44,16 +98,16 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
                 url={url}
                 urlPlaceholder={`Paste URL to add bookmark content...`}
             />
-            <ActionToolbar
+            {/* <ActionToolbar
                 data-kg-card-toolbar="bookmark"
-                isVisible={isSelected && !isEditing}
+                isVisible={title && isSelected && !isEditing}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-bookmark-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
                     <ToolbarMenuSeparator />
                     <ToolbarMenuItem icon="snippet" isActive={false} label="Snippet" />
                 </ToolbarMenu>
-            </ActionToolbar>
+            </ActionToolbar> */}
         </>
     );
 }
@@ -98,7 +152,7 @@ export class BookmarkNode extends BaseBookmarkNode {
                     publisher={this.__publisher}
                     thumbnail={this.__thumbnail}
                     title={this.__title}
-                    urlValue={this.__url}
+                    url={this.__url}
                 />
             </KoenigCardWrapper>
         );
