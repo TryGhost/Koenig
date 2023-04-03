@@ -3405,10 +3405,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@18.0.32":
-  version "18.0.32"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.32.tgz#5e88b2af6833251d54ec7fe86d393224499f41d5"
-  integrity sha512-gYGXdtPQ9Cj0w2Fwqg5/ak6BcK3Z15YgjSqtyDizWUfx7mQ8drs0NBUzRRsAdoFVTO8kJ8L2TL8Skm7OFPnLUw==
+"@types/react@*", "@types/react@18.0.33":
+  version "18.0.33"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.33.tgz#a1575160cb4376787c2f5fe0312302f824baa61e"
+  integrity sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -3611,22 +3611,6 @@
     "@codemirror/language" "^6.0.0"
     "@codemirror/lint" "^6.0.0"
     "@codemirror/search" "^6.0.0"
-    "@codemirror/state" "^6.0.0"
-    "@codemirror/view" "^6.0.0"
-
-"@uiw/codemirror-theme-github@^4.19.9":
-  version "4.19.11"
-  resolved "https://registry.yarnpkg.com/@uiw/codemirror-theme-github/-/codemirror-theme-github-4.19.11.tgz#49c827520d03207a33018ea0f07866646648ded8"
-  integrity sha512-tNhQ7ACy+GsUZltJ03ybWc/SJNEApMJGUPyXbuUFRh0cXKzoZDBllfvyvPjiCIu6Cs0icMwPfzpTIsijTaiGhA==
-  dependencies:
-    "@uiw/codemirror-themes" "4.19.11"
-
-"@uiw/codemirror-themes@4.19.11":
-  version "4.19.11"
-  resolved "https://registry.yarnpkg.com/@uiw/codemirror-themes/-/codemirror-themes-4.19.11.tgz#b65d3b86bfaf3eb74871ae034f8c60cf9cf4474a"
-  integrity sha512-4bh0vfkqeVJ7L2aGimKXqQtaoSEe/1xZb9nkGn35V5daHXkxRhb+BRFMOSrMsjGm74hM+dvYi5iH8HXVsvjJrQ==
-  dependencies:
-    "@codemirror/language" "^6.0.0"
     "@codemirror/state" "^6.0.0"
     "@codemirror/view" "^6.0.0"
 
