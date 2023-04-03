@@ -23,7 +23,8 @@ const KoenigComposableEditor = ({
     placeholder,
     className = '',
     readOnly = false,
-    isDragEnabled = true
+    isDragEnabled = true,
+    disableProse = false
 }) => {
     const _onChange = React.useCallback((editorState) => {
         const json = editorState.toJSON();
@@ -41,7 +42,7 @@ const KoenigComposableEditor = ({
     };
 
     return (
-        <div ref={editorContainerRef} className={`koenig-lexical ${darkMode ? 'dark' : ''} ${className}`}>
+        <div ref={editorContainerRef} className={`${disableProse ? '' : 'koenig-lexical'} ${darkMode ? 'dark' : ''} ${className}`}>
             <RichTextPlugin
                 contentEditable={
                     <div ref={onRef} data-kg="editor">

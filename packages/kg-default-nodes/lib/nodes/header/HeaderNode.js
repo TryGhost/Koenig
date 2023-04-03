@@ -84,7 +84,7 @@ export class HeaderNode extends KoenigDecoratorNode {
         this.__subheaderSlug = subheaderSlug || '';
         this.__hasHeader = hasHeader || false;
         this.__hasSubheader = hasSubheader || false;
-        this.__backgroundImageStyle = backgroundImageStyle || '';
+        this.__backgroundImageStyle = backgroundImageStyle || 'dark';
         this.__backgroundImageSrc = backgroundImageSrc || '';
     }
 

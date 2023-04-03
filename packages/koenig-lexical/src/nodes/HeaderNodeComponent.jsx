@@ -2,7 +2,6 @@ import CardContext from '../context/CardContext';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {HeaderCard} from '../components/ui/cards/HeaderCard';
-import {sanitizeHtml} from '../utils/sanitize-html';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function HeaderNodeComponent(props) {
@@ -12,8 +11,6 @@ function HeaderNodeComponent(props) {
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
 
     const handleHeadingTextEdit = (text) => {
-        console.log(nodeKey);
-        console.log('handleHeadingTextEdit', text);
         // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -25,7 +22,23 @@ function HeaderNodeComponent(props) {
         // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setSubheading(text);
+            node.setSubheader(text);
+        });
+    };
+
+    const handleColorSelector = (color) => {
+        // this text should come from lexical
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundImageStyle(color);
+        });
+    };
+
+    const handleSizeSelector = (size) => {
+        // this text should come from lexical
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setSize(size);
         });
     };
 
@@ -36,7 +49,9 @@ function HeaderNodeComponent(props) {
             buttonPlaceholder={props.buttonPlaceholder}
             buttonText={props.buttonText}
             buttonUrl={props.buttonUrl}
+            handleColorSelector={handleColorSelector}
             handleHeadingTextEdit={handleHeadingTextEdit}
+            handleSizeSelector={handleSizeSelector}
             handleSubheadingTextEdit={handleSubheadingTextEdit}
             heading={props.heading}
             headingPlaceholder={props.headingPlaceholder}

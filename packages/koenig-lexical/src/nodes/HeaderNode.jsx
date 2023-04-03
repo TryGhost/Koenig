@@ -36,9 +36,11 @@ export class HeaderNode extends BaseHeaderNode {
                     buttonText={this.getButtonText()}
                     buttonUrl={this.getButtonUrl()}
                     heading={this.getHeader()}
+                    headingPlaceholder={'Enter heading text'}
                     nodeKey={this.getKey()}
                     size={this.getSize()}
                     subHeading={this.getSubheader()}
+                    subHeadingPlaceholder={'Enter subheading text'}
                     
                 />
             </KoenigCardWrapper>

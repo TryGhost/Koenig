@@ -7,9 +7,9 @@ import {HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, MINIMAL_NODES,
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-const Placeholder = ({text = 'Type here'}) => {
+const Placeholder = ({text = 'Type here', className}) => {
     return (
-        <div className="pointer-events-none absolute top-0 left-0 m-0 min-w-full cursor-text font-serif text-xl font-normal tracking-wide text-grey-500 ">
+        <div className={className}>
             {text}
         </div>
     );
@@ -74,8 +74,9 @@ const KoenigHeaderEditor = ({paragraphs = 1, html, setHtml, placeholderText, rea
         >
             <KoenigComposableEditor
                 className={className}
+                disableProse={true}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
-                // placeholder={<Placeholder text={placeholderText} />}
+                placeholder={<Placeholder className={className} text={placeholderText} />}
                 readOnly={readOnly}
             >
                 <HeaderEditorPlugin parentEditor={parentEditor} parentNode={nodeKey} />
