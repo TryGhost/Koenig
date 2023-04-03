@@ -29,9 +29,12 @@ export function BookmarkCard({
                             <span className="line-clamp-1">{publisher}</span>
                         </div>
                     </div>
-                    <div className={`${thumbnail ? 'grow-1 min-w-[33%] rounded-r-[.3rem] bg-grey-300' : ''}`}>
-                        <img alt="" src={thumbnail} />
-                    </div>
+                    {thumbnail ?   
+                        <div>
+                            <img alt="" src={thumbnail} />
+                        </div>
+                        : <div className={'grow-1 min-w-[33%] rounded-r-[.3rem] bg-grey-300'}></div>
+                    }
                 </div>
                 <CardCaptionEditor
                     caption={caption || ''}

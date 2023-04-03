@@ -1,5 +1,6 @@
 import CardContext from '../context/CardContext';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
+import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
@@ -15,6 +16,7 @@ export {INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 function BookmarkNodeComponent({nodeKey, url, icon, title, description, publisher, thumbnail, caption}) {
     const [editor] = useLexicalComposerContext();
 
+    const {cardConfig} = React.useContext(KoenigComposerContext);
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
     const [urlInputValue, setUrlInputValue] = React.useState('');
 
@@ -25,44 +27,21 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
         });
     };
 
-    // const handleToolbarEdit = (event) => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     setEditing(true);
-    // };
-
-    // const handleUrlChange = (event) => {
-    //     editor.update(() => {
-    //         const node = $getNodeByKey(nodeKey);
-    //         node.setUrl(event.target.value);
-    //     });
-    // };
-
     const handleUrlChange = (event) => {
-        console.log(`urlInputValue`, event.target.value);
         setUrlInputValue(event.target.value);
     };
 
     const handleUrlInput = async (event) => {
-        // console.log(`fetching... `,event.target.value);
-        // let response;
-        // try {
-        //     response = await (await fetch(event.target.value)).text();
-        //     console.log(response);
-        // } catch (e) {
-        //     console.log(`error`,e);
-        // }
-        // need to use metascraper to mock this up properly?..
-        console.log(`test data`);
-        const testData = {
-            url: 'https://www.ghost.org/',
-            icon: 'https://www.ghost.org/favicon.ico',
-            title: 'Ghost: The Creator Economy Platform',
-            description: 'doing ghost stuff',
-            publisher: 'Ghost - The Professional Publishing Platform',
-            // thumbnail: 'https://ghost.org/images/meta/ghost.png',
-            caption: 'caption here'
-        };
+        const testData = await cardConfig.fetchEmbed(event.target.value, {type: 'bookmark'});
+        // const testData = {
+        //     url: 'https://www.ghost.org/',
+        //     icon: 'https://www.ghost.org/favicon.ico',
+        //     title: 'Ghost: The Creator Economy Platform',
+        //     description: 'doing ghost stuff',
+        //     publisher: 'Ghost - The Professional Publishing Platform',
+        //     thumbnail: 'https://ghost.org/images/meta/ghost.png',
+        //     caption: 'caption here'
+        // };
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             // console.log(`node`,node);
@@ -76,10 +55,6 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
     };
 
     React.useEffect(() => {
-        // console.log(`isEditing`,isEditing);
-        // console.log(`isSelected`,isSelected);
-        // fetchEmbed('test','bookmark');
-        // console.log(fetchEmbed('test', {type: 'bookmark'}));
         editor.focus();
         if (!isEditing && isSelected) {
             setEditing(true);
@@ -105,16 +80,14 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
                 urlInputValue={urlInputValue}
                 urlPlaceholder={`Paste URL to add bookmark content...`}
             />
-            {/* <ActionToolbar
+            <ActionToolbar
                 data-kg-card-toolbar="bookmark"
                 isVisible={title && isSelected && !isEditing}
             >
                 <ToolbarMenu>
-                    <ToolbarMenuItem dataTestId="edit-bookmark-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
-                    <ToolbarMenuSeparator />
                     <ToolbarMenuItem icon="snippet" isActive={false} label="Snippet" />
                 </ToolbarMenu>
-            </ActionToolbar> */}
+            </ActionToolbar>
         </>
     );
 }

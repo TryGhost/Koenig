@@ -17,6 +17,7 @@ import {
 import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
 import {createWebsocketProvider} from './multiplayer';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
+import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
 import {useLocation} from 'react-router-dom';
 import {useSearchParams} from 'react-router-dom';
@@ -26,7 +27,8 @@ const skipCollaborationInit =
     window.parent !== null && window.parent.frames.right === window;
 
 const cardConfig = {
-    unsplash: {defaultHeaders: defaultUnsplashHeaders}
+    unsplash: {defaultHeaders: defaultUnsplashHeaders},
+    fetchEmbed: fetchEmbed
 };
 
 function getDefaultContent({editorType}) {
