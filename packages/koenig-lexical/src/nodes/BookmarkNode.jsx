@@ -58,9 +58,9 @@ function BookmarkNodeComponent({nodeKey, url, icon, title, description, publishe
             url: 'https://www.ghost.org/',
             icon: 'https://www.ghost.org/favicon.ico',
             title: 'Ghost: The Creator Economy Platform',
-            description: 'doing kewl stuff',
+            description: 'doing ghost stuff',
             publisher: 'Ghost - The Professional Publishing Platform',
-            thumbnail: 'https://ghost.org/images/meta/ghost.png',
+            // thumbnail: 'https://ghost.org/images/meta/ghost.png',
             caption: 'caption here'
         };
         editor.update(() => {
