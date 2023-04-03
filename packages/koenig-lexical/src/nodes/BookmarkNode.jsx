@@ -7,7 +7,7 @@ import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {BookmarkNode as BaseBookmarkNode, INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 import {BookmarkCard} from '../components/ui/cards/BookmarkCard';
 import {ReactComponent as BookmarkCardIcon} from '../assets/icons/kg-card-type-bookmark.svg';
-import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
+import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 // re-export here so we don't need to import from multiple places throughout the app

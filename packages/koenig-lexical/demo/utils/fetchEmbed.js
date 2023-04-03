@@ -24,6 +24,6 @@ export async function fetchEmbed(url, {type}) {
 
         return testData;
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }
