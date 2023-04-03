@@ -65,20 +65,18 @@ export const calloutColorPicker = [
 ];
 
 export function CalloutCard({
-    color, 
-    emoji, 
+    color,
+    emoji,
     isEditing,
     setShowEmojiPicker,
-    toggleEmoji, 
-    handleColorChange, 
+    toggleEmoji,
+    handleColorChange,
     changeEmoji,
     emojiValue,
-    text,
-    setText,
+    textEditor,
     nodeKey,
     toggleEmojiPicker,
-    showEmojiPicker,
-    sanitizeHtml
+    showEmojiPicker
 }) {
     const emojiButtonRef = React.useRef(null);
     const {darkMode} = React.useContext(KoenigComposerContext);
@@ -89,18 +87,22 @@ export function CalloutCard({
         }
     }, [isEditing, setShowEmojiPicker]);
 
+    React.useEffect(() => {
+        textEditor.setEditable(isEditing);
+    }, [isEditing, textEditor]);
+
     return (
         <>
             <div className={`flex rounded border px-7 py-5 ${CALLOUT_COLORS[color]} `} data-testid={`callout-bg-${color}`}>
                 <div>
-                    {emoji && 
+                    {emoji &&
                     <>
                         <button
                             ref={emojiButtonRef}
                             className={`mr-2 cursor-pointer rounded px-2 text-xl ${isEditing ? 'hover:bg-grey-500/20' : ''} ` }
-                            data-testid="emoji-picker-button" 
-                            type="button" 
-                            onClick={toggleEmojiPicker} 
+                            data-testid="emoji-picker-button"
+                            type="button"
+                            onClick={toggleEmojiPicker}
                         >
                             {emojiValue}
                         </button>
@@ -112,25 +114,17 @@ export function CalloutCard({
                                     onEmojiClick={changeEmoji} />
                             )
                         }
-                    </>
-                    }
+                    </>}
                 </div>
-                {
-                    isEditing ?
-                        <KoenigCalloutEditor
-                            className="my-0 w-full whitespace-normal bg-transparent font-serif text-xl font-normal text-black dark:text-grey-300"
-                            html={text}
-                            nodeKey={nodeKey}
-                            placeholderText={'Callout text...'}
-                            readOnly={isEditing}
-                            setHtml={setText}
-                        />
-                        :
-                        <div dangerouslySetInnerHTML={{__html: sanitizeHtml(text)}} className="my-0 w-full whitespace-normal bg-transparent font-serif text-xl font-normal text-black dark:text-grey-300"/>
-                }
+                <KoenigCalloutEditor
+                    className="my-0 w-full whitespace-normal bg-transparent font-serif text-xl font-normal text-black dark:text-grey-300"
+                    nodeKey={nodeKey}
+                    placeholderText={'Callout text...'}
+                    textEditor={textEditor}
+                />
             </div>
             {
-                isEditing && (
+                isEditing ? (
                     <SettingsPanel
                         darkMode={darkMode}
                     >
@@ -149,6 +143,8 @@ export function CalloutCard({
                             onClick={handleColorChange}
                         />
                     </SettingsPanel>
+                ) : (
+                    <div className="absolute top-0 z-10 m-0 h-full w-full cursor-default p-0"></div>
                 )
             }
         </>

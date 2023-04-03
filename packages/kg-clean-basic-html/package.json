@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/kg-clean-basic-html",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "repository": "https://github.com/TryGhost/Koenig/tree/master/packages/kg-clean-basic-html",
   "author": "Ghost Foundation",
   "license": "MIT",
@@ -30,14 +30,14 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/core": "7.21.3",
-    "@babel/preset-env": "7.20.2",
+    "@babel/core": "7.21.4",
+    "@babel/preset-env": "7.21.4",
     "c8": "7.13.0",
     "jsdom": "21.1.1",
     "mocha": "10.2.0",
     "rollup": "2.79.1",
     "rollup-plugin-babel": "4.4.0",
     "should": "13.2.3",
-    "sinon": "15.0.2"
+    "sinon": "15.0.3"
   }
 }

@@ -1,3 +1,4 @@
+import {isTestEnv} from '../../test/utils/isTestEnv';
 import {useState} from 'react';
 
 export const fileTypes = {
@@ -16,6 +17,10 @@ export const fileTypes = {
     mediaThumbnail: {
         mimeTypes: ['image/gif', 'image/jpg', 'image/jpeg', 'image/png', 'image/webp'],
         extensions: ['gif', 'jpg', 'jpeg', 'png', 'webp']
+    },
+    file: {
+        mimeTypes: [],
+        extensions: []
     }
 };
 
@@ -27,6 +32,9 @@ export function useFileUpload({isMultiplayer = false} = {}) {
         const [filesNumber, setFilesNumber] = useState(0);
 
         function defaultValidator(file) {
+            if (type === 'file') {
+                return true;
+            }
             let extensions = fileTypes[type].extensions;
             let [, extension] = (/(?:\.([^.]+))?$/).exec(file.name);
 
@@ -43,7 +51,6 @@ export function useFileUpload({isMultiplayer = false} = {}) {
                 let validExtensions = `.${extensions.join(', .').toUpperCase()}`;
                 return `The file type you uploaded is not supported. Please use ${validExtensions}`;
             }
-
             return true;
         }
 
@@ -80,7 +87,7 @@ export function useFileUpload({isMultiplayer = false} = {}) {
 
             let stepDelay = 200;
             // adjust when testing to speed up tests
-            if (import.meta.env.VITE_TEST === 'true') {
+            if (isTestEnv) {
                 stepDelay = 0;
             }
 

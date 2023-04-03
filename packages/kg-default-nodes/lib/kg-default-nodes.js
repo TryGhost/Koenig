@@ -10,6 +10,9 @@ import * as html from './nodes/html/HtmlNode';
 import * as toggle from './nodes/toggle/ToggleNode';
 import * as button from './nodes/button/ButtonNode';
 import * as bookmark from './nodes/bookmark/BookmarkNode';
+import * as file from './nodes/file/FileNode';
+import * as paywall from './nodes/paywall/PaywallNode';
+import * as product from './nodes/product/ProductNode';
 
 // re-export everything for easier importing
 export * from './KoenigDecoratorNode';
@@ -26,6 +29,9 @@ export * from './nodes/html/HtmlNode';
 export * from './nodes/toggle/ToggleNode';
 export * from './nodes/button/ButtonNode';
 export * from './nodes/bookmark/BookmarkNode';
+export * from './nodes/file/FileNode';
+export * from './nodes/paywall/PaywallNode';
+export * from './nodes/product/ProductNode';
 
 // export convenience objects for use elsewhere
 export const DEFAULT_NODES = [
@@ -38,7 +44,10 @@ export const DEFAULT_NODES = [
     aside.AsideNode,
     horizontalrule.HorizontalRuleNode,
     html.HtmlNode,
+    file.FileNode,
     toggle.ToggleNode,
     button.ButtonNode,
-    bookmark.BookmarkNode
+    bookmark.BookmarkNode,
+    paywall.PaywallNode,
+    product.ProductNode
 ];

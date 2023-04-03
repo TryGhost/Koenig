@@ -1,8 +1,10 @@
 /* Components */
 import DesignSandbox from './components/DesignSandbox';
+import KoenigCardWrapper from './components/KoenigCardWrapper';
 import KoenigComposableEditor from './components/KoenigComposableEditor';
 import KoenigComposer from './components/KoenigComposer';
 import KoenigEditor from './components/KoenigEditor';
+import KoenigNestedComposer from './components/KoenigNestedComposer';
 
 /* Plugins */
 import AudioPlugin from './plugins/AudioPlugin';
@@ -11,6 +13,7 @@ import CardMenuPlugin from './plugins/CardMenuPlugin';
 import DragDropPastePlugin from './plugins/DragDropPastePlugin';
 import DragDropReorderPlugin from './plugins/DragDropReorderPlugin';
 import ExternalControlPlugin from './plugins/ExternalControlPlugin';
+import FilePlugin from './plugins/FilePlugin';
 import FloatingFormatToolbarPlugin from './plugins/FloatingFormatToolbarPlugin';
 import HorizontalRulePlugin from './plugins/HorizontalRulePlugin';
 import HtmlOutputPlugin from './plugins/HtmlOutputPlugin';
@@ -50,6 +53,8 @@ export {
     KoenigComposableEditor,
     KoenigComposer,
     KoenigEditor,
+    KoenigNestedComposer,
+    KoenigCardWrapper,
 
     AudioPlugin,
     CardMenuPlugin,
@@ -69,6 +74,7 @@ export {
     VideoPlugin,
     TogglePlugin,
     CalloutPlugin,
+    FilePlugin,
 
     AllDefaultPlugins,
 
