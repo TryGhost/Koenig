@@ -2,7 +2,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from '../Button';
+import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-upload-fill.svg';
+import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg';
+import {ReactComponent as TrashIcon} from '../../../assets/icons/kg-trash.svg';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {MediaPlaceholder} from '../MediaPlaceholder';
+import ImageUploadForm from '../ImageUploadForm';
 import {sanitizeHtml} from '../../../utils/sanitize-html';
 export const HEADER_COLORS = {
     dark: 'bg-black',
@@ -26,7 +31,11 @@ function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundIma
     return (
         <>
         
-            <button ref={fileInputRef} className='rounded bg-blue-500 py-1 px-2 text-white hover:bg-blue-600' type="button" onClick={toggleBackgroundImagePreview}>add image</button>
+            <button ref={fileInputRef} className='flex h-[3rem] w-[3rem] cursor-pointer items-center justify-center rounded-full border-2 border-transparent' type="button" onClick={toggleBackgroundImagePreview}>
+                <span className="h-6 w-6 rounded-full border border-1 border-black/5 flex justify-center items-center">
+                    <PlusIcon className="h-3 w-3 stroke-grey-700 stroke-2 dark:stroke-grey-500 dark:group-hover:stroke-grey-100" />
+                </span>
+            </button>
             <form onChange={onFileChange}>
                 <input
                     ref={fileInputRef}
@@ -40,18 +49,26 @@ function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundIma
                 backgroundImagePreview && (
                     <div className="w-full">
                         <div className="relative">
-                            <div className="h-400 border-gray-300 bg-gray-100 flex w-full items-center justify-center border border-dashed">
+                            <div className=" border-grey-300 bg-grey-50 rounded-sm flex w-full items-center justify-center border border-dashed">
                                 {
                                     backgroundImageSrc ? 
                                         <>
-                                            <div className='pointer' onClick={handleClearBackgroundImage}>clear img</div>
-                                            <img alt='backgroundHeaderImage' src={backgroundImageSrc} />
+                                            <div className="inset-0 absolute p-2">
+                                                <div className="flex flex-row-reverse">
+                                                    <button className="bg-white/90 rounded-sm py-1 px-2 pointer-events-auto" onClick={handleClearBackgroundImage}>
+                                                        <TrashIcon className="h-5 w-5 fill-grey-900 stroke-[3px] transition-all ease-linear group-hover:scale-105" />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <img alt='backgroundHeaderImage' src="https://i.kinja-img.com/gawker-media/image/upload/c_fit,f_auto,g_center,q_60,w_965/dff83a69003982f61039bb5d72fe002c.jpg" />
                                             
                                         </>
-                                        :
-                                        <div className="flex flex-col items-center justify-center">
-                                            <button type="button" onClick={openFilePicker}>Upload background image</button>
-                                        </div>
+                                        :                                          
+                                        <button type="button" onClick={openFilePicker} className="flex h-[120px] group cursor-pointer flex-col items-center justify-center">
+                                            <FileUploadIcon className="h-5 w-5 fill-grey-700 stroke-[3px] transition-all ease-linear group-hover:scale-105" />
+                                            <span class="text-[1.35rem] text-grey-700 font-medium px-1">Click to upload background image</span>
+                                        </button>
+                                        
                                 }
                             </div>
                         </div>
