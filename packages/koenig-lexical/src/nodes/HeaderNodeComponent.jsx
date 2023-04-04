@@ -1,14 +1,36 @@
 import CardContext from '../context/CardContext';
+import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {HeaderCard} from '../components/ui/cards/HeaderCard';
+import {backgroundImageUploadHandler} from '../utils/imageUploadHandler';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function HeaderNodeComponent(props) {
     const {nodeKey} = props;
     const [editor] = useLexicalComposerContext();
+    const {fileUploader} = React.useContext(KoenigComposerContext);
 
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
+
+    const imageUploader = fileUploader.useFileUpload('image');
+
+    const onFileChange = async (e) => {
+        const files = e.target.files;
+
+        // reset original src so it can be replaced with preview and upload progress
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundImageSrc('');
+        });
+
+        const {imageSrc} = await backgroundImageUploadHandler(files, imageUploader.upload);
+
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundImageSrc(imageSrc);
+        });
+    };
 
     const handleHeadingTextEdit = (text) => {
         editor.update(() => {
@@ -59,9 +81,17 @@ function HeaderNodeComponent(props) {
         });
     };
 
+    const handleClearBackgroundImage = () => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundImageSrc('');
+        });
+    };
+
     return (
         <HeaderCard
             backgroundColor={props.backgroundColor}
+            backgroundImageSrc={props.backgroundImageSrc}
             button={props.button}
             buttonPlaceholder={props.buttonPlaceholder}
             buttonText={props.buttonText}
@@ -69,6 +99,7 @@ function HeaderNodeComponent(props) {
             handleButtonText={handleButtonText}
             handleButtonToggle={handleButtonToggle}
             handleButtonUrl={handleButtonUrl}
+            handleClearBackgroundImage={handleClearBackgroundImage}
             handleColorSelector={handleColorSelector}
             handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}
@@ -79,6 +110,7 @@ function HeaderNodeComponent(props) {
             size={props.size}
             subHeading={props.subHeading}
             subHeadingPlaceholder={props.subHeadingPlaceholder}
+            onFileChange={onFileChange}
         />
     );
 }
