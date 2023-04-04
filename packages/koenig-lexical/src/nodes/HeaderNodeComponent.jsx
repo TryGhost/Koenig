@@ -11,7 +11,6 @@ function HeaderNodeComponent(props) {
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
 
     const handleHeadingTextEdit = (text) => {
-        // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setHeader(text);
@@ -19,7 +18,6 @@ function HeaderNodeComponent(props) {
     };
 
     const handleSubheadingTextEdit = (text) => {
-        // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setSubheader(text);
@@ -27,7 +25,6 @@ function HeaderNodeComponent(props) {
     };
 
     const handleColorSelector = (color) => {
-        // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setBackgroundImageStyle(color);
@@ -35,10 +32,30 @@ function HeaderNodeComponent(props) {
     };
 
     const handleSizeSelector = (size) => {
-        // this text should come from lexical
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setSize(size);
+        });
+    };
+
+    const handleButtonToggle = (event) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setButtonEnabled(event.target.checked);
+        });
+    };
+    
+    const handleButtonText = (event) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setButtonText(event.target.value);
+        });
+    };
+
+    const handleButtonUrl = (event) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setButtonUrl(event.target.value);
         });
     };
 
@@ -49,6 +66,9 @@ function HeaderNodeComponent(props) {
             buttonPlaceholder={props.buttonPlaceholder}
             buttonText={props.buttonText}
             buttonUrl={props.buttonUrl}
+            handleButtonText={handleButtonText}
+            handleButtonToggle={handleButtonToggle}
+            handleButtonUrl={handleButtonUrl}
             handleColorSelector={handleColorSelector}
             handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}

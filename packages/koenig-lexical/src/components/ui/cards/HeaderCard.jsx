@@ -25,7 +25,10 @@ export function HeaderCard({isEditing,
     handleSubheadingTextEdit, 
     nodeKey, 
     handleColorSelector,
-    handleSizeSelector}) {
+    handleSizeSelector,
+    handleButtonText,
+    handleButtonUrl,
+    handleButtonToggle}) {
     const buttonGroupChildren = [
         {
             label: 'S',
@@ -118,6 +121,7 @@ export function HeaderCard({isEditing,
                     <ToggleSetting
                         isChecked={button}
                         label='Button'
+                        onChange={handleButtonToggle}
                     />
                     {button && (
                         <>
@@ -125,11 +129,14 @@ export function HeaderCard({isEditing,
                                 label='Button text'
                                 placeholder='Add button text'
                                 value={buttonText}
+                                onChange={handleButtonText}
+
                             />
                             <InputSetting
                                 label='Button URL'
                                 placeholder='https://yoursite.com/#/portal/signup/'
                                 value={buttonUrl}
+                                onChange={handleButtonUrl}
                             />
                         </>
                     )}
