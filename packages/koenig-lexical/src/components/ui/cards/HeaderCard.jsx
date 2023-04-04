@@ -1,4 +1,4 @@
-import KoenigHeaderEditor from '../../KoenigHeaderEditor';
+// import KoenigHeaderEditor from '../../KoenigHeaderEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from '../Button';
@@ -74,9 +74,9 @@ export function HeaderCard({isEditing,
     buttonText, 
     buttonPlaceholder, 
     buttonUrl, 
-    handleHeadingTextEdit, 
-    handleSubheadingTextEdit, 
-    nodeKey, 
+    // handleHeadingTextEdit, 
+    // handleSubheadingTextEdit, 
+    // nodeKey, 
     handleColorSelector,
     handleSizeSelector,
     handleButtonText,
@@ -126,8 +126,11 @@ export function HeaderCard({isEditing,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center center'
                 } : null}>
-                
-                {
+
+                <div dangerouslySetInnerHTML={{__html: heading !== '' ? sanitizeHtml(heading) : headingPlaceholder}} className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} {heading || ''}`}/>
+                <div dangerouslySetInnerHTML={{__html: heading ? sanitizeHtml(subHeading) : subHeadingPlaceholder}} className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}/>
+
+                {/* {
                     isEditing ?
                         <KoenigHeaderEditor
                             className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
@@ -140,9 +143,9 @@ export function HeaderCard({isEditing,
                         />
                         :
                         <div dangerouslySetInnerHTML={{__html: heading !== '' ? sanitizeHtml(heading) : headingPlaceholder}} className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} {heading || ''}`}/>
-                }
+                } */}
 
-                {
+                {/* {
                     isEditing ?
                         <KoenigHeaderEditor
                             className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
@@ -155,7 +158,7 @@ export function HeaderCard({isEditing,
                         />
                         :
                         <div dangerouslySetInnerHTML={{__html: heading ? sanitizeHtml(subHeading) : subHeadingPlaceholder}} className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}/>
-                }
+                } */}
 
                 { (button && (isEditing || (buttonText && buttonUrl))) && 
                 <div className={`${(size === 'S') ? 'mt-6' : (size === 'M') ? 'mt-8' : 'mt-10'}`}>

@@ -11,7 +11,7 @@ function HeaderNodeComponent(props) {
     const [editor] = useLexicalComposerContext();
     const {fileUploader} = React.useContext(KoenigComposerContext);
 
-    const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
+    const {isEditing} = React.useContext(CardContext);
 
     const imageUploader = fileUploader.useFileUpload('image');
 
