@@ -92,7 +92,7 @@ describe('PaywallNode', function () {
             const paywallNode = $createPaywallNode();
             const {element} = paywallNode.exportDOM(exportOptions);
 
-            element.outerHTML.should.equal('<span><!--members-only--></span>');
+            element.outerHTML.should.equal('<span hidden="true"><!--members-only--></span>');
         }));
     });
 
@@ -141,7 +141,7 @@ describe('PaywallNode', function () {
                 htmlString = $generateHtmlFromNodes(editor);
             });
 
-            htmlString.should.equal('<span><!--members-only--></span>');
+            htmlString.should.equal('<span hidden="true"><!--members-only--></span>');
         }));
     });
 });
