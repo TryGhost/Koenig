@@ -2,7 +2,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import React from 'react';
 import {EditorView, keymap, lineNumbers} from '@codemirror/view';
 import {HighlightStyle, syntaxHighlighting} from '@codemirror/language';
-// import {githubDark, githubLight} from '@uiw/codemirror-theme-github';
+import {closeBrackets, closeBracketsKeymap} from '@codemirror/autocomplete';
 import {html as langHtml} from '@codemirror/lang-html';
 import {minimalSetup} from '@uiw/codemirror-extensions-basic-setup';
 import {standardKeymap} from '@codemirror/commands';
@@ -103,7 +103,7 @@ export default function HtmlEditor({darkMode, html, updateHtml}) {
     });
 
     const editorLightHighlightStyle = HighlightStyle.define([
-        {tag: t.keyword, color: '#5A5CAD', fontWeight: 'bold'},
+        {tag: t.keyword, color: '#5A5CAD'},
         {tag: t.atom, color: '#6C8CD5'},
         {tag: t.number, color: '#116644'},
         {tag: t.definition(t.variableName), textDecoration: 'underline'},
@@ -117,17 +117,18 @@ export default function HtmlEditor({darkMode, html, updateHtml}) {
     ]);
 
     const editorDarkHighlightStyle = HighlightStyle.define([
-        {tag: t.keyword, color: '#5A5CAD', fontWeight: 'bold'},
+        {tag: t.keyword, color: '#795da3'},
         {tag: t.atom, color: '#6C8CD5'},
-        {tag: t.number, color: '#116644'},
+        {tag: t.number, color: '#63a35c'},
         {tag: t.definition(t.variableName), textDecoration: 'underline'},
-        {tag: t.variableName, color: 'black'},
+        {tag: t.variableName, color: 'white'},
         {tag: t.comment, color: '#0080FF', fontStyle: 'italic', background: 'rgba(0,0,0,.05)'},
-        {tag: [t.string, t.special(t.brace)], color: '#183691'},
+        {tag: [t.string, t.special(t.brace)], color: 'rgb(72, 110, 225)'},
         {tag: t.meta, color: 'yellow'},
         {tag: t.bracket, color: '#63a35c'},
         {tag: t.tagName, color: '#63a35c'},
-        {tag: t.attributeName, color: '#795da3'}
+        {tag: t.attributeName, color: '#795da3'},
+        {tag: [t.className, t.propertyName], color: 'rgb(72, 110, 225)'}
     ]);
 
     const editorCSS = darkMode ? editorDarkCSS : editorLightCSS;
@@ -139,8 +140,10 @@ export default function HtmlEditor({darkMode, html, updateHtml}) {
         editorCSS,
         lineNumbers(), // adds line numbers to the gutter
         minimalSetup({defaultKeymap: false}), // disable defaultKeymap to prevent Mod+Enter from inserting new line
+        keymap.of(closeBracketsKeymap), // required for quote completion; needs to be listed before standardKeymap
         keymap.of(standardKeymap), // add back in standardKeymap, which doesn't include Mod+Enter
-        langHtml()
+        langHtml(),
+        closeBrackets()
     ];
 
     return (

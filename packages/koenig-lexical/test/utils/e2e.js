@@ -1,8 +1,10 @@
 import jsdom from 'jsdom';
+import playwright from '@playwright/test';
 import prettier from 'prettier';
 import {E2E_PORT} from '../e2e-setup';
 import {chromium, firefox, webkit} from 'playwright';
 import {expect} from 'vitest';
+import {startCase} from 'lodash';
 
 const {JSDOM} = jsdom;
 
@@ -16,7 +18,7 @@ export async function startApp(browserName = BROWSER_NAME) {
         slowMo: slowMo
     });
     const page = await browser.newPage();
-    
+
     return {
         app: {
             stop: async () => {
@@ -322,4 +324,11 @@ export async function dragMouse(
 export function isMac() {
     // issue https://github.com/microsoft/playwright/issues/12168
     return process.platform === 'darwin';
+}
+
+export async function insertCard(page, {cardName}) {
+    await page.keyboard.type(`/${cardName}`);
+    await playwright.expect(await page.locator(`[data-kg-card-menu-item="${startCase(cardName)}"][data-kg-cardmenu-selected="true"]`)).toBeVisible();
+    await page.keyboard.press('Enter');
+    await playwright.expect(await page.locator(`[data-kg-card="${cardName}"]`)).toBeVisible();
 }

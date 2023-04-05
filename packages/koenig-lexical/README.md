@@ -20,6 +20,21 @@ _Note:_ If any changes are made to those packages you'll need to rebuild them be
 
 Run `yarn dev` to start the development server to test/develop the editor standalone. This will generate a demo site from the `index.html` file which renders the demo app in `demo/demo.jsx` and makes it available on http://localhost:5173
 
+### Cards additional setup
+
+#### Gif card
+
+To see this card locally, you need to create `.env.local` file in `koenig-lexical` root package with the next data:
+```
+VITE_TENOR_API_KEY=xxx
+```
+
+How to get the tenor key is described here https://ghost.org/docs/config/#tenor
+
+#### Bookmark & Embed cards
+
+These cards make external web requests. Since the demo doesn't have a server to process these requests, we must fetch these resources on the front end. To do this we need to enable CORS, which is most easily done with a browser extension like 'Test CORS' for Chrome. Otherwise you will see blocked requests logging errors in the console. This can also be avoided by using test data directly without fetching via `fetchEmbed.js`.
+
 ### Running inside Admin
 
 To test/develop inside of Admin you can run `yarn preview` then in Ghost set your `editor.url` value in `config.local.json` to `http://127.0.0.1:4173/koenig-lexical.umd.js` and load Admin as usual.

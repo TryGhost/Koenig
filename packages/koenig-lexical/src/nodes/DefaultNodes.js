@@ -1,5 +1,6 @@
 import {AsideNode} from './AsideNode';
 import {AudioNode} from './AudioNode';
+import {BookmarkNode} from './BookmarkNode';
 import {ButtonNode} from './ButtonNode';
 import {CalloutNode} from './CalloutNode';
 import {CodeBlockNode} from './CodeBlockNode';
@@ -12,6 +13,7 @@ import {ImageNode} from './ImageNode';
 import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {MarkdownNode} from './MarkdownNode';
+import {PaywallNode} from './PaywallNode';
 import {ToggleNode} from './ToggleNode';
 import {VideoNode} from './VideoNode';
 
@@ -33,7 +35,9 @@ const DEFAULT_NODES = [
     FileNode,
     ButtonNode,
     ToggleNode,
-    HeaderNode
+    HeaderNode,
+    BookmarkNode,
+    PaywallNode
 ];
 
 export default DEFAULT_NODES;

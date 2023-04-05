@@ -20,11 +20,13 @@ export function SettingsPanel({children, darkMode}) {
         // Block with fixed position and transformed ancestor can be incorrectly positioned https://bugs.chromium.org/p/chromium/issues/detail?id=20574
         // Using Portal to avoid such issue as some cards using transformation
         <Portal>
-            <div ref={ref}
-                className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 overflow-y-auto rounded-lg bg-white bg-clip-padding p-6 font-sans shadow"
-                data-testid="settings-panel"
-            >
-                {children}
+            <div className={`${darkMode ? 'dark' : ''}`}>
+                <div ref={ref}
+                    className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 overflow-y-auto rounded-lg bg-white bg-clip-padding p-6 font-sans shadow dark:bg-grey-900"
+                    data-testid="settings-panel"
+                >
+                    {children}
+                </div>
             </div>
         </Portal>
     );
@@ -58,11 +60,11 @@ export function InputSetting({label, description, onChange, value, placeholder, 
     );
 }
 
-export function InputListSetting({dataTestId, label, description, onChange, value, placeholder}) {
+export function InputListSetting({dataTestId, label, description, onChange, value, placeholder, list, listOptions}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900">{label}</div>
-            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
+            <Input dataTestId={dataTestId} list={list} listOptions={listOptions} placeholder={placeholder} value={value} onChange={onChange} />
             {description &&
                     <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
