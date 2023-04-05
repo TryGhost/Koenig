@@ -1,5 +1,4 @@
 const {html} = require('../utils');
-const {$getRoot} = require('lexical');
 const {createHeadlessEditor} = require('@lexical/headless');
 const {$generateNodesFromDOM} = require('@lexical/html');
 const {JSDOM} = require('jsdom');
@@ -35,8 +34,6 @@ describe('HeaderNode', function () {
             size: 'small',
             style: 'image',
             subheader: 'hello',
-            headerSlug: 'this-is-the-header-card',
-            subheaderSlug: 'hello',
             backgroundImageStyle: 'cover',
             hasHeader: true,
             hasSubheader: true
@@ -130,16 +127,16 @@ describe('HeaderNode', function () {
                 buttonEnabled: false,
                 buttonText: 'The button',
                 buttonUrl: 'https://example.com/',
-                header: 'hi',
+                header: 'hello world',
                 size: 'small',
                 style: 'dark',
-                subheader: null,
+                subheader: 'hello sub world',
                 hasHeader: true
             };
             const node = $createHeaderNode(payload);
 
             const {element} = node.exportDOM(exportOptions);
-            const expectedElement = `<div class="kg-card kg-header-card kg-width-full kg-size-small kg-style-dark" data-kg-background-image="" style=""><h2 class="kg-header-card-header" id="hi">hi</h2></div>`;
+            const expectedElement = `<div class="kg-card kg-header-card kg-width-full kg-size-small kg-style-dark" data-kg-background-image="" style=""><h2 class="kg-header-card-header" id="hello-world">hello world</h2></div>`;
             element.outerHTML.should.equal(expectedElement);
         }));
     });
@@ -159,9 +156,7 @@ describe('HeaderNode', function () {
             node.getStyle().should.equal('image');
             node.getBackgroundImageSrc().should.equal('https://example.com/image.jpg');
             node.getHeader().should.equal('Header');
-            node.getHeaderSlug().should.equal('header-slug');
             node.getSubheader().should.equal('Subheader');
-            node.getSubheaderSlug().should.equal('subheader-slug');
             node.getButtonEnabled().should.be.true;
             node.getButtonUrl().should.equal('https://example.com');
             node.getButtonText().should.equal('Button');

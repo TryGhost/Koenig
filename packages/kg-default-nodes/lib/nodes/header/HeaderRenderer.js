@@ -1,5 +1,17 @@
-import {slugify} from '@tryghost/kg-utils';
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+
+function slugify(str) {
+    // Remove any non-word character with whitespace
+    str = str.replace(/[^\w\s]/gi, '');
+    
+    // Replace any whitespace character with a dash
+    str = str.replace(/\s+/g, '-');
+    
+    // Convert to lowercase
+    str = str.toLowerCase();
+    
+    return str;
+}
 
 export function renderHeaderNodeToDOM(node, options = {}) {
     addCreateDocumentOption(options);
@@ -9,8 +21,7 @@ export function renderHeaderNodeToDOM(node, options = {}) {
     if (!node.getHeader() && !node.getSubheader()) {
         return document.createTextNode('');
     }
-    
-    const {ghostVersion} = {options: {ghostVersion: '5.0'}, ...options};
+
     const templateData = {
         size: node.getSize(),
         style: node.getStyle(),
@@ -18,9 +29,9 @@ export function renderHeaderNodeToDOM(node, options = {}) {
         buttonUrl: node.getButtonUrl(),
         buttonText: node.getButtonText(),
         header: node.getHeader(),
-        headerSlug: slugify(node.getHeader(), {ghostVersion}),
+        headerSlug: slugify(node.getHeader()),
         subheader: node.getSubheader(),
-        subheaderSlug: slugify(node.getSubheader(), {ghostVersion}),
+        subheaderSlug: slugify(node.getSubheader()),
         hasHeader: node.getHasHeader(),
         hasSubheader: node.getHasSubheader(),
         backgroundImageStyle: node.getStyle() === 'image' ? `background-image: url(${node.getBackgroundImageSrc()})` : '',

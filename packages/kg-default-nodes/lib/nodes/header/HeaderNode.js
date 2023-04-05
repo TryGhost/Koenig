@@ -14,9 +14,7 @@ export class HeaderNode extends KoenigDecoratorNode {
     __buttonUrl;
     __buttonText;
     __header;
-    __headerSlug;
     __subheader;
-    __subheaderSlug;
     __hasHeader;
     __hasSubheader;
     __backgroundImageStyle;
@@ -49,9 +47,7 @@ export class HeaderNode extends KoenigDecoratorNode {
             buttonUrl: self.__buttonUrl,
             buttonText: self.__buttonText,
             header: self.__header,
-            headerSlug: self.__headerSlug,
             subheader: self.__subheader,
-            subheaderSlug: self.__subheaderSlug,
             hasHeader: self.__hasHeader,
             hasSubheader: self.__hasSubheader,
             backgroundImageStyle: self.__backgroundImageStyle,
@@ -65,9 +61,7 @@ export class HeaderNode extends KoenigDecoratorNode {
         buttonUrl, 
         buttonText, 
         header, 
-        headerSlug, 
-        subheader, 
-        subheaderSlug, 
+        subheader,
         hasHeader, 
         hasSubheader, 
         backgroundImageStyle, 
@@ -79,9 +73,7 @@ export class HeaderNode extends KoenigDecoratorNode {
         this.__buttonUrl = buttonUrl || '';
         this.__buttonText = buttonText || '';
         this.__header = header || '';
-        this.__headerSlug = headerSlug || '';
         this.__subheader = subheader || '';
-        this.__subheaderSlug = subheaderSlug || '';
         this.__hasHeader = hasHeader || false;
         this.__hasSubheader = hasSubheader || false;
         this.__backgroundImageStyle = backgroundImageStyle || 'dark';
@@ -89,7 +81,7 @@ export class HeaderNode extends KoenigDecoratorNode {
     }
 
     static importJSON(serializedNode) {
-        const {size, style, buttonEnabled, buttonUrl, buttonText, header, headerSlug, subheader, subheaderSlug, hasHeader, hasSubheader, backgroundImageStyle, backgroundImageSrc} = serializedNode;
+        const {size, style, buttonEnabled, buttonUrl, buttonText, header, subheader, hasHeader, hasSubheader, backgroundImageStyle, backgroundImageSrc} = serializedNode;
         const node = new this({
             size,
             style,
@@ -97,9 +89,7 @@ export class HeaderNode extends KoenigDecoratorNode {
             buttonUrl,
             buttonText,
             header,
-            headerSlug,
             subheader,
-            subheaderSlug,
             hasHeader,
             hasSubheader,
             backgroundImageStyle,
@@ -117,9 +107,7 @@ export class HeaderNode extends KoenigDecoratorNode {
             buttonUrl: this.__buttonUrl,
             buttonText: this.__buttonText,
             header: this.__header,
-            headerSlug: this.__headerSlug,
             subheader: this.__subheader,
-            subheaderSlug: this.__subheaderSlug,
             hasHeader: this.__hasHeader,
             hasSubheader: this.__hasSubheader,
             backgroundImageStyle: this.__backgroundImageStyle,
@@ -212,16 +200,6 @@ export class HeaderNode extends KoenigDecoratorNode {
         writable.__header = header;
     }
 
-    getHeaderSlug() {
-        const self = this.getLatest();
-        return self.__headerSlug;
-    }
-
-    setHeaderSlug(headerSlug) {
-        const writable = this.getWritable();
-        writable.__headerSlug = headerSlug;
-    }
-
     getSubheader() {
         const self = this.getLatest();
         return self.__subheader;
@@ -230,16 +208,6 @@ export class HeaderNode extends KoenigDecoratorNode {
     setSubheader(subheader) {
         const writable = this.getWritable();
         writable.__subheader = subheader;
-    }
-
-    getSubheaderSlug() {
-        const self = this.getLatest();
-        return self.__subheaderSlug;
-    }
-
-    setSubheaderSlug(subheaderSlug) {
-        const writable = this.getWritable();
-        writable.__subheaderSlug = subheaderSlug;
     }
 
     getHasHeader() {
