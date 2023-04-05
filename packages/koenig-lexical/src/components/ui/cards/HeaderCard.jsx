@@ -1,4 +1,4 @@
-// import KoenigHeaderEditor from '../../KoenigHeaderEditor';
+import KoenigHeaderEditor from '../../KoenigHeaderEditor';
 // import ImageUploadForm from '../ImageUploadForm';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -6,42 +6,19 @@ import {Button} from '../Button';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-upload-fill.svg';
 // import {MediaPlaceholder} from '../MediaPlaceholder';
-import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg';
+// import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg';
 import {ReactComponent as TrashIcon} from '../../../assets/icons/kg-trash.svg';
 import {sanitizeHtml} from '../../../utils/sanitize-html';
+
 export const HEADER_COLORS = {
     dark: 'bg-black',
     light: 'bg-grey-100',
     accent: 'bg-pink'
 };
 
-function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundImage}) {
-    const [backgroundImagePreview, setBackgroundImagePreview] = React.useState(false);
-
-    const fileInputRef = React.useRef(null);
-
-    const openFilePicker = () => {
-        fileInputRef.current.click();
-    };
-
-    const toggleBackgroundImagePreview = () => {
-        setBackgroundImagePreview(!backgroundImagePreview);
-    };
-    
-    React.useEffect(() => {
-        if (backgroundImageSrc !== null) {
-            setBackgroundImagePreview(true);
-        }
-    }, [backgroundImageSrc]);
-
+function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundImage, fileInputRef, backgroundImagePreview, openFilePicker}) {
     return (
         <>
-        
-            <button ref={fileInputRef} className='flex h-[3rem] w-[3rem] cursor-pointer items-center justify-center rounded-full border-2 border-transparent' type="button" onClick={toggleBackgroundImagePreview}>
-                <span className="border-1 flex h-6 w-6 items-center justify-center rounded-full border border-black/5">
-                    <PlusIcon className="h-3 w-3 stroke-grey-700 stroke-2 dark:stroke-grey-500 dark:group-hover:stroke-grey-100" />
-                </span>
-            </button>
             <form onChange={onFileChange}>
                 <input
                     ref={fileInputRef}
@@ -74,7 +51,6 @@ function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundIma
                                             <FileUploadIcon className="h-5 w-5 fill-grey-700 stroke-[3px] transition-all ease-linear group-hover:scale-105" />
                                             <span className="px-1 text-[1.35rem] font-medium text-grey-700">Click to upload background image</span>
                                         </button>
-                                        
                                 }
                             </div>
                         </div>
@@ -88,18 +64,14 @@ function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundIma
 
 export function HeaderCard({isEditing, 
     size, 
-    backgroundColor, 
-    heading, 
-    headingPlaceholder, 
-    subHeading, 
+    backgroundColor,
+    headingPlaceholder,
     subHeadingPlaceholder, 
     button, 
     buttonText, 
     buttonPlaceholder, 
     buttonUrl, 
-    // handleHeadingTextEdit, 
-    // handleSubheadingTextEdit, 
-    // nodeKey, 
+    nodeKey, 
     handleColorSelector,
     handleSizeSelector,
     handleButtonText,
@@ -107,6 +79,12 @@ export function HeaderCard({isEditing,
     backgroundImageSrc,
     onFileChange,
     handleClearBackgroundImage,
+    backgroundImagePreview,
+    fileInputRef,
+    openFilePicker,
+    backgroundImageStyle,
+    headerTextEditor,
+    subHeaderTextEditor,
     handleButtonToggle}) {
     const buttonGroupChildren = [
         {
@@ -138,52 +116,39 @@ export function HeaderCard({isEditing,
             label: 'Accent',
             name: 'accent',
             color: 'pink'
+        },
+        {
+            label: 'Background Image', // technically not a color, but it could have some styles associated with it when a background image is added.
+            name: 'bg-image',
+            color: 'grey-50'
         }
     ];
 
     return (
         <>
             <div className={`not-kg-prose flex flex-col items-center justify-center text-center font-sans ${(size === 'small') ? 'min-h-[40vh] py-[14vmin]' : (size === 'medium') ? 'min-h-[60vh] py-[12vmin]' : 'min-h-[80vh] py-[18vmin]'} ${HEADER_COLORS[backgroundColor]} `} 
-                style={backgroundImageSrc ? {
+                style={backgroundImageSrc && backgroundImageStyle === 'bg-image' ? {
                     backgroundImage: `url(${backgroundImageSrc})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center center'
                 } : null}>
 
+                {/* 
                 <div dangerouslySetInnerHTML={{__html: heading !== '' ? sanitizeHtml(heading) : headingPlaceholder}} className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} {heading || ''}`}/>
-                <div dangerouslySetInnerHTML={{__html: heading ? sanitizeHtml(subHeading) : subHeadingPlaceholder}} className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}/>
-
-                {/* {
-                    isEditing ?
-                        <KoenigHeaderEditor
-                            className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
-                            headingPlaceholder={headingPlaceholder}
-                            html={heading}
-                            nodeKey={nodeKey}
-                            readOnly={isEditing}
-                            setHtml={handleHeadingTextEdit}
-                            size={size}
-                        />
-                        :
-                        <div dangerouslySetInnerHTML={{__html: heading !== '' ? sanitizeHtml(heading) : headingPlaceholder}} className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} {heading || ''}`}/>
-                } */}
-
-                {/* {
-                    isEditing ?
-                        <KoenigHeaderEditor
-                            className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
-                            headingPlaceholder={subHeadingPlaceholder}
-                            html={subHeading}
-                            nodeKey={nodeKey}
-                            readOnly={isEditing}
-                            setHtml={handleSubheadingTextEdit}
-                            size={size}
-                        />
-                        :
-                        <div dangerouslySetInnerHTML={{__html: heading ? sanitizeHtml(subHeading) : subHeadingPlaceholder}} className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}/>
-                } */}
-
-                { (button && (isEditing || (buttonText && buttonUrl))) && 
+                <div dangerouslySetInnerHTML={{__html: heading ? sanitizeHtml(subHeading) : subHeadingPlaceholder}} className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}/> */}
+                <KoenigHeaderEditor
+                    className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    nodeKey={nodeKey}
+                    placeholderText={headingPlaceholder}
+                    textEditor={headerTextEditor}
+                />
+                <KoenigHeaderEditor
+                    className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    nodeKey={nodeKey}
+                    placeholderText={subHeadingPlaceholder}
+                    textEditor={subHeaderTextEditor}
+                />
+                { (button) && 
                 <div className={`${(size === 'S') ? 'mt-6' : (size === 'M') ? 'mt-8' : 'mt-10'}`}>
                     {((button && (backgroundColor === 'light')) && <Button placeholder={buttonPlaceholder} size={size} value={buttonText} />) || (button && <Button color='light' placeholder={buttonPlaceholder} size={size} value={buttonText} />)}
                 </div>
@@ -205,8 +170,11 @@ export function HeaderCard({isEditing,
                         onClick={handleColorSelector}
                     />
                     <ImagePicker
+                        backgroundImagePreview={backgroundImagePreview}
                         backgroundImageSrc={backgroundImageSrc}
+                        fileInputRef={fileInputRef}
                         handleClearBackgroundImage={handleClearBackgroundImage}
+                        openFilePicker={openFilePicker}
                         onFileChange={onFileChange}
                     />
                     <SettingsDivider />
@@ -240,7 +208,7 @@ export function HeaderCard({isEditing,
 
 HeaderCard.propTypes = {
     size: PropTypes.oneOf(['small', 'medium', 'large']),
-    backgroundColor: PropTypes.oneOf(['dark', 'light', 'accent']),
+    backgroundColor: PropTypes.oneOf(['dark', 'light', 'accent', 'bg-image']),
     heading: PropTypes.string,
     headingPlaceholder: PropTypes.string,
     subHeading: PropTypes.string,

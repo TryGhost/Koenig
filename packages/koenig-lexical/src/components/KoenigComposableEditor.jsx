@@ -73,7 +73,7 @@ const KoenigComposableEditor = ({
     };
 
     return (
-        <div ref={onWrapperRef} className={`koenig-lexical ${darkMode ? 'dark' : ''} ${className}`}>
+        <div ref={onWrapperRef} className={`${disableProse ? '' : 'koenig-lexical'} ${darkMode ? 'dark' : ''} ${className}`}>
             <RichTextPlugin
                 contentEditable={
                     <div ref={onContentEditableRef} data-kg="editor">

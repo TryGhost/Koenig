@@ -32,6 +32,24 @@ function HeaderNodeComponent(props) {
         });
     };
 
+    const [backgroundImagePreview, setBackgroundImagePreview] = React.useState(false);
+
+    const fileInputRef = React.useRef(null);
+
+    const openFilePicker = () => {
+        fileInputRef.current.click();
+    };
+
+    const toggleBackgroundImagePreview = () => {
+        setBackgroundImagePreview(!backgroundImagePreview);
+    };
+
+    React.useEffect(() => {
+        if (props.backgroundImageSrc !== '') {
+            setBackgroundImagePreview(true);
+        }
+    }, [props.backgroundImageSrc]);
+
     const handleHeadingTextEdit = (text) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -47,6 +65,11 @@ function HeaderNodeComponent(props) {
     };
 
     const handleColorSelector = (color) => {
+        color === 'bg-image' ? setBackgroundImagePreview(true) : setBackgroundImagePreview(false);
+
+        if (color === 'bg-image' && props.backgroundImageSrc === ''){
+            openFilePicker();
+        }
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setBackgroundImageStyle(color);
@@ -91,11 +114,14 @@ function HeaderNodeComponent(props) {
     return (
         <HeaderCard
             backgroundColor={props.backgroundColor}
+            backgroundImagePreview={backgroundImagePreview}
             backgroundImageSrc={props.backgroundImageSrc}
+            backgroundImageStyle={props.backgroundImageStyle}
             button={props.button}
             buttonPlaceholder={props.buttonPlaceholder}
             buttonText={props.buttonText}
             buttonUrl={props.buttonUrl}
+            fileInputRef={fileInputRef}
             handleButtonText={handleButtonText}
             handleButtonToggle={handleButtonToggle}
             handleButtonUrl={handleButtonUrl}
@@ -104,13 +130,18 @@ function HeaderNodeComponent(props) {
             handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}
             handleSubheadingTextEdit={handleSubheadingTextEdit}
+            headerTextEditor={props.headerTextEditor}
             heading={props.heading}
             headingPlaceholder={props.headingPlaceholder}
             isEditing={isEditing}
+            openFilePicker={openFilePicker}
             size={props.size}
+            subHeaderTextEditor={props.subHeaderTextEditor}
             subHeading={props.subHeading}
             subHeadingPlaceholder={props.subHeadingPlaceholder}
+            toggleBackgroundImagePreview={toggleBackgroundImagePreview}
             onFileChange={onFileChange}
+
         />
     );
 }

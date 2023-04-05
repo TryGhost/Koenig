@@ -110,7 +110,6 @@ export class CalloutNode extends BaseCalloutNode {
 
     constructor(dataset = {}, key) {
         super(dataset, key);
-
         // set up and populate nested editor from the serialized HTML
         this.__textEditor = dataset.textEditor || createEditor({nodes: MINIMAL_NODES});
         if (!dataset.textEditor) {

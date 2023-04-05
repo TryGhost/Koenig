@@ -1,9 +1,6 @@
-// we can probably refactor this so that KoenigCaptionEditor can be replaced with this:
-
-import CardContext from '../context/CardContext.jsx';
-import React, {useCallback, useContext} from 'react';
-import {$createParagraphNode, $getNodeByKey, COMMAND_PRIORITY_LOW, KEY_ENTER_COMMAND} from 'lexical';
-import {HtmlOutputPlugin, KoenigComposableEditor, KoenigComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
+import React from 'react';
+import {COMMAND_PRIORITY_LOW, KEY_ENTER_COMMAND} from 'lexical';
+import {KoenigComposableEditor, KoenigNestedComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
@@ -15,75 +12,84 @@ const Placeholder = ({text = 'Type here', className}) => {
     );
 };
 
-function HeaderEditorPlugin({parentEditor}) {
+// TODO: extract shared behaviour into a `KoenigNestedEditorPlugin` component
+function CalloutEditorPlugin({autoFocus}) {
     const [editor] = useLexicalComposerContext();
-    const {nodeKey} = useContext(CardContext);
 
-    // focus on caption editor when something is typed while card is selected
-    const handleKeyDown = useCallback((event) => {
-    // don't focus caption input if any other input or textarea is focused
-        if (event.target.matches('input, textarea')) {
-            return;
-        }
-
-        // only trigger on Enter key
-        if (event.key === 'Enter') {
-            editor.focus();
-        }
-    }, [editor]);
+    // using state here because this component can get re-rendered after the
+    // editor's editable state changes so we need to re-focus on re-render
+    const [shouldFocus, setShouldFocus] = React.useState(autoFocus);
 
     React.useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [handleKeyDown, editor, nodeKey]);
+        if (shouldFocus) {
+            editor.focus(() => {
+                editor.getRootElement().focus({preventScroll: true});
+            });
+        }
+    }, [shouldFocus, editor]);
 
-    React.useEffect(
-        () => {
-            return mergeRegister(
-                editor.registerCommand(
-                    KEY_ENTER_COMMAND,
-                    (event) => {
-                        // if hitting enter while holding shift, don't create a new paragraph
-                        if (event.shiftKey) {
-                            return false;
-                        }
-                        parentEditor.update(() => {
-                            const cardNode = $getNodeByKey(nodeKey);
-                            const paragraphNode = $createParagraphNode();
-                            cardNode.getTopLevelElementOrThrow().insertAfter(paragraphNode);
-                            paragraphNode.selectStart();
-                        });
+    React.useEffect(() => {
+        return mergeRegister(
+            // watch for editor becoming editable rather than relying on an `isEditing` prop
+            // because the prop will change before the contenteditable becomes editable, meaning
+            // we try to focus a non-editable editor which puts focus on the main editor instead
+            editor.registerEditableListener((isEditable) => {
+                if (!autoFocus) {
+                    return;
+                }
+
+                if (isEditable) {
+                    setShouldFocus(true);
+                } else {
+                    setShouldFocus(false);
+                }
+            }),
+            editor.registerCommand(
+                KEY_ENTER_COMMAND,
+                (event) => {
+                    // allow shift+enter to create a line break
+                    if (event.shiftKey) {
                         return false;
-                    },
-                    COMMAND_PRIORITY_LOW
-                )
-            );
-        },
-        [editor, parentEditor, nodeKey]
-    );
+                    }
+
+                    // otherwise, let the parent editor handle the enter key
+                    // - with ctrl/cmd+enter toggles edit mode
+                    // - or creates paragraph after card and moves cursor
+                    event._fromNested = true;
+                    editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
+
+                    // prevent normal/KoenigBehaviourPlugin enter key behaviour
+                    return true;
+                },
+                COMMAND_PRIORITY_LOW
+            )
+        );
+    }, [editor, autoFocus]);
+
     return null;
 }
 
-const KoenigHeaderEditor = ({paragraphs = 1, html, setHtml, placeholderText, readOnly, className, nodeKey}) => {
-    const [parentEditor] = useLexicalComposerContext();
+const KoenigHeaderEditor = ({
+    paragraphs = 1, 
+    placeholderText, 
+    className, 
+    textEditor
+}) => {
     return (
-        <KoenigComposer
-            nodes={MINIMAL_NODES}
+        <KoenigNestedComposer
+            initialEditor={textEditor}
+            initialNodes={MINIMAL_NODES}
         >
             <KoenigComposableEditor
                 className={className}
                 disableProse={true}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 placeholder={<Placeholder className={className} text={placeholderText} />}
-                readOnly={readOnly}
             >
-                <HeaderEditorPlugin parentEditor={parentEditor} parentNode={nodeKey} />
+                <CalloutEditorPlugin autoFocus={true} />
                 <RestrictContentPlugin paragraphs={paragraphs} />
-                <HtmlOutputPlugin html={html} setHtml={setHtml} />
             </KoenigComposableEditor>
-        </KoenigComposer>
+        </KoenigNestedComposer>
     );
 };
 
