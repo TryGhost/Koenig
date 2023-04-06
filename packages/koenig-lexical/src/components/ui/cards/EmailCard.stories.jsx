@@ -1,6 +1,6 @@
 import React from 'react';
-import {CardWrapper} from './../CardWrapper';
-import {EmailContentCard} from './EmailContentCard';
+import {CardWrapper} from '../CardWrapper';
+import {EmailCard} from './EmailCard';
 import {ReactComponent as EmailIndicatorIcon} from '../../../assets/icons/kg-indicator-email.svg';
 
 const displayOptions = {
@@ -11,7 +11,7 @@ const displayOptions = {
 
 const story = {
     title: 'Primary cards/Email content card',
-    component: EmailContentCard,
+    component: EmailCard,
     subcomponent: {CardWrapper},
     argTypes: {
         display: {
@@ -40,7 +40,7 @@ const Template = ({display, ...args}) => (
     <div className="kg-prose">
         <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
             <CardWrapper IndicatorIcon={EmailIndicatorIcon} wrapperStyle='wide' {...display} {...args}>
-                <EmailContentCard {...display} {...args} />
+                <EmailCard {...display} {...args} />
             </CardWrapper>
         </div>
     </div>
