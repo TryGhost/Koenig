@@ -8,7 +8,6 @@ import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-upload-
 // import {MediaPlaceholder} from '../MediaPlaceholder';
 // import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg';
 import {ReactComponent as TrashIcon} from '../../../assets/icons/kg-trash.svg';
-import {sanitizeHtml} from '../../../utils/sanitize-html';
 
 export const HEADER_COLORS = {
     dark: 'bg-black',
@@ -133,9 +132,6 @@ export function HeaderCard({isEditing,
                     backgroundPosition: 'center center'
                 } : null}>
 
-                {/* 
-                <div dangerouslySetInnerHTML={{__html: heading !== '' ? sanitizeHtml(heading) : headingPlaceholder}} className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'} {heading || ''}`}/>
-                <div dangerouslySetInnerHTML={{__html: heading ? sanitizeHtml(subHeading) : subHeadingPlaceholder}} className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}/> */}
                 <KoenigHeaderEditor
                     className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     nodeKey={nodeKey}

@@ -5,9 +5,9 @@ import React from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 import populateNestedEditor from '../utils/populateNestedEditor';
 import {$generateHtmlFromNodes} from '@lexical/html';
-import {$getNodeByKey, createEditor} from 'lexical';
 import {HeaderNode as BaseHeaderNode, INSERT_HEADER_COMMAND} from '@tryghost/kg-default-nodes';
 import {ReactComponent as HeaderCardIcon} from '../assets/icons/kg-card-type-header.svg';
+import {createEditor} from 'lexical';
 export {INSERT_HEADER_COMMAND} from '@tryghost/kg-default-nodes';
 
 export class HeaderNode extends BaseHeaderNode {
