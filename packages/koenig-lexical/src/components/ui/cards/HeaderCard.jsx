@@ -7,6 +7,7 @@ import {ButtonGroupSetting, ColorPickerSetting, InputSetting, SettingsDivider, S
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-upload-fill.svg';
 // import {MediaPlaceholder} from '../MediaPlaceholder';
 // import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg';
+import {ProgressBar} from '../ProgressBar';
 import {ReactComponent as TrashIcon} from '../../../assets/icons/kg-trash.svg';
 
 export const HEADER_COLORS = {
@@ -15,7 +16,35 @@ export const HEADER_COLORS = {
     accent: 'bg-pink'
 };
 
-function ImagePicker({onFileChange, backgroundImageSrc, handleClearBackgroundImage, fileInputRef, backgroundImagePreview, openFilePicker}) {
+function FileUploading({progress}) {
+    const progressStyle = {
+        width: `${progress?.toFixed(0)}%`
+    };
+
+    return (
+        <div className="h-full border border-transparent">
+            <div className="relative flex h-full items-center justify-center border border-grey/20 bg-grey-50 before:pb-[12.5%] dark:bg-grey-900">
+                <div className="flex w-full items-center justify-center overflow-hidden">
+                    <ProgressBar style={progressStyle} />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function ImagePicker({onFileChange, 
+    backgroundImageSrc, 
+    handleClearBackgroundImage, 
+    fileInputRef, 
+    backgroundImagePreview, 
+    openFilePicker,
+    isUploading,
+    progress}) {
+    if (isUploading) {
+        return (
+            <FileUploading progress={progress} />
+        );
+    }
     return (
         <>
             <form onChange={onFileChange}>
@@ -84,6 +113,7 @@ export function HeaderCard({isEditing,
     backgroundImageStyle,
     headerTextEditor,
     subHeaderTextEditor,
+    fileUploader,
     handleButtonToggle}) {
     const buttonGroupChildren = [
         {
@@ -122,6 +152,8 @@ export function HeaderCard({isEditing,
             color: 'grey-50'
         }
     ];
+
+    const {isLoading: isUploading, progress} = fileUploader || {};
 
     return (
         <>
@@ -170,7 +202,9 @@ export function HeaderCard({isEditing,
                         backgroundImageSrc={backgroundImageSrc}
                         fileInputRef={fileInputRef}
                         handleClearBackgroundImage={handleClearBackgroundImage}
+                        isUploading={isUploading}
                         openFilePicker={openFilePicker}
+                        progress={progress}
                         onFileChange={onFileChange}
                     />
                     <SettingsDivider />

@@ -122,6 +122,7 @@ function HeaderNodeComponent(props) {
             buttonText={props.buttonText}
             buttonUrl={props.buttonUrl}
             fileInputRef={fileInputRef}
+            fileUploader={imageUploader}
             handleButtonText={handleButtonText}
             handleButtonToggle={handleButtonToggle}
             handleButtonUrl={handleButtonUrl}
