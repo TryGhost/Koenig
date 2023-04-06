@@ -6,7 +6,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const Placeholder = ({text = 'Type here', className}) => {
     return (
-        <div className={className}>
+        <div className={`${className} opacity-50`}>
             {text}
         </div>
     );
@@ -82,7 +82,7 @@ const KoenigHeaderEditor = ({
         >
             <KoenigComposableEditor
                 className={className}
-                disableProse={true}
+                disableKoenigStyles={true}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 placeholder={<Placeholder className={className} text={placeholderText} />}
             >
