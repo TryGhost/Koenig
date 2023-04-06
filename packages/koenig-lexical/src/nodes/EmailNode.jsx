@@ -31,7 +31,7 @@ export class EmailNode extends BaseEmailNode {
         // create nested editor
         this.__htmlEditor = dataset.htmlEditor || createEditor({nodes: BASIC_NODES});
         if (!dataset.htmlEditor) {
-            const initialHtml = dataset.html ? `<p>${dataset.header}</p>` : '<p>Hey <code>{first_name, "there"},</code></p>';
+            const initialHtml = dataset.html ? dataset.html : '<p>Hey <code>{first_name, "there"},</code></p>';
             populateNestedEditor({editor: this.__htmlEditor, initialHtml});
         }
     }
