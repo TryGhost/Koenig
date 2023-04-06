@@ -115,16 +115,6 @@ describe('EmailNode', function () {
     });
 
     describe('exportDOM', function () {
-        it('renders an empty text node for a non-email target', editorTest(function () {
-            const payload = {
-                html: '<p>Hello World</p>'
-            };
-            const emailNode = $createEmailNode(payload);
-            const {element} = emailNode.exportDOM(exportOptions);
-
-            element.should.be.empty();
-        }));
-
         it('renders for email target', editorTest(function () {
             const payload = {
                 html: '<p>Hello World</p>'
@@ -140,6 +130,31 @@ describe('EmailNode', function () {
             element.outerHTML.should.prettifyTo(html`
                 <p>Hello World</p>
             `);
+        }));
+
+        it('renders nothing if the target is not email', editorTest(function () {
+            const payload = {
+                html: '<p>Hello World</p>'
+            };
+            const emailNode = $createEmailNode(payload);
+            const {element} = emailNode.exportDOM(exportOptions);
+
+            element.should.be.empty();
+        }));
+
+        it('renders nothing if the `html` payload is empty', editorTest(function () {
+            const payload = {
+                html: ''
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post'
+            };
+            const emailNode = $createEmailNode(payload);
+            const {element} = emailNode.exportDOM({...exportOptions, ...options});
+
+            element.should.be.empty();
         }));
     });
 });
