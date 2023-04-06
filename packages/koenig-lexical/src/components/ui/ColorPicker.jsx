@@ -5,11 +5,11 @@ export function ColorPicker({buttons = [], selectedName, onClick}) {
     return (
         <div className="flex">
             <ul className="flex w-full items-center justify-between rounded font-sans text-md font-normal text-white">
-                {buttons.map(({label, name, colorClass}) => (
+                {buttons.map(({label, name, color}) => (
                     name !== 'bg-image' ? 
                         <ColorButton
                             key={`${name}-${label}`}
-                            colorClass={colorClass}
+                            colorClass={color}
                             label={label}
                             name={name}
                             selectedName={selectedName}
@@ -40,7 +40,7 @@ export function ColorButton({onClick, label, name, colorClass, selectedName}) {
                 onClick={() => onClick(name)}
             >
                 <span
-                    className={`${colorClass} h-6 w-6 rounded-full border-2 border-black/5`}
+                    className={`bg-${colorClass} h-6 w-6 rounded-full border-2 border-black/5`}
                 ></span>
             </button>
         </li>
