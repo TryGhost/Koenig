@@ -14,6 +14,7 @@ import * as file from './nodes/file/FileNode';
 import * as header from './nodes/header/HeaderNode';
 import * as paywall from './nodes/paywall/PaywallNode';
 import * as product from './nodes/product/ProductNode';
+import * as embed from './nodes/embed/EmbedNode';
 
 // re-export everything for easier importing
 export * from './KoenigDecoratorNode';
@@ -34,6 +35,7 @@ export * from './nodes/file/FileNode';
 export * from './nodes/header/HeaderNode';
 export * from './nodes/paywall/PaywallNode';
 export * from './nodes/product/ProductNode';
+export * from './nodes/embed/EmbedNode';
 
 // export convenience objects for use elsewhere
 export const DEFAULT_NODES = [
@@ -52,5 +54,6 @@ export const DEFAULT_NODES = [
     header.HeaderNode,
     bookmark.BookmarkNode,
     paywall.PaywallNode,
-    product.ProductNode
+    product.ProductNode,
+    embed.EmbedNode
 ];
