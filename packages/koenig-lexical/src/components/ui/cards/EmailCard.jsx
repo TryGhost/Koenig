@@ -9,7 +9,7 @@ export function EmailCard({htmlEditor, isEditing}) {
             <KoenigNestedEditor
                 autoFocus={true}
                 initialEditor={htmlEditor}
-                nodes='minimal'
+                nodes='basic'
                 textClassName='px-3 kg-email-html'
             />
 

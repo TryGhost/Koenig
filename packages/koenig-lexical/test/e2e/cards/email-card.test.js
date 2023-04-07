@@ -145,4 +145,17 @@ describe('Email card', async () => {
         const emailCard = page.locator('[data-kg-card="email"]');
         await expect(emailCard).not.toBeVisible();
     });
+
+    it.only('it can contain lists', async function () {
+        await focusEditor(page);
+        await insertEmailCard(page);
+
+        // Create a list
+        await page.keyboard.press('Enter');
+        await page.keyboard.type('- List item 1');
+        await page.keyboard.press('Enter');
+
+        const emailCard = page.locator('[data-kg-card="email"] ul > li:first-child');
+        await expect(emailCard).toHaveText('List item 1');
+    });
 });
