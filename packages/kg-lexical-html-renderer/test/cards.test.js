@@ -9,7 +9,7 @@ describe('Cards', function () {
     let lexicalState;
     let options;
 
-    beforeEach(async function () {
+    beforeEach(function () {
         lexicalState = {
             root: {
                 children: [],
@@ -53,6 +53,26 @@ describe('Cards', function () {
   <figcaption>This is a caption</figcaption>
 </figure>
 `;
+        output.should.equal(expected);
+    });
+
+    it('renders a paywall card', function () {
+        const p = {
+            type: 'paragraph'
+        };
+
+        const paywallCard = {
+            type: 'paywall'
+        };
+
+        lexicalState.root.children.push(p);
+        lexicalState.root.children.push(paywallCard);
+
+        const renderer = new Renderer({nodes});
+
+        const output = Prettier.format(renderer.render(JSON.stringify(lexicalState), options), {parser: 'html'});
+
+        const expected = `<p></p><!--members-only-->`;
         output.should.equal(expected);
     });
 });
