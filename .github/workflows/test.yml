@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v3
         env:
           FORCE_COLOR: 0
+          # https://github.com/vitejs/vite/issues/2433
+          NODE_OPTIONS: '--max_old_space_size=8192'
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
