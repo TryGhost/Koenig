@@ -1,9 +1,9 @@
 const {JSDOM} = require('jsdom');
 const Prettier = require('prettier');
 const Renderer = require('../index');
-const {ImageNode} = require('@tryghost/kg-default-nodes');
+const {ImageNode, PaywallNode} = require('@tryghost/kg-default-nodes');
 
-const nodes = [ImageNode];
+const nodes = [ImageNode, PaywallNode];
 
 describe('Cards', function () {
     let lexicalState;
@@ -57,22 +57,19 @@ describe('Cards', function () {
     });
 
     it('renders a paywall card', function () {
-        const p = {
-            type: 'paragraph'
-        };
-
         const paywallCard = {
             type: 'paywall'
         };
 
-        lexicalState.root.children.push(p);
         lexicalState.root.children.push(paywallCard);
 
         const renderer = new Renderer({nodes});
 
         const output = Prettier.format(renderer.render(JSON.stringify(lexicalState), options), {parser: 'html'});
 
-        const expected = `<p></p><!--members-only-->`;
+        const expected =
+`<!--members-only-->
+`;
         output.should.equal(expected);
     });
 });
