@@ -92,8 +92,8 @@ describe('PaywallNode', function () {
             const paywallNode = $createPaywallNode();
             const {element} = paywallNode.exportDOM(exportOptions);
 
-            element.outerHTML.should.equal('<span class="gh-post-upgrade-cta-visibility"><!--members-only--></span>');
-            element.innerHTML.should.equal('<!--members-only-->');
+            element.nodeType.should.equal(8); // comment node
+            element.nodeValue.should.equal('members-only');
         }));
     });
 
@@ -142,7 +142,7 @@ describe('PaywallNode', function () {
                 htmlString = $generateHtmlFromNodes(editor);
             });
 
-            htmlString.should.equal('<span class="gh-post-upgrade-cta-visibility"><!--members-only--></span>');
+            htmlString.should.equal('<!--members-only-->');
         }));
     });
 });
