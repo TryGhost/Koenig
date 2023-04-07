@@ -146,7 +146,7 @@ describe('Email card', async () => {
         await expect(emailCard).not.toBeVisible();
     });
 
-    it.only('it can contain lists', async function () {
+    it('it can contain lists', async function () {
         await focusEditor(page);
         await insertEmailCard(page);
 
