@@ -92,8 +92,7 @@ describe('PaywallNode', function () {
             const paywallNode = $createPaywallNode();
             const {element} = paywallNode.exportDOM(exportOptions);
 
-            element.nodeType.should.equal(8); // comment node
-            element.nodeValue.should.equal('members-only');
+            element.innerHTML.should.equal('<!--members-only-->');
         }));
     });
 
