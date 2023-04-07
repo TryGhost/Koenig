@@ -8,7 +8,6 @@ export function renderPaywallNodeToDOM(_, options = {}) {
     const paywall = document.createComment('members-only');
 
     span.appendChild(paywall);
-    span.setAttribute('hidden', 'true');
 
     return span;
 }
