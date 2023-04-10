@@ -157,7 +157,7 @@ export function HeaderCard({isEditing,
 
     return (
         <>
-            <div className={`not-kg-prose flex flex-col items-center justify-center text-center font-sans ${(size === 'small') ? 'min-h-[40vh] py-[14vmin]' : (size === 'medium') ? 'min-h-[60vh] py-[12vmin]' : 'min-h-[80vh] py-[18vmin]'} ${HEADER_COLORS[backgroundColor]} `} 
+            <div className={`not-kg-prose flex flex-col items-center justify-center text-center font-sans ${(size === 'small') ? 'min-h-[40vh] p-[14vmin]' : (size === 'medium') ? 'min-h-[60vh] p-[12vmin]' : 'min-h-[80vh] p-[18vmin]'} ${HEADER_COLORS[backgroundColor]} `} 
                 style={backgroundImageSrc && backgroundImageStyle === 'bg-image' ? {
                     backgroundImage: `url(${backgroundImageSrc})`,
                     backgroundSize: 'cover',
@@ -165,15 +165,17 @@ export function HeaderCard({isEditing,
                 } : null}>
 
                 <KoenigHeaderEditor
-                    className={`whitespace-normal font-extrabold leading-tight ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`relative z-50 w-full whitespace-normal text-left font-extrabold leading-tight tracking-tight empty:pl-[calc(50%_-_285px)] ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     nodeKey={nodeKey}
                     placeholderText={headingPlaceholder}
+                    placeholderTextClassName={`whitespace-normal tracking-tight absolute top-0 left-0 z-1 pointer-events-none cursor-text font-extrabold leading-tight ${(size === 'small') ? 'text-6xl kg-header-card-heading-small' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     textEditor={headerTextEditor}
                 />
                 <KoenigHeaderEditor
-                    className={`w-full whitespace-normal font-normal ${(size === 'small') ? 'mt-2 text-2xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`relative w-full whitespace-normal text-left font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     nodeKey={nodeKey}
                     placeholderText={subHeadingPlaceholder}
+                    placeholderTextClassName={`w-full whitespace-medium leading-tight absolute top-0 left-0 z-1 pointer-events-none cursor-text font-normal kg-header-card-subheading-small`}
                     textEditor={subHeaderTextEditor}
                 />
                 { (button) && 
@@ -184,7 +186,7 @@ export function HeaderCard({isEditing,
             </div>
 
             {isEditing && (
-                <SettingsPanel>
+                <SettingsPanel className="mt-0" papa="kiki">
                     <ButtonGroupSetting
                         buttons={buttonGroupChildren}
                         label='Size'

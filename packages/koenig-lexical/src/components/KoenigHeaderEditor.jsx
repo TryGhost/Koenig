@@ -6,7 +6,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const Placeholder = ({text = 'Type here', className}) => {
     return (
-        <div className={`${className} opacity-50`}>
+        <div className={`${className} kg-header-editor-placeholder opacity-50`}>
             {text}
         </div>
     );
@@ -71,7 +71,8 @@ function CalloutEditorPlugin({autoFocus}) {
 
 const KoenigHeaderEditor = ({
     paragraphs = 1, 
-    placeholderText, 
+    placeholderText,
+    placeholderTextClassName, 
     className, 
     textEditor
 }) => {
@@ -84,7 +85,7 @@ const KoenigHeaderEditor = ({
                 className={className}
                 disableKoenigStyles={true}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
-                placeholder={<Placeholder className={className} text={placeholderText} />}
+                placeholder={<Placeholder className={placeholderTextClassName} text={placeholderText} />}
             >
                 <CalloutEditorPlugin autoFocus={true} />
                 <RestrictContentPlugin paragraphs={paragraphs} />
