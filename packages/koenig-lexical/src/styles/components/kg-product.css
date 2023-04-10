@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .kg-product-title * {
+    @apply text-[22px] font-bold text-black leading-snug dark:text-grey-50 opacity-100 tracking-tight
+  }
+
+  .kg-product-description p {
+    @apply text-[1.6rem] font-normal leading-snug text-grey-700 dark:text-grey-600 opacity-100
+  }
+
+    .kg-product-title, .kg-product-description {
+        @apply !whitespace-normal
+    }
+}

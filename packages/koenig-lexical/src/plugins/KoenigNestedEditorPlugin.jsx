@@ -1,11 +1,9 @@
 import React from 'react';
-import {BASIC_NODES, BASIC_TRANSFORMERS, KoenigComposableEditor, KoenigNestedComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
 import {COMMAND_PRIORITY_LOW, KEY_ENTER_COMMAND} from 'lexical';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext.js';
 
-// TODO: extract shared behaviour into a `KoenigNestedEditorPlugin` component
-function ToggleEditorPlugin({autoFocus, focusNext}) {
+function KoenigNestedEditorPlugin({autoFocus, focusNext}) {
     const [editor] = useLexicalComposerContext();
 
     // using state here because this component can get re-rendered after the
@@ -65,42 +63,4 @@ function ToggleEditorPlugin({autoFocus, focusNext}) {
     return null;
 }
 
-const Placeholder = ({text = 'Type here', className = ''}) => {
-    return (
-        <div className={`not-kg-prose pointer-events-none absolute top-0 left-0 min-w-full cursor-text ${className}`}>
-            {text}
-        </div>
-    );
-};
-
-const KoenigToggleEditor = ({
-    initialEditor,
-    nodes = 'basic',
-    placeholderText,
-    textClassName,
-    placeholderClassName,
-    autoFocus = false,
-    focusNext,
-    singleParagraph = false
-}) => {
-    const initialNodes = nodes === 'minimal' ? MINIMAL_NODES : BASIC_NODES;
-    const markdownTransformers = nodes === 'minimal' ? MINIMAL_TRANSFORMERS : BASIC_TRANSFORMERS;
-
-    return (
-        <KoenigNestedComposer
-            initialEditor={initialEditor}
-            initialNodes={initialNodes}
-        >
-            <KoenigComposableEditor
-                className={textClassName}
-                markdownTransformers={markdownTransformers}
-                placeholder={<Placeholder className={placeholderClassName} text={placeholderText} />}
-            >
-                {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
-                <ToggleEditorPlugin autoFocus={autoFocus} focusNext={focusNext} />
-            </KoenigComposableEditor>
-        </KoenigNestedComposer>
-    );
-};
-
-export default KoenigToggleEditor;
+export default KoenigNestedEditorPlugin;

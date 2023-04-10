@@ -9,10 +9,12 @@ import {BookmarkPlugin} from '../plugins/BookmarkPlugin';
 import {ButtonPlugin} from '../plugins/ButtonPlugin';
 import {CalloutPlugin} from '../plugins/CalloutPlugin';
 import {CardMenuPlugin} from '../plugins/CardMenuPlugin';
+import {EmailPlugin} from '../plugins/EmailPlugin';
 import {FilePlugin} from '../plugins/FilePlugin';
 import {HeaderPlugin} from '../plugins/HeaderPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {PaywallPlugin} from '../plugins/PaywallPlugin';
+import {ProductPlugin} from '../plugins/ProductPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
 import {TogglePlugin} from '../plugins/TogglePlugin';
 import {VideoPlugin} from '../plugins/VideoPlugin';
@@ -42,6 +44,8 @@ export const AllDefaultPlugins = () => {
             <BookmarkPlugin />
             <PaywallPlugin />
             <KoenigSelectorPlugin />
+            <ProductPlugin />
+            <EmailPlugin />
         </>
     );
 };

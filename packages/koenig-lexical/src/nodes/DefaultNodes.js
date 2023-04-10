@@ -4,6 +4,7 @@ import {BookmarkNode} from './BookmarkNode';
 import {ButtonNode} from './ButtonNode';
 import {CalloutNode} from './CalloutNode';
 import {CodeBlockNode} from './CodeBlockNode';
+import {EmailNode} from './EmailNode';
 import {FileNode} from './FileNode';
 import {HeaderNode} from './HeaderNode';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
@@ -14,6 +15,7 @@ import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {MarkdownNode} from './MarkdownNode';
 import {PaywallNode} from './PaywallNode';
+import {ProductNode} from './ProductNode';
 import {ToggleNode} from './ToggleNode';
 import {VideoNode} from './VideoNode';
 
@@ -37,7 +39,9 @@ const DEFAULT_NODES = [
     ToggleNode,
     HeaderNode,
     BookmarkNode,
-    PaywallNode
+    PaywallNode,
+    ProductNode,
+    EmailNode
 ];
 
 export default DEFAULT_NODES;
