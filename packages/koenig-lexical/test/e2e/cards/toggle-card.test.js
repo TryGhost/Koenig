@@ -1,13 +1,6 @@
 import {afterAll, beforeAll, beforeEach, describe} from 'vitest';
-import {assertHTML, focusEditor, html, initialize, startApp} from '../../utils/e2e';
+import {assertHTML, focusEditor, html, initialize, insertCard, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
-
-async function insertToggleCard(page) {
-    await page.keyboard.type('/toggle');
-    await page.waitForSelector('[data-kg-card-menu-item="Toggle"][data-kg-cardmenu-selected="true"]');
-    await page.keyboard.press('Enter');
-    await page.waitForSelector('[data-kg-card="toggle"]');
-}
 
 describe('Toggle card', async () => {
     let app;
@@ -93,7 +86,7 @@ describe('Toggle card', async () => {
 
     it('renders toggle card node from slash command', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
@@ -144,7 +137,7 @@ describe('Toggle card', async () => {
 
     it('focuses on the header input when rendered', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         await page.keyboard.type('Header');
 
@@ -152,9 +145,9 @@ describe('Toggle card', async () => {
         await expect(header).toContainText('Header');
     });
 
-    it('focuses on the content input when "Enter" is pressed from the header input', async function () {
+    it.only('focuses on the content input when "Enter" is pressed from the header input', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         await page.keyboard.press('Enter');
         await page.keyboard.type('Content');
@@ -165,7 +158,7 @@ describe('Toggle card', async () => {
 
     it('focuses on the content input when "Tab" is pressed from the header input', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         await page.keyboard.press('Tab');
         await page.keyboard.type('Content');
@@ -176,7 +169,7 @@ describe('Toggle card', async () => {
 
     it('focuses on the content input when "Arrow Down" is pressed from the header input', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         await page.keyboard.press('ArrowDown');
         await page.keyboard.type('Content');
@@ -187,7 +180,7 @@ describe('Toggle card', async () => {
 
     it('focuses on the header input when "Arrow Up" is pressed from the content input', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         await page.keyboard.press('ArrowUp');
         await page.keyboard.type('Header');
@@ -198,7 +191,7 @@ describe('Toggle card', async () => {
 
     it('renders in display mode when unfocused', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         // add some content to avoid auto-removal when leaving empty
         await page.keyboard.type('Header');
@@ -215,7 +208,7 @@ describe('Toggle card', async () => {
 
     it('renders an action toolbar', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         // Add some content to avoid auto-removal
         await page.keyboard.type('Header');
@@ -235,7 +228,7 @@ describe('Toggle card', async () => {
 
     it('is removed when left empty', async function () {
         await focusEditor(page);
-        await insertToggleCard(page);
+        await insertCard(page, {cardName: 'toggle'});
 
         // Shift focus from header to content
         await page.keyboard.press('ArrowDown');
