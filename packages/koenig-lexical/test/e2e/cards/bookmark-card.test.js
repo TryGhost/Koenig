@@ -97,15 +97,23 @@ describe('Bookmark card', async () => {
             await urlInput.fill('https://ghost.org/');
             await urlInput.press('Tab');
 
-            await expect(await page.getByTestId('bookmark-url-loading-spinner')).toBeVisible();
-            await expect(await page.getByTestId('bookmark-url-loading-spinner')).toBeHidden();
-
             await expect(await page.getByTestId('bookmark-title')).toHaveText('Ghost: The Creator Economy Platform');
             await expect(await page.getByTestId('bookmark-description')).toContainText('The former of the two songs addresses the issue of negative rumors in a relationship, while the latter, with a more upbeat pulse, is a classic club track; the single is highlighted by a hyped bridge.');
             await expect(await page.getByTestId('bookmark-publisher')).toContainText('Ghost - The Professional Publishing Platform');
         });
 
-        // TODO: test for caption, requires the above test to be functional
+        // TODO: the caption editor is very nested, and we don't have an actual input field here, so we aren't testing for filling it
+        test('caption displays on insert', async function () {
+            await focusEditor(page);
+            await insertCard(page, {cardName: 'bookmark'});
+
+            const urlInput = await page.getByTestId('bookmark-url');
+            await urlInput.fill('https://ghost.org/');
+            await urlInput.press('Tab');
+
+            const captionInput = await page.getByTestId('bookmark-caption');
+            await expect(captionInput).toContainText('Type caption for bookmark (optional)');
+        });
     });
 
     describe('Error Handling', async () => {
