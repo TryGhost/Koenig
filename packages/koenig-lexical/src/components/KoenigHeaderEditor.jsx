@@ -52,14 +52,17 @@ function CalloutEditorPlugin({autoFocus}) {
                         return false;
                     }
 
+                    // if enter is pressed from the Header, we want it to jump to the subheader
+                    // if enter is pressed from the subheader, we want it to create a new paragraph
+
                     // otherwise, let the parent editor handle the enter key
                     // - with ctrl/cmd+enter toggles edit mode
                     // - or creates paragraph after card and moves cursor
                     event._fromNested = true;
                     editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
 
-                    // prevent normal/KoenigBehaviourPlugin enter key behaviour
-                    return true;
+                    // // prevent normal/KoenigBehaviourPlugin enter key behaviour
+                    // return true;
                 },
                 COMMAND_PRIORITY_LOW
             )
@@ -71,10 +74,12 @@ function CalloutEditorPlugin({autoFocus}) {
 
 const KoenigHeaderEditor = ({
     paragraphs = 1, 
-    placeholderText,
-    placeholderTextClassName, 
+    placeholderText, 
     className, 
-    textEditor
+    textEditor,
+    autoFocus = false,
+    isSubheader = false,
+    placeholderTextClassName
 }) => {
     return (
         <KoenigNestedComposer
@@ -87,7 +92,7 @@ const KoenigHeaderEditor = ({
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 placeholder={<Placeholder className={placeholderTextClassName} text={placeholderText} />}
             >
-                <CalloutEditorPlugin autoFocus={true} />
+                <CalloutEditorPlugin autoFocus={autoFocus} isSubheader={isSubheader} />
                 <RestrictContentPlugin paragraphs={paragraphs} />
             </KoenigComposableEditor>
         </KoenigNestedComposer>

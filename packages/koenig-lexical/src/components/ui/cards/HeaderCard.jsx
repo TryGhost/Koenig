@@ -165,6 +165,7 @@ export function HeaderCard({isEditing,
                 } : null}>
 
                 <KoenigHeaderEditor
+                    autoFocus={true}
                     className={`relative z-50 w-full whitespace-normal text-left font-extrabold leading-tight tracking-tight empty:pl-[calc(50%_-_285px)] ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     nodeKey={nodeKey}
                     placeholderText={headingPlaceholder}
@@ -172,6 +173,7 @@ export function HeaderCard({isEditing,
                     textEditor={headerTextEditor}
                 />
                 <KoenigHeaderEditor
+                    autoFocus={false}
                     className={`relative w-full whitespace-normal text-left font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     nodeKey={nodeKey}
                     placeholderText={subHeadingPlaceholder}
