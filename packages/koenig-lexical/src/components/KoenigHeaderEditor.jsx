@@ -13,9 +13,8 @@ const Placeholder = ({text = 'Type here', className}) => {
 };
 
 // TODO: extract shared behaviour into a `KoenigNestedEditorPlugin` component
-function CalloutEditorPlugin({autoFocus}) {
+function HeaderEditorPlugin({autoFocus, handleEditorFocus, isSubheader}) {
     const [editor] = useLexicalComposerContext();
-
     // using state here because this component can get re-rendered after the
     // editor's editable state changes so we need to re-focus on re-render
     const [shouldFocus, setShouldFocus] = React.useState(autoFocus);
@@ -26,7 +25,7 @@ function CalloutEditorPlugin({autoFocus}) {
                 editor.getRootElement().focus({preventScroll: true});
             });
         }
-    }, [shouldFocus, editor]);
+    }, [shouldFocus, editor, autoFocus]);
 
     React.useEffect(() => {
         return mergeRegister(
@@ -52,14 +51,30 @@ function CalloutEditorPlugin({autoFocus}) {
                         return false;
                     }
 
+                    // console.log(isSubheader);
+
+                    if (isSubheader) {
+                        event._fromNested = true;
+                        editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
+    
+                        // prevent normal/KoenigBehaviourPlugin enter key behaviour
+                        return true;
+                    }
+
+                    if (!isSubheader) {
+                        console.log('we should switch to subheader');
+                        handleEditorFocus();
+                        console.log(autoFocus);
+                    }
+
                     // if enter is pressed from the Header, we want it to jump to the subheader
                     // if enter is pressed from the subheader, we want it to create a new paragraph
 
                     // otherwise, let the parent editor handle the enter key
                     // - with ctrl/cmd+enter toggles edit mode
                     // - or creates paragraph after card and moves cursor
-                    event._fromNested = true;
-                    editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
+                    // event._fromNested = true;
+                    // editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
 
                     // // prevent normal/KoenigBehaviourPlugin enter key behaviour
                     // return true;
@@ -67,7 +82,7 @@ function CalloutEditorPlugin({autoFocus}) {
                 COMMAND_PRIORITY_LOW
             )
         );
-    }, [editor, autoFocus]);
+    }, [editor, autoFocus, handleEditorFocus, isSubheader]);
 
     return null;
 }
@@ -79,7 +94,8 @@ const KoenigHeaderEditor = ({
     textEditor,
     autoFocus = false,
     isSubheader = false,
-    placeholderTextClassName
+    placeholderTextClassName,
+    handleEditorFocus
 }) => {
     return (
         <KoenigNestedComposer
@@ -92,7 +108,11 @@ const KoenigHeaderEditor = ({
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 placeholder={<Placeholder className={placeholderTextClassName} text={placeholderText} />}
             >
-                <CalloutEditorPlugin autoFocus={autoFocus} isSubheader={isSubheader} />
+                <HeaderEditorPlugin
+                    autoFocus={autoFocus} 
+                    handleEditorFocus={handleEditorFocus} 
+                    isSubheader={isSubheader}
+                />
                 <RestrictContentPlugin paragraphs={paragraphs} />
             </KoenigComposableEditor>
         </KoenigNestedComposer>

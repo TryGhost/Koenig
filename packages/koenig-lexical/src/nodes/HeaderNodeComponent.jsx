@@ -111,6 +111,22 @@ function HeaderNodeComponent(props) {
         });
     };
 
+    const [focusOn, setFocusOn] = React.useState('header');
+
+    const handleEditorFocus = () => {
+        // so this is where we need to figure out how to get
+        // 1. the first header to focus when initialising the header card
+        // 2. then when the user hits enter or tab on while the header is focused, we switch to the subheader
+
+        if (focusOn === 'header') {
+            setFocusOn('subheader');
+        }
+
+        if (focusOn === 'subheader') {
+            setFocusOn('header');
+        }
+    };
+
     return (
         <HeaderCard
             backgroundColor={props.backgroundColor}
@@ -123,11 +139,13 @@ function HeaderNodeComponent(props) {
             buttonUrl={props.buttonUrl}
             fileInputRef={fileInputRef}
             fileUploader={imageUploader}
+            focusOn={focusOn}
             handleButtonText={handleButtonText}
             handleButtonToggle={handleButtonToggle}
             handleButtonUrl={handleButtonUrl}
             handleClearBackgroundImage={handleClearBackgroundImage}
             handleColorSelector={handleColorSelector}
+            handleEditorFocus={handleEditorFocus}
             handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}
             handleSubheadingTextEdit={handleSubheadingTextEdit}
@@ -135,6 +153,7 @@ function HeaderNodeComponent(props) {
             heading={props.heading}
             headingPlaceholder={props.headingPlaceholder}
             isEditing={isEditing}
+            nodeKey={nodeKey}
             openFilePicker={openFilePicker}
             size={props.size}
             subHeaderTextEditor={props.subHeaderTextEditor}
@@ -142,7 +161,6 @@ function HeaderNodeComponent(props) {
             subHeadingPlaceholder={props.subHeadingPlaceholder}
             toggleBackgroundImagePreview={toggleBackgroundImagePreview}
             onFileChange={onFileChange}
-
         />
     );
 }
