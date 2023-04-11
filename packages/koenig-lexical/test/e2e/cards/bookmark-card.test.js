@@ -76,44 +76,34 @@ describe('Bookmark card', async () => {
         await expect(urlInput).toHaveValue('test');
     });
 
-    // TODO: this whole section is a WIP... I think we need to mock requests in playwright/whatever
     describe('Valid URL handling', async () => {
-        // // TODO: this test doesn't work if there is no request... it's a race condition
-        // test('shows loading wheel', async function () {
-        //     await focusEditor(page);
-        //     await insertCard(page, {cardName: 'bookmark'});
+        test('shows loading wheel', async function () {
+            await focusEditor(page);
+            await insertCard(page, {cardName: 'bookmark'});
 
-        //     const urlInput = await page.getByTestId('bookmark-url');
-        //     await urlInput.fill('https://ghost.org/');
-        //     await urlInput.press('Tab');
+            const urlInput = await page.getByTestId('bookmark-url');
+            await urlInput.fill('https://ghost.org/');
+            await urlInput.press('Tab');
 
-        //     await expect(await page.getByTestId('bookmark-url-loading-container')).toBeVisible();
-        //     await expect(await page.getByTestId('bookmark-url-loading-spinner')).toBeVisible();
-        // });
+            await expect(await page.getByTestId('bookmark-url-loading-container')).toBeVisible();
+            await expect(await page.getByTestId('bookmark-url-loading-spinner')).toBeVisible();
+        });
 
-        // test('displays expected metadata', async function () {
-        //     await focusEditor(page);
-        //     await insertCard(page, {cardName: 'bookmark'});
+        test('displays expected metadata', async function () {
+            await focusEditor(page);
+            await insertCard(page, {cardName: 'bookmark'});
 
-        //     page.on('request', request => console.log('>>', request.method(), request.url));
-        //     page.on('response', response => console.log('<<', response.status(), response.url));
+            const urlInput = await page.getByTestId('bookmark-url');
+            await urlInput.fill('https://ghost.org/');
+            await urlInput.press('Tab');
 
-        //     const urlInput = await page.getByTestId('bookmark-url');
-        //     await urlInput.fill('https://ghost.org/');
-        //     await urlInput.press('Tab');
+            await expect(await page.getByTestId('bookmark-url-loading-spinner')).toBeVisible();
+            await expect(await page.getByTestId('bookmark-url-loading-spinner')).toBeHidden();
 
-        //     // TODO: for some reason the awaits do not find the content, but if you
-        //     //  run the test headless, it does work... 
-        //     //  might have something to do with a need to mock the response, although
-        //     //  given the current config there is *no* actual outside request despite
-        //     //  the logging that's done here... it's confusing
-
-        //     // const title = await page.getByTestId('bookmark-title');
-        //     // await expect(title).toHaveText('Ghost: The Creator Economy Platform');
-        //     // await expect(await page.getByTestId('bookmark-title')).toContainText('Ghost: The Creator Economy Platform');
-        //     // await expect(await page.getByTestId('bookmark-description')).toContainText('The former of the two songs addresses the issue of negative rumors in a relationship, while the latter, with a more upbeat pulse, is a classic club track; the single is highlighted by a hyped bridge.');
-        //     // await expect(await page.getByTestId('bookmark-publisher')).toContainText('Ghost - The Professional Publishing Platform');
-        // });
+            await expect(await page.getByTestId('bookmark-title')).toHaveText('Ghost: The Creator Economy Platform');
+            await expect(await page.getByTestId('bookmark-description')).toContainText('The former of the two songs addresses the issue of negative rumors in a relationship, while the latter, with a more upbeat pulse, is a classic club track; the single is highlighted by a hyped bridge.');
+            await expect(await page.getByTestId('bookmark-publisher')).toContainText('Ghost - The Professional Publishing Platform');
+        });
 
         // TODO: test for caption, requires the above test to be functional
     });
