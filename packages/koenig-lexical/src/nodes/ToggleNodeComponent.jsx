@@ -6,26 +6,10 @@ import {ToggleCard} from '../components/ui/cards/ToggleCard';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function ToggleNodeComponent({nodeKey, headerEditor, contentEditor}) {
+export function ToggleNodeComponent({nodeKey, headerEditor, headerEditorInitialState, contentEditor, contentEditorInitialState}) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
     const {isEditing, isSelected} = cardContext;
-
-    const [isContentVisible, setContentVisible] = React.useState(false);
-
-    const toggleRef = React.useRef(null);
-
-    React.useEffect(() => {
-        if (toggleRef && toggleRef.current) {
-            toggleRef.current.click();
-        }
-    }, []);
-
-    const toggleContent = (event) => {
-        event?.preventDefault();
-        event?.stopPropagation();
-        setContentVisible(!isContentVisible);
-    };
 
     const handleToolbarEdit = (event) => {
         event.preventDefault();
@@ -42,13 +26,12 @@ export function ToggleNodeComponent({nodeKey, headerEditor, contentEditor}) {
         <>
             <ToggleCard
                 contentEditor={contentEditor}
+                contentEditorInitialState={contentEditorInitialState}
                 contentPlaceholder={'Collapsible content'}
                 headerEditor={headerEditor}
+                headerEditorInitialState={headerEditorInitialState}
                 headerPlaceholder={'Toggle header'}
-                isContentVisible={isContentVisible}
                 isEditing={isEditing}
-                toggleContent={toggleContent}
-                toggleRef={toggleRef}
             />
 
             <ActionToolbar

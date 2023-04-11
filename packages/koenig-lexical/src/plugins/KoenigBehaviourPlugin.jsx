@@ -134,8 +134,8 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
     React.useEffect(() => {
         return mergeRegister(
             editor.registerUpdateListener(({editorState, tags}) => {
-                // ignore updates triggered by other users
-                if (tags.has('collaboration')) {
+                // ignore updates triggered by other users or by card node exportJSON calls
+                if (tags.has('collaboration') || tags.has('card-export')) {
                     return;
                 }
 
@@ -866,9 +866,9 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             editor.registerCommand(
                 PASTE_COMMAND,
                 (clipboard) => {
-                    // avoid Koenig behaviours when an inner element (e.g. a card input) has focus
-                    if (document.activeElement !== editor.getRootElement()) {
-                        return true;
+                    // avoid Koenig behaviours when an inner element (e.g. a card input) has focus and event wasn't triggered from nested editor
+                    if (document.activeElement !== editor.getRootElement() && !isNested) {
+                        return false;
                     }
 
                     const clipboardDataset = clipboard?.clipboardData?.getData('text');

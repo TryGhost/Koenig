@@ -5,13 +5,12 @@ import {ReactComponent as ArrowDownIcon} from '../../../assets/icons/kg-toggle-a
 
 export function ToggleCard({
     contentEditor,
+    contentEditorInitialState,
     contentPlaceholder,
     headerEditor,
+    headerEditorInitialState,
     headerPlaceholder,
-    isContentVisible,
-    isEditing,
-    toggleContent,
-    toggleRef
+    isEditing
 }) {
     return (
         <>
@@ -22,6 +21,7 @@ export function ToggleCard({
                             autoFocus={true}
                             focusNext={contentEditor}
                             initialEditor={headerEditor}
+                            initialEditorState={headerEditorInitialState}
                             nodes='minimal'
                             placeholderClassName={'kg-toggle-header-placeholder'}
                             placeholderText={headerPlaceholder}
@@ -29,13 +29,14 @@ export function ToggleCard({
                             textClassName={'kg-toggle-header-text'}
                         />
                     </div>
-                    <div ref={toggleRef} className='z-20 ml-auto mt-[-1px] flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center' onClick={toggleContent}>
-                        <ArrowDownIcon className={`h-4 w-4 stroke-2 text-grey-400 dark:text-grey/30 ${isContentVisible ? 'rotate-180' : 'rotate-0'}`} />
+                    <div className='z-20 ml-auto mt-[-1px] flex h-8 w-8 shrink-0 items-center justify-center'>
+                        <ArrowDownIcon className={'h-4 w-4 stroke-2 text-grey-400 dark:text-grey/30'} />
                     </div>
                 </div>
-                <div className={`mt-2 w-full ${isContentVisible ? 'visible' : 'hidden'}`}>
+                <div className={'mt-2 w-full'}>
                     <KoenigNestedEditor
                         initialEditor={contentEditor}
+                        initialEditorState={contentEditorInitialState}
                         placeholderClassName={'kg-toggle-content-placeholder'}
                         placeholderText={contentPlaceholder}
                         textClassName={'kg-toggle-content-text'}
@@ -48,16 +49,15 @@ export function ToggleCard({
 }
 
 ToggleCard.propTypes = {
+    contentEditor: PropTypes.object,
     contentPlaceholder: PropTypes.string,
+    headerEditor: PropTypes.object,
     headerPlaceholder: PropTypes.string,
-    isContentVisible: PropTypes.bool,
-    isEditing: PropTypes.bool,
-    toggleRef: PropTypes.object
+    isEditing: PropTypes.bool
 };
 
 ToggleCard.defaultProps = {
     contentPlaceholder: 'Collapsible content',
     headerPlaceholder: 'Toggle header',
-    isContentVisible: true,
     isEditing: false
 };
