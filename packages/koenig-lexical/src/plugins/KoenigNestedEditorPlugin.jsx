@@ -1,10 +1,19 @@
+import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
-import {COMMAND_PRIORITY_LOW, KEY_ENTER_COMMAND} from 'lexical';
+import {
+    $createNodeSelection,
+    $getSelection,
+    $setSelection,
+    BLUR_COMMAND,
+    COMMAND_PRIORITY_LOW,
+    KEY_ENTER_COMMAND
+} from 'lexical';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext.js';
 
 function KoenigNestedEditorPlugin({autoFocus, focusNext}) {
     const [editor] = useLexicalComposerContext();
+    const {selectedCardKey} = React.useContext(KoenigComposerContext);
 
     // using state here because this component can get re-rendered after the
     // editor's editable state changes so we need to re-focus on re-render
@@ -56,9 +65,32 @@ function KoenigNestedEditorPlugin({autoFocus, focusNext}) {
                     return false;
                 },
                 COMMAND_PRIORITY_LOW
+            ),
+            editor.registerCommand(
+                BLUR_COMMAND,
+                () => {
+                    // when the nested editor is selected, the parent editor looses selection
+                    // return selection to the card when nested editor is blurred
+                    if (editor._parentEditor) {
+                        editor._parentEditor.getEditorState().read(() => {
+                            if (!$getSelection()) {
+                                editor._parentEditor.update(() => {
+                                    const selection = $createNodeSelection();
+                                    selection.add(selectedCardKey);
+                                    $setSelection(selection);
+                                });
+                            }
+                        });
+
+                        return true;
+                    }
+
+                    return false;
+                },
+                COMMAND_PRIORITY_LOW
             )
         );
-    }, [editor, autoFocus, focusNext]);
+    }, [editor, autoFocus, focusNext, selectedCardKey]);
 
     return null;
 }

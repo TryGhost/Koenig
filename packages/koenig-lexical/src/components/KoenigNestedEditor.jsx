@@ -14,11 +14,11 @@ const KoenigNestedEditor = ({
     initialEditor,
     initialEditorState,
     nodes = 'basic',
-    placeholderText = '',
-    textClassName = '',
-    placeholderClassName = '',
+    placeholderText,
+    textClassName,
+    placeholderClassName,
     autoFocus = false,
-    focusNext = null,
+    focusNext,
     singleParagraph = false
 }) => {
     const initialNodes = nodes === 'minimal' ? MINIMAL_NODES : BASIC_NODES;
