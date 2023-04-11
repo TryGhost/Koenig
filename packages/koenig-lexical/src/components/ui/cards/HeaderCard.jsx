@@ -13,7 +13,8 @@ import {ReactComponent as TrashIcon} from '../../../assets/icons/kg-trash.svg';
 export const HEADER_COLORS = {
     dark: 'bg-black',
     light: 'bg-grey-100',
-    accent: 'bg-pink'
+    accent: 'bg-pink',
+    'bg-image': 'bg-grey-300 dark:bg-grey-950 bg-gradient-to-t from-black/0 via-black/5 to-black/30'
 };
 
 function FileUploading({progress}) {
@@ -23,7 +24,7 @@ function FileUploading({progress}) {
 
     return (
         <div className="h-full border border-transparent">
-            <div className="relative flex h-full items-center justify-center border border-grey/20 bg-grey-50 before:pb-[12.5%] dark:bg-grey-900">
+            <div className="relative flex h-[120px] items-center justify-center border border-grey/20 bg-grey-50 before:pb-[12.5%] dark:bg-grey-900">
                 <div className="flex w-full items-center justify-center overflow-hidden">
                     <ProgressBar style={progressStyle} />
                 </div>
@@ -60,22 +61,23 @@ function ImagePicker({onFileChange,
                 backgroundImagePreview && (
                     <div className="w-full">
                         <div className="relative">
-                            <div className=" flex w-full items-center justify-center rounded-sm border border-dashed border-grey-300 bg-grey-50">
+                            <div className="flex w-full items-center justify-center">
                                 {
                                     backgroundImageSrc ? 
                                         <>
-                                            <div className="absolute inset-0 p-2">
-                                                <div className="flex flex-row-reverse">
-                                                    <button className="pointer-events-auto rounded-sm bg-white/90 py-1 px-2" type="button" onClick={handleClearBackgroundImage}>
+                                            <div className="group relative mb-4 w-full rounded">
+                                                <div className="absolute inset-0 rounded bg-gradient-to-t from-black/0 via-black/5 to-black/30 opacity-0 transition-all group-hover:opacity-100">
+                                                </div>
+                                                <div className="absolute top-5 right-5 flex opacity-0 transition-all group-hover:opacity-100">
+                                                    <button className="pointer-events-auto flex h-8 w-9 cursor-pointer items-center justify-center rounded bg-white/90 transition-all hover:bg-white" type="button" onClick={handleClearBackgroundImage}>
                                                         <TrashIcon className="h-5 w-5 fill-grey-900 stroke-[3px] transition-all ease-linear group-hover:scale-105" />
                                                     </button>
                                                 </div>
+                                                <img alt='backgroundHeaderImage' src={backgroundImageSrc} />
                                             </div>
-                                            <img alt='backgroundHeaderImage' src={backgroundImageSrc} />
-                                            
                                         </>
                                         :                                          
-                                        <button className="group flex h-[120px] cursor-pointer flex-col items-center justify-center" type="button" onClick={openFilePicker}>
+                                        <button className="group flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-sm border border-dashed border-grey-300 bg-grey-50 dark:border-grey-800 dark:bg-grey-900" type="button" onClick={openFilePicker}>
                                             <FileUploadIcon className="h-5 w-5 fill-grey-700 stroke-[3px] transition-all ease-linear group-hover:scale-105" />
                                             <span className="px-1 text-[1.35rem] font-medium text-grey-700">Click to upload background image</span>
                                         </button>
@@ -114,8 +116,8 @@ export function HeaderCard({isEditing,
     headerTextEditor,
     subHeaderTextEditor,
     fileUploader,
-    // heading,
-    // subHeading,
+    heading,
+    subHeading,
     focusOn = 'header',
     handleEditorFocus,
     handleButtonToggle}) {
@@ -165,12 +167,12 @@ export function HeaderCard({isEditing,
                 style={backgroundImageSrc && backgroundImageStyle === 'bg-image' ? {
                     backgroundImage: `url(${backgroundImageSrc})`,
                     backgroundSize: 'cover',
-                    backgroundPosition: 'center center'
+                    backgroundPosition: 'center center',
+                    backgroundColor: 'bg-grey-950'
                 } : null}>
-
                 <KoenigHeaderEditor
                     autoFocus={focusOn === 'header'}
-                    className={`relative z-50 w-full whitespace-normal text-left font-extrabold leading-tight tracking-tight empty:pl-[calc(50%_-_285px)] ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`relative z-50 w-full whitespace-normal text-left ${(heading) ? 'bg-red' : 'bg-blue'} pl-[calc(50%_-_285px)] font-extrabold leading-tight tracking-tight ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     handleEditorFocus={handleEditorFocus}
                     isSubheader={false}
                     nodeKey={nodeKey}
@@ -180,7 +182,7 @@ export function HeaderCard({isEditing,
                 />
                 <KoenigHeaderEditor
                     autoFocus={focusOn === 'subheader'}
-                    className={`relative w-full whitespace-normal text-left font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`relative w-full whitespace-normal ${(subHeading) ? 'bg-red' : 'bg-blue'} text-left font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     handleEditorFocus={handleEditorFocus}
                     isSubheader={true}
                     nodeKey={nodeKey}
@@ -196,7 +198,7 @@ export function HeaderCard({isEditing,
             </div>
 
             {isEditing && (
-                <SettingsPanel className="mt-0" papa="kiki">
+                <SettingsPanel className="mt-0">
                     <ButtonGroupSetting
                         buttons={buttonGroupChildren}
                         label='Size'
@@ -236,7 +238,7 @@ export function HeaderCard({isEditing,
                             />
                             <InputSetting
                                 label='Button URL'
-                                placeholder='https://yoursite.com/#/portal/signup/'
+                                placeholder='Add URL'
                                 value={buttonUrl}
                                 onChange={handleButtonUrl}
                             />
