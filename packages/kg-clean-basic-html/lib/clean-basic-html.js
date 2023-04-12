@@ -1,7 +1,7 @@
 /**
  * Removes any <code> wrappers around replacement strings {foo}
- * Example input:  <code><span>%%{foo}%%</span></code>
- * Example output:       <span>%%{foo}%%</span>
+ * Example input:  <code><span>{foo}</span></code>
+ * Example output:       <span>{foo}</span>
  * @param {string} html
  * @returns {string}
  */
