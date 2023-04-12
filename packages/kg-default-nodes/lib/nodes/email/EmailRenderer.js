@@ -1,8 +1,18 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 
 /**
- * Wraps our replacement strings (e.g. {foo}) in %% (e.g. %%{foo}%%)
+ * Removes consecutive whitespaces and newlines
+ * @param {string} html
+ * @returns {string}
+ */
+function removeSpaces(html) {
+    return html.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Wraps replacement strings with %%
  * This helps to prevent conflicts between code samples and our replacement strings
+ * Example: {foo} -> %%{foo}%%
  * @param {string} html
  * @returns {string}
  */
@@ -11,22 +21,13 @@ function wrapReplacementStrings(html) {
 }
 
 /**
- * Removes any <code> wrappers around our replacement strings
- * Example: <code>{foo}</code> -> <span>{foo}</span>
+ * Removes any <code> wrappers around wrapped replacement strings
+ * Example: <code><span>%%{foo}%%</span></code> -> <span>%%{foo}%%</span>
  * @param {string} html
  * @returns {string}
  */
 function removeCodeWrappers(html) {
-    return html.replace(/<code>(<span>{.*?}<\/span>)<\/code>/gi, '$1');
-}
-
-/**
- * Removes any whitespaces or newlines from the input
- * @param {string} html
- * @returns {string}
- */
-function removeSpaces(html) {
-    return html.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+    return html.replace(/<code>((.*?)%%{.*?}%%(.*?))<\/code>/gi, '$1');
 }
 
 export function renderEmailNodeToDOM(node, options = {}) {
@@ -39,7 +40,7 @@ export function renderEmailNodeToDOM(node, options = {}) {
         return document.createTextNode('');
     }
 
-    const cleanedHtml = removeSpaces(wrapReplacementStrings(removeCodeWrappers(html)));
+    const cleanedHtml = removeCodeWrappers(wrapReplacementStrings(removeSpaces(html)));
     const element = document.createElement('div');
     element.innerHTML = cleanedHtml;
 
