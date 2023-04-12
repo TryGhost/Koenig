@@ -50,19 +50,19 @@ function HeaderNodeComponent(props) {
         }
     }, [props.backgroundImageSrc]);
 
-    const handleHeadingTextEdit = (text) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setHeader(text);
-        });
-    };
+    // const handleHeadingTextEdit = (text) => {
+    //     editor.update(() => {
+    //         const node = $getNodeByKey(nodeKey);
+    //         node.setHeader(text);
+    //     });
+    // };
 
-    const handleSubheadingTextEdit = (text) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setSubheader(text);
-        });
-    };
+    // const handleSubheadingTextEdit = (text) => {
+    //     editor.update(() => {
+    //         const node = $getNodeByKey(nodeKey);
+    //         node.setSubheader(text);
+    //     });
+    // };
 
     const handleColorSelector = (color) => {
         color === 'bg-image' ? setBackgroundImagePreview(true) : setBackgroundImagePreview(false);
@@ -119,10 +119,12 @@ function HeaderNodeComponent(props) {
         // 2. then when the user hits enter or tab on while the header is focused, we switch to the subheader
 
         if (focusOn === 'header') {
+            console.log('focus on subheader');
             setFocusOn('subheader');
         }
 
         if (focusOn === 'subheader') {
+            console.log('focus on header');
             setFocusOn('header');
         }
     };
@@ -154,9 +156,9 @@ function HeaderNodeComponent(props) {
             handleClearBackgroundImage={handleClearBackgroundImage}
             handleColorSelector={handleColorSelector}
             handleEditorFocus={handleEditorFocus}
-            handleHeadingTextEdit={handleHeadingTextEdit}
+            // handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}
-            handleSubheadingTextEdit={handleSubheadingTextEdit}
+            // handleSubheadingTextEdit={handleSubheadingTextEdit}
             headerTextEditor={props.headerTextEditor}
             headerTextEditorInitialState={props.headerTextEditorInitialState}
             headingPlaceholder={props.headingPlaceholder}

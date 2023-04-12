@@ -28,6 +28,14 @@ function HeaderEditorPlugin({autoFocus, handleEditorFocus, isSubheader}) {
     }, [shouldFocus, editor, autoFocus]);
 
     React.useEffect(() => {
+        if (isSubheader && autoFocus) {
+            editor.focus(() => {
+                editor.getRootElement().focus({preventScroll: true});
+            });
+        } else {
+            // editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND);
+            setShouldFocus(false);
+        }
         return mergeRegister(
             // watch for editor becoming editable rather than relying on an `isEditing` prop
             // because the prop will change before the contenteditable becomes editable, meaning
@@ -51,33 +59,19 @@ function HeaderEditorPlugin({autoFocus, handleEditorFocus, isSubheader}) {
                         return false;
                     }
 
-                    // console.log(isSubheader);
-
                     if (isSubheader) {
+                        handleEditorFocus();
                         event._fromNested = true;
+                        // create new paragraph
                         editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
-    
-                        // prevent normal/KoenigBehaviourPlugin enter key behaviour
                         return true;
                     }
 
                     if (!isSubheader) {
-                        console.log('we should switch to subheader');
                         handleEditorFocus();
-                        console.log(autoFocus);
+                        // go to the subheader
+                        return false;
                     }
-
-                    // if enter is pressed from the Header, we want it to jump to the subheader
-                    // if enter is pressed from the subheader, we want it to create a new paragraph
-
-                    // otherwise, let the parent editor handle the enter key
-                    // - with ctrl/cmd+enter toggles edit mode
-                    // - or creates paragraph after card and moves cursor
-                    // event._fromNested = true;
-                    // editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
-
-                    // // prevent normal/KoenigBehaviourPlugin enter key behaviour
-                    // return true;
                 },
                 COMMAND_PRIORITY_LOW
             )
