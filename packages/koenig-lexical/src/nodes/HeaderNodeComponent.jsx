@@ -50,19 +50,19 @@ function HeaderNodeComponent(props) {
         }
     }, [props.backgroundImageSrc]);
 
-    // const handleHeadingTextEdit = (text) => {
-    //     editor.update(() => {
-    //         const node = $getNodeByKey(nodeKey);
-    //         node.setHeader(text);
-    //     });
-    // };
+    const handleHeadingTextEdit = (text) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setHeader(text);
+        });
+    };
 
-    // const handleSubheadingTextEdit = (text) => {
-    //     editor.update(() => {
-    //         const node = $getNodeByKey(nodeKey);
-    //         node.setSubheader(text);
-    //     });
-    // };
+    const handleSubheadingTextEdit = (text) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setSubheader(text);
+        });
+    };
 
     const handleColorSelector = (color) => {
         color === 'bg-image' ? setBackgroundImagePreview(true) : setBackgroundImagePreview(false);
@@ -146,9 +146,9 @@ function HeaderNodeComponent(props) {
             handleClearBackgroundImage={handleClearBackgroundImage}
             handleColorSelector={handleColorSelector}
             handleEditorFocus={handleEditorFocus}
-            // handleHeadingTextEdit={handleHeadingTextEdit}
+            handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}
-            // handleSubheadingTextEdit={handleSubheadingTextEdit}
+            handleSubheadingTextEdit={handleSubheadingTextEdit}
             headerTextEditor={props.headerTextEditor}
             heading={props.heading}
             headingPlaceholder={props.headingPlaceholder}

@@ -65,10 +65,11 @@ export class HeaderNode extends BaseHeaderNode {
 
     getDataset() {
         const dataset = super.getDataset();
+
         // client-side only data properties such as nested editors
         const self = this.getLatest();
         dataset.headerTextEditor = self.__headerTextEditor;
-        dataset.subHeaderTextEditor = self.__subHeaderTextEditor;
+
         return dataset;
     }
 
@@ -84,12 +85,12 @@ export class HeaderNode extends BaseHeaderNode {
                     buttonText={this.getButtonText()}
                     buttonUrl={this.getButtonUrl()}
                     headerTextEditor={this.__headerTextEditor}
-                    // heading={this.getHeader()}
+                    heading={this.getHeader()}
                     headingPlaceholder={'Enter heading text'}
                     nodeKey={this.getKey()}
                     size={this.getSize()}
                     subHeaderTextEditor={this.__subHeaderTextEditor}
-                    // subHeading={this.getSubheader()}
+                    subHeading={this.getSubheader()}
                     subHeadingPlaceholder={'Enter subheading text'}
                 />
             </KoenigCardWrapper>
