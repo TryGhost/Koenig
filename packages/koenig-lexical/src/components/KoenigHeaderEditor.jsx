@@ -95,11 +95,13 @@ const KoenigHeaderEditor = ({
     autoFocus = false,
     isSubheader = false,
     placeholderTextClassName,
-    handleEditorFocus
+    handleEditorFocus,
+    textEditorInitialState
 }) => {
     return (
         <KoenigNestedComposer
             initialEditor={textEditor}
+            initialEditorState={textEditorInitialState}
             initialNodes={MINIMAL_NODES}
         >
             <KoenigComposableEditor

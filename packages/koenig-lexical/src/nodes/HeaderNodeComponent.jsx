@@ -11,7 +11,7 @@ function HeaderNodeComponent(props) {
     const [editor] = useLexicalComposerContext();
     const {fileUploader} = React.useContext(KoenigComposerContext);
 
-    const {isEditing} = React.useContext(CardContext);
+    const {isEditing, setEditing, isSelected} = React.useContext(CardContext);
 
     const imageUploader = fileUploader.useFileUpload('image');
 
@@ -127,6 +127,14 @@ function HeaderNodeComponent(props) {
         }
     };
 
+    React.useEffect(() => {
+        // on initial render make sure editing is true
+        if (isSelected && !isEditing) {
+            setEditing(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSelected]);
+
     return (
         <HeaderCard
             backgroundColor={props.backgroundColor}
@@ -150,14 +158,14 @@ function HeaderNodeComponent(props) {
             handleSizeSelector={handleSizeSelector}
             handleSubheadingTextEdit={handleSubheadingTextEdit}
             headerTextEditor={props.headerTextEditor}
-            heading={props.heading}
+            headerTextEditorInitialState={props.headerTextEditorInitialState}
             headingPlaceholder={props.headingPlaceholder}
             isEditing={isEditing}
             nodeKey={nodeKey}
             openFilePicker={openFilePicker}
             size={props.size}
             subHeaderTextEditor={props.subHeaderTextEditor}
-            subHeading={props.subHeading}
+            subHeaderTextEditorInitialState={props.subHeaderTextEditorInitialState}
             subHeadingPlaceholder={props.subHeadingPlaceholder}
             toggleBackgroundImagePreview={toggleBackgroundImagePreview}
             onFileChange={onFileChange}
