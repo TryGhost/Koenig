@@ -20,16 +20,6 @@ function wrapReplacementStrings(html) {
     return html.replace(/\{(\w*?)(?:,? *"(.*?)")?\}/g, '%%$&%%');
 }
 
-/**
- * Removes any <code> wrappers around wrapped replacement strings
- * Example: <code><span>%%{foo}%%</span></code> -> <span>%%{foo}%%</span>
- * @param {string} html
- * @returns {string}
- */
-function removeCodeWrappers(html) {
-    return html.replace(/<code>((.*?)%%{.*?}%%(.*?))<\/code>/gi, '$1');
-}
-
 export function renderEmailNodeToDOM(node, options = {}) {
     addCreateDocumentOption(options);
     const document = options.createDocument();
@@ -40,7 +30,7 @@ export function renderEmailNodeToDOM(node, options = {}) {
         return document.createTextNode('');
     }
 
-    const cleanedHtml = removeCodeWrappers(wrapReplacementStrings(removeSpaces(html)));
+    const cleanedHtml = wrapReplacementStrings(removeSpaces(html));
     const element = document.createElement('div');
     element.innerHTML = cleanedHtml;
 
