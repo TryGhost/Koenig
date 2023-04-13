@@ -1,10 +1,13 @@
 import CardContext from '../context/CardContext';
-import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
+import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
+import populateNestedEditor from '../utils/populateNestedEditor';
 import {$createLinkNode} from '@lexical/link';
-import {$createParagraphNode, $createTextNode, $getNodeByKey} from 'lexical';
+import {$createParagraphNode, $createTextNode, $getNodeByKey, createEditor} from 'lexical';
+import {$generateHtmlFromNodes} from '@lexical/html';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
+import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
 import {BookmarkNode as BaseBookmarkNode, INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 import {BookmarkCard} from '../components/ui/cards/BookmarkCard';
 import {ReactComponent as BookmarkCardIcon} from '../assets/icons/kg-card-type-bookmark.svg';
@@ -15,7 +18,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 
-function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, caption}) {
+function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor}) {
     const [editor] = useLexicalComposerContext();
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -92,7 +95,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
         <>
             <BookmarkCard
                 author={author}
-                caption={caption}
+                captionEditor={captionEditor}
                 description={description}
                 handleClose={handleClose}
                 handlePasteAsLink={handlePasteAsLink}
@@ -150,6 +153,12 @@ export class BookmarkNode extends BaseBookmarkNode {
 
     constructor(dataset = {}, key) {
         super(dataset, key);
+
+        // set up and populate nested editors from the serialized HTML
+        this.__captionEditor = dataset.captionEditor || createEditor({nodes: BASIC_NODES});
+        if (!dataset.captionEditor) {
+            populateNestedEditor({editor: this.__captionEditor, initialHtml: dataset.caption});
+        }
     }
 
     createDOM() {
@@ -157,7 +166,29 @@ export class BookmarkNode extends BaseBookmarkNode {
     }
 
     getDataset() {
-        return super.getDataset();
+        const dataset = super.getDataset();
+
+        // client-side only data properties such as nested editors
+        const self = this.getLatest();
+        dataset.captionEditor = self.__captionEditor;
+
+        return dataset;
+    }
+
+    exportJSON() {
+        const json = super.exportJSON();
+
+        // convert nested editor instances back into HTML because their content may not
+        // be automatically updated when the nested editor changes
+        if (this.__captionEditor) {
+            this.__captionEditor.getEditorState().read(() => {
+                const html = $generateHtmlFromNodes(this.__captionEditor, null);
+                const cleanedHtml = cleanBasicHtml(html);
+                json.caption = cleanedHtml;
+            });
+        }
+
+        return json;
     }
 
     updateDOM() {
@@ -169,7 +200,7 @@ export class BookmarkNode extends BaseBookmarkNode {
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <BookmarkNodeComponent
                     author={this.__author}
-                    caption={this.__caption}
+                    captionEditor={this.__captionEditor}
                     description={this.__description}
                     icon={this.__icon}
                     nodeKey={this.getKey()}

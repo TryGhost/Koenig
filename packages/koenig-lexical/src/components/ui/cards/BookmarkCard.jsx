@@ -18,7 +18,7 @@ export function BookmarkCard({
     description,
     icon,
     publisher,
-    caption,
+    captionEditor,
     setCaption,
     isSelected,
     isLoading,
@@ -44,7 +44,7 @@ export function BookmarkCard({
                     }
                 </div>
                 <CardCaptionEditor
-                    caption={caption || ''}
+                    captionEditor={captionEditor}
                     captionPlaceholder="Type caption for bookmark (optional)"
                     dataTestId="bookmark-caption"
                     isSelected={isSelected}
@@ -76,6 +76,7 @@ export function BookmarkIcon({src}) {
     );
 }
 
+// TODO: update this list
 BookmarkCard.propTypes = {
     handleUrlChange: PropTypes.func,
     handleUrlInput: PropTypes.func,
