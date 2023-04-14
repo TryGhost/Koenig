@@ -28,13 +28,6 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
     const [urlError, setUrlError] = React.useState(false);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
-    const setCaption = (value) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setCaption(value);
-        });
-    };
-
     const handleUrlChange = (event) => {
         setUrlInputValue(event.target.value);
     };
@@ -44,8 +37,6 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
     };
 
     const handleRetry = async () => {
-        // TODO: this is causing the card to disappear rather than return to the input field
-        //  it almost seems like the card is losing focus and being removed by generic editor behavior..
         setUrlError(false);
     };
 
@@ -106,7 +97,6 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
                 isLoading={loading}
                 isSelected={isSelected}
                 publisher={publisher}
-                setCaption={setCaption}
                 thumbnail={thumbnail}
                 title={title}
                 url={url}

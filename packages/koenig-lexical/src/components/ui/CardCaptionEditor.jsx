@@ -49,7 +49,6 @@ export function CardCaptionEditor({
     setAltText,
     captionEditor,
     captionPlaceholder,
-    setCaption,
     isSelected,
     readOnly,
     dataTestId
@@ -72,7 +71,6 @@ export function CardCaptionEditor({
         <figcaption className="flex min-h-[40px] w-full p-2">
             {isEditingAlt
                 ? <AltTextInput dataTestId={dataTestId} placeholder={altTextPlaceholder} readOnly={readOnly} value={altText} onChange={setAltText} />
-                // : <CaptionInput captionEditor={captionEditor} dataTestId={dataTestId} placeholder={captionPlaceholder} readOnly={readOnly} onChange={setCaption}/> }
                 : <CaptionInput captionEditor={captionEditor} dataTestId={dataTestId} placeholder={captionPlaceholder} /> }
             {setAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
         </figcaption>

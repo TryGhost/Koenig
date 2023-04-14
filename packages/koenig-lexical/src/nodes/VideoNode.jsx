@@ -1,8 +1,12 @@
-import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import React from 'react';
+import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
+import populateNestedEditor from '../utils/populateNestedEditor';
+import {$generateHtmlFromNodes} from '@lexical/html';
+import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
 import {VideoNode as BaseVideoNode, INSERT_VIDEO_COMMAND} from '@tryghost/kg-default-nodes';
 import {ReactComponent as VideoCardIcon} from '../assets/icons/kg-card-type-video.svg';
 import {VideoNodeComponent} from './VideoNodeComponent';
+import {createEditor} from 'lexical';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_VIDEO_COMMAND} from '@tryghost/kg-default-nodes';
@@ -38,6 +42,12 @@ export class VideoNode extends BaseVideoNode {
         this.__triggerFileDialog = !dataset.src && triggerFileDialog;
 
         this.__initialFile = initialFile || null;
+
+        // set up and populate nested editors from the serialized HTML
+        this.__captionEditor = dataset.captionEditor || createEditor({nodes: BASIC_NODES});
+        if (!dataset.captionEditor) {
+            populateNestedEditor({editor: this.__captionEditor, initialHtml: dataset.caption});
+        }
     }
 
     setTriggerFileDialog(shouldTrigger) {
@@ -45,11 +55,37 @@ export class VideoNode extends BaseVideoNode {
         return writable.__triggerFileDialog = shouldTrigger;
     }
 
+    getDataset() {
+        const dataset = super.getDataset();
+
+        // client-side only data properties such as nested editors
+        const self = this.getLatest();
+        dataset.captionEditor = self.__captionEditor;
+
+        return dataset;
+    }
+
+    exportJSON() {
+        const json = super.exportJSON();
+
+        // convert nested editor instances back into HTML because their content may not
+        // be automatically updated when the nested editor changes
+        if (this.__captionEditor) {
+            this.__captionEditor.getEditorState().read(() => {
+                const html = $generateHtmlFromNodes(this.__captionEditor, null);
+                const cleanedHtml = cleanBasicHtml(html);
+                json.caption = cleanedHtml;
+            });
+        }
+
+        return json;
+    }
+
     decorate() {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth()}>
                 <VideoNodeComponent
-                    caption={this.getCaption()}
+                    captionEditor={this.__captionEditor}
                     cardWidth={this.getCardWidth()}
                     customThumbnail={this.getCustomThumbnailSrc()}
                     initialFile={this.__initialFile}

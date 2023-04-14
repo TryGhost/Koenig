@@ -19,7 +19,6 @@ export function BookmarkCard({
     icon,
     publisher,
     captionEditor,
-    setCaption,
     isSelected,
     isLoading,
     urlError
@@ -48,7 +47,6 @@ export function BookmarkCard({
                     captionPlaceholder="Type caption for bookmark (optional)"
                     dataTestId="bookmark-caption"
                     isSelected={isSelected}
-                    setCaption={setCaption}
                 />
                 <div className="absolute inset-0 z-50 mt-0"></div>
             </>

@@ -92,8 +92,9 @@ export function ImageCard({
     isSelected,
     src,
     onFileChange,
-    caption,
-    setCaption,
+    // caption,
+    // setCaption,
+    captionEditor,
     altText,
     setAltText,
     setFigureRef,
@@ -131,13 +132,12 @@ export function ImageCard({
                 <CardCaptionEditor
                     altText={altText || ''}
                     altTextPlaceholder="Type alt text for image (optional)"
-                    caption={caption || ''}
+                    captionEditor={captionEditor}
                     captionPlaceholder="Type caption for image (optional)"
                     dataTestId="image-caption-editor"
                     isSelected={isSelected}
                     readOnly={!isSelected}
                     setAltText={setAltText}
-                    setCaption={setCaption}
                 />
             </figure>
         </>
@@ -145,9 +145,9 @@ export function ImageCard({
 }
 
 ImageCard.propTypes = {
-    caption: PropTypes.string,
+    // caption: PropTypes.string,
     altText: PropTypes.string,
-    setCaption: PropTypes.func,
+    // setCaption: PropTypes.func,
     src: PropTypes.string,
     isDraggedOver: PropTypes.bool,
     previewSrc: PropTypes.string

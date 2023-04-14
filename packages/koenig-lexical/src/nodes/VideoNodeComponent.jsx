@@ -15,7 +15,7 @@ export function VideoNodeComponent({
     nodeKey,
     thumbnail,
     customThumbnail,
-    caption,
+    captionEditor,
     totalDuration,
     cardWidth,
     triggerFileDialog,
@@ -107,13 +107,6 @@ export function VideoNodeComponent({
         await handleVideoUpload(e.target.files);
     };
 
-    const onCaptionChange = (newCaption) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setCaption(newCaption);
-        });
-    };
-
     const handleCustomThumbnailChange = async (files) => {
         const customThumbnailUploadResult = await customThumbnailUploader.upload(files);
         const imageUrl = customThumbnailUploadResult?.[0]?.url;
@@ -194,7 +187,7 @@ export function VideoNodeComponent({
     return (
         <>
             <VideoCard
-                caption={caption}
+                captionEditor={captionEditor}
                 cardWidth={cardWidth}
                 customThumbnail={customThumbnail}
                 customThumbnailUploader={customThumbnailUploader}
@@ -210,7 +203,6 @@ export function VideoNodeComponent({
                 videoMimeTypes={videoMimeTypes}
                 videoUploader={videoUploader}
                 videoUploadErrors={[...thumbnailUploader.errors, ...metadataExtractionErrors, ...videoUploader.errors]}
-                onCaptionChange={onCaptionChange}
                 onCardWidthChange={onCardWidthChange}
                 onCustomThumbnailChange={onCustomThumbnailChange}
                 onLoopChange={onLoopChange}
