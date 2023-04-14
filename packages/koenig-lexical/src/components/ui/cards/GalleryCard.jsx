@@ -34,22 +34,23 @@ function EmptyGalleryCard({onFileChange}) {
 export function GalleryCard({
     isSelected,
     onFileChange,
-    caption,
-    setCaption
+    captionEditor
 }) {
     return (
         <figure>
             <EmptyGalleryCard onFileChange={onFileChange} />
             <CardCaptionEditor
-                caption={caption || ''}
+                captionEditor={captionEditor}
                 captionPlaceholder="Type caption for gallery (optional)"
                 isSelected={isSelected}
-                setCaption={setCaption}
             />
         </figure>
     );
 }
 
 GalleryCard.propTypes = {
-    caption: PropTypes.string
+    // caption: PropTypes.string TODO: remove
+    isSelected: PropTypes.bool,
+    onFileChange: PropTypes.func,
+    captionEditor: PropTypes.object
 };
