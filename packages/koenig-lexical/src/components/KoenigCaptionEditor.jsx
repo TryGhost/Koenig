@@ -91,7 +91,7 @@ const KoenigCaptionEditor = ({paragraphs = 1, captionEditor, placeholderText, cl
     return (
         <KoenigNestedComposer
             initialEditor={captionEditor}
-            nodes={MINIMAL_NODES}
+            initialNodes={MINIMAL_NODES}
         >
             <KoenigComposableEditor
                 className={className}
