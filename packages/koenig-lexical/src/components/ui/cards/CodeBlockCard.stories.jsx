@@ -40,7 +40,7 @@ export default story;
 
 const Template = ({display, caption, ...args}) => {
     const captionEditor = createEditor({nodes: MINIMAL_NODES});
-    populateNestedEditor({editor: captionEditor, initialHtml: caption});
+    populateNestedEditor({editor: captionEditor, initialHtml: `<p>${caption}</p>`});
 
     return (
         <div className="kg-prose">
