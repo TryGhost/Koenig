@@ -52,7 +52,7 @@ const Template = ({display, caption, ...args}) => {
                 </CardWrapper>
             </div>
         </div>
-    )
+    );
 };
 
 export const Empty = Template.bind({});

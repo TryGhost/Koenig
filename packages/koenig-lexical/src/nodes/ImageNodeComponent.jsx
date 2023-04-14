@@ -18,7 +18,7 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
     const [editor] = useLexicalComposerContext();
     const [showLink, setShowLink] = React.useState(false);
     const {fileUploader} = React.useContext(KoenigComposerContext);
-    const {isSelected, cardWidth, setCardWidth, setCaptionHasFocus, captionHasFocus} = React.useContext(CardContext);
+    const {isSelected, cardWidth, setCardWidth} = React.useContext(CardContext);
     const fileInputRef = React.useRef();
     const toolbarFileInputRef = React.useRef();
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
