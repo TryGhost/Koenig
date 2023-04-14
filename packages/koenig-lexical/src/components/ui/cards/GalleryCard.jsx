@@ -49,7 +49,6 @@ export function GalleryCard({
 }
 
 GalleryCard.propTypes = {
-    // caption: PropTypes.string TODO: remove
     isSelected: PropTypes.bool,
     onFileChange: PropTypes.func,
     captionEditor: PropTypes.object

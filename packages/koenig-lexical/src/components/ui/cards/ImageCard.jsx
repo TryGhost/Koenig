@@ -92,8 +92,6 @@ export function ImageCard({
     isSelected,
     src,
     onFileChange,
-    // caption,
-    // setCaption,
     captionEditor,
     altText,
     setAltText,
@@ -144,11 +142,12 @@ export function ImageCard({
     );
 }
 
-ImageCard.propTypes = {
-    // caption: PropTypes.string,
-    altText: PropTypes.string,
-    // setCaption: PropTypes.func,
+ImageHolder.propTypes = {
     src: PropTypes.string,
-    isDraggedOver: PropTypes.bool,
-    previewSrc: PropTypes.string
+    altText: PropTypes.string,
+    previewSrc: PropTypes.string,
+    imageUploader: PropTypes.func,
+    onFileChange: PropTypes.func,
+    setFileInputRef: PropTypes.func,
+    imageDragHandler: PropTypes.func
 };

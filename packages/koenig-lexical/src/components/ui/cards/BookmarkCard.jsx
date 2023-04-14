@@ -74,16 +74,23 @@ export function BookmarkIcon({src}) {
     );
 }
 
-// TODO: update this list
 BookmarkCard.propTypes = {
+    author: PropTypes.string,
+    handleClose: PropTypes.func,
+    handlePasteAsLink: PropTypes.func,
+    handleRetry: PropTypes.func,
     handleUrlChange: PropTypes.func,
     handleUrlInput: PropTypes.func,
     url: PropTypes.string,
     urlInputValue: PropTypes.string,
     urlPlaceholder: PropTypes.string,
+    thumbnail: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.string,
     icon: PropTypes.string,
     publisher: PropTypes.string,
-    thumbnail: PropTypes.string
+    captionEditor: PropTypes.object,
+    isSelected: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    urlError: PropTypes.bool
 };
