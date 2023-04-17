@@ -1,5 +1,6 @@
 import KoenigCaptionEditor from '../KoenigCaptionEditor';
 import React from 'react';
+import {$canShowPlaceholderCurry} from '@lexical/text';
 import {TextInput} from './TextInput';
 
 function CaptionInput({captionEditor, captionEditorInitialState, placeholder, dataTestId}) {
@@ -69,12 +70,16 @@ export function CardCaptionEditor({
         }
     }, [isSelected, setIsEditingAlt]);
 
+    const isCaptionEmpty = captionEditor.getEditorState().read($canShowPlaceholderCurry(false));
+
     return (
-        <figcaption className="flex min-h-[40px] w-full p-2">
-            {isEditingAlt
-                ? <AltTextInput dataTestId={dataTestId} placeholder={altTextPlaceholder} readOnly={readOnly} value={altText} onChange={setAltText} />
-                : <CaptionInput captionEditor={captionEditor} captionEditorInitialState={captionEditorInitialState} dataTestId={dataTestId} placeholder={captionPlaceholder} /> }
-            {setAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
-        </figcaption>
+        ((isSelected || !isCaptionEmpty) &&
+            <figcaption className="flex min-h-[40px] w-full p-2">
+                {isEditingAlt
+                    ? <AltTextInput dataTestId={dataTestId} placeholder={altTextPlaceholder} readOnly={readOnly} value={altText} onChange={setAltText} />
+                    : <CaptionInput captionEditor={captionEditor} captionEditorInitialState={captionEditorInitialState} dataTestId={dataTestId} placeholder={captionPlaceholder} /> }
+                {setAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
+            </figcaption>
+        )
     );
 }
