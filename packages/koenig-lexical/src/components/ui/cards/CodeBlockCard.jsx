@@ -208,5 +208,5 @@ CodeBlockCard.propTypes = {
     code: PropTypes.string,
     language: PropTypes.string,
     captionEditor: PropTypes.object,
-    captionEditorInitialState: PropTypes.object
+    captionEditorInitialState: propTypes.string
 };
