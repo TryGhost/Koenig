@@ -148,10 +148,10 @@ ImageHolder.propTypes = {
     src: PropTypes.string,
     altText: PropTypes.string,
     previewSrc: PropTypes.string,
-    imageUploader: PropTypes.func,
+    imageUploader: PropTypes.object,
     onFileChange: PropTypes.func,
     setFileInputRef: PropTypes.func,
-    imageDragHandler: PropTypes.func
+    imageDragHandler: PropTypes.object
 };
 
 ImageCard.propTypes = {
@@ -163,9 +163,9 @@ ImageCard.propTypes = {
     altText: PropTypes.string,
     setAltText: PropTypes.func,
     setFigureRef: PropTypes.func,
-    fileInputRef: PropTypes.string,
+    fileInputRef: PropTypes.object,
     cardWidth: PropTypes.string,
     previewSrc: PropTypes.string,
     imageUploader: PropTypes.object,
-    imageDragHandler: PropTypes.func
+    imageDragHandler: PropTypes.object
 };
