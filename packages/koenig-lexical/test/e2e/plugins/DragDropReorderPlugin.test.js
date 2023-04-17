@@ -157,7 +157,7 @@ describe('Drag Drop Reorder Plugin', async function () {
         const paragraphBBox = await page.locator('p:not(figure p)').boundingBox();
         const toBBox = {
             x: paragraphBBox.x,
-            y: paragraphBBox.y + paragraphBBox.height + 35,
+            y: paragraphBBox.y + paragraphBBox.height + 45,
             width: paragraphBBox.width,
             height: paragraphBBox.height
         };
