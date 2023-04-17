@@ -1,8 +1,8 @@
-import createDataTransfer from '../../utils/createDataTransfer';
-import path from 'path';
+// import createDataTransfer from '../../utils/createDataTransfer';
+// import path from 'path';
 import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {assertHTML, focusEditor, html, initialize, startApp} from '../../utils/e2e';
-import {expect} from '@playwright/test';
+// import {expect} from '@playwright/test';
 
 describe('File card', async () => {
     let app;
@@ -68,7 +68,7 @@ describe('File card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="header">
+                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="header">
                 </div>
             </div>
             <p><br /></p>
@@ -88,7 +88,7 @@ describe('File card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="header">
+                <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="header">
                     <div data-kg-card-input="header">
                         <p><span>Hello world</span></p>
                     </div>

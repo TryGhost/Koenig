@@ -1,12 +1,9 @@
 import KoenigHeaderEditor from '../../KoenigHeaderEditor';
-// import ImageUploadForm from '../ImageUploadForm';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from '../Button';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as FileUploadIcon} from '../../../assets/icons/kg-upload-fill.svg';
-// import {MediaPlaceholder} from '../MediaPlaceholder';
-// import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg';
 import {ProgressBar} from '../ProgressBar';
 import {ReactComponent as TrashIcon} from '../../../assets/icons/kg-trash.svg';
 
@@ -116,8 +113,8 @@ export function HeaderCard({isEditing,
     headerTextEditor,
     subHeaderTextEditor,
     fileUploader,
-    // heading,
-    // subHeading,
+    header,
+    subHeader,
     focusOn = 'header',
     headerTextEditorInitialState,
     subHeaderTextEditorInitialState,
@@ -174,7 +171,7 @@ export function HeaderCard({isEditing,
                 } : null}>
                 <KoenigHeaderEditor
                     autoFocus={focusOn === 'header'}
-                    className={`relative z-50 w-full whitespace-normal text-left ${(headerTextEditorInitialState) ? 'bg-red' : 'bg-blue'} pl-[calc(50%_-_285px)] font-extrabold leading-tight tracking-tight ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`relative z-50 w-full whitespace-normal text-left ${(header) ? 'bg-red' : 'bg-blue'} pl-[calc(50%_-_285px)] font-extrabold leading-tight tracking-tight ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     handleEditorFocus={handleEditorFocus}
                     isSubheader={false}
                     nodeKey={nodeKey}
@@ -185,7 +182,7 @@ export function HeaderCard({isEditing,
                 />
                 <KoenigHeaderEditor
                     autoFocus={focusOn === 'subheader'}
-                    className={`relative w-full whitespace-normal ${(subHeaderTextEditorInitialState) ? 'bg-red' : 'bg-blue'} text-left font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`relative w-full whitespace-normal ${(subHeader) ? 'bg-red' : 'bg-blue'} text-left font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     handleEditorFocus={handleEditorFocus}
                     isSubheader={true}
                     nodeKey={nodeKey}

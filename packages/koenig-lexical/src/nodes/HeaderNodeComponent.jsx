@@ -4,6 +4,7 @@ import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {HeaderCard} from '../components/ui/cards/HeaderCard';
 import {backgroundImageUploadHandler} from '../utils/imageUploadHandler';
+import {isEditorEmpty} from '../utils/isEditorEmpty';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function HeaderNodeComponent(props) {
@@ -50,20 +51,6 @@ function HeaderNodeComponent(props) {
         }
     }, [props.backgroundImageSrc]);
 
-    // const handleHeadingTextEdit = (text) => {
-    //     editor.update(() => {
-    //         const node = $getNodeByKey(nodeKey);
-    //         node.setHeader(text);
-    //     });
-    // };
-
-    // const handleSubheadingTextEdit = (text) => {
-    //     editor.update(() => {
-    //         const node = $getNodeByKey(nodeKey);
-    //         node.setSubheader(text);
-    //     });
-    // };
-
     const handleColorSelector = (color) => {
         color === 'bg-image' ? setBackgroundImagePreview(true) : setBackgroundImagePreview(false);
 
@@ -84,6 +71,8 @@ function HeaderNodeComponent(props) {
     };
 
     const handleButtonToggle = (event) => {
+        event.stopPropagation();
+        setEditing(true); // kinda weird but this avoids the card from unselecting itself when toggling.
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setButtonEnabled(event.target.checked);
@@ -114,17 +103,11 @@ function HeaderNodeComponent(props) {
     const [focusOn, setFocusOn] = React.useState('header');
 
     const handleEditorFocus = () => {
-        // so this is where we need to figure out how to get
-        // 1. the first header to focus when initialising the header card
-        // 2. then when the user hits enter or tab on while the header is focused, we switch to the subheader
-
         if (focusOn === 'header') {
-            console.log('focus on subheader');
             setFocusOn('subheader');
         }
 
         if (focusOn === 'subheader') {
-            console.log('focus on header');
             setFocusOn('header');
         }
     };
@@ -156,9 +139,8 @@ function HeaderNodeComponent(props) {
             handleClearBackgroundImage={handleClearBackgroundImage}
             handleColorSelector={handleColorSelector}
             handleEditorFocus={handleEditorFocus}
-            // handleHeadingTextEdit={handleHeadingTextEdit}
             handleSizeSelector={handleSizeSelector}
-            // handleSubheadingTextEdit={handleSubheadingTextEdit}
+            header={isEditorEmpty(props.headerTextEditor)}
             headerTextEditor={props.headerTextEditor}
             headerTextEditorInitialState={props.headerTextEditorInitialState}
             headingPlaceholder={props.headingPlaceholder}
@@ -166,6 +148,7 @@ function HeaderNodeComponent(props) {
             nodeKey={nodeKey}
             openFilePicker={openFilePicker}
             size={props.size}
+            subHeader={isEditorEmpty(props.subHeaderTextEditor)}
             subHeaderTextEditor={props.subHeaderTextEditor}
             subHeaderTextEditorInitialState={props.subHeaderTextEditorInitialState}
             subHeadingPlaceholder={props.subHeadingPlaceholder}

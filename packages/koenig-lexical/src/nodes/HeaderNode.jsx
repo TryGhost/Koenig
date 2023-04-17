@@ -84,7 +84,6 @@ export class HeaderNode extends BaseHeaderNode {
         const self = this.getLatest();
         dataset.headerTextEditor = self.__headerTextEditor;
         dataset.subHeaderTextEditor = self.__subHeaderTextEditor;
-
         return dataset;
     }
 
@@ -99,11 +98,13 @@ export class HeaderNode extends BaseHeaderNode {
                     buttonPlaceholder={'Your button text'}
                     buttonText={this.getButtonText()}
                     buttonUrl={this.getButtonUrl()}
+                    header={this.getHeader()}
                     headerTextEditor={this.__headerTextEditor}
                     headerTextEditorInitialState={this.__headerTextEditorInitialState}
                     headingPlaceholder={'Enter heading text'}
                     nodeKey={this.getKey()}
                     size={this.getSize()}
+                    subHeader={this.getSubheader()}
                     subHeaderTextEditor={this.__subHeaderTextEditor}
                     subHeaderTextEditorInitialState={this.__subHeaderTextEditorInitialState}
                     subHeadingPlaceholder={'Enter subheading text'}
