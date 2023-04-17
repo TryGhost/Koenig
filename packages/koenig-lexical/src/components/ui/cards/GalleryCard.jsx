@@ -54,5 +54,5 @@ GalleryCard.propTypes = {
     isSelected: PropTypes.bool,
     onFileChange: PropTypes.func,
     captionEditor: PropTypes.object,
-    captionEditorInitialState: propTypes.string
+    captionEditorInitialState: PropTypes.string
 };

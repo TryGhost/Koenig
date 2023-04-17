@@ -92,7 +92,7 @@ BookmarkCard.propTypes = {
     icon: PropTypes.string,
     publisher: PropTypes.string,
     captionEditor: PropTypes.object,
-    captionEditorInitialState: propTypes.string,
+    captionEditorInitialState: PropTypes.string,
     isSelected: PropTypes.bool,
     isLoading: PropTypes.bool,
     urlError: PropTypes.bool
