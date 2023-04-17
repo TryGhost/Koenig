@@ -2,7 +2,7 @@ import KoenigCaptionEditor from '../KoenigCaptionEditor';
 import React from 'react';
 import {TextInput} from './TextInput';
 
-function CaptionInput({captionEditor, placeholder, dataTestId}) {
+function CaptionInput({captionEditor, captionEditorInitialState, placeholder, dataTestId}) {
     return (
         <div
             className={`m-0 w-full px-9 text-center`}
@@ -10,6 +10,7 @@ function CaptionInput({captionEditor, placeholder, dataTestId}) {
         >
             <KoenigCaptionEditor
                 captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
                 placeholderText={placeholder}
             />
         </div>
@@ -48,6 +49,7 @@ export function CardCaptionEditor({
     altTextPlaceholder,
     setAltText,
     captionEditor,
+    captionEditorInitialState,
     captionPlaceholder,
     isSelected,
     readOnly,
@@ -71,7 +73,7 @@ export function CardCaptionEditor({
         <figcaption className="flex min-h-[40px] w-full p-2">
             {isEditingAlt
                 ? <AltTextInput dataTestId={dataTestId} placeholder={altTextPlaceholder} readOnly={readOnly} value={altText} onChange={setAltText} />
-                : <CaptionInput captionEditor={captionEditor} dataTestId={dataTestId} placeholder={captionPlaceholder} /> }
+                : <CaptionInput captionEditor={captionEditor} captionEditorInitialState={captionEditorInitialState} dataTestId={dataTestId} placeholder={captionPlaceholder} /> }
             {setAltText && <AltToggleButton isEditingAlt={isEditingAlt} onClick={toggleIsEditingAlt} />}
         </figcaption>
     );

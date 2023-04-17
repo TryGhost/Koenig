@@ -166,7 +166,7 @@ export function CodeBlock({caption, code, language}) {
     }
 }
 
-export function CodeBlockCard({captionEditor, code, isEditing, isSelected, language, updateCode, updateLanguage, setCaption}) {
+export function CodeBlockCard({captionEditor, captionEditorInitialState, code, isEditing, isSelected, language, updateCode, updateLanguage, setCaption}) {
     if (isEditing) {
         return (
             <CodeEditor
@@ -183,6 +183,7 @@ export function CodeBlockCard({captionEditor, code, isEditing, isSelected, langu
                 <CodeBlock code={code} language={language} />
                 <CardCaptionEditor
                     captionEditor={captionEditor}
+                    captionEditorInitialState={captionEditorInitialState}
                     captionPlaceholder="Type caption for code block (optional)"
                     isSelected={isSelected}
                 />
@@ -206,5 +207,6 @@ CodeBlock.propTypes = {
 CodeBlockCard.propTypes = {
     code: PropTypes.string,
     language: PropTypes.string,
-    captionEditor: PropTypes.object
+    captionEditor: PropTypes.object,
+    captionEditorInitialState: PropTypes.object
 };

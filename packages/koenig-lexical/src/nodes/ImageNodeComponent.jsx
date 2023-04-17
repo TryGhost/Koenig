@@ -14,7 +14,7 @@ import {isGif} from '../utils/isGif';
 import {openFileSelection} from '../utils/openFileSelection';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionEditor, triggerFileDialog, previewSrc, href}) {
+export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionEditor, captionEditorInitialState, triggerFileDialog, previewSrc, href}) {
     const [editor] = useLexicalComposerContext();
     const [showLink, setShowLink] = React.useState(false);
     const {fileUploader} = React.useContext(KoenigComposerContext);
@@ -118,6 +118,7 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
             <ImageCard
                 altText={altText}
                 captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
                 cardWidth={cardWidth}
                 fileInputRef={fileInputRef}
                 imageDragHandler={imageDragHandler}
@@ -125,7 +126,6 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
                 isSelected={isSelected}
                 previewSrc={previewSrc}
                 setAltText={setAltText}
-                // setCaptionHasFocus={setCaptionHasFocus}
                 src={src}
                 onFileChange={onFileChange}
             />
@@ -133,7 +133,6 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
             <ActionToolbar
                 data-kg-card-toolbar="image"
                 isVisible={showLink}
-                // isVisible={showLink && !captionHasFocus}
             >
                 <LinkInput
                     cancel={cancelLinkAndReselect}
@@ -155,7 +154,6 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
             <ActionToolbar
                 data-kg-card-toolbar="image"
                 isVisible={src && isSelected && !showLink && !showSnippetToolbar}
-                // isVisible={src && isSelected && !showLink && !captionHasFocus && !showSnippetToolbar}
             >
                 <ImageUploadForm
                     fileInputRef={toolbarFileInputRef}

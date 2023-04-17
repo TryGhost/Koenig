@@ -93,6 +93,7 @@ export function ImageCard({
     src,
     onFileChange,
     captionEditor,
+    captionEditorInitialState,
     altText,
     setAltText,
     setFigureRef,
@@ -131,6 +132,7 @@ export function ImageCard({
                     altText={altText || ''}
                     altTextPlaceholder="Type alt text for image (optional)"
                     captionEditor={captionEditor}
+                    captionEditorInitialState={captionEditorInitialState}
                     captionPlaceholder="Type caption for image (optional)"
                     dataTestId="image-caption-editor"
                     isSelected={isSelected}
@@ -149,5 +151,21 @@ ImageHolder.propTypes = {
     imageUploader: PropTypes.func,
     onFileChange: PropTypes.func,
     setFileInputRef: PropTypes.func,
+    imageDragHandler: PropTypes.func
+};
+
+ImageCard.propTypes = {
+    isSelected: PropTypes.bool,
+    src: PropTypes.string,
+    onFileChange: PropTypes.func,
+    captionEditor: PropTypes.object,
+    captionEditorInitialState: PropTypes.object,
+    altText: PropTypes.string,
+    setAltText: PropTypes.func,
+    setFigureRef: PropTypes.func,
+    fileInputRef: PropTypes.string,
+    cardWidth: PropTypes.string,
+    previewSrc: PropTypes.string,
+    imageUploader: PropTypes.object,
     imageDragHandler: PropTypes.func
 };

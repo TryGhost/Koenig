@@ -169,6 +169,7 @@ const VideoHolder = ({
 
 export function VideoCard({
     captionEditor,
+    captionEditorInitialState,
     isSelected,
     isEditing,
     ...props
@@ -191,6 +192,7 @@ export function VideoCard({
 
 VideoCard.propTypes = {
     captionEditor: PropTypes.object,
+    captionEditorInitialState: PropTypes.object,
     isSelected: PropTypes.bool,
     isEditing: PropTypes.bool
 };

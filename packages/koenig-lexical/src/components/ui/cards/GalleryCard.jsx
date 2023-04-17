@@ -34,13 +34,15 @@ function EmptyGalleryCard({onFileChange}) {
 export function GalleryCard({
     isSelected,
     onFileChange,
-    captionEditor
+    captionEditor,
+    captionEditorInitialState
 }) {
     return (
         <figure>
             <EmptyGalleryCard onFileChange={onFileChange} />
             <CardCaptionEditor
                 captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
                 captionPlaceholder="Type caption for gallery (optional)"
                 isSelected={isSelected}
             />
@@ -51,5 +53,6 @@ export function GalleryCard({
 GalleryCard.propTypes = {
     isSelected: PropTypes.bool,
     onFileChange: PropTypes.func,
-    captionEditor: PropTypes.object
+    captionEditor: PropTypes.object,
+    captionEditorInitialState: PropTypes.object
 };

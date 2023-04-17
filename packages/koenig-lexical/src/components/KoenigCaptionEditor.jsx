@@ -86,11 +86,12 @@ function CaptionPlugin({parentEditor}) {
     return null;
 }
 
-const KoenigCaptionEditor = ({paragraphs = 1, captionEditor, placeholderText, className = 'koenig-lexical-caption'}) => {
+const KoenigCaptionEditor = ({paragraphs = 1, captionEditor, captionEditorInitialState, placeholderText, className = 'koenig-lexical-caption'}) => {
     const [parentEditor] = useLexicalComposerContext();
     return (
         <KoenigNestedComposer
             initialEditor={captionEditor}
+            initialEditorState={captionEditorInitialState}
             initialNodes={MINIMAL_NODES}
         >
             <KoenigComposableEditor

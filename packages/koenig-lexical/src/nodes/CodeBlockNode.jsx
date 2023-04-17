@@ -1,20 +1,20 @@
 import * as React from 'react';
 import CardContext from '../context/CardContext';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
-import populateNestedEditor from '../utils/populateNestedEditor';
+import generateEditorState from '../utils/generateEditorState';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {$getNodeByKey} from 'lexical';
-import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
 import {CodeBlockNode as BaseCodeBlockNode} from '@tryghost/kg-default-nodes';
 import {CodeBlockCard} from '../components/ui/cards/CodeBlockCard';
 import {ReactComponent as CodeBlockIcon} from '../assets/icons/kg-card-type-gen-embed.svg';
+import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
 import {createEditor} from 'lexical';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_CODE_BLOCK_COMMAND} from '@tryghost/kg-default-nodes';
 
-function CodeBlockNodeComponent({nodeKey, captionEditor, code, language}) {
+function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorInitialState, code, language}) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
 
@@ -35,6 +35,7 @@ function CodeBlockNodeComponent({nodeKey, captionEditor, code, language}) {
     return (
         <CodeBlockCard
             captionEditor={captionEditor}
+            captionEditorInitialState={captionEditorInitialState}
             code={code}
             isEditing={cardContext.isEditing}
             language={language}
@@ -48,6 +49,8 @@ function CodeBlockNodeComponent({nodeKey, captionEditor, code, language}) {
 export class CodeBlockNode extends BaseCodeBlockNode {
     // transient properties used to control node behaviour
     __openInEditMode = false;
+    __captionEditor;
+    __captionEditorInitialState;
 
     constructor(dataset = {}, key) {
         super(dataset, key);
@@ -56,9 +59,21 @@ export class CodeBlockNode extends BaseCodeBlockNode {
         this.__openInEditMode = _openInEditMode || false;
         
         // set up and populate nested editors from the serialized HTML
-        this.__captionEditor = dataset.captionEditor || createEditor({nodes: BASIC_NODES});
-        if (!dataset.captionEditor) {
-            populateNestedEditor({editor: this.__captionEditor, initialHtml: dataset.caption});
+        this.__captionEditor = dataset.captionEditor || createEditor({nodes: MINIMAL_NODES});
+        this.__captionEditorInitialState = dataset.captionEditorInitialState;
+
+        if (!this.__captionEditorInitialState) {
+            // wrap the caption in a paragraph so it gets parsed correctly
+            // - we serialize with no wrapper so the renderer can decide how to wrap it
+            const initialHtml = dataset.caption ? `<p>${dataset.caption}</p>` : null;
+
+            // store the initial state separately as it's passed in to `<CollaborationPlugin />`
+            // for use when there is no YJS document already stored
+            this.__captionEditorInitialState = generateEditorState({
+                // create a new editor instance so we don't pre-fill an editor that will be filled by YJS content
+                editor: createEditor({nodes: MINIMAL_NODES}),
+                initialHtml
+            });
         }
     }
 
@@ -77,6 +92,7 @@ export class CodeBlockNode extends BaseCodeBlockNode {
         // client-side only data properties such as nested editors
         const self = this.getLatest();
         dataset.captionEditor = self.__captionEditor;
+        dataset.captionEditorInitialState = self.__captionEditorInitialState;
 
         return dataset;
     }
@@ -101,7 +117,8 @@ export class CodeBlockNode extends BaseCodeBlockNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()} width={this.__cardWidth} wrapperStyle="code-card">
                 <CodeBlockNodeComponent
-                    caption={this.__caption}
+                    captionEditor={this.__captionEditor}
+                    captionEditorInitialState={this.__captionEditorInitialState}
                     code={this.__code}
                     language={this.__language}
                     nodeKey={this.getKey()}

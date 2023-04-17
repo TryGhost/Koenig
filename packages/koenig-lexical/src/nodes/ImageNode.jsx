@@ -1,12 +1,12 @@
 import React from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
-import populateNestedEditor from '../utils/populateNestedEditor';
+import generateEditorState from '../utils/generateEditorState';
 import {$generateHtmlFromNodes} from '@lexical/html';
-import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
 import {ImageNode as BaseImageNode, INSERT_IMAGE_COMMAND} from '@tryghost/kg-default-nodes';
 import {ReactComponent as GIFIcon} from '../assets/icons/kg-card-type-gif.svg';
 import {ReactComponent as ImageCardIcon} from '../assets/icons/kg-card-type-image.svg';
 import {ImageNodeComponent} from './ImageNodeComponent';
+import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
 import {OPEN_TENOR_SELECTOR_COMMAND, OPEN_UNSPLASH_SELECTOR_COMMAND} from '../plugins/KoenigSelectorPlugin.jsx';
 import {ReactComponent as UnsplashIcon} from '../assets/icons/kg-card-type-unsplash.svg';
 import {createEditor} from 'lexical';
@@ -18,6 +18,8 @@ export class ImageNode extends BaseImageNode {
     // transient properties used to control node behaviour
     __triggerFileDialog = false;
     __previewSrc = null;
+    __captionEditor;
+    __captionEditorInitialState;
 
     static kgMenu = [{
         label: 'Image',
@@ -73,9 +75,21 @@ export class ImageNode extends BaseImageNode {
         this.__isImageHidden = isImageHidden;
 
         // set up and populate nested editors from the serialized HTML
-        this.__captionEditor = dataset.captionEditor || createEditor({nodes: BASIC_NODES});
-        if (!dataset.captionEditor) {
-            populateNestedEditor({editor: this.__captionEditor, initialHtml: caption});
+        this.__captionEditor = dataset.captionEditor || createEditor({nodes: MINIMAL_NODES});
+        this.__captionEditorInitialState = dataset.captionEditorInitialState;
+
+        if (!this.__captionEditorInitialState) {
+            // wrap the caption in a paragraph so it gets parsed correctly
+            // - we serialize with no wrapper so the renderer can decide how to wrap it
+            const initialHtml = dataset.caption ? `<p>${dataset.caption}</p>` : null;
+
+            // store the initial state separately as it's passed in to `<CollaborationPlugin />`
+            // for use when there is no YJS document already stored
+            this.__captionEditorInitialState = generateEditorState({
+                // create a new editor instance so we don't pre-fill an editor that will be filled by YJS content
+                editor: createEditor({nodes: MINIMAL_NODES}),
+                initialHtml
+            });
         }
     }
 
@@ -92,6 +106,7 @@ export class ImageNode extends BaseImageNode {
         // client-side only data properties such as nested editors
         const self = this.getLatest();
         dataset.captionEditor = self.__captionEditor;
+        dataset.captionEditorInitialState = self.__captionEditorInitialState;
 
         return dataset;
     }
@@ -143,6 +158,7 @@ export class ImageNode extends BaseImageNode {
                         <ImageNodeComponent
                             altText={this.__altText}
                             captionEditor={this.__captionEditor}
+                            captionEditorInitialState={this.__captionEditorInitialState}
                             href={this.__href}
                             initialFile={this.__initialFile}
                             nodeKey={this.getKey()}

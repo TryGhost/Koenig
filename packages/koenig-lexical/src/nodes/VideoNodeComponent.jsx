@@ -16,6 +16,7 @@ export function VideoNodeComponent({
     thumbnail,
     customThumbnail,
     captionEditor,
+    captionEditorInitialState,
     totalDuration,
     cardWidth,
     triggerFileDialog,
@@ -188,6 +189,7 @@ export function VideoNodeComponent({
         <>
             <VideoCard
                 captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
                 cardWidth={cardWidth}
                 customThumbnail={customThumbnail}
                 customThumbnailUploader={customThumbnailUploader}

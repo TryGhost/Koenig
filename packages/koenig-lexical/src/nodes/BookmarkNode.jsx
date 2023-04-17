@@ -2,15 +2,15 @@ import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
-import populateNestedEditor from '../utils/populateNestedEditor';
+import generateEditorState from '../utils/generateEditorState';
 import {$createLinkNode} from '@lexical/link';
 import {$createParagraphNode, $createTextNode, $getNodeByKey, createEditor} from 'lexical';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
-import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
 import {BookmarkNode as BaseBookmarkNode, INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 import {BookmarkCard} from '../components/ui/cards/BookmarkCard';
 import {ReactComponent as BookmarkCardIcon} from '../assets/icons/kg-card-type-bookmark.svg';
+import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -18,7 +18,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 
-function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor}) {
+function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor, captionEditorInitialState}) {
     const [editor] = useLexicalComposerContext();
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -87,6 +87,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
             <BookmarkCard
                 author={author}
                 captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
                 description={description}
                 handleClose={handleClose}
                 handlePasteAsLink={handlePasteAsLink}
@@ -129,6 +130,9 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
 }
 
 export class BookmarkNode extends BaseBookmarkNode {
+    __captionEditor;
+    __captionEditorInitialState;
+
     static kgMenu = [{
         label: 'Bookmark',
         desc: 'Embed a link as a visual bookmark',
@@ -145,9 +149,21 @@ export class BookmarkNode extends BaseBookmarkNode {
         super(dataset, key);
 
         // set up and populate nested editors from the serialized HTML
-        this.__captionEditor = dataset.captionEditor || createEditor({nodes: BASIC_NODES});
-        if (!dataset.captionEditor) {
-            populateNestedEditor({editor: this.__captionEditor, initialHtml: dataset.caption});
+        this.__captionEditor = dataset.captionEditor || createEditor({nodes: MINIMAL_NODES});
+        this.__captionEditorInitialState = dataset.captionEditorInitialState;
+
+        if (!this.__captionEditorInitialState) {
+            // wrap the caption in a paragraph so it gets parsed correctly
+            // - we serialize with no wrapper so the renderer can decide how to wrap it
+            const initialHtml = dataset.caption ? `<p>${dataset.caption}</p>` : null;
+
+            // store the initial state separately as it's passed in to `<CollaborationPlugin />`
+            // for use when there is no YJS document already stored
+            this.__captionEditorInitialState = generateEditorState({
+                // create a new editor instance so we don't pre-fill an editor that will be filled by YJS content
+                editor: createEditor({nodes: MINIMAL_NODES}),
+                initialHtml
+            });
         }
     }
 
@@ -161,6 +177,7 @@ export class BookmarkNode extends BaseBookmarkNode {
         // client-side only data properties such as nested editors
         const self = this.getLatest();
         dataset.captionEditor = self.__captionEditor;
+        dataset.captionEditorInitialState = self.__captionEditorInitialState;
 
         return dataset;
     }
@@ -191,6 +208,7 @@ export class BookmarkNode extends BaseBookmarkNode {
                 <BookmarkNodeComponent
                     author={this.__author}
                     captionEditor={this.__captionEditor}
+                    captionEditorInitialState={this.__captionEditorInitialState}
                     description={this.__description}
                     icon={this.__icon}
                     nodeKey={this.getKey()}
