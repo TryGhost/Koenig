@@ -81,7 +81,7 @@ export class ImageNode extends BaseImageNode {
         if (!this.__captionEditorInitialState) {
             // wrap the caption in a paragraph so it gets parsed correctly
             // - we serialize with no wrapper so the renderer can decide how to wrap it
-            const initialHtml = dataset.caption ? `<p>${dataset.caption}</p>` : null;
+            const initialHtml = caption ? `<p>${caption}</p>` : null;
 
             // store the initial state separately as it's passed in to `<CollaborationPlugin />`
             // for use when there is no YJS document already stored
