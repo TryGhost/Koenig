@@ -26,7 +26,7 @@ export function Dropdown({value, menu, onChange}) {
                 <ul className="absolute mt-[-1px] w-full rounded-b border border-grey-200 bg-white py-1 shadow dark:border-black dark:bg-black">
                     {menu.map(menuItem => (
                         <li key={menuItem.name} className="hover:bg-grey-100 dark:hover:bg-grey-950">
-                            <button className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white" type="button" onClick={(event) => handleSelect(event, menuItem.name)}>{menuItem.label}</button>
+                            <button className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white" type="button" onClick={event => handleSelect(event, menuItem.name)}>{menuItem.label}</button>
                         </li>
                     ))}
                 </ul>
