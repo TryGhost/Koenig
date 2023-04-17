@@ -47,7 +47,7 @@ const Template = ({display, value, ...args}) => {
             <div className="kg-prose">
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
                     <CardWrapper IndicatorIcon={EmailIndicatorIcon} wrapperStyle='wide' {...display} {...args}>
-                        <EmailCtaCard {...display} {...args} />
+                        <EmailCtaCard {...display} {...args} htmlEditor={htmlEditor} />
                     </CardWrapper>
                 </div>
             </div>
