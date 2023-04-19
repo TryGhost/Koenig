@@ -2,7 +2,7 @@ import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
 
-describe.only('Bookmark card', async () => {
+describe('Bookmark card', async () => {
     let app;
     let page;
 
