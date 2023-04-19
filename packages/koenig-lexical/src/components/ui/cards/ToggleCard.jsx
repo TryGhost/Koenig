@@ -14,7 +14,7 @@ export function ToggleCard({
 }) {
     return (
         <>
-            <div className='border-grey/40 dark:border-grey/30 rounded border py-4 px-6'>
+            <div className='rounded border border-grey/40 py-4 px-6 dark:border-grey/30'>
                 <div className='flex cursor-text items-start justify-between'>
                     <div className="mr-2 w-full">
                         <KoenigNestedEditor
@@ -30,7 +30,7 @@ export function ToggleCard({
                         />
                     </div>
                     <div className='z-20 ml-auto mt-[-1px] flex h-8 w-8 shrink-0 items-center justify-center'>
-                        <ArrowDownIcon className={'text-grey-400 dark:text-grey/30 h-4 w-4 stroke-2'} />
+                        <ArrowDownIcon className={'h-4 w-4 stroke-2 text-grey-400 dark:text-grey/30'} />
                     </div>
                 </div>
                 <div className={'mt-2 w-full'}>
