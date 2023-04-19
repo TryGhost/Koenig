@@ -3,13 +3,13 @@ import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 function slugify(str) {
     // Remove any non-word character with whitespace
     str = str.replace(/[^\w\s]/gi, '');
-    
+
     // Replace any whitespace character with a dash
     str = str.replace(/\s+/g, '-');
-    
+
     // Convert to lowercase
     str = str.toLowerCase();
-    
+
     return str;
 }
 
@@ -18,7 +18,7 @@ export function renderHeaderNodeToDOM(node, options = {}) {
 
     const document = options.createDocument();
 
-    if (!node.getHeader() && !node.getSubheader() && (!node.getButtonEnabled() || (!node.getButtonUrl() || !node.getButtonText())) {
+    if (!node.getHeader() && !node.getSubheader() && (!node.getButtonEnabled() || (!node.getButtonUrl() || !node.getButtonText()))) {
         return document.createTextNode('');
     }
 

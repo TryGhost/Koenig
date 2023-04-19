@@ -8,6 +8,7 @@ import {EmailCtaNode} from './EmailCtaNode';
 import {EmailNode} from './EmailNode';
 import {EmbedNode} from './EmbedNode';
 import {FileNode} from './FileNode';
+import {GalleryNode} from './GalleryNode';
 import {HeaderNode} from './HeaderNode';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
