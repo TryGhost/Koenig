@@ -128,7 +128,7 @@ describe.only('Embed card', async () => {
     });
 
     describe('Error Handling', async () => {
-        test.skip('bad url entry shows error message', async function () {
+        test('bad url entry shows error message', async function () {
             await focusEditor(page);
             await page.keyboard.type('/embed');
             await page.keyboard.press('Enter');
@@ -184,7 +184,7 @@ describe.only('Embed card', async () => {
             `);
         });
 
-        test.skip('close button removes card', async function () {
+        test('close button removes card', async function () {
             await focusEditor(page);
             await page.keyboard.type('/embed');
             await page.keyboard.press('Enter');
