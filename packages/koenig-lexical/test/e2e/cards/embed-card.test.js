@@ -100,7 +100,7 @@ describe.only('Embed card', async () => {
             await expect(await page.getByTestId('embed-url-loading-spinner')).toBeVisible();
         });
 
-        test.skip('displays expected metadata', async function () {
+        test('displays expected metadata', async function () {
             await focusEditor(page);
             await page.keyboard.type('/embed');
             await page.keyboard.press('Enter');
