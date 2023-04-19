@@ -171,23 +171,23 @@ export function HeaderCard({isEditing,
                 } : null}>
                 <KoenigHeaderEditor
                     autoFocus={focusOn === 'header'}
-                    className={`relative z-50 w-full whitespace-normal text-center font-extrabold leading-tight tracking-tight ${(size === 'small') ? 'kg-header-card-heading-small text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`kg-header-header-text ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     handleEditorFocus={handleEditorFocus}
                     isSubheader={false}
                     nodeKey={nodeKey}
                     placeholderText={headingPlaceholder}
-                    placeholderTextClassName={`whitespace-normal tracking-tight absolute text-center w-full top-0 left-0 z-1 pointer-events-none cursor-text font-extrabold leading-tight ${(size === 'small') ? 'text-6xl kg-header-card-heading-small' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    placeholderTextClassName={`kg-header-header-placeholder ${(size === 'small') ? 'text-6xl' : (size === 'medium') ? 'text-7xl' : 'text-8xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     textEditor={headerTextEditor}
                     textEditorInitialState={headerTextEditorInitialState}
                 />
                 <KoenigHeaderEditor
                     autoFocus={focusOn === 'subheader'}
-                    className={`relative w-full whitespace-normal text-center font-medium leading-tight ${(size === 'small') ? 'kg-header-card-subheading-small mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-[2.7rem]' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
+                    className={`kg-header-subheader-text ${(size === 'small') ? 'mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-2xl' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     handleEditorFocus={handleEditorFocus}
                     isSubheader={true}
                     nodeKey={nodeKey}
                     placeholderText={subHeadingPlaceholder}
-                    placeholderTextClassName={`w-full whitespace-medium text-center leading-tight absolute top-0 left-0 z-1 pointer-events-none cursor-text font-normal kg-header-card-subheading-small`}
+                    placeholderTextClassName={`kg-header-subheader-placeholder ${(size === 'small') ? 'mt-2 text-xl' : (size === 'medium') ? 'mt-3 text-2xl' : 'mt-3 text-3xl'} ${(backgroundColor === 'light') ? 'text-black' : 'text-white'}`}
                     textEditor={subHeaderTextEditor}
                     textEditorInitialState={subHeaderTextEditorInitialState}
                 />

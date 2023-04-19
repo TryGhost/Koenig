@@ -6,7 +6,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const Placeholder = ({text = 'Type here', className}) => {
     return (
-        <div className={`${className} kg-header-editor-placeholder opacity-50`}>
+        <div className={`${className} opacity-50`}>
             {text}
         </div>
     );
