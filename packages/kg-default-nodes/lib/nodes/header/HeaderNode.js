@@ -34,7 +34,9 @@ export class HeaderNode extends KoenigDecoratorNode {
     static get urlTransformMap() {
         return {
             buttonUrl: 'url',
-            backgroundImageSrc: 'url'
+            backgroundImageSrc: 'url',
+            header: 'html',
+            subheader: 'html'
         };
     }
 

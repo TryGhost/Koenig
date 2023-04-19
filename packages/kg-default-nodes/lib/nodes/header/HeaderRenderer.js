@@ -18,7 +18,7 @@ export function renderHeaderNodeToDOM(node, options = {}) {
 
     const document = options.createDocument();
 
-    if (!node.getHeader() && !node.getSubheader()) {
+    if (!node.getHeader() && !node.getSubheader() && (!node.getButtonEnabled() || (!node.getButtonUrl() || !node.getButtonText())) {
         return document.createTextNode('');
     }
 
@@ -47,7 +47,7 @@ export function renderHeaderNodeToDOM(node, options = {}) {
         const headerElement = document.createElement('h2');
         headerElement.classList.add('kg-header-card-header');
         headerElement.setAttribute('id', templateData.headerSlug);
-        headerElement.textContent = templateData.header;
+        headerElement.innerHTML = templateData.header;
         div.appendChild(headerElement);
     }
 
@@ -55,7 +55,7 @@ export function renderHeaderNodeToDOM(node, options = {}) {
         const subheaderElement = document.createElement('h3');
         subheaderElement.classList.add('kg-header-card-subheader');
         subheaderElement.setAttribute('id', templateData.subheaderSlug);
-        subheaderElement.textContent = templateData.subheader;
+        subheaderElement.innerHTML = templateData.subheader;
         div.appendChild(subheaderElement);
     }
 
