@@ -1,43 +1,108 @@
+import {readCaptionFromElement} from '../../utils/read-caption-from-element.js';
+
+// TODO: add NFT card parser
 export class EmbedParser {
     constructor(NodeClass) {
         this.NodeClass = NodeClass;
     }
 
     get DOMConversionMap() {
-        // const self = this;
+        const self = this;
 
         return {
-            // figure: (nodeElem) => {
-            //     const isKgEmbedCard = nodeElem.classList?.contains('kg-embed-card');
-            //     if (nodeElem.tagName === 'FIGURE' && isKgEmbedCard) {
-            //         return {
-            //             conversion(domNode) {
-            //                 const url = domNode?.querySelector('.kg-embed-container').href;
-            //                 const icon = domNode?.querySelector('.kg-embed-icon').src;
-            //                 const title = domNode?.querySelector('.kg-embed-title').textContent;
-            //                 const description = domNode?.querySelector('.kg-embed-description').textContent;
-            //                 const author = domNode?.querySelector('.kg-embed-author').textContent;
-            //                 const publisher = domNode?.querySelector('.kg-embed-publisher').textContent;
-            //                 const thumbnail = domNode?.querySelector('.kg-embed-thumbnail img').src;
-            //                 const caption = domNode?.querySelector('figure.kg-embed-card figcaption').textContent;
-            //                 const payload = {
-            //                     url: url,
-            //                     icon: icon,
-            //                     title: title,
-            //                     description: description,
-            //                     author: author,
-            //                     publisher: publisher,
-            //                     thumbnail: thumbnail,
-            //                     caption: caption
-            //                 };
-            //                 const node = new self.NodeClass(payload);
-            //                 return {node};
-            //             },
-            //             priority: 1
-            //         };
-            //     }
-            //     return null;
-            // }
+            figure: (nodeElem) => {
+                if (nodeElem.nodeType === 1 && nodeElem.tagName === 'FIGURE') {
+                    const iframe = nodeElem.querySelector('iframe');
+                    if (iframe) {
+                        return {
+                            conversion(domNode) {
+                                const payload = _createPayloadForIframe(iframe);
+
+                                if (!payload) {
+                                    return null;
+                                }
+
+                                payload.caption = readCaptionFromElement(domNode);
+
+                                const node = new self.NodeClass(payload);
+                                return {node};
+                            },
+                            priority: 1
+                        };
+                    }
+                    const blockquote = nodeElem.querySelector('blockquote');
+                    if (blockquote) {
+                        return {
+                            conversion(domNode) {
+                                const link = domNode.querySelector('a');
+                                if (!link) {
+                                    return null;
+                                }
+
+                                let url = link.href;
+
+                                // If we don't have a url, or it's not an absolute URL, we can't handle this
+                                if (!url || !url.match(/^https?:\/\//i)) {
+                                    return null;
+                                }
+
+                                let payload = {url: url};
+
+                                // append caption, remove element from blockquote
+                                payload.caption = readCaptionFromElement(domNode);
+                                let figcaption = domNode.querySelector('figcaption');
+                                figcaption?.remove();
+
+                                payload.html = domNode.innerHTML;
+
+                                const node = new self.NodeClass(payload);
+                                return {node};
+                            },
+                            priority: 1
+                        };
+                    }
+                }
+                return null;
+            },
+            iframe: (nodeElem) => {
+                if (nodeElem.nodeType === 1 && nodeElem.tagName === 'IFRAME') {
+                    return {
+                        conversion(domNode) {
+                            const payload = _createPayloadForIframe(domNode);
+
+                            if (!payload) {
+                                return null;
+                            }
+
+                            const node = new self.NodeClass(payload);
+                            return {node};
+                        },
+                        priority: 1
+                    };
+                }
+                return null;
+            }
         };
     }
+}
+
+function _createPayloadForIframe(iframe) {
+    // If we don't have a src Or it's not an absolute URL, we can't handle this
+    // This regex handles http://, https:// or //
+    if (!iframe.src || !iframe.src.match(/^(https?:)?\/\//i)) {
+        return;
+    }
+
+    // if it's a schemaless URL, convert to https
+    if (iframe.src.match(/^\/\//)) {
+        iframe.src = `https:${iframe.src}`;
+    }
+
+    let payload = {
+        url: iframe.src
+    };
+
+    payload.html = iframe.outerHTML;
+
+    return payload;
 }

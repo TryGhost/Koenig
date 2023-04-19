@@ -11,7 +11,9 @@ import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {EditorPlaceholder} from './ui/EditorPlaceholder';
 import {ExternalControlPlugin} from '../plugins/ExternalControlPlugin';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
+import {LinkPlugin} from '@lexical/react/LexicalLinkPlugin';
 import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
+import {RestrictContentPlugin} from '../index.js';
 import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
 import {useCollaborationContext} from '@lexical/react/LexicalCollaborationContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -25,10 +27,14 @@ const KoenigComposableEditor = ({
     cursorDidExitAtTop,
     children,
     placeholder,
+    singleParagraph,
+    placeholderText = '',
+    placeholderClassName = '',
     className = '',
     readOnly = false,
     isDragEnabled = true,
-    disableKoenigStyles = false
+    disableKoenigStyles = false,
+    isSnippetsEnabled = true
 }) => {
     const {historyState} = useSharedHistoryContext();
     const [editor] = useLexicalComposerContext();
@@ -81,16 +87,18 @@ const KoenigComposableEditor = ({
                     </div>
                 }
                 ErrorBoundary={KoenigErrorBoundary}
-                placeholder={placeholder || <EditorPlaceholder />}
+                placeholder={placeholder || <EditorPlaceholder className={placeholderClassName} text={placeholderText} />}
             />
+            <LinkPlugin />
             <OnChangePlugin ignoreSelectionChange={true} onChange={_onChange} />
             {!isCollabActive && <HistoryPlugin externalHistoryState={historyState} />} {/* adds undo/redo, in multiplayer that's handled by yjs */}
             <KoenigBehaviourPlugin containerElem={editorContainerRef} cursorDidExitAtTop={cursorDidExitAtTop} isNested={isNested} />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
-            {floatingAnchorElem && (<FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} />)}
+            {floatingAnchorElem && (<FloatingFormatToolbarPlugin anchorElem={floatingAnchorElem} isSnippetsEnabled={isSnippetsEnabled} />)}
             <DragDropPastePlugin />
             {registerAPI ? <ExternalControlPlugin registerAPI={registerAPI} /> : null}
             {isDragReorderEnabled && <DragDropReorderPlugin containerElem={editorContainerRef} />}
+            {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
             {children}
         </div>
     );

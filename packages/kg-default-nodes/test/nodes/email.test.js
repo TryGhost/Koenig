@@ -127,7 +127,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hello World</p>
             `);
         }));
@@ -157,6 +157,40 @@ describe('EmailNode', function () {
             element.should.be.empty();
         }));
 
+        it('removes any extra consecutives whitespaces', editorTest(function () {
+            const payload = {
+                html: '<p><span>Hey    you</span></p>'
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post'
+            };
+            const emailNode = $createEmailNode(payload);
+            const {element} = emailNode.exportDOM({...exportOptions, ...options});
+
+            element.innerHTML.should.prettifyTo(html`
+                <p><span>Hey you</span></p>
+            `);
+        }));
+
+        it('removes any linebreaks', editorTest(function () {
+            const payload = {
+                html: '<p>\n<span>Hey \nyou</span>\n</p>'
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post'
+            };
+            const emailNode = $createEmailNode(payload);
+            const {element} = emailNode.exportDOM({...exportOptions, ...options});
+
+            element.innerHTML.should.prettifyTo(html`
+                <p><span>Hey you</span></p>
+            `);
+        }));
+
         it('wraps {foo} in %%', editorTest(function () {
             const payload = {
                 html: '<p>Hey {foo}</p>'
@@ -169,7 +203,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo}%%</p>
             `);
         }));
@@ -186,7 +220,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo, "default"}%%</p>
             `);
         }));
@@ -203,7 +237,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo,  "default"}%%</p>
             `);
         }));
@@ -220,7 +254,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo "default"}%%</p>
             `);
         }));
@@ -237,7 +271,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo  "default"}%%</p>
             `);
         }));
@@ -254,7 +288,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo}%%, you are {invalid }</p>
             `);
         }));
@@ -271,7 +305,7 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey %%{foo}%%, you are { invalid}</p>
             `);
         }));
@@ -288,8 +322,27 @@ describe('EmailNode', function () {
             const emailNode = $createEmailNode(payload);
             const {element} = emailNode.exportDOM({...exportOptions, ...options});
 
-            element.outerHTML.should.prettifyTo(html`
+            element.innerHTML.should.prettifyTo(html`
                 <p>Hey {foo invalid}</p>
+            `);
+        }));
+
+        it('renders multiple paragraphs', editorTest(function () {
+            const payload = {
+                html: '<p>First paragraph</p><p>Second paragraph</p><p>Third paragraph</p>'
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post'
+            };
+            const emailNode = $createEmailNode(payload);
+            const {element} = emailNode.exportDOM({...exportOptions, ...options});
+
+            element.innerHTML.should.prettifyTo(html`
+                <p>First paragraph</p>
+                <p>Second paragraph</p>
+                <p>Third paragraph</p>
             `);
         }));
     });

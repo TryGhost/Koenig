@@ -7,14 +7,15 @@ import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-le
 
 export function ButtonCard({
     alignment,
-    buttonText, 
-    buttonPlaceholder, 
-    buttonUrl, 
+    buttonText,
+    buttonPlaceholder,
+    buttonUrl,
     handleAlignmentChange,
     handleButtonTextChange,
     handleButtonUrlChange,
     handleOptionClick,
-    isEditing
+    isEditing,
+    suggestedUrls
 }) {
     const buttonGroupChildren = [
         {
@@ -29,12 +30,6 @@ export function ButtonCard({
             Icon: CenterAlignIcon,
             dataTestId: 'button-align-center'
         }
-    ];
-
-    // TODO: this will need to be provided by the digesting code
-    const testListOptions = [
-        {value: 'Homepage', caption: window.location.origin + '/'},
-        {value: 'Free signup', caption: window.location.origin + '/#/portal/signup/free'}
     ];
 
     return (
@@ -63,20 +58,28 @@ export function ButtonCard({
                         dataTestId="button-input-url"
                         handleOptionClick={handleOptionClick}
                         label='Button URL'
-                        list='suggestedUrls'
-                        listOptions={testListOptions}
+                        listOptions={suggestedUrls}
                         placeholder='https://yoursite.com/#/portal/signup/'
                         value={buttonUrl}
                         onChange={handleButtonUrlChange}
                     />
-                </SettingsPanel>    
+                </SettingsPanel>
             )}
         </>
     );
 }
 
 ButtonCard.propTypes = {
+    alignment: PropTypes.string,
     buttonText: PropTypes.string,
-    buttonPlaceholder: PropTypes.string, 
-    buttonUrl: PropTypes.string
+    buttonPlaceholder: PropTypes.string,
+    buttonUrl: PropTypes.string,
+    handleAlignmentChange: PropTypes.func,
+    handleButtonTextChange: PropTypes.func,
+    handleButtonUrlChange: PropTypes.func,
+    handleButtonUrlFocus: PropTypes.func,
+    handleOptionClick: PropTypes.func,
+    isEditing: PropTypes.bool,
+    suggestedUrls: PropTypes.array,
+    suggestedUrlVisibility: PropTypes.bool
 };

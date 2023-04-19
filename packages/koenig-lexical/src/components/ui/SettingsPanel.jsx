@@ -7,6 +7,7 @@ import {ReactComponent as DeleteIcon} from '../../assets/icons/kg-trash.svg';
 import {Dropdown} from './Dropdown';
 import {IconButton} from './IconButton';
 import {Input} from './Input';
+import {InputList} from './InputList';
 import {MediaPlaceholder} from './MediaPlaceholder';
 import {ProgressBar} from './ProgressBar';
 import {Toggle} from './Toggle';
@@ -29,7 +30,7 @@ export function SettingsPanel({children, darkMode}) {
     );
 }
 
-export function ToggleSetting({label, description, isChecked, onChange, dataTestID}) {
+export function ToggleSetting({label, description, isChecked, onChange, dataTestId}) {
     return (
         <div className="mt-2 flex min-h-[3rem] w-full items-center justify-between text-[1.3rem] first:mt-0">
             <div>
@@ -39,7 +40,7 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
                 }
             </div>
             <div className="flex shrink-0 pl-2">
-                <Toggle dataTestID={dataTestID} isChecked={isChecked} onChange={onChange} />
+                <Toggle dataTestId={dataTestId} isChecked={isChecked} onChange={onChange} />
             </div>
         </div>
     );
@@ -51,17 +52,24 @@ export function InputSetting({label, description, onChange, value, placeholder, 
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
             <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
             {description &&
-                    <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
+                <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
         </div>
     );
 }
 
-export function InputListSetting({dataTestId, label, description, onChange, value, placeholder, list, listOptions, handleOptionClick}) {
+/**
+ * A text input with autocomplete suggestions.
+ * @param {object} options
+ * @param {(value: string) => void} options.onChange Does not pass an event, only the value
+ * @param {{value: string, label: string}[]} options.listOptions
+ * @returns
+ */
+export function InputListSetting({dataTestId, description, label, listOptions, onChange, placeholder, value}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
-            <Input dataTestId={dataTestId} handleOptionClick={handleOptionClick} list={list} listOptions={listOptions} placeholder={placeholder} value={value} onChange={onChange} />
+            <InputList dataTestId={dataTestId} listOptions={listOptions} placeholder={placeholder} value={value} onChange={onChange} />
             {description &&
                     <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
@@ -69,13 +77,14 @@ export function InputListSetting({dataTestId, label, description, onChange, valu
     );
 }
 
-export function DropdownSetting({label, description, trigger, menu}) {
+export function DropdownSetting({label, description, value, menu, onChange}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
-            <div className="font-bold text-grey-900">{label}</div>
+            <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
             <Dropdown
                 menu={menu}
-                trigger={trigger}
+                value={value}
+                onChange={onChange}
             />
             {description &&
                     <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
@@ -84,7 +93,7 @@ export function DropdownSetting({label, description, trigger, menu}) {
     );
 }
 
-export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
+export function ButtonGroupSetting({label, onClick, selectedName, buttons, dataTestId}) {
     return (
         <div className="mt-2 flex w-full items-center justify-between text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
@@ -96,9 +105,9 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
     );
 }
 
-export function ColorPickerSetting({label, onClick, selectedName, buttons, layout, dataTestID}) {
+export function ColorPickerSetting({label, onClick, selectedName, buttons, layout, dataTestId}) {
     return (
-        <div className={`mt-2 flex w-full text-[1.3rem] first:mt-0 ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestID}>
+        <div className={`mt-2 flex w-full text-[1.3rem] first:mt-0 ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestId}>
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
 
             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
@@ -108,7 +117,7 @@ export function ColorPickerSetting({label, onClick, selectedName, buttons, layou
     );
 }
 
-export function ThumbnailSetting({label, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, dataTestID, errors = [], progress, onRemoveCustomThumbnail, icon, desc = '', size, mimeTypes}) {
+export function ThumbnailSetting({label, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, dataTestId, errors = [], progress, onRemoveCustomThumbnail, icon, desc = '', size, mimeTypes}) {
     const fileInputRef = React.useRef(null);
 
     const onFileInputRef = (element) => {
@@ -164,7 +173,7 @@ export function ThumbnailSetting({label, onFileChange, isDraggedOver, placeholde
 
                     {!isLoading && (
                         <div className="absolute top-2 right-2 flex opacity-0 transition-all group-hover:opacity-100">
-                            <IconButton dataTestID={dataTestID} Icon={DeleteIcon} onClick={onRemove} />
+                            <IconButton dataTestId={dataTestId} Icon={DeleteIcon} onClick={onRemove} />
                         </div>
                     )}
 

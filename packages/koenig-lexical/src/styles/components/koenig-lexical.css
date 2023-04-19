@@ -29,7 +29,7 @@
 /* Dark mode */
 .koenig-lexical > .dark, .koenig-lexical.dark, .dark .koenig-lexical {
     background-color: var(--black);
-    
+
     > * {
         color: var(--grey-300);
     }
@@ -109,3 +109,29 @@ em-emoji-picker {
     top: 0;
     left: 0;
   }
+
+/* Menu */
+.kg-cardmenu-card-hover:hover svg [data-selector=bg] {
+    fill: #fff;
+}
+
+.dark .kg-cardmenu-card-hover svg [data-selector=bg] {
+    fill: var(--grey-900);
+}
+
+.dark .kg-cardmenu-card-hover:hover svg [data-selector=bg] {
+    fill: var(--grey-800);
+}
+
+.dark .kg-cardmenu-card-hover svg [data-selector=fold] {
+    fill: var(--grey-800);
+}
+
+.dark .kg-cardmenu-card-hover:hover svg [data-selector=fold] {
+    fill: var(--grey-700);
+}
+
+/* tailwind `hidden` class conflicts with ghost styles */
+.kg-cardmenu-card-hover button {
+    display: none;
+}

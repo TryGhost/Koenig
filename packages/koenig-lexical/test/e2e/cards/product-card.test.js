@@ -1,7 +1,7 @@
 import createDataTransfer from '../../utils/createDataTransfer';
 import path from 'path';
 import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
-import {assertHTML, focusEditor, html, initialize, insertCard, startApp} from '../../utils/e2e';
+import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
 
 describe('Product card', async () => {
@@ -27,8 +27,8 @@ describe('Product card', async () => {
                     children: [{
                         type: 'product',
                         imgSrc: '/content/images/2022/11/koenig-lexical.jpg',
-                        title: 'This is a title',
-                        description: 'This is a description',
+                        title: '<span>This is <em>title</em></span>',
+                        description: '<p dir="ltr"><span>Description</span></p>',
                         buttonUrl: 'https://google.com/',
                         buttonText: 'Button',
                         isButtonEnabled: true,
@@ -48,10 +48,58 @@ describe('Product card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="product">
+                <div
+                    data-kg-card-editing="false"
+                    data-kg-card-selected="false"
+                    data-kg-card="product">
+                    <div>
+                        <div><img src="/content/images/2022/11/koenig-lexical.jpg" /></div>
+                        <div>
+                            <div>
+                                <div>
+                                    <div data-kg="editor">
+                                        <div
+                                            contenteditable="false"
+                                            spellcheck="true"
+                                            data-lexical-editor="true"
+                                            aria-autocomplete="none">
+                                            <p dir="ltr">
+                                                <span data-lexical-text="true">This is</span>
+                                                <em data-lexical-text="true">title</em>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button"><svg></svg></button>
+                                <button type="button"><svg></svg></button>
+                                <button type="button"><svg></svg></button>
+                                <button type="button"><svg></svg></button>
+                                <button type="button"><svg></svg></button>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <div data-kg="editor">
+                                    <div
+                                        contenteditable="false"
+                                        spellcheck="true"
+                                        data-lexical-editor="true"
+                                        aria-autocomplete="none">
+                                        <p dir="ltr"><span data-lexical-text="true">Description</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="https://google.com/"><span>Button</span></a>
+                        </div>
+                    </div>
+                    <div></div>
                 </div>
             </div>
-        `, {ignoreCardContents: true});
+            `, {ignoreCardToolbarContents: true, ignoreInnerSVG: true});
     });
 
     test('renders product card node', async function () {
@@ -273,6 +321,27 @@ describe('Product card', async () => {
             </div>
             <p><br /></p>
             `, {ignoreCardToolbarContents: true, ignoreInnerSVG: true});
+    });
+
+    test('can add snippet', async function () {
+        await focusEditor(page);
+        // insert new card
+        await insertCard(page, {cardName: 'product'});
+
+        // fill card
+        await expect(await page.locator('[data-kg-card="product"]')).toBeVisible();
+        await page.keyboard.type('snippet');
+        await page.keyboard.press('Escape');
+
+        // create snippet
+        await createSnippet(page);
+
+        // can insert card from snippet
+        await page.keyboard.press('Enter');
+        await page.keyboard.type('/snippet');
+        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
+        await page.keyboard.press('Enter');
+        await expect(await page.locator('[data-kg-card="product"]')).toHaveCount(2);
     });
 
     test('renders product card toolbar', async () => {

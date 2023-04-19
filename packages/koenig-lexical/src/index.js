@@ -16,6 +16,7 @@ import ExternalControlPlugin from './plugins/ExternalControlPlugin';
 import FilePlugin from './plugins/FilePlugin';
 import FloatingFormatToolbarPlugin from './plugins/FloatingFormatToolbarPlugin';
 import HeaderPlugin from './plugins/HeaderPlugin';
+import GalleryPlugin from './plugins/GalleryPlugin';
 import HorizontalRulePlugin from './plugins/HorizontalRulePlugin';
 import HtmlOutputPlugin from './plugins/HtmlOutputPlugin';
 import ImagePlugin from './plugins/ImagePlugin';
@@ -58,11 +59,14 @@ export {
     KoenigCardWrapper,
 
     AudioPlugin,
+    CalloutPlugin,
     CardMenuPlugin,
     DragDropPastePlugin,
     DragDropReorderPlugin,
     ExternalControlPlugin,
+    FilePlugin,
     FloatingFormatToolbarPlugin,
+    GalleryPlugin,
     HorizontalRulePlugin,
     HtmlOutputPlugin,
     ImagePlugin,
@@ -72,11 +76,9 @@ export {
     PlusCardMenuPlugin,
     RestrictContentPlugin,
     SlashCardMenuPlugin,
-    VideoPlugin,
     TogglePlugin,
-    CalloutPlugin,
-    FilePlugin,
     HeaderPlugin,
+    VideoPlugin,
 
     AllDefaultPlugins,
 

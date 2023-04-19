@@ -9,9 +9,12 @@ import {BookmarkPlugin} from '../plugins/BookmarkPlugin';
 import {ButtonPlugin} from '../plugins/ButtonPlugin';
 import {CalloutPlugin} from '../plugins/CalloutPlugin';
 import {CardMenuPlugin} from '../plugins/CardMenuPlugin';
+import {EmailCtaPlugin} from '../plugins/EmailCtaPlugin';
 import {EmailPlugin} from '../plugins/EmailPlugin';
+import {EmbedPlugin} from '../plugins/EmbedPlugin';
 import {FilePlugin} from '../plugins/FilePlugin';
 import {HeaderPlugin} from '../plugins/HeaderPlugin';
+import {KoenigSnippetPlugin} from '../plugins/KoenigSnippetPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {PaywallPlugin} from '../plugins/PaywallPlugin';
 import {ProductPlugin} from '../plugins/ProductPlugin';
@@ -32,6 +35,7 @@ export const AllDefaultPlugins = () => {
             {/* Card Plugins */}
             <AudioPlugin />
             <ImagePlugin />
+            <GalleryPlugin />
             <VideoPlugin />
             <MarkdownPlugin />
             <HorizontalRulePlugin />
@@ -45,7 +49,12 @@ export const AllDefaultPlugins = () => {
             <PaywallPlugin />
             <KoenigSelectorPlugin />
             <ProductPlugin />
+            <EmailCtaPlugin />
             <EmailPlugin />
+            <EmbedPlugin />
+
+            {/* Snippet Plugins */}
+            <KoenigSnippetPlugin />
         </>
     );
 };

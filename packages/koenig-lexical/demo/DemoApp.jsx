@@ -31,7 +31,11 @@ const WEBSOCKET_ID = params.get('multiplayerId') || '0';
 const cardConfig = {
     unsplash: {defaultHeaders: defaultUnsplashHeaders},
     fetchEmbed: fetchEmbed,
-    tenor: tenorConfig
+    tenor: tenorConfig,
+    fetchAutocompleteLinks: () => Promise.resolve([
+        {label: 'Homepage', value: window.location.origin + '/'},
+        {label: 'Free signup', value: window.location.origin + '/#/portal/signup/free'}
+    ])
 };
 
 function getDefaultContent({editorType}) {
@@ -65,6 +69,7 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode}) {
         return (
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
+                isSnippetsEnabled={false}
                 markdownTransformers={MINIMAL_TRANSFORMERS}
                 registerAPI={registerAPI}
             >

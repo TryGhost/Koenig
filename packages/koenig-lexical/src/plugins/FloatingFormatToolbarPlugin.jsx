@@ -19,20 +19,24 @@ import {
     $getNearestNodeOfType,
     mergeRegister
 } from '@lexical/utils';
+import {$isLinkNode} from '@lexical/link';
 import {
     $isListNode,
     ListNode
 } from '@lexical/list';
 import {
-    $wrapNodes
+    $wrapNodes,
+    createDOMRange,
+    createRectsFromDOMRange
 } from '@lexical/selection';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
+import {LinkActionToolbar} from '../components/ui/LinkActionToolbar.jsx';
+import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar';
 import {
     ToolbarMenu,
     ToolbarMenuItem,
     ToolbarMenuSeparator
 } from '../components/ui/ToolbarMenu';
-import {getDOMRangeRect} from '../utils/getDOMRangeRect';
 import {getScrollParent} from '../utils/getScrollParent';
 import {getSelectedNode} from '../utils/getSelectedNode';
 import {setFloatingElemPosition} from '../utils/setFloatingElemPosition';
@@ -54,10 +58,26 @@ const blockTypeToBlockName = {
     aside: 'Aside'
 };
 
-function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, isItalic}) {
+const toolbarItemTypes = {
+    snippet: 'snippet',
+    link: 'link'
+};
+
+function FloatingFormatToolbar({
+    isText,
+    editor,
+    anchorElem,
+    blockType,
+    isBold,
+    isItalic,
+    isLink,
+    isSnippetsEnabled,
+    toolbarItemType,
+    setToolbarItemType,
+    setIsText
+}) {
     const [stickyToolbar, setStickyToolbar] = React.useState(false);
     const toolbarRef = React.useRef(null);
-    // const [isVisible, setIsVisible] = React.useState(false);
 
     let hideHeading = false;
     if (!editor.hasNodes([HeadingNode])){
@@ -67,6 +87,11 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
     let hideQuotes = false;
     if (!editor.hasNodes([QuoteNode])){
         hideQuotes = true;
+    }
+
+    let hideSnippets = !isSnippetsEnabled;
+    if (editor._parentEditor) {
+        hideSnippets = true;
     }
 
     const formatParagraph = () => {
@@ -111,26 +136,20 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
 
     const updateFloatingToolbar = React.useCallback(() => {
         const toolbarElement = toolbarRef.current;
+        const selection = $getSelection();
 
-        if (!toolbarElement) {
+        if (!toolbarElement || !$isRangeSelection(selection)) {
             return;
         }
 
-        const selection = $getSelection();
-        const nativeSelection = window.getSelection();
-        const rootElement = editor.getRootElement();
+        const anchor = selection.anchor;
+        const focus = selection.focus;
+        const selectionRange = createDOMRange(editor, anchor.getNode(), selection.anchor.offset, focus.getNode(), selection.focus.offset);
+        const selectionRects = createRectsFromDOMRange(editor, selectionRange);
+        const rangeRect = selectionRects[0];
 
-        if (
-            selection !== null &&
-            nativeSelection !== null &&
-            !nativeSelection.isCollapsed &&
-            rootElement !== null &&
-            rootElement.contains(nativeSelection.anchorNode)
-        ) {
-            const rangeRect = getDOMRangeRect(nativeSelection, rootElement);
-            if (!stickyToolbar) {
-                setFloatingElemPosition(rangeRect, toolbarElement, anchorElem);
-            }
+        if (rangeRect && !stickyToolbar) {
+            setFloatingElemPosition(rangeRect, toolbarElement, anchorElem);
         }
     }, [editor, anchorElem, stickyToolbar]);
 
@@ -148,7 +167,7 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
         return () => {
             document.removeEventListener('mouseup', toggleVis);
         };
-    }, [toggleVis, editor, updateFloatingToolbar]);
+    }, [toggleVis, editor, updateFloatingToolbar, toolbarItemType]);
 
     React.useEffect(() => {
         editor.getEditorState().read(() => {
@@ -210,9 +229,25 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
         );
     }, [editor, updateFloatingToolbar]);
 
+    const handleActionItemClick = (type) => {
+        setToolbarItemType(type);
+    };
+
+    const handleActionToolbarClose = () => {
+        setToolbarItemType(null);
+        setIsText(false);
+    };
+
+    const isSnippetVisible = toolbarItemTypes.snippet === toolbarItemType;
+    const isLinkVisible = toolbarItemTypes.link === toolbarItemType;
+
     return (
-        <div ref={toolbarRef} className="not-kg-prose fixed" style={{opacity: 0}} data-kg-floating-toolbar>
-            <ToolbarMenu>
+        <div ref={toolbarRef} className="not-kg-prose fixed z-[10000]" style={{opacity: 0}} data-kg-floating-toolbar>
+            {isSnippetVisible && <SnippetActionToolbar onClose={handleActionToolbarClose}/>}
+
+            {isLinkVisible && <LinkActionToolbar isLink={isLink} onClose={handleActionToolbarClose}/>}
+
+            <ToolbarMenu hide={toolbarItemType}>
                 <ToolbarMenuItem data-kg-toolbar-button="bold" icon="bold" isActive={isBold} label="Format text as bold" onClick={() => {
                     setStickyToolbar(true);
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
@@ -234,16 +269,36 @@ function FloatingFormatToolbar({isText, editor, anchorElem, blockType, isBold, i
                     (formatQuote());
                     setStickyToolbar(true);
                 }} />
+
+                <ToolbarMenuItem
+                    data-kg-toolbar-button="link"
+                    icon="link"
+                    isActive={isLink}
+                    label="Link"
+                    onClick={() => handleActionItemClick(toolbarItemTypes.link)}
+                />
+
+                <ToolbarMenuSeparator hide={hideSnippets} />
+                <ToolbarMenuItem
+                    data-kg-toolbar-button="snippet"
+                    hide={hideSnippets}
+                    icon="snippet"
+                    isActive={false}
+                    label="Snippet"
+                    onClick={() => handleActionItemClick(toolbarItemTypes.snippet)}
+                />
             </ToolbarMenu>
         </div>
     );
 }
 
-function useFloatingFormatToolbar(editor, anchorElem) {
+function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled) {
     const [isText, setIsText] = React.useState(false);
     const [isBold, setIsBold] = React.useState(false);
     const [isItalic, setIsItalic] = React.useState(false);
+    const [isLink, setIsLink] = React.useState(false);
     const [blockType, setBlockType] = React.useState('paragraph');
+    const [toolbarItemType, setToolbarItemType] = React.useState(null);
 
     const updatePopup = React.useCallback(() => {
         editor.getEditorState().read(() => {
@@ -261,7 +316,7 @@ function useFloatingFormatToolbar(editor, anchorElem) {
                     !$isRangeSelection(selection) ||
                     rootElement === null ||
                     !rootElement.contains(nativeSelection.anchorNode)
-                )
+                ) && !toolbarItemType
             ) {
                 setIsText(false);
                 return;
@@ -281,6 +336,13 @@ function useFloatingFormatToolbar(editor, anchorElem) {
             // update text format
             setIsBold(selection.hasFormat('bold'));
             setIsItalic(selection.hasFormat('italic'));
+
+            const parent = anchorNode.getParent();
+            if ($isLinkNode(parent) || $isLinkNode(anchorNode)) {
+                setIsLink(true);
+            } else {
+                setIsLink(false);
+            }
 
             if (elementDOM !== null) {
                 if ($isListNode(element)) {
@@ -306,7 +368,7 @@ function useFloatingFormatToolbar(editor, anchorElem) {
                 setIsText(false);
             }
         });
-    }, [editor]);
+    }, [editor, toolbarItemType]);
 
     useEffect(() => {
         document.addEventListener('selectionchange', updatePopup);
@@ -333,13 +395,18 @@ function useFloatingFormatToolbar(editor, anchorElem) {
                 editor={editor}
                 isBold={isBold}
                 isItalic={isItalic}
+                isLink={isLink}
+                isSnippetsEnabled={isSnippetsEnabled}
                 isText={isText}
+                setIsText={setIsText}
+                setToolbarItemType={setToolbarItemType}
+                toolbarItemType={toolbarItemType}
             />
         </Portal>
     );
 }
 
-export default function FloatingFormatToolbarPlugin({anchorElem = document.body}) {
+export default function FloatingFormatToolbarPlugin({anchorElem = document.body, isSnippetsEnabled}) {
     const [editor] = useLexicalComposerContext();
-    return useFloatingFormatToolbar(editor, anchorElem);
+    return useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled);
 }

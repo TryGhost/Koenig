@@ -1,4 +1,3 @@
-import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import {$createLinkNode} from '@lexical/link';
 import {
@@ -38,6 +37,7 @@ import {
 import {$isKoenigCard} from '@tryghost/kg-default-nodes';
 import {$isListItemNode, $isListNode, ListNode} from '@lexical/list';
 import {mergeRegister} from '@lexical/utils';
+import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 export const INSERT_CARD_COMMAND = createCommand('INSERT_CARD_COMMAND');
@@ -103,7 +103,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
         setSelectedCardKey,
         isEditingCard,
         setIsEditingCard
-    } = React.useContext(KoenigComposerContext);
+    } = useKoenigSelectedCardContext();
 
     // deselect cards on mousedown outside of the editor container
     React.useEffect(() => {
@@ -911,7 +911,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 }
             })
         );
-    });
+    }, [editor]);
 
     return null;
 }

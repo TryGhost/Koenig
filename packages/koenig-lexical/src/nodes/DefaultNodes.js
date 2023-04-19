@@ -4,7 +4,9 @@ import {BookmarkNode} from './BookmarkNode';
 import {ButtonNode} from './ButtonNode';
 import {CalloutNode} from './CalloutNode';
 import {CodeBlockNode} from './CodeBlockNode';
+import {EmailCtaNode} from './EmailCtaNode';
 import {EmailNode} from './EmailNode';
+import {EmbedNode} from './EmbedNode';
 import {FileNode} from './FileNode';
 import {HeaderNode} from './HeaderNode';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
@@ -41,7 +43,10 @@ const DEFAULT_NODES = [
     BookmarkNode,
     PaywallNode,
     ProductNode,
-    EmailNode
+    EmailNode,
+    EmailCtaNode,
+    EmbedNode,
+    GalleryNode
 ];
 
 export default DEFAULT_NODES;

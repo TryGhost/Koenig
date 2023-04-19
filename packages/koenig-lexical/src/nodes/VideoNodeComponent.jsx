@@ -5,6 +5,7 @@ import extractVideoMetadata from '../utils/extractVideoMetadata';
 import useDragAndDrop from '../hooks/useDragAndDrop';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
+import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {VideoCard} from '../components/ui/cards/VideoCard';
 import {openFileSelection} from '../utils/openFileSelection';
@@ -14,7 +15,8 @@ export function VideoNodeComponent({
     nodeKey,
     thumbnail,
     customThumbnail,
-    caption,
+    captionEditor,
+    captionEditorInitialState,
     totalDuration,
     cardWidth,
     triggerFileDialog,
@@ -22,7 +24,7 @@ export function VideoNodeComponent({
     initialFile
 }) {
     const [editor] = useLexicalComposerContext();
-    const {fileUploader} = React.useContext(KoenigComposerContext);
+    const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const cardContext = React.useContext(CardContext);
     const videoFileInputRef = React.useRef();
     const [previewThumbnail, setPreviewThumbnail] = useState('');
@@ -33,6 +35,7 @@ export function VideoNodeComponent({
     const videoDragHandler = useDragAndDrop({handleDrop: handleVideoDrop});
     const thumbnailDragHandler = useDragAndDrop({handleDrop: handleThumbnailDrop});
     const [metadataExtractionErrors, setMetadataExtractionErrors] = useState([]);
+    const [showSnippetToolbar, setShowSnippetToolbar] = useState(false);
 
     const videoMimeTypes = fileUploader.fileTypes.video?.mimeTypes || ['video/*'];
 
@@ -103,13 +106,6 @@ export function VideoNodeComponent({
             return;
         }
         await handleVideoUpload(e.target.files);
-    };
-
-    const onCaptionChange = (newCaption) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setCaption(newCaption);
-        });
     };
 
     const handleCustomThumbnailChange = async (files) => {
@@ -192,7 +188,8 @@ export function VideoNodeComponent({
     return (
         <>
             <VideoCard
-                caption={caption}
+                captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
                 cardWidth={cardWidth}
                 customThumbnail={customThumbnail}
                 customThumbnailUploader={customThumbnailUploader}
@@ -208,7 +205,6 @@ export function VideoNodeComponent({
                 videoMimeTypes={videoMimeTypes}
                 videoUploader={videoUploader}
                 videoUploadErrors={[...thumbnailUploader.errors, ...metadataExtractionErrors, ...videoUploader.errors]}
-                onCaptionChange={onCaptionChange}
                 onCardWidthChange={onCardWidthChange}
                 onCustomThumbnailChange={onCustomThumbnailChange}
                 onLoopChange={onLoopChange}
@@ -217,12 +213,26 @@ export function VideoNodeComponent({
             />
             <ActionToolbar
                 data-kg-card-toolbar="video"
-                isVisible={isCardPopulated && cardContext.isSelected && !cardContext.isEditing}
+                isVisible={showSnippetToolbar}
+            >
+                <SnippetActionToolbar onClose={() => setShowSnippetToolbar(false)} />
+            </ActionToolbar>
+
+            <ActionToolbar
+                data-kg-card-toolbar="video"
+                isVisible={isCardPopulated && cardContext.isSelected && !cardContext.isEditing && !showSnippetToolbar}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-video-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
-                    <ToolbarMenuSeparator />
-                    <ToolbarMenuItem icon="snippet" isActive={false} label="Snippet" />
+                    <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
+                    <ToolbarMenuItem
+                        dataTestId="create-snippet"
+                        hide={!cardConfig.createSnippet}
+                        icon="snippet"
+                        isActive={false}
+                        label="Snippet"
+                        onClick={() => setShowSnippetToolbar(true)}
+                    />
                 </ToolbarMenu>
             </ActionToolbar>
         </>

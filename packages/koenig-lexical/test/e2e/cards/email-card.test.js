@@ -1,5 +1,5 @@
 import {afterAll, beforeAll, beforeEach, describe} from 'vitest';
-import {assertHTML, focusEditor, html, initialize, startApp} from '../../utils/e2e';
+import {assertHTML, createSnippet, focusEditor, html, initialize, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
 
 async function insertEmailCard(page) {
@@ -47,6 +47,7 @@ describe('Email card', async () => {
 
         await assertHTML(page, html`
         <div data-lexical-decorator="true" contenteditable="false">
+            <div><svg></svg></div>
             <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="email">
                 <div>
                     <div>
@@ -71,6 +72,7 @@ describe('Email card', async () => {
 
         await assertHTML(page, html`
         <div data-lexical-decorator="true" contenteditable="false">
+            <div><svg></svg></div>
             <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="email">
                 <div>
                     <div>
@@ -79,13 +81,14 @@ describe('Email card', async () => {
                                 <p dir="ltr">
                                   <span data-lexical-text="true">Hey</span>
                                   <code data-lexical-text="true">
-                                    <span>{first_name, "there"},</span>
+                                    <span>{first_name, "there"}</span>
                                   </code>
+                                    <span data-lexical-text="true">,</span>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div> 
+                    <div>
                         Only visible when delivered by email, this card will not be published on your site.
                         <a href="https://ghost.org/help/email-newsletters/#email-cards" rel="noopener noreferrer" target="_blank">
                             <svg></svg>
@@ -158,5 +161,21 @@ describe('Email card', async () => {
 
         const emailCard = page.locator('[data-kg-card="email"] ul > li:first-child');
         await expect(emailCard).toHaveText('List item 1');
+    });
+
+    it('can add snippet', async function () {
+        await focusEditor(page);
+        await insertEmailCard(page);
+
+        // create snippet
+        await page.keyboard.press('Escape');
+        await createSnippet(page);
+
+        // can insert card from snippet
+        await page.keyboard.press('Enter');
+        await page.keyboard.type('/snippet');
+        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
+        await page.keyboard.press('Enter');
+        await expect(await page.locator('[data-kg-card="email"]')).toHaveCount(2);
     });
 });

@@ -1,14 +1,5 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-
-/**
- * Wraps our replacement strings (e.g. {foo}) in %% (e.g. %%{foo}%%)
- * This helps to prevent conflicts between code samples and our replacement strings
- * @param {*} html
- * @returns {string} html with replacement strings wrapped in %%
- */
-function wrapReplacementStrings(html) {
-    return html.replace(/\{(\w*?)(?:,? *"(.*?)")?\}/g, '%%$&%%');
-}
+import {removeSpaces, wrapReplacementStrings} from '../../utils/replacement-strings';
 
 export function renderEmailNodeToDOM(node, options = {}) {
     addCreateDocumentOption(options);
@@ -20,9 +11,9 @@ export function renderEmailNodeToDOM(node, options = {}) {
         return document.createTextNode('');
     }
 
-    const wrappedHtml = wrapReplacementStrings(html);
-    const element = document.createElement('div');
-    element.innerHTML = wrappedHtml;
+    const cleanedHtml = wrapReplacementStrings(removeSpaces(html));
+    const div = document.createElement('div');
+    div.innerHTML = cleanedHtml;
 
-    return element.firstElementChild;
+    return div;
 }

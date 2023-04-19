@@ -5,6 +5,7 @@ import useDragAndDrop from '../hooks/useDragAndDrop';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {ProductCard} from '../components/ui/cards/ProductCard';
+import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
@@ -18,18 +19,21 @@ export function ProductNodeComponent({
     isButtonEnabled,
     isRatingEnabled,
     starRating,
+    title,
     titleEditor,
     titleEditorInitialState,
     descriptionEditor,
-    descriptionEditorInitialState
+    descriptionEditorInitialState,
+    description
 }) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
-    const {fileUploader} = React.useContext(KoenigComposerContext);
+    const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const imgMimeTypes = fileUploader.fileTypes.image?.mimeTypes || ['image/*'];
     const imgDragHandler = useDragAndDrop({handleDrop: handleImgDrop, disabled: !isEditing});
     const imgUploader = fileUploader.useFileUpload('image');
     const [imgPreview, setImgPreview] = React.useState('');
+    const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
     React.useEffect(() => {
         titleEditor.setEditable(isEditing);
@@ -119,6 +123,7 @@ export function ProductNodeComponent({
             <ProductCard
                 buttonText={buttonText}
                 buttonUrl={buttonUrl}
+                description={description}
                 descriptionEditor={descriptionEditor}
                 descriptionEditorInitialState={descriptionEditorInitialState}
                 imgDragHandler={imgDragHandler}
@@ -131,6 +136,7 @@ export function ProductNodeComponent({
                 isEditing={isEditing}
                 isRatingEnabled={isRatingEnabled}
                 rating={starRating}
+                title={title}
                 titleEditor={titleEditor}
                 titleEditorInitialState={titleEditorInitialState}
                 onButtonTextChange={handleButtonTextChange}
@@ -144,12 +150,26 @@ export function ProductNodeComponent({
 
             <ActionToolbar
                 data-kg-card-toolbar="product"
-                isVisible={isSelected && !isEditing}
+                isVisible={showSnippetToolbar}
+            >
+                <SnippetActionToolbar onClose={() => setShowSnippetToolbar(false)} />
+            </ActionToolbar>
+
+            <ActionToolbar
+                data-kg-card-toolbar="product"
+                isVisible={isSelected && !isEditing && !showSnippetToolbar}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-product-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
-                    <ToolbarMenuSeparator />
-                    <ToolbarMenuItem icon="snippet" isActive={false} label="Snippet" />
+                    <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
+                    <ToolbarMenuItem
+                        dataTestId="create-snippet"
+                        hide={!cardConfig.createSnippet}
+                        icon="snippet"
+                        isActive={false}
+                        label="Snippet"
+                        onClick={() => setShowSnippetToolbar(true)}
+                    />
                 </ToolbarMenu>
             </ActionToolbar>
         </>

@@ -1,15 +1,19 @@
 import CardContext from '../context/CardContext';
+import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
 import {ActionToolbar} from '../components/ui/ActionToolbar';
 import {EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
 import {EmailCard} from '../components/ui/cards/EmailCard';
+import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 export function EmailNodeComponent({nodeKey, htmlEditor, htmlEditorInitialState}) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
+    const {cardConfig} = React.useContext(KoenigComposerContext);
     const {isEditing, isSelected} = cardContext;
+    const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
     const handleToolbarEdit = (event) => {
         event.preventDefault();
@@ -31,12 +35,26 @@ export function EmailNodeComponent({nodeKey, htmlEditor, htmlEditorInitialState}
 
             <ActionToolbar
                 data-kg-card-toolbar="email"
-                isVisible={isSelected && !isEditing}
+                isVisible={showSnippetToolbar}
+            >
+                <SnippetActionToolbar onClose={() => setShowSnippetToolbar(false)} />
+            </ActionToolbar>
+
+            <ActionToolbar
+                data-kg-card-toolbar="email"
+                isVisible={isSelected && !isEditing && !showSnippetToolbar}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
-                    <ToolbarMenuSeparator />
-                    <ToolbarMenuItem icon="snippet" isActive={false} label="Snippet" />
+                    <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
+                    <ToolbarMenuItem
+                        dataTestId="create-snippet"
+                        hide={!cardConfig.createSnippet}
+                        icon="snippet"
+                        isActive={false}
+                        label="Snippet"
+                        onClick={() => setShowSnippetToolbar(true)}
+                    />
                 </ToolbarMenu>
             </ActionToolbar>
         </>
