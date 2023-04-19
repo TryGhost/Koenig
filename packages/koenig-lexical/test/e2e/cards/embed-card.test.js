@@ -2,7 +2,7 @@ import {afterAll, beforeAll, beforeEach, describe, test} from 'vitest';
 import {assertHTML, createSnippet, focusEditor, html, initialize, startApp} from '../../utils/e2e';
 import {expect} from '@playwright/test';
 
-describe.skip('Embed card', async () => {
+describe.only('Embed card', async () => {
     let app;
     let page;
 
@@ -94,7 +94,7 @@ describe.skip('Embed card', async () => {
 
             const urlInput = await page.getByTestId('embed-url');
             await urlInput.fill('https://ghost.org/');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             await expect(await page.getByTestId('embed-url-loading-container')).toBeVisible();
             await expect(await page.getByTestId('embed-url-loading-spinner')).toBeVisible();
@@ -107,7 +107,7 @@ describe.skip('Embed card', async () => {
 
             const urlInput = await page.getByTestId('embed-url');
             await urlInput.fill('https://ghost.org/');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             await expect(await page.getByTestId('embed-iframe')).toBeVisible();
         });
@@ -120,7 +120,7 @@ describe.skip('Embed card', async () => {
 
             const urlInput = await page.getByTestId('embed-url');
             await urlInput.fill('https://ghost.org/');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             const captionInput = await page.getByTestId('embed-caption');
             await expect(captionInput).toContainText('Type caption for embed (optional)');
@@ -136,7 +136,7 @@ describe.skip('Embed card', async () => {
             const urlInput = await page.getByTestId('embed-url');
             await urlInput.fill('badurl');
             await expect(urlInput).toHaveValue('badurl');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             await expect(await page.getByTestId('embed-url-error-message')).toContainText('There was an error when parsing the URL.');
         });
@@ -151,7 +151,7 @@ describe.skip('Embed card', async () => {
 
             await urlInput.fill('badurl');
             await expect(urlInput).toHaveValue('badurl');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             const retryButton = await page.getByTestId('embed-url-error-retry');
             await retryButton.click();
@@ -171,7 +171,7 @@ describe.skip('Embed card', async () => {
 
             await urlInput.fill('badurl');
             await expect(urlInput).toHaveValue('badurl');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             const retryButton = await page.getByTestId('embed-url-error-pasteAsLink');
             await retryButton.click();
@@ -194,7 +194,7 @@ describe.skip('Embed card', async () => {
 
             await urlInput.fill('badurl');
             await expect(urlInput).toHaveValue('badurl');
-            await urlInput.press('Tab');
+            await urlInput.press('Enter');
 
             const retryButton = await page.getByTestId('embed-url-error-close');
             await retryButton.click();
@@ -210,7 +210,7 @@ describe.skip('Embed card', async () => {
 
         const urlInput = await page.getByTestId('embed-url');
         await urlInput.fill('https://ghost.org/');
-        await urlInput.press('Tab');
+        await urlInput.press('Enter');
         await expect(await page.getByTestId('embed-iframe')).toBeVisible();
 
         // create snippet
