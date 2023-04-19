@@ -1,7 +1,30 @@
 import React from 'react';
+import {COMMAND_PRIORITY_LOW, KEY_ENTER_COMMAND} from 'lexical';
 import {ReactComponent as CloseIcon} from '../../assets/icons/kg-close.svg';
+import {mergeRegister} from '@lexical/utils';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function UrlInput({dataTestId, value, placeholder, handleUrlChange, handleUrlInput, hasError, handlePasteAsLink, handleRetry, handleClose, isLoading}) {
+function UrlInputPlugin({value, onEnter}) {
+    const [editor] = useLexicalComposerContext();
+
+    React.useEffect(
+        (event) => {
+            return mergeRegister(
+                editor.registerCommand(
+                    KEY_ENTER_COMMAND,
+                    () => {
+                        onEnter(event);
+                        return false;
+                    },
+                    COMMAND_PRIORITY_LOW
+                )
+            );
+        },
+        [editor, onEnter, value]
+    );
+}
+
+export function UrlInput({dataTestId, value, placeholder, handleUrlChange, handleUrlSubmit, hasError, handlePasteAsLink, handleRetry, handleClose, isLoading}) {
     if (isLoading) {
         return (
             <div className="flex w-full items-center justify-center rounded border border-grey-300 p-2 font-sans text-sm font-normal leading-snug text-grey-900 focus-visible:outline-none dark:border-grey-800 dark:bg-grey-900 dark:placeholder:text-grey-800" data-testid={`${dataTestId}-loading-container`}>
@@ -24,14 +47,17 @@ export function UrlInput({dataTestId, value, placeholder, handleUrlChange, handl
         );
     }
     return (
-        <input
-            autoFocus={true}
-            className="w-full rounded border border-grey-300 p-2 font-sans text-sm font-normal leading-snug text-grey-900 focus-visible:outline-none dark:border-grey-800 dark:bg-grey-900 dark:placeholder:text-grey-800"
-            data-testid={dataTestId}
-            placeholder={placeholder}
-            value={value}
-            onBlur={handleUrlInput}
-            onChange={handleUrlChange}
-        />
+        <>
+            <UrlInputPlugin value={value} onEnter={handleUrlSubmit} />
+            <input
+                autoFocus={true}
+                className="w-full rounded border border-grey-300 p-2 font-sans text-sm font-normal leading-snug text-grey-900 focus-visible:outline-none dark:border-grey-800 dark:bg-grey-900 dark:placeholder:text-grey-800"
+                data-testid={dataTestId}
+                placeholder={placeholder}
+                value={value}
+                onChange={handleUrlChange}
+                onKeyDown={handleUrlSubmit}
+            />
+        </>
     );
 }

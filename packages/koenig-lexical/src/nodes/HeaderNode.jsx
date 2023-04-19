@@ -5,6 +5,7 @@ import React from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 import generateEditorState from '../utils/generateEditorState';
 // import populateNestedEditor from '../utils/populateNestedEditor';
+import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {HeaderNode as BaseHeaderNode, INSERT_HEADER_COMMAND} from '@tryghost/kg-default-nodes';
 import {ReactComponent as HeaderCardIcon} from '../assets/icons/kg-card-type-header.svg';
@@ -57,7 +58,7 @@ export class HeaderNode extends BaseHeaderNode {
         if (this.__headerTextEditor) {
             this.__headerTextEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__headerTextEditor, null);
-                const cleanedHtml = cleanBasicHtml(html);
+                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true});
                 json.header = cleanedHtml;
             });
         }
@@ -65,7 +66,7 @@ export class HeaderNode extends BaseHeaderNode {
         if (this.__subHeaderTextEditor) {
             this.__subHeaderTextEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__subHeaderTextEditor, null);
-                const cleanedHtml = cleanBasicHtml(html);
+                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true});
                 json.subheader = cleanedHtml;
             });
         }
@@ -111,6 +112,14 @@ export class HeaderNode extends BaseHeaderNode {
                 />
             </KoenigCardWrapper>
         );
+    }
+
+    // override the default `isEmpty` check because we need to check the nested editors
+    // rather than the data properties themselves
+    isEmpty() {
+        const isHtmlEmpty = this.__headerTextEditor.getEditorState().read($canShowPlaceholderCurry(false));
+        const isSubHtmlEmpty = this.__subHeaderTextEditor.getEditorState().read($canShowPlaceholderCurry(false));
+        return isHtmlEmpty && isSubHtmlEmpty && (!this.__buttonEnabled || (!this.__buttonText && !this.__buttonUrl)) && !this.__backgroundImageSrc;
     }
 }
 
