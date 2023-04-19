@@ -61,7 +61,7 @@ describe.only('Embed card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test.skip('renders embed card node', async function () {
+    test('renders embed card node', async function () {
         await focusEditor(page);
         await page.keyboard.type('/embed');
         await page.keyboard.press('Enter');
