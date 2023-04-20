@@ -1,5 +1,4 @@
 import React from 'react';
-import {$createBookmarkNode} from '../nodes/BookmarkNode';
 import {$createEmbedNode} from '../nodes/EmbedNode';
 import {$createLinkNode} from '@lexical/link';
 import {
@@ -892,9 +891,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     // if a link is pasted in a blank text node, insert an embed card (may turn into bookmark)
                     if (linkMatch && !selectionContent.length > 0) {
                         const url = linkMatch[1];
-                        console.log(`url`,url);
                         const embedNode = $createEmbedNode({url});
-                        console.log(`inserting embed card`);
                         editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode: embedNode, createdWithUrl: true});
                         return true;
                     }
