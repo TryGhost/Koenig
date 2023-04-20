@@ -93,15 +93,11 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
     //  if it fails, paste as a link
     React.useEffect(() => {
         if (createdWithUrl) {
-            console.log(`createdWithUrl`,createdWithUrl);
-            console.log(`url`,url);
             setUrlInputValue(url);
             // handlePasteAsLink(url.href);
             try {
-                console.log(`fetching metadata`);
                 fetchMetadata(url.href);
             } catch {
-                console.log(`pasting as link`);
                 handlePasteAsLink(url.href);
             }
         }
