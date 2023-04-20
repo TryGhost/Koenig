@@ -3,6 +3,7 @@ import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 import generateEditorState from '../utils/generateEditorState';
+import {$createBookmarkNode} from './BookmarkNode';
 import {$createLinkNode} from '@lexical/link';
 import {$createParagraphNode, $createTextNode, $getNodeByKey, createEditor} from 'lexical';
 import {$generateHtmlFromNodes} from '@lexical/html';
@@ -21,7 +22,6 @@ import {ReactComponent as VimeoIcon} from '../assets/icons/kg-card-type-vimeo.sv
 import {ReactComponent as YouTubeIcon} from '../assets/icons/kg-card-type-youtube.svg';
 import {useCallback} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import { $createBookmarkNode } from './BookmarkNode';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_EMBED_COMMAND} from '@tryghost/kg-default-nodes';

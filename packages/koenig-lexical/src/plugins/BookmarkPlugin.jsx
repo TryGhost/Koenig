@@ -21,7 +21,6 @@ export const BookmarkPlugin = () => {
             editor.registerCommand(
                 INSERT_BOOKMARK_COMMAND,
                 async (dataset) => {
-                    console.log(dataset);
                     const selection = $getSelection();
 
                     if (!$isRangeSelection(selection)) {
