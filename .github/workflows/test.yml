@@ -16,6 +16,7 @@ jobs:
       FORCE_COLOR: 1
       # https://github.com/vitejs/vite/issues/2433
       NODE_OPTIONS: '--max_old_space_size=8192'
+      CI: true
     name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v3
