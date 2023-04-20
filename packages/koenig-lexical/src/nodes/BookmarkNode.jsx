@@ -60,7 +60,31 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
         });
     };
 
-    const fetchMetadata = useCallback(async () => {
+    const fetchMetadata = async (href) => {
+        setLoading(true);
+        let response;
+        try {
+            // set the test data return values in fetchEmbed.js
+            response = await cardConfig.fetchEmbed(href, {type: 'bookmark'});
+        } catch (e) {
+            setLoading(false);
+            setUrlError(true);
+            return;
+        }
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setUrl(response.url);
+            node.setAuthor(response.metadata.author);
+            node.setIcon(response.metadata.icon);
+            node.setTitle(response.metadata.title);
+            node.setDescription(response.metadata.description);
+            node.setPublisher(response.metadata.publisher);
+            node.setThumbnail(response.metadata.thumbnail);
+        });
+        setLoading(false);
+    };
+
+    const fetchMetadataEffect = useCallback(async () => {
         setLoading(true);
         let response;
         try {
@@ -82,26 +106,27 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
             node.setThumbnail(response.metadata.thumbnail);
         });
         setLoading(false);
-    }, [cardConfig, editor, nodeKey]);
-
-    // in case we're creating the node with a url already, fetch the metadata and 
-    //  paste as a link if it fails
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     // TODO: this needs to be a custom hook
     // if we create the node with a url
     //  fetch the metadata
     //  if it fails, paste as a link
     React.useEffect(() => {
+        // only run this once
         if (createdWithUrl) {
             setUrlInputValue(url);
-            // handlePasteAsLink(url.href);
             try {
-                fetchMetadata(url.href);
+                fetchMetadataEffect(url);
             } catch {
-                handlePasteAsLink(url.href);
+                handlePasteAsLink(url);
             }
         }
-    }, [url, createdWithUrl, fetchMetadata, handlePasteAsLink]);
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

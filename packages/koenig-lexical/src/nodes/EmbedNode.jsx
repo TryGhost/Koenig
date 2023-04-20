@@ -21,6 +21,7 @@ import {ReactComponent as VimeoIcon} from '../assets/icons/kg-card-type-vimeo.sv
 import {ReactComponent as YouTubeIcon} from '../assets/icons/kg-card-type-youtube.svg';
 import {useCallback} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import { $createBookmarkNode } from './BookmarkNode';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_EMBED_COMMAND} from '@tryghost/kg-default-nodes';
@@ -71,9 +72,19 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
         setLoading(true);
         let response;
         const type = createdWithUrl ? '' : 'embed';
+        const requestedUrl = createdWithUrl ? url : urlInputValue;
         try {
             // set the test data return values in fetchEmbed.js
-            response = await cardConfig.fetchEmbed(url, {type});
+            response = await cardConfig.fetchEmbed(requestedUrl, {type});
+            // we may end up with a bookmark return if the url is valid but doesn't return an embed
+            if (response.type === 'bookmark') {
+                editor.update(() => {
+                    const node = $getNodeByKey(nodeKey);
+                    const bookmarkNode = $createBookmarkNode({url: response.url});
+                    node.replace(bookmarkNode);
+                });
+                return;
+            }
         } catch (e) {
             setLoading(false);
             setUrlError(true);
@@ -87,7 +98,9 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
             node.setHtml(response.html);
         });
         setLoading(false);
-    }, [cardConfig, createdWithUrl, editor, url, nodeKey]);
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         if (createdWithUrl) {
@@ -99,7 +112,9 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
                 handlePasteAsLink(url);
             }
         }
-    }, [url, createdWithUrl, fetchMetadata, handlePasteAsLink]);
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -157,7 +172,8 @@ export class EmbedNode extends BaseEmbedNode {
         desc: 'Embed a link as a visual embed',
         Icon: EmbedCardIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        matches: ['embed']
+        matches: ['embed'],
+        queryParams: ['url']
     },
     {
         section: 'Embed',
@@ -165,7 +181,7 @@ export class EmbedNode extends BaseEmbedNode {
         desc: '/twitter [tweet url]',
         Icon: TwitterIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        params: ['url'],
+        queryParams: ['url'],
         matches: ['twitter']
     },
     {
@@ -174,7 +190,7 @@ export class EmbedNode extends BaseEmbedNode {
         desc: '/youtube [video url]',
         Icon: YouTubeIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        params: ['url'],
+        queryParams: ['url'],
         matches: ['youtube']
     },
     {
@@ -183,7 +199,7 @@ export class EmbedNode extends BaseEmbedNode {
         desc: '/vimeo [video url]',
         Icon: VimeoIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        params: ['url'],
+        queryParams: ['url'],
         matches: ['vimeo']
     },
     {
@@ -192,7 +208,7 @@ export class EmbedNode extends BaseEmbedNode {
         desc: '/codepen [pen url]',
         Icon: CodePenIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        params: ['url'],
+        queryParams: ['url'],
         matches: ['codepen']
     },
     {
@@ -201,7 +217,7 @@ export class EmbedNode extends BaseEmbedNode {
         desc: '/spotify [track or playlist url]',
         Icon: SpotifyIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        params: ['url'],
+        queryParams: ['url'],
         matches: ['spotify']
     },
     {
@@ -210,7 +226,7 @@ export class EmbedNode extends BaseEmbedNode {
         desc: '/soundcloud [track or playlist url]',
         Icon: SoundCloudIcon,
         insertCommand: INSERT_EMBED_COMMAND,
-        params: ['url'],
+        queryParams: ['url'],
         matches: ['soundcloud']
     }];
 
