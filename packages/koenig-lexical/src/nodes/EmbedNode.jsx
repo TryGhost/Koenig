@@ -91,6 +91,8 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
 
     React.useEffect(() => {
         if (createdWithUrl) {
+            // keep value in sync in case the user goes to retry to paste as link
+            setUrlInputValue(url);
             try {
                 fetchMetadata(url);
             } catch {

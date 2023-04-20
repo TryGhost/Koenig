@@ -1,6 +1,6 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
-import React, { useCallback } from 'react';
+import React, {useCallback} from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 import generateEditorState from '../utils/generateEditorState';
 import {$createLinkNode} from '@lexical/link';
@@ -23,7 +23,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
     const {isSelected} = React.useContext(CardContext);
-    const [urlInputValue, setUrlInputValue] = React.useState('');
+    const [urlInputValue, setUrlInputValue] = React.useState(url);
     const [loading, setLoading] = React.useState(false);
     const [urlError, setUrlError] = React.useState(false);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
@@ -60,12 +60,12 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
         });
     };
 
-    const fetchMetadata = useCallback(async (href) => {
+    const fetchMetadata = useCallback(async () => {
         setLoading(true);
         let response;
         try {
             // set the test data return values in fetchEmbed.js
-            response = await cardConfig.fetchEmbed(href, {type: 'bookmark'});
+            response = await cardConfig.fetchEmbed(url, {type: 'bookmark'});
         } catch (e) {
             setLoading(false);
             setUrlError(true);
@@ -94,6 +94,8 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
     React.useEffect(() => {
         if (createdWithUrl) {
             console.log(`createdWithUrl`,createdWithUrl);
+            console.log(`url`,url);
+            setUrlInputValue(url);
             // handlePasteAsLink(url.href);
             try {
                 console.log(`fetching metadata`);
@@ -164,7 +166,8 @@ export class BookmarkNode extends BaseBookmarkNode {
         desc: 'Embed a link as a visual bookmark',
         Icon: BookmarkCardIcon,
         insertCommand: INSERT_BOOKMARK_COMMAND,
-        matches: ['bookmark']
+        matches: ['bookmark'],
+        queryParams: ['url']
     }];
 
     getIcon() {
