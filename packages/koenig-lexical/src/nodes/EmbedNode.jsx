@@ -68,7 +68,7 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
         });
     };
 
-    const fetchMetadata = useCallback(async () => {
+    const fetchMetadata = async () => {
         setLoading(true);
         let response;
         const type = createdWithUrl ? '' : 'embed';
@@ -100,7 +100,7 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
         setLoading(false);
         // We only do this for init
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     React.useEffect(() => {
         if (createdWithUrl) {
