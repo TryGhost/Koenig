@@ -895,7 +895,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode: embedNode, createdWithUrl: true});
                         return true;
                     }
-                    // TODO: need to handle a '/bookmark <url>' paste
                 },
                 COMMAND_PRIORITY_LOW
             )
