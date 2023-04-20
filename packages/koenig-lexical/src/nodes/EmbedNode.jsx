@@ -19,12 +19,13 @@ import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu.jsx';
 import {ReactComponent as TwitterIcon} from '../assets/icons/kg-card-type-twitter.svg';
 import {ReactComponent as VimeoIcon} from '../assets/icons/kg-card-type-vimeo.svg';
 import {ReactComponent as YouTubeIcon} from '../assets/icons/kg-card-type-youtube.svg';
+import {useCallback} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_EMBED_COMMAND} from '@tryghost/kg-default-nodes';
 
-function EmbedNodeComponent({nodeKey, url, html, embedType, metadata, captionEditor, captionEditorInitialState}) {
+function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, metadata, captionEditor, captionEditorInitialState}) {
     const [editor] = useLexicalComposerContext();
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -48,7 +49,7 @@ function EmbedNodeComponent({nodeKey, url, html, embedType, metadata, captionEdi
         setUrlError(false);
     };
 
-    const handlePasteAsLink = () => {
+    const handlePasteAsLink = useCallback(() => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             const paragraph = $createParagraphNode()
@@ -57,7 +58,7 @@ function EmbedNodeComponent({nodeKey, url, html, embedType, metadata, captionEdi
             node.replace(paragraph);
             paragraph.selectEnd();
         });
-    };
+    }, [editor, nodeKey, urlInputValue]);
 
     const handleClose = () => {
         editor.update(() => {
@@ -66,12 +67,13 @@ function EmbedNodeComponent({nodeKey, url, html, embedType, metadata, captionEdi
         });
     };
 
-    async function fetchMetadata(href) {
+    const fetchMetadata = useCallback(async () => {
         setLoading(true);
         let response;
+        const type = createdWithUrl ? '' : 'embed';
         try {
             // set the test data return values in fetchEmbed.js
-            response = await cardConfig.fetchEmbed(href, {type: 'embed'});
+            response = await cardConfig.fetchEmbed(url, {type});
         } catch (e) {
             setLoading(false);
             setUrlError(true);
@@ -79,13 +81,23 @@ function EmbedNodeComponent({nodeKey, url, html, embedType, metadata, captionEdi
         }
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setUrl(href);
+            node.setUrl(response.url);
+            node.setMetadata(response);
             node.setEmbedType(response.type);
             node.setHtml(response.html);
-            node.setMetadata(response);
         });
         setLoading(false);
-    }
+    }, [cardConfig, createdWithUrl, editor, url, nodeKey]);
+
+    React.useEffect(() => {
+        if (createdWithUrl) {
+            try {
+                fetchMetadata(url);
+            } catch {
+                handlePasteAsLink(url);
+            }
+        }
+    }, [url, createdWithUrl, fetchMetadata, handlePasteAsLink]);
 
     return (
         <>
@@ -135,6 +147,7 @@ function EmbedNodeComponent({nodeKey, url, html, embedType, metadata, captionEdi
 export class EmbedNode extends BaseEmbedNode {
     __captionEditor;
     __captionEditorInitialState;
+    __createdWithUrl;
 
     static kgMenu = [{
         section: 'Embed',
@@ -206,6 +219,8 @@ export class EmbedNode extends BaseEmbedNode {
     constructor(dataset = {}, key) {
         super(dataset, key);
 
+        this.__createdWithUrl = !!dataset.url;
+
         // set up and populate nested editors from the serialized HTML
         this.__captionEditor = dataset.captionEditor || createEditor({nodes: MINIMAL_NODES});
         this.__captionEditorInitialState = dataset.captionEditorInitialState;
@@ -266,6 +281,7 @@ export class EmbedNode extends BaseEmbedNode {
                 <EmbedNodeComponent
                     captionEditor={this.__captionEditor}
                     captionEditorInitialState={this.__captionEditorInitialState}
+                    createdWithUrl={this.__createdWithUrl}
                     embedType={this.__embedType}
                     html={this.__html}
                     metadata={this.__metadata}

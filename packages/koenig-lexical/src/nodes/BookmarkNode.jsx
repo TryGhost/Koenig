@@ -1,6 +1,6 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
-import React from 'react';
+import React, { useCallback } from 'react';
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 import generateEditorState from '../utils/generateEditorState';
 import {$createLinkNode} from '@lexical/link';
@@ -18,7 +18,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 // re-export here so we don't need to import from multiple places throughout the app
 export {INSERT_BOOKMARK_COMMAND} from '@tryghost/kg-default-nodes';
 
-function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor, captionEditorInitialState}) {
+function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor, captionEditorInitialState, createdWithUrl}) {
     const [editor] = useLexicalComposerContext();
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -42,7 +42,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
         setUrlError(false);
     };
 
-    const handlePasteAsLink = () => {
+    const handlePasteAsLink = useCallback(() => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             const paragraph = $createParagraphNode()
@@ -51,7 +51,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
             node.replace(paragraph);
             paragraph.selectEnd();
         });
-    };
+    }, [editor, nodeKey, urlInputValue]);
 
     const handleClose = () => {
         editor.update(() => {
@@ -60,7 +60,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
         });
     };
 
-    async function fetchMetadata(href) {
+    const fetchMetadata = useCallback(async (href) => {
         setLoading(true);
         let response;
         try {
@@ -82,7 +82,28 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
             node.setThumbnail(response.metadata.thumbnail);
         });
         setLoading(false);
-    }
+    }, [cardConfig, editor, nodeKey]);
+
+    // in case we're creating the node with a url already, fetch the metadata and 
+    //  paste as a link if it fails
+
+    // TODO: this needs to be a custom hook
+    // if we create the node with a url
+    //  fetch the metadata
+    //  if it fails, paste as a link
+    React.useEffect(() => {
+        if (createdWithUrl) {
+            console.log(`createdWithUrl`,createdWithUrl);
+            // handlePasteAsLink(url.href);
+            try {
+                console.log(`fetching metadata`);
+                fetchMetadata(url.href);
+            } catch {
+                console.log(`pasting as link`);
+                handlePasteAsLink(url.href);
+            }
+        }
+    }, [url, createdWithUrl, fetchMetadata, handlePasteAsLink]);
 
     return (
         <>
@@ -136,6 +157,7 @@ function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, 
 export class BookmarkNode extends BaseBookmarkNode {
     __captionEditor;
     __captionEditorInitialState;
+    __createdWithUrl;
 
     static kgMenu = [{
         label: 'Bookmark',
@@ -151,6 +173,8 @@ export class BookmarkNode extends BaseBookmarkNode {
 
     constructor(dataset = {}, key) {
         super(dataset, key);
+
+        this.__createdWithUrl = !!dataset.url;
 
         // set up and populate nested editors from the serialized HTML
         this.__captionEditor = dataset.captionEditor || createEditor({nodes: MINIMAL_NODES});
@@ -213,6 +237,7 @@ export class BookmarkNode extends BaseBookmarkNode {
                     author={this.__author}
                     captionEditor={this.__captionEditor}
                     captionEditorInitialState={this.__captionEditorInitialState}
+                    createdWithUrl={this.__createdWithUrl}
                     description={this.__description}
                     icon={this.__icon}
                     nodeKey={this.getKey()}
