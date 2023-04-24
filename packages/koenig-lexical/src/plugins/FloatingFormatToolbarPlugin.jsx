@@ -79,6 +79,7 @@ function FloatingFormatToolbar({
 }) {
     const [stickyToolbar, setStickyToolbar] = React.useState(false);
     const toolbarRef = React.useRef(null);
+    const [selectionRangeRect, setSelectionRangeRect] = React.useState({});
 
     let hideHeading = false;
     if (!editor.hasNodes([HeadingNode])){
@@ -148,6 +149,7 @@ function FloatingFormatToolbar({
         const selectionRange = createDOMRange(editor, anchor.getNode(), selection.anchor.offset, focus.getNode(), selection.focus.offset);
         const selectionRects = createRectsFromDOMRange(editor, selectionRange);
         const rangeRect = selectionRects[0];
+        setSelectionRangeRect(rangeRect);
 
         if (rangeRect && !stickyToolbar) {
             setFloatingElemPosition(rangeRect, toolbarElement, anchorElem);
@@ -183,7 +185,7 @@ function FloatingFormatToolbar({
         return () => {
             document.removeEventListener('keyup', shiftUp);
         };
-    }, [toggleVis, editor, updateFloatingToolbar]);
+    }, [toggleVis, editor, updateFloatingToolbar, toolbarItemType]);
 
     React.useEffect(() => {
         const scrollElement = getScrollParent(anchorElem);
@@ -205,7 +207,7 @@ function FloatingFormatToolbar({
                 scrollElement.removeEventListener('scroll', update);
             }
         };
-    }, [editor, updateFloatingToolbar, anchorElem]);
+    }, [editor, updateFloatingToolbar, anchorElem, toolbarItemType]);
 
     React.useEffect(() => {
         editor.getEditorState().read(() => {
@@ -241,14 +243,26 @@ function FloatingFormatToolbar({
 
     const isSnippetVisible = toolbarItemTypes.snippet === toolbarItemType;
     const isLinkVisible = toolbarItemTypes.link === toolbarItemType;
+    const arrowStyles = getArrowPositionStyles(selectionRangeRect, toolbarRef);
 
     return (
         <div ref={toolbarRef} className="not-kg-prose fixed z-[10000]" style={{opacity: 0}} data-kg-floating-toolbar>
-            {isSnippetVisible && <SnippetActionToolbar onClose={handleActionToolbarClose}/>}
+            {isSnippetVisible && (
+                <SnippetActionToolbar
+                    arrowStyles={arrowStyles}
+                    onClose={handleActionToolbarClose}
+                />
+            )}
 
-            {isLinkVisible && <LinkActionToolbar href={href} onClose={handleActionToolbarClose}/>}
+            {isLinkVisible && (
+                <LinkActionToolbar
+                    arrowStyles={arrowStyles}
+                    href={href}
+                    onClose={handleActionToolbarClose}
+                />
+            )}
 
-            <ToolbarMenu hide={toolbarItemType}>
+            <ToolbarMenu arrowStyles={arrowStyles} hide={toolbarItemType}>
                 <ToolbarMenuItem data-kg-toolbar-button="bold" icon="bold" isActive={isBold} label="Format text as bold" onClick={() => {
                     setStickyToolbar(true);
                     editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
@@ -417,4 +431,21 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled) {
 export default function FloatingFormatToolbarPlugin({anchorElem = document.body, isSnippetsEnabled}) {
     const [editor] = useLexicalComposerContext();
     return useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled);
+}
+
+function getArrowPositionStyles(selectionRangeRect, toolbarRef) {
+    const ARROW_WIDTH = 8;
+    const selectionLeft = selectionRangeRect.left;
+
+    if (!toolbarRef.current) {
+        return {};
+    }
+    const toolbarRect = toolbarRef.current.getClientRects()[0];
+    const toolbarLeft = toolbarRect.left;
+    const arrowLeftPosition = (selectionLeft - toolbarLeft) + selectionRangeRect?.width / 2 - ARROW_WIDTH;
+
+    if (arrowLeftPosition > toolbarRect.width) {
+        return {};
+    }
+    return ({left: `${Math.round(arrowLeftPosition)}px`});
 }
