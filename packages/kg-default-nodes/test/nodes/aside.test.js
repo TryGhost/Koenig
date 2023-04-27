@@ -39,7 +39,7 @@ describe('AsideNode', function () {
     describe('importDOM', function () {
         it('parses an aside element', editorTest(function () {
             const dom = (new JSDOM(html`
-                <aside />
+                <blockquote class="kg-blockquote-alt">Hello</blockquote>
             `)).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
 
