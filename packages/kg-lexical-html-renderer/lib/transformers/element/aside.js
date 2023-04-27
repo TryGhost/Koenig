@@ -1,4 +1,4 @@
-const {$isAsideNode} = require('../../nodes/AsideNode');
+const {$isAsideNode} = require('@tryghost/kg-default-nodes');
 
 module.exports = {
     export(node, options, exportChildren) {
