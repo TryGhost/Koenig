@@ -2061,7 +2061,7 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@playwright/test@^1.30.0":
+"@playwright/test@^1.33.0":
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.33.0.tgz#669ef859efb81b143dfc624eef99d1dd92a81b67"
   integrity sha512-YunBa2mE7Hq4CfPkGzQRK916a4tuZoVx/EpLjeWlTVOnD4S2+fdaQZE0LJkbfhN5FTSKNLdcl7MoT5XB37bTkg==
@@ -7577,7 +7577,6 @@ eslint-plugin-es@^4.1.0:
 
 eslint-plugin-filenames@allouis/eslint-plugin-filenames:
   version "1.3.2"
-  uid a59e08330f606d501f3d6657853792f8e6ed8234
   resolved "https://codeload.github.com/allouis/eslint-plugin-filenames/tar.gz/a59e08330f606d501f3d6657853792f8e6ed8234"
   dependencies:
     lodash.camelcase "4.3.0"
