@@ -17,6 +17,7 @@ import {
     $isTextNode,
     $setSelection,
     COMMAND_PRIORITY_LOW,
+    DELETE_LINE_COMMAND,
     INSERT_PARAGRAPH_COMMAND,
     KEY_ARROW_DOWN_COMMAND,
     KEY_ARROW_LEFT_COMMAND,
@@ -824,6 +825,40 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 // delete the card, keeping selection in place
                                 event.preventDefault();
                                 nextSibling.remove();
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+                },
+                COMMAND_PRIORITY_LOW
+            ),
+            editor.registerCommand(
+                DELETE_LINE_COMMAND,
+                (isBackward) => {
+                    // delete selected card if it's not a nested editor
+                    if (selectedCardKey && document.activeElement === editor.getRootElement() && !isNested) {
+                        editor.dispatchCommand(DELETE_CARD_COMMAND, {cardKey: selectedCardKey, direction: isBackward ? 'backward' : 'forward'});
+                        return true;
+                    }
+
+                    const selection = $getSelection();
+
+                    if ($isRangeSelection(selection)) {
+                        if (selection.isCollapsed) {
+                            const anchor = selection.anchor;
+                            const anchorNode = anchor.getNode();
+                            const topLevelElement = anchorNode.getTopLevelElement();
+                            const previousSibling = topLevelElement.getPreviousSibling();
+                            const nextSibling = topLevelElement.getNextSibling();
+                            const sibling = isBackward ? previousSibling : nextSibling;
+
+                            // avoid deleting a card unintentionally
+                            if ($isDecoratorNode(sibling) && topLevelElement.getChildrenSize() === 1) {
+                                anchorNode.remove();
+                                $selectDecoratorNode(sibling);
+
                                 return true;
                             }
                         }
