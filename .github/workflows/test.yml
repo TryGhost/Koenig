@@ -54,8 +54,15 @@ jobs:
         run: npx playwright install --with-deps
 
       - run: yarn test
-
       - uses: codecov/codecov-action@v3
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 30
 
       - uses: daniellockyer/action-slack-build@master
         if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
