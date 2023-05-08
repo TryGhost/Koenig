@@ -3343,9 +3343,9 @@
     unidecode "^0.1.8"
 
 "@tryghost/url-utils@^4.0.0":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.1.tgz#fa86d183de8790eb8b16b3e0fa4faa52ed2b1cac"
-  integrity sha512-35Fhu88YdvnrmJX0lvDDJqCzKP51BqD+ZhD8VrKNR4ZuRCF65pG6hHD+CXVrhdLvLmt8iJTJE6GXaHis7u/8WA==
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.2.tgz#3461c65f00e1167ff479da15bfabcbb4d2a82163"
+  integrity sha512-UDaPjAX3VWUvj9zSqWe4nMhfNsXpg32R9h1QpXH0N4jw4gBj7Y54pCRZmQ6NjKxHrL66sX0mJWYxd/2LVdusag==
   dependencies:
     cheerio "^0.22.0"
     moment "^2.27.0"
