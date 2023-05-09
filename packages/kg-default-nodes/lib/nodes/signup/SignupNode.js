@@ -1,5 +1,6 @@
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {createCommand} from 'lexical';
+import {renderSignupCardToDOM} from './SignupRenderer';
 
 export const INSERT_SIGNUP_COMMAND = createCommand();
 const NODE_TYPE = 'signup';
@@ -62,6 +63,14 @@ export class SignupNode extends KoenigDecoratorNode {
         this.__subheader = subheader || '';
         this.__disclaimer = disclaimer || '';
         this.__backgroundImageSrc = backgroundImageSrc || '';
+    }
+
+    exportDOM(options = {}) {
+        const element = renderSignupCardToDOM(this, options);
+        return {
+            element,
+            type: 'inner'
+        };
     }
 
     static importJSON(serializedNode) {

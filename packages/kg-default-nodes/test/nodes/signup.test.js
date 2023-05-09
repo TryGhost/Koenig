@@ -1,4 +1,6 @@
 const {createHeadlessEditor} = require('@lexical/headless');
+const {html} = require('../utils');
+const {JSDOM} = require('jsdom');
 const {SignupNode, $createSignupNode, $isSignupNode} = require('../../');
 
 const editorNodes = [SignupNode];
@@ -6,6 +8,7 @@ const editorNodes = [SignupNode];
 describe('SignupNode', function () {
     let editor;
     let dataset;
+    let exportOptions;
 
     const editorTest = testFn => function (done) {
         editor.update(() => {
@@ -29,6 +32,12 @@ describe('SignupNode', function () {
             subheader: 'Subheader',
             size: 'small',
             style: 'image'
+        };
+
+        exportOptions = {
+            createDocument() {
+                return (new JSDOM()).window.document;
+            }
         };
     });
 
@@ -78,6 +87,16 @@ describe('SignupNode', function () {
             const signupNode = $createSignupNode(dataset);
             const nodeData = signupNode.getDataset();
             nodeData.should.deepEqual(dataset);
+        }));
+    });
+
+    describe('exportDOM', function () {
+        it('creates signup element', editorTest(function () {
+            const signupNode = $createSignupNode();
+            const {element} = signupNode.exportDOM(exportOptions);
+            element.should.prettifyTo(html`
+            <form data-members-form=""><input data-members-email="" type="email" required=""><button type="submit">Continue</button></form>
+            `);
         }));
     });
 });
