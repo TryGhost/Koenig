@@ -1,0 +1,206 @@
+import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
+import {createCommand} from 'lexical';
+
+export const INSERT_SIGNUP_COMMAND = createCommand();
+const NODE_TYPE = 'signup';
+
+export class SignupNode extends KoenigDecoratorNode {
+    // payload properties
+    __size;
+    __style;
+    __buttonText;
+    __header;
+    __subheader;
+    __disclaimer;
+    __backgroundImageSrc;
+
+    static getType() {
+        return NODE_TYPE;
+    }
+
+    static clone(node) {
+        return new this(
+            node.getDataset(),
+            node.__key
+        );
+    }
+
+    static get urlTransformMap() {
+        return {
+            backgroundImageSrc: 'url',
+            header: 'html',
+            subheader: 'html',
+            disclaimer: 'html'
+        };
+    }
+
+    getDataset() {
+        const self = this.getLatest();
+        return {
+            size: self.__size,
+            style: self.__style,
+            buttonText: self.__buttonText,
+            header: self.__header,
+            subheader: self.__subheader,
+            disclaimer: self.__disclaimer,
+            backgroundImageSrc: self.__backgroundImageSrc
+        };
+    }
+
+    constructor({size,
+        style,
+        buttonText,
+        header,
+        subheader,
+        disclaimer,
+        backgroundImageSrc} = {}, key) {
+        super(key);
+        this.__size = size || 'small';
+        this.__style = style || 'dark';
+        this.__buttonText = buttonText || '';
+        this.__header = header || '';
+        this.__subheader = subheader || '';
+        this.__disclaimer = disclaimer || '';
+        this.__backgroundImageSrc = backgroundImageSrc || '';
+    }
+
+    static importJSON(serializedNode) {
+        const {size, style, buttonText, header, subheader, disclaimer, backgroundImageSrc} = serializedNode;
+        const node = new this({
+            size,
+            style,
+            buttonText,
+            header,
+            subheader,
+            disclaimer,
+            backgroundImageSrc
+        });
+        return node;
+    }
+
+    exportJSON() {
+        const dataset = {
+            type: NODE_TYPE,
+            version: 1,
+            size: this.getSize(),
+            style: this.getStyle(),
+            buttonText: this.getButtonText(),
+            header: this.getSignup(),
+            subheader: this.getSubheader(),
+            disclaimer: this.getDisclaimer(),
+            backgroundImageSrc: this.getBackgroundImageSrc()
+        };
+        return dataset;
+    }
+
+    // static importDOM() {
+    // }
+
+    // exportDOM(options = {}) {
+    // }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+
+    getSize() {
+        const self = this.getLatest();
+        return self.__size;
+    }
+
+    setSize(size) {
+        const writable = this.getWritable();
+        writable.__size = size;
+    }
+
+    getStyle() {
+        const self = this.getLatest();
+        return self.__style;
+    }
+
+    setStyle(style) {
+        const writable = this.getWritable();
+        writable.__style = style;
+    }
+
+    getButtonText() {
+        const self = this.getLatest();
+        return self.__buttonText;
+    }
+
+    setButtonText(buttonText) {
+        const writable = this.getWritable();
+        writable.__buttonText = buttonText;
+    }
+
+    geHeader() {
+        const self = this.getLatest();
+        return self.__header;
+    }
+
+    setHeader(header) {
+        const writable = this.getWritable();
+        writable.__header = header;
+    }
+
+    getSubheader() {
+        const self = this.getLatest();
+        return self.__subheader;
+    }
+
+    setSubheader(subheader) {
+        const writable = this.getWritable();
+        writable.__subheader = subheader;
+    }
+
+    getDisclaimer() {
+        const self = this.getLatest();
+        return self.__disclaimer;
+    }
+
+    setDisclaimer(size) {
+        const writable = this.getWritable();
+        writable.__disclaimer = size;
+    }
+
+    getBackgroundImageSrc() {
+        const self = this.getLatest();
+        return self.__backgroundImageSrc;
+    }
+
+    setBackgroundImageSrc(backgroundImageSrc) {
+        const writable = this.getWritable();
+        writable.__backgroundImageSrc = backgroundImageSrc;
+    }
+
+    hasEditMode() {
+        return true;
+    }
+
+    isEmpty() {
+        return !this.header && !this.subheader && !this.disclaimer && !this.__buttonText && !this.__backgroundImageSrc;
+    }
+
+    // should be overridden
+    /* c8 ignore next 3 */
+    decorate() {
+        return '';
+    }
+}
+
+export const $createSignupNode = (dataset) => {
+    return new SignupNode(dataset);
+};
+
+export function $isSignupNode(node) {
+    return node instanceof SignupNode;
+}
