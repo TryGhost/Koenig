@@ -85,19 +85,13 @@ export class SignupNode extends KoenigDecoratorNode {
             size: this.getSize(),
             style: this.getStyle(),
             buttonText: this.getButtonText(),
-            header: this.getSignup(),
+            header: this.getHeader(),
             subheader: this.getSubheader(),
             disclaimer: this.getDisclaimer(),
             backgroundImageSrc: this.getBackgroundImageSrc()
         };
         return dataset;
     }
-
-    // static importDOM() {
-    // }
-
-    // exportDOM(options = {}) {
-    // }
 
     /* c8 ignore start */
     createDOM() {
@@ -142,7 +136,7 @@ export class SignupNode extends KoenigDecoratorNode {
         writable.__buttonText = buttonText;
     }
 
-    geHeader() {
+    getHeader() {
         const self = this.getLatest();
         return self.__header;
     }
@@ -187,7 +181,7 @@ export class SignupNode extends KoenigDecoratorNode {
     }
 
     isEmpty() {
-        return !this.header && !this.subheader && !this.disclaimer && !this.__buttonText && !this.__backgroundImageSrc;
+        return !this.__header && !this.__subheader && !this.__disclaimer && !this.__buttonText && !this.__backgroundImageSrc;
     }
 
     // should be overridden
