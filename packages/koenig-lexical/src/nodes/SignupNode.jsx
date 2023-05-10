@@ -117,7 +117,7 @@ export class SignupNode extends BaseSignupNode {
 
     decorate() {
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()} width={'full'}>
+            <KoenigCardWrapper nodeKey={this.getKey()}>
                 <SignupNodeComponent
                     backgroundImageSrc={this.getBackgroundImageSrc()}
                     buttonPlaceholder={'Add button text'}
@@ -127,7 +127,7 @@ export class SignupNode extends BaseSignupNode {
                     disclaimerTextEditor={this.__disclaimerTextEditor}
                     disclaimerTextEditorInitialState={this.__disclaimerTextEditorInitialState}
                     header={this.getHeader()}
-                    headerPlaceholder={'Enter heading text'}
+                    headerPlaceholder={'Enter heading'}
                     headerTextEditor={this.__headerTextEditor}
                     headerTextEditorInitialState={this.__headerTextEditorInitialState}
                     nodeKey={this.getKey()}
