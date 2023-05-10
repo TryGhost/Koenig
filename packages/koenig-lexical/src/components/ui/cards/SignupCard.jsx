@@ -180,6 +180,7 @@ export function SignupCard({type,
                 {
                     (isEditing || !!subheader || !isEditorEmpty(subheaderTextEditor)) && (
                         <KoenigNestedEditor
+                            focusNext={disclaimerTextEditor}
                             hasSettingsPanel={true}
                             initialEditor={subheaderTextEditor}
                             initialEditorState={subheaderTextEditorInitialState}
@@ -196,7 +197,7 @@ export function SignupCard({type,
                 {/* Form */}
                 <div className="mt-8 flex">
                     <div className="mr-4 flex items-center rounded border border-white px-4">Enter your email</div>
-                    <Button color={type === 'light' ? 'accent' : 'light'} dataTestId="header-card-button" placeholder={buttonPlaceholder} size='medium' value={buttonText} />
+                    <Button color={type === 'light' ? 'accent' : 'light'} dataTestId="signup-card-button" placeholder={buttonPlaceholder} size='medium' value={buttonText} />
                 </div>
 
                 {/* Disclaimer */}
@@ -239,7 +240,7 @@ export function SignupCard({type,
                     />
                     <SettingsDivider />
                     <InputSetting
-                        dataTestId='header-button-text'
+                        dataTestId='signup-button-text'
                         label='Button text'
                         placeholder='Add button text'
                         value={buttonText}
