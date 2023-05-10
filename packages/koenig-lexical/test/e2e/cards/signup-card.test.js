@@ -12,7 +12,7 @@ test.describe('Signup card', async () => {
 
     test('renders signup card node', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
@@ -25,7 +25,7 @@ test.describe('Signup card', async () => {
 
     test('can edit header', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         await page.keyboard.type('Hello world');
         const firstEditor = page.locator('[data-kg-card="signup"] [data-kg="editor"]').nth(0);
@@ -34,7 +34,7 @@ test.describe('Signup card', async () => {
 
     test('can edit subheader', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         await page.keyboard.press('Enter');
         await page.keyboard.type('Hello subheader');
@@ -46,7 +46,7 @@ test.describe('Signup card', async () => {
 
     test('can edit disclaimer', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         await page.keyboard.press('Enter');
         await page.keyboard.press('Enter');
@@ -59,7 +59,7 @@ test.describe('Signup card', async () => {
 
     test('can edit subheader and disclaimer via arrow keys', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         await page.keyboard.type('Hello');
 
@@ -88,7 +88,7 @@ test.describe('Signup card', async () => {
 
     test('can edit button text', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         await page.click('[data-testid="signup-button-text"]');
         await page.keyboard.type('Click me');
@@ -98,7 +98,7 @@ test.describe('Signup card', async () => {
 
     test('can change the background color', async function ({page}) {
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         const lightButton = page.locator('[aria-label="Light"]');
         const darkButton = page.locator('[aria-label="Dark"]');
@@ -130,7 +130,7 @@ test.describe('Signup card', async () => {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
 
         await focusEditor(page);
-        await insertCard(page, {cardName: 'product'});
+        await insertCard(page, {cardName: 'signup'});
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
