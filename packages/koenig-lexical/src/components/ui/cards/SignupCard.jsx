@@ -209,6 +209,7 @@ export function SignupCard({alignment,
                     />
                     {splitLayout ?
                         <BackgroundImagePicker
+                            backgroundImagePreview={backgroundImagePreview}
                             backgroundImageSrc={backgroundImageSrc}
                             fileInputRef={fileInputRef}
                             handleClearBackgroundImage={handleClearBackgroundImage}
@@ -224,8 +225,8 @@ export function SignupCard({alignment,
                                 selectedName={type}
                                 onClick={handleColorSelector}
                             />
-                            {(type === 'image') &&
                             <BackgroundImagePicker
+                                backgroundImagePreview={backgroundImagePreview}
                                 backgroundImageSrc={backgroundImageSrc}
                                 fileInputRef={fileInputRef}
                                 handleClearBackgroundImage={handleClearBackgroundImage}
@@ -234,7 +235,6 @@ export function SignupCard({alignment,
                                 progress={progress}
                                 onFileChange={onFileChange}
                             />
-                            }
                         </>
                     }
                     <SettingsDivider />
