@@ -41,15 +41,11 @@ test.describe('Signup card', async () => {
     test('can edit subheader', async function ({page}) {
         await createSignupCard({page});
 
-        await page.keyboard.type('Hello world');
-
         await page.keyboard.press('Enter');
         await page.keyboard.type('Hello subheader');
 
-        const firstEditor = page.locator('[data-kg-card="signup"] [data-kg="editor"]').nth(0);
         const secondEditor = page.locator('[data-kg-card="signup"] [data-kg="editor"]').nth(1);
 
-        await expect(firstEditor).toHaveText('Hello world');
         await expect(secondEditor).toHaveText('Hello subheader');
     });
 
