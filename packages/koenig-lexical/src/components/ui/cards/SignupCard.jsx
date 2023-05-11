@@ -49,6 +49,7 @@ export function SignupCard({alignment,
     handleButtonText,
     handleClearBackgroundImage,
     labels,
+    availableLabels,
     handleLabels,
     openFilePicker,
     onFileChange,
@@ -111,14 +112,6 @@ export function SignupCard({alignment,
             color: 'bg-grey-50'
         }
     ];
-
-    const dropdownOptions = [{
-        name: 'Label 1',
-        label: 'Label 1'
-    }, {
-        name: 'Label 2',
-        label: 'Label 2'
-    }];
 
     const {isLoading: isUploading, progress} = fileUploader || {};
 
@@ -254,7 +247,7 @@ export function SignupCard({alignment,
                     <LabelDropdownSetting
                         description='These labels will be applied to members who sign up via this form.'
                         label='Labels'
-                        labels={dropdownOptions.map(option => option.label)}
+                        labels={availableLabels}
                         value={labels}
                         onChange={handleLabels}
                     />
@@ -288,6 +281,7 @@ SignupCard.propTypes = {
     handleClearBackgroundImage: PropTypes.func,
     handleLabels: PropTypes.func,
     labels: PropTypes.arrayOf(PropTypes.string),
+    availableLabels: PropTypes.arrayOf(PropTypes.object),
     openFilePicker: PropTypes.func,
     onFileChange: PropTypes.func,
     headerTextEditor: PropTypes.object,

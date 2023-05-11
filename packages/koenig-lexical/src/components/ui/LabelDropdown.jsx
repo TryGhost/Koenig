@@ -3,6 +3,7 @@ import {ReactComponent as ArrowIcon} from '../../assets/icons/kg-arrow-down.svg'
 import {ReactComponent as CloseIcon} from '../../assets/icons/kg-close.svg';
 import {DropdownContainer} from './DropdownContainer';
 import {KeyboardSelection} from './KeyboardSelection';
+import {partition} from 'lodash-es';
 
 function Item({item, selected, onChange}) {
     let selectionClass = '';
@@ -13,15 +14,15 @@ function Item({item, selected, onChange}) {
 
     // We use the capture phase of the mouse down event, otherwise the list option will be removed when blurring the input
     // before calling the click event
-    const handleOptionMouseDown = (event, v) => {
+    const handleOptionMouseDown = (event) => {
         // Prevent losing focus when clicking an option
         event.preventDefault();
-        onChange(v);
+        onChange(item);
     };
 
     return (
         <li key={item.name} className={selectionClass}>
-            <button className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white" type="button" onMouseDownCapture={event => handleOptionMouseDown(event, item.name)}>{item.label}</button>
+            <button className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white" type="button" onMouseDownCapture={handleOptionMouseDown}>{item.label}</button>
         </li>
     );
 }
@@ -29,6 +30,7 @@ function Item({item, selected, onChange}) {
 export function LabelDropdown({value = [], labels, onChange}) {
     const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = React.useState('');
+    const [newLabels, setNewLabels] = React.useState([]);
     const inputRef = React.useRef(null);
 
     const handleOpen = (event) => {
@@ -44,20 +46,27 @@ export function LabelDropdown({value = [], labels, onChange}) {
         setOpen(false);
     };
 
-    const handleSelect = (name) => {
-        if (!name || value?.includes(name)) {
+    const handleSelect = (item) => {
+        if (!item.name || value?.includes(item.id)) {
             return;
         }
 
-        onChange(value.concat(name));
+        // TODO: How to handle new labels?
+        if (!item.id) {
+            item.id = `new-label-${item.name}`;
+            setNewLabels(newLabels.concat({id: item.id, name: item.name}));
+        }
+
+        onChange(value.concat(item.id));
         setFilter('');
     };
 
-    const handleDeselect = (event, name) => {
+    const handleDeselect = (event, item) => {
         // Prevent losing focus when clicking an option
         event.preventDefault();
 
-        onChange(value.filter(selection => selection !== name));
+        onChange(value.filter(selection => selection !== item.id));
+        setNewLabels(newLabels.filter(label => label.id !== item.id));
     };
 
     const handleBackspace = (event) => {
@@ -72,11 +81,12 @@ export function LabelDropdown({value = [], labels, onChange}) {
         );
     };
 
-    const nonSelectedItems = labels.filter(label => !value?.includes(label)).map(label => ({name: label, label}));
-    const filteredItems = nonSelectedItems.filter(item => item.label.toLowerCase().includes(filter.toLowerCase()));
-    const emptyItem = filter && !value?.includes(filter)
-        ? [{name: filter, label: <>Add <strong>&quot;{filter}&quot;...</strong></>}]
-        : [{name: undefined, label: 'Type to search'}];
+    const allLabels = labels.concat(newLabels).map(label => ({...label, label: label.name}));
+    const [selectedLabels, nonSelectedLabels] = partition(allLabels, label => value?.includes(label.id));
+    const filteredItems = nonSelectedLabels.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
+    const emptyItem = filter && !selectedLabels?.some(label => label.name === filter)
+        ? [{id: undefined, name: filter, label: <>Add <strong>&quot;{filter}&quot;...</strong></>}]
+        : [{id: undefined, name: undefined, label: 'Type to search'}];
 
     return (
         <div className="relative font-sans text-sm font-normal">
@@ -85,14 +95,14 @@ export function LabelDropdown({value = [], labels, onChange}) {
                 type="button"
                 onClick={() => inputRef.current.focus()}
             >
-                {value.map(label => (
+                {selectedLabels.map(label => (
                     <button
-                        key={label}
+                        key={label.id}
                         className="bg-grey-900 dark:bg-grey-100 dark:text-grey-900 flex cursor-pointer items-center rounded-sm py-1 px-2 leading-none text-white"
                         type="button"
                         onMouseDownCapture={event => handleDeselect(event, label)}
                     >
-                        {label}
+                        {label.label}
                         <CloseIcon className="ml-2 h-2 w-2" />
                     </button>
                 ))}
@@ -117,7 +127,7 @@ export function LabelDropdown({value = [], labels, onChange}) {
                     <KeyboardSelection
                         getItem={getItem}
                         items={filteredItems.length ? filteredItems : emptyItem}
-                        onSelect={item => handleSelect(item.name)}
+                        onSelect={handleSelect}
                     />
                 </DropdownContainer>
             )}

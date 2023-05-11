@@ -35,6 +35,13 @@ function SignupNodeComponent({
     const {fileUploader} = useContext(KoenigComposerContext);
     const {isEditing, isSelected} = useContext(CardContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = useState(false);
+    const [availableLabels, setAvailableLabels] = useState([]);
+
+    useEffect(() => {
+        cardConfig.signup.fetchAvailableLabels().then((options) => {
+            setAvailableLabels(options);
+        });
+    }, [cardConfig.signup]);
 
     const handleToolbarEdit = (event) => {
         event.preventDefault();
@@ -122,6 +129,7 @@ function SignupNodeComponent({
     return (
         <>
             <SignupCard
+                availableLabels={availableLabels}
                 backgroundImagePreview={backgroundImagePreview}
                 backgroundImageSrc={backgroundImageSrc}
                 buttonPlaceholder={buttonPlaceholder}
