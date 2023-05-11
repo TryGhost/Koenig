@@ -27,7 +27,7 @@ function Item({item, selected, onChange}) {
     );
 }
 
-export function LabelDropdown({value = [], labels, onChange}) {
+export function LabelDropdown({value = [], menu, onChange}) {
     const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = React.useState('');
     const [newLabels, setNewLabels] = React.useState([]);
@@ -81,7 +81,7 @@ export function LabelDropdown({value = [], labels, onChange}) {
         );
     };
 
-    const allLabels = labels.concat(newLabels).map(label => ({...label, label: label.name}));
+    const allLabels = menu.concat(newLabels).map(label => ({...label, label: label.name}));
     const [selectedLabels, nonSelectedLabels] = partition(allLabels, label => value?.includes(label.id));
     const filteredItems = nonSelectedLabels.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
     const emptyItem = filter && !selectedLabels?.some(label => label.name === filter)

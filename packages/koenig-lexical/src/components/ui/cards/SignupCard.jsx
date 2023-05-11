@@ -247,7 +247,7 @@ export function SignupCard({alignment,
                     <LabelDropdownSetting
                         description='These labels will be applied to members who sign up via this form.'
                         label='Labels'
-                        labels={availableLabels}
+                        menu={availableLabels}
                         value={labels}
                         onChange={handleLabels}
                     />
