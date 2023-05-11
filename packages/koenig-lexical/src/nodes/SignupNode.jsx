@@ -119,6 +119,7 @@ export class SignupNode extends BaseSignupNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <SignupNodeComponent
+                    backgroundColor={this.getBackgroundColor()}
                     backgroundImageSrc={this.getBackgroundImageSrc()}
                     buttonPlaceholder={'Add button text'}
                     buttonText={this.getButtonText()}

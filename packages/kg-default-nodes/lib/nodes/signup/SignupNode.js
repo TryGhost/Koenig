@@ -14,6 +14,7 @@ export class SignupNode extends KoenigDecoratorNode {
     __subheader;
     __disclaimer;
     __backgroundImageSrc;
+    __backgroundColor;
     __labels;
 
     static getType() {
@@ -45,6 +46,7 @@ export class SignupNode extends KoenigDecoratorNode {
             subheader: self.__subheader,
             disclaimer: self.__disclaimer,
             backgroundImageSrc: self.__backgroundImageSrc,
+            backgroundColor: self.__backgroundColor,
             labels: self.__labels
         };
     }
@@ -55,6 +57,7 @@ export class SignupNode extends KoenigDecoratorNode {
         subheader,
         disclaimer,
         backgroundImageSrc,
+        backgroundColor,
         labels} = {}, key) {
         super(key);
         this.__style = style || 'dark';
@@ -63,6 +66,7 @@ export class SignupNode extends KoenigDecoratorNode {
         this.__subheader = subheader || '';
         this.__disclaimer = disclaimer || '';
         this.__backgroundImageSrc = backgroundImageSrc || '';
+        this.__backgroundColor = backgroundColor || '';
         this.__labels = labels || [];
     }
 
@@ -75,7 +79,7 @@ export class SignupNode extends KoenigDecoratorNode {
     }
 
     static importJSON(serializedNode) {
-        const {style, buttonText, header, subheader, disclaimer, backgroundImageSrc, labels} = serializedNode;
+        const {style, buttonText, header, subheader, disclaimer, backgroundImageSrc, backgroundColor, labels} = serializedNode;
         const node = new this({
             style,
             buttonText,
@@ -83,6 +87,7 @@ export class SignupNode extends KoenigDecoratorNode {
             subheader,
             disclaimer,
             backgroundImageSrc,
+            backgroundColor,
             labels
         });
         return node;
@@ -103,6 +108,7 @@ export class SignupNode extends KoenigDecoratorNode {
             subheader: this.getSubheader(),
             disclaimer: this.getDisclaimer(),
             backgroundImageSrc: this.getBackgroundImageSrc(),
+            backgroundColor: this.getBackgroundColor(),
             labels: this.getLabels()
         };
         return dataset;
@@ -181,6 +187,16 @@ export class SignupNode extends KoenigDecoratorNode {
         writable.__backgroundImageSrc = backgroundImageSrc;
     }
 
+    getBackgroundColor() {
+        const self = this.getLatest();
+        return self.__backgroundColor;
+    }
+
+    setBackgroundColor(backgroundColor) {
+        const writable = this.getWritable();
+        writable.__backgroundColor = backgroundColor;
+    }
+
     getLabels() {
         const self = this.getLatest();
         return self.__labels;
@@ -210,7 +226,7 @@ export class SignupNode extends KoenigDecoratorNode {
     }
 
     isEmpty() {
-        return !this.__header && !this.__subheader && !this.__disclaimer && !this.__buttonText && !this.__backgroundImageSrc;
+        return !this.__header && !this.__subheader && !this.__disclaimer && !this.__buttonText && !this.__backgroundImageSrc && !this.__backgroundColor;
     }
 
     // should be overridden

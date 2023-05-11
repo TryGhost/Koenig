@@ -1,8 +1,9 @@
 import ImageUploadForm from './ImageUploadForm';
 import KoenigComposerContext from '../../context/KoenigComposerContext.jsx';
-import React from 'react';
+import React, {useState} from 'react';
 import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';
 import {ButtonGroup} from './ButtonGroup';
+import {ColorIndicator, FullColorPicker} from './FullColorPicker';
 import {ColorPicker} from './ColorPicker';
 import {ReactComponent as DeleteIcon} from '../../assets/icons/kg-trash.svg';
 import {Dropdown} from './Dropdown';
@@ -165,6 +166,23 @@ export function ColorPickerSetting({label, onClick, selectedName, buttons, layou
             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
                 <ColorPicker buttons={buttons} selectedName={selectedName} onClick={onClick} />
             </div>
+        </div>
+    );
+}
+
+export function FullColorPickerSetting({label, onChange, value, dataTestId}) {
+    const [isExpanded, setExpanded] = useState(false);
+
+    return (
+        <div className="flex-col">
+            <div className="mt-2 flex w-full items-center justify-between text-[1.3rem] first:mt-0" data-testid={dataTestId}>
+                <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
+
+                <div className="shrink-0 pl-2">
+                    <ColorIndicator value={value} onClick={() => setExpanded(!isExpanded)} />
+                </div>
+            </div>
+            {isExpanded && <FullColorPicker value={value} onChange={onChange} />}
         </div>
     );
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {BackgroundImagePicker} from '../BackgroundImagePicker';
 import {Button} from '../Button';
-import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, FullColorPickerSetting, InputSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../../assets/icons/kg-img-regular.svg';
@@ -42,11 +42,13 @@ export function SignupCard({alignment,
     buttonText,
     buttonPlaceholder,
     backgroundImageSrc,
+    backgroundColor,
     isEditing,
     fileUploader,
     fileInputRef,
     handleButtonText,
     handleClearBackgroundImage,
+    handleBackgroundColor,
     labels,
     availableLabels,
     handleLabels,
@@ -204,6 +206,11 @@ export function SignupCard({alignment,
                         isChecked={splitLayout}
                         label='Split layout'
                     />
+                    <FullColorPickerSetting
+                        label='Color picker'
+                        value={backgroundColor}
+                        onChange={handleBackgroundColor}
+                    />
                     {splitLayout ?
                         <BackgroundImagePicker
                             backgroundImageSrc={backgroundImageSrc}
@@ -271,6 +278,7 @@ SignupCard.propTypes = {
     buttonText: PropTypes.string,
     buttonPlaceholder: PropTypes.string,
     backgroundImageSrc: PropTypes.string,
+    backgroundColor: PropTypes.string,
     isEditing: PropTypes.bool,
     fileUploader: PropTypes.object,
     fileInputRef: PropTypes.object,
@@ -278,6 +286,7 @@ SignupCard.propTypes = {
     handleSizeSelector: PropTypes.func,
     handleButtonText: PropTypes.func,
     handleClearBackgroundImage: PropTypes.func,
+    handleBackgroundColor: PropTypes.func,
     handleLabels: PropTypes.func,
     labels: PropTypes.arrayOf(PropTypes.string),
     availableLabels: PropTypes.arrayOf(PropTypes.object),

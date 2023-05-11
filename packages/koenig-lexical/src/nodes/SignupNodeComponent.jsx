@@ -12,6 +12,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function SignupNodeComponent({
     backgroundImageSrc,
+    backgroundColor,
     buttonPlaceholder,
     buttonText,
     nodeKey,
@@ -107,6 +108,13 @@ function SignupNodeComponent({
         });
     };
 
+    const handleBackgroundColor = (color) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundColor(color);
+        });
+    };
+
     const handleLabels = (newLabels) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -122,6 +130,7 @@ function SignupNodeComponent({
         <>
             <SignupCard
                 availableLabels={availableLabels}
+                backgroundColor={backgroundColor}
                 backgroundImageSrc={backgroundImageSrc}
                 buttonPlaceholder={buttonPlaceholder}
                 buttonText={buttonText}
@@ -131,6 +140,7 @@ function SignupNodeComponent({
                 disclaimerTextEditorInitialState={disclaimerTextEditorInitialState}
                 fileInputRef={fileInputRef}
                 fileUploader={imageUploader}
+                handleBackgroundColor={handleBackgroundColor}
                 handleButtonText={handleButtonText}
                 handleClearBackgroundImage={handleClearBackgroundImage}
                 handleColorSelector={handleColorSelector}
