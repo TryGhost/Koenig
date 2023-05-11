@@ -14,14 +14,14 @@ export class FileParser {
                         conversion(domNode) {
                             const link = domNode.querySelector('a');
                             const src = link.getAttribute('href');
-                            const title = domNode.querySelector('.kg-file-card-title')?.textContent || '';
-                            const description = domNode.querySelector('.kg-file-card-caption')?.textContent || '';
+                            const fileTitle = domNode.querySelector('.kg-file-card-title')?.textContent || '';
+                            const fileCaption = domNode.querySelector('.kg-file-card-caption')?.textContent || '';
                             const fileName = domNode.querySelector('.kg-file-card-filename')?.textContent || '';
                             let fileSize = domNode.querySelector('.kg-file-card-filesize')?.textContent || '';
                             const payload = {
                                 src,
-                                title,
-                                description,
+                                fileTitle,
+                                fileCaption,
                                 fileName,
                                 fileSize
                             };

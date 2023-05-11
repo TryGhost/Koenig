@@ -20,8 +20,8 @@ export function bytesToSize(bytes) {
 export class FileNode extends KoenigDecoratorNode {
     // file payload properties
     __src;
-    __title;
-    __description;
+    __fileTitle;
+    __fileCaption;
     __fileName;
     __fileSize;
 
@@ -46,30 +46,31 @@ export class FileNode extends KoenigDecoratorNode {
         const self = this.getLatest();
         return {
             src: self.__src,
-            title: self.__title,
-            description: self.__description,
+            fileTitle: self.__fileTitle,
+            fileCaption: self.__fileCaption,
             fileName: self.__fileName,
             fileSize: self.__fileSize
         };
     }
 
-    constructor({src, title, description, fileName, fileSize} = {}, key) {
+    constructor({src, fileTitle, fileCaption, fileName, fileSize} = {}, key) {
         super(key);
         this.__src = src || '';
-        this.__title = title || '';
-        this.__description = description || '';
+        this.__fileTitle = fileTitle || '';
+        this.__fileCaption = fileCaption || '';
         this.__fileName = fileName || '';
         this.__fileSize = fileSize || '';
     }
 
     static importJSON(serializedNode) {
-        const {src, title, description, fileName, fileSize} = serializedNode;
+        const {src, fileTitle, fileCaption, fileName, fileSize} = serializedNode;
+
         return new this({
             src,
-            title,
-            description,
+            fileTitle,
+            fileCaption,
             fileName,
-            fileSize
+            fileSize: typeof fileSize === 'number' ? bytesToSize(Math.round(fileSize)) : fileSize
         });
     }
 
@@ -79,10 +80,10 @@ export class FileNode extends KoenigDecoratorNode {
         return {
             type: this.getType(),
             src: isBlob ? '<base64String>' : this.getSrc(),
-            title: this.__title,
-            description: this.__description,
-            fileName: this.__fileName,
-            fileSize: this.__fileSize
+            fileTitle: this.getFileTitle(),
+            fileCaption: this.getFileCaption(),
+            fileName: this.getFileName(),
+            fileSize: this.getFileSize()
         };
     }
 
@@ -120,24 +121,24 @@ export class FileNode extends KoenigDecoratorNode {
         writable.__src = src;
     }
 
-    getTitle() {
+    getFileTitle() {
         const self = this.getLatest();
-        return self.__title;
+        return self.__fileTitle;
     }
 
-    setTitle(title) {
+    setFileTitle(fileTitle) {
         const writable = this.getWritable();
-        writable.__title = title;
+        writable.__fileTitle = fileTitle;
     }
 
-    getDescription() {
+    getFileCaption() {
         const self = this.getLatest();
-        return self.__description;
+        return self.__fileCaption;
     }
 
-    setDescription(description) {
+    setFileCaption(fileCaption) {
         const writable = this.getWritable();
-        writable.__description = description;
+        writable.__fileCaption = fileCaption;
     }
 
     getFileName() {
@@ -152,12 +153,12 @@ export class FileNode extends KoenigDecoratorNode {
 
     getFileSize() {
         const self = this.getLatest();
-        return self.__fileSize;
+        return typeof self.__fileSize === 'number' ? bytesToSize(Math.round(self.__fileSize)) : self.__fileSize;
     }
 
     setFileSize(fileSize) {
         const writable = this.getWritable();
-        const size = bytesToSize(fileSize);
+        const size = typeof fileSize === 'number' ? bytesToSize(Math.round(fileSize)) : fileSize;
         writable.__fileSize = size;
     }
 
