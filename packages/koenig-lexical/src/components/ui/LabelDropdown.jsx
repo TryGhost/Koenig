@@ -98,14 +98,14 @@ export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
     return (
         <div className="relative font-sans text-sm font-normal" data-testid={dataTestId}>
             <div
-                className={`border-grey-300 text-grey-900 dark:border-grey-900 dark:bg-grey-900 dark:placeholder:text-grey-800 relative flex w-full cursor-text flex-wrap gap-1 border py-2 pl-3 pr-5 text-left font-sans font-normal focus-visible:outline-none dark:text-white ${open ? 'rounded-t' : 'rounded'}`}
+                className={`relative flex w-full cursor-text flex-wrap gap-1 border border-grey-300 py-2 pl-3 pr-5 text-left font-sans font-normal text-grey-900 focus-visible:outline-none dark:border-grey-900 dark:bg-grey-900 dark:text-white dark:placeholder:text-grey-800 ${open ? 'rounded-t' : 'rounded'}`}
                 type="button"
                 onClick={() => inputRef.current.focus()}
             >
                 {selectedLabels.map(label => (
                     <button
                         key={label.id}
-                        className="bg-grey-900 dark:bg-grey-100 dark:text-grey-900 flex cursor-pointer items-center rounded-sm py-1 px-2 leading-none text-white"
+                        className="flex cursor-pointer items-center rounded-sm bg-grey-900 py-1 px-2 leading-none text-white dark:bg-grey-100 dark:text-grey-900"
                         data-testid="label-dropdown-selected"
                         type="button"
                         onMouseDownCapture={event => handleDeselect(event, label)}
@@ -128,7 +128,7 @@ export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
                     />
                 </div>
 
-                <ArrowIcon className={`text-grey-600 absolute right-2 top-4 h-2 w-2 ${open && 'rotate-180'}`} />
+                <ArrowIcon className={`absolute right-2 top-4 h-2 w-2 text-grey-600 ${open && 'rotate-180'}`} />
             </div>
             {open && (
                 <DropdownContainer>
