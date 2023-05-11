@@ -1,9 +1,8 @@
 import KoenigNestedEditor from '../../KoenigNestedEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {BackgroundImagePicker} from '../BackgroundImagePicker';
 import {Button} from '../Button';
-import {ButtonGroupSetting, ColorPickerSetting, FullColorPickerSetting, InputSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, FullColorPickerSetting, InputSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ThumbnailSetting, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../../assets/icons/kg-img-regular.svg';
@@ -30,7 +29,6 @@ export const TEXT_COLORS = {
 export function SignupCard({alignment,
     type,
     cardWidth,
-    handleColorSelector,
     handleSizeSelector,
     splitLayout,
     header,
@@ -41,19 +39,20 @@ export function SignupCard({alignment,
     disclaimerPlaceholder,
     buttonText,
     buttonPlaceholder,
+    showBackgroundImage,
     backgroundImageSrc,
     backgroundColor,
     isEditing,
     fileUploader,
-    fileInputRef,
     handleButtonText,
+    handleToggleBackgroundImage,
     handleClearBackgroundImage,
     handleBackgroundColor,
     labels,
     availableLabels,
     handleLabels,
-    openFilePicker,
     onFileChange,
+    imageDragHandler,
     headerTextEditor,
     headerTextEditorInitialState,
     subheaderTextEditor,
@@ -88,29 +87,6 @@ export function SignupCard({alignment,
             label: 'Center',
             name: 'center',
             Icon: CenterAlignIcon
-        }
-    ];
-
-    const colorPickerChildren = [
-        {
-            label: 'Dark',
-            name: 'dark',
-            color: 'bg-black'
-        },
-        {
-            label: 'Light',
-            name: 'light',
-            color: 'bg-grey-50'
-        },
-        {
-            label: 'Accent',
-            name: 'accent',
-            color: 'bg-accent'
-        },
-        {
-            label: 'Background Image', // technically not a color, but it could have some styles associated with it when a background image is added.
-            name: 'image',
-            color: 'bg-grey-50'
         }
     ];
 
@@ -206,41 +182,31 @@ export function SignupCard({alignment,
                         isChecked={splitLayout}
                         label='Split layout'
                     />
-                    <FullColorPickerSetting
-                        label='Color picker'
+                    <ToggleSetting
+                        isChecked={Boolean(showBackgroundImage)}
+                        label='Image'
+                        onChange={handleToggleBackgroundImage}
+                    />
+                    {showBackgroundImage && <ThumbnailSetting
+                        alt='Background image'
+                        errors={fileUploader.errors}
+                        icon='file'
+                        isDraggedOver={imageDragHandler.isDraggedOver}
+                        isLoading={isUploading}
+                        label='Custom thumbnail'
+                        mimeTypes={['image/*']}
+                        placeholderRef={imageDragHandler.setRef}
+                        progress={progress}
+                        size='xsmall'
+                        src={backgroundImageSrc}
+                        onFileChange={onFileChange}
+                        onRemoveCustomThumbnail={handleClearBackgroundImage}
+                    />}
+                    {(!showBackgroundImage || splitLayout) && <FullColorPickerSetting
+                        label='Background'
                         value={backgroundColor}
                         onChange={handleBackgroundColor}
-                    />
-                    {splitLayout ?
-                        <BackgroundImagePicker
-                            backgroundImageSrc={backgroundImageSrc}
-                            fileInputRef={fileInputRef}
-                            handleClearBackgroundImage={handleClearBackgroundImage}
-                            isUploading={isUploading}
-                            openFilePicker={openFilePicker}
-                            progress={progress}
-                            type={type}
-                            onFileChange={onFileChange}
-                        />
-                        : <>
-                            <ColorPickerSetting
-                                buttons={colorPickerChildren}
-                                label='Background'
-                                selectedName={type}
-                                onClick={handleColorSelector}
-                            />
-                            <BackgroundImagePicker
-                                backgroundImageSrc={backgroundImageSrc}
-                                fileInputRef={fileInputRef}
-                                handleClearBackgroundImage={handleClearBackgroundImage}
-                                isUploading={isUploading}
-                                openFilePicker={openFilePicker}
-                                progress={progress}
-                                type={type}
-                                onFileChange={onFileChange}
-                            />
-                        </>
-                    }
+                    />}
                     <SettingsDivider />
 
                     <InputSetting
@@ -279,19 +245,21 @@ SignupCard.propTypes = {
     buttonPlaceholder: PropTypes.string,
     backgroundImageSrc: PropTypes.string,
     backgroundColor: PropTypes.string,
+    showBackgroundImage: PropTypes.bool,
     isEditing: PropTypes.bool,
     fileUploader: PropTypes.object,
     fileInputRef: PropTypes.object,
-    handleColorSelector: PropTypes.func,
     handleSizeSelector: PropTypes.func,
     handleButtonText: PropTypes.func,
     handleClearBackgroundImage: PropTypes.func,
     handleBackgroundColor: PropTypes.func,
+    handleToggleBackgroundImage: PropTypes.func,
     handleLabels: PropTypes.func,
     labels: PropTypes.arrayOf(PropTypes.string),
     availableLabels: PropTypes.arrayOf(PropTypes.object),
     openFilePicker: PropTypes.func,
     onFileChange: PropTypes.func,
+    imageDragHandler: PropTypes.object,
     headerTextEditor: PropTypes.object,
     headerTextEditorInitialState: PropTypes.string,
     subheaderTextEditor: PropTypes.object,

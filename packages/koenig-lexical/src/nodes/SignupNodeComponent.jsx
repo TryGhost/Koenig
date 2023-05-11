@@ -1,5 +1,6 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext';
+import useFileDragAndDrop from '../hooks/useFileDragAndDrop';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar';
 import {EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
@@ -7,7 +8,7 @@ import {SignupCard} from '../components/ui/cards/SignupCard.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
 import {backgroundImageUploadHandler} from '../utils/imageUploadHandler';
-import {useContext, useEffect, useRef, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function SignupNodeComponent({
@@ -37,6 +38,7 @@ function SignupNodeComponent({
     const {isEditing, isSelected} = useContext(CardContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = useState(false);
     const [availableLabels, setAvailableLabels] = useState([]);
+    const [showBackgroundImage, setShowBackgroundImage] = useState(Boolean(backgroundImageSrc));
 
     useEffect(() => {
         if (cardConfig?.fetchLabels) {
@@ -54,9 +56,7 @@ function SignupNodeComponent({
 
     const imageUploader = fileUploader.useFileUpload('image');
 
-    const onFileChange = async (e) => {
-        const files = e.target.files;
-
+    const handleImageChange = async (files) => {
         // reset original src so it can be replaced with preview and upload progress
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -71,21 +71,11 @@ function SignupNodeComponent({
         });
     };
 
-    const fileInputRef = useRef(null);
-
-    const openFilePicker = () => {
-        fileInputRef.current.click();
+    const onFileChange = async (e) => {
+        handleImageChange(e.target.files);
     };
 
-    const handleColorSelector = (color) => {
-        if (color === 'image' && backgroundImageSrc === ''){
-            openFilePicker();
-        }
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setStyle(color);
-        });
-    };
+    const imageDragHandler = useFileDragAndDrop({handleDrop: handleImageChange});
 
     const handleSizeSelector = (s) => {
         editor.update(() => {
@@ -106,6 +96,15 @@ function SignupNodeComponent({
             const node = $getNodeByKey(nodeKey);
             node.setBackgroundImageSrc('');
         });
+    };
+
+    const handleToggleBackgroundImage = (e) => {
+        if (e.target.checked) {
+            setShowBackgroundImage(true);
+        } else {
+            setShowBackgroundImage(false);
+            handleClearBackgroundImage();
+        }
     };
 
     const handleBackgroundColor = (color) => {
@@ -138,21 +137,21 @@ function SignupNodeComponent({
                 disclaimerPlaceholder={disclaimerPlaceholder}
                 disclaimerTextEditor={disclaimerTextEditor}
                 disclaimerTextEditorInitialState={disclaimerTextEditorInitialState}
-                fileInputRef={fileInputRef}
                 fileUploader={imageUploader}
                 handleBackgroundColor={handleBackgroundColor}
                 handleButtonText={handleButtonText}
                 handleClearBackgroundImage={handleClearBackgroundImage}
-                handleColorSelector={handleColorSelector}
                 handleLabels={handleLabels}
                 handleSizeSelector={handleSizeSelector}
+                handleToggleBackgroundImage={handleToggleBackgroundImage}
                 header={header}
                 headerPlaceholder={headerPlaceholder}
                 headerTextEditor={headerTextEditor}
                 headerTextEditorInitialState={headerTextEditorInitialState}
+                imageDragHandler={imageDragHandler}
                 isEditing={isEditing}
                 labels={labels}
-                openFilePicker={openFilePicker}
+                showBackgroundImage={showBackgroundImage}
                 subheader={subheader}
                 subheaderPlaceholder={subheaderPlaceholder}
                 subheaderTextEditor={subheaderTextEditor}
