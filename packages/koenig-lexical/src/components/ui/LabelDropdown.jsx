@@ -22,12 +22,19 @@ function Item({item, selected, onChange}) {
 
     return (
         <li key={item.name} className={selectionClass}>
-            <button className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white" type="button" onMouseDownCapture={handleOptionMouseDown}>{item.label}</button>
+            <button
+                className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white"
+                data-testid="label-dropdown-item"
+                type="button"
+                onMouseDownCapture={handleOptionMouseDown}
+            >
+                {item.label}
+            </button>
         </li>
     );
 }
 
-export function LabelDropdown({value = [], menu, onChange}) {
+export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
     const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = React.useState('');
     const [newLabels, setNewLabels] = React.useState([]);
@@ -89,7 +96,7 @@ export function LabelDropdown({value = [], menu, onChange}) {
         : [{id: undefined, name: undefined, label: 'Type to search'}];
 
     return (
-        <div className="relative font-sans text-sm font-normal">
+        <div className="relative font-sans text-sm font-normal" data-testid={dataTestId}>
             <div
                 className={`border-grey-300 text-grey-900 dark:border-grey-900 dark:bg-grey-900 dark:placeholder:text-grey-800 relative flex w-full cursor-text flex-wrap gap-1 border py-2 pl-3 pr-5 text-left font-sans font-normal focus-visible:outline-none dark:text-white ${open ? 'rounded-t' : 'rounded'}`}
                 type="button"
@@ -99,6 +106,7 @@ export function LabelDropdown({value = [], menu, onChange}) {
                     <button
                         key={label.id}
                         className="bg-grey-900 dark:bg-grey-100 dark:text-grey-900 flex cursor-pointer items-center rounded-sm py-1 px-2 leading-none text-white"
+                        data-testid="label-dropdown-selected"
                         type="button"
                         onMouseDownCapture={event => handleDeselect(event, label)}
                     >

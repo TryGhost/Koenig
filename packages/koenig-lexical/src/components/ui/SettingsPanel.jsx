@@ -128,11 +128,12 @@ export function DropdownSetting({label, description, value, menu, onChange}) {
     );
 }
 
-export function LabelDropdownSetting({label, description, value, menu, onChange}) {
+export function LabelDropdownSetting({label, description, value, menu, onChange, dataTestId}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="text-grey-900 dark:text-grey-200 font-bold">{label}</div>
             <LabelDropdown
+                dataTestId={dataTestId}
                 menu={menu}
                 value={value}
                 onChange={onChange}
