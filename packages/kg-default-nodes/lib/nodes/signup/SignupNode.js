@@ -187,8 +187,22 @@ export class SignupNode extends KoenigDecoratorNode {
     }
 
     setLabels(labels) {
+        if (!Array.isArray(labels) || !labels.every(item => typeof item === 'string')) {
+            throw new Error('Invalid argument: Expected an array of strings.'); // eslint-disable-line
+        }
+
         const writable = this.getWritable();
         writable.__labels = labels;
+    }
+
+    addLabel(label) {
+        const writable = this.getWritable();
+        writable.__labels.push(label);
+    }
+
+    removeLabel(label) {
+        const writable = this.getWritable();
+        writable.__labels = writable.__labels.filter(l => l !== label);
     }
 
     hasEditMode() {
