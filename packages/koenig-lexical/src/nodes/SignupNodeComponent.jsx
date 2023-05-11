@@ -38,10 +38,12 @@ function SignupNodeComponent({
     const [availableLabels, setAvailableLabels] = useState([]);
 
     useEffect(() => {
-        cardConfig.signup.fetchAvailableLabels().then((options) => {
-            setAvailableLabels(options);
-        });
-    }, [cardConfig.signup]);
+        if (cardConfig?.fetchLabels) {
+            cardConfig.fetchLabels().then((options) => {
+                setAvailableLabels(options);
+            });
+        }
+    }, [cardConfig]);
 
     const handleToolbarEdit = (event) => {
         event.preventDefault();
