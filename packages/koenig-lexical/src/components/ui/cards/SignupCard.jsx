@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {BackgroundImagePicker} from '../BackgroundImagePicker';
 import {Button} from '../Button';
-import {ButtonGroupSetting, ColorPickerSetting, DropdownSetting, InputSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, InputSetting, LabelDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../../assets/icons/kg-img-regular.svg';
@@ -48,6 +48,8 @@ export function SignupCard({alignment,
     fileInputRef,
     handleButtonText,
     handleClearBackgroundImage,
+    labels,
+    handleLabels,
     openFilePicker,
     onFileChange,
     headerTextEditor,
@@ -111,8 +113,10 @@ export function SignupCard({alignment,
     ];
 
     const dropdownOptions = [{
+        name: 'Label 1',
         label: 'Label 1'
     }, {
+        name: 'Label 2',
         label: 'Label 2'
     }];
 
@@ -246,14 +250,14 @@ export function SignupCard({alignment,
                         placeholder='Add button text'
                         value={buttonText}
                         onChange={handleButtonText}
-
                     />
-                    <DropdownSetting
+                    <LabelDropdownSetting
                         description='These labels will be applied to members who sign up via this form.'
                         label='Labels'
-                        menu={dropdownOptions}
+                        labels={dropdownOptions.map(option => option.label)}
+                        value={labels}
+                        onChange={handleLabels}
                     />
-
                 </SettingsPanel>
             )}
         </>
@@ -282,6 +286,8 @@ SignupCard.propTypes = {
     handleSizeSelector: PropTypes.func,
     handleButtonText: PropTypes.func,
     handleClearBackgroundImage: PropTypes.func,
+    handleLabels: PropTypes.func,
+    labels: PropTypes.arrayOf(PropTypes.string),
     openFilePicker: PropTypes.func,
     onFileChange: PropTypes.func,
     headerTextEditor: PropTypes.object,
