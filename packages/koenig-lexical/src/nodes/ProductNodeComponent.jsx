@@ -55,8 +55,8 @@ export function ProductNodeComponent({
             editor.update(() => {
                 const node = $getNodeByKey(nodeKey);
                 node.setProductImageSrc(imageUrl);
-                node.setImageHeight(height);
-                node.setImageWidth(width);
+                node.setProductImageHeight(height);
+                node.setProductImageWidth(width);
             });
         }
 
