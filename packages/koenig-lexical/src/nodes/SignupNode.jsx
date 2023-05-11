@@ -121,6 +121,7 @@ export class SignupNode extends BaseSignupNode {
                 <SignupNodeComponent
                     backgroundColor={this.getBackgroundColor()}
                     backgroundImageSrc={this.getBackgroundImageSrc()}
+                    buttonColor={this.getButtonColor()}
                     buttonPlaceholder={'Add button text'}
                     buttonText={this.getButtonText()}
                     disclaimer={this.getDisclaimer()}

@@ -16,6 +16,7 @@ function SignupNodeComponent({
     backgroundColor,
     buttonPlaceholder,
     buttonText,
+    buttonColor,
     nodeKey,
     disclaimer,
     disclaimerPlaceholder,
@@ -114,6 +115,13 @@ function SignupNodeComponent({
         });
     };
 
+    const handleButtonColor = (color) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setButtonColor(color);
+        });
+    };
+
     const handleLabels = (newLabels) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -131,6 +139,7 @@ function SignupNodeComponent({
                 availableLabels={availableLabels}
                 backgroundColor={backgroundColor}
                 backgroundImageSrc={backgroundImageSrc}
+                buttonColor={buttonColor}
                 buttonPlaceholder={buttonPlaceholder}
                 buttonText={buttonText}
                 disclaimer={disclaimer}
@@ -139,6 +148,7 @@ function SignupNodeComponent({
                 disclaimerTextEditorInitialState={disclaimerTextEditorInitialState}
                 fileUploader={imageUploader}
                 handleBackgroundColor={handleBackgroundColor}
+                handleButtonColor={handleButtonColor}
                 handleButtonText={handleButtonText}
                 handleClearBackgroundImage={handleClearBackgroundImage}
                 handleLabels={handleLabels}

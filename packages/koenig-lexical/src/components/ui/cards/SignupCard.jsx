@@ -42,12 +42,14 @@ export function SignupCard({alignment,
     showBackgroundImage,
     backgroundImageSrc,
     backgroundColor,
+    buttonColor,
     isEditing,
     fileUploader,
     handleButtonText,
     handleToggleBackgroundImage,
     handleClearBackgroundImage,
     handleBackgroundColor,
+    handleButtonColor,
     labels,
     availableLabels,
     handleLabels,
@@ -199,6 +201,7 @@ export function SignupCard({alignment,
                         progress={progress}
                         size='xsmall'
                         src={backgroundImageSrc}
+                        hideLabel
                         onFileChange={onFileChange}
                         onRemoveCustomThumbnail={handleClearBackgroundImage}
                     />}
@@ -209,11 +212,17 @@ export function SignupCard({alignment,
                     />}
                     <SettingsDivider />
 
+                    <FullColorPickerSetting
+                        label='Button'
+                        value={buttonColor}
+                        onChange={handleButtonColor}
+                    />
                     <InputSetting
                         dataTestId='signup-button-text'
                         label='Button text'
                         placeholder='Add button text'
                         value={buttonText}
+                        hideLabel
                         onChange={handleButtonText}
                     />
                     <MultiSelectDropdownSetting
@@ -245,6 +254,7 @@ SignupCard.propTypes = {
     buttonPlaceholder: PropTypes.string,
     backgroundImageSrc: PropTypes.string,
     backgroundColor: PropTypes.string,
+    buttonColor: PropTypes.string,
     showBackgroundImage: PropTypes.bool,
     isEditing: PropTypes.bool,
     fileUploader: PropTypes.object,
@@ -254,6 +264,7 @@ SignupCard.propTypes = {
     handleClearBackgroundImage: PropTypes.func,
     handleBackgroundColor: PropTypes.func,
     handleToggleBackgroundImage: PropTypes.func,
+    handleButtonColor: PropTypes.func,
     handleLabels: PropTypes.func,
     labels: PropTypes.arrayOf(PropTypes.string),
     availableLabels: PropTypes.arrayOf(PropTypes.object),
