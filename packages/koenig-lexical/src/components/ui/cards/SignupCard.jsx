@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {BackgroundImagePicker} from '../BackgroundImagePicker';
 import {Button} from '../Button';
-import {ButtonGroupSetting, ColorPickerSetting, InputSetting, LabelDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../../assets/icons/kg-img-regular.svg';
@@ -244,7 +244,7 @@ export function SignupCard({alignment,
                         value={buttonText}
                         onChange={handleButtonText}
                     />
-                    <LabelDropdownSetting
+                    <MultiSelectDropdownSetting
                         dataTestId='labels-dropdown'
                         description='These labels will be applied to members who sign up via this form.'
                         label='Labels'

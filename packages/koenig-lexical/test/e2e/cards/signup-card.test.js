@@ -157,29 +157,29 @@ test.describe('Signup card', async () => {
         // Add existing label
 
         await page.keyboard.type('Label 1');
-        await page.click('[data-testid="labels-dropdown"] [data-testid="label-dropdown-item"]');
+        await page.click('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-item"]');
 
-        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]')).toHaveCount(1);
-        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]')).toHaveText('Label 1');
+        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]')).toHaveCount(1);
+        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]')).toHaveText('Label 1');
 
         // Add new label
 
         await page.keyboard.type('Some new label');
         await page.keyboard.press('Enter');
 
-        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]')).toHaveCount(2);
-        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]:nth-child(2)')).toHaveText('Some new label');
+        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]')).toHaveCount(2);
+        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]:nth-child(2)')).toHaveText('Some new label');
 
         // Remove label with backspace
 
         await page.keyboard.press('Backspace');
 
-        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]')).toHaveCount(1);
+        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]')).toHaveCount(1);
 
         // Remove label by clicking
 
-        await page.click('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]');
+        await page.click('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]');
 
-        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="label-dropdown-selected"]')).toHaveCount(0);
+        await expect(page.locator('[data-testid="labels-dropdown"] [data-testid="multiselect-dropdown-selected"]')).toHaveCount(0);
     });
 });

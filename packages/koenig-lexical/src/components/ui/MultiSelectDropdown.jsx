@@ -24,7 +24,7 @@ function Item({item, selected, onChange}) {
         <li key={item.name} className={selectionClass}>
             <button
                 className="h-full w-full cursor-pointer px-3 py-1 text-left dark:text-white"
-                data-testid="label-dropdown-item"
+                data-testid="multiselect-dropdown-item"
                 type="button"
                 onMouseDownCapture={handleOptionMouseDown}
             >
@@ -34,10 +34,10 @@ function Item({item, selected, onChange}) {
     );
 }
 
-export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
+export function MultiSelectDropdown({value = [], menu, onChange, dataTestId}) {
     const [open, setOpen] = React.useState(false);
     const [filter, setFilter] = React.useState('');
-    const [newLabels, setNewLabels] = React.useState([]);
+    const [newItems, setNewItems] = React.useState([]);
     const inputRef = React.useRef(null);
 
     const handleOpen = (event) => {
@@ -58,22 +58,22 @@ export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
             return;
         }
 
-        // TODO: How to handle new labels?
+        // TODO: How to handle new items?
         if (!item.id) {
-            item.id = `new-label-${item.name}`;
-            setNewLabels(newLabels.concat({id: item.id, name: item.name}));
+            item.id = `new-item-${item.name}`;
+            setNewItems(newItems.concat({id: item.id, name: item.name}));
         }
 
         onChange(value.concat(item.id));
         setFilter('');
     };
 
-    const handleDeselect = (event, item) => {
+    const handleDeselect = (event, selectedItem) => {
         // Prevent losing focus when clicking an option
         event.preventDefault();
 
-        onChange(value.filter(selection => selection !== item.id));
-        setNewLabels(newLabels.filter(label => label.id !== item.id));
+        onChange(value.filter(selection => selection !== selectedItem.id));
+        setNewItems(newItems.filter(item => item.id !== selectedItem.id));
     };
 
     const handleBackspace = (event) => {
@@ -88,10 +88,10 @@ export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
         );
     };
 
-    const allLabels = menu.concat(newLabels).map(label => ({...label, label: label.name}));
-    const [selectedLabels, nonSelectedLabels] = partition(allLabels, label => value?.includes(label.id));
-    const filteredItems = nonSelectedLabels.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
-    const emptyItem = filter && !selectedLabels?.some(label => label.name === filter)
+    const allItems = menu.concat(newItems).map(item => ({...item, label: item.name}));
+    const [selectedItems, nonSelectedItems] = partition(allItems, item => value?.includes(item.id));
+    const filteredItems = nonSelectedItems.filter(item => item.name.toLowerCase().includes(filter.toLowerCase()));
+    const emptyItem = filter && !selectedItems?.some(item => item.name === filter)
         ? [{id: undefined, name: filter, label: <>Add <strong>&quot;{filter}&quot;...</strong></>}]
         : [{id: undefined, name: undefined, label: 'Type to search'}];
 
@@ -102,15 +102,15 @@ export function LabelDropdown({value = [], menu, onChange, dataTestId}) {
                 type="button"
                 onClick={() => inputRef.current.focus()}
             >
-                {selectedLabels.map(label => (
+                {selectedItems.map(item => (
                     <button
-                        key={label.id}
+                        key={item.id}
                         className="flex cursor-pointer items-center rounded-sm bg-grey-900 py-1 px-2 leading-none text-white dark:bg-grey-100 dark:text-grey-900"
-                        data-testid="label-dropdown-selected"
+                        data-testid="multiselect-dropdown-selected"
                         type="button"
-                        onMouseDownCapture={event => handleDeselect(event, label)}
+                        onMouseDownCapture={event => handleDeselect(event, item)}
                     >
-                        {label.label}
+                        {item.label}
                         <CloseIcon className="ml-2 h-2 w-2" />
                     </button>
                 ))}
