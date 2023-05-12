@@ -1,14 +1,13 @@
 import KoenigNestedEditor from '../../KoenigNestedEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button} from '../Button';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../../assets/icons/kg-img-regular.svg';
 import {ReactComponent as ImgWideIcon} from '../../../assets/icons/kg-img-wide.svg';
-import {Input} from '../Input';
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
+import {SubscribeForm} from '../SubscribeForm';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
@@ -21,7 +20,6 @@ export function SignupCard({alignment,
     disclaimer,
     disclaimerPlaceholder,
     buttonText,
-    buttonPlaceholder,
     showBackgroundImage,
     backgroundImageSrc,
     backgroundColor,
@@ -141,19 +139,19 @@ export function SignupCard({alignment,
                     )
                 }
 
-                {/* Subscribe field */}
-                <div className={`${(layout === 'regular') ? 'mt-6' : (layout === 'wide') ? 'mt-8' : 'mt-10'}`}>
-                    <Input placeholder='jamie@example.com' />
-                    <Button
-                        color='light'
-                        dataTestId="signup-card-button"
-                        placeholder={buttonPlaceholder}
-                        size='medium'
-                        style={buttonColor ? {
+                {/* Subscribe form */}
+                <div className={`${(layout === 'regular') ? 'mt-6 h-full w-full' : (layout === 'wide') ? 'mt-8' : 'mt-10'}`}>
+                    <SubscribeForm 
+                        buttonSize='medium'
+                        buttonStyle={buttonColor ? {
                             backgroundColor: buttonColor,
                             color: textColorForBackgroundColor(buttonColor).hex()
+                        } : null} 
+                        buttonText={buttonText} 
+                        inputBorderStyle={buttonColor ? {
+                            border: `1px solid ${buttonColor}`
                         } : null}
-                        value={buttonText}
+                        placeholder='yourname@example.com'
                     />
                 </div>
 
@@ -165,10 +163,10 @@ export function SignupCard({alignment,
                             initialEditor={disclaimerTextEditor}
                             initialEditorState={disclaimerTextEditorInitialState}
                             nodes="minimal"
-                            placeholderClassName={`truncate opacity-50 w-full whitespace-normal !leading-tight !font-normal ${(alignment === 'center' && 'text-center')} ${(layout === 'regular') ? '!text-xl' : (layout === 'wide') ? '!text-2xl' : '!text-3xl'}`}
+                            placeholderClassName={`truncate opacity-50 w-full whitespace-normal !leading-tight !font-normal ${(alignment === 'center' && 'text-center')} ${(layout === 'regular') ? '!text-md' : (layout === 'wide') ? '!text-lg' : '!text-xl'}`}
                             placeholderText={disclaimerPlaceholder}
                             singleParagraph={true}
-                            textClassName={`koenig-lexical-header-subheading relative w-full whitespace-normal ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(layout === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_105px)] !mt-2' : (layout === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_124px)] !mt-3' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_156px)] !mt-3'}`}
+                            textClassName={`koenig-lexical-header-subheading koenig-lexical-header-xsmall relative w-full whitespace-normal ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(layout === 'regular') ? '[&:has(br)]:pl-[calc(50%_-_105px)] !mt-3' : (layout === 'wide') ? '[&:has(br)]:pl-[calc(50%_-_124px)] !mt-4' : '[&:has(br)]:pl-[calc(50%_-_156px)] !mt-4'}`}
                         />
                     )
                 }
