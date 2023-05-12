@@ -38,7 +38,7 @@ export function renderFileNodeToDOM(node, options = {}) {
   
     const filesize = document.createElement('div');
     filesize.setAttribute('class', 'kg-file-card-filesize');
-    filesize.textContent = node.getFileSize() || '';
+    filesize.textContent = node.getFormattedFileSize() || '';
   
     metadata.appendChild(filename);
     metadata.appendChild(filesize);

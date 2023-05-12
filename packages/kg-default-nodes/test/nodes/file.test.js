@@ -33,7 +33,7 @@ describe('FileNode', function () {
         dataset = {
             src: '/content/files/2023/03/IMG_0196.jpeg',
             fileTitle: 'Cool image to download',
-            fileSize: '121 KB',
+            fileSize: 123456,
             fileCaption: 'This is a description',
             fileName: 'IMG_0196.jpeg'
         };
@@ -69,7 +69,8 @@ describe('FileNode', function () {
             node.setFileTitle('new title');
             node.getFileTitle().should.equal('new title');
             node.setFileSize(123456);
-            node.getFileSize().should.equal('121 KB');
+            node.getFileSize().should.equal(123456);
+            node.getFormattedFileSize().should.equal('121 KB');
             node.setFileCaption('new description');
             node.getFileCaption().should.equal('new description');
             node.setFileName('IMG_0196.jpeg');
@@ -134,7 +135,7 @@ describe('FileNode', function () {
             nodes[0].getFileTitle().should.equal('Cool image to download');
             nodes[0].getFileCaption().should.equal('This is a description');
             nodes[0].getFileName().should.equal('IMG_0196.jpeg');
-            nodes[0].getFileSize().should.equal('121 KB'); // ~121 KB
+            nodes[0].getFileSize().should.equal(123904); // ~121 KB
         }));
     });
 
@@ -164,42 +165,8 @@ describe('FileNode', function () {
                     fileNode.getFileTitle().should.equal('Cool image to download');
                     fileNode.getFileCaption().should.equal('This is a description');
                     fileNode.getFileName().should.equal('IMG_0196.jpeg');
-                    fileNode.getFileSize().should.equal('121 KB');
-                    done();
-                } catch (e) {
-                    done(e);
-                }
-            });
-        });
-
-        // NOTE: for easier compatibility with mobiledoc, we accept `fileSize` as a formatted string or a number of bytes
-        it('accepts filesize as a number in bytes', function (done) {
-            const serializedState = JSON.stringify({
-                root: {
-                    children: [{
-                        type: 'file',
-                        ...dataset,
-                        fileSize: 123456
-                    }],
-                    direction: null,
-                    format: '',
-                    indent: 0,
-                    type: 'root',
-                    version: 1
-                }
-            });
-
-            const editorState = editor.parseEditorState(serializedState);
-            editor.setEditorState(editorState);
-
-            editor.getEditorState().read(() => {
-                try {
-                    const [fileNode] = $getRoot().getChildren();
-                    fileNode.getSrc().should.equal('/content/files/2023/03/IMG_0196.jpeg');
-                    fileNode.getFileTitle().should.equal('Cool image to download');
-                    fileNode.getFileCaption().should.equal('This is a description');
-                    fileNode.getFileName().should.equal('IMG_0196.jpeg');
-                    fileNode.getFileSize().should.equal('121 KB');
+                    fileNode.getFileSize().should.equal(123456);
+                    fileNode.getFormattedFileSize().should.equal('121 KB'); // ~121 KB
                     done();
                 } catch (e) {
                     done(e);
@@ -217,7 +184,8 @@ describe('FileNode', function () {
             clonedNode.getFileTitle().should.equal('Cool image to download');
             clonedNode.getFileCaption().should.equal('This is a description');
             clonedNode.getFileName().should.equal('IMG_0196.jpeg');
-            clonedNode.getFileSize().should.equal('121 KB');
+            clonedNode.getFileSize().should.equal(123456);
+            clonedNode.getFormattedFileSize().should.equal('121 KB'); // ~121 KB
         }));
     });
 

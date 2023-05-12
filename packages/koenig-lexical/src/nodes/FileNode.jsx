@@ -53,7 +53,7 @@ export class FileNode extends BaseFileNode {
                     fileDesc={this.getFileCaption()}
                     fileDescPlaceholder={'Enter a description'}
                     fileName={this.getFileName()} 
-                    fileSize={this.getFileSize()}
+                    fileSize={this.getFormattedFileSize()}
                     fileSrc = {this.getSrc()}
                     fileTitle={this.getFileTitle()}
                     fileTitlePlaceholder={'Enter a title'}

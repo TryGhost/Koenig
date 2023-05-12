@@ -70,7 +70,7 @@ export class FileNode extends KoenigDecoratorNode {
             fileTitle,
             fileCaption,
             fileName,
-            fileSize: typeof fileSize === 'number' ? bytesToSize(Math.round(fileSize)) : fileSize
+            fileSize
         });
     }
 
@@ -153,13 +153,17 @@ export class FileNode extends KoenigDecoratorNode {
 
     getFileSize() {
         const self = this.getLatest();
-        return typeof self.__fileSize === 'number' ? bytesToSize(Math.round(self.__fileSize)) : self.__fileSize;
+        return self.__fileSize;
     }
 
-    setFileSize(fileSize) {
+    setFileSize(size) {
         const writable = this.getWritable();
-        const size = typeof fileSize === 'number' ? bytesToSize(Math.round(fileSize)) : fileSize;
         writable.__fileSize = size;
+    }
+
+    getFormattedFileSize() {
+        const self = this.getLatest();
+        return bytesToSize(self.__fileSize);
     }
 
     hasEditMode() {
