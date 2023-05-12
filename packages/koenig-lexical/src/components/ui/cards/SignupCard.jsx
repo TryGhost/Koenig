@@ -10,21 +10,7 @@ import {ReactComponent as ImgWideIcon} from '../../../assets/icons/kg-img-wide.s
 import {Input} from '../Input';
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
-
-export const BACKGROUND_COLORS = {
-    dark: 'bg-black',
-    light: 'bg-grey-100',
-    accent: 'bg-accent',
-    image: 'bg-grey-300 dark:bg-grey-950 bg-gradient-to-t from-black/0 via-black/5 to-black/30'
-};
-
-export const TEXT_COLORS = {
-    dark: 'text-white caret-white',
-    light: 'text-black caret-black',
-    // kg-header-accent fixes the link color
-    accent: 'text-white caret-white kg-header-accent',
-    image: 'text-white caret-white'
-};
+import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
 export function SignupCard({alignment,
     type,
@@ -94,16 +80,27 @@ export function SignupCard({alignment,
 
     const {isLoading: isUploading, progress} = fileUploader || {};
 
+    const wrapperStyle = () => {
+        if (backgroundImageSrc && type === 'image') {
+            return {
+                backgroundImage: `url(${backgroundImageSrc})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundColor: 'bg-grey-950'
+            };
+        } else if (backgroundColor) {
+            return {
+                backgroundColor: backgroundColor,
+                color: textColorForBackgroundColor(backgroundColor).hex()
+            };
+        }
+
+        return null;
+    };
+
     return (
         <>
-            <div className={`flex flex-col justify-center font-sans transition-colors ease-in-out ${(alignment === 'center' && 'items-center')} ${(cardWidth === 'regular') ? 'min-h-[40vh] p-[14vmin]' : (cardWidth === 'wide') ? 'min-h-[60vh] p-[12vmin]' : 'min-h-[80vh] p-[18vmin]'} ${BACKGROUND_COLORS[type]} `}
-                style={backgroundImageSrc && type === 'image' ? {
-                    backgroundImage: `url(${backgroundImageSrc})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center center',
-                    backgroundColor: 'bg-grey-950'
-                } : null}>
-
+            <div className={`flex flex-col justify-center bg-black font-sans text-white transition-colors ease-in-out ${(alignment === 'center' && 'items-center')} ${(cardWidth === 'regular') ? 'min-h-[40vh] p-[14vmin]' : (cardWidth === 'wide') ? 'min-h-[60vh] p-[12vmin]' : 'min-h-[80vh] p-[18vmin]'}`} style={wrapperStyle()}>
                 {/* Heading */}
                 {
                     (isEditing || !!header || !isEditorEmpty(headerTextEditor)) && (
@@ -114,10 +111,10 @@ export function SignupCard({alignment,
                             initialEditor={headerTextEditor}
                             initialEditorState={headerTextEditorInitialState}
                             nodes="minimal"
-                            placeholderClassName={`truncate opacity-50 whitespace-normal !tracking-tight w-full !leading-tight !font-bold ${(alignment === 'center' && 'text-center')} ${(cardWidth === 'regular') ? 'kg-header-small !text-6xl' : (cardWidth === 'wide') ? '!text-7xl' : '!text-8xl'} ${TEXT_COLORS[type]}`}
+                            placeholderClassName={`truncate opacity-50 whitespace-normal !tracking-tight w-full !leading-tight !font-bold ${(alignment === 'center' && 'text-center')} ${(cardWidth === 'regular') ? 'kg-header-small !text-6xl' : (cardWidth === 'wide') ? '!text-7xl' : '!text-8xl'}`}
                             placeholderText={headerPlaceholder}
                             singleParagraph={true}
-                            textClassName={`koenig-lexical-header-heading relative w-full whitespace-normal font-bold ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(cardWidth === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_254px)]' : (cardWidth === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_304px)]' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_404px)]'} ${TEXT_COLORS[type]}`}
+                            textClassName={`koenig-lexical-header-heading relative w-full whitespace-normal font-bold ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(cardWidth === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_254px)]' : (cardWidth === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_304px)]' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_404px)]'}`}
                         />
                     )
                 }
@@ -131,10 +128,10 @@ export function SignupCard({alignment,
                             initialEditor={subheaderTextEditor}
                             initialEditorState={subheaderTextEditorInitialState}
                             nodes="minimal"
-                            placeholderClassName={`truncate opacity-50 w-full whitespace-normal !leading-tight !font-normal ${(alignment === 'center' && 'text-center')} ${(cardWidth === 'regular') ? '!text-xl' : (cardWidth === 'wide') ? '!text-2xl' : '!text-3xl'} ${TEXT_COLORS[type]}`}
+                            placeholderClassName={`truncate opacity-50 w-full whitespace-normal !leading-tight !font-normal ${(alignment === 'center' && 'text-center')} ${(cardWidth === 'regular') ? '!text-xl' : (cardWidth === 'wide') ? '!text-2xl' : '!text-3xl'}`}
                             placeholderText={subheaderPlaceholder}
                             singleParagraph={true}
-                            textClassName={`koenig-lexical-header-subheading relative w-full whitespace-normal ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(cardWidth === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_105px)] !mt-2' : (cardWidth === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_124px)] !mt-3' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_156px)] !mt-3'} ${TEXT_COLORS[type]}`}
+                            textClassName={`koenig-lexical-header-subheading relative w-full whitespace-normal ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(cardWidth === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_105px)] !mt-2' : (cardWidth === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_124px)] !mt-3' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_156px)] !mt-3'}`}
                         />
                     )
                 }
@@ -142,7 +139,17 @@ export function SignupCard({alignment,
                 {/* Subscribe field */}
                 <div className={`${(cardWidth === 'regular') ? 'mt-6' : (cardWidth === 'wide') ? 'mt-8' : 'mt-10'}`}>
                     <Input placeholder='jamie@example.com' />
-                    {((type === 'light') && <Button dataTestId="signup-card-button" placeholder={buttonPlaceholder} size='medium' value={buttonText} />) || <Button color='light' dataTestId="signup-card-button" placeholder={buttonPlaceholder} size='medium' value={buttonText} />}
+                    <Button
+                        color='light'
+                        dataTestId="signup-card-button"
+                        placeholder={buttonPlaceholder}
+                        size='medium'
+                        style={buttonColor ? {
+                            backgroundColor: buttonColor,
+                            color: textColorForBackgroundColor(buttonColor).hex()
+                        } : null}
+                        value={buttonText}
+                    />
                 </div>
 
                 {/* Disclaimer */}
@@ -153,10 +160,10 @@ export function SignupCard({alignment,
                             initialEditor={disclaimerTextEditor}
                             initialEditorState={disclaimerTextEditorInitialState}
                             nodes="minimal"
-                            placeholderClassName={`truncate opacity-50 w-full whitespace-normal !leading-tight !font-normal ${(alignment === 'center' && 'text-center')} ${(cardWidth === 'regular') ? '!text-xl' : (cardWidth === 'wide') ? '!text-2xl' : '!text-3xl'} ${TEXT_COLORS[type]}`}
+                            placeholderClassName={`truncate opacity-50 w-full whitespace-normal !leading-tight !font-normal ${(alignment === 'center' && 'text-center')} ${(cardWidth === 'regular') ? '!text-xl' : (cardWidth === 'wide') ? '!text-2xl' : '!text-3xl'}`}
                             placeholderText={disclaimerPlaceholder}
                             singleParagraph={true}
-                            textClassName={`koenig-lexical-header-subheading relative w-full whitespace-normal ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(cardWidth === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_105px)] !mt-2' : (cardWidth === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_124px)] !mt-3' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_156px)] !mt-3'} ${TEXT_COLORS[type]}`}
+                            textClassName={`koenig-lexical-header-subheading relative w-full whitespace-normal ${(alignment === 'center' && 'text-center')} [&:has(br)]:text-left ${(cardWidth === 'regular') ? 'koenig-lexical-header-small [&:has(br)]:pl-[calc(50%_-_105px)] !mt-2' : (cardWidth === 'wide') ? 'koenig-lexical-header-medium [&:has(br)]:pl-[calc(50%_-_124px)] !mt-3' : 'koenig-lexical-header-large [&:has(br)]:pl-[calc(50%_-_156px)] !mt-3'}`}
                         />
                     )
                 }
