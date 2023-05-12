@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-key */
 import React from 'react';
 
-import { ReactComponent as CenterAlignIcon } from '../../assets/icons/kg-align-center.svg';
-import { ReactComponent as LeftAlignIcon } from '../../assets/icons/kg-align-left.svg';
-import { ReactComponent as ImgFullIcon } from '../../assets/icons/kg-img-full.svg';
-import { ReactComponent as ImgRegularIcon } from '../../assets/icons/kg-img-regular.svg';
-import { ReactComponent as ImgWideIcon } from '../../assets/icons/kg-img-wide.svg';
-import { ButtonGroupSetting, ColorOptionSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting } from './SettingsPanel';
+import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from './SettingsPanel';
+import {ReactComponent as CenterAlignIcon} from '../../assets/icons/kg-align-center.svg';
+import {ReactComponent as ImgFullIcon} from '../../assets/icons/kg-img-full.svg';
+import {ReactComponent as ImgRegularIcon} from '../../assets/icons/kg-img-regular.svg';
+import {ReactComponent as ImgWideIcon} from '../../assets/icons/kg-img-wide.svg';
+import {ReactComponent as LeftAlignIcon} from '../../assets/icons/kg-align-left.svg';
 
 const story = {
     title: 'Settings panel/Settings panel',
@@ -93,9 +93,10 @@ EmailCtaCard.args = {
     ]
 };
 
-export const SignupLabelsCard = Template.bind({});
-SignupLabelsCard.args = {
+export const SignupCard = Template.bind({});
+SignupCard.args = {
     children: [
+        <ColorPickerSetting label='Background color' value='#777777' />,
         <MultiSelectDropdownSetting
             description='These labels will be applied to members who sign up via this form.'
             label='Labels'
