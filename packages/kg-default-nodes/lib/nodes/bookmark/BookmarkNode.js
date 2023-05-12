@@ -81,7 +81,7 @@ export class BookmarkNode extends KoenigDecoratorNode {
             version: 1,
             url: this.getUrl(),
             metadata: {
-                icon: this.getIcon(),
+                icon: this.getIconSrc(),
                 title: this.getTitle(),
                 description: this.getDescription(),
                 author: this.getAuthor(),
@@ -130,12 +130,13 @@ export class BookmarkNode extends KoenigDecoratorNode {
         return writable.__url = url;
     }
 
-    getIcon() {
+    // getIcon() is reserved for the card's icon in the editor
+    getIconSrc() {
         const self = this.getLatest();
         return self.__icon;
     }
 
-    setIcon(icon) {
+    setIconSrc(icon) {
         const writable = this.getWritable();
         return writable.__icon = icon;
     }

@@ -61,7 +61,7 @@ describe('BookmarkNode', function () {
             const bookmarkNode = $createBookmarkNode(dataset);
 
             bookmarkNode.getUrl().should.equal(dataset.url);
-            bookmarkNode.getIcon().should.equal(dataset.metadata.icon);
+            bookmarkNode.getIconSrc().should.equal(dataset.metadata.icon);
             bookmarkNode.getTitle().should.equal(dataset.metadata.title);
             bookmarkNode.getDescription().should.equal(dataset.metadata.description);
             bookmarkNode.getAuthor().should.equal(dataset.metadata.author);
@@ -77,9 +77,9 @@ describe('BookmarkNode', function () {
             bookmarkNode.setUrl('https://www.ghost.org/');
             bookmarkNode.getUrl().should.equal('https://www.ghost.org/');
 
-            bookmarkNode.getIcon().should.equal('');
-            bookmarkNode.setIcon('https://www.ghost.org/favicon.ico');
-            bookmarkNode.getIcon().should.equal('https://www.ghost.org/favicon.ico');
+            bookmarkNode.getIconSrc().should.equal('');
+            bookmarkNode.setIconSrc('https://www.ghost.org/favicon.ico');
+            bookmarkNode.getIconSrc().should.equal('https://www.ghost.org/favicon.ico');
 
             bookmarkNode.getTitle().should.equal('');
             bookmarkNode.setTitle('Ghost: The Creator Economy Platform');
@@ -222,7 +222,7 @@ describe('BookmarkNode', function () {
                     const [bookmarkNode] = $getRoot().getChildren();
 
                     bookmarkNode.getUrl().should.equal(dataset.url);
-                    bookmarkNode.getIcon().should.equal(dataset.metadata.icon);
+                    bookmarkNode.getIconSrc().should.equal(dataset.metadata.icon);
                     bookmarkNode.getTitle().should.equal(dataset.metadata.title);
                     bookmarkNode.getDescription().should.equal(dataset.metadata.description);
                     bookmarkNode.getAuthor().should.equal(dataset.metadata.author);
@@ -293,7 +293,7 @@ describe('BookmarkNode', function () {
 
             nodes.length.should.equal(1);
             nodes[0].getUrl().should.equal(dataset.url);
-            nodes[0].getIcon().should.equal(dataset.metadata.icon);
+            nodes[0].getIconSrc().should.equal(dataset.metadata.icon);
             nodes[0].getTitle().should.equal(dataset.metadata.title);
             nodes[0].getDescription().should.equal(dataset.metadata.description);
             nodes[0].getAuthor().should.equal(dataset.metadata.author);
