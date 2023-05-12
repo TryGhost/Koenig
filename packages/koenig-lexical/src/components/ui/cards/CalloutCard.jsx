@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import EmojiPickerPortal from '../EmojiPickerPortal';
 import KoenigComposerContext from '../../../context/KoenigComposerContext.jsx';
 import KoenigNestedEditor from '../../KoenigNestedEditor';
-import EmojiPickerPortal from '../EmojiPickerPortal';
-import { ColorOptionSetting, SettingsPanel, ToggleSetting } from '../SettingsPanel';
+import PropTypes from 'prop-types';
+import React from 'react';
+import {ColorOptionSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 
 export const CALLOUT_COLORS = {
     grey: 'bg-grey/10 border-transparent',

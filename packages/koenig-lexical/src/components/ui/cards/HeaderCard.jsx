@@ -1,10 +1,10 @@
+import KoenigNestedEditor from '../../KoenigNestedEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isEditorEmpty } from '../../../utils/isEditorEmpty';
-import KoenigNestedEditor from '../../KoenigNestedEditor';
-import { BackgroundImagePicker } from '../BackgroundImagePicker';
-import { Button } from '../Button';
-import { ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting } from '../SettingsPanel';
+import {BackgroundImagePicker} from '../BackgroundImagePicker';
+import {Button} from '../Button';
+import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 
 export const HEADER_COLORS = {
     dark: 'bg-black',
