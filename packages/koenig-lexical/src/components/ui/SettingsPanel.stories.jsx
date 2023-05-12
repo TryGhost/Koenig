@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React from 'react';
 
-import {ButtonGroupSetting, ColorPickerSetting, DropdownSetting, InputSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ThumbnailSetting, ToggleSetting} from './SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from './SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../assets/icons/kg-img-regular.svg';
@@ -182,7 +182,7 @@ VideoCard.args = {
             description='Autoplay your video on a loop without sound.'
             label='Loop'
         />,
-        <ThumbnailSetting
+        <MediaUploadSetting
             desc=''
             icon='file'
             label='Custom thumbnail'

@@ -196,7 +196,7 @@ export function FullColorPickerSetting({label, onChange, value, dataTestId}) {
     );
 }
 
-export function ThumbnailSetting({label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, dataTestId, errors = [], progress, onRemoveCustomThumbnail, icon, desc = '', size, mimeTypes}) {
+export function MediaUploadSetting({label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, dataTestId, errors = [], progress, onRemoveMedia, icon, desc = '', size, mimeTypes}) {
     const fileInputRef = React.useRef(null);
 
     const onFileInputRef = (element) => {
@@ -209,7 +209,7 @@ export function ThumbnailSetting({label, hideLabel, onFileChange, isDraggedOver,
 
     const onRemove = (e) => {
         e.stopPropagation(); // prevents card from losing selected state
-        onRemoveCustomThumbnail();
+        onRemoveMedia();
     };
 
     const isEmpty = !isLoading && !src;
