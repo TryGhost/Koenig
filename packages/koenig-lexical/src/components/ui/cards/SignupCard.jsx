@@ -213,6 +213,7 @@ export function SignupCard({alignment,
                         onRemoveMedia={handleClearBackgroundImage}
                     />}
                     {(!showBackgroundImage || splitLayout) && <ColorPickerSetting
+                        dataTestId='signup-background-color'
                         label='Background'
                         value={backgroundColor}
                         onChange={handleBackgroundColor}
@@ -220,6 +221,7 @@ export function SignupCard({alignment,
                     <SettingsDivider />
 
                     <ColorPickerSetting
+                        dataTestId='signup-button-color'
                         label='Button'
                         value={buttonColor}
                         onChange={handleButtonColor}

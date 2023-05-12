@@ -37,8 +37,10 @@ describe('SignupNode', function () {
         editor = createHeadlessEditor({nodes: editorNodes});
 
         dataset = {
+            backgroundColor: '',
             backgroundImageSrc: 'https://example.com/image.jpg',
             buttonText: 'Button',
+            buttonColor: '#000',
             disclaimer: 'Disclaimer',
             header: 'Header',
             subheader: 'Subheader',
@@ -181,10 +183,12 @@ describe('SignupNode', function () {
                 version: 1,
                 style: dataset.style,
                 backgroundImageSrc: dataset.backgroundImageSrc,
+                backgroundColor: dataset.backgroundColor,
                 header: dataset.header,
                 subheader: dataset.subheader,
                 disclaimer: dataset.disclaimer,
                 buttonText: dataset.buttonText,
+                buttonColor: dataset.buttonColor,
                 labels: dataset.labels
             });
         }));

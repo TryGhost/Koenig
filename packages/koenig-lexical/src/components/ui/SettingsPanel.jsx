@@ -183,8 +183,8 @@ export function ColorPickerSetting({label, onChange, value, dataTestId}) {
     useEffect(() => repositionPanel(), [repositionPanel, isExpanded]);
 
     return (
-        <div className="flex-col">
-            <div className="mt-2 flex w-full items-center justify-between text-[1.3rem] first:mt-0" data-testid={dataTestId}>
+        <div className="mt-2 flex-col" data-testid={dataTestId}>
+            <div className="flex w-full items-center justify-between text-[1.3rem] first:mt-0">
                 <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
 
                 <div className="shrink-0 pl-2">
