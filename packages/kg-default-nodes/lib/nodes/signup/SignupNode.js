@@ -2,7 +2,6 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {SignupParser} from './SignupParser';
 import {renderSignupCardToDOM} from './SignupRenderer';
-import {thru} from 'lodash';
 
 export const INSERT_SIGNUP_COMMAND = createCommand();
 const NODE_TYPE = 'signup';
