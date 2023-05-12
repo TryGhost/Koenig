@@ -2,7 +2,7 @@ import KoenigNestedEditor from '../../KoenigNestedEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from '../Button';
-import {ButtonGroupSetting, FullColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as ImgFullIcon} from '../../../assets/icons/kg-img-full.svg';
 import {ReactComponent as ImgRegularIcon} from '../../../assets/icons/kg-img-regular.svg';
@@ -212,14 +212,14 @@ export function SignupCard({alignment,
                         onFileChange={onFileChange}
                         onRemoveMedia={handleClearBackgroundImage}
                     />}
-                    {(!showBackgroundImage || splitLayout) && <FullColorPickerSetting
+                    {(!showBackgroundImage || splitLayout) && <ColorPickerSetting
                         label='Background'
                         value={backgroundColor}
                         onChange={handleBackgroundColor}
                     />}
                     <SettingsDivider />
 
-                    <FullColorPickerSetting
+                    <ColorPickerSetting
                         label='Button'
                         value={buttonColor}
                         onChange={handleButtonColor}

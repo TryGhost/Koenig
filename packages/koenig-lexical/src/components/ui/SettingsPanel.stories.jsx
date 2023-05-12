@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-key */
 import React from 'react';
 
-import {ButtonGroupSetting, ColorPickerSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from './SettingsPanel';
-import {ReactComponent as CenterAlignIcon} from '../../assets/icons/kg-align-center.svg';
-import {ReactComponent as ImgFullIcon} from '../../assets/icons/kg-img-full.svg';
-import {ReactComponent as ImgRegularIcon} from '../../assets/icons/kg-img-regular.svg';
-import {ReactComponent as ImgWideIcon} from '../../assets/icons/kg-img-wide.svg';
-import {ReactComponent as LeftAlignIcon} from '../../assets/icons/kg-align-left.svg';
+import { ReactComponent as CenterAlignIcon } from '../../assets/icons/kg-align-center.svg';
+import { ReactComponent as LeftAlignIcon } from '../../assets/icons/kg-align-left.svg';
+import { ReactComponent as ImgFullIcon } from '../../assets/icons/kg-img-full.svg';
+import { ReactComponent as ImgRegularIcon } from '../../assets/icons/kg-img-regular.svg';
+import { ReactComponent as ImgWideIcon } from '../../assets/icons/kg-img-wide.svg';
+import { ButtonGroupSetting, ColorOptionSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting } from './SettingsPanel';
 
 const story = {
     title: 'Settings panel/Settings panel',
@@ -166,7 +166,7 @@ const calloutColorPicker = [
 export const CalloutCard = Template.bind({});
 CalloutCard.args = {
     children: [
-        <ColorPickerSetting buttons={calloutColorPicker} label='Background color' layout='stacked' />,
+        <ColorOptionSetting buttons={calloutColorPicker} label='Background color' layout='stacked' />,
         <ToggleSetting label='Emoji' />
     ]
 };
@@ -221,7 +221,7 @@ export const HeaderCard = Template.bind({});
 HeaderCard.args = {
     children: [
         <ButtonGroupSetting buttons={sizeButtonGroup} label='Size' />,
-        <ColorPickerSetting buttons={headerColorPicker} label='Style' />,
+        <ColorOptionSetting buttons={headerColorPicker} label='Style' />,
         <SettingsDivider />,
         <ToggleSetting label='Button' />,
         <InputSetting label='Button text' placeholder='Add button text' />,

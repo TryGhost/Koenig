@@ -3,8 +3,8 @@ import KoenigComposerContext from '../../context/KoenigComposerContext.jsx';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';
 import {ButtonGroup} from './ButtonGroup';
-import {ColorIndicator, FullColorPicker} from './FullColorPicker';
-import {ColorPicker} from './ColorPicker';
+import {ColorIndicator, ColorPicker} from './ColorPicker';
+import {ColorOptionButtons} from './ColorOptionButtons';
 import {ReactComponent as DeleteIcon} from '../../assets/icons/kg-trash.svg';
 import {Dropdown} from './Dropdown';
 import {IconButton} from './IconButton';
@@ -164,19 +164,19 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons, dataT
     );
 }
 
-export function ColorPickerSetting({label, onClick, selectedName, buttons, layout, dataTestId}) {
+export function ColorOptionSetting({label, onClick, selectedName, buttons, layout, dataTestId}) {
     return (
         <div className={`mt-2 flex w-full text-[1.3rem] first:mt-0 ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestId}>
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
 
             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
-                <ColorPicker buttons={buttons} selectedName={selectedName} onClick={onClick} />
+                <ColorOptionButtons buttons={buttons} selectedName={selectedName} onClick={onClick} />
             </div>
         </div>
     );
 }
 
-export function FullColorPickerSetting({label, onChange, value, dataTestId}) {
+export function ColorPickerSetting({label, onChange, value, dataTestId}) {
     const [isExpanded, setExpanded] = useState(false);
     const {repositionPanel} = useSettingsPanelContext();
 
@@ -191,7 +191,7 @@ export function FullColorPickerSetting({label, onChange, value, dataTestId}) {
                     <ColorIndicator value={value} onClick={() => setExpanded(!isExpanded)} />
                 </div>
             </div>
-            {isExpanded && <FullColorPicker value={value} onChange={onChange} />}
+            {isExpanded && <ColorPicker value={value} onChange={onChange} />}
         </div>
     );
 }
