@@ -1,6 +1,6 @@
 import ImageUploadForm from './ImageUploadForm';
 import KoenigComposerContext from '../../context/KoenigComposerContext.jsx';
-import React, {useState} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';
 import {ButtonGroup} from './ButtonGroup';
 import {ColorIndicator, FullColorPicker} from './FullColorPicker';
@@ -16,20 +16,26 @@ import {ProgressBar} from './ProgressBar';
 import {Toggle} from './Toggle';
 import {openFileSelection} from '../../utils/openFileSelection';
 
+const SettingsPanelContext = createContext();
+
+export const useSettingsPanelContext = () => useContext(SettingsPanelContext);
+
 export function SettingsPanel({children, darkMode}) {
-    const {ref} = useSettingsPanelReposition();
+    const {ref,repositionPanel} = useSettingsPanelReposition();
 
     return (
         // Block with fixed position and transformed ancestor can be incorrectly positioned https://bugs.chromium.org/p/chromium/issues/detail?id=20574
         // Using Portal to avoid such issue as some cards using transformation
-        <div className={`!mt-0 ${darkMode ? 'dark' : ''}`}>
-            <div ref={ref}
-                className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow dark:bg-grey-950"
-                data-testid="settings-panel"
-            >
-                {children}
+        <SettingsPanelContext.Provider value={{repositionPanel}}>
+            <div className={`!mt-0 ${darkMode ? 'dark' : ''}`}>
+                <div ref={ref}
+                    className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow dark:bg-grey-950"
+                    data-testid="settings-panel"
+                >
+                    {children}
+                </div>
             </div>
-        </div>
+        </SettingsPanelContext.Provider>
     );
 }
 
@@ -172,6 +178,9 @@ export function ColorPickerSetting({label, onClick, selectedName, buttons, layou
 
 export function FullColorPickerSetting({label, onChange, value, dataTestId}) {
     const [isExpanded, setExpanded] = useState(false);
+    const {repositionPanel} = useSettingsPanelContext();
+
+    useEffect(() => repositionPanel(), [repositionPanel, isExpanded]);
 
     return (
         <div className="flex-col">
