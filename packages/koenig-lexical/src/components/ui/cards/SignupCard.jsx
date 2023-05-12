@@ -103,7 +103,7 @@ export function SignupCard({alignment,
 
     return (
         <>
-            <div className={`flex flex-col justify-center bg-black font-sans text-white transition-colors ease-in-out ${(alignment === 'center' && 'items-center')} ${(layout === 'regular') ? 'min-h-[40vh] p-[14vmin]' : (layout === 'wide') ? 'min-h-[60vh] p-[12vmin]' : 'min-h-[80vh] p-[18vmin]'}`} style={wrapperStyle()}>
+            <div className={`flex flex-col justify-center bg-black font-sans text-white transition-colors ease-in-out ${(alignment === 'center' && 'items-center')} ${(layout === 'regular') ? 'min-h-[40vh] p-[14vmin]' : (layout === 'wide') ? 'min-h-[60vh] p-[12vmin]' : 'min-h-[80vh] p-[18vmin]'}`} data-testid={'signup-card-container'} style={wrapperStyle()}>
                 {/* Heading */}
                 {
                     (isEditing || !!header || !isEditorEmpty(headerTextEditor)) && (
@@ -148,6 +148,7 @@ export function SignupCard({alignment,
                             color: textColorForBackgroundColor(buttonColor).hex()
                         } : null} 
                         buttonText={buttonText} 
+                        dataTestId='signup-card-button'
                         inputBorderStyle={buttonColor ? {
                             border: `1px solid ${buttonColor}`
                         } : null}
