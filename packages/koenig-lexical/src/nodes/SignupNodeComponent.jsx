@@ -30,7 +30,6 @@ function SignupNodeComponent({
     subheaderPlaceholder,
     subheaderTextEditor,
     subheaderTextEditorInitialState,
-    type,
     labels
 }) {
     const [editor] = useLexicalComposerContext();
@@ -166,7 +165,6 @@ function SignupNodeComponent({
                 subheaderPlaceholder={subheaderPlaceholder}
                 subheaderTextEditor={subheaderTextEditor}
                 subheaderTextEditorInitialState={subheaderTextEditorInitialState}
-                type={type}
                 onFileChange={onFileChange}
             />
             <ActionToolbar

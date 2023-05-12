@@ -13,7 +13,6 @@ import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
 export function SignupCard({alignment,
-    type,
     cardWidth,
     handleSizeSelector,
     splitLayout,
@@ -81,7 +80,7 @@ export function SignupCard({alignment,
     const {isLoading: isUploading, progress} = fileUploader || {};
 
     const wrapperStyle = () => {
-        if (backgroundImageSrc && type === 'image') {
+        if (backgroundImageSrc) {
             return {
                 backgroundImage: `url(${backgroundImageSrc})`,
                 backgroundSize: 'cover',
@@ -251,7 +250,6 @@ export function SignupCard({alignment,
 SignupCard.propTypes = {
     cardWidth: PropTypes.oneOf(['regular', 'wide', 'full']),
     alignment: PropTypes.oneOf(['left', 'center']),
-    type: PropTypes.oneOf(['dark', 'light', 'accent', 'image']),
     splitLayout: PropTypes.bool,
     header: PropTypes.string,
     headerPlaceholder: PropTypes.string,

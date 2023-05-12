@@ -8,7 +8,6 @@ const NODE_TYPE = 'signup';
 
 export class SignupNode extends KoenigDecoratorNode {
     // payload properties
-    __style;
     __buttonText;
     __header;
     __subheader;
@@ -41,7 +40,6 @@ export class SignupNode extends KoenigDecoratorNode {
     getDataset() {
         const self = this.getLatest();
         return {
-            style: self.__style,
             buttonText: self.__buttonText,
             header: self.__header,
             subheader: self.__subheader,
@@ -53,8 +51,7 @@ export class SignupNode extends KoenigDecoratorNode {
         };
     }
 
-    constructor({style,
-        buttonText,
+    constructor({buttonText,
         header,
         subheader,
         disclaimer,
@@ -63,7 +60,6 @@ export class SignupNode extends KoenigDecoratorNode {
         buttonColor,
         labels} = {}, key) {
         super(key);
-        this.__style = style || 'dark';
         this.__buttonText = buttonText || '';
         this.__header = header || '';
         this.__subheader = subheader || '';
@@ -83,9 +79,8 @@ export class SignupNode extends KoenigDecoratorNode {
     }
 
     static importJSON(serializedNode) {
-        const {style, buttonText, header, subheader, disclaimer, backgroundImageSrc, backgroundColor, buttonColor, labels} = serializedNode;
+        const {buttonText, header, subheader, disclaimer, backgroundImageSrc, backgroundColor, buttonColor, labels} = serializedNode;
         const node = new this({
-            style,
             buttonText,
             header,
             subheader,
@@ -107,7 +102,6 @@ export class SignupNode extends KoenigDecoratorNode {
         const dataset = {
             type: NODE_TYPE,
             version: 1,
-            style: this.getStyle(),
             buttonText: this.getButtonText(),
             header: this.getHeader(),
             subheader: this.getSubheader(),
@@ -131,16 +125,6 @@ export class SignupNode extends KoenigDecoratorNode {
 
     isInline() {
         return false;
-    }
-
-    getStyle() {
-        const self = this.getLatest();
-        return self.__style;
-    }
-
-    setStyle(style) {
-        const writable = this.getWritable();
-        writable.__style = style;
     }
 
     getButtonText() {

@@ -138,7 +138,6 @@ export class SignupNode extends BaseSignupNode {
                     subheaderPlaceholder={'Enter subheading text'}
                     subheaderTextEditor={this.__subheaderTextEditor}
                     subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState}
-                    type={this.getStyle()}
                 />
             </KoenigCardWrapper>
         );
