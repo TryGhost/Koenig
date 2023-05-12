@@ -222,7 +222,7 @@ export function MediaUploadSetting({label, hideLabel, onFileChange, isDraggedOve
                 <div className="h-32">
                     <MediaPlaceholder
                         borderStyle='dashed'
-                        dataTestId="thumbnail-media-placeholder"
+                        dataTestId="media-upload-placeholder"
                         desc={desc}
                         errorDataTestId="custom-thumbnails-errors"
                         errors={errors}
@@ -242,7 +242,7 @@ export function MediaUploadSetting({label, hideLabel, onFileChange, isDraggedOve
             }
 
             {!isEmpty && (
-                <div className="group relative flex h-32 items-center justify-center rounded" data-testid="custom-thumbnail-filled">
+                <div className="group relative flex h-32 items-center justify-center rounded" data-testid="media-upload-filled">
                     {src && (
                         <>
                             <img alt={alt} className="mx-auto h-full w-full rounded object-cover" src={src} />

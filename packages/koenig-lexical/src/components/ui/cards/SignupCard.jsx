@@ -191,6 +191,7 @@ export function SignupCard({alignment,
                         label='Split layout'
                     />
                     <ToggleSetting
+                        dataTestId='signup-background-image-toggle'
                         isChecked={Boolean(showBackgroundImage)}
                         label='Image'
                         onChange={handleToggleBackgroundImage}

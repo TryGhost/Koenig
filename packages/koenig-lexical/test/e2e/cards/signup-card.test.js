@@ -120,14 +120,13 @@ test.describe('Signup card', async () => {
 
     test('can add and remove background image', async function ({page}) {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
+        const fileChooserPromise = page.waitForEvent('filechooser');
 
         await focusEditor(page);
         await insertCard(page, {cardName: 'signup'});
 
-        const fileChooserPromise = page.waitForEvent('filechooser');
-
-        // Click data-testid="background-image-color-button"
-        await page.click('[data-testid="background-image-color-button"]');
+        await page.click('[data-testid="signup-background-image-toggle"]');
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         // Set files
         const fileChooser = await fileChooserPromise;
@@ -137,10 +136,10 @@ test.describe('Signup card', async () => {
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-image', /blob:/);
 
         // Check if it is also set as an image in the panel
-        await expect(page.getByTestId('image-picker-background')).toHaveAttribute('src', /blob:/);
+        await expect(page.locator('[data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
     });
 
-    test.only('can change the button color', async function ({page}) {
+    test('can change the button color', async function ({page}) {
         await focusEditor(page);
         await insertCard(page, {cardName: 'signup'});
 
