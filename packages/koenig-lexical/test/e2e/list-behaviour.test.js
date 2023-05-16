@@ -78,7 +78,9 @@ test.describe('List behaviour', async () => {
             // sanity check - contents are as we expect
             await assertHTML(page, html`
                 <div data-lexical-decorator="true" contenteditable="false">
-                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <div><hr /></div>
+                    </div>
                 </div>
                 <ul>
                     <li value="1" dir="ltr"><span data-lexical-text="true">first li</span></li>
@@ -105,7 +107,9 @@ test.describe('List behaviour', async () => {
             // first list item converted to a paragraph
             await assertHTML(page, html`
                 <div data-lexical-decorator="true" contenteditable="false">
-                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <div><hr /></div>
+                    </div>
                 </div>
                 <p dir="ltr"><span data-lexical-text="true">first li</span></p>
                 <ul>

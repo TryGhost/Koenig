@@ -12,7 +12,7 @@ test.describe('Renders horizontal line rule', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
-                    <hr>
+                    <div><hr></div>
                 </div>
             </div>
             <p><br></p>

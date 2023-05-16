@@ -52,46 +52,48 @@ test.describe('Gallery card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="gallery">
-                    <figure>
-                        <div>
-                            <div data-gallery="true">
-                                <div data-row="0">
-                                    <div data-image="true">
-                                        <img
-                                            alt="Alt 1"
-                                            height="2160"
-                                            src="/content/images/2023/04/retreat-1.jpg"
-                                            width="3840" />
-                                        <div>
+                    <div>
+                        <figure>
+                            <div>
+                                <div data-gallery="true">
+                                    <div data-row="0">
+                                        <div data-image="true">
+                                            <img
+                                                alt="Alt 1"
+                                                height="2160"
+                                                src="/content/images/2023/04/retreat-1.jpg"
+                                                width="3840" />
                                             <div>
-                                                <button type="button"><svg></svg></button>
+                                                <div>
+                                                    <button type="button"><svg></svg></button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div data-image="true">
-                                        <img
-                                            alt="Alt 2"
-                                            height="2160"
-                                            src="/content/images/2023/04/retreat-2.jpg"
-                                            width="3840" />
-                                        <div>
+                                        <div data-image="true">
+                                            <img
+                                                alt="Alt 2"
+                                                height="2160"
+                                                src="/content/images/2023/04/retreat-2.jpg"
+                                                width="3840" />
                                             <div>
-                                                <button type="button"><svg></svg></button>
+                                                <div>
+                                                    <button type="button"><svg></svg></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <form>
+                                    <input
+                                        accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
+                                        hidden=""
+                                        multiple=""
+                                        name="image-input"
+                                        type="file" />
+                                </form>
                             </div>
-                            <form>
-                                <input
-                                    accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
-                                    hidden=""
-                                    multiple=""
-                                    name="image-input"
-                                    type="file" />
-                            </form>
-                        </div>
-                    </figure>
+                        </figure>
+                    </div>
                 </div>
             </div>
         `);
@@ -104,38 +106,40 @@ test.describe('Gallery card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="gallery">
-                    <figure>
-                        <div>
+                    <div>
+                        <figure>
                             <div>
                                 <div>
-                                    <button name="placeholder-button" type="button">
-                                        <svg></svg>
-                                        <p>Click to select up to 9 images</p>
-                                    </button>
-                                </div>
-                            </div>
-                            <form>
-                                <input
-                                    accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
-                                    hidden=""
-                                    multiple=""
-                                    name="image-input"
-                                    type="file" />
-                            </form>
-                        </div>
-                        <figcaption>
-                            <div>
-                                <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" role="textbox">
-                                            <p><br /></p>
-                                        </div>
+                                    <div>
+                                        <button name="placeholder-button" type="button">
+                                            <svg></svg>
+                                            <p>Click to select up to 9 images</p>
+                                        </button>
                                     </div>
-                                    <div>Type caption for gallery (optional)</div>
                                 </div>
+                                <form>
+                                    <input
+                                        accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
+                                        hidden=""
+                                        multiple=""
+                                        name="image-input"
+                                        type="file" />
+                                </form>
                             </div>
-                        </figcaption>
-                    </figure>
+                            <figcaption>
+                                <div>
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" role="textbox">
+                                                <p><br /></p>
+                                            </div>
+                                        </div>
+                                        <div>Type caption for gallery (optional)</div>
+                                    </div>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </div>
                 </div>
             </div>
             <p><br /></p>
@@ -158,46 +162,48 @@ test.describe('Gallery card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="gallery">
-                    <figure>
-                        <div>
-                            <div data-gallery="true">
-                                <div data-row="0">
-                                    <div data-image="true">
-                                        <img
-                                            height="248"
-                                            src="blob:..."
-                                            width="248" />
-                                        <div>
+                    <div>
+                        <figure>
+                            <div>
+                                <div data-gallery="true">
+                                    <div data-row="0">
+                                        <div data-image="true">
+                                            <img
+                                                height="248"
+                                                src="blob:..."
+                                                width="248" />
                                             <div>
-                                                <button type="button"><svg></svg></button>
+                                                <div>
+                                                    <button type="button"><svg></svg></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <form>
+                                    <input
+                                        accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
+                                        hidden=""
+                                        multiple=""
+                                        name="image-input"
+                                        type="file" />
+                                </form>
                             </div>
-                            <form>
-                                <input
-                                    accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
-                                    hidden=""
-                                    multiple=""
-                                    name="image-input"
-                                    type="file" />
-                            </form>
-                        </div>
-                        <figcaption>
-                            <div>
+                            <figcaption>
                                 <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" role="textbox">
-                                            <p><br /></p>
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" role="textbox">
+                                                <p><br /></p>
+                                            </div>
                                         </div>
+                                        <div>Type caption for gallery (optional)</div>
                                     </div>
-                                    <div>Type caption for gallery (optional)</div>
                                 </div>
-                            </div>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="gallery"></div>
+                            </figcaption>
+                        </figure>
+                        <div data-kg-card-toolbar="gallery"></div>
+                    </div>
                 </div>
             </div>
             <p><br /></p>

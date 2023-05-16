@@ -43,8 +43,33 @@ test.describe('Product card', async () => {
                     data-kg-card-selected="false"
                     data-kg-card="product">
                     <div>
-                        <div><img src="/content/images/2022/11/koenig-lexical.jpg" /></div>
                         <div>
+                            <div><img src="/content/images/2022/11/koenig-lexical.jpg" /></div>
+                            <div>
+                                <div>
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div
+                                                contenteditable="false"
+                                                spellcheck="true"
+                                                data-lexical-editor="true"
+                                                aria-autocomplete="none">
+                                                <p dir="ltr">
+                                                    <span data-lexical-text="true">This is</span>
+                                                    <em data-lexical-text="true">title</em>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button type="button"><svg></svg></button>
+                                    <button type="button"><svg></svg></button>
+                                    <button type="button"><svg></svg></button>
+                                    <button type="button"><svg></svg></button>
+                                    <button type="button"><svg></svg></button>
+                                </div>
+                            </div>
                             <div>
                                 <div>
                                     <div data-kg="editor">
@@ -53,40 +78,17 @@ test.describe('Product card', async () => {
                                             spellcheck="true"
                                             data-lexical-editor="true"
                                             aria-autocomplete="none">
-                                            <p dir="ltr">
-                                                <span data-lexical-text="true">This is</span>
-                                                <em data-lexical-text="true">title</em>
-                                            </p>
+                                            <p dir="ltr"><span data-lexical-text="true">Description</span></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <button type="button"><svg></svg></button>
-                                <button type="button"><svg></svg></button>
-                                <button type="button"><svg></svg></button>
-                                <button type="button"><svg></svg></button>
-                                <button type="button"><svg></svg></button>
+                                <a href="https://google.com/"><span>Button</span></a>
                             </div>
                         </div>
-                        <div>
-                            <div>
-                                <div data-kg="editor">
-                                    <div
-                                        contenteditable="false"
-                                        spellcheck="true"
-                                        data-lexical-editor="true"
-                                        aria-autocomplete="none">
-                                        <p dir="ltr"><span data-lexical-text="true">Description</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <a href="https://google.com/"><span>Button</span></a>
-                        </div>
+                        <div></div>
                     </div>
-                    <div></div>
                 </div>
             </div>
             `, {ignoreCardToolbarContents: true, ignoreInnerSVG: true});
@@ -241,21 +243,36 @@ test.describe('Product card', async () => {
                         <div>
                             <div>
                                 <div>
-                                    <button name="placeholder-button" type="button">
-                                        <svg></svg>
-                                        <p>Click to select a product image</p>
-                                    </button>
+                                    <div>
+                                        <button name="placeholder-button" type="button">
+                                            <svg></svg>
+                                            <p>Click to select a product image</p>
+                                        </button>
+                                    </div>
+                                </div>
+                                <form>
+                                    <input
+                                        accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
+                                        hidden=""
+                                        name="image-input"
+                                        type="file" />
+                                </form>
+                            </div>
+                            <div>
+                                <div>
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div
+                                                contenteditable="true"
+                                                spellcheck="true"
+                                                data-lexical-editor="true"
+                                                role="textbox">
+                                                <p dir="ltr"><span data-lexical-text="true">Title</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <form>
-                                <input
-                                    accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
-                                    hidden=""
-                                    name="image-input"
-                                    type="file" />
-                            </form>
-                        </div>
-                        <div>
                             <div>
                                 <div>
                                     <div data-kg="editor">
@@ -264,21 +281,8 @@ test.describe('Product card', async () => {
                                             spellcheck="true"
                                             data-lexical-editor="true"
                                             role="textbox">
-                                            <p dir="ltr"><span data-lexical-text="true">Title</span></p>
+                                            <p dir="ltr"><span data-lexical-text="true">Description</span></p>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div>
-                                <div data-kg="editor">
-                                    <div
-                                        contenteditable="true"
-                                        spellcheck="true"
-                                        data-lexical-editor="true"
-                                        role="textbox">
-                                        <p dir="ltr"><span data-lexical-text="true">Description</span></p>
                                     </div>
                                 </div>
                             </div>

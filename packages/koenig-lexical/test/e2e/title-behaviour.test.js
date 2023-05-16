@@ -164,7 +164,9 @@ test.describe('Title behaviour (ExternalControlPlugin)', async () => {
                 // card is selected
                 await assertHTML(page, html`
                     <div data-lexical-decorator="true" contenteditable="false">
-                       <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="horizontalrule"><hr /></div>
+                        <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="horizontalrule">
+                            <div><hr /></div>
+                        </div>
                     </div>
                     <p><br /></p>
                 `);
@@ -175,7 +177,9 @@ test.describe('Title behaviour (ExternalControlPlugin)', async () => {
 
                 await assertHTML(page, html`
                     <div data-lexical-decorator="true" contenteditable="false">
-                       <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                        <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                            <div><hr /></div>
+                        </div>
                     </div>
                     <p dir="ltr"><span data-lexical-text="true">Testing</span></p>
                     <p><br /></p>
@@ -218,7 +222,9 @@ test.describe('Title behaviour (ExternalControlPlugin)', async () => {
                 // card is not selected
                 await assertHTML(page, html`
                     <div data-lexical-decorator="true" contenteditable="false">
-                        <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                        <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                            <div><hr /></div>
+                        </div>
                     </div>
                     <p><br /></p>
                 `);
@@ -314,7 +320,9 @@ test.describe('Title behaviour (ExternalControlPlugin)', async () => {
                 // card is not selected
                 await assertHTML(page, html`
                     <div data-lexical-decorator="true" contenteditable="false">
-                        <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                        <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                            <div><hr /></div>
+                        </div>
                     </div>
                     <p><br /></p>
                 `);

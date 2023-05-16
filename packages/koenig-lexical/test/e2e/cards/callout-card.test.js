@@ -36,21 +36,23 @@ test.describe('Callout Card', async () => {
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="callout">
                     <div>
-                        <div><button type="button">😚</button></div>
                         <div>
-                            <div data-kg="editor">
-                                <div
-                                    contenteditable="false"
-                                    spellcheck="true"
-                                    data-lexical-editor="true"
-                                    aria-autocomplete="none"
-                                >
-                                    <p dir="ltr"><span data-lexical-text="true">Hello World</span></p>
+                            <div><button type="button">😚</button></div>
+                            <div>
+                                <div data-kg="editor">
+                                    <div
+                                        contenteditable="false"
+                                        spellcheck="true"
+                                        data-lexical-editor="true"
+                                        aria-autocomplete="none"
+                                    >
+                                        <p dir="ltr"><span data-lexical-text="true">Hello World</span></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div></div>
                     </div>
-                    <div></div>
                 </div>
             </div>
         `);
@@ -195,22 +197,24 @@ test.describe('Callout Card', async () => {
                 <div data-lexical-decorator="true" contenteditable="false">
                     <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="callout">
                         <div>
-                            <div><button type="button">💡</button></div>
                             <div>
-                                <div data-kg="editor">
-                                    <div
-                                        contenteditable="false"
-                                        spellcheck="true"
-                                        data-lexical-editor="true"
-                                        aria-autocomplete="none">
-                                        <p dir="ltr">
-                                            <span data-lexical-text="true">testing nesting</span>
-                                        </p>
+                                <div><button type="button">💡</button></div>
+                                <div>
+                                    <div data-kg="editor">
+                                        <div
+                                            contenteditable="false"
+                                            spellcheck="true"
+                                            data-lexical-editor="true"
+                                            aria-autocomplete="none">
+                                            <p dir="ltr">
+                                                <span data-lexical-text="true">testing nesting</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div></div>
                         </div>
-                        <div></div>
                     </div>
                 </div>
                 <p><br /></p>
@@ -229,23 +233,25 @@ test.describe('Callout Card', async () => {
                 <div data-lexical-decorator="true" contenteditable="false">
                     <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="callout">
                         <div>
-                            <div><button type="button">💡</button></div>
                             <div>
-                                <div data-kg="editor">
-                                    <div
-                                        contenteditable="false"
-                                        spellcheck="true"
-                                        data-lexical-editor="true"
-                                        aria-autocomplete="none">
-                                        <p dir="ltr">
-                                            <span data-lexical-text="true">testing nesting</span>
-                                        </p>
+                                <div><button type="button">💡</button></div>
+                                <div>
+                                    <div data-kg="editor">
+                                        <div
+                                            contenteditable="false"
+                                            spellcheck="true"
+                                            data-lexical-editor="true"
+                                            aria-autocomplete="none">
+                                            <p dir="ltr">
+                                                <span data-lexical-text="true">testing nesting</span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div></div>
-                        <div data-kg-card-toolbar="callout">
+                            <div></div>
+                            <div data-kg-card-toolbar="callout">
+                            </div>
                         </div>
                     </div>
                 </div>

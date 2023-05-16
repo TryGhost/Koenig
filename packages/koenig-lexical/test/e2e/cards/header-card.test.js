@@ -50,28 +50,30 @@ test.describe('Header card', async () => {
             <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="header">
                 <div>
                     <div>
-                        <div data-kg="editor">
-                        <div
-                            contenteditable="false"
-                            spellcheck="true"
-                            data-lexical-editor="true"
-                            aria-autocomplete="none">
-                            <p dir="ltr"><span data-lexical-text="true">hello world</span></p>
+                        <div>
+                            <div data-kg="editor">
+                            <div
+                                contenteditable="false"
+                                spellcheck="true"
+                                data-lexical-editor="true"
+                                aria-autocomplete="none">
+                                <p dir="ltr"><span data-lexical-text="true">hello world</span></p>
+                            </div>
+                            </div>
                         </div>
+                        <div>
+                            <div data-kg="editor">
+                            <div
+                                contenteditable="false"
+                                spellcheck="true"
+                                data-lexical-editor="true"
+                                aria-autocomplete="none">
+                                <p dir="ltr"><span data-lexical-text="true">hello sub</span></p>
+                            </div>
+                            </div>
                         </div>
+                        <div></div>
                     </div>
-                    <div>
-                        <div data-kg="editor">
-                        <div
-                            contenteditable="false"
-                            spellcheck="true"
-                            data-lexical-editor="true"
-                            aria-autocomplete="none">
-                            <p dir="ltr"><span data-lexical-text="true">hello sub</span></p>
-                        </div>
-                        </div>
-                    </div>
-                    <div></div>
                 </div>
             </div>
             </div>
@@ -201,25 +203,25 @@ test.describe('Header card', async () => {
         const accentButton = page.locator('[aria-label="Accent"]');
 
         // Default class should be 'bg-black' on the card
-        await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-black /);
+        await expect(page.locator('[data-kg-card="header"] > div:first-child > div:first-child')).toHaveClass(/ bg-black /);
 
         // Switch to light
         await lightButton.click();
 
         // Check that the background color has changed
-        await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-grey-100 /);
+        await expect(page.locator('[data-kg-card="header"] > div:first-child > div:first-child')).toHaveClass(/ bg-grey-100 /);
 
         // Switch back to dark
         await darkButton.click();
 
         // Check that the background color has changed
-        await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-black /);
+        await expect(page.locator('[data-kg-card="header"] > div:first-child > div:first-child')).toHaveClass(/ bg-black /);
 
         // Switch to accent
         await accentButton.click();
 
         // Check that the background color has changed
-        await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-accent /);
+        await expect(page.locator('[data-kg-card="header"] > div:first-child > div:first-child')).toHaveClass(/ bg-accent /);
     });
 
     test('can add and remove background image', async function ({page}) {
@@ -237,7 +239,7 @@ test.describe('Header card', async () => {
         await fileChooser.setFiles([filePath]);
 
         // Check if it is set as a background image
-        await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-image', /blob:/);
+        await expect(page.locator('[data-kg-card="header"] > div:first-child > div:first-child')).toHaveCSS('background-image', /blob:/);
 
         // Check if it is also set as an image in the panel
         await expect(page.getByTestId('image-picker-background')).toHaveAttribute('src', /blob:/);

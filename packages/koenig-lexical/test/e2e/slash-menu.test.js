@@ -226,7 +226,9 @@ test.describe('Slash menu', async () => {
 
             await assertHTML(page, html`
                 <div data-lexical-decorator="true" contenteditable="false">
-                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <div><hr /></div>
+                    </div>
                 </div>
                 <p><br /></p>
             `);
@@ -251,7 +253,9 @@ test.describe('Slash menu', async () => {
             await assertHTML(page, html`
                 <p dir="ltr"><span data-lexical-text="true">Testing</span></p>
                 <div data-lexical-decorator="true" contenteditable="false">
-                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule"><hr /></div>
+                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <div><hr /></div>
+                    </div>
                 </div>
                 <p><br /></p>
             `);

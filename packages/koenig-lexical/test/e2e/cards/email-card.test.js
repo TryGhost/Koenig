@@ -39,15 +39,17 @@ test.describe('Email card', async () => {
             <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="email">
                 <div>
                     <div>
-                        <div data-kg="editor">
-                            <div contenteditable="false" spellcheck="true" data-lexical-editor="true" aria-autocomplete="none">
-                                <p dir="ltr">
-                                    <span data-lexical-text="true">A paragraph</span>
-                                </p>
+                        <div>
+                            <div data-kg="editor">
+                                <div contenteditable="false" spellcheck="true" data-lexical-editor="true" aria-autocomplete="none">
+                                    <p dir="ltr">
+                                        <span data-lexical-text="true">A paragraph</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                        <div></div>
                     </div>
-                    <div></div>
                 </div>
             </div>
         </div>
@@ -64,23 +66,25 @@ test.describe('Email card', async () => {
             <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="email">
                 <div>
                     <div>
-                        <div data-kg="editor">
-                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" role="textbox">
-                                <p dir="ltr">
-                                  <span data-lexical-text="true">Hey</span>
-                                  <code data-lexical-text="true">
-                                    <span>{first_name, "there"}</span>
-                                  </code>
-                                    <span data-lexical-text="true">,</span>
-                                </p>
+                        <div>
+                            <div data-kg="editor">
+                                <div contenteditable="true" spellcheck="true" data-lexical-editor="true" role="textbox">
+                                    <p dir="ltr">
+                                    <span data-lexical-text="true">Hey</span>
+                                    <code data-lexical-text="true">
+                                        <span>{first_name, "there"}</span>
+                                    </code>
+                                        <span data-lexical-text="true">,</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        Only visible when delivered by email, this card will not be published on your site.
-                        <a href="https://ghost.org/help/email-newsletters/#email-cards" rel="noopener noreferrer" target="_blank">
-                            <svg></svg>
-                        </a>
+                        <div>
+                            Only visible when delivered by email, this card will not be published on your site.
+                            <a href="https://ghost.org/help/email-newsletters/#email-cards" rel="noopener noreferrer" target="_blank">
+                                <svg></svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

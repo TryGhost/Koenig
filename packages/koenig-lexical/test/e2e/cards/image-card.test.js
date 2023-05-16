@@ -90,17 +90,19 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div data-testid="media-placeholder">
-                            <div>
-                                <button name="placeholder-button" type="button">
-                                    <svg width="134" height="135" viewBox="0 0 134 135" xmlns="http://www.w3.org/2000/svg"></svg>
-                                    <p>Click to select an image</p>
-                                </button>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div data-testid="media-placeholder">
+                                <div>
+                                    <button name="placeholder-button" type="button">
+                                        <svg width="134" height="135" viewBox="0 0 134 135" xmlns="http://www.w3.org/2000/svg"></svg>
+                                        <p>Click to select an image</p>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <form><input accept="image/*" hidden="" name="image-input" type="file" /></form>
-                    </figure>
+                            <form><input accept="image/*" hidden="" name="image-input" type="file" /></form>
+                        </figure>
+                    </div>
                 </div>
             </div>
             <div contenteditable="false" data-lexical-cursor="true"></div>
@@ -147,14 +149,16 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div><img alt="" src="blob:..." /></div>
-                        <figcaption>
-                            <input placeholder="Type alt text for image (optional)" value=""/>
-                            <button name="alt-toggle-button" type="button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div><img alt="" src="blob:..." /></div>
+                            <figcaption>
+                                <input placeholder="Type alt text for image (optional)" value=""/>
+                                <button name="alt-toggle-button" type="button">Alt</button>
+                            </figcaption>
+                        </figure>
+                        <div data-kg-card-toolbar="image"></div
+                    </div>
                 </div>
             </div>
         `, {ignoreCardToolbarContents: true});
@@ -203,28 +207,30 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div>
-                            <img alt="" src="blob:...">
-                        </div>
-                        <figcaption>
-                            <div data-testid="image-caption-editor">
-                                <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
-                                            <p dir="ltr" data-koenig-dnd-droppable="true">
-                                                <span data-lexical-text="true">This is link </span>
-                                                <a href="https://ghost.org/changelog/markdown/" dir="ltr">
-                                                    <span data-lexical-text="true">ghost.org/changelog/markdown/</span>
-                                                </a>
-                                            </p>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div>
+                                <img alt="" src="blob:...">
+                            </div>
+                            <figcaption>
+                                <div data-testid="image-caption-editor">
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
+                                                <p dir="ltr" data-koenig-dnd-droppable="true">
+                                                    <span data-lexical-text="true">This is link </span>
+                                                    <a href="https://ghost.org/changelog/markdown/" dir="ltr">
+                                                        <span data-lexical-text="true">ghost.org/changelog/markdown/</span>
+                                                    </a>
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <button name="alt-toggle-button" type="button">Alt</button>
-                        </figcaption>
-                    </figure>
+                                <button name="alt-toggle-button" type="button">Alt</button>
+                            </figcaption>
+                        </figure>
+                    </div>
                 </div>
             </div>
         `, {ignoreCardToolbarContents: true});
@@ -374,25 +380,27 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div>
-                            <img alt="" src="blob:...">
-                        </div>
-                        <figcaption>
-                            <div data-testid="image-caption-editor">
-                                <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
-                                            <p><br /></p>
-                                        </div>
-                                    </div>
-                                    <div>Type caption for image (optional)</div>
-                                </div>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div>
+                                <img alt="" src="blob:...">
                             </div>
-                            <button name="alt-toggle-button" type="button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
+                            <figcaption>
+                                <div data-testid="image-caption-editor">
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
+                                                <p><br /></p>
+                                            </div>
+                                        </div>
+                                        <div>Type caption for image (optional)</div>
+                                    </div>
+                                </div>
+                                <button name="alt-toggle-button" type="button">Alt</button>
+                            </figcaption>
+                        </figure>
+                        <div data-kg-card-toolbar="image"></div>
+                    </div>
                 </div>
             </div>
         `, {ignoreCardToolbarContents: true});
@@ -508,11 +516,13 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div>
-                            <img alt="" src="blob:..." />
-                        </div>
-                    </figure>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div>
+                                <img alt="" src="blob:..." />
+                            </div>
+                        </figure>
+                    </div>
                 </div>
             </div>
             <div contenteditable="false" data-lexical-cursor="true"></div>
@@ -644,27 +654,29 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div>
-                            <img
-                                alt="a group of people walking down a street next to tall buildings"
-                                src="http://127.0.0.1:5173/Koenig-editor-1.png" />
-                        </div>
-                        <figcaption>
-                            <div data-testid="image-caption-editor">
-                                <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
-                                            <p><br /></p>
-                                        </div>
-                                    </div>
-                                    <div>Type caption for image (optional)</div>
-                                </div>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div>
+                                <img
+                                    alt="a group of people walking down a street next to tall buildings"
+                                    src="http://127.0.0.1:5173/Koenig-editor-1.png" />
                             </div>
-                            <button name="alt-toggle-button" type="button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
+                            <figcaption>
+                                <div data-testid="image-caption-editor">
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
+                                                <p><br /></p>
+                                            </div>
+                                        </div>
+                                        <div>Type caption for image (optional)</div>
+                                    </div>
+                                </div>
+                                <button name="alt-toggle-button" type="button">Alt</button>
+                            </figcaption>
+                        </figure>
+                        <div data-kg-card-toolbar="image"></div>
+                    </div>
                 </div>
             </div>
             <p><br /></p>
@@ -687,27 +699,29 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div>
-                            <img
-                                alt=""
-                                src="https://media.tenor.com/ocbMLlwniWQAAAAC/steve-harvey-oh.gif" />
-                        </div>
-                        <figcaption>
-                            <div data-testid="image-caption-editor">
-                                <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
-                                            <p><br /></p>
-                                        </div>
-                                    </div>
-                                    <div>Type caption for image (optional)</div>
-                                </div>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div>
+                                <img
+                                    alt=""
+                                    src="https://media.tenor.com/ocbMLlwniWQAAAAC/steve-harvey-oh.gif" />
                             </div>
-                            <button name="alt-toggle-button" type="button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
+                            <figcaption>
+                                <div data-testid="image-caption-editor">
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
+                                                <p><br /></p>
+                                            </div>
+                                        </div>
+                                        <div>Type caption for image (optional)</div>
+                                    </div>
+                                </div>
+                                <button name="alt-toggle-button" type="button">Alt</button>
+                            </figcaption>
+                        </figure>
+                        <div data-kg-card-toolbar="image"></div>
+                    </div>
                 </div>
             </div>
             <p><br /></p>
@@ -733,27 +747,29 @@ test.describe('Image card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
-                    <figure data-kg-card-width="regular">
-                        <div>
-                            <img
-                                alt=""
-                                src="https://media.tenor.com/Sm9aylrzSyMAAAAC/cats-animals.gif" />
-                        </div>
-                        <figcaption>
-                            <div data-testid="image-caption-editor">
-                                <div>
-                                    <div data-kg="editor">
-                                        <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
-                                            <p><br /></p>
-                                        </div>
-                                    </div>
-                                    <div>Type caption for image (optional)</div>
-                                </div>
+                    <div>
+                        <figure data-kg-card-width="regular">
+                            <div>
+                                <img
+                                    alt=""
+                                    src="https://media.tenor.com/Sm9aylrzSyMAAAAC/cats-animals.gif" />
                             </div>
-                            <button name="alt-toggle-button" type="button">Alt</button>
-                        </figcaption>
-                    </figure>
-                    <div data-kg-card-toolbar="image"></div>
+                            <figcaption>
+                                <div data-testid="image-caption-editor">
+                                    <div>
+                                        <div data-kg="editor">
+                                            <div contenteditable="true" spellcheck="true" data-lexical-editor="true" data-koenig-dnd-container="true" role="textbox">
+                                                <p><br /></p>
+                                            </div>
+                                        </div>
+                                        <div>Type caption for image (optional)</div>
+                                    </div>
+                                </div>
+                                <button name="alt-toggle-button" type="button">Alt</button>
+                            </figcaption>
+                        </figure>
+                        <div data-kg-card-toolbar="image"></div>
+                    </div>
                 </div>
             </div>
             <p><br /></p>

@@ -37,10 +37,30 @@ test.describe('Toggle card', async () => {
         await assertHTML(page, html`
                 <div data-lexical-decorator="true" contenteditable="false">
                     <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="toggle">
-                        <div class="rounded border border-grey/40 py-4 px-6 dark:border-grey/30">
-                            <div class="flex cursor-text items-start justify-between">
-                                <div class="mr-2 w-full">
-                                    <div class="koenig-lexical-toggle-heading">
+                        <div>
+                            <div class="rounded border border-grey/40 py-4 px-6 dark:border-grey/30">
+                                <div class="flex cursor-text items-start justify-between">
+                                    <div class="mr-2 w-full">
+                                        <div class="koenig-lexical-toggle-heading">
+                                            <div data-kg="editor">
+                                                <div
+                                                    contenteditable="false"
+                                                    spellcheck="true"
+                                                    data-lexical-editor="true"
+                                                    aria-autocomplete="none"
+                                                >
+                                                    <p dir="ltr"><em data-lexical-text="true">Heading</em></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="ml-auto mt-[-1px] flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center">
+                                        <svg></svg>
+                                    </div>
+                                </div>
+                                <div class="mt-2 w-full visible">
+                                    <div class="koenig-lexical-toggle-description">
                                         <div data-kg="editor">
                                             <div
                                                 contenteditable="false"
@@ -48,32 +68,14 @@ test.describe('Toggle card', async () => {
                                                 data-lexical-editor="true"
                                                 aria-autocomplete="none"
                                             >
-                                                <p dir="ltr"><em data-lexical-text="true">Heading</em></p>
+                                                <p dir="ltr"><span data-lexical-text="true">Content</span></p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="ml-auto mt-[-1px] flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center">
-                                    <svg></svg>
-                                </div>
                             </div>
-                            <div class="mt-2 w-full visible">
-                                <div class="koenig-lexical-toggle-description">
-                                    <div data-kg="editor">
-                                        <div
-                                            contenteditable="false"
-                                            spellcheck="true"
-                                            data-lexical-editor="true"
-                                            aria-autocomplete="none"
-                                        >
-                                            <p dir="ltr"><span data-lexical-text="true">Content</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div></div>
                         </div>
-                        <div></div>
                     </div>
                 </div>
             `, {ignoreCardToolbarContents: true, ignoreInnerSVG: true});
@@ -86,10 +88,31 @@ test.describe('Toggle card', async () => {
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="toggle">
-                    <div class="rounded border border-grey/40 py-4 px-6 dark:border-grey/30">
-                        <div class="flex cursor-text items-start justify-between">
-                            <div class="mr-2 w-full">
-                                <div class="koenig-lexical-toggle-heading">
+                    <div>
+                        <div class="rounded border border-grey/40 py-4 px-6 dark:border-grey/30">
+                            <div class="flex cursor-text items-start justify-between">
+                                <div class="mr-2 w-full">
+                                    <div class="koenig-lexical-toggle-heading">
+                                        <div data-kg="editor">
+                                            <div
+                                                contenteditable="true"
+                                                spellcheck="true"
+                                                data-lexical-editor="true"
+                                                role="textbox"
+                                            >
+                                                <p><br /></p>
+                                            </div>
+                                        </div>
+                                        <div>Toggle header</div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="ml-auto mt-[-1px] flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center">
+                                    <svg></svg>
+                                </div>
+                            </div>
+                            <div class="mt-2 w-full visible">
+                                <div class="koenig-lexical-toggle-description">
                                     <div data-kg="editor">
                                         <div
                                             contenteditable="true"
@@ -100,27 +123,8 @@ test.describe('Toggle card', async () => {
                                             <p><br /></p>
                                         </div>
                                     </div>
-                                    <div>Toggle header</div>
+                                    <div>Collapsible content</div>
                                 </div>
-                            </div>
-                            <div
-                                class="ml-auto mt-[-1px] flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center">
-                                <svg></svg>
-                            </div>
-                        </div>
-                        <div class="mt-2 w-full visible">
-                            <div class="koenig-lexical-toggle-description">
-                                <div data-kg="editor">
-                                    <div
-                                        contenteditable="true"
-                                        spellcheck="true"
-                                        data-lexical-editor="true"
-                                        role="textbox"
-                                    >
-                                        <p><br /></p>
-                                    </div>
-                                </div>
-                                <div>Collapsible content</div>
                             </div>
                         </div>
                     </div>

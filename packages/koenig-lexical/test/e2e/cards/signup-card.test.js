@@ -137,7 +137,7 @@ test.describe('Signup card', async () => {
         await fileChooser.setFiles([filePath]);
 
         // Check if it is set as a background image
-        await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-image', /blob:/);
+        await expect(page.locator('[data-kg-card="signup"] > div:first-child > div:first-child')).toHaveCSS('background-image', /blob:/);
 
         // Check if it is also set as an image in the panel
         await expect(page.locator('[data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);

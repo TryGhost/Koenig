@@ -48,7 +48,7 @@ test.describe('Selection behaviour', async () => {
             <p dir="ltr"><span data-lexical-text="true">First paragraph</span></p>
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
-                    <hr>
+                    <div><hr></div>
                 </div>
             </div>
             <p><span data-lexical-text="true">Second paragraph</span></p>

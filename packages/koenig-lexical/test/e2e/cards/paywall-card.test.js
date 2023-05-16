@@ -32,7 +32,9 @@ test.describe('Paywall card', async () => {
             <div data-lexical-decorator="true" contenteditable="false" data-koenig-dnd-draggable="true" data-koenig-dnd-droppable="true">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="paywall">
                     <div>
-                        Free public preview<span>↑</span>/<span>↓</span>Only visible to members
+                        <div>
+                            Free public preview<span>↑</span>/<span>↓</span>Only visible to members
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,7 +49,9 @@ test.describe('Paywall card', async () => {
             <div data-lexical-decorator="true" contenteditable="false" data-koenig-dnd-draggable="true" data-koenig-dnd-droppable="true">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="paywall">
                     <div>
-                        Free public preview<span>↑</span>/<span>↓</span>Only visible to members
+                        <div>
+                            Free public preview<span>↑</span>/<span>↓</span>Only visible to members
+                        </div>
                     </div>
                 </div>
             </div>
