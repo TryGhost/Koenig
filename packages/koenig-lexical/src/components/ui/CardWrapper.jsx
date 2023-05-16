@@ -1,14 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
-const CARD_WIDTH_CLASSES = {
-    wide: [
-        'w-[calc(100%+3.6rem)] left-[calc(50%-(100%+3.6rem)/2)]',
-        'sm:w-[calc(100%+10rem)] sm:left-[calc(50%-(100%+10rem)/2)]',
-        'lg:w-[calc(100%+18rem)] lg:left-[calc(50%-(100%+18rem)/2)]'
-    ].join(' '),
-    full: 'inset-x-[-1px] mx-[calc(50%-50vw+(var(--kg-breakout-adjustment)/2))] w-[calc(100vw-var(--kg-breakout-adjustment)+2px)]'
-};
+import clsx from 'clsx';
 
 export const CardWrapper = React.forwardRef(({
     cardType,
@@ -22,26 +14,6 @@ export const CardWrapper = React.forwardRef(({
     children,
     ...props
 }, ref) => {
-    const wrapperClass = () => {
-        if ((wrapperStyle === 'wide') && (isEditing || isSelected)) {
-            return '!-mx-3 !px-3';
-        } else if (((wrapperStyle === 'code-card') && isEditing)) {
-            return '-mx-6';
-        } else if (wrapperStyle === 'wide') {
-            return 'hover:-mx-3 hover:px-3';
-        } else {
-            return 'border';
-        }
-    };
-
-    const className = [
-        'relative border-transparent caret-grey-800',
-        isSelected && !isDragging ? 'shadow-[0_0_0_2px] shadow-green' : '',
-        !isSelected && !isDragging ? 'hover:shadow-[0_0_0_1px] hover:shadow-green' : '',
-        CARD_WIDTH_CLASSES[cardWidth] || '',
-        wrapperClass()
-    ].join(' ');
-
     return (
         <>
             {IndicatorIcon &&
@@ -51,13 +23,24 @@ export const CardWrapper = React.forwardRef(({
             }
             <div
                 ref={ref}
-                className={className}
                 data-kg-card={cardType}
                 data-kg-card-editing={isEditing}
                 data-kg-card-selected={isSelected}
                 {...props}
             >
-                {children}
+                {/* Apply styling to a child wrapper so that we can Portal the settings panel into here */}
+                <div className={clsx(
+                    'relative border-transparent caret-grey-800',
+                    isSelected && !isDragging && 'shadow-[0_0_0_2px] shadow-green',
+                    !isSelected && !isDragging && 'hover:shadow-[0_0_0_1px] hover:shadow-green',
+                    (cardWidth === 'wide') && 'mx-[calc(50%-(50vw-var(--kg-breakout-adjustment))-.8rem)] w-[calc(65vw+2px-var(--kg-breakout-adjustment))] min-w-[calc(100%+3.6rem)] translate-x-[calc(50vw-50%+.8rem-var(--kg-breakout-adjustment))] sm:min-w-[calc(100%+10rem)] lg:min-w-[calc(100%+18rem)]',
+                    (cardWidth === 'full') && 'inset-x-[-1px] mx-[calc(50%-50vw+(var(--kg-breakout-adjustment)/2))] w-[calc(100vw-var(--kg-breakout-adjustment)+2px)]',
+                    ((wrapperStyle === 'wide') && (isEditing || isSelected)) && '!-mx-3 !px-3',
+                    ((wrapperStyle === 'code-card') && isEditing) && '-mx-6',
+                    (wrapperStyle === 'wide') ? 'hover:-mx-3 hover:px-3' : 'border'
+                )}>
+                    {children}
+                </div>
             </div>
         </>
     );

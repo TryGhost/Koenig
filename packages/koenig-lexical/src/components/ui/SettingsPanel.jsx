@@ -14,7 +14,9 @@ import {MediaPlaceholder} from './MediaPlaceholder';
 import {MultiSelectDropdown} from './MultiSelectDropdown';
 import {ProgressBar} from './ProgressBar';
 import {Toggle} from './Toggle';
+import {createPortal} from 'react-dom';
 import {openFileSelection} from '../../utils/openFileSelection';
+import {useCardContext} from '../../context/CardContext';
 
 const SettingsPanelContext = createContext();
 
@@ -22,10 +24,9 @@ export const useSettingsPanelContext = () => useContext(SettingsPanelContext);
 
 export function SettingsPanel({children, darkMode}) {
     const {ref,repositionPanel} = useSettingsPanelReposition();
+    const cardContext = useCardContext();
 
-    return (
-        // Ideally we would use Portal to avoid issues with transformed ancestors (https://bugs.chromium.org/p/chromium/issues/detail?id=20574)
-        // However, Portal causes problems with drag/drop, focus, etc
+    const element = (
         <SettingsPanelContext.Provider value={{repositionPanel}}>
             <div className={`!mt-0 ${darkMode ? 'dark' : ''}`}>
                 <div ref={ref}
@@ -37,6 +38,13 @@ export function SettingsPanel({children, darkMode}) {
             </div>
         </SettingsPanelContext.Provider>
     );
+
+    if (!cardContext?.cardContainerRef?.current) {
+        return element;
+    }
+
+    // Attach to the card wrapper to avoid problems with transformed ancestors https://bugs.chromium.org/p/chromium/issues/detail?id=20574
+    return createPortal(element, cardContext.cardContainerRef.current);
 }
 
 export function ToggleSetting({label, description, isChecked, onChange, dataTestId}) {
