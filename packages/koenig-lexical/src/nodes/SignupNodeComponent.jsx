@@ -1,6 +1,7 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import useFileDragAndDrop from '../hooks/useFileDragAndDrop';
+import useFocusHistory from '../hooks/useFocusHistory';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar';
 import {EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
@@ -41,6 +42,7 @@ function SignupNodeComponent({
     const [showSnippetToolbar, setShowSnippetToolbar] = useState(false);
     const [availableLabels, setAvailableLabels] = useState([]);
     const [showBackgroundImage, setShowBackgroundImage] = useState(Boolean(backgroundImageSrc));
+    const {restorePreviousFocus} = useFocusHistory({enabled: isEditing});
 
     useEffect(() => {
         if (cardConfig?.fetchLabels) {
@@ -62,6 +64,7 @@ function SignupNodeComponent({
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setAlignment(a);
+            restorePreviousFocus();
         });
     };
 
@@ -98,6 +101,7 @@ function SignupNodeComponent({
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setLayout(l);
+            restorePreviousFocus();
         });
     };
 
