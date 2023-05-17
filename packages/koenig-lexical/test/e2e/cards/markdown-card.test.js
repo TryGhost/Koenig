@@ -41,6 +41,8 @@ test.describe('Markdown card', async () => {
             editor.setEditorState(editorState);
         });
 
+        //test commit
+
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div><svg></svg></div>
