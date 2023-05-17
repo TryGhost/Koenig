@@ -23,6 +23,25 @@ export function ButtonGroup({buttons = [], selectedName, onClick}) {
 }
 
 export function IconButton({dataTestId, onClick, label, name, selectedName, Icon}) {
+    let previousRange = null;
+
+    const handleMousedown = () => {
+        const selection = document.getSelection();
+        previousRange = selection.rangeCount === 0 ? null : selection.getRangeAt(0);
+    };
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        onClick(name);
+
+        if (previousRange) {
+            const selection = document.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(previousRange);
+            previousRange = null;
+        }
+    };
+
     const isActive = name === selectedName;
     return (
         <li className="mb-0">
@@ -31,7 +50,8 @@ export function IconButton({dataTestId, onClick, label, name, selectedName, Icon
                 className={`m-[3px] flex h-7 w-8 cursor-pointer items-center justify-center ${isActive ? 'rounded bg-white text-black shadow-sm dark:bg-grey-900 dark:text-white' : 'text-grey-700 dark:text-white' } ${Icon || 'text-[1.3rem] font-bold'}`}
                 data-testid={dataTestId}
                 type="button"
-                onClick={() => onClick(name)}
+                onClick={handleClick}
+                onMouseDown={handleMousedown}
             >
                 {Icon ? <Icon className="fill-black dark:fill-white" /> : label}
             </button>
