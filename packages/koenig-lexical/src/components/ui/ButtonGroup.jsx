@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
-import PropTypes from 'prop-types';
+import {usePreviousFocus} from '../../hooks/usePreviousFocus';
 
 export function ButtonGroup({buttons = [], selectedName, onClick}) {
     return (
@@ -23,26 +24,10 @@ export function ButtonGroup({buttons = [], selectedName, onClick}) {
 }
 
 export function IconButton({dataTestId, onClick, label, name, selectedName, Icon}) {
-    let previousRange = null;
-
-    const handleMousedown = () => {
-        const selection = document.getSelection();
-        previousRange = selection.rangeCount === 0 ? null : selection.getRangeAt(0);
-    };
-
-    const handleClick = (e) => {
-        e.preventDefault();
-        onClick(name);
-
-        if (previousRange) {
-            const selection = document.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(previousRange);
-            previousRange = null;
-        }
-    };
-
     const isActive = name === selectedName;
+
+    const {handleMousedown, handleClick} = usePreviousFocus(onClick, name);
+
     return (
         <li className="mb-0">
             <button
