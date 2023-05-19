@@ -1,20 +1,21 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 
-// TODO this is a placeholder, we need to figure out what the signup card should look like and
-// which elements should be customizable inside the editor
 // ref https://ghost.org/docs/themes/members#signup-forms
 
 function cardTemplate(nodeData) {
     const cardClasses = getCardClasses(nodeData).join(' ');
 
+    const backgroundAccent = nodeData.backgroundColor === 'accent' ? 'kg-style-accent' : '';
+    const buttonAccent = nodeData.buttonColor === 'accent' ? 'kg-style-accent' : '';
+
     return `
     <div class="${cardClasses}" data-lexical-signup-form style="display:none;">
-        <div class="kg-signup-card-container" style="background-color: ${nodeData.backgroundColor}; background-image: url(${nodeData.backgroundImageSrc});">
+        <div class="kg-signup-card-container ${backgroundAccent}" style="background-color: ${nodeData.backgroundColor}; background-image: url(${nodeData.backgroundImageSrc});">
             <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
             <h3 class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</h3>
             <form class="kg-signup-card-form" data-members-form="">
                 <input class="kg-signup-card-input" style="border-color: ${nodeData.buttonColor};" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com" />
-                <button class="kg-signup-card-button" style="background-color: ${nodeData.buttonColor}; color: ${nodeData.buttonTextColor};" type="submit">${nodeData.buttonText || 'Subscribe'}</button>
+                <button class="kg-signup-card-button ${buttonAccent}" style="background-color: ${nodeData.buttonColor}; color: ${nodeData.buttonTextColor};" type="submit">${nodeData.buttonText || 'Subscribe'}</button>
             </form>
             <p class="kg-signup-card-disclaimer" style="color: ${nodeData.textColor};">${nodeData.disclaimer}</p>
         </div>
