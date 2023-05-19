@@ -4,8 +4,8 @@ import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 // which elements should be customizable inside the editor
 // ref https://ghost.org/docs/themes/members#signup-forms
 
-function cardTemplate({nodeData, node}) {
-    const cardClasses = getCardClasses(node).join(' ');
+function cardTemplate(nodeData) {
+    const cardClasses = getCardClasses(nodeData).join(' ');
 
     return `
     <div class="${cardClasses}" data-lexical-signup-form style="display:none;">
@@ -50,11 +50,11 @@ export function renderSignupCardToDOM(dataset, options = {}) {
     return element.firstElementChild;
 }
 
-export function getCardClasses(node) {
+export function getCardClasses(nodeData) {
     let cardClasses = ['kg-card kg-signup-card'];
 
-    if (node.getCardWidth()) {
-        cardClasses.push(`kg-width-${node.getCardWidth()}`);
+    if (nodeData.layout) {
+        cardClasses.push(`kg-width-${nodeData.layout}`);
     }
 
     return cardClasses;
