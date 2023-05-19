@@ -49,6 +49,27 @@ export function renderSignupCardToDOM(dataset, options = {}) {
 
     const element = document.createElement('div');
     element.innerHTML = htmlString?.trim();
+
+    if (node.header === '') {
+        const h2Element = element.querySelector('.kg-signup-card-heading');
+        if (h2Element) {
+            h2Element.remove();
+        }
+    }
+
+    if (node.subheader === '') {
+        const h3Element = element.querySelector('.kg-signup-card-subheading');
+        if (h3Element) {
+            h3Element.remove();
+        }
+    }
+
+    if (node.disclaimer === '') {
+        const pElement = element.querySelector('.kg-signup-card-disclaimer');
+        if (pElement) {
+            pElement.remove();
+        }
+    }
     return element.firstElementChild;
 }
 

@@ -178,8 +178,38 @@ describe('SignupNode', function () {
             const signupNode = $createSignupNode(dataset);
             const {element} = signupNode.exportDOM(exportOptions);
             element.outerHTML.should.prettifyTo(html`
-            <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none"><div class="kg-signup-card-container" style="background-color:transparent"><h1 style="color:#000">Header</h1><h2 style="color:#000">Subheader</h2><form data-members-form="" style="background-image:url(https://example.com/image.jpg)"><input style="border-color:#000" id="email" data-members-email="" type="email" required="true"><button type="submit" style="background-color:#000;color:#fff">Button</button></form><p style="color:#000">Disclaimer</p></div></div>
+            <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none"><div class="kg-signup-card-container" style="background-color:transparent;background-image:url(https://example.com/image.jpg)"><h2 class="kg-signup-card-heading" style="color:#000">Header</h2><h3 class="kg-signup-card-subheading" style="color:#000">Subheader</h3><form class="kg-signup-card-form" data-members-form=""><input class="kg-signup-card-input" style="border-color:#000" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com"><button class="kg-signup-card-button" style="background-color:#000;color:#fff" type="submit">Button</button></form><p class="kg-signup-card-disclaimer" style="color:#000">Disclaimer</p></div></div>
             `);
+        }));
+
+        it('removes empty elements', editorTest(function () {
+            dataset.header = '';
+            dataset.subheader = '';
+            dataset.disclaimer = '';
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+            element.outerHTML.should.prettifyTo(html`
+            <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none"><div class="kg-signup-card-container" style="background-color:transparent;background-image:url(https://example.com/image.jpg)"><form class="kg-signup-card-form" data-members-form=""><input class="kg-signup-card-input" style="border-color:#000" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com"><button class="kg-signup-card-button" style="background-color:#000;color:#fff" type="submit">Button</button></form></div></div>
+            `);
+        }));
+
+        it('renders accent classes', editorTest(function () {
+            dataset.backgroundColor = 'accent';
+            dataset.buttonColor = 'accent';
+
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+            element.outerHTML.should.prettifyTo(html`
+            <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none"><div class="kg-signup-card-container kg-style-accent" style="background-color:accent;background-image:url(https://example.com/image.jpg)"><h2 class="kg-signup-card-heading" style="color:#000">Header</h2><h3 class="kg-signup-card-subheading" style="color:#000">Subheader</h3><form class="kg-signup-card-form" data-members-form=""><input class="kg-signup-card-input" style="border-color:accent" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com"><button class="kg-signup-card-button kg-style-accent" style="background-color:accent;color:#fff" type="submit">Button</button></form><p class="kg-signup-card-disclaimer" style="color:#000">Disclaimer</p></div></div>
+            `);
+        }));
+
+        it('renders split classes', editorTest(function () {
+            dataset.layout = 'split';
+
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+            element.outerHTML.should.
         }));
     });
 
