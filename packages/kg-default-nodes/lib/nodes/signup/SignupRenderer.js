@@ -7,10 +7,11 @@ function cardTemplate(nodeData) {
 
     const backgroundAccent = nodeData.backgroundColor === 'accent' ? 'kg-style-accent' : '';
     const buttonAccent = nodeData.buttonColor === 'accent' ? 'kg-style-accent' : '';
+    const alignment = nodeData.alignment === 'center' ? 'align-center' : '';
 
     return `
     <div class="${cardClasses}" data-lexical-signup-form style="display:none;">
-        <div class="kg-signup-card-container ${backgroundAccent}" style="background-color: ${nodeData.backgroundColor}; background-image: url(${nodeData.backgroundImageSrc});">
+        <div class="kg-signup-card-container ${alignment} ${backgroundAccent}" style="background-color: ${nodeData.backgroundColor}; background-image: url(${nodeData.backgroundImageSrc});">
             <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
             <h3 class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</h3>
             <form class="kg-signup-card-form" data-members-form="">
