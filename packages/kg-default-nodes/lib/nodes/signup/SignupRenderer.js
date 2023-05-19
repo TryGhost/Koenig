@@ -9,14 +9,14 @@ function cardTemplate(nodeData) {
 
     return `
     <div class="${cardClasses}" data-lexical-signup-form style="display:none;">
-        <div class="kg-signup-card-container" style="background-color: ${nodeData.backgroundColor};">
-            <h1 style="color: ${nodeData.textColor};">${nodeData.header}</h1>
-            <h2 style="color: ${nodeData.textColor};">${nodeData.subheader}</h2>
-            <form data-members-form="" style="background-image: url(${nodeData.backgroundImageSrc});">
-                <input style="border-color: ${nodeData.buttonColor};" id="email" data-members-email="" type="email" required="true" />
-                <button type="submit" style="background-color: ${nodeData.buttonColor}; color: ${nodeData.buttonTextColor};">${nodeData.buttonText || 'Subscribe'}</button>
+        <div class="kg-signup-card-container" style="background-color: ${nodeData.backgroundColor}; background-image: url(${nodeData.backgroundImageSrc});">
+            <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
+            <h3 class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</h3>
+            <form class="kg-signup-card-form" data-members-form="">
+                <input class="kg-signup-card-input" style="border-color: ${nodeData.buttonColor};" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com" />
+                <button class="kg-signup-card-button" style="background-color: ${nodeData.buttonColor}; color: ${nodeData.buttonTextColor};" type="submit">${nodeData.buttonText || 'Subscribe'}</button>
             </form>
-            <p style="color: ${nodeData.textColor};">${nodeData.disclaimer}</p>
+            <p class="kg-signup-card-disclaimer" style="color: ${nodeData.textColor};">${nodeData.disclaimer}</p>
         </div>
     </div>
     `;
