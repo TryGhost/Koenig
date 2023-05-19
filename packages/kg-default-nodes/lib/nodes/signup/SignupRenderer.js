@@ -53,8 +53,12 @@ export function renderSignupCardToDOM(dataset, options = {}) {
 export function getCardClasses(nodeData) {
     let cardClasses = ['kg-card kg-signup-card'];
 
-    if (nodeData.layout) {
+    if (nodeData.layout && nodeData.layout !== 'split') {
         cardClasses.push(`kg-width-${nodeData.layout}`);
+    }
+
+    if (nodeData.layout === 'split') {
+        cardClasses.push('kg-layout-split kg-width-full');
     }
 
     return cardClasses;
