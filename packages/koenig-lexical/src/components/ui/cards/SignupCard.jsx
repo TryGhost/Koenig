@@ -147,13 +147,19 @@ export function SignupCard({alignment,
                 (layout === 'full') && 'min-h-[80vh]',
                 (layout === 'split') && 'h-auto sm:h-[80vh]'
             )} data-testid={'signup-card-container'} style={wrapperStyle()}>
-                {layout === 'split' && (
+                {/* BEWARE - MediaUploader renders at 2 different locations in this Component,
+                    if something changes here, change below as well.
+                    - TODO - see if we can let the flexbox swap this around instead of rendering twice
+                */}
+
+                {layout === 'split' && !isSwapped ? (
                     <MediaUploader
                         alt='Background image'
                         className="sm:w-1/2"
                         desc='Click to select an image'
                         dragHandler={imageDragHandler}
                         errors={fileUploader?.errors}
+                        handleSwapLayout={handleSwapLayout}
                         icon='image'
                         isLoading={isLoading}
                         mimeTypes={['image/*']}
@@ -163,7 +169,7 @@ export function SignupCard({alignment,
                         onFileChange={onFileChange}
                         onRemoveMedia={handleClearBackgroundImage}
                     />
-                )}
+                ) : <></>}
 
                 <div className={clsx(
                     'mx-auto flex w-full flex-1 flex-col justify-center',
@@ -277,6 +283,24 @@ export function SignupCard({alignment,
                     {/* Read-only overlay */}
                     {!isEditing && <div className="absolute top-0 z-10 !m-0 h-full w-full cursor-default p-0"></div>}
                 </div>
+                {layout === 'split' && isSwapped ? (
+                    <MediaUploader
+                        alt='Background image'
+                        className="sm:w-1/2"
+                        desc='Click to select an image'
+                        dragHandler={imageDragHandler}
+                        errors={fileUploader?.errors}
+                        handleSwapLayout={handleSwapLayout}
+                        icon='image'
+                        isLoading={isLoading}
+                        mimeTypes={['image/*']}
+                        progress={progress}
+                        size='large'
+                        src={backgroundImageSrc}
+                        onFileChange={onFileChange}
+                        onRemoveMedia={handleClearBackgroundImage}
+                    />
+                ) : <></>}
             </div>
 
             {isEditing &&
