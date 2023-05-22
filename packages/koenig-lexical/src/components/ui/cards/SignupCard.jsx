@@ -39,11 +39,13 @@ export function SignupCard({alignment,
     handleLayout,
     handleTextColor,
     handleSuccessMessage,
+    isPinturaEnabled,
     labels,
     layout,
     availableLabels,
     handleLabels,
     onFileChange,
+    openImageEditor,
     imageDragHandler,
     headerTextEditor,
     headerTextEditorInitialState,
@@ -162,7 +164,9 @@ export function SignupCard({alignment,
                         handleSwapLayout={handleSwapLayout}
                         icon='image'
                         isLoading={isLoading}
+                        isPinturaEnabled={isPinturaEnabled}
                         mimeTypes={['image/*']}
+                        openImageEditor={openImageEditor}
                         progress={progress}
                         size='large'
                         src={backgroundImageSrc}
@@ -417,6 +421,7 @@ SignupCard.propTypes = {
     successMessage: PropTypes.string,
     showBackgroundImage: PropTypes.bool,
     isEditing: PropTypes.bool,
+    isPinturaEnabled: PropTypes.bool,
     fileUploader: PropTypes.object,
     fileInputRef: PropTypes.object,
     handleLayout: PropTypes.func,
@@ -434,6 +439,7 @@ SignupCard.propTypes = {
     availableLabels: PropTypes.arrayOf(PropTypes.object),
     openFilePicker: PropTypes.func,
     onFileChange: PropTypes.func,
+    openImageEditor: PropTypes.func,
     imageDragHandler: PropTypes.object,
     headerTextEditor: PropTypes.object,
     headerTextEditorInitialState: PropTypes.string,
