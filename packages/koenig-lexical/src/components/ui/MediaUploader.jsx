@@ -5,6 +5,7 @@ import {ReactComponent as DeleteIcon} from '../../assets/icons/kg-trash.svg';
 import {IconButton} from './IconButton';
 import {MediaPlaceholder} from './MediaPlaceholder';
 import {ProgressBar} from './ProgressBar';
+import {ReactComponent as SwapIcon} from '../../assets/icons/kg-swap.svg';
 import {openFileSelection} from '../../utils/openFileSelection';
 import {useRef} from 'react';
 
@@ -78,6 +79,7 @@ export function MediaUploader({
             {!isLoading && (
                 <div className="absolute top-2 right-2 flex opacity-0 transition-all group-hover:opacity-100">
                     <IconButton dataTestId="media-upload-remove" Icon={DeleteIcon} onClick={onRemove} />
+                    <IconButton dataTestId="media-upload-swap" Icon={SwapIcon} onClick={handleSwapLayout} />
                 </div>
             )}
 
