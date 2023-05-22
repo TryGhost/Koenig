@@ -173,16 +173,17 @@ export function SignupCard({alignment,
                         onFileChange={onFileChange}
                         onRemoveMedia={handleClearBackgroundImage}
                     />
-                ) : <></>}
+                ) : null}
 
-                <div className={clsx(
-                    'mx-auto flex w-full flex-1 flex-col justify-center',
-                    (alignment === 'center') && 'items-center',
-                    (layout === 'regular') && 'p-[8vmin] pb-[9vmin]',
-                    (layout === 'wide') && 'p-[10vmin] pb-[12vmin]',
-                    (layout === 'full') && 'p-[14vmin] pb-[16vmin]',
-                    (layout === 'split') && 'px-[6vmin] pt-[16vmin] pb-[18vmin]'
-                )}>
+                <div
+                    className={clsx(
+                        'mx-auto flex w-full flex-1 flex-col justify-center',
+                        (alignment === 'center') && 'items-center',
+                        (layout === 'regular') && 'p-[8vmin] pb-[9vmin]',
+                        (layout === 'wide') && 'p-[10vmin] pb-[12vmin]',
+                        (layout === 'full') && 'p-[14vmin] pb-[16vmin]',
+                        (layout === 'split') && 'px-[6vmin] pt-[16vmin] pb-[18vmin]'
+                    )}>
                     {/* Heading */}
                     {
                         (isEditing || !!header || !isEditorEmpty(headerTextEditor)) && (
@@ -302,7 +303,7 @@ export function SignupCard({alignment,
                         onFileChange={onFileChange}
                         onRemoveMedia={handleClearBackgroundImage}
                     />
-                ) : <></>}
+                ) : null}
 
                 {/* Read-only overlay */}
                 {!isEditing && <div className="absolute top-0 z-10 !m-0 h-full w-full cursor-default p-0"></div>}
