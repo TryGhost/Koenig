@@ -23,7 +23,8 @@ export function MediaUploader({
     isLoading,
     progress,
     errors,
-    onRemoveMedia
+    onRemoveMedia,
+    handleSwapLayout
 }) {
     const fileInputRef = useRef(null);
 

@@ -50,7 +50,9 @@ export function SignupCard({alignment,
     subheaderTextEditor,
     subheaderTextEditorInitialState,
     disclaimerTextEditor,
-    disclaimerTextEditorInitialState}) {
+    disclaimerTextEditorInitialState,
+    isSwapped,
+    handleSwapLayout}) {
     const matchingTextColor = (color) => {
         return color === 'transparent' ? '' : textColorForBackgroundColor(hexColorValue(color)).hex();
     };
@@ -413,5 +415,7 @@ SignupCard.propTypes = {
     subheaderTextEditor: PropTypes.object,
     subheaderTextEditorInitialState: PropTypes.string,
     disclaimerTextEditor: PropTypes.object,
-    disclaimerTextEditorInitialState: PropTypes.string
+    disclaimerTextEditorInitialState: PropTypes.string,
+    isSwapped: PropTypes.bool,
+    handleSwapLayout: PropTypes.func
 };

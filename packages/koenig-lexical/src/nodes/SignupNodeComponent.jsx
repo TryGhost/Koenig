@@ -31,7 +31,8 @@ function SignupNodeComponent({
     subheaderTextEditor,
     subheaderTextEditorInitialState,
     textColor,
-    successMessage
+    successMessage,
+    isSwapped
 }) {
     const [editor] = useLexicalComposerContext();
     const {cardConfig} = useContext(KoenigComposerContext);
@@ -160,6 +161,13 @@ function SignupNodeComponent({
         });
     };
 
+    const handleSwapLayout = () => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setSwapped(!isSwapped);
+        });
+    };
+
     useEffect(() => {
         headerTextEditor.setEditable(isEditing);
         subheaderTextEditor.setEditable(isEditing);
@@ -187,6 +195,7 @@ function SignupNodeComponent({
                 handleLabels={handleLabels}
                 handleLayout={handleLayout}
                 handleSuccessMessage={handleSuccessMessage}
+                handleSwapLayout={handleSwapLayout}
                 handleTextColor={handleTextColor}
                 handleToggleBackgroundImage={handleToggleBackgroundImage}
                 header={header}
@@ -194,6 +203,7 @@ function SignupNodeComponent({
                 headerTextEditorInitialState={headerTextEditorInitialState}
                 imageDragHandler={imageDragHandler}
                 isEditing={isEditing}
+                isSwapped={isSwapped}
                 labels={labels}
                 layout={layout}
                 showBackgroundImage={showBackgroundImage}
