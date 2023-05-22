@@ -154,12 +154,7 @@ export function SignupCard({alignment,
                     - TODO - see if we can let the flexbox swap this around instead of rendering twice
                 */}
 
-                {/* BEWARE - MediaUploader renders at 2 different locations in this Component,
-                    if something changes here, change below as well.
-                    - TODO - see if we can let the flexbox swap this around instead of rendering twice
-                */}
-
-                {layout === 'split' && !isSwapped ? !isSwapped ? (
+                {layout === 'split' && !isSwapped ? (
                     <MediaUploader
                         alt='Background image'
                         className="sm:w-1/2"
