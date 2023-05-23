@@ -69,3 +69,6 @@ typings/
 .DS_Store
 
 # Koenig Custom
+
+# Playwright report
+playwright-report/
