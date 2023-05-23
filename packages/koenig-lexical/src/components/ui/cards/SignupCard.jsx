@@ -337,12 +337,14 @@ export function SignupCard({alignment,
                     {(!showBackgroundImage || layout === 'split') && <ColorPickerSetting
                         dataTestId='signup-background-color'
                         eyedropper={layout === 'split'}
+                        imgBackground={layout !== 'split'}
                         label='Background'
-                        swatches={[
-                            {title: 'Brand color', accent: true},
+                        swatchesUpdated={[
+                            {title: 'Grey', hex: '#F4F5F6'},
                             {title: 'Black', hex: '#000000'},
-                            {title: 'Transparent', transparent: true}
+                            {title: 'Brand color', accent: true}
                         ]}
+                        transparency={true}
                         value={backgroundColor}
                         onChange={color => handleBackgroundColor(color, matchingTextColor(color))}
                     />}
@@ -351,12 +353,14 @@ export function SignupCard({alignment,
                     <ColorPickerSetting
                         dataTestId='signup-button-color'
                         eyedropper={layout === 'split'}
+                        imgBackground={false}
                         label='Button'
-                        swatches={[
-                            {title: 'Brand color', accent: true},
+                        swatchesUpdated={[
+                            {title: 'White', hex: '#ffffff'},
                             {title: 'Black', hex: '#000000'},
-                            {title: 'White', hex: '#ffffff'}
+                            {title: 'Brand color', accent: true}
                         ]}
+                        transparency={false}
                         value={buttonColor}
                         onChange={color => handleButtonColor(color, matchingTextColor(color))}
                     />

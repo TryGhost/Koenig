@@ -171,7 +171,7 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
     );
 }
 
-export function ColorPickerSetting({label, onChange, value, swatches, eyedropper, dataTestId}) {
+export function ColorPickerSetting({label, onChange, value, swatchesUpdated, imgBackground, eyedropper, transparency, dataTestId}) {
     const [isExpanded, setExpanded] = useState(false);
     const {repositionPanel} = useSettingsPanelContext();
 
@@ -183,10 +183,10 @@ export function ColorPickerSetting({label, onChange, value, swatches, eyedropper
                 <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
 
                 <div className="shrink-0 pl-2">
-                    <ColorIndicator value={value} onClick={() => setExpanded(!isExpanded)} />
+                    <ColorIndicator imgBackground={imgBackground} swatchesUpdated={swatchesUpdated} value={value} onClick={() => setExpanded(!isExpanded)} />
                 </div>
             </div>
-            {isExpanded && <ColorPicker eyedropper={eyedropper} swatches={swatches} value={value} onBlur={() => setExpanded(false)} onChange={onChange} />}
+            {isExpanded && <ColorPicker eyedropper={eyedropper} transparency={transparency} value={value} onBlur={() => setExpanded(false)} onChange={onChange} />}
         </div>
     );
 }

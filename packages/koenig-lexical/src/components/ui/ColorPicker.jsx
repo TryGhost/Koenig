@@ -1,10 +1,12 @@
 import React, {useCallback, useEffect, useRef} from 'react';
+import {Button} from './Button';
 import {ReactComponent as EyedropperIcon} from '../../assets/icons/kg-eyedropper.svg';
 import {HexColorInput, HexColorPicker} from 'react-colorful';
 import {INPUT_CLASSES} from './Input';
+import {ReactComponent as ImgBgIcon} from '../../assets/icons/kg-img-bg.svg';
 import {getAccentColor} from '../../utils/getAccentColor';
 
-export function ColorPicker({value, swatches, eyedropper, onChange, onBlur}) {
+export function ColorPicker({value, eyedropper, transparency, onChange, onBlur}) {
     // HexColorInput doesn't support adding a ref on the input itself
     const inputWrapperRef = useRef(null);
 
@@ -42,11 +44,11 @@ export function ColorPicker({value, swatches, eyedropper, onChange, onBlur}) {
         }, 100);
     }, [onBlur]);
 
-    const pickSwatch = useCallback((color) => {
-        onChange(color);
+    // const pickSwatch = useCallback((color) => {
+    //     onChange(color);
 
-        inputWrapperRef.current?.querySelector('input')?.focus();
-    }, [onChange]);
+    //     inputWrapperRef.current?.querySelector('input')?.focus();
+    // }, [onChange]);
 
     const openColorPicker = useCallback((e) => {
         e.preventDefault();
@@ -78,19 +80,13 @@ export function ColorPicker({value, swatches, eyedropper, onChange, onBlur}) {
     return (
         <div className="mt-2" onMouseDown={stopPropagation} onTouchStart={stopPropagation}>
             <HexColorPicker color={hexValue || '#ffffff'} onChange={onChange} onMouseDown={startUsingColorPicker} onTouchStart={startUsingColorPicker} />
-            <div className="mt-3 flex">
-                <div ref={inputWrapperRef} className={`flex w-full items-center ${INPUT_CLASSES} rounded-r-none`}>
+            <div className="mt-3 flex gap-2">
+                <div ref={inputWrapperRef} className={`relative flex w-full items-center ${INPUT_CLASSES}`}>
                     <span className='ml-1 mr-2 text-grey-700'>#</span>
                     <HexColorInput aria-label="Color value" className='w-full bg-transparent' color={hexValue} onBlur={onBlurHandler} onChange={onChange} />
-                </div>
-                <div className={`flex items-center gap-1 ${INPUT_CLASSES} ml-[-1px] rounded-l-none`}>
-                    {swatches.map(swatch => (
-                        <ColorSwatch key={swatch.title} onSelect={pickSwatch} {...swatch} />
-                    ))}
-
                     {eyedropper && !!window.EyeDropper && (
                         <button
-                            className="ml-[2px] flex h-4 w-4 items-center justify-center p-[1px] pt-[2px]"
+                            className="absolute inset-y-0 right-3 my-auto h-4 w-4 p-[1px]"
                             type="button"
                             onMouseDown={openColorPicker}
                             onTouchStart={openColorPicker}
@@ -99,12 +95,14 @@ export function ColorPicker({value, swatches, eyedropper, onChange, onBlur}) {
                         </button>
                     )}
                 </div>
+
+                {transparency && <Button color='grey' value='Clear' />}
             </div>
         </div>
     );
 }
 
-function ColorSwatch({hex, accent, transparent, title, onSelect}) {
+export function ColorSwatch({hex, accent, transparent, title, onSelect}) {
     const backgroundColor = accent ? getAccentColor() : hex;
 
     const ref = useRef(null);
@@ -136,7 +134,52 @@ function ColorSwatch({hex, accent, transparent, title, onSelect}) {
     );
 }
 
-export function ColorIndicator({value, onClick}) {
+function ColorSwatchUpdated({hex, accent, transparent, title, onSelect}) {
+    const backgroundColor = accent ? getAccentColor() : hex;
+
+    const ref = useRef(null);
+
+    const onSelectHandler = (e) => {
+        e.preventDefault();
+
+        if (accent) {
+            onSelect('accent');
+        } else if (transparent) {
+            onSelect('transparent');
+        } else {
+            onSelect(hex);
+        }
+    };
+
+    return (
+        <button
+            ref={ref}
+            className={`relative flex h-6 w-6 shrink-0 items-center rounded-full border border-grey-300`}
+            style={{backgroundColor}}
+            title={title}
+            type="button"
+            onMouseDown={onSelectHandler}
+            onTouchStart={onSelectHandler}
+        >
+            {transparent && <div className="absolute left-0 top-0 z-10 w-[136%] origin-left rotate-45 border-b border-b-red" />}
+        </button>
+    );
+}
+
+function ImageSwatch({title, onClick}) {
+    return (
+        <button
+            className={`relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`}
+            title={title}
+            type="button"
+            onClick={onClick}
+        >
+            <ImgBgIcon className="h-[1.4rem] w-[1.4rem]" />
+        </button>
+    );
+}
+
+export function ColorIndicator({value, onClick, swatchesUpdated, imgBackground, imgSwatchTitle}) {
     let backgroundColor = value;
     if (value === 'accent') {
         backgroundColor = getAccentColor();
@@ -145,13 +188,22 @@ export function ColorIndicator({value, onClick}) {
     }
 
     return (
-        <button aria-label="Pick color" className="relative h-6 w-6" type="button" onClick={onClick}>
-            <div className='absolute inset-0 rounded-full bg-[conic-gradient(hsl(360,100%,50%),hsl(315,100%,50%),hsl(270,100%,50%),hsl(225,100%,50%),hsl(180,100%,50%),hsl(135,100%,50%),hsl(90,100%,50%),hsl(45,100%,50%),hsl(0,100%,50%))]' />
-            {value && (
-                <div className="absolute inset-[3px] overflow-hidden rounded-full border border-grey-200" style={{backgroundColor}} onClick={onClick}>
-                    {value === 'transparent' && <div className="absolute top-[3px] left-[3px] z-10 w-[136%] origin-left rotate-45 border-b border-b-red" />}
-                </div>
-            )}
-        </button>
+        <div className='flex gap-1'>
+            <div className={`flex items-center gap-1`}>
+                {imgBackground && <ImageSwatch title={imgSwatchTitle} onClick={onClick} />}
+                {swatchesUpdated.map(swatch => (
+                    <ColorSwatchUpdated key={swatch.title} {...swatch} />
+                ))}
+
+            </div>
+            <button aria-label="Pick color" className="relative h-6 w-6" type="button" onClick={onClick}>
+                <div className='absolute inset-0 rounded-full bg-[conic-gradient(hsl(360,100%,50%),hsl(315,100%,50%),hsl(270,100%,50%),hsl(225,100%,50%),hsl(180,100%,50%),hsl(135,100%,50%),hsl(90,100%,50%),hsl(45,100%,50%),hsl(0,100%,50%))]' />
+                {value && (
+                    <div className="absolute inset-[3px] overflow-hidden rounded-full border border-grey-200" style={{backgroundColor}} onClick={onClick}>
+                        {value === 'transparent' && <div className="absolute top-[3px] left-[3px] z-10 w-[136%] origin-left rotate-45 border-b border-b-red" />}
+                    </div>
+                )}
+            </button>
+        </div>
     );
 }
