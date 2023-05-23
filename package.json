@@ -31,17 +31,27 @@
     "packageRules": [
       {
         "groupName": "rollup + plugins",
-        "packagePatterns": ["^rollup"]
+        "packagePatterns": [
+          "^rollup"
+        ]
       },
       {
         "groupName": "lexical",
-        "packagePatterns": ["^lexical", "^@lexical"]
+        "packagePatterns": [
+          "^lexical",
+          "^@lexical"
+        ]
       },
       {
         "groupName": "vitest",
-        "packagePatterns": ["^vitest", "^@vitest"]
+        "packagePatterns": [
+          "^vitest",
+          "^@vitest"
+        ]
       }
     ],
-    "ignoreDeps": ["vite"]
+    "ignoreDeps": [
+      "vite"
+    ]
   }
 }
