@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "dev": "echo \"Implement me!\"",
+    "prepare": "husky install .github/hooks",
     "presetup": "yarn",
     "setup": "lerna bootstrap && lerna run build",
     "test": "lerna run test",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "eslint": "8.40.0",
     "eslint-plugin-ghost": "2.18.1",
+    "husky": "8.0.3",
     "lint-staged": "12.5.0"
   },
   "renovate": {
