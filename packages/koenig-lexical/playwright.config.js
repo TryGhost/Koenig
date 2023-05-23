@@ -31,8 +31,9 @@ export default defineConfig({
             slowMo: parseInt(process.env.PLAYWRIGHT_SLOWMO) || 0,
             // force GPU hardware acceleration
             // (even in headless mode)
-            args: ['--use-gl=egl']
-        }
+            args: ['--use-gl=egl'],
+        },
+        permissions: ['clipboard-read']
     },
     projects: [
         {
