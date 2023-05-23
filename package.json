@@ -26,5 +26,26 @@
     "mocha": "10.2.0",
     "should": "13.2.3",
     "sinon": "15.0.4"
+  },
+  "renovate": {
+    "extends": [
+      "@tryghost:quietJS",
+      "@tryghost:automergeDevDependencies"
+    ],
+    "packageRules": [
+      {
+        "groupName": "rollup + plugins",
+        "packagePatterns": ["^rollup"]
+      },
+      {
+        "groupName": "lexical",
+        "packagePatterns": ["^lexical", "^@lexical"]
+      },
+      {
+        "groupName": "vitest",
+        "packagePatterns": ["^vitest", "^@vitest"]
+      }
+    ],
+    "ignoreDeps": ["vite"]
   }
 }
