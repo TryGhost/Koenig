@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "echo \"Implement me!\"",
     "presetup": "yarn",
-    "setup": "lerna bootstrap",
+    "setup": "lerna bootstrap && lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
