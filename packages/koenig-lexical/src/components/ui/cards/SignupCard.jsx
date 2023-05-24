@@ -67,12 +67,15 @@ export function SignupCard({alignment,
             new FastAverageColor().getColorAsync(backgroundImageSrc).then((color) => {
                 handleTextColor(matchingTextColor(color.hex));
             });
+            // avoids using the image's background colour as source for text colour when switching to split layout
+        } else if (layout === 'split' && backgroundColor) {
+            handleTextColor(matchingTextColor(backgroundColor));
         }
 
         // avoids using the images background colour as source for text colour when switching to split layout
-        if (layout === 'split') {
-            handleTextColor(textColorForBackgroundColor(hexColorValue(backgroundColor)).hex());
-        }
+        // if (layout === 'split') {
+        //     handleTextColor(textColorForBackgroundColor(hexColorValue(backgroundColor)).hex());
+        // }
         // This is only needed when the background image is changed
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [backgroundImageSrc, layout]);
