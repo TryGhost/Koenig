@@ -182,7 +182,7 @@ export function SignupCard({alignment,
                     )}>
                     {/* Heading */}
                     {
-                        (isEditing || !!header || !isEditorEmpty(headerTextEditor)) && (
+                        (isEditing || !isEditorEmpty(headerTextEditor)) && (
                             <KoenigNestedEditor
                                 autoFocus={true}
                                 focusNext={subheaderTextEditor}
@@ -216,7 +216,7 @@ export function SignupCard({alignment,
 
                     {/* Subheading */}
                     {
-                        (isEditing || !!subheader || !isEditorEmpty(subheaderTextEditor)) && (
+                        (isEditing || !isEditorEmpty(subheaderTextEditor)) && (
                             <KoenigNestedEditor
                                 focusNext={disclaimerTextEditor}
                                 hasSettingsPanel={true}
@@ -267,7 +267,7 @@ export function SignupCard({alignment,
 
                     {/* Disclaimer */}
                     {
-                        (isEditing || !!disclaimer || !isEditorEmpty(disclaimerTextEditor)) && (
+                        (isEditing || !isEditorEmpty(disclaimerTextEditor)) && (
                             <KoenigNestedEditor
                                 hasSettingsPanel={true}
                                 initialEditor={disclaimerTextEditor}
