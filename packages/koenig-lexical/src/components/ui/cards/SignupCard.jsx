@@ -58,25 +58,20 @@ export function SignupCard({alignment,
     disclaimerTextEditorInitialState,
     isSwapped,
     handleSwapLayout}) {
-    const [prevTextColor, setTextPrevColor] = useState(textColor);
     const matchingTextColor = (color) => {
         return color === 'transparent' ? '' : textColorForBackgroundColor(hexColorValue(color)).hex();
     };
 
     useEffect(() => {
-        let currentTextColor = textColor;
         if (backgroundImageSrc && layout !== 'split') {
             new FastAverageColor().getColorAsync(backgroundImageSrc).then((color) => {
                 handleTextColor(matchingTextColor(color.hex));
-                setTextPrevColor(currentTextColor);
             });
         }
 
-        // Reset the text color to the previous value when the layout is changed back to split
-        // ref https://github.com/TryGhost/Team/issues/3292
-
-        if (layout === 'split' && prevTextColor) {
-            handleTextColor(prevTextColor);
+        // avoids using the images background colour as source for text colour when switching to split layout
+        if (layout === 'split') {
+            handleTextColor(textColorForBackgroundColor(hexColorValue(backgroundColor)).hex());
         }
         // This is only needed when the background image is changed
         // eslint-disable-next-line react-hooks/exhaustive-deps
