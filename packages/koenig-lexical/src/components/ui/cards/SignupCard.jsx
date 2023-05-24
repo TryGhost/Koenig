@@ -1,6 +1,6 @@
 import KoenigNestedEditor from '../../KoenigNestedEditor';
 import PropTypes from 'prop-types';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
@@ -58,19 +58,29 @@ export function SignupCard({alignment,
     disclaimerTextEditorInitialState,
     isSwapped,
     handleSwapLayout}) {
+    const [prevTextColor, setTextPrevColor] = useState(textColor);
     const matchingTextColor = (color) => {
         return color === 'transparent' ? '' : textColorForBackgroundColor(hexColorValue(color)).hex();
     };
 
     useEffect(() => {
+        let currentTextColor = textColor;
         if (backgroundImageSrc && layout !== 'split') {
             new FastAverageColor().getColorAsync(backgroundImageSrc).then((color) => {
                 handleTextColor(matchingTextColor(color.hex));
+                setTextPrevColor(currentTextColor);
             });
+        }
+
+        // Reset the text color to the previous value when the layout is changed back to split
+        // ref https://github.com/TryGhost/Team/issues/3292
+
+        if (layout === 'split' && prevTextColor) {
+            handleTextColor(prevTextColor);
         }
         // This is only needed when the background image is changed
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [backgroundImageSrc]);
+    }, [backgroundImageSrc, layout]);
 
     const layoutChildren = [
         {
