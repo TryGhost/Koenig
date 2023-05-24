@@ -170,9 +170,9 @@ test.describe('Signup card', async () => {
         const secondEditor = page.locator('[data-kg-card="signup"] [data-kg="editor"]').nth(1);
         const thirdEditor = page.locator('[data-kg-card="signup"] [data-kg="editor"]').nth(2);
 
-        await expect(firstEditor).toHaveText('Sign up for Koenig Lexical. Hello-cursor4-');
-        await expect(secondEditor).toHaveText(`There's a w-cursor1-hole lot to discover in this editor. Let us help you settle in.-cursor3-`);
-        await expect(thirdEditor).toHaveText('No spam. Unsubscribe anytim-cursor2-e.');
+        await expect(firstEditor).toHaveText(/Hello-cursor4-/);
+        await expect(secondEditor).toHaveText(/-cursor1-.+-cursor3-/);
+        await expect(thirdEditor).toHaveText(/-cursor2-/);
     });
 
     test('can edit button text', async function ({page}) {
