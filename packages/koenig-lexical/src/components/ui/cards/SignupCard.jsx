@@ -332,7 +332,6 @@ export function SignupCard({alignment,
                                         type="button"
                                         onClick={() => {
                                             handleShowBackgroundImage();
-                                            setBackgroundColorPickerExpanded(false);
                                         }}
                                     >
                                         <ImgBgIcon className="h-[1.4rem] w-[1.4rem]" />
@@ -344,11 +343,21 @@ export function SignupCard({alignment,
                             {title: 'Brand color', accent: true}
                         ].filter(Boolean)}
                         value={(showBackgroundImage && layout !== 'split') ? '' : backgroundColor}
-                        onChange={color => handleBackgroundColor(color, matchingTextColor(color))}
+                        onChange={(color) => {
+                            handleBackgroundColor(color, matchingTextColor(color));
+                            setBackgroundColorPickerExpanded(false);
+                        }}
                         onTogglePicker={(isExpanded) => {
-                            if (isExpanded && layout !== 'split') {
-                                handleHideBackgroundImage();
+                            if (isExpanded) {
+                                if (layout !== 'split') {
+                                    handleHideBackgroundImage();
+                                }
+
+                                if (backgroundColor) {
+                                    handleBackgroundColor(backgroundColor, matchingTextColor(backgroundColor));
+                                }
                             }
+
                             setBackgroundColorPickerExpanded(isExpanded);
                         }}
                     />
@@ -387,7 +396,10 @@ export function SignupCard({alignment,
                             {title: 'Brand color', accent: true}
                         ]}
                         value={buttonColor}
-                        onChange={color => handleButtonColor(color, matchingTextColor(color))}
+                        onChange={(color) => {
+                            handleButtonColor(color, matchingTextColor(color));
+                            setButtonColorPickerExpanded(false);
+                        }}
                         onTogglePicker={setButtonColorPickerExpanded}
                     />
                     <InputSetting
