@@ -332,6 +332,7 @@ export function SignupCard({alignment,
                                         type="button"
                                         onClick={() => {
                                             handleShowBackgroundImage();
+                                            setBackgroundColorPickerExpanded(false);
                                         }}
                                     >
                                         <ImgBgIcon className="h-[1.4rem] w-[1.4rem]" />
@@ -343,10 +344,7 @@ export function SignupCard({alignment,
                             {title: 'Brand color', accent: true}
                         ].filter(Boolean)}
                         value={(showBackgroundImage && layout !== 'split') ? '' : backgroundColor}
-                        onChange={(color) => {
-                            handleBackgroundColor(color, matchingTextColor(color));
-                            setBackgroundColorPickerExpanded(false);
-                        }}
+                        onChange={color => handleBackgroundColor(color, matchingTextColor(color))}
                         onTogglePicker={(isExpanded) => {
                             if (isExpanded) {
                                 if (layout !== 'split') {
@@ -396,10 +394,7 @@ export function SignupCard({alignment,
                             {title: 'Brand color', accent: true}
                         ]}
                         value={buttonColor}
-                        onChange={(color) => {
-                            handleButtonColor(color, matchingTextColor(color));
-                            setButtonColorPickerExpanded(false);
-                        }}
+                        onChange={color => handleButtonColor(color, matchingTextColor(color))}
                         onTogglePicker={setButtonColorPickerExpanded}
                     />
                     <InputSetting
