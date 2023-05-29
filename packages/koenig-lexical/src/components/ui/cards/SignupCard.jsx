@@ -226,7 +226,6 @@ export function SignupCard({alignment,
                     {<KoenigNestedEditor
                         focusNext={disclaimerTextEditor}
                         hasSettingsPanel={true}
-                        hiddenFormats={['bold']}
                         initialEditor={subheaderTextEditor}
                         initialEditorState={subheaderTextEditorInitialState}
                         nodes="minimal"
