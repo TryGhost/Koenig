@@ -195,6 +195,7 @@ export function SignupCard({alignment,
                         autoFocus={true}
                         focusNext={subheaderTextEditor}
                         hasSettingsPanel={true}
+                        hiddenFormats={['bold']}
                         initialEditor={headerTextEditor}
                         initialEditorState={headerTextEditorInitialState}
                         nodes="minimal"
@@ -225,6 +226,7 @@ export function SignupCard({alignment,
                     {<KoenigNestedEditor
                         focusNext={disclaimerTextEditor}
                         hasSettingsPanel={true}
+                        hiddenFormats={['bold']}
                         initialEditor={subheaderTextEditor}
                         initialEditorState={subheaderTextEditorInitialState}
                         nodes="minimal"
