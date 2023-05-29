@@ -39,6 +39,15 @@ jobs:
           sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
           sudo apt-get install msttcorefonts -qq
 
+      - name: "Check if repository is a Lerna monorepo"
+        id: check_files
+        uses: andstor/file-existence-action@20b4d2e596410855db8f9ca21e96fbe18e12930b
+        with:
+          files: "lerna.json"
+
+      - run: yarn global add lerna@^4
+        if: steps.check_files.outputs.files_exists == 'true'
+
       - run: yarn
 
       - name: Install Playwright

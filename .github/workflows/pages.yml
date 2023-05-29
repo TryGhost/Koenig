@@ -27,14 +27,20 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Setup monorepo + build packages
-        run: yarn setup
+      - name: Build default nodes
+        run: cd ./packages/kg-default-nodes && yarn build
+
+      - name: Build clean-basic-html
+        run: cd ./packages/kg-clean-basic-html && yarn build
+
+      - name: Build kg-converters
+        run: cd ./packages/kg-converter && yarn build
 
       - name: Copy CNAME to build
         run: cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
 
-      - name: Build Demo project
-        run: yarn workspace @tryghost/koenig-lexical build:demo
+      - name: Build project
+        run: cd ./packages/koenig-lexical && yarn && yarn build:demo
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v3
