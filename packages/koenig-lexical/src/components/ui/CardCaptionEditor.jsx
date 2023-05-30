@@ -1,4 +1,4 @@
-import KoenigCaptionEditor from '../KoenigCaptionEditor';
+import KoenigNestedEditor from '../KoenigNestedEditor';
 import React from 'react';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {TextInput} from './TextInput';
@@ -9,10 +9,13 @@ function CaptionInput({captionEditor, captionEditorInitialState, placeholder, da
             className={`m-0 w-full px-9 text-center`}
             data-testid={dataTestId}
         >
-            <KoenigCaptionEditor
-                captionEditor={captionEditor}
-                captionEditorInitialState={captionEditorInitialState}
+            <KoenigNestedEditor
+                initialEditor={captionEditor}
+                initialEditorState={captionEditorInitialState}
+                placeholderClassName="!m-0 min-w-full cursor-text font-sans text-sm font-normal tracking-wide text-grey-500 dark:text-grey-800"
                 placeholderText={placeholder}
+                singleParagraph={true}
+                textClassName="koenig-lexical-image-caption whitespace-normal text-grey-700"
             />
         </div>
     );

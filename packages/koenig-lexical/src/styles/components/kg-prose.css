@@ -783,7 +783,7 @@
         }
     }
 
-.koenig-lexical-product-description {
+.koenig-lexical-product-description, .koenig-lexical-image-caption {
         .kg-prose {
             :where(
                         p,
