@@ -19,6 +19,7 @@ import {HeaderPlugin} from '../plugins/HeaderPlugin';
 import {KoenigSnippetPlugin} from '../plugins/KoenigSnippetPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {PaywallPlugin} from '../plugins/PaywallPlugin';
+import {PostPlugin} from '../plugins/PostPlugin';
 import {ProductPlugin} from '../plugins/ProductPlugin';
 import {SignupPlugin} from '../plugins/SignupPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
@@ -57,6 +58,7 @@ export const AllDefaultPlugins = () => {
             <EmailPlugin />
             <EmbedPlugin />
             <SignupPlugin />
+            <PostPlugin />
 
             {/* Snippet Plugins */}
             <KoenigSnippetPlugin />
