@@ -1328,7 +1328,7 @@ test.describe('Card behaviour', async () => {
     });
 
     test.describe('SELECTION', function () {
-        test.skip('shift+down does not put card in selected state', async function () {
+        test('shift+down does not put card in selected state', async function () {
             await focusEditor(page);
             await page.keyboard.type('First');
             await page.keyboard.press('Enter');
@@ -1350,30 +1350,30 @@ test.describe('Card behaviour', async () => {
             await page.keyboard.press('ArrowDown');
             await page.keyboard.press('ArrowDown');
             await page.keyboard.up('Shift');
-
+            // offsets are based on the root node offset
             await assertSelection(page, {
-                anchorPath: [0, 0, 0],
+                anchorPath: [],
                 anchorOffset: 0,
-                focusPath: [2, 0, 0],
-                focusOffset: 6
+                focusPath: [],
+                focusOffset: 2
             });
-
+            // this is a range selection, so the card isn't explicitly selected
             await expect(page.locator('[data-kg-card-selected="true"]')).not.toBeVisible();
         });
 
-        test.skip('shift+up does not put card in selected state', async function () {
+        test('shift+up does not put card in selected state', async function () {
             await focusEditor(page);
             await page.keyboard.type('First');
             await page.keyboard.press('Enter');
-            await insertCard(page, {cardName: 'button'});
+            await page.keyboard.type('--- ');
             await page.keyboard.press('Enter');
             await page.keyboard.type('Second');
 
             // sanity check
             await assertSelection(page, {
-                anchorPath: [2, 0, 0],
+                anchorPath: [3, 0, 0],
                 anchorOffset: 6,
-                focusPath: [2, 0, 0],
+                focusPath: [3, 0, 0],
                 focusOffset: 6
             });
 
@@ -1382,13 +1382,14 @@ test.describe('Card behaviour', async () => {
             await page.keyboard.press('ArrowUp');
             await page.keyboard.up('Shift');
 
+            // offsets are based on the root node offset
             await assertSelection(page, {
-                anchorPath: [2, 0, 0],
-                anchorOffset: 6,
-                focusPath: [0, 0, 0],
-                focusOffset: 0
+                anchorPath: [],
+                anchorOffset: 4,
+                focusPath: [],
+                focusOffset: 2
             });
-
+            // this is a range selection, so the card isn't explicitly selected
             await expect(page.locator('[data-kg-card-selected="true"]')).not.toBeVisible();
         });
     });
