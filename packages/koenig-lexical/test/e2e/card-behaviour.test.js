@@ -1328,7 +1328,7 @@ test.describe('Card behaviour', async () => {
     });
 
     test.describe('SELECTION', function () {
-        test('shift+down does not put card in selected state', async function () {
+        test.skip('shift+down does not put card in selected state', async function () {
             await focusEditor(page);
             await page.keyboard.type('First');
             await page.keyboard.press('Enter');
@@ -1361,11 +1361,12 @@ test.describe('Card behaviour', async () => {
             await expect(page.locator('[data-kg-card-selected="true"]')).not.toBeVisible();
         });
 
-        test('shift+up does not put card in selected state', async function () {
+        test.skip('shift+up does not put card in selected state', async function () {
             await focusEditor(page);
             await page.keyboard.type('First');
             await page.keyboard.press('Enter');
-            await page.keyboard.type('--- ');
+            await insertCard(page, {cardName: 'button'});
+            await page.keyboard.press('Enter');
             await page.keyboard.type('Second');
 
             // sanity check

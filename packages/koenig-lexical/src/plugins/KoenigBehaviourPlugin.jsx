@@ -14,6 +14,7 @@ import {
     $isNodeSelection,
     $isParagraphNode,
     $isRangeSelection,
+    $isRootNode,
     $isTextNode,
     $setSelection,
     COMMAND_PRIORITY_LOW,
@@ -396,8 +397,48 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             editor.registerCommand(
                 KEY_ARROW_UP_COMMAND,
                 (event) => {
-                    // stick to default behaviour if a selection is being made
-                    if (event.shiftKey) {
+                    const selection = $getSelection();
+
+                    // if a selection is being made, we need to handle it ourselves (lexical does not handle decorator nodes at this time)
+                    if (event?.shiftKey) {
+                        if ($isRangeSelection(selection)) {
+                            let anchorNode = selection.anchor.getNode();
+
+                            if (!$isRootNode(anchorNode)) {
+                                anchorNode = anchorNode.getTopLevelElement();
+                                let focusNode = selection.focus.getNode().getTopLevelElement();
+
+                                // treat text nodes as normal
+                                let previousSibling = focusNode.getTopLevelElement().getPreviousSibling();
+                                if ($isTextNode(focusNode) && $isTextNode(previousSibling)) {
+                                    return false;
+                                }
+                                // if on or about to move to decorator node selection, select the entire current node using root node offsets
+                                if ($isDecoratorNode(anchorNode) || $isDecoratorNode(previousSibling)) {
+                                    // if at the start of the line, treat that line/node as not selected
+                                    if (selection.anchor.offset === 0) {
+                                        selection.focus.set('root', focusNode.getIndexWithinParent() - 1, 'element');
+                                        selection.anchor.set('root', anchorNode.getIndexWithinParent(), 'element');
+                                    } else {
+                                        selection.focus.set('root', focusNode.getIndexWithinParent(), 'element');
+                                        selection.anchor.set('root', anchorNode.getIndexWithinParent() + 1, 'element');
+                                    }
+                                    event.preventDefault(); 
+                                    return true;
+                                }
+                            }
+
+                            // if using the root node, simply add the card above
+                            if ($isRootNode(anchorNode)) {
+                                const offset = selection.focus.offset;
+                                if (offset > 0) {
+                                    selection.focus.set('root', selection.focus.offset - 1, 'element');
+                                }
+                                event.preventDefault();
+                                return true;
+                            }
+                        }
+                        // use default behavior for other selection
                         return false;
                     }
 
@@ -405,8 +446,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     if (document.activeElement !== editor.getRootElement()) {
                         return true;
                     }
-
-                    const selection = $getSelection();
 
                     if ($isNodeSelection(selection)) {
                         const currentNode = selection.getNodes()[0];
@@ -475,8 +514,47 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             editor.registerCommand(
                 KEY_ARROW_DOWN_COMMAND,
                 (event) => {
-                    // stick to default behaviour if shift key is pressed
+                    const selection = $getSelection();
+                    
                     if (event?.shiftKey) {
+                        if ($isRangeSelection(selection)) {
+                            let anchorNode = selection.anchor.getNode();
+
+                            if (!$isRootNode(anchorNode)) {
+                                anchorNode = anchorNode.getTopLevelElement();
+                                let focusNode = selection.focus.getNode().getTopLevelElement();
+
+                                // treat text nodes as normal
+                                let nextSibling = focusNode.getTopLevelElement().getNextSibling();
+                                if ($isTextNode(focusNode) && $isTextNode(nextSibling)) {
+                                    return false;
+                                }
+                                // if on or about to move to decorator node selection, select the entire current node using root node offsets
+                                if ($isDecoratorNode(anchorNode) || $isDecoratorNode(nextSibling)) {
+                                    // if at end of a line, treat it as if that line/node is not selected
+                                    if (selection.anchor.offset === anchorNode.getTextContentSize()) {
+                                        selection.anchor.set('root', anchorNode.getIndexWithinParent() + 1, 'element');
+                                        selection.focus.set('root', focusNode.getIndexWithinParent() + 2, 'element');
+                                    } else {
+                                        selection.anchor.set('root', anchorNode.getIndexWithinParent(), 'element');
+                                        selection.focus.set('root', focusNode.getIndexWithinParent() + 1, 'element');
+                                    }
+                                    event.preventDefault(); 
+                                    return true;
+                                }
+                            }
+
+                            // if using the root node, simply add the card below
+                            if ($isRootNode(anchorNode)) {
+                                const offset = selection.focus.offset;
+                                if (offset < anchorNode.getLastChildOrThrow().getIndexWithinParent()) {
+                                    selection.focus.set('root', selection.focus.offset + 1, 'element');
+                                }
+                                event.preventDefault();
+                                return true;
+                            }
+                        }
+                        // use default behavior for other selection
                         return false;
                     }
 
@@ -484,8 +562,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     if (document.activeElement !== editor.getRootElement()) {
                         return true;
                     }
-
-                    const selection = $getSelection();
 
                     if ($isNodeSelection(selection)) {
                         const currentNode = selection.getNodes()[0];
@@ -510,7 +586,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         nextSibling.selectStart();
                         return true;
                     }
-
+``
                     if ($isRangeSelection(selection)) {
                         if (selection.isCollapsed()) {
                             const topLevelElement = selection.anchor.getNode().getTopLevelElement();
