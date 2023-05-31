@@ -547,7 +547,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             // if using the root node, simply add the card below
                             if ($isRootNode(anchorNode)) {
                                 const offset = selection.focus.offset;
-                                if (offset < anchorNode.getLastChildOrThrow().getIndexWithinParent()) {
+                                if (offset <= anchorNode.getLastChildOrThrow().getIndexWithinParent()) {
                                     selection.focus.set('root', selection.focus.offset + 1, 'element');
                                 }
                                 event.preventDefault();
