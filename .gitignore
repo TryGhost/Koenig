@@ -73,3 +73,12 @@ typings/
 
 # Playwright report
 playwright-report/
+
+# Yarn 3 without PnP
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
