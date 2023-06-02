@@ -39,9 +39,9 @@ jobs:
           sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
           sudo apt-get install msttcorefonts -qq
 
-          - name: Get installed Playwright version
-          id: playwright-version
-          run: echo "PLAYWRIGHT_VERSION=$(grep -A1 '^"@playwright/test@' yarn.lock | awk -F'"' '/version/ {print $2}')" >> $GITHUB_ENV
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(grep -A1 '^"@playwright/test@' yarn.lock | awk -F'"' '/version/ {print $2}')" >> $GITHUB_ENV
 
       - name: Cache playwright binaries
         uses: actions/cache@v3
