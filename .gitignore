@@ -64,6 +64,7 @@ typings/
 *.iml
 *.sublime-*
 .vscode/*
+!.vscode/settings.json
 
 # OSX
 .DS_Store
