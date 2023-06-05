@@ -13,11 +13,11 @@
     "dev": "echo \"Implement me!\"",
     "prepare": "husky install .github/hooks",
     "presetup": "yarn",
-    "setup": "lerna bootstrap && lerna run build",
+    "setup": "yarn presetup && lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
-    "ship": "lerna publish --git-remote ${GHOST_UPSTREAM:-origin}"
+    "ship": "yarn preship && lerna publish --git-remote ${GHOST_UPSTREAM:-origin}"
   },
   "devDependencies": {
     "eslint": "8.40.0",

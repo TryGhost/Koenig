@@ -33,7 +33,7 @@
     "@lexical/link": "^0.11.0",
     "@lexical/list": "^0.11.0",
     "@lexical/rich-text": "^0.11.0",
-    "@tryghost/kg-default-nodes": "^0.0.52",
+    "@tryghost/kg-default-nodes": "workspace:^",
     "jsdom": "^22.1.0",
     "lexical": "^0.11.0",
     "prettier": "^2.7.1"

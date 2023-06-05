@@ -21,7 +21,7 @@
     "sinon": "15.0.4"
   },
   "dependencies": {
-    "@tryghost/kg-parser-plugins": "^3.0.19",
+    "@tryghost/kg-parser-plugins": "workspace:^",
     "@tryghost/mobiledoc-kit": "^0.12.4-ghost.1",
     "jsdom": "^21.0.0"
   }

@@ -42,8 +42,8 @@
     "sinon": "15.0.4"
   },
   "dependencies": {
-    "@tryghost/kg-clean-basic-html": "^3.0.18",
-    "@tryghost/kg-markdown-html-renderer": "^6.0.8",
+    "@tryghost/kg-clean-basic-html": "workspace:^",
+    "@tryghost/kg-markdown-html-renderer": "workspace:^",
     "html-minifier": "^4.0.0",
     "jsdom": "^21.0.0",
     "lexical": "^0.11.0",
