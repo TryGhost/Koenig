@@ -4,8 +4,8 @@ import {KoenigDecoratorNode} from '../KoenigDecoratorNode';
  * @typedef {Object} DecoratorNodeAttribute
  * @property {string} name - The attribute's name.
  * @property {string} type - The attribute's type.
- * @property {string|null} urlType - If the attribute contains a URL, the URL's type (e.g. 'url', 'html', 'markdown')
  * @property {*} default - The attribute's default value.
+ * @property {string|null} urlType - If the attribute contains a URL, the URL's type (e.g. 'url', 'html', 'markdown')
  *
  * @typedef {string} nodeType – The node's type (must be unique)
  * @param {DecoratorNodeAttribute[]} attributes - An array of attributes for the generated class
