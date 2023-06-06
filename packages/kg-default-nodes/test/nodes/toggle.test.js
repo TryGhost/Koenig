@@ -53,20 +53,20 @@ describe('ToggleNode', function () {
         it('has getters for all properties', editorTest(function () {
             const toggleNode = $createToggleNode(dataset);
 
-            toggleNode.getHeading().should.equal(dataset.heading);
-            toggleNode.getContent().should.equal(dataset.content);
+            toggleNode.heading.should.equal(dataset.heading);
+            toggleNode.content.should.equal(dataset.content);
         }));
 
         it('has setters for all properties', editorTest(function () {
             const toggleNode = $createToggleNode();
 
-            toggleNode.getHeading().should.equal('');
-            toggleNode.setHeading('Heading');
-            toggleNode.getHeading().should.equal('Heading');
+            toggleNode.heading.should.equal('');
+            toggleNode.heading = 'Heading';
+            toggleNode.heading.should.equal('Heading');
 
-            toggleNode.getContent().should.equal('');
-            toggleNode.setContent('Content');
-            toggleNode.getContent().should.equal('Content');
+            toggleNode.content.should.equal('');
+            toggleNode.content = 'Content';
+            toggleNode.content.should.equal('Content');
         }));
 
         it('has getDataset() convenience method', editorTest(function () {
@@ -116,8 +116,8 @@ describe('ToggleNode', function () {
                 try {
                     const [toggleNode] = $getRoot().getChildren();
 
-                    toggleNode.getHeading().should.equal(dataset.heading);
-                    toggleNode.getContent().should.equal(dataset.content);
+                    toggleNode.heading.should.equal(dataset.heading);
+                    toggleNode.content.should.equal(dataset.content);
 
                     done();
                 } catch (e) {
@@ -203,8 +203,8 @@ describe('ToggleNode', function () {
             `)).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            nodes[0].getHeading().should.equal('Heading');
-            nodes[0].getContent().should.equal('Content');
+            nodes[0].heading.should.equal('Heading');
+            nodes[0].content.should.equal('Content');
         }));
     });
 });

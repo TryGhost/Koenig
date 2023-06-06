@@ -7,18 +7,20 @@ import {KoenigDecoratorNode} from './KoenigDecoratorNode';
  * @property {*} default - The attribute's default value.
  * @property {string|null} urlType - If the attribute contains a URL, the URL's type (e.g. 'url', 'html', 'markdown')
  *
- * @typedef {string} nodeType – The node's type (must be unique)
+ * @param {string} nodeType – The node's type (must be unique)
  * @param {DecoratorNodeAttribute[]} attributes - An array of attributes for the generated class
  * @returns {Object} - The generated class.
  */
 export function generateDecoratorNode({nodeType = '', attributes = []}) {
-    const attributeNames = attributes.map(attr => attr.name);
+    attributes = attributes.map((obj) => {
+        return {...obj, privateName: `__${obj.name}`};
+    });
 
-    class generatedClass extends KoenigDecoratorNode {
+    class GeneratedDecoratorNode extends KoenigDecoratorNode {
         constructor(data = {}, key) {
             super(key);
             attributes.forEach((attr) => {
-                this['__' + attr.name] = data[attr.name] || attr.default;
+                this[attr.privateName] = data[attr.name] || attr.default;
             });
         }
 
@@ -48,7 +50,7 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
 
             let dataset = {};
             attributes.forEach((attr) => {
-                dataset[attr.name] = self['__' + attr.name];
+                dataset[attr.name] = self[attr.privateName];
             });
 
             return dataset;
@@ -56,8 +58,8 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
 
         static importJSON(serializedNode) {
             const data = {};
-            attributeNames.forEach((name) => {
-                data[name] = serializedNode[name];
+            attributes.forEach((attr) => {
+                data[attr.name] = serializedNode[attr.name];
             });
 
             return new this(data);
@@ -67,8 +69,8 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
             const dataset = {
                 type: nodeType,
                 version: 1,
-                ...attributeNames.reduce((obj, name) => {
-                    obj[name] = this['get' + toPascalCase(name)]();
+                ...attributes.reduce((obj, attr) => {
+                    obj[attr.name] = this[attr.name];
                     return obj;
                 }, {})
             };
@@ -97,31 +99,19 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
         /* c8 ignore stop */
     }
 
-    // Define getters and setters for each attribute, using getAttribute() and setAttribute(attr) formats
-    attributeNames.forEach((name) => {
-        const capName = toPascalCase(name);
-        Object.defineProperty(generatedClass.prototype, `get${capName}`, {
-            value: function () {
+    // Add getters and setters to the class prototype
+    attributes.forEach((attr) => {
+        Object.defineProperty(GeneratedDecoratorNode.prototype, attr.name, {
+            get: function () {
                 const self = this.getLatest();
-                return self['__' + name];
+                return self[attr.privateName];
             },
-            configurable: true,
-            writable: true
-        });
-    
-        Object.defineProperty(generatedClass.prototype, `set${capName}`, {
-            value: function (value) {
+            set: function (newVal) {
                 const writable = this.getWritable();
-                writable['__' + name] = value;
-            },
-            configurable: true,
-            writable: true
+                writable[attr.privateName] = newVal;
+            }
         });
     });
 
-    return generatedClass;
-}
-
-function toPascalCase(str) {
-    return str.replace(/(^\w|-\w)/g, text => text.replace(/-/, '').toUpperCase());
+    return GeneratedDecoratorNode;
 }
