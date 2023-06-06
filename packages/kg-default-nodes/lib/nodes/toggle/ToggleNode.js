@@ -1,8 +1,8 @@
 import {ToggleParser} from './ToggleParser';
 import {renderToggleNodeToDOM} from './ToggleRenderer';
-import {generateDecoratorNodeFromAttrs} from '../../utils/generate-decorator-node-from-attributes';
+import {generateDecoratorNode} from '../../generate-decorator-node';
 
-export class ToggleNode extends generateDecoratorNodeFromAttrs({nodeType: 'toggle',
+export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
     attributes: [
         {name: 'content', type: 'string', default: '', urlType: 'url'},
         {name: 'heading', type: 'string', default: '', urlType: 'url'}

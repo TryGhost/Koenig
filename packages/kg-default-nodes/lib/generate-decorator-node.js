@@ -1,4 +1,4 @@
-import {KoenigDecoratorNode} from '../KoenigDecoratorNode';
+import {KoenigDecoratorNode} from './KoenigDecoratorNode';
 
 /**
  * @typedef {Object} DecoratorNodeAttribute
@@ -11,10 +11,10 @@ import {KoenigDecoratorNode} from '../KoenigDecoratorNode';
  * @param {DecoratorNodeAttribute[]} attributes - An array of attributes for the generated class
  * @returns {Object} - The generated class.
  */
-export function generateDecoratorNodeFromAttrs({nodeType = '', attributes = []}) {
+export function generateDecoratorNode({nodeType = '', attributes = []}) {
     const attributeNames = attributes.map(attr => attr.name);
 
-    let generatedClass = class extends KoenigDecoratorNode {
+    class generatedClass extends KoenigDecoratorNode {
         constructor(data = {}, key) {
             super(key);
             attributes.forEach((attr) => {
@@ -95,7 +95,7 @@ export function generateDecoratorNodeFromAttrs({nodeType = '', attributes = []})
             return true;
         }
         /* c8 ignore stop */
-    };
+    }
 
     // Define getters and setters for each attribute, using getAttribute() and setAttribute(attr) formats
     attributeNames.forEach((name) => {
