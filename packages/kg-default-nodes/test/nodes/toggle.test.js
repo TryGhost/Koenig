@@ -93,6 +93,15 @@ describe('ToggleNode', function () {
         }));
     });
 
+    describe('urlTransformMap', function () {
+        it('contains the expected URL mapping', editorTest(function () {
+            ToggleNode.urlTransformMap.should.deepEqual({
+                heading: 'html',
+                content: 'html'
+            });
+        }));
+    });
+
     describe('importJSON', function () {
         it('imports all data', function (done) {
             const serializedState = JSON.stringify({

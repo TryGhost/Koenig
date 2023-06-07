@@ -37,11 +37,13 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
         // (cf. `@tryghost/url-utils` for more information)
         static get urlTransformMap() {
             let map = {};
+
             attributes.forEach((attr) => {
                 if (attr.urlType) {
                     map[attr.name] = attr.urlType;
                 }
             });
+
             return map;
         }
 
@@ -58,6 +60,7 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
 
         static importJSON(serializedNode) {
             const data = {};
+
             attributes.forEach((attr) => {
                 data[attr.name] = serializedNode[attr.name];
             });
