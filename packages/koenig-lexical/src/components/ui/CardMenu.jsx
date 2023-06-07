@@ -1,5 +1,6 @@
 import React from 'react';
 import {ReactComponent as TrashCardIcon} from '../../assets/icons/kg-trash-outline.svg';
+import trackEvent from '../../utils/analytics';
 
 export const CardMenuSection = ({label, children, ...props}) => {
     return (
@@ -108,6 +109,7 @@ export const CardMenu = ({menu = new Map(), insert = () => {}, selectedItemIndex
             const onClick = (event) => {
                 event.preventDefault();
                 event.stopPropagation();
+                trackEvent('Card Added', {card: item.label});
                 insert?.(item.insertCommand, {insertParams: item.insertParams, queryParams: item.queryParams});
             };
 
