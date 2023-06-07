@@ -3,7 +3,7 @@ import {renderToggleNodeToDOM} from './ToggleRenderer';
 import {generateDecoratorNode} from '../../generate-decorator-node';
 
 export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
-    attributes: [
+    properties: [
         {name: 'content', type: 'string', default: '', urlType: 'html'},
         {name: 'heading', type: 'string', default: '', urlType: 'html'}
     ]}

@@ -1,26 +1,26 @@
 import {KoenigDecoratorNode} from './KoenigDecoratorNode';
 
 /**
- * @typedef {Object} DecoratorNodeAttribute
- * @property {string} name - The attribute's name.
- * @property {string} type - The attribute's type.
- * @property {*} default - The attribute's default value.
- * @property {string|null} urlType - If the attribute contains a URL, the URL's type (e.g. 'url', 'html', 'markdown')
+ * @typedef {Object} DecoratorNodeProperty
+ * @property {string} name - The property's name.
+ * @property {string} type - The property's type.
+ * @property {*} default - The property's default value.
+ * @property {string|null} urlType - If the property contains a URL, the URL's type (e.g. 'url', 'html', 'markdown')
  *
  * @param {string} nodeType – The node's type (must be unique)
- * @param {DecoratorNodeAttribute[]} attributes - An array of attributes for the generated class
+ * @param {DecoratorNodeProperty[]} properties - An array of properties for the generated class
  * @returns {Object} - The generated class.
  */
-export function generateDecoratorNode({nodeType = '', attributes = []}) {
-    attributes = attributes.map((obj) => {
+export function generateDecoratorNode({nodeType = '', properties = []}) {
+    properties = properties.map((obj) => {
         return {...obj, privateName: `__${obj.name}`};
     });
 
     class GeneratedDecoratorNode extends KoenigDecoratorNode {
         constructor(data = {}, key) {
             super(key);
-            attributes.forEach((attr) => {
-                this[attr.privateName] = data[attr.name] || attr.default;
+            properties.forEach((prop) => {
+                this[prop.privateName] = data[prop.name] || prop.default;
             });
         }
 
@@ -38,9 +38,9 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
         static get urlTransformMap() {
             let map = {};
 
-            attributes.forEach((attr) => {
-                if (attr.urlType) {
-                    map[attr.name] = attr.urlType;
+            properties.forEach((prop) => {
+                if (prop.urlType) {
+                    map[prop.name] = prop.urlType;
                 }
             });
 
@@ -51,8 +51,8 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
             const self = this.getLatest();
 
             let dataset = {};
-            attributes.forEach((attr) => {
-                dataset[attr.name] = self[attr.privateName];
+            properties.forEach((prop) => {
+                dataset[prop.name] = self[prop.privateName];
             });
 
             return dataset;
@@ -61,8 +61,8 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
         static importJSON(serializedNode) {
             const data = {};
 
-            attributes.forEach((attr) => {
-                data[attr.name] = serializedNode[attr.name];
+            properties.forEach((prop) => {
+                data[prop.name] = serializedNode[prop.name];
             });
 
             return new this(data);
@@ -72,8 +72,8 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
             const dataset = {
                 type: nodeType,
                 version: 1,
-                ...attributes.reduce((obj, attr) => {
-                    obj[attr.name] = this[attr.name];
+                ...properties.reduce((obj, prop) => {
+                    obj[prop.name] = this[prop.name];
                     return obj;
                 }, {})
             };
@@ -103,15 +103,15 @@ export function generateDecoratorNode({nodeType = '', attributes = []}) {
     }
 
     // Add getters and setters to the class prototype
-    attributes.forEach((attr) => {
-        Object.defineProperty(GeneratedDecoratorNode.prototype, attr.name, {
+    properties.forEach((prop) => {
+        Object.defineProperty(GeneratedDecoratorNode.prototype, prop.name, {
             get: function () {
                 const self = this.getLatest();
-                return self[attr.privateName];
+                return self[prop.privateName];
             },
             set: function (newVal) {
                 const writable = this.getWritable();
-                writable[attr.privateName] = newVal;
+                writable[prop.privateName] = newVal;
             }
         });
     });
