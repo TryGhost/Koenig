@@ -79,6 +79,32 @@ describe('ToggleNode', function () {
         }));
     });
 
+    describe('getType', function () {
+        it('returns the correct node type', editorTest(function () {
+            ToggleNode.getType().should.equal('toggle');
+        }));
+    });
+
+    describe('clone', function () {
+        it('returns a copy of the current toggle node', editorTest(function () {
+            const toggleNode = $createToggleNode(dataset);
+            const toggleNodeDataset = toggleNode.getDataset();
+            const clone = ToggleNode.clone(toggleNode);
+            const cloneDataset = clone.getDataset();
+
+            cloneDataset.should.deepEqual({...toggleNodeDataset});
+        }));
+    });
+
+    describe('urlTransformMap', function () {
+        it('contains the expected URL mapping', editorTest(function () {
+            ToggleNode.urlTransformMap.should.deepEqual({
+                heading: 'html',
+                content: 'html'
+            });
+        }));
+    });
+
     describe('exportJSON', function () {
         it('contains all data', editorTest(function () {
             const toggleNode = $createToggleNode(dataset);
@@ -89,15 +115,6 @@ describe('ToggleNode', function () {
                 version: 1,
                 heading: dataset.heading,
                 content: dataset.content
-            });
-        }));
-    });
-
-    describe('urlTransformMap', function () {
-        it('contains the expected URL mapping', editorTest(function () {
-            ToggleNode.urlTransformMap.should.deepEqual({
-                heading: 'html',
-                content: 'html'
             });
         }));
     });
