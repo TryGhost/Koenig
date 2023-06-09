@@ -43,6 +43,20 @@ export class PaywallNode extends KoenigDecoratorNode {
         const element = renderPaywallNodeToDOM(this, options);
         return {element, type: 'inner'};
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createPaywallNode = (dataset) => {

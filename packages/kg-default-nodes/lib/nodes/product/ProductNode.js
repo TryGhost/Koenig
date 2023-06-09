@@ -225,6 +225,20 @@ export class ProductNode extends KoenigDecoratorNode {
         const isButtonFilled = this.__productButtonEnabled && this.__productUrl && this.__productButton;
         return !this.__productTitle && !this.__productDescription && !isButtonFilled && !this.__productImageSrc && !this.__productRatingEnabled;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createProductNode = (dataset) => {

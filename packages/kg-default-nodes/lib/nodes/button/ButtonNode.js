@@ -110,6 +110,20 @@ export class ButtonNode extends KoenigDecoratorNode {
     hasEditMode() {
         return true;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createButtonNode = (dataset) => {

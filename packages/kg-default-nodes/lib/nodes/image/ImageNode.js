@@ -185,6 +185,20 @@ export class ImageNode extends KoenigDecoratorNode {
         const writable = this.getWritable();
         return writable.__alt = alt;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createImageNode = (dataset) => {

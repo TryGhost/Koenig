@@ -192,6 +192,20 @@ export class BookmarkNode extends KoenigDecoratorNode {
     isEmpty() {
         return !this.__url;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createBookmarkNode = (dataset) => {

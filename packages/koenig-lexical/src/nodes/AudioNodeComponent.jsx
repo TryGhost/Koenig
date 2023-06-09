@@ -12,20 +12,32 @@ import {openFileSelection} from '../utils/openFileSelection';
 import {thumbnailUploadHandler} from '../utils/thumbnailUploadHandler';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function AudioNodeComponent({nodeKey, src, thumbnailSrc, title, duration}) {
+export function AudioNodeComponent({duration, initialFile, nodeKey, src, thumbnailSrc, title, triggerFileDialog}) {
     const [editor] = useLexicalComposerContext();
     const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const {isSelected, isEditing, setEditing} = React.useContext(CardContext);
     const audioFileInputRef = React.useRef();
     const thumbnailFileInputRef = React.useRef();
     const cardContext = React.useContext(CardContext);
-    const [triggerFileDialog, setTriggerFileDialog] = React.useState(!src);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
     const audioUploader = fileUploader.useFileUpload('audio');
     const thumbnailUploader = fileUploader.useFileUpload('mediaThumbnail');
     const audioDragHandler = useFileDragAndDrop({handleDrop: handleAudioDrop});
     const thumbnailDragHandler = useFileDragAndDrop({handleDrop: handleThumbnailDrop, disabled: !isEditing});
+
+    React.useEffect(() => {
+        const uploadInitialFile = async (file) => {
+            if (file && !src) {
+                await audioUploadHandler([file], nodeKey, editor, audioUploader.upload);
+            }
+        };
+
+        uploadInitialFile(initialFile);
+
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onAudioFileChange = async (e) => {
         const fls = e.target.files;

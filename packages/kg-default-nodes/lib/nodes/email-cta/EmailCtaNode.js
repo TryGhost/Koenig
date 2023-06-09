@@ -167,6 +167,20 @@ export class EmailCtaNode extends KoenigDecoratorNode {
     isEmpty() {
         return !this.__html && (!this.__showButton || (!this.__buttonText && !this.__buttonUrl));
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createEmailCtaNode = (dataset) => {

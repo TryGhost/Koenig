@@ -112,6 +112,20 @@ export class CodeBlockNode extends KoenigDecoratorNode {
     isEmpty() {
         return !this.__code;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export function $createCodeBlockNode(dataset) {

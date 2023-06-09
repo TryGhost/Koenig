@@ -144,6 +144,20 @@ export class EmbedNode extends KoenigDecoratorNode {
     isEmpty() {
         return !this.__url && !this.__html;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createEmbedNode = (dataset) => {

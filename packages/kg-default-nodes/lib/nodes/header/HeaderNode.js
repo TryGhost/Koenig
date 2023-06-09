@@ -198,6 +198,20 @@ export class HeaderNode extends KoenigDecoratorNode {
     isEmpty() {
         return !this.header && !this.subheader && (!this.__buttonEnabled || (!this.__buttonText && !this.__buttonUrl)) && !this.__backgroundImageSrc;
     }
+
+    /* c8 ignore start */
+    createDOM() {
+        return document.createElement('div');
+    }
+
+    updateDOM() {
+        return false;
+    }
+
+    isInline() {
+        return false;
+    }
+    /* c8 ignore stop */
 }
 
 export const $createHeaderNode = (dataset) => {
