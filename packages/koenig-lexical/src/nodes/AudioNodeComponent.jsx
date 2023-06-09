@@ -28,7 +28,7 @@ export function AudioNodeComponent({duration, initialFile, nodeKey, src, thumbna
 
     React.useEffect(() => {
         const uploadInitialFile = async (file) => {
-            if (file && !src) {
+            if (file && !src && !audioUploader.isLoading) {
                 await audioUploadHandler([file], nodeKey, editor, audioUploader.upload);
             }
         };
@@ -88,8 +88,11 @@ export function AudioNodeComponent({duration, initialFile, nodeKey, src, thumbna
             // trigger dialog
             openFileSelection({fileInputRef: audioFileInputRef});
 
-            // reset trigger
-            setTriggerFileDialog(false);
+            // clear the property on the node so we don't accidentally trigger anything with a re-render
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.setTriggerFileDialog(false);
+            });
         });
 
         return (() => {

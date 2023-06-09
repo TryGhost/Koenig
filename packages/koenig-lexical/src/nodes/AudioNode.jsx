@@ -18,7 +18,7 @@ export class AudioNode extends BaseAudioNode {
         Icon: AudioCardIcon,
         insertCommand: INSERT_AUDIO_COMMAND,
         insertParams: {
-            triggerFileDialog: false
+            triggerFileDialog: true
         },
         matches: ['audio'],
         priority: 14
