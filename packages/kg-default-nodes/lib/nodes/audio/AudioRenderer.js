@@ -5,7 +5,7 @@ export function renderAudioNodeToDOM(node, options = {}) {
 
     const document = options.createDocument();
 
-    if (!node.getSrc() || node.getSrc().trim() === '') {
+    if (!node.src || node.src.trim() === '') {
         return document.createTextNode('');
     }
 
@@ -15,7 +15,7 @@ export function renderAudioNodeToDOM(node, options = {}) {
 function frontendTemplate(node, document) {
     let thumbnailCls = 'kg-audio-thumbnail';
     let emptyThumbnailCls = 'kg-audio-thumbnail placeholder';
-    if (!node.getThumbnailSrc()) {
+    if (!node.thumbnailSrc) {
         thumbnailCls += ' kg-audio-hide';
     } else {
         emptyThumbnailCls += ' kg-audio-hide';
@@ -24,7 +24,7 @@ function frontendTemplate(node, document) {
     const cardDiv = document.createElement('div');
     cardDiv.setAttribute('class', 'kg-card kg-audio-card');
     const img = document.createElement('img');
-    img.src = node.getThumbnailSrc();
+    img.src = node.thumbnailSrc;
     img.alt = 'audio-thumbnail';
     img.setAttribute('class', thumbnailCls);
     cardDiv.appendChild(img);
@@ -58,13 +58,13 @@ function frontendTemplate(node, document) {
     audioPlayerContainer.setAttribute('class', 'kg-audio-player-container');
 
     const audioElement = document.createElement('audio');
-    audioElement.setAttribute('src', node.getSrc());
+    audioElement.setAttribute('src', node.src);
     audioElement.setAttribute('preload', 'metadata');
     audioPlayerContainer.appendChild(audioElement);
 
     const audioTitle = document.createElement('div');
     audioTitle.setAttribute('class', 'kg-audio-title');
-    audioTitle.textContent = node.getTitle();
+    audioTitle.textContent = node.title;
     audioPlayerContainer.appendChild(audioTitle);
 
     const audioPlayer = document.createElement('div');
@@ -112,7 +112,7 @@ function frontendTemplate(node, document) {
     audioDurationTotal.textContent = '/';
     const audioDUrationNode = document.createElement('span');
     audioDUrationNode.setAttribute('class', 'kg-audio-duration');
-    audioDUrationNode.textContent = node.getDuration();
+    audioDUrationNode.textContent = node.duration;
     audioDurationTotal.appendChild(audioDUrationNode);
     audioPlayer.appendChild(audioDurationTotal);
 

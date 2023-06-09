@@ -86,7 +86,7 @@ describe('ToggleNode', function () {
     });
 
     describe('clone', function () {
-        it('returns a copy of the current toggle node', editorTest(function () {
+        it('returns a copy of the current node', editorTest(function () {
             const toggleNode = $createToggleNode(dataset);
             const toggleNodeDataset = toggleNode.getDataset();
             const clone = ToggleNode.clone(toggleNode);
@@ -102,6 +102,13 @@ describe('ToggleNode', function () {
                 heading: 'html',
                 content: 'html'
             });
+        }));
+    });
+
+    describe('hasEditMode', function () {
+        it('returns true', editorTest(function () {
+            const toggleNode = $createToggleNode(dataset);
+            toggleNode.hasEditMode().should.be.true;
         }));
     });
 
