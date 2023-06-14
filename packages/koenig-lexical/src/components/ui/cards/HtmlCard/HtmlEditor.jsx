@@ -8,7 +8,7 @@ import {minimalSetup} from '@uiw/codemirror-extensions-basic-setup';
 import {standardKeymap} from '@codemirror/commands';
 import {tags as t} from '@lezer/highlight';
 
-export default function HtmlEditor({darkMode, html, updateHtml}) {
+export default function HtmlEditor({darkMode, html, updateHtml, onBlur}) {
     const onChange = React.useCallback((value) => {
         updateHtml(value);
     }, [updateHtml]);
@@ -154,6 +154,7 @@ export default function HtmlEditor({darkMode, html, updateHtml}) {
                 basicSetup={false} // basic setup includes unnecessary extensions
                 extensions={extensions}
                 value={html}
+                onBlur={onBlur}
                 onChange={onChange}
             />
         </div>

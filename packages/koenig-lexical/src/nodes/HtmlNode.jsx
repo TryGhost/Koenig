@@ -18,7 +18,7 @@ export {INSERT_HTML_COMMAND} from '@tryghost/kg-default-nodes';
 
 function HtmlNodeComponent({nodeKey, html}) {
     const [editor] = useLexicalComposerContext();
-    const cardContext = React.useContext(CardContext);
+    const {isEditing, isSelected} = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
     const updateHtml = (value) => {
@@ -33,15 +33,24 @@ function HtmlNodeComponent({nodeKey, html}) {
         editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: false});
     };
 
+    const onBlur = () => {
+        editor.update(() => {
+            // manually trigger state update to get our card deselection handling to trigger
+            const state = editor.getEditorState();
+            editor.setEditorState(state);
+        });
+    };
+
     return (
         <>
             <HtmlCard
                 darkMode={darkMode}
                 html={html}
-                isEditing={cardContext.isEditing}
+                isEditing={isEditing}
                 nodeKey={nodeKey}
                 unsplashConf={cardConfig.unsplash}
                 updateHtml={updateHtml}
+                onBlur={onBlur}
             />
 
             <ActionToolbar
@@ -53,7 +62,7 @@ function HtmlNodeComponent({nodeKey, html}) {
 
             <ActionToolbar
                 data-kg-card-toolbar="html"
-                isVisible={cardContext.isSelected && !cardContext.isEditing && !showSnippetToolbar}
+                isVisible={isSelected && !isEditing && !showSnippetToolbar}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />

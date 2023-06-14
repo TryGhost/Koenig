@@ -34,6 +34,14 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
         setEditing(true);
     };
 
+    const onBlur = () => {
+        editor.update(() => {
+            // manually trigger state update to get our card deselection handling to trigger
+            const state = editor.getEditorState();
+            editor.setEditorState(state);
+        });
+    };
+
     return (
         <>
             <CodeBlockCard
@@ -48,6 +56,7 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
                 nodeKey={nodeKey}
                 updateCode={updateCode}
                 updateLanguage={updateLanguage}
+                onBlur={onBlur}
             />
             <ActionToolbar
                 data-kg-card-toolbar="button"
