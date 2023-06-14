@@ -5,7 +5,9 @@ export function renderHtmlNodeToDOM(node, options = {}) {
 
     const document = options.createDocument();
 
-    const html = node.getHtml() || '';
+    let html = node.getHtml() || '';
+
+    html = '<!--kg-card-begin: html-->' + html + '<!--kg-card-end: html-->';
 
     const div = document.createElement('div');
 

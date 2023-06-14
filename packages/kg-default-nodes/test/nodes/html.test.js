@@ -84,11 +84,13 @@ describe('HtmlNode', function () {
             const {element, type} = htmlNode.exportDOM(exportOptions);
             type.should.equal('inner');
             element.innerHTML.should.prettifyTo(html`
+                <!--kg-card-begin: html-->
                 <p>Paragraph with:</p>
                 <ul>
                     <li>list</li>
                     <li>items</li>
                 </ul>
+                <!--kg-card-end: html-->
             `);
         }));
 
@@ -96,7 +98,7 @@ describe('HtmlNode', function () {
             const htmlNode = $createHtmlNode();
             const {element} = htmlNode.exportDOM(exportOptions);
 
-            element.outerHTML.should.equal('<div></div>');
+            element.outerHTML.should.equal('<div><!--kg-card-begin: html--><!--kg-card-end: html--></div>');
         }));
     });
 
