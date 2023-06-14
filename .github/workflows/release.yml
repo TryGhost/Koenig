@@ -1,0 +1,16 @@
+name: Release notifications
+on:
+  push:
+    tags:
+      - '@tryghost/koenig-lexical@*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Generate release notifications
+      uses: tryghost/actions/actions/package-release@main
+      env:
+        RELEASE_NOTIFICATION_URL: ${{ secrets.RELEASE_NOTIFICATION_URL }}
