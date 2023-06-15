@@ -79,6 +79,9 @@ class TextContent {
         const a = this.doc.createElement('a');
 
         a.setAttribute('href', node.getURL());
+        if (node.getRel()) {
+            a.setAttribute('rel', node.getRel());
+        }
         a.innerHTML = exportChildren(node, options);
 
         this.currentNode.append(a);
