@@ -1,17 +1,5 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-
-function slugify(str) {
-    // Remove any non-word character with whitespace
-    str = str.replace(/[^\w\s]/gi, '');
-
-    // Replace any whitespace character with a dash
-    str = str.replace(/\s+/g, '-');
-
-    // Convert to lowercase
-    str = str.toLowerCase();
-
-    return str;
-}
+import {slugify} from '@tryghost/kg-utils';
 
 export function renderHeaderNodeToDOM(node, options = {}) {
     addCreateDocumentOption(options);

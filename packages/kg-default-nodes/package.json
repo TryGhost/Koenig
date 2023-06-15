@@ -44,6 +44,7 @@
   "dependencies": {
     "@tryghost/kg-clean-basic-html": "^3.0.19",
     "@tryghost/kg-markdown-html-renderer": "^6.0.8",
+    "@tryghost/kg-utils": "^1.0.16",
     "html-minifier": "^4.0.0",
     "jsdom": "^21.0.0",
     "lexical": "^0.11.0",
