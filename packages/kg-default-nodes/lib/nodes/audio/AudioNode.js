@@ -17,8 +17,8 @@ export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
     }
 
     exportDOM(options = {}) {
-        const element = renderAudioNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderAudioNodeToDOM(this, options);
+        return {element, type};
     }
 }
 

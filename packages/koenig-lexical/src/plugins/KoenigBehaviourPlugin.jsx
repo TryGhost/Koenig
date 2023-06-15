@@ -108,6 +108,12 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
     // deselect cards on mousedown outside of the editor container
     React.useEffect(() => {
         const onMousedown = (event) => {
+            if (!document.body.contains(event.target)) {
+                // The event target is no longer in the DOM
+                // This is possible if we have listeners in the capture phase of the event (e.g. dropdowns)
+                return;
+            }
+
             if (containerElem.current && !containerElem.current.contains(event.target)) {
                 editor.update(() => {
                     const selection = $getSelection();
@@ -246,11 +252,11 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             ),
             editor.registerCommand(
                 EDIT_CARD_COMMAND,
-                ({cardKey}) => {
+                ({cardKey, focusEditor}) => {
                     if (selectedCardKey && selectedCardKey !== cardKey) {
                         $deselectCard(editor, selectedCardKey);
                     }
-                    $selectCard(editor, cardKey);
+                    $selectCard(editor, cardKey, focusEditor);
 
                     setSelectedCardKey(cardKey);
 
@@ -376,18 +382,20 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     if (!isNested) {
                         const selection = $getSelection();
                         const currentNode = selection.getNodes()[0];
-                        const textContent = currentNode.getTextContent();
-                        if (textContent.match(/^```(\w{1,10})/)) {
-                            event.preventDefault();
-                            const language = textContent.replace(/^```/,'');
-                            const replacementNode = currentNode.getTopLevelElement().insertAfter($createCodeBlockNode({language, _openInEditMode: true}));
-                            currentNode.getTopLevelElement().remove();
+                        if ($isTextNode(currentNode)) {
+                            const textContent = currentNode.getTextContent();
+                            if (textContent.match(/^```(\w{1,10})?/)) {
+                                event.preventDefault();
+                                const language = textContent.replace(/^```/,'');
+                                const replacementNode = currentNode.getTopLevelElement().insertAfter($createCodeBlockNode({language, _openInEditMode: true}));
+                                currentNode.getTopLevelElement().remove();
 
-                            // select node when replacing so it immediately renders in editing mode
-                            const replacementSelection = $createNodeSelection();
-                            replacementSelection.add(replacementNode.getKey());
-                            $setSelection(replacementSelection);
-                            return true;
+                                // select node when replacing so it immediately renders in editing mode
+                                const replacementSelection = $createNodeSelection();
+                                replacementSelection.add(replacementNode.getKey());
+                                $setSelection(replacementSelection);
+                                return true;
+                            }
                         }
                     }
                 },
@@ -962,7 +970,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         linkNode.append(linkTextNode);
                         parentNode.append(linkNode);
                         parentNode.selectEnd();
-                        return true; 
+                        return true;
                     }
 
                     // if a link is pasted in a blank text node, insert an embed card (may turn into bookmark)

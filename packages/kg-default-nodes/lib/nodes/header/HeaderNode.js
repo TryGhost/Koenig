@@ -2,6 +2,7 @@ import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {renderHeaderNodeToDOM} from './HeaderRenderer';
 import {HeaderParser} from './HeaderParser';
 import {createCommand} from 'lexical';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_HEADER_COMMAND = createCommand();
 const NODE_TYPE = 'header';
@@ -107,8 +108,8 @@ export class HeaderNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderHeaderNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderHeaderNodeToDOM(this, options);
+        return {element, type};
     }
 
     getSize() {
@@ -212,6 +213,17 @@ export class HeaderNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+
+        let text = [
+            readTextContent(self, 'header'),
+            readTextContent(self, 'subheader')
+        ].filter(Boolean).join('\n');
+
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export const $createHeaderNode = (dataset) => {

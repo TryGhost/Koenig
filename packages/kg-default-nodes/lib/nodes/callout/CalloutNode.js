@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {renderCalloutNodeToDOM} from './CalloutRenderer';
 import {CalloutParser} from './CalloutParser';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_CALLOUT_COMMAND = createCommand();
 const NODE_TYPE = 'callout';
@@ -35,7 +36,7 @@ export class CalloutNode extends KoenigDecoratorNode {
     constructor({calloutText, calloutEmoji, backgroundColor} = {}, key) {
         super(key);
         this.__calloutText = calloutText || '';
-        this.__calloutEmoji = calloutEmoji || '💡';
+        this.__calloutEmoji = calloutEmoji !== undefined ? calloutEmoji : '💡';
         this.__backgroundColor = backgroundColor || 'blue';
     }
 
@@ -65,8 +66,8 @@ export class CalloutNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderCalloutNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderCalloutNodeToDOM(this, options);
+        return {element, type};
     }
 
     getCalloutText() {
@@ -116,6 +117,12 @@ export class CalloutNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = readTextContent(self, 'calloutText');
+        return text ? `${readTextContent(self, 'calloutText')}\n\n` : '';
+    }
 }
 
 export function $isCalloutNode(node) {

@@ -2,7 +2,7 @@ const {createHeadlessEditor} = require('@lexical/headless');
 const {html} = require('../utils');
 const {JSDOM} = require('jsdom');
 const {$getRoot} = require('lexical');
-const {SignupNode, $createSignupNode, $isSignupNode} = require('../../');
+const {SignupNode, $createSignupNode, $isSignupNode, $createPaywallNode} = require('../../');
 const {$generateNodesFromDOM} = require('@lexical/html');
 
 const editorNodes = [SignupNode];
@@ -24,20 +24,21 @@ describe('SignupNode', function () {
     };
 
     const checkGetters = (signupNode, data) => {
-        signupNode.getAlignment().should.equal(data.alignment);
-        signupNode.getBackgroundColor().should.equal(data.backgroundColor);
-        signupNode.getBackgroundImageSrc().should.equal(data.backgroundImageSrc);
-        signupNode.getTextColor().should.equal(data.textColor);
-        signupNode.getButtonColor().should.equal(data.buttonColor);
-        signupNode.getButtonText().should.equal(data.buttonText);
-        signupNode.getButtonTextColor().should.equal(data.buttonTextColor);
-        signupNode.getDisclaimer().should.equal(data.disclaimer);
-        signupNode.getHeader().should.equal(data.header);
-        signupNode.getLabels().should.deepEqual(data.labels);
-        signupNode.getLayout().should.equal(data.layout);
-        signupNode.getSubheader().should.equal(data.subheader);
-        signupNode.getSuccessMessage().should.equal(data.successMessage);
-        signupNode.getSwapped().should.equal(data.swapped);
+        signupNode.getAlignment().should.equal(data.alignment, 'alignment');
+        signupNode.getBackgroundColor().should.equal(data.backgroundColor, 'backgroundColor');
+        signupNode.getBackgroundImageSrc().should.equal(data.backgroundImageSrc, 'backgroundImageSrc');
+        signupNode.getBackgroundSize().should.equal(data.backgroundSize, 'backgroundSize');
+        signupNode.getTextColor().should.equal(data.textColor, 'textColor');
+        signupNode.getButtonColor().should.equal(data.buttonColor, 'buttonColor');
+        signupNode.getButtonText().should.equal(data.buttonText, 'buttonText');
+        signupNode.getButtonTextColor().should.equal(data.buttonTextColor, 'buttonTextColor');
+        signupNode.getDisclaimer().should.equal(data.disclaimer, 'disclaimer');
+        signupNode.getHeader().should.equal(data.header, 'header');
+        signupNode.getLabels().should.deepEqual(data.labels, 'labels');
+        signupNode.getLayout().should.equal(data.layout, 'layout');
+        signupNode.getSubheader().should.equal(data.subheader, 'subheader');
+        signupNode.getSuccessMessage().should.equal(data.successMessage, 'successMessage');
+        signupNode.getSwapped().should.equal(data.swapped, 'swapped');
     };
 
     beforeEach(function () {
@@ -46,6 +47,7 @@ describe('SignupNode', function () {
         dataset = {
             backgroundColor: 'transparent',
             backgroundImageSrc: 'https://example.com/image.jpg',
+            backgroundSize: 'cover',
             textColor: '#000000',
             buttonColor: '#000000',
             buttonText: 'Button',
@@ -101,6 +103,8 @@ describe('SignupNode', function () {
             node.getAlignment().should.equal('left');
             node.setBackgroundColor('#f00');
             node.getBackgroundColor().should.equal('#f00');
+            node.setBackgroundSize('contain');
+            node.getBackgroundSize().should.equal('contain');
             node.setBackgroundImageSrc('https://example.com/image2.jpg');
             node.getBackgroundImageSrc().should.equal('https://example.com/image2.jpg');
             node.setTextColor('#0f0');
@@ -205,17 +209,17 @@ describe('SignupNode', function () {
             const {element} = signupNode.exportDOM(exportOptions);
             element.outerHTML.should.prettifyTo(html`
                 <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none">
-                    <div class="kg-signup-card-container align-center" style="background-color:transparent;background-image:url(https://example.com/image.jpg)">
+                    <div class="kg-signup-card-container align-center" style="background-color:#ffffff;background-image:url(https://example.com/image.jpg)">
                         <h2 class="kg-signup-card-heading" style="color:#000000">Header</h2>
                         <h3 class="kg-signup-card-subheading" style="color:#000000">Subheader</h3>
                         <form class="kg-signup-card-form" data-members-form="signup">
                             <input data-members-label="" type="hidden" value="label 1">
                             <input data-members-label="" type="hidden" value="label 2">
                             <div class="kg-signup-card-fields">
-                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com">
+                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email">
                                 <button class="kg-signup-card-button" style="background-color:#000000;color:#ffffff" type="submit">
                                     <span class="kg-signup-card-button-default">Button</span>
-                                    <span class="kg-signup-card-button-loading" style="background-color:#000000">${loadingIcon}</span>
+                                    <span class="kg-signup-card-button-loading">${loadingIcon}</span>
                                 </button>
                             </div>
                             <div class="kg-signup-card-success" style="color:#000000">Success!</div>
@@ -235,15 +239,15 @@ describe('SignupNode', function () {
             const {element} = signupNode.exportDOM(exportOptions);
             element.outerHTML.should.prettifyTo(html`
                 <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none">
-                    <div class="kg-signup-card-container align-center" style="background-color:transparent;background-image:url(https://example.com/image.jpg)">
+                    <div class="kg-signup-card-container align-center" style="background-color:#ffffff;background-image:url(https://example.com/image.jpg)">
                         <form class="kg-signup-card-form" data-members-form="signup">
                             <input data-members-label="" type="hidden" value="label 1">
                             <input data-members-label="" type="hidden" value="label 2">
                             <div class="kg-signup-card-fields">
-                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com">
+                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email">
                                 <button class="kg-signup-card-button" style="background-color:#000000;color:#ffffff" type="submit">
                                     <span class="kg-signup-card-button-default">Button</span>
-                                    <span class="kg-signup-card-button-loading" style="background-color:#000000">${loadingIcon}</span>
+                                    <span class="kg-signup-card-button-loading">${loadingIcon}</span>
                                 </button>
                             </div>
                             <div class="kg-signup-card-success" style="color:#000000">Success!</div>
@@ -257,22 +261,23 @@ describe('SignupNode', function () {
         it('renders accent classes', editorTest(function () {
             dataset.backgroundColor = 'accent';
             dataset.buttonColor = 'accent';
+            dataset.backgroundImageSrc = '';
 
             const signupNode = $createSignupNode(dataset);
             const {element} = signupNode.exportDOM(exportOptions);
             element.outerHTML.should.prettifyTo(html`
                 <div class="kg-card kg-signup-card kg-width-regular" data-lexical-signup-form="" style="display:none">
-                    <div class="kg-signup-card-container align-center kg-style-accent" style="background-color:accent;background-image:url(https://example.com/image.jpg)">
+                    <div class="kg-signup-card-container align-center kg-style-accent" style="">
                         <h2 class="kg-signup-card-heading" style="color:#000000">Header</h2>
                         <h3 class="kg-signup-card-subheading" style="color:#000000">Subheader</h3>
                         <form class="kg-signup-card-form" data-members-form="signup">
                             <input data-members-label="" type="hidden" value="label 1">
                             <input data-members-label="" type="hidden" value="label 2">
                             <div class="kg-signup-card-fields">
-                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com">
-                                <button class="kg-signup-card-button kg-style-accent" style="background-color:accent;color:#ffffff" type="submit">
+                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email">
+                                <button class="kg-signup-card-button kg-style-accent" style="color:#ffffff" type="submit">
                                     <span class="kg-signup-card-button-default">Button</span>
-                                    <span class="kg-signup-card-button-loading" style="background-color:accent">${loadingIcon}</span>
+                                    <span class="kg-signup-card-button-loading">${loadingIcon}</span>
                                 </button>
                             </div>
                             <div class="kg-signup-card-success" style="color:#000000">Success!</div>
@@ -290,7 +295,7 @@ describe('SignupNode', function () {
             const signupNode = $createSignupNode(dataset);
             const {element} = signupNode.exportDOM(exportOptions);
             element.outerHTML.should.prettifyTo(html`
-                <div class="kg-card kg-signup-card kg-layout-split kg-width-full" data-lexical-signup-form="" style="display:none">
+                <div class="kg-card kg-signup-card kg-layout-split kg-width-full kg-background-size-cover" data-lexical-signup-form="" style="display:none">
                     <img class="kg-signup-card-image" style="background-color: transparent" src="https://example.com/image.jpg" alt="">
                     <div class="kg-signup-card-container align-center" style="background-color:transparent">
                         <h2 class="kg-signup-card-heading" style="color:#000000">Header</h2>
@@ -299,10 +304,10 @@ describe('SignupNode', function () {
                             <input data-members-label="" type="hidden" value="label 1">
                             <input data-members-label="" type="hidden" value="label 2">
                             <div class="kg-signup-card-fields">
-                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com">
+                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email">
                                 <button class="kg-signup-card-button" style="background-color:#000000;color:#ffffff" type="submit">
                                     <span class="kg-signup-card-button-default">Button</span>
-                                    <span class="kg-signup-card-button-loading" style="background-color:#000000">${loadingIcon}</span>
+                                    <span class="kg-signup-card-button-loading">${loadingIcon}</span>
                                 </button>
                             </div>
                             <div class="kg-signup-card-success" style="color:#000000">Success!</div>
@@ -317,11 +322,11 @@ describe('SignupNode', function () {
         it('renders split card swapped', editorTest(function () {
             dataset.layout = 'split';
             dataset.swapped = true;
-        
+
             const signupNode = $createSignupNode(dataset);
             const {element} = signupNode.exportDOM(exportOptions);
             element.outerHTML.should.prettifyTo(html`
-                <div class="kg-card kg-signup-card kg-layout-split kg-width-full kg-swapped" data-lexical-signup-form="" style="display:none">
+                <div class="kg-card kg-signup-card kg-layout-split kg-width-full kg-swapped kg-background-size-cover" data-lexical-signup-form="" style="display:none">
                     <img class="kg-signup-card-image" style="background-color: transparent" src="https://example.com/image.jpg" alt="">
                     <div class="kg-signup-card-container align-center" style="background-color:transparent">
                         <h2 class="kg-signup-card-heading" style="color:#000000">Header</h2>
@@ -330,10 +335,41 @@ describe('SignupNode', function () {
                             <input data-members-label="" type="hidden" value="label 1">
                             <input data-members-label="" type="hidden" value="label 2">
                             <div class="kg-signup-card-fields">
-                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com">
+                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email">
                                 <button class="kg-signup-card-button" style="background-color:#000000;color:#ffffff" type="submit">
                                     <span class="kg-signup-card-button-default">Button</span>
-                                    <span class="kg-signup-card-button-loading" style="background-color:#000000">${loadingIcon}</span>
+                                    <span class="kg-signup-card-button-loading">${loadingIcon}</span>
+                                </button>
+                            </div>
+                            <div class="kg-signup-card-success" style="color:#000000">Success!</div>
+                            <div class="kg-signup-card-error" style="color:#000000" data-members-error=""></div>
+                        </form>
+                        <p class="kg-signup-card-disclaimer" style="color:#000000">Disclaimer</p>
+                    </div>
+                </div>
+            `);
+        }));
+
+        it('renders background size', editorTest(function () {
+            dataset.layout = 'split';
+            dataset.backgroundSize = 'contain';
+
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+            element.outerHTML.should.prettifyTo(html`
+                <div class="kg-card kg-signup-card kg-layout-split kg-width-full kg-background-size-contain" data-lexical-signup-form="" style="display:none">
+                    <img class="kg-signup-card-image" style="background-color: transparent" src="https://example.com/image.jpg" alt="">
+                    <div class="kg-signup-card-container align-center" style="background-color:transparent">
+                        <h2 class="kg-signup-card-heading" style="color:#000000">Header</h2>
+                        <h3 class="kg-signup-card-subheading" style="color:#000000">Subheader</h3>
+                        <form class="kg-signup-card-form" data-members-form="signup">
+                            <input data-members-label="" type="hidden" value="label 1">
+                            <input data-members-label="" type="hidden" value="label 2">
+                            <div class="kg-signup-card-fields">
+                                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email">
+                                <button class="kg-signup-card-button" style="background-color:#000000;color:#ffffff" type="submit">
+                                    <span class="kg-signup-card-button-default">Button</span>
+                                    <span class="kg-signup-card-button-loading">${loadingIcon}</span>
                                 </button>
                             </div>
                             <div class="kg-signup-card-success" style="color:#000000">Success!</div>
@@ -347,6 +383,8 @@ describe('SignupNode', function () {
     });
     describe('importDOM', function () {
         it('parses a signup card', editorTest(function () {
+            dataset.backgroundColor = '#ffffff';
+
             const signupNode = $createSignupNode(dataset);
             const {element} = signupNode.exportDOM(exportOptions);
 
@@ -379,10 +417,61 @@ describe('SignupNode', function () {
             checkGetters(nodes[0], dataset);
         }));
 
+        it('parses background size contain correctly', editorTest(function () {
+            dataset.layout = 'split';
+            dataset.backgroundSize = 'contain';
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+            const dom = new JSDOM(element.outerHTML).window.document;
+            const nodes = $generateNodesFromDOM(editor, dom);
+            nodes.length.should.equal(1);
+            checkGetters(nodes[0], dataset);
+        }));
+
+        it('parses background size cover correctly', editorTest(function () {
+            dataset.layout = 'split';
+            dataset.backgroundSize = 'cover';
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+            const dom = new JSDOM(element.outerHTML).window.document;
+            const nodes = $generateNodesFromDOM(editor, dom);
+            nodes.length.should.equal(1);
+            checkGetters(nodes[0], dataset);
+        }));
+
         it('parses with empty elements removed', editorTest(function () {
             dataset.header = '';
             dataset.subheader = '';
             dataset.disclaimer = '';
+            dataset.backgroundColor = '#ffffff';
+
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+
+            const dom = new JSDOM(element.outerHTML).window.document;
+            const nodes = $generateNodesFromDOM(editor, dom);
+            nodes.length.should.equal(1);
+            checkGetters(nodes[0], dataset);
+        }));
+
+        it('parses without image', editorTest(function () {
+            // red background
+            dataset.backgroundColor = '#ff0000';
+            dataset.backgroundImageSrc = '';
+
+            const signupNode = $createSignupNode(dataset);
+            const {element} = signupNode.exportDOM(exportOptions);
+
+            const dom = new JSDOM(element.outerHTML).window.document;
+            const nodes = $generateNodesFromDOM(editor, dom);
+            nodes.length.should.equal(1);
+            checkGetters(nodes[0], dataset);
+        }));
+
+        it('parses with accent button and background', editorTest(function () {
+            dataset.backgroundColor = 'accent';
+            dataset.buttonColor = 'accent';
+            dataset.buttonTextColor = '#ffffff';
 
             const signupNode = $createSignupNode(dataset);
             const {element} = signupNode.exportDOM(exportOptions);
@@ -405,6 +494,7 @@ describe('SignupNode', function () {
                 alignment: dataset.alignment,
                 backgroundColor: dataset.backgroundColor,
                 backgroundImageSrc: dataset.backgroundImageSrc,
+                backgroundSize: dataset.backgroundSize,
                 textColor: dataset.textColor,
                 buttonColor: dataset.buttonColor,
                 buttonText: dataset.buttonText,
@@ -452,5 +542,14 @@ describe('SignupNode', function () {
                 }
             });
         });
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createPaywallNode();
+
+            // signup nodes don't have text content
+            node.getTextContent().should.equal('');
+        }));
     });
 });

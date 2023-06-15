@@ -42,5 +42,5 @@ export function renderToggleNodeToDOM(node, options = {}) {
     const element = document.createElement('div');
     element.innerHTML = htmlString.trim();
 
-    return element.firstElementChild;
+    return {element: element.firstElementChild};
 }

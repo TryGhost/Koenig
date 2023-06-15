@@ -17,6 +17,7 @@ function SignupNodeComponent({
     alignment,
     backgroundColor,
     backgroundImageSrc,
+    backgroundSize,
     buttonColor,
     buttonText,
     buttonTextColor,
@@ -73,10 +74,17 @@ function SignupNodeComponent({
         });
     };
 
+    const handleBackgroundSize = (a) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.setBackgroundSize(a);
+        });
+    };
+
     const handleToolbarEdit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey});
+        editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: false});
     };
 
     const imageUploader = fileUploader.useFileUpload('image');
@@ -116,6 +124,15 @@ function SignupNodeComponent({
             const node = $getNodeByKey(nodeKey);
             node.setButtonText(event.target.value);
         });
+    };
+
+    const handleButtonTextBlur = (event) => {
+        if (!event.target.value) {
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.setButtonText('Subscribe');
+            });
+        }
     };
 
     const handleClearBackgroundImage = () => {
@@ -196,6 +213,7 @@ function SignupNodeComponent({
                 availableLabels={availableLabels}
                 backgroundColor={backgroundColor}
                 backgroundImageSrc={backgroundImageSrc}
+                backgroundSize={backgroundSize}
                 buttonColor={buttonColor}
                 buttonText={buttonText}
                 buttonTextColor={buttonTextColor}
@@ -205,8 +223,10 @@ function SignupNodeComponent({
                 fileUploader={imageUploader}
                 handleAlignment={handleAlignment}
                 handleBackgroundColor={handleBackgroundColor}
+                handleBackgroundSize={handleBackgroundSize}
                 handleButtonColor={handleButtonColor}
                 handleButtonText={handleButtonText}
+                handleButtonTextBlur={handleButtonTextBlur}
                 handleClearBackgroundImage={handleClearBackgroundImage}
                 handleHideBackgroundImage={handleHideBackgroundImage}
                 handleLabels={handleLabels}
@@ -251,7 +271,7 @@ function SignupNodeComponent({
                         hide={!cardConfig.createSnippet}
                         icon="snippet"
                         isActive={false}
-                        label="Snippet"
+                        label="Create snippet"
                         onClick={() => setShowSnippetToolbar(true)}
                     />
                 </ToolbarMenu>

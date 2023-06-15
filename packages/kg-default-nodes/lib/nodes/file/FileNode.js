@@ -2,6 +2,7 @@ import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {renderFileNodeToDOM} from './FileRenderer';
 import {FileParser} from './FileParser';
 import {createCommand} from 'lexical';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_FILE_COMMAND = createCommand();
 
@@ -93,8 +94,8 @@ export class FileNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderFileNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderFileNodeToDOM(this, options);
+        return {element, type};
     }
 
     getSrc() {
@@ -169,6 +170,16 @@ export class FileNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = [
+            readTextContent(self, 'fileTitle'),
+            readTextContent(self, 'fileCaption')
+        ].filter(Boolean).join('\n');
+
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export function $isFileNode(node) {

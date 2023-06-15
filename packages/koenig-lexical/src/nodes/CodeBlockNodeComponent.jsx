@@ -11,7 +11,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorInitialState, code, language}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, setEditing, isSelected} = React.useContext(CardContext);
-    const {cardConfig} = React.useContext(KoenigComposerContext);
+    const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
     const updateCode = (value) => {
@@ -40,6 +40,7 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
                 captionEditor={captionEditor}
                 captionEditorInitialState={captionEditorInitialState}
                 code={code}
+                darkMode={darkMode}
                 handleToolbarEdit={handleToolbarEdit}
                 isEditing={isEditing}
                 isSelected={isSelected}
@@ -67,7 +68,7 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
                         hide={!cardConfig.createSnippet}
                         icon="snippet"
                         isActive={false}
-                        label="Snippet"
+                        label="Create snippet"
                         onClick={() => setShowSnippetToolbar(true)}
                     />
                 </ToolbarMenu>

@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import Sidebar from './components/Sidebar';
 import TitleTextBox from './components/TitleTextBox';
 import Watermark from './components/Watermark';
+import WordCount from './components/WordCount';
 import basicContent from './content/basic-content.json';
 import content from './content/content.json';
 import minimalContent from './content/minimal-content.json';
@@ -13,7 +14,8 @@ import {
     BASIC_NODES, BASIC_TRANSFORMERS, KoenigComposableEditor,
     KoenigComposer, KoenigEditor, MINIMAL_NODES, MINIMAL_TRANSFORMERS,
     MobiledocCopyPlugin,
-    RestrictContentPlugin
+    RestrictContentPlugin,
+    WordCountPlugin
 } from '../src';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
@@ -40,7 +42,8 @@ const cardConfig = {
     siteDescription: `There's a whole lot to discover in this editor. Let us help you settle in.`,
     feature: {
         signupCard: true
-    }
+    },
+    membersEnabled: true
 };
 
 function getDefaultContent({editorType}) {
@@ -61,14 +64,16 @@ function getAllowedNodes({editorType}) {
     return undefined;
 }
 
-function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode}) {
+function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setWordCount}) {
     if (editorType === 'basic') {
         return (
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
                 markdownTransformers={BASIC_TRANSFORMERS}
                 registerAPI={registerAPI}
-            />
+            >
+                <WordCountPlugin onChange={setWordCount} />
+            </KoenigComposableEditor>
         );
     } else if (editorType === 'minimal') {
         return (
@@ -79,6 +84,7 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode}) {
                 registerAPI={registerAPI}
             >
                 <RestrictContentPlugin paragraphs={1} />
+                <WordCountPlugin onChange={setWordCount} />
             </KoenigComposableEditor>
         );
     }
@@ -90,11 +96,12 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode}) {
             registerAPI={registerAPI}
         >
             <MobiledocCopyPlugin />
+            <WordCountPlugin onChange={setWordCount} />
         </KoenigEditor>
     );
 }
 
-function DemoApp({editorType, isMultiplayer}) {
+function DemoComposer({editorType, isMultiplayer, setWordCount}) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [sidebarView, setSidebarView] = useState('json');
@@ -207,6 +214,56 @@ function DemoApp({editorType, isMultiplayer}) {
 
     const showTitle = !isMultiplayer && !['basic', 'minimal'].includes(editorType);
 
+    return (
+        <KoenigComposer
+            cardConfig={{...cardConfig, snippets, createSnippet, deleteSnippet}}
+            darkMode={darkMode}
+            enableMultiplayer={isMultiplayer}
+            fileUploader={{useFileUpload: useFileUpload({isMultiplayer}), fileTypes}}
+            initialEditorState={initialContent}
+            multiplayerDocId={`demo/${WEBSOCKET_ID}`}
+            multiplayerEndpoint={WEBSOCKET_ENDPOINT}
+            nodes={getAllowedNodes({editorType})}
+        >
+            <div className={`koenig-demo relative h-full grow ${darkMode ? 'dark' : ''}`}>
+                {
+                    !isMultiplayer && searchParams !== 'false'
+                        ? <InitialContentToggle defaultContent={defaultContent} searchParams={searchParams} setSearchParams={setSearchParams} setTitle={setTitle} />
+                        : null
+                }
+                <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+                <div ref={containerRef} className="h-full overflow-auto" onClick={focusEditor}>
+                    <div className="mx-auto max-w-[740px] py-[15vmin] px-6 lg:px-0">
+                        {showTitle
+                            ? <TitleTextBox ref={titleRef} editorAPI={editorAPI} setTitle={setTitle} title={title} />
+                            : null
+                        }
+                        <DemoEditor
+                            cursorDidExitAtTop={focusTitle}
+                            darkMode={darkMode}
+                            editorType={editorType}
+                            registerAPI={setEditorAPI}
+                            setWordCount={setWordCount}
+                        />
+                    </div>
+                </div>
+            </div>
+            <Watermark
+                editorType={editorType || 'full'}
+            />
+            <div className="absolute z-20 flex h-full flex-col items-end sm:relative">
+                <Sidebar isOpen={isSidebarOpen} view={sidebarView} />
+                <FloatingButton isOpen={isSidebarOpen} onClick={openSidebar} />
+            </div>
+        </KoenigComposer>
+    );
+}
+
+const MemoizedDemoComposer = React.memo(DemoComposer);
+
+function DemoApp({editorType, isMultiplayer}) {
+    const [wordCount, setWordCount] = useState(0);
+
     // used to force a re-initialization of the editor when URL changes, otherwise
     // content is memoized and causes issues when switching between editor types
     const location = useLocation();
@@ -216,46 +273,14 @@ function DemoApp({editorType, isMultiplayer}) {
             key={location.key}
             className={`koenig-lexical top`}
         >
-            <KoenigComposer
-                cardConfig={{...cardConfig, snippets, createSnippet, deleteSnippet}}
-                darkMode={darkMode}
-                enableMultiplayer={isMultiplayer}
-                fileUploader={{useFileUpload: useFileUpload({isMultiplayer}), fileTypes}}
-                initialEditorState={initialContent}
-                multiplayerDocId={`demo/${WEBSOCKET_ID}`}
-                multiplayerEndpoint={WEBSOCKET_ENDPOINT}
-                nodes={getAllowedNodes({editorType})}
-            >
-                <div className={`koenig-demo relative h-full grow ${darkMode ? 'dark' : ''}`}>
-                    {
-                        !isMultiplayer && searchParams !== 'false'
-                            ? <InitialContentToggle defaultContent={defaultContent} searchParams={searchParams} setSearchParams={setSearchParams} setTitle={setTitle} />
-                            : null
-                    }
-                    <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-                    <div ref={containerRef} className="h-full overflow-auto" onClick={focusEditor}>
-                        <div className="mx-auto max-w-[740px] py-[15vmin] px-6 lg:px-0">
-                            { showTitle
-                                ? <TitleTextBox ref={titleRef} editorAPI={editorAPI} setTitle={setTitle} title={title} />
-                                : null
-                            }
-                            <DemoEditor
-                                cursorDidExitAtTop={focusTitle}
-                                darkMode={darkMode}
-                                editorType={editorType}
-                                registerAPI={setEditorAPI}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <Watermark
-                    editorType={editorType || 'full'}
-                />
-                <div className="absolute z-20 flex h-full flex-col items-end sm:relative">
-                    <Sidebar isOpen={isSidebarOpen} view={sidebarView} />
-                    <FloatingButton isOpen={isSidebarOpen} onClick={openSidebar} />
-                </div>
-            </KoenigComposer>
+            {/* outside of DemoComposer to avoid re-renders and flaky tests when word count changes */}
+            <WordCount wordCount={wordCount} />
+
+            <MemoizedDemoComposer
+                editorType={editorType}
+                isMultiplayer={isMultiplayer}
+                setWordCount={setWordCount}
+            />
         </div>
     );
 }

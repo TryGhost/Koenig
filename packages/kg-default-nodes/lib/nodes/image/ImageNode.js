@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {ImageParser} from './ImageParser';
 import {renderImageNodeToDOM} from './ImageRenderer';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_IMAGE_COMMAND = createCommand();
 export const UPLOAD_IMAGE_COMMAND = createCommand();
@@ -102,8 +103,8 @@ export class ImageNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderImageNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderImageNodeToDOM(this, options);
+        return {element, type};
     }
 
     getSrc() {
@@ -199,6 +200,12 @@ export class ImageNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = readTextContent(self, 'caption');
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export const $createImageNode = (dataset) => {

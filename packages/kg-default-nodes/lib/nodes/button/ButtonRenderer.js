@@ -1,8 +1,11 @@
+import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+
 export function renderButtonNodeToDOM(node, options = {}) {
+    addCreateDocumentOption(options);
     const document = options.createDocument();
 
     if (!node.getButtonUrl() || node.getButtonUrl().trim() === '') {
-        return document.createTextNode('');
+        return {element: document.createElement('span'), type: 'inner'};
     }
 
     if (options.target === 'email') {
@@ -24,7 +27,7 @@ function frontendTemplate(node, document) {
     button.textContent = node.getButtonText() || 'Button Title';
 
     cardDiv.appendChild(button);
-    return cardDiv;
+    return {element: cardDiv};
 }
 
 function emailTemplate(node, document) {
@@ -38,7 +41,7 @@ function emailTemplate(node, document) {
     table.setAttribute('border', 0);
     table.setAttribute('cellspacing', 0);
     table.setAttribute('cellpadding', 0);
-    table.setAttribute('alignment',node.getAlignment());
+    table.setAttribute('align',node.getAlignment());
     buttonDiv.appendChild(table);
     
     const row = document.createElement('tr');
@@ -53,7 +56,7 @@ function emailTemplate(node, document) {
     button.textContent = node.getButtonText();
     cell.appendChild(button);
 
-    return parent;
+    return {element: parent};
 }
 
 function getCardClasses(node) {

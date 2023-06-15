@@ -7,17 +7,18 @@ function cardTemplate(nodeData) {
 
     const backgroundAccent = nodeData.backgroundColor === 'accent' ? 'kg-style-accent' : '';
     const buttonAccent = nodeData.buttonColor === 'accent' ? 'kg-style-accent' : '';
+    const buttonStyle = nodeData.buttonColor !== 'accent' ? `background-color: ${nodeData.buttonColor};` : ``;
     const alignment = nodeData.alignment === 'center' ? 'align-center' : '';
-    const backgroundImageStyle = nodeData.layout === 'split' ? '' : `background-image: url(${nodeData.backgroundImageSrc})`;
+    const backgroundImageStyle = (nodeData.layout === 'split' || !nodeData.backgroundImageSrc) ? (nodeData.backgroundColor !== 'accent' ? `background-color: ${nodeData.backgroundColor}` : '') : `background-color: #ffffff; background-image: url(${nodeData.backgroundImageSrc})`;
 
     const formTemplate = `
         <form class="kg-signup-card-form" data-members-form="signup">
             ${nodeData.labels.map(label => `<input data-members-label type="hidden" value="${label}" />`).join('\n')}
             <div class="kg-signup-card-fields">
-                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="yourname@example.com" />
-                <button class="kg-signup-card-button ${buttonAccent}" style="background-color: ${nodeData.buttonColor}; color: ${nodeData.buttonTextColor};" type="submit">
+                <input class="kg-signup-card-input" id="email" data-members-email="" type="email" required="true" placeholder="Your email" />
+                <button class="kg-signup-card-button ${buttonAccent}" style="${buttonStyle}color: ${nodeData.buttonTextColor};" type="submit">
                     <span class="kg-signup-card-button-default">${nodeData.buttonText || 'Subscribe'}</span>
-                    <span class="kg-signup-card-button-loading" style="background-color: ${nodeData.buttonColor}">${loadingIcon()}</span>
+                    <span class="kg-signup-card-button-loading">${loadingIcon()}</span>
                 </button>
             </div>
             <div class="kg-signup-card-success" style="color: ${nodeData.textColor};">
@@ -29,8 +30,8 @@ function cardTemplate(nodeData) {
 
     return `
         <div class="${cardClasses}" data-lexical-signup-form style="display:none;">
-            ${nodeData.layout === 'split' ? `<img class="kg-signup-card-image ${backgroundAccent}" style="background-color: ${nodeData.backgroundColor};" src="${nodeData.backgroundImageSrc}" alt="" />` : ''}
-            <div class="kg-signup-card-container ${alignment} ${backgroundAccent}" style="background-color: ${nodeData.backgroundColor}; ${backgroundImageStyle}">
+            ${nodeData.layout === 'split' ? `<img class="kg-signup-card-image ${backgroundAccent}" style="${backgroundImageStyle};" src="${nodeData.backgroundImageSrc}" alt="" />` : ''}
+            <div class="kg-signup-card-container ${alignment} ${backgroundAccent}" style="${backgroundImageStyle}">
                 <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
                 <h3 class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</h3>
                 ${formTemplate}
@@ -71,6 +72,7 @@ export function renderSignupCardToDOM(dataset, options = {}) {
         subheader: dataset.__subheader,
         disclaimer: dataset.__disclaimer,
         backgroundImageSrc: dataset.__backgroundImageSrc,
+        backgroundSize: dataset.__backgroundSize,
         backgroundColor: dataset.__backgroundColor,
         buttonColor: dataset.__buttonColor,
         labels: dataset.__labels,
@@ -108,7 +110,7 @@ export function renderSignupCardToDOM(dataset, options = {}) {
             pElement.remove();
         }
     }
-    return element.firstElementChild;
+    return {element: element.firstElementChild};
 }
 
 export function getCardClasses(nodeData) {
@@ -124,6 +126,10 @@ export function getCardClasses(nodeData) {
 
     if (nodeData.swapped && nodeData.layout === 'split') {
         cardClasses.push('kg-swapped');
+    }
+
+    if (nodeData.layout === 'split') {
+        cardClasses.push('kg-background-size-' + nodeData.backgroundSize);
     }
 
     return cardClasses;

@@ -26,7 +26,11 @@ export function CalloutNodeComponent({nodeKey, textEditor, textEditorInitialStat
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             setHasEmoji(event.target.checked);
-            node.setCalloutEmoji(event.target.checked ? emoji : '');
+            if (event.target.checked && emoji === '') {
+                node.setCalloutEmoji('💡');
+            } else {
+                node.setCalloutEmoji(event.target.checked ? emoji : '');
+            }
         });
     };
 
@@ -57,7 +61,7 @@ export function CalloutNodeComponent({nodeKey, textEditor, textEditorInitialStat
     const handleToolbarEdit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey});
+        editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: false});
     };
 
     React.useEffect(() => {
@@ -101,7 +105,7 @@ export function CalloutNodeComponent({nodeKey, textEditor, textEditorInitialStat
                         hide={!cardConfig.createSnippet}
                         icon="snippet"
                         isActive={false}
-                        label="Snippet"
+                        label="Create snippet"
                         onClick={() => setShowSnippetToolbar(true)}
                     />
                 </ToolbarMenu>

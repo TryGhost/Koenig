@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {BookmarkParser} from './BookmarkParser';
 import {renderBookmarkNodeToDOM} from './BookmarkRenderer';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_BOOKMARK_COMMAND = createCommand();
 
@@ -48,7 +49,7 @@ export class BookmarkNode extends KoenigDecoratorNode {
                 thumbnail: self.__thumbnail
             },
             caption: self.__caption
-        
+
         };
     }
 
@@ -100,8 +101,8 @@ export class BookmarkNode extends KoenigDecoratorNode {
 
     // renderer used when copying node >> html
     exportDOM(options = {}) {
-        const element = renderBookmarkNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderBookmarkNodeToDOM(this, options);
+        return {element, type};
     }
 
     getUrl() {
@@ -134,7 +135,7 @@ export class BookmarkNode extends KoenigDecoratorNode {
         const writable = this.getWritable();
         return writable.__title = title;
     }
-    
+
     getDescription() {
         const self = this.getLatest();
         return self.__description;
@@ -206,6 +207,19 @@ export class BookmarkNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+
+        const text = [
+            readTextContent(self, 'title'),
+            readTextContent(self, 'description'),
+            readTextContent(self, 'url'),
+            readTextContent(self, 'caption')
+        ].filter(Boolean).join('\n');
+
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export const $createBookmarkNode = (dataset) => {

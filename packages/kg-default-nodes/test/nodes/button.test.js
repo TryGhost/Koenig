@@ -103,12 +103,11 @@ describe('ButtonNode', function () {
             output.should.containEql('<td align="center">');
         }));
 
-        it('renders nothing with a missing buttonUrl', editorTest(function () {
+        it('renders an empty span with a missing buttonUrl', editorTest(function () {
             const buttonNode = $createButtonNode();
             const {element} = buttonNode.exportDOM(exportOptions);
 
-            element.textContent.should.equal('');
-            should(element.outerHTML).be.undefined();
+            element.outerHTML.should.equal('<span></span>');
         }));
     });
 
@@ -200,6 +199,17 @@ describe('ButtonNode', function () {
             nodes[0].getButtonUrl().should.equal('http://someblog.com/somepost');
             nodes[0].getButtonText().should.equal('click me');
             nodes[0].getAlignment().should.equal('center');
+        }));
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createButtonNode();
+            node.setButtonText('Testing');
+            node.setButtonUrl('http://someblog.com/somepost');
+
+            // button nodes don't have text content
+            node.getTextContent().should.equal('');
         }));
     });
 });

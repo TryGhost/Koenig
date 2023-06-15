@@ -175,12 +175,11 @@ describe('CodeBlockNode', function () {
             `);
         }));
 
-        it('renders nothing when code is undefined or empty', editorTest(function () {
+        it('renders empty span when code is undefined or empty', editorTest(function () {
             const codeBlockNode = $createCodeBlockNode({code: ''});
             const {element} = codeBlockNode.exportDOM(exportOptions);
 
-            element.textContent.should.equal('');
-            should(element.outerHTML).be.undefined();
+            element.outerHTML.should.equal('<span></span>');
         }));
 
         it('renders a figure if a caption is provided', editorTest(function () {
@@ -288,6 +287,18 @@ describe('CodeBlockNode', function () {
             nodes[0].getCode().should.equal('Test code');
             nodes[0].getLanguage().should.equal('ruby');
             should(nodes[0].getCaption()).be.undefined();
+        }));
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createCodeBlockNode();
+            node.getTextContent().should.equal('');
+
+            node.setCode('<script>const test = true;</script>');
+            node.setCaption('Test caption');
+
+            node.getTextContent().should.equal('<script>const test = true;</script>\nTest caption\n\n');
         }));
     });
 });

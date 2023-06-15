@@ -1,5 +1,5 @@
 import KoenigComposerContext from '../../context/KoenigComposerContext.jsx';
-import React, {createContext, useContext, useEffect} from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';
 import {ButtonGroup} from './ButtonGroup';
@@ -12,26 +12,20 @@ import {MediaUploader} from './MediaUploader';
 import {MultiSelectDropdown} from './MultiSelectDropdown';
 import {Toggle} from './Toggle';
 
-const SettingsPanelContext = createContext();
-
-export const useSettingsPanelContext = () => useContext(SettingsPanelContext);
-
 export function SettingsPanel({children, darkMode}) {
-    const {ref,repositionPanel} = useSettingsPanelReposition();
+    const {ref} = useSettingsPanelReposition();
 
     return (
         // Ideally we would use Portal to avoid issues with transformed ancestors (https://bugs.chromium.org/p/chromium/issues/detail?id=20574)
         // However, Portal causes problems with drag/drop, focus, etc
-        <SettingsPanelContext.Provider value={{repositionPanel}}>
-            <div className={`!mt-0 ${darkMode ? 'dark' : ''}`}>
-                <div ref={ref}
-                    className="not-kg-prose z-[9999999] m-0 flex w-[320px] flex-col gap-2 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow dark:bg-grey-950"
-                    data-testid="settings-panel"
-                >
-                    {children}
-                </div>
+        <div className={`!mt-0 touch-none ${darkMode ? 'dark' : ''}`}>
+            <div ref={ref}
+                className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-2 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow dark:bg-grey-950"
+                data-testid="settings-panel"
+            >
+                {children}
             </div>
-        </SettingsPanelContext.Provider>
+        </div>
     );
 }
 
@@ -51,11 +45,11 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     );
 }
 
-export function InputSetting({label, hideLabel, description, onChange, value, placeholder, dataTestId}) {
+export function InputSetting({label, hideLabel, description, onChange, value, placeholder, dataTestId, onBlur}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className={hideLabel ? 'sr-only' : 'font-bold text-grey-900 dark:text-grey-200'}>{label}</div>
-            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onChange={onChange} />
+            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onBlur={onBlur} onChange={onChange} />
             {description &&
                 <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
             }
@@ -131,14 +125,24 @@ export function DropdownSetting({label, description, value, menu, onChange}) {
     );
 }
 
-export function MultiSelectDropdownSetting({label, description, items, availableItems, onChange, dataTestId}) {
+/**
+ *
+ * @param {object} options
+ * @param {T[]} options.items The curretly selected items
+ * @param {T[]} options.availableItems The items available for selection
+ * @param {boolean} options.allowAdd Whether to allow adding new items
+ * @returns
+ */
+export function MultiSelectDropdownSetting({label, description, placeholder = '', items, availableItems, onChange, dataTestId, allowAdd = true}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
             <MultiSelectDropdown
+                allowAdd={allowAdd}
                 availableItems={availableItems}
                 dataTestId={dataTestId}
                 items={items}
+                placeholder={placeholder}
                 onChange={onChange}
             />
             {description &&
@@ -173,25 +177,44 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
 }
 
 export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId}) {
-    const {repositionPanel} = useSettingsPanelContext();
+    const mappedPicker = (event) => {
+        onTogglePicker(true);
+    };
 
-    useEffect(() => repositionPanel(), [repositionPanel, isExpanded]);
+    const markClickedInside = (event) => {
+        event.stopPropagation();
+    };
+
+    // Close on click outside
+    React.useEffect(() => {
+        if (isExpanded) {
+            const closePicker = (event) => {
+                onTogglePicker(false);
+            };
+            document.addEventListener('click', closePicker);
+
+            return () => {
+                document.removeEventListener('click', closePicker);
+            };
+        }
+    }, [isExpanded]);
 
     return (
-        <div className="mt-2 flex-col" data-testid={dataTestId}>
+        <div className="mt-2 flex-col" data-testid={dataTestId} onClick={markClickedInside}>
             <div className="flex w-full items-center justify-between text-[1.3rem] first:mt-0">
                 <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
 
                 <div className="shrink-0 pl-2">
                     <ColorIndicator
+                        isExpanded={isExpanded}
                         swatches={swatches}
                         value={value}
                         onSwatchChange={onSwatchChange}
-                        onTogglePicker={onTogglePicker}
+                        onTogglePicker={mappedPicker}
                     />
                 </div>
             </div>
-            {isExpanded && <ColorPicker eyedropper={eyedropper} hasTransparentOption={hasTransparentOption} value={value} onBlur={() => onTogglePicker(false)} onChange={onPickerChange} />}
+            {isExpanded && <ColorPicker eyedropper={eyedropper} hasTransparentOption={hasTransparentOption} value={value} onChange={onPickerChange} />}
         </div>
     );
 }

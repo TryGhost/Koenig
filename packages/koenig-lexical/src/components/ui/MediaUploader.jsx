@@ -17,10 +17,12 @@ export function MediaUploader({
     desc,
     icon,
     size,
-    borderStyle = 'border-transparent',
+    borderStyle = 'solid',
+    backgroundSize = 'cover',
     mimeTypes,
     onFileChange,
     dragHandler,
+    isEditing = true,
     isLoading,
     isPinturaEnabled,
     openImageEditor,
@@ -54,7 +56,7 @@ export function MediaUploader({
                 <MediaPlaceholder
                     borderStyle={borderStyle}
                     dataTestId="media-upload-placeholder"
-                    desc={desc}
+                    desc={isEditing ? desc : ''}
                     errorDataTestId="media-upload-errors"
                     errors={errors}
                     filePicker={() => openFileSelection({fileInputRef})}
@@ -77,7 +79,7 @@ export function MediaUploader({
         <div className={clsx('group relative flex items-center justify-center', borderStyle === 'dashed' && 'rounded', className)} data-testid="media-upload-filled">
             {src && (
                 <>
-                    <img alt={alt} className={clsx('mx-auto h-full w-full object-cover', borderStyle === 'dashed' && 'rounded', imgClassName)} src={src} />
+                    <img alt={alt} className={clsx('mx-auto h-full w-full', backgroundSize === 'cover' ? 'object-cover' : 'object-contain', borderStyle === 'dashed' && 'rounded', imgClassName)} src={src} />
                     <div className={clsx('absolute inset-0 bg-gradient-to-t from-black/0 via-black/5 to-black/30 opacity-0 transition-all group-hover:opacity-100', borderStyle === 'dashed' && 'rounded')}></div>
                 </>
             )}

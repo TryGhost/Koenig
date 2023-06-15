@@ -1,7 +1,7 @@
 import {ToggleParser} from './ToggleParser';
 import {renderToggleNodeToDOM} from './ToggleRenderer';
 import {generateDecoratorNode} from '../../generate-decorator-node';
-
+import readTextContent from '../../utils/read-text-content';
 export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
     properties: [
         {name: 'content', type: 'string', default: '', urlType: 'html'},
@@ -14,8 +14,19 @@ export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
     }
 
     exportDOM(options = {}) {
-        const element = renderToggleNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderToggleNodeToDOM(this, options);
+        return {element, type};
+    }
+
+    getTextContent() {
+        const self = this.getLatest();
+
+        const text = [
+            readTextContent(self, 'heading'),
+            readTextContent(self, 'content')
+        ].filter(Boolean).join('\n');
+
+        return text ? `${text}\n\n` : '';
     }
 }
 

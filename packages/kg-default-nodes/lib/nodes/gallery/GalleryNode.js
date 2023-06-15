@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {GalleryParser} from './GalleryParser';
 import {renderGalleryNodeToDOM} from './GalleryRenderer';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_GALLERY_COMMAND = createCommand();
 
@@ -65,8 +66,8 @@ export class GalleryNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderGalleryNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderGalleryNodeToDOM(this, options);
+        return {element, type};
     }
 
     getImages() {
@@ -106,6 +107,12 @@ export class GalleryNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = readTextContent(self, 'caption');
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export const $createGalleryNode = (dataset) => {

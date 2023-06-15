@@ -240,4 +240,17 @@ describe('ToggleNode', function () {
             nodes[0].content.should.equal('Content');
         }));
     });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createToggleNode();
+            node.getTextContent().should.equal('');
+
+            node.heading = 'header';
+            node.getTextContent().should.equal('header\n\n');
+
+            node.content = 'content';
+            node.getTextContent().should.equal('header\ncontent\n\n');
+        }));
+    });
 });

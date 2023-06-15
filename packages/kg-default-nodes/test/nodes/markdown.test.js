@@ -91,11 +91,11 @@ describe('MarkdownNode', function () {
             `);
         }));
 
-        it('renders nothing with a missing src', editorTest(function () {
+        it('renders an empty div with a missing src', editorTest(function () {
             const markdownNode = $createMarkdownNode();
             const {element} = markdownNode.exportDOM(exportOptions);
 
-            element.innerHTML.should.equal('');
+            element.outerHTML.should.equal('<div></div>');
         }));
     });
 
@@ -170,6 +170,17 @@ describe('MarkdownNode', function () {
             MarkdownNode.urlTransformMap.should.deepEqual({
                 markdown: 'markdown'
             });
+        }));
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createMarkdownNode();
+            node.getTextContent().should.equal('');
+
+            node.setMarkdown('#HEADING\r\n- list\r\n- items');
+
+            node.getTextContent().should.equal('#HEADING\r\n- list\r\n- items\n\n');
         }));
     });
 });

@@ -85,6 +85,7 @@ export const IMAGE = {
     type: 'element'
 };
 
+// custom text format transformers
 export const SUBSCRIPT = {
     format: ['subscript'],
     tag: '~',

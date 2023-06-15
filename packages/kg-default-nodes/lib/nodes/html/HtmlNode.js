@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {renderHtmlNodeToDOM} from './HtmlRenderer';
 import {HtmlParser} from './HtmlParser';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_HTML_COMMAND = createCommand();
 
@@ -55,7 +56,7 @@ export class HtmlNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderHtmlNodeToDOM(this, options);
+        const {element} = renderHtmlNodeToDOM(this, options);
         return {
             element,
             type: 'inner'
@@ -93,6 +94,12 @@ export class HtmlNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = readTextContent(self, 'html');
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export function $createHtmlNode(dataset) {

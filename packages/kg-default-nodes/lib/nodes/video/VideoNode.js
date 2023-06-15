@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {VideoParser} from './VideoParser';
 import {renderVideoNodeToDOM} from './VideoRenderer';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_VIDEO_COMMAND = createCommand();
 const NODE_TYPE = 'video';
@@ -128,8 +129,8 @@ export class VideoNode extends KoenigDecoratorNode {
     }
 
     exportDOM(options = {}) {
-        const element = renderVideoNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderVideoNodeToDOM(this, options);
+        return {element, type};
     }
 
     getSrc() {
@@ -287,6 +288,12 @@ export class VideoNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = readTextContent(self, 'caption');
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export const $createVideoNode = (dataset) => {

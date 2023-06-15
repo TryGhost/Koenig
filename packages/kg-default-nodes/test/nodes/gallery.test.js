@@ -596,20 +596,18 @@ describe('GalleryNode', function () {
     });
 
     describe('exportDOM', function () {
-        it('renders nothing with no images', editorTest(function () {
+        it('renders empty span with no images', editorTest(function () {
             const galleryNode = $createGalleryNode({images: [], caption: null});
             const {element} = galleryNode.exportDOM(exportOptions);
 
-            element.textContent.should.equal('');
-            should(element.outerHTML).be.undefined();
+            element.outerHTML.should.equal('<span></span>');
         }));
 
-        it('renders nothing with no valid images', editorTest(function () {
+        it('renders empty span no valid images', editorTest(function () {
             const galleryNode = $createGalleryNode({images: [{src: 'undefined'}], caption: null});
             const {element} = galleryNode.exportDOM(exportOptions);
 
-            element.textContent.should.equal('');
-            should(element.outerHTML).be.undefined();
+            element.outerHTML.should.equal('<span></span>');
         }));
 
         it('renders', editorTest(function () {
@@ -1077,5 +1075,15 @@ describe('GalleryNode', function () {
                 output.should.match(/\/content\/images\/2020\/06\/image\.png/);
             }));
         });
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createGalleryNode();
+            node.getTextContent().should.equal('');
+
+            node.setCaption('Test caption');
+            node.getTextContent().should.equal('Test caption\n\n');
+        }));
     });
 });

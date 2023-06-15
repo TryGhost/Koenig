@@ -183,12 +183,11 @@ describe('ImageNode', function () {
             `);
         }));
 
-        it('renders nothing with a missing src', editorTest(function () {
+        it('renders an empty span with a missing src', editorTest(function () {
             const imageNode = $createImageNode();
             const {element} = imageNode.exportDOM(exportOptions);
 
-            element.textContent.should.equal('');
-            should(element.outerHTML).be.undefined();
+            element.outerHTML.should.equal('<span></span>');
         }));
 
         it('renders a wide image', editorTest(function () {
@@ -496,5 +495,15 @@ describe('ImageNode', function () {
                 }
             });
         });
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createImageNode();
+            node.getTextContent().should.equal('');
+
+            node.setCaption('Test caption');
+            node.getTextContent().should.equal('Test caption\n\n');
+        }));
     });
 });

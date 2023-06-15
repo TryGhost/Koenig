@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {$getSelection, $isParagraphNode, $isRangeSelection, $isTextNode} from 'lexical';
+import {$getSelection, $isParagraphNode, $isRangeSelection, $isTextNode, COMMAND_PRIORITY_LOW, FORMAT_TEXT_COMMAND, KEY_MODIFIER_COMMAND} from 'lexical';
 import {$getSelectionRangeRect} from '../utils/$getSelectionRangeRect';
 import {$isLinkNode} from '@lexical/link';
 import {FloatingFormatToolbar, toolbarItemTypes} from '../components/ui/FloatingFormatToolbar';
@@ -95,9 +95,39 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
         });
     }, [editor, toolbarItemType]);
 
+    React.useEffect(() => {
+        editor.registerCommand(
+            KEY_MODIFIER_COMMAND,
+            (event) => {
+                const {keyCode, ctrlKey, metaKey, shiftKey, altKey} = event;
+                // ctrl/cmd K with selected text should prompt for link insertion
+                if (!shiftKey && keyCode === 75 && (ctrlKey || metaKey)) {
+                    const selection = $getSelection();
+                    if ($isRangeSelection(selection) && !selection.isCollapsed()) {
+                        setToolbarItemType(toolbarItemTypes.link);
+                        event.preventDefault();
+                        return true;
+                    }
+                }
+                // ctrl/cmd shift K should format text as code
+                if (shiftKey && keyCode === 75 && (ctrlKey || metaKey)) {
+                    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
+                    return true;
+                }
+                // ctrl/cmd alt U should strikethrough
+                if (altKey && keyCode === 85 && (ctrlKey || metaKey)) {
+                    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+                    return true;
+                }
+                return false;
+            },
+            COMMAND_PRIORITY_LOW
+        );
+    }, [editor]);
+
     const handleLinkEdit = (data) => {
         setToolbarItemType(toolbarItemTypes.link);
-        setHref(data.href);
+        setHref(data?.href);
     };
     return (
         <>

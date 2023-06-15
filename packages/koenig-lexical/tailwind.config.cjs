@@ -77,7 +77,7 @@ module.exports = {
         },
         fontFamily: {
             sans: 'Inter, -apple-system, BlinkMacSystemFont, avenir next, avenir, helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif',
-            serif: 'Georgia, serif',
+            serif: 'Georgia, Times, serif',
             mono: 'Consolas, Liberation Mono, Menlo, Courier, monospace'
         },
         boxShadow: {
@@ -176,7 +176,7 @@ module.exports = {
                 '9xl': ['12.8rem', '1']
             },
             screens: {
-                xs: '480px'
+                xs: '500px'
             }
         }
     },

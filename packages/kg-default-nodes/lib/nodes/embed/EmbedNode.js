@@ -2,6 +2,7 @@ import {createCommand} from 'lexical';
 import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 import {EmbedParser} from './EmbedParser';
 import {renderEmbedNodeToDOM} from './EmbedRenderer';
+import readTextContent from '../../utils/read-text-content';
 
 export const INSERT_EMBED_COMMAND = createCommand();
 
@@ -83,8 +84,8 @@ export class EmbedNode extends KoenigDecoratorNode {
 
     // renderer used when copying node >> html
     exportDOM(options = {}) {
-        const element = renderEmbedNodeToDOM(this, options);
-        return {element};
+        const {element, type} = renderEmbedNodeToDOM(this, options);
+        return {element, type};
     }
 
     getUrl() {
@@ -158,6 +159,12 @@ export class EmbedNode extends KoenigDecoratorNode {
         return false;
     }
     /* c8 ignore stop */
+
+    getTextContent() {
+        const self = this.getLatest();
+        const text = readTextContent(self, 'caption');
+        return text ? `${text}\n\n` : '';
+    }
 }
 
 export const $createEmbedNode = (dataset) => {

@@ -92,11 +92,11 @@ describe('HtmlNode', function () {
             `);
         }));
 
-        it('renders nothing with a missing src', editorTest(function () {
+        it('renders an empty div with a missing src', editorTest(function () {
             const htmlNode = $createHtmlNode();
             const {element} = htmlNode.exportDOM(exportOptions);
 
-            element.innerHTML.should.equal('');
+            element.outerHTML.should.equal('<div></div>');
         }));
     });
 
@@ -200,6 +200,17 @@ describe('HtmlNode', function () {
             HtmlNode.urlTransformMap.should.deepEqual({
                 html: 'html'
             });
+        }));
+    });
+
+    describe('getTextContent', function () {
+        it('returns contents', editorTest(function () {
+            const node = $createHtmlNode();
+            node.getTextContent().should.equal('');
+
+            node.setHtml('<script>const test = true;</script>');
+
+            node.getTextContent().should.equal('<script>const test = true;</script>\n\n');
         }));
     });
 });
