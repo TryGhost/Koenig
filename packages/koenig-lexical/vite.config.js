@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import {defineConfig} from 'vitest/config';
 import {resolve} from 'path';
+import {sentryVitePlugin} from '@sentry/vite-plugin';
 
 const outputFileName = pkg.name[0] === '@' ? pkg.name.slice(pkg.name.indexOf('/') + 1) : pkg.name;
 
@@ -11,7 +12,18 @@ export default (function viteConfig() {
     return defineConfig({
         plugins: [
             svgr(),
-            react()
+            react(),
+
+            // Keep sentryVitePlugin as the last plugin
+            // TODO: move config values to env vars
+            sentryVitePlugin({
+                org: 'ghost-foundation',
+                project: 'admin',
+
+                // Auth tokens can be obtained from https://sentry.io/settings/account/api/auth-tokens/
+                // and need `project:releases` and `org:read` scopes
+                authToken: '3878a3c19aee426b805905bba42d46c74a2e0513901345f587fcfbc628587d0e'
+            })
         ],
         define: {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
