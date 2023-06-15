@@ -35,6 +35,7 @@ function frontendTemplate(node, document) {
     svg.setAttribute('width', '24');
     svg.setAttribute('height', '24');
     svg.setAttribute('fill', 'none');
+    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path1.setAttribute('fill-rule', 'evenodd');
     path1.setAttribute('clip-rule', 'evenodd');
@@ -73,6 +74,7 @@ function frontendTemplate(node, document) {
     audioPlayIcon.setAttribute('class', 'kg-audio-play-icon');
     const audioPlayIconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     audioPlayIconSvg.setAttribute('viewBox', '0 0 24 24');
+    audioPlayIconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const playPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     playPath.setAttribute('d', 'M23.14 10.608 2.253.164A1.559 1.559 0 0 0 0 1.557v20.887a1.558 1.558 0 0 0 2.253 1.392L23.14 13.393a1.557 1.557 0 0 0 0-2.785Z');
     audioPlayIconSvg.appendChild(playPath);
@@ -83,7 +85,8 @@ function frontendTemplate(node, document) {
     audioPauseIcon.setAttribute('class', 'kg-audio-pause-icon kg-audio-hide');
     const audioPauseIconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     audioPauseIconSvg.setAttribute('viewBox', '0 0 24 24');
-    const rectSvg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    audioPauseIconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    const rectSvg = document.createElement('rect');
     rectSvg.setAttribute('x', '3');
     rectSvg.setAttribute('y', '1');
     rectSvg.setAttribute('width', '7');
@@ -91,7 +94,7 @@ function frontendTemplate(node, document) {
     rectSvg.setAttribute('rx', '1.5');
     rectSvg.setAttribute('ry', '1.5');
     audioPauseIconSvg.appendChild(rectSvg);
-    const rectSvg2 = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    const rectSvg2 = document.createElement('rect');
     rectSvg2.setAttribute('x', '14');
     rectSvg2.setAttribute('y', '1');
     rectSvg2.setAttribute('width', '7');
@@ -132,6 +135,7 @@ function frontendTemplate(node, document) {
     unmuteIcon.setAttribute('class', 'kg-audio-unmute-icon');
     const unmuteIconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     unmuteIconSvg.setAttribute('viewBox', '0 0 24 24');
+    unmuteIconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const unmutePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     unmutePath.setAttribute('d', 'M15.189 2.021a9.728 9.728 0 0 0-7.924 4.85.249.249 0 0 1-.221.133H5.25a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1.794a.249.249 0 0 1 .221.133 9.73 9.73 0 0 0 7.924 4.85h.06a1 1 0 0 0 1-1V3.02a1 1 0 0 0-1.06-.998Z');
     unmuteIconSvg.appendChild(unmutePath);
@@ -142,6 +146,7 @@ function frontendTemplate(node, document) {
     muteIcon.setAttribute('class', 'kg-audio-mute-icon kg-audio-hide');
     const muteIconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     muteIconSvg.setAttribute('viewBox', '0 0 24 24');
+    muteIconSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     const mutePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     mutePath.setAttribute('d', 'M16.177 4.3a.248.248 0 0 0 .073-.176v-1.1a1 1 0 0 0-1.061-1 9.728 9.728 0 0 0-7.924 4.85.249.249 0 0 1-.221.133H5.25a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h.114a.251.251 0 0 0 .177-.073ZM23.707 1.706A1 1 0 0 0 22.293.292l-22 22a1 1 0 0 0 0 1.414l.009.009a1 1 0 0 0 1.405-.009l6.63-6.631A.251.251 0 0 1 8.515 17a.245.245 0 0 1 .177.075 10.081 10.081 0 0 0 6.5 2.92 1 1 0 0 0 1.061-1V9.266a.247.247 0 0 1 .073-.176Z');
     muteIconSvg.appendChild(mutePath);
