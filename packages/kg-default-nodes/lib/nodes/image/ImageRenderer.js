@@ -15,7 +15,7 @@ export function renderImageNodeToDOM(node, options = {}) {
 
     const figure = document.createElement('figure');
 
-    let figureClasses = 'kg-card kg-image-card';
+    let figureClasses = node.getCaption() ? 'kg-card kg-image-card kg-card-hascaption' : 'kg-card kg-image-card';
     if (node.getCardWidth() !== 'regular') {
         figureClasses += ` kg-width-${node.getCardWidth()}`;
     }

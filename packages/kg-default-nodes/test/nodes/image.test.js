@@ -127,7 +127,7 @@ describe('ImageNode', function () {
             const {element} = imageNode.exportDOM(exportOptions);
 
             element.outerHTML.should.prettifyTo(html`
-                <figure class="kg-card kg-image-card">
+                <figure class="kg-card kg-image-card kg-card-hascaption">
                     <img
                         src="/content/images/2022/11/koenig-lexical.jpg"
                         alt="This is some alt text"
@@ -150,7 +150,7 @@ describe('ImageNode', function () {
             const {element} = imageNode.exportDOM(exportOptions);
 
             element.outerHTML.should.prettifyTo(html`
-                <figure class="kg-card kg-image-card">
+                <figure class="kg-card kg-image-card kg-card-hascaption">
                     <a href="https://example.com"
                         ><img
                         src="/content/images/2022/11/koenig-lexical.jpg"
