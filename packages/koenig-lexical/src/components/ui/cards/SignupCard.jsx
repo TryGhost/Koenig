@@ -130,6 +130,15 @@ export function SignupCard({alignment,
         }
     ];
 
+    const swappedChildren = [
+        {
+            label: 'Swapped',
+            name: 'swapped',
+            Icon: SwapIcon,
+            dataTestId: 'signup-swapped'
+        }
+    ];
+
     const {isLoading, progress} = fileUploader || {};
 
     const headerPlaceholder = layout === 'split' ? 'Heading' : 'Enter heading text';
@@ -197,7 +206,6 @@ export function SignupCard({alignment,
                     {layout === 'split' && (
                         <MediaUploader
                             additionalActions={<>
-                                <IconButton dataTestId="media-upload-swap" Icon={SwapIcon} onClick={toggleSwapped} />
                                 <IconButton dataTestId="media-upload-size" Icon={(backgroundSize === 'cover') ? ShrinkIcon : ExpandIcon} onClick={toggleBackgroundSize} />
                             </>}
                             alt='Background image'
@@ -358,6 +366,20 @@ export function SignupCard({alignment,
                         selectedName={alignment}
                         onClick={handleAlignment}
                     />
+
+                    {
+                        layout === 'split' && (
+                            <ButtonGroupSetting
+                                buttons={swappedChildren}
+                                label='Switch sides'
+                                selectedName={isSwapped}
+                                onClick={toggleSwapped}
+                            />
+                        )
+                    }
+
+                    {/* <IconButton dataTestId="media-upload-swap" Icon={SwapIcon} onClick={toggleSwapped} /> */}
+
                     <ColorPickerSetting
                         dataTestId='signup-background-color'
                         eyedropper={layout === 'split'}
