@@ -72,6 +72,11 @@ describe('Format combinations', function () {
         input: `{"root":{"children":[{"children":[{"detail":0,"format":2,"mode":"normal","style":"","text":"Italic ","type":"text","version":1},{"detail":0,"format":3,"mode":"normal","style":"","text":"Strong","type":"text","version":1},{"detail":0,"format":2,"mode":"normal","style":"","text":" Italic","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`,
         output: `<p><em>Italic <strong>Strong</strong> Italic</em></p>`
     }));
+
+    it('bold+italic ordering', shouldRender({
+        input: `{"root":{"children":[{"children":[{"detail":0,"format":3,"mode":"normal","style":"","text": "Lever Time","type": "text","version": 1}],"direction": "ltr","format": "","indent": 0,"type": "paragraph","version": 1}],"direction": "ltr","format": "","indent": 0,"type": "root","version": 1}}`,
+        output: `<p><em><strong>Lever Time</strong></em></p>`
+    }));
 });
 
 describe('Formats with linebreaks', function () {

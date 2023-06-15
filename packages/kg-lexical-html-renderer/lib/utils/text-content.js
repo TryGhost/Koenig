@@ -50,7 +50,7 @@ class TextContent {
         this._insertQueuedLineBreaks();
 
         // add any new format tags for this node
-        Object.entries(FORMAT_TAG_MAP).forEach(([format, tag]) => {
+        Object.entries(FORMAT_TAG_MAP).reverse().forEach(([format, tag]) => {
             if (node.hasFormat(format)) {
                 // prevent adding extra wrapping tags if we already have this format
                 if (!this.currentFormats.includes(format)) {
