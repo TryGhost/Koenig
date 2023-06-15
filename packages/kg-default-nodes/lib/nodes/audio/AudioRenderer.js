@@ -12,6 +12,14 @@ export function renderAudioNodeToDOM(node, options = {}) {
     return frontendTemplate(node, document);
 }
 
+function formatDuration(rawDuration) {
+    const minutes = Math.floor(rawDuration / 60);
+    const seconds = Math.floor(rawDuration - (minutes * 60));
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    const formattedDuration = `${minutes}:${returnedSeconds}`;
+    return formattedDuration;
+}
+
 function frontendTemplate(node, document) {
     let thumbnailCls = 'kg-audio-thumbnail';
     let emptyThumbnailCls = 'kg-audio-thumbnail placeholder';
@@ -115,7 +123,7 @@ function frontendTemplate(node, document) {
     audioDurationTotal.textContent = '/';
     const audioDUrationNode = document.createElement('span');
     audioDUrationNode.setAttribute('class', 'kg-audio-duration');
-    audioDUrationNode.textContent = node.getDuration();
+    audioDUrationNode.textContent = formatDuration(node.getDuration());
     audioDurationTotal.appendChild(audioDUrationNode);
     audioPlayer.appendChild(audioDurationTotal);
 
