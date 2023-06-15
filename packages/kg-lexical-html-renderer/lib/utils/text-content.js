@@ -78,7 +78,9 @@ class TextContent {
 
         const a = this.doc.createElement('a');
 
-        a.setAttribute('href', node.getURL());
+        if (node.getURL()) {
+            a.setAttribute('href', node.getURL());
+        }
         if (node.getRel()) {
             a.setAttribute('rel', node.getRel());
         }
