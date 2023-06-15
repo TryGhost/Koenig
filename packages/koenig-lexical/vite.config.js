@@ -60,7 +60,13 @@ export default (function viteConfig() {
                 }
             },
             rollupOptions: {
-                external: ['react', 'react-dom'],
+                external: [
+                    'react',
+                    'react-dom',
+                    '@tryghost/kg-markdown-html-renderer',
+                    '@tryghost/kg-simplemde',
+                    '@tryghost/kg-clean-basic-html'
+                ],
                 output: {
                     globals: {
                         react: 'React',
