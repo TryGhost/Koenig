@@ -267,7 +267,7 @@ function buildMarkers(childWithFormats, mobiledoc) {
             }
 
             if (child.type === 'link') {
-                const linkMarkup = ['a', ['href', child.url]];
+                const linkMarkup = child.url ? ['a', ['href', child.url]] : ['a'];
                 const linkMarkupIndex = mobiledoc.markups.push(linkMarkup) - 1;
 
                 child.children.forEach((linkChild, linkChildIndex) => {

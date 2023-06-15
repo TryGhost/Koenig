@@ -820,6 +820,86 @@ describe('lexicalToMobiledoc', function () {
             }));
         });
 
+        it('converts a paragraph with a link with no href', function () {
+            const result = lexicalToMobiledoc(JSON.stringify({
+                root: {
+                    children: [
+                        {
+                            children: [
+                                {
+                                    detail: 0,
+                                    format: 0,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: 'Hello, ',
+                                    type: 'text',
+                                    version: 1
+                                },
+                                {
+                                    children: [
+                                        {
+                                            detail: 0,
+                                            format: 0,
+                                            mode: 'normal',
+                                            style: '',
+                                            text: 'world',
+                                            type: 'text',
+                                            version: 1
+                                        }
+                                    ],
+                                    direction: 'ltr',
+                                    format: '',
+                                    indent: 0,
+                                    type: 'link',
+                                    version: 1,
+                                    rel: 'noopener',
+                                    target: null,
+                                    title: null,
+                                    url: null
+                                },
+                                {
+                                    detail: 0,
+                                    format: 0,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: '!',
+                                    type: 'text',
+                                    version: 1
+                                }
+                            ],
+                            direction: 'ltr',
+                            format: '',
+                            indent: 0,
+                            type: 'paragraph',
+                            version: 1
+                        }
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    type: 'root',
+                    version: 1
+                }
+            }));
+
+            assert.equal(result, JSON.stringify({
+                version: MOBILEDOC_VERSION,
+                ghostVersion: GHOST_VERSION,
+                atoms: [],
+                cards: [],
+                markups: [
+                    ['a']
+                ],
+                sections: [
+                    [1, 'p', [
+                        [0, [], 0, 'Hello, '],
+                        [0, [0], 1, 'world'],
+                        [0, [], 0, '!']
+                    ]]
+                ]
+            }));
+        });
+
         it('converts a paragraph with a link with a format starting and ending inside', function () {
             const result = lexicalToMobiledoc(JSON.stringify({
                 root: {
