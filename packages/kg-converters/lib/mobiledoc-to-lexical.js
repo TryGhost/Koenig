@@ -65,6 +65,7 @@ const MARKUP_TO_FORMAT = {
     em: 1 << 1,
     i: 1 << 1,
     s: 1 << 2,
+    u: 1 << 3,
     code: 1 << 4,
     sub: 1 << 5,
     sup: 1 << 6
@@ -164,6 +165,7 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
     let openMarkups = []; // tracks which markup tags are open for the current marker
     let linkNode = undefined; // tracks current link node or undefined if no a tag is open
     let href = undefined; // tracks the href for the current link node or undefined if no a tag is open
+    let rel = undefined;
 
     // loop over markers and convert each one to lexical
     for (let i = 0; i < markers.length; i++) {
@@ -197,6 +199,10 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
                 } else {
                     href = '';
                 }
+
+                if (markup[1] && markup[1][2] === 'rel') {
+                    rel = markup[1][3];
+                }
             }
             // Add the markup to the list of open markups
             openMarkups.push(markup);
@@ -210,7 +216,7 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
             // Otherwise add the text to the parent node
             if (href !== undefined) { // link is open
                 // Create an empty link node if it doesn't exist already
-                linkNode = linkNode !== undefined ? linkNode : createEmptyLexicalNode('a', {url: href});
+                linkNode = linkNode !== undefined ? linkNode : createEmptyLexicalNode('a', {url: href, rel: rel || null});
 
                 // Create a text node and add it to the link node
                 const textNode = createTextNode(value, format);
