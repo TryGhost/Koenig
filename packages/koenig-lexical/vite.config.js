@@ -1,28 +1,30 @@
 import pkg from './package.json';
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
-import {defineConfig} from 'vitest/config';
+import {defineConfig, loadEnv} from 'vite';
 import {resolve} from 'path';
 import {sentryVitePlugin} from '@sentry/vite-plugin';
 
 const outputFileName = pkg.name[0] === '@' ? pkg.name.slice(pkg.name.indexOf('/') + 1) : pkg.name;
 
 // https://vitejs.dev/config/
-export default (function viteConfig() {
+export default (function viteConfig({mode}) {
+    const env = loadEnv(mode, process.cwd());
+    process.env = {...process.env, ...env};
+
     return defineConfig({
         plugins: [
             svgr(),
             react(),
 
             // Keep sentryVitePlugin as the last plugin
-            // TODO: move config values to env vars
             sentryVitePlugin({
-                org: process.env.SENTRY_ORG,
-                project: process.env.SENTRY_PROJECT,
+                org: process.env.VITE_SENTRY_ORG,
+                project: process.env.VITE_SENTRY_PROJECT,
 
                 // Auth tokens can be obtained from https://sentry.io/settings/account/api/auth-tokens/
                 // and need `project:releases` and `org:read` scopes
-                authToken: process.env.SENTRY_AUTH_TOKEN,
+                authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
 
                 // We're not injecting release information into the build
                 // @see https://www.npmjs.com/package/@sentry/vite-plugin#option-release-inject
