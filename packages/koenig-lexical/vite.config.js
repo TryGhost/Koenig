@@ -17,12 +17,20 @@ export default (function viteConfig() {
             // Keep sentryVitePlugin as the last plugin
             // TODO: move config values to env vars
             sentryVitePlugin({
-                org: 'ghost-foundation',
-                project: 'admin',
+                org: process.env.SENTRY_ORG,
+                project: process.env.SENTRY_PROJECT,
 
                 // Auth tokens can be obtained from https://sentry.io/settings/account/api/auth-tokens/
                 // and need `project:releases` and `org:read` scopes
-                authToken: '3878a3c19aee426b805905bba42d46c74a2e0513901345f587fcfbc628587d0e'
+                authToken: process.env.SENTRY_AUTH_TOKEN,
+
+                // We're not injecting release information into the build
+                // @see https://www.npmjs.com/package/@sentry/vite-plugin#option-release-inject
+                // Setting this option to true causes our build to fail: this plugin runs before the build is complete,
+                // and therefore our commonJS dependencies such as `kg-markdown-html-renderer` are not yet transpiled
+                release: {
+                    inject: false
+                }
             })
         ],
         define: {
@@ -62,10 +70,7 @@ export default (function viteConfig() {
             rollupOptions: {
                 external: [
                     'react',
-                    'react-dom',
-                    '@tryghost/kg-markdown-html-renderer',
-                    '@tryghost/kg-simplemde',
-                    '@tryghost/kg-clean-basic-html'
+                    'react-dom'
                 ],
                 output: {
                     globals: {
