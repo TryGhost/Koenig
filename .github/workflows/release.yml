@@ -14,3 +14,11 @@ jobs:
       uses: tryghost/actions/actions/package-release@main
       env:
         RELEASE_NOTIFICATION_URL: ${{ secrets.RELEASE_NOTIFICATION_URL }}
+
+    - name: Upload sourcemap to Sentry
+      if: startsWith(github.ref, 'refs/tags/@tryghost/koenig-lexical@')
+      run: yarn workspaces @tryghost/koenig-lexical run build
+      env:
+        VITE_SENTRY_ORG: ghost-foundation
+        VITE_SENTRY_PROJECT: admin
+        VITE_SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
