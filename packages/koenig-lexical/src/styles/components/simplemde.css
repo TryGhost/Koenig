@@ -22,6 +22,7 @@
 
     .editor-toolbar {
         position: sticky;
+        position: -webkit-sticky; /* Safari */
         bottom: 0;
         z-index: 2;
         display: flex;
