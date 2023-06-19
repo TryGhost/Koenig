@@ -2968,10 +2968,10 @@
     "@sentry/utils" "7.53.1"
     tslib "^1.9.3"
 
-"@sentry/bundler-plugin-core@2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.2.2.tgz#0418c75012061aa9996a3bdb9b4caa25318437a5"
-  integrity sha512-tbuy9eQjbbeen8mAi7gmpXAtj/9CQHjdVxHntjBJ3fsA/dvOTWHQrnGkAUe9xNU+dwQstclSMCEwE6N3h5wXKA==
+"@sentry/bundler-plugin-core@2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.3.0.tgz#4d3e6bb92cd0954846cffa8bac74a724fae8842c"
+  integrity sha512-PiX3yJ8UFKBIPRfhytweYjVdGfcruYJYdwSlbwFNe28fSMTKYPAF9/IqAOav9G8izlICnJm7ROyXlFlfMw0gRA==
   dependencies:
     "@sentry/cli" "^2.17.0"
     "@sentry/node" "7.53.1"
@@ -3029,11 +3029,11 @@
     tslib "^1.9.3"
 
 "@sentry/vite-plugin@^2.2.2":
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.2.2.tgz#014b31b89b2b8f7490b83a37edad51d37c00cc72"
-  integrity sha512-P/3Nd57dT3TkFpvzpIVHD2mUo130YdotZeEl9Pn5fK7LDLpKcy5TpJk2KX3cacljDN48QnApINgTz9IIqdL7eg==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.3.0.tgz#21045fd8da69f5ca552ca2f612ea826de3bfc691"
+  integrity sha512-TUKj29cLT0RLUKg74GyP4YoAalvkYrVo9/7zW+L+gbgR/7sh+9iNBjn8IZbEuMwot+A7tG+2NBGLDVXvGrwIKA==
   dependencies:
-    "@sentry/bundler-plugin-core" "2.2.2"
+    "@sentry/bundler-plugin-core" "2.3.0"
     unplugin "1.0.1"
 
 "@sideway/address@^4.1.3":
