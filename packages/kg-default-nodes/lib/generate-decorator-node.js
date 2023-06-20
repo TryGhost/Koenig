@@ -1,10 +1,25 @@
 import {KoenigDecoratorNode} from './KoenigDecoratorNode';
 import readTextContent from './utils/read-text-content';
+const {ValidationError} = require('@tryghost/errors');
+
+/**
+ * Validates the required arguments passed to `generateDecoratorNode`
+*/
+function validateArguments(nodeType, properties) {
+    if (!nodeType) {
+        throw new ValidationError({message: '[generateDecoratorNode] A unique "nodeType" should be provided'});
+    }
+
+    properties.forEach((prop) => {
+        if (!('name' in prop) || !('default' in prop)){
+            throw new ValidationError({message: '[generateDecoratorNode] Properties should have both "name" and "default" attributes.'});
+        }
+    });
+}
 
 /**
  * @typedef {Object} DecoratorNodeProperty
  * @property {string} name - The property's name.
- * @property {string} type - The property's type.
  * @property {*} default - The property's default value
  * @property {('url'|'html'|'markdown'|null)} urlType - If the property contains a URL, the URL's type: 'url', 'html' or 'markdown'. Use 'url' is the property contains only a URL, 'html' or 'markdown' if the property contains HTML or markdown code, that may contain URLs.
  * @property {boolean} wordCount - Whether the property should be counted in the word count
@@ -14,6 +29,8 @@ import readTextContent from './utils/read-text-content';
  * @returns {Object} - The generated class.
  */
 export function generateDecoratorNode({nodeType, properties = []}) {
+    validateArguments(nodeType, properties);
+
     // Adds a `privateName` field to the properties for convenience (e.g. `__name`):
     // properties: [{name: 'name', privateName: '__name', type: 'string', default: 'hello'}, {...}]
     properties = properties.map((prop) => {

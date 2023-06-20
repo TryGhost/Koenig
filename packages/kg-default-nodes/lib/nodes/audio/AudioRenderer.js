@@ -1,7 +1,7 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
 
-export function renderAudioNodeToDOM(node, options = {}) {
+export function renderAudioNode(node, options = {}) {
     addCreateDocumentOption(options);
     const document = options.createDocument();
 

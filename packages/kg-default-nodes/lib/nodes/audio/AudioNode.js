@@ -4,11 +4,11 @@ import {renderAudioNode} from './AudioRenderer';
 
 export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
     properties: [
-        {name: 'duration', type: 'integer', default: 0},
-        {name: 'mimeType', type: 'string', default: ''},
-        {name: 'src', type: 'string', default: '', urlType: 'url'},
-        {name: 'title', type: 'string', default: ''},
-        {name: 'thumbnailSrc', type: 'string', default: ''}
+        {name: 'duration', default: 0},
+        {name: 'mimeType', default: ''},
+        {name: 'src', default: '', urlType: 'url'},
+        {name: 'title', default: ''},
+        {name: 'thumbnailSrc', default: ''}
     ]}
 ) {
     static importDOM() {

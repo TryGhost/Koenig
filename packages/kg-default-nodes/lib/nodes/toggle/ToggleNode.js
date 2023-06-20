@@ -4,8 +4,8 @@ import {generateDecoratorNode} from '../../generate-decorator-node';
 
 export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
     properties: [
-        {name: 'heading', type: 'string', default: '', urlType: 'html', wordCount: true},
-        {name: 'content', type: 'string', default: '', urlType: 'html', wordCount: true}
+        {name: 'heading', default: '', urlType: 'html', wordCount: true},
+        {name: 'content', default: '', urlType: 'html', wordCount: true}
     ]}
 ) {
     static importDOM() {
