@@ -30,7 +30,7 @@ function emailCardTemplate({node}) {
     );
 }
 
-export function renderToggleNodeToDOM(node, options = {}) {
+export function renderToggleNode(node, options = {}) {
     addCreateDocumentOption(options);
 
     const document = options.createDocument();

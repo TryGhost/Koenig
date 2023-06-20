@@ -1,5 +1,5 @@
-import {ToggleParser} from './ToggleParser';
-import {renderToggleNodeToDOM} from './ToggleRenderer';
+import {parseToggleNode} from './ToggleParser';
+import {renderToggleNode} from './ToggleRenderer';
 import {generateDecoratorNode} from '../../generate-decorator-node';
 import readTextContent from '../../utils/read-text-content';
 export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
@@ -9,13 +9,11 @@ export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
     ]}
 ) {
     static importDOM() {
-        const parser = new ToggleParser(this);
-        return parser.DOMConversionMap;
+        return parseToggleNode(this);
     }
 
     exportDOM(options = {}) {
-        const {element, type} = renderToggleNodeToDOM(this, options);
-        return {element, type};
+        return renderToggleNode(this, options);
     }
 
     getTextContent() {
