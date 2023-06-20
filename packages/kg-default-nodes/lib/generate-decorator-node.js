@@ -14,6 +14,14 @@ function validateArguments(nodeType, properties) {
         if (!('name' in prop) || !('default' in prop)){
             throw new ValidationError({message: '[generateDecoratorNode] Properties should have both "name" and "default" attributes.'});
         }
+
+        if (prop.urlType && !['url', 'html', 'markdown'].includes(prop.urlType)) {
+            throw new ValidationError({message: '[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"'});
+        }
+
+        if ('wordCount' in prop && typeof prop.wordCount !== 'boolean') {
+            throw new ValidationError({message: '[generateDecoratorNode] "wordCount" should be of boolean type.'});
+        }
     });
 }
 
