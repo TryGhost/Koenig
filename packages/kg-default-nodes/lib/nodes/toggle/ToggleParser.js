@@ -1,4 +1,4 @@
-export function parseToggleNode(toggleNode) {
+export function parseToggleNode(ToggleNode) {
     return {
         div: () => ({
             conversion(domNode) {
@@ -15,7 +15,7 @@ export function parseToggleNode(toggleNode) {
                         content
                     };
 
-                    const node = new toggleNode(payload);
+                    const node = new ToggleNode(payload);
                     return {node};
                 }
 

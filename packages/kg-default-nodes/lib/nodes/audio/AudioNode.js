@@ -1,6 +1,6 @@
 import {generateDecoratorNode} from '../../generate-decorator-node';
-import {AudioParser} from './AudioParser';
-import {renderAudioNodeToDOM} from './AudioRenderer';
+import {parseAudioNode} from './AudioParser';
+import {renderAudioNode} from './AudioRenderer';
 
 export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
     properties: [
@@ -12,13 +12,11 @@ export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
     ]}
 ) {
     static importDOM() {
-        const parser = new AudioParser(this);
-        return parser.DOMConversionMap;
+        return parseAudioNode(this);
     }
 
     exportDOM(options = {}) {
-        const {element, type} = renderAudioNodeToDOM(this, options);
-        return {element, type};
+        return renderAudioNode(this, options);
     }
 }
 
