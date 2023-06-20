@@ -39,8 +39,9 @@ export function renderToggleNode(node, options = {}) {
         ? emailCardTemplate({node})
         : cardTemplate({node});
 
-    const element = document.createElement('div');
-    element.innerHTML = htmlString.trim();
+    const container = document.createElement('div');
+    container.innerHTML = htmlString.trim();
 
-    return {element: element.firstElementChild};
+    const element = container.firstElementChild;
+    return {element};
 }
