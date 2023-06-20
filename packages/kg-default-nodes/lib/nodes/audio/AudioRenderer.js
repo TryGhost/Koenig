@@ -1,12 +1,12 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+import {renderEmptyContainer} from '../../utils/render-empty-container';
 
 export function renderAudioNodeToDOM(node, options = {}) {
     addCreateDocumentOption(options);
-
     const document = options.createDocument();
 
     if (!node.src || node.src.trim() === '') {
-        return {element: document.createElement('span'), type: 'inner'};
+        return renderEmptyContainer(document);
     }
 
     return frontendTemplate(node, document);
@@ -21,13 +21,13 @@ function frontendTemplate(node, document) {
         emptyThumbnailCls += ' kg-audio-hide';
     }
 
-    const cardDiv = document.createElement('div');
-    cardDiv.setAttribute('class', 'kg-card kg-audio-card');
+    const element = document.createElement('div');
+    element.setAttribute('class', 'kg-card kg-audio-card');
     const img = document.createElement('img');
     img.src = node.thumbnailSrc;
     img.alt = 'audio-thumbnail';
     img.setAttribute('class', thumbnailCls);
-    cardDiv.appendChild(img);
+    element.appendChild(img);
 
     const emptyThumbnailDiv = document.createElement('div');
     emptyThumbnailDiv.setAttribute('class', emptyThumbnailCls);
@@ -52,7 +52,7 @@ function frontendTemplate(node, document) {
     svg.appendChild(path3);
     emptyThumbnailDiv.appendChild(svg);
 
-    cardDiv.appendChild(emptyThumbnailDiv);
+    element.appendChild(emptyThumbnailDiv);
 
     const audioPlayerContainer = document.createElement('div');
     audioPlayerContainer.setAttribute('class', 'kg-audio-player-container');
@@ -156,7 +156,7 @@ function frontendTemplate(node, document) {
     audioPlayer.appendChild(volumeSlider);
 
     audioPlayerContainer.appendChild(audioPlayer);
-    cardDiv.appendChild(audioPlayerContainer);
+    element.appendChild(audioPlayerContainer);
 
-    return {element: cardDiv};
+    return {element};
 }
