@@ -1,4 +1,5 @@
 import {KoenigDecoratorNode} from './KoenigDecoratorNode';
+import readTextContent from './utils/read-text-content';
 
 /**
  * @typedef {Object} DecoratorNodeProperty
@@ -6,6 +7,7 @@ import {KoenigDecoratorNode} from './KoenigDecoratorNode';
  * @property {string} type - The property's type.
  * @property {*} default - The property's default value
  * @property {('url'|'html'|'markdown'|null)} urlType - If the property contains a URL, the URL's type: 'url', 'html' or 'markdown'. Use 'url' is the property contains only a URL, 'html' or 'markdown' if the property contains HTML or markdown code, that may contain URLs.
+ * @property {boolean} wordCount - Whether the property should be counted in the word count
  *
  * @param {string} nodeType – The node's type (must be unique)
  * @param {DecoratorNodeProperty[]} properties - An array of properties for the generated class
@@ -146,6 +148,21 @@ export function generateDecoratorNode({nodeType, properties = []}) {
             return true;
         }
         /* c8 ignore stop */
+
+        /*
+        * Returns the text content of the node, used by the editor to calculate the word count
+        * This method filters out properties without `wordCount: true`
+        */
+        getTextContent() {
+            const self = this.getLatest();
+            const propertiesWithText = properties.filter(prop => !!prop.wordCount);
+
+            const text = propertiesWithText.map(
+                prop => readTextContent(self, prop.name)
+            ).filter(Boolean).join('\n');
+
+            return text ? `${text}\n\n` : '';
+        }
     }
 
     /**
