@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import trackEvent from '../../../utils/analytics';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
+import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {ReactComponent as ExpandIcon} from '../../../assets/icons/kg-expand.svg';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../IconButton';
@@ -19,7 +20,6 @@ import {ReactComponent as ShrinkIcon} from '../../../assets/icons/kg-shrink.svg'
 import {SubscribeForm} from '../SubscribeForm';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
-import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
 export function SignupCard({alignment,
     buttonText,
@@ -67,10 +67,31 @@ export function SignupCard({alignment,
         return color === 'transparent' ? '' : textColorForBackgroundColor(hexColorValue(color)).hex();
     };
 
+    /**
+     * Convert a semi transparent color to a fully opaque color by merging it with a white background
+     */
+    const mergeWhiteColor = ({r, g, b, a}) => {
+        const aPercentage = a / 255;
+
+        return Color({
+            r: r * aPercentage + 255 * (1 - aPercentage),
+            g: g * aPercentage + 255 * (1 - aPercentage),
+            b: b * aPercentage + 255 * (1 - aPercentage)
+        }).hex();
+    };
+
     useEffect(() => {
         if (backgroundImageSrc && layout !== 'split') {
             new FastAverageColor().getColorAsync(backgroundImageSrc, {defaultColor: [255, 255, 255, 255]}).then((color) => {
-                handleTextColor(matchingTextColor(color.hex));
+                // If we uploaded a transparent image, the average color will be semi transparent, we need to merge it with white
+                // Merge white color to the color
+                const correctedHex = mergeWhiteColor({
+                    r: color.value[0],
+                    g: color.value[1],
+                    b: color.value[2],
+                    a: color.value[3]
+                });
+                handleTextColor(matchingTextColor(correctedHex));
             });
         }
         // This is only needed when the background image or layout is changed
@@ -194,7 +215,8 @@ export function SignupCard({alignment,
                     'flex w-full flex-col transition-colors ease-in-out sm:flex-row',
                     (layout === 'split' && isSwapped) && 'sm:flex-row-reverse',
                     // This is needed to align the content with wide breakout width
-                    (layout === 'split' && (correctedBackgroundSize === 'contain')) && 'mx-auto w-[calc(740px+40rem)] xs:w-[calc(740px+8rem)] md:w-[calc(740px+12rem)] lg:w-[calc(740px+22rem)] xl:w-[calc(740px+40rem)]'
+                    (layout === 'split' && (correctedBackgroundSize === 'contain')) && 'mx-auto w-[calc(740px+40rem)] xs:w-[calc(740px+8rem)] md:w-[calc(740px+12rem)] lg:w-[calc(740px+22rem)] xl:w-[calc(740px+40rem)]',
+                    (backgroundImageSrc && (layout === 'split') && (correctedBackgroundSize === 'contain')) && 'items-center',
                 )}>
                     {layout === 'split' && (
                         <MediaUploader
@@ -244,7 +266,7 @@ export function SignupCard({alignment,
                             initialEditorState={headerTextEditorInitialState}
                             nodes="minimal"
                             placeholderClassName={clsx(
-                                'h-[110%] w-full truncate whitespace-normal !font-bold !leading-[1.1] !tracking-tight !text-grey-700 opacity-50',
+                                '!font-bold !leading-[1.1] !tracking-tight !text-grey-700 opacity-50',
                                 (alignment === 'center') && 'text-center',
                                 (layout === 'regular') && 'text-3xl sm:text-4xl md:text-5xl',
                                 (layout === 'wide' || layout === 'split') && 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl',
@@ -253,16 +275,12 @@ export function SignupCard({alignment,
                             placeholderText={headerPlaceholder}
                             singleParagraph={true}
                             textClassName={clsx(
-                                'koenig-lexical-header-heading relative w-full whitespace-normal font-bold caret-current [&:has(br)]:text-left',
+                                'koenig-lexical-header-heading relative w-full whitespace-normal font-bold caret-current',
                                 (!isEditing && isEditorEmpty(headerTextEditor)) ? 'hidden' : 'peer',
-                                (alignment === 'center') && 'text-center',
+                                (alignment === 'center') && 'text-center [&:has(.placeholder)]:w-fit [&:has(.placeholder)]:text-left',
                                 (layout === 'regular' || (layout === 'split' && correctedBackgroundSize === 'contain')) && 'koenig-lexical-header-xsmall',
-                                (layout === 'regular' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_128px)] [&:has(br)]:sm:pl-[calc(50%_-_154px)] [&:has(br)]:md:pl-[calc(50%_-_204px)]',
                                 (layout === 'wide' || (layout === 'split' && correctedBackgroundSize === 'cover')) && 'koenig-lexical-header-small',
-                                (layout === 'wide' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_128px)] [&:has(br)]:sm:pl-[calc(50%_-_154px)] [&:has(br)]:md:pl-[calc(50%_-_204px)] [&:has(br)]:lg:pl-[calc(50%_-_254px)]',
                                 (layout === 'full') && 'koenig-lexical-header-large',
-                                (layout === 'full' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_154px)] [&:has(br)]:sm:pl-[calc(50%_-_204px)] [&:has(br)]:md:pl-[calc(50%_-_254px)] [&:has(br)]:lg:pl-[calc(50%_-_306px)]',
-                                (layout === 'split' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_59px)] [&:has(br)]:sm:pl-[calc(50%_-_71px)] [&:has(br)]:md:pl-[calc(50%_-_94px)] [&:has(br)]:lg:pl-[calc(50%_-_118px)]'
                             )}
                         />}
 
@@ -275,7 +293,7 @@ export function SignupCard({alignment,
                             initialEditorState={subheaderTextEditorInitialState}
                             nodes="minimal"
                             placeholderClassName={clsx(
-                                'h-[110%] w-full truncate whitespace-normal !font-medium !leading-snug !tracking-tight !text-grey-700 opacity-60',
+                                '!font-medium !leading-snug !tracking-tight !text-grey-700 opacity-60',
                                 (alignment === 'center') && 'text-center',
                                 (layout === 'regular') && 'text-lg sm:text-xl',
                                 (layout === 'wide') && 'text-lg sm:text-xl md:text-2xl',
@@ -285,17 +303,13 @@ export function SignupCard({alignment,
                             placeholderText={subheaderPlaceholder}
                             singleParagraph={true}
                             textClassName={clsx(
-                                'koenig-lexical-header-subheading relative w-full whitespace-normal caret-current [&:has(br)]:text-left',
+                                'koenig-lexical-header-subheading relative w-full whitespace-normal caret-current',
                                 (!isEditing && isEditorEmpty(subheaderTextEditor)) ? 'hidden' : 'peer',
-                                (alignment === 'center') && 'text-center',
+                                (alignment === 'center') && 'text-center [&:has(.placeholder)]:w-fit [&:has(.placeholder)]:text-left',
                                 (layout === 'regular' || (layout === 'split' && correctedBackgroundSize === 'contain')) && 'koenig-lexical-header-small !mt-2',
-                                (layout === 'regular' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_90px)] [&:has(br)]:sm:pl-[calc(50%_-_100px)]',
                                 (layout === 'wide' || (layout === 'split' && correctedBackgroundSize === 'cover')) && 'koenig-lexical-header-medium !mt-3',
-                                (layout === 'wide' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_90px)] [&:has(br)]:sm:pl-[calc(50%_-_100px)] [&:has(br)]:md:pl-[calc(50%_-_120px)]',
                                 layout === 'full' && 'xl:max-w-[880px]',
-                                (layout === 'full') && 'koenig-lexical-header-large !mt-3',
-                                (layout === 'full' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_100px)] [&:has(br)]:md:pl-[calc(50%_-_120px)] [&:has(br)]:xl:pl-[calc(880px_-_560px)]',
-                                (layout === 'split' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_75px)] [&:has(br)]:md:pl-[calc(50%_-_90px)]'
+                                (layout === 'full') && 'koenig-lexical-header-large !mt-3'
                             )}
                         />}
 
@@ -322,14 +336,13 @@ export function SignupCard({alignment,
                             initialEditor={disclaimerTextEditor}
                             initialEditorState={disclaimerTextEditorInitialState}
                             nodes="minimal"
-                            placeholderClassName={`truncate opacity-80 w-full h-[110%] whitespace-normal !leading-snug !font-normal !text-[1.6rem] !tracking-tight !text-grey-700 ${(alignment === 'center' && 'text-center')}`}
+                            placeholderClassName={`opacity-80 !leading-snug !font-normal !text-[1.6rem] !tracking-tight !text-grey-700`}
                             placeholderText={disclaimerPlaceholder}
                             singleParagraph={true}
                             textClassName={clsx(
                                 'koenig-lexical-header-subheading koenig-lexical-header-xsmall relative !mt-4 w-full whitespace-normal caret-current',
                                 (!isEditing && isEditorEmpty(disclaimerTextEditor)) && 'hidden',
-                                alignment === 'center' && 'text-center [&:has(br)]:pl-[calc(50%_-_74px)] [&:has(br)]:text-left',
-                                (layout === 'split' && alignment === 'center') && '[&:has(br)]:pl-[calc(50%_-_54px)]'
+                                alignment === 'center' && 'text-center [&:has(.placeholder)]:w-fit [&:has(.placeholder)]:text-left'
                             )}
                         />
                     </div>
@@ -447,7 +460,10 @@ export function SignupCard({alignment,
                         size='xsmall'
                         src={backgroundImageSrc}
                         onFileChange={onFileChange}
-                        onRemoveMedia={handleClearBackgroundImage}
+                        onRemoveMedia={() => {
+                            handleClearBackgroundImage();
+                            handleTextColor(matchingTextColor(backgroundColor));
+                        }}
                     />
                     <SettingsDivider />
 
