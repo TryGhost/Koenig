@@ -50,8 +50,8 @@ export class SignupParser {
                             const disclaimer = domNode.querySelector('p')?.textContent || '';
                             const backgroundImageSrc = layout === 'split'
                                 ? domNode.querySelector('.kg-signup-card-image')?.getAttribute('src')
-                                : domNode.querySelector('.kg-signup-card-text')?.getAttribute('style')?.match(/url\((.+)\)/)?.[1] || '';
-                            const backgroundColor = domNode.querySelector('.kg-signup-card-text')?.style.backgroundColor || '';
+                                : domNode.getAttribute('style')?.match(/url\((.+)\)/)?.[1] || '';
+                            const backgroundColor = domNode.style.backgroundColor || '';
                             const buttonColor = domNode.querySelector('.kg-signup-card-button')?.style.backgroundColor || '';
                             const buttonText = domNode.querySelector('.kg-signup-card-button-default')?.textContent?.trim() || 'Subscribe';
                             const buttonTextColor = domNode.querySelector('.kg-signup-card-button')?.style.color || '';
@@ -60,7 +60,7 @@ export class SignupParser {
                             const successMessage = domNode.querySelector('.kg-signup-card-success')?.textContent?.trim() || '';
                             const labels = [...domNode.querySelectorAll('input[data-members-label]')].map(input => input.value);
 
-                            const isAccentBackground = domNode.querySelector('.kg-signup-card-text')?.classList?.contains('kg-style-accent') ?? false;
+                            const isAccentBackground = domNode.classList?.contains('kg-style-accent') ?? false;
                             const isAccentButton = domNode.querySelector('.kg-signup-card-button')?.classList?.contains('kg-style-accent') ?? false;
 
                             const isSwapped = domNode.classList.contains('kg-swapped');
