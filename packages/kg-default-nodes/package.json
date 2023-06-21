@@ -42,7 +42,6 @@
     "sinon": "15.0.4"
   },
   "dependencies": {
-    "@tryghost/errors": "^1.2.25",
     "@tryghost/kg-clean-basic-html": "^3.0.19",
     "@tryghost/kg-markdown-html-renderer": "^6.0.8",
     "html-minifier": "^4.0.0",

@@ -1,26 +1,25 @@
 import {KoenigDecoratorNode} from './KoenigDecoratorNode';
 import readTextContent from './utils/read-text-content';
-const {ValidationError} = require('@tryghost/errors');
-
 /**
  * Validates the required arguments passed to `generateDecoratorNode`
 */
 function validateArguments(nodeType, properties) {
+    /* eslint-disable ghost/ghost-custom/no-native-error */
     if (!nodeType) {
-        throw new ValidationError({message: '[generateDecoratorNode] A unique "nodeType" should be provided'});
+        throw new Error({message: '[generateDecoratorNode] A unique "nodeType" should be provided'});
     }
 
     properties.forEach((prop) => {
         if (!('name' in prop) || !('default' in prop)){
-            throw new ValidationError({message: '[generateDecoratorNode] Properties should have both "name" and "default" attributes.'});
+            throw new Error({message: '[generateDecoratorNode] Properties should have both "name" and "default" attributes.'});
         }
 
         if (prop.urlType && !['url', 'html', 'markdown'].includes(prop.urlType)) {
-            throw new ValidationError({message: '[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"'});
+            throw new Error({message: '[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"'});
         }
 
         if ('wordCount' in prop && typeof prop.wordCount !== 'boolean') {
-            throw new ValidationError({message: '[generateDecoratorNode] "wordCount" should be of boolean type.'});
+            throw new Error({message: '[generateDecoratorNode] "wordCount" should be of boolean type.'});
         }
     });
 }
@@ -62,7 +61,7 @@ export function generateDecoratorNode({nodeType, properties = []}) {
         static getType() {
             return nodeType;
         }
-  
+
         /**
          * Creates a copy of an existing node with all its properties
          * @extends DecoratorNode
