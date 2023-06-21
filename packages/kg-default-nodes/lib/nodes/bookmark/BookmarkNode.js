@@ -1,6 +1,6 @@
+import {generateDecoratorNode} from '../../generate-decorator-node';
 import {parseBookmarkNode} from './BookmarkParser';
 import {renderBookmarkNode} from './BookmarkRenderer';
-import {generateDecoratorNode} from '../../generate-decorator-node';
 
 export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
     properties: [
