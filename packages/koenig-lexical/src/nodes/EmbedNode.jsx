@@ -104,7 +104,7 @@ function EmbedNodeComponent({nodeKey, url, html, createdWithUrl, embedType, meta
         }
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setUrl(response.url);
+            node.setUrl(href);
             node.setMetadata(response);
             node.setEmbedType(response.type);
             node.setHtml(response.html);
