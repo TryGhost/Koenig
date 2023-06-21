@@ -1,6 +1,6 @@
+import {generateDecoratorNode} from '../../generate-decorator-node';
 import {parseToggleNode} from './ToggleParser';
 import {renderToggleNode} from './ToggleRenderer';
-import {generateDecoratorNode} from '../../generate-decorator-node';
 
 export class ToggleNode extends generateDecoratorNode({nodeType: 'toggle',
     properties: [
