@@ -50,7 +50,11 @@ export function generateDecoratorNode({nodeType, properties = []}) {
         constructor(data = {}, key) {
             super(key);
             properties.forEach((prop) => {
-                this[prop.privateName] = data[prop.name] || prop.default;
+                if (typeof prop.default === 'boolean') {
+                    this[prop.privateName] = data[prop.name] ?? prop.default;
+                } else {
+                    this[prop.privateName] = data[prop.name] || prop.default;
+                }
             });
         }
 
