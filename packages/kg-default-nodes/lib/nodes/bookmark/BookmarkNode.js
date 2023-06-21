@@ -83,7 +83,7 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
     }
 
     isEmpty() {
-        return !this.__url;
+        return !this.url;
     }
 }
 

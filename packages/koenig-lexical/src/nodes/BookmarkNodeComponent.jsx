@@ -65,13 +65,13 @@ export function BookmarkNodeComponent({author, nodeKey, url, icon, title, descri
         }
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setUrl(response.url);
-            node.setAuthor(response.metadata.author);
-            node.setIconSrc(response.metadata.icon);
-            node.setTitle(response.metadata.title);
-            node.setDescription(response.metadata.description);
-            node.setPublisher(response.metadata.publisher);
-            node.setThumbnail(response.metadata.thumbnail);
+            node.url = response.url;
+            node.author = response.metadata.author;
+            node.icon = response.metadata.icon;
+            node.title = response.metadata.title;
+            node.description = response.metadata.description;
+            node.publisher = response.metadata.publisher;
+            node.thumbnail = response.metadata.thumbnail;
         });
         setLoading(false);
     };
@@ -89,13 +89,13 @@ export function BookmarkNodeComponent({author, nodeKey, url, icon, title, descri
         }
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setUrl(response.url);
-            node.setAuthor(response.metadata.author);
-            node.setIconSrc(response.metadata.icon);
-            node.setTitle(response.metadata.title);
-            node.setDescription(response.metadata.description);
-            node.setPublisher(response.metadata.publisher);
-            node.setThumbnail(response.metadata.thumbnail);
+            node.url = response.url;
+            node.author = response.metadata.author;
+            node.icon = response.metadata.icon;
+            node.title = response.metadata.title;
+            node.description = response.metadata.description;
+            node.publisher = response.metadata.publisher;
+            node.thumbnail = response.metadata.thumbnail;
 
             if (createdWithUrl) {
                 node.selectNext();
