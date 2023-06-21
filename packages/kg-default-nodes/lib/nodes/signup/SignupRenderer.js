@@ -29,13 +29,15 @@ function cardTemplate(nodeData) {
         `;
 
     return `
-        <div class="${cardClasses}" data-lexical-signup-form style="display:none;">
-            ${nodeData.layout === 'split' ? `<img class="kg-signup-card-image ${backgroundAccent}" style="${backgroundImageStyle};" src="${nodeData.backgroundImageSrc}" alt="" />` : ''}
-            <div class="kg-signup-card-container ${alignment} ${backgroundAccent}" style="${backgroundImageStyle}">
-                <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
-                <h3 class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</h3>
-                ${formTemplate}
-                <p class="kg-signup-card-disclaimer" style="color: ${nodeData.textColor};">${nodeData.disclaimer}</p>
+        <div class="${cardClasses} ${backgroundAccent}" data-lexical-signup-form style="${backgroundImageStyle}; display: none;">
+            <div class="kg-signup-card-content">
+                ${nodeData.layout === 'split' ? `<img class="kg-signup-card-image" src="${nodeData.backgroundImageSrc}" alt="" />` : ''}
+                <div class="kg-signup-card-text ${alignment}">
+                    <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
+                    <h3 class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</h3>
+                    ${formTemplate}
+                    <p class="kg-signup-card-disclaimer" style="color: ${nodeData.textColor};">${nodeData.disclaimer}</p>
+                </div>
             </div>
         </div>
         `;
@@ -129,7 +131,9 @@ export function getCardClasses(nodeData) {
     }
 
     if (nodeData.layout === 'split') {
-        cardClasses.push('kg-background-size-' + nodeData.backgroundSize);
+        if (nodeData.backgroundSize === 'contain') {
+            cardClasses.push('kg-content-wide');
+        }
     }
 
     return cardClasses;
