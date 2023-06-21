@@ -5,6 +5,7 @@ import readTextContent from './utils/read-text-content';
 */
 function validateArguments(nodeType, properties) {
     /* eslint-disable ghost/ghost-custom/no-native-error */
+    /* c8 ignore start */
     if (!nodeType) {
         throw new Error({message: '[generateDecoratorNode] A unique "nodeType" should be provided'});
     }
@@ -22,6 +23,7 @@ function validateArguments(nodeType, properties) {
             throw new Error({message: '[generateDecoratorNode] "wordCount" should be of boolean type.'});
         }
     });
+    /* c8 ignore stop */
 }
 
 /**
@@ -163,6 +165,7 @@ export function generateDecoratorNode({nodeType, properties = []}) {
             // All our cards are top-level blocks. Override if needed.
             return false;
         }
+        /* c8 ignore stop */
 
         /**
          * Defines whether a node has an edit mode in the editor UI
@@ -171,7 +174,6 @@ export function generateDecoratorNode({nodeType, properties = []}) {
             // Most of our cards have an edit mode. Override if needed.
             return true;
         }
-        /* c8 ignore stop */
 
         /*
         * Returns the text content of the node, used by the editor to calculate the word count

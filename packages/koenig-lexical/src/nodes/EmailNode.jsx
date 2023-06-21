@@ -3,14 +3,15 @@ import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
-import {EmailNode as BaseEmailNode, INSERT_EMAIL_COMMAND} from '@tryghost/kg-default-nodes';
+import {EmailNode as BaseEmailNode} from '@tryghost/kg-default-nodes';
 import {ReactComponent as EmailCardIcon} from '../assets/icons/kg-card-type-email.svg';
 import {ReactComponent as EmailIndicatorIcon} from '../assets/icons/kg-indicator-email.svg';
 import {EmailNodeComponent} from './EmailNodeComponent';
+import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 // re-export here so we don't need to import from multiple places throughout the app
-export {INSERT_EMAIL_COMMAND} from '@tryghost/kg-default-nodes';
+export const INSERT_EMAIL_COMMAND = createCommand();
 
 export class EmailNode extends BaseEmailNode {
     __htmlEditor;
@@ -66,10 +67,6 @@ export class EmailNode extends BaseEmailNode {
         }
 
         return json;
-    }
-
-    createDOM() {
-        return document.createElement('div');
     }
 
     decorate() {
