@@ -8,6 +8,7 @@ const {$getRoot} = require('lexical');
 const editorNodes = [CodeBlockNode];
 
 describe('CodeBlockNode', function () {
+    let dataset;
     let editor;
     let code;
     let language;
@@ -34,6 +35,12 @@ describe('CodeBlockNode', function () {
         code = '<script></script>';
         language = 'javascript';
         caption = 'A code block';
+
+        dataset = {
+            code,
+            language,
+            caption
+        };
 
         exportOptions = new Object({
             createDocument: () => {
@@ -146,13 +153,47 @@ describe('CodeBlockNode', function () {
                 caption: 'A code block'
             });
         }));
+    });
 
-        it('has isEmpty() convenience method', editorTest(function () {
-            const codeBlockNode = $createCodeBlockNode({language, code, caption});
+    describe('isEmpty()', function () {
+        it('returns true if markdown is empty', editorTest(function () {
+            const codeBlockNode = $createCodeBlockNode(dataset);
 
             codeBlockNode.isEmpty().should.be.false;
-            codeBlockNode.code = '';
+            codeBlockNode.markdown = '';
             codeBlockNode.isEmpty().should.be.true;
+        }));
+    });
+
+    describe('getType', function () {
+        it('returns the correct node type', editorTest(function () {
+            CodeBlockNode.getType().should.equal('codeblock');
+        }));
+    });
+
+    describe('clone', function () {
+        it('returns a copy of the current node', editorTest(function () {
+            const codeBlockNode = $createCodeBlockNode(dataset);
+            const codeBlockNodeDataset = codeBlockNode.getDataset();
+            const clone = CodeBlockNode.clone(codeBlockNode);
+            const cloneDataset = clone.getDataset();
+
+            cloneDataset.should.deepEqual({...codeBlockNodeDataset});
+        }));
+    });
+
+    describe('urlTransformMap', function () {
+        it('contains the expected URL mapping', editorTest(function () {
+            CodeBlockNode.urlTransformMap.should.deepEqual({
+                caption: 'html'
+            });
+        }));
+    });
+
+    describe('hasEditMode', function () {
+        it('returns true', editorTest(function () {
+            const codeBlockNode = $createCodeBlockNode(dataset);
+            codeBlockNode.hasEditMode().should.be.true;
         }));
     });
 

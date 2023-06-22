@@ -19,10 +19,6 @@ export class HtmlNode extends BaseHtmlNode {
         priority: 3
     };
 
-    static getType() {
-        return 'html';
-    }
-
     getIcon() {
         return HtmlCardIcon;
     }

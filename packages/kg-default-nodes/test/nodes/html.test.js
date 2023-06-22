@@ -78,6 +78,48 @@ describe('HtmlNode', function () {
         }));
     });
 
+    describe('isEmpty()', function () {
+        it('returns true if markdown is empty', editorTest(function () {
+            const htmlNode = $createHtmlNode(dataset);
+
+            htmlNode.isEmpty().should.be.false;
+            htmlNode.markdown = '';
+            htmlNode.isEmpty().should.be.true;
+        }));
+    });
+
+    describe('getType', function () {
+        it('returns the correct node type', editorTest(function () {
+            HtmlNode.getType().should.equal('html');
+        }));
+    });
+
+    describe('clone', function () {
+        it('returns a copy of the current node', editorTest(function () {
+            const htmlNode = $createHtmlNode(dataset);
+            const htmlNodeDataset = htmlNode.getDataset();
+            const clone = HtmlNode.clone(htmlNode);
+            const cloneDataset = clone.getDataset();
+
+            cloneDataset.should.deepEqual({...htmlNodeDataset});
+        }));
+    });
+
+    describe('urlTransformMap', function () {
+        it('contains the expected URL mapping', editorTest(function () {
+            HtmlNode.urlTransformMap.should.deepEqual({
+                html: 'html'
+            });
+        }));
+    });
+
+    describe('hasEditMode', function () {
+        it('returns true', editorTest(function () {
+            const htmlNode = $createHtmlNode(dataset);
+            htmlNode.hasEditMode().should.be.true;
+        }));
+    });
+
     describe('exportDOM', function () {
         it('creates a html card', editorTest(function () {
             const htmlNode = $createHtmlNode(dataset);
@@ -183,34 +225,6 @@ describe('HtmlNode', function () {
                 }
             });
         });
-    });
-
-    describe('hasEditMode', function () {
-        it('returns true', editorTest(function () {
-            const htmlNode = $createHtmlNode(dataset);
-            htmlNode.hasEditMode().should.be.true;
-        }));
-    });
-
-    describe('clone', function () {
-        it('clones the node', editorTest(function () {
-            const htmlNode = $createHtmlNode(dataset);
-            const clonedHtmlNode = HtmlNode.clone(htmlNode);
-            $isHtmlNode(clonedHtmlNode).should.be.true;
-            clonedHtmlNode.html.should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
-        }));
-    });
-
-    describe('static properties', function () {
-        it('getType', editorTest(function () {
-            HtmlNode.getType().should.equal('html');
-        }));
-
-        it('urlTransformMap', editorTest(function () {
-            HtmlNode.urlTransformMap.should.deepEqual({
-                html: 'html'
-            });
-        }));
     });
 
     describe('getTextContent', function () {
