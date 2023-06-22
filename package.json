@@ -10,21 +10,22 @@
     "**/node_modules/**"
   ],
   "scripts": {
-    "dev": "echo \"Implement me!\"",
+    "dev": "yarn workspace @tryghost/koenig-lexical dev",
     "prepare": "husky install .github/hooks",
     "presetup": "yarn",
     "setup": "lerna bootstrap && lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
-    "ship": "lerna publish --git-remote ${GHOST_UPSTREAM:-origin}"
+    "ship": "lerna publish --git-remote ${KOENIG_UPSTREAM:-origin}",
+    "main": "git checkout main && git pull ${KOENIG_UPSTREAM:-origin} main && yarn"
   },
   "devDependencies": {
     "eslint": "8.40.0",
     "eslint-plugin-ghost": "2.18.1",
     "husky": "8.0.3",
-    "lerna": "6.0.0",
-    "lint-staged": "12.5.0"
+    "lerna": "6.6.2",
+    "lint-staged": "13.2.2"
   },
   "renovate": {
     "extends": [

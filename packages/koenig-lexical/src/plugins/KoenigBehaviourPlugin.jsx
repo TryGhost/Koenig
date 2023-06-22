@@ -409,7 +409,12 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         return false;
                     }
 
-                    // avoid processing card behaviours when an inner element has focus
+                    // if we're in a nested editor, we need to move selection back to the parent editor
+                    if (event._fromCaptionEditor) {
+                        $selectCard(editor, selectedCardKey);
+                    }
+
+                    // avoid processing card behaviours when an inner element has focus (e.g. nested editors)
                     if (document.activeElement !== editor.getRootElement()) {
                         return true;
                     }
@@ -488,7 +493,12 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         return false;
                     }
 
-                    // avoid processing card behaviours when an inner element has focus
+                    // if we're in a nested editor, we need to move selection back to the parent editor
+                    if (event._fromCaptionEditor) {
+                        $selectCard(editor, selectedCardKey);
+                    }
+
+                    // avoid processing card behaviours when an inner element has focus (e.g. nested editors)
                     if (document.activeElement !== editor.getRootElement()) {
                         return true;
                     }
@@ -548,11 +558,14 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 const rects = range.getClientRects();
 
                                 if (rects.length > 0) {
-                                    const rangeRect = rects[0];
+                                    // rects.length will be 2 if at the start/end of a line and we should default to the new/second line for
+                                    //  determining if a card is below the cursor
+                                    const rangeRect = rects.length > 1 ? rects[1] : rects[0];
                                     const elemRect = nativeTopLevelElement.getBoundingClientRect();
 
                                     if (Math.abs(rangeRect.bottom - elemRect.bottom) < RANGE_TO_ELEMENT_BOUNDARY_THRESHOLD_PX) {
                                         const nextSibling = topLevelElement.getNextSibling();
+                                        // console.log(`nextSibling`,nextSibling)
                                         if ($isDecoratorNode(nextSibling)) {
                                             $selectDecoratorNode(nextSibling);
                                             return true;
@@ -683,6 +696,46 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                     firstNode.selectStart();
                                     return true;
                                 }
+                            }
+                        }
+                    }
+
+                    const {metaKey, code} = event;
+                    if (metaKey && code === 'KeyA') {
+                        const selection = $getSelection();
+                        if ($isRangeSelection(selection)) {
+                            const root = $getRoot();
+                            const firstNode = root.getFirstChildOrThrow();
+                            const lastNode = root.getLastChildOrThrow();
+                  
+                            if (firstNode && lastNode) {
+                                if (!$isDecoratorNode(firstNode) && !firstNode.isEmpty()) {
+                                    const firstChild = firstNode.getFirstChild();
+                                    if ($isTextNode(firstChild)) {
+                                        selection.anchor.set(firstChild.getKey(), 0, 'text');
+                                    }
+                                } else {
+                                    selection.anchor.set('root', 0, 'element');
+                                }
+                  
+                                if (!$isDecoratorNode(lastNode) && !lastNode.isEmpty()) {
+                                    const lastChild = lastNode.getLastChild();
+                                    if ($isTextNode(lastChild)) {
+                                        selection.focus.set(
+                                            lastChild.getKey(),
+                                            lastChild.getTextContentSize(),
+                                            'text',
+                                        );
+                                    }
+                                } else {
+                                    selection.focus.set(
+                                        'root',
+                                        lastNode.getIndexWithinParent() + 1,
+                                        'element',
+                                    );
+                                }
+                                event.preventDefault();
+                                return true;
                             }
                         }
                     }

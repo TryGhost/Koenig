@@ -53,7 +53,10 @@ export function CalloutNodeComponent({nodeKey, textEditor, textEditorInitialStat
     const toggleEmojiPicker = () => {
         if (!isEditing) {
             setEditing(true);
-            return;
+        }
+
+        if (showEmojiPicker) {
+            textEditor.focus();
         }
         setShowEmojiPicker(!showEmojiPicker);
     };
