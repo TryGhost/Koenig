@@ -110,10 +110,6 @@ export class EmbedNode extends BaseEmbedNode {
         }
     }
 
-    createDOM() {
-        return document.createElement('div');
-    }
-
     getDataset() {
         const dataset = super.getDataset();
 
@@ -139,10 +135,6 @@ export class EmbedNode extends BaseEmbedNode {
         }
 
         return json;
-    }
-
-    updateDOM() {
-        return false;
     }
 
     decorate() {

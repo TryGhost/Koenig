@@ -96,7 +96,7 @@ export class EmailCtaNode extends BaseEmailCtaNode {
     // rather than the data properties themselves
     isEmpty() {
         const isHtmlEmpty = this.__htmlEditor.getEditorState().read($canShowPlaceholderCurry(false));
-        return isHtmlEmpty && (!this.getShowButton() || (!this.getButtonText() && !this.getButtonUrl()));
+        return isHtmlEmpty && (!this.showButton || (!this.buttonText && !this.buttonUrl));
     }
 }
 

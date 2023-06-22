@@ -14,6 +14,10 @@ export class HorizontalRuleNode extends generateDecoratorNode({nodeType: 'horizo
     getTextContent() {
         return '---\n\n';
     }
+
+    hasEditMode() {
+        return false;
+    }
 }
 
 export function $createHorizontalRuleNode() {
