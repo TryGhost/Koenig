@@ -17,14 +17,14 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
     const updateCode = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setCode(value);
+            node.code = value;
         });
     };
 
     const updateLanguage = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setLanguage(value);
+            node.language = value;
         });
     };
 
