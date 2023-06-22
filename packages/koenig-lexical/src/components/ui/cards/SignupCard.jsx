@@ -214,7 +214,7 @@ export function SignupCard({alignment,
                     // This is needed to align the content with wide breakout width
                     (layout === 'full' || (layout === 'split' && (correctedBackgroundSize === 'contain'))) && 'mx-auto w-[calc(740px+4rem)] xs:w-[calc(740px+8rem)] md:w-[calc(740px+12rem)] lg:w-[calc(740px+22rem)] xl:w-[calc(740px+40rem)]',
                     (backgroundImageSrc && (layout === 'split') && (correctedBackgroundSize === 'contain')) && 'items-center',
-                )}>
+                )} data-testid={'signup-card-content'}>
                     {layout === 'split' && (
                         <MediaUploader
                             additionalActions={<>
