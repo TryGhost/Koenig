@@ -28,7 +28,6 @@ export class MarkdownNode extends BaseMarkdownNode {
             <KoenigCardWrapper
                 IndicatorIcon={MarkdownIndicatorIcon}
                 nodeKey={this.getKey()}
-                width={this.__cardWidth}
                 wrapperStyle="wide"
             >
                 <MarkdownNodeComponent

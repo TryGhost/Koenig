@@ -28,7 +28,6 @@ export class HtmlNode extends BaseHtmlNode {
             <KoenigCardWrapper
                 IndicatorIcon={HtmlIndicatorIcon}
                 nodeKey={this.getKey()}
-                width={this.__cardWidth}
                 wrapperStyle="wide"
             >
                 <HtmlNodeComponent

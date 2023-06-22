@@ -74,7 +74,6 @@ export class EmailNode extends BaseEmailNode {
             <KoenigCardWrapper
                 IndicatorIcon={EmailIndicatorIcon}
                 nodeKey={this.getKey()}
-                width={this.__cardWidth}
                 wrapperStyle="wide"
             >
                 <EmailNodeComponent
