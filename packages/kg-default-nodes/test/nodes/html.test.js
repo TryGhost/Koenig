@@ -49,15 +49,15 @@ describe('HtmlNode', function () {
         it('has getters for all properties', editorTest(function () {
             const htmlNode = $createHtmlNode(dataset);
 
-            htmlNode.getHtml().should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
+            htmlNode.html.should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
         }));
 
         it('has setters for all properties', editorTest(function () {
             const htmlNode = $createHtmlNode(dataset);
 
-            htmlNode.getHtml().should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
-            htmlNode.setHtml('<p>Paragraph 1</p><p>Paragraph 2</p>');
-            htmlNode.getHtml().should.equal('<p>Paragraph 1</p><p>Paragraph 2</p>');
+            htmlNode.html.should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
+            htmlNode.html = '<p>Paragraph 1</p><p>Paragraph 2</p>';
+            htmlNode.html.should.equal('<p>Paragraph 1</p><p>Paragraph 2</p>');
         }));
 
         it('has getDataset() convenience method', editorTest(function () {
@@ -73,7 +73,7 @@ describe('HtmlNode', function () {
             const htmlNode = $createHtmlNode(dataset);
 
             htmlNode.isEmpty().should.be.false;
-            htmlNode.setHtml('');
+            htmlNode.html = '';
             htmlNode.isEmpty().should.be.true;
         }));
     });
@@ -97,7 +97,7 @@ describe('HtmlNode', function () {
             const {element, type} = htmlNode.exportDOM(exportOptions);
             type.should.equal('inner');
 
-            element.outerHTML.should.equal('<div></div>');
+            element.outerHTML.should.equal('<span></span>');
         }));
 
         it('renders unclosed tags', editorTest(function () {
@@ -175,7 +175,7 @@ describe('HtmlNode', function () {
                 try {
                     const [htmlNode] = $getRoot().getChildren();
 
-                    htmlNode.getHtml().should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
+                    htmlNode.html.should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
 
                     done();
                 } catch (e) {
@@ -197,7 +197,7 @@ describe('HtmlNode', function () {
             const htmlNode = $createHtmlNode(dataset);
             const clonedHtmlNode = HtmlNode.clone(htmlNode);
             $isHtmlNode(clonedHtmlNode).should.be.true;
-            clonedHtmlNode.getHtml().should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
+            clonedHtmlNode.html.should.equal('<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>');
         }));
     });
 
@@ -218,7 +218,7 @@ describe('HtmlNode', function () {
             const node = $createHtmlNode();
             node.getTextContent().should.equal('');
 
-            node.setHtml('<script>const test = true;</script>');
+            node.html = '<script>const test = true;</script>';
 
             node.getTextContent().should.equal('<script>const test = true;</script>\n\n');
         }));
