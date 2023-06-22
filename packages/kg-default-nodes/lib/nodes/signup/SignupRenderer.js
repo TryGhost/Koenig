@@ -8,7 +8,7 @@ function cardTemplate(nodeData) {
     const backgroundAccent = nodeData.backgroundColor === 'accent' ? 'kg-style-accent' : '';
     const buttonAccent = nodeData.buttonColor === 'accent' ? 'kg-style-accent' : '';
     const buttonStyle = nodeData.buttonColor !== 'accent' ? `background-color: ${nodeData.buttonColor};` : ``;
-    const alignment = nodeData.alignment === 'center' ? 'align-center' : '';
+    const alignment = nodeData.alignment === 'center' ? 'kg-align-center' : '';
     const backgroundImageStyle = (nodeData.layout === 'split' || !nodeData.backgroundImageSrc) ? (nodeData.backgroundColor !== 'accent' ? `background-color: ${nodeData.backgroundColor}` : '') : `background-color: #ffffff; background-image: url(${nodeData.backgroundImageSrc})`;
 
     const formTemplate = `

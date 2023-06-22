@@ -56,7 +56,7 @@ export class SignupParser {
                             const buttonText = domNode.querySelector('.kg-signup-card-button-default')?.textContent?.trim() || 'Subscribe';
                             const buttonTextColor = domNode.querySelector('.kg-signup-card-button')?.style.color || '';
                             const textColor = domNode.querySelector('.kg-signup-card-success')?.style.color || '';
-                            const alignment = domNode.querySelector('.kg-signup-card-text')?.classList.contains('align-center') ? 'center' : 'left';
+                            const alignment = domNode.querySelector('.kg-signup-card-text')?.classList.contains('kg-align-center') ? 'center' : 'left';
                             const successMessage = domNode.querySelector('.kg-signup-card-success')?.textContent?.trim() || '';
                             const labels = [...domNode.querySelectorAll('input[data-members-label]')].map(input => input.value);
 
