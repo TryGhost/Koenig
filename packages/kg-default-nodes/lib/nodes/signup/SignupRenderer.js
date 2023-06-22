@@ -130,6 +130,10 @@ export function getCardClasses(nodeData) {
         cardClasses.push('kg-swapped');
     }
 
+    if (nodeData.layout && nodeData.layout === 'full') {
+        cardClasses.push(`kg-content-wide`);
+    }
+
     if (nodeData.layout === 'split') {
         if (nodeData.backgroundSize === 'contain') {
             cardClasses.push('kg-content-wide');
