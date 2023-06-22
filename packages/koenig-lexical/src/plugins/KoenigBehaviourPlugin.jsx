@@ -271,7 +271,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 DESELECT_CARD_COMMAND,
                 ({cardKey}) => {
                     $deselectCard(editor, cardKey);
-
+                    
                     setSelectedCardKey(null);
                     setIsEditingCard(false);
                 },

@@ -5,7 +5,7 @@ import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {HtmlNode as BaseHtmlNode, INSERT_HTML_COMMAND} from '@tryghost/kg-default-nodes';
-import {EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
+import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
 import {HtmlCard} from '../components/ui/cards/HtmlCard';
 import {ReactComponent as HtmlCardIcon} from '../assets/icons/kg-card-type-html.svg';
 import {ReactComponent as HtmlIndicatorIcon} from '../assets/icons/kg-indicator-html.svg';
@@ -21,24 +21,24 @@ function HtmlNodeComponent({nodeKey, html}) {
     const {isEditing, isSelected} = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+
     const updateHtml = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.setHtml(value);
         });
     };
+
     const handleToolbarEdit = (event) => {
         event.preventDefault();
         event.stopPropagation();
         editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: false});
     };
 
-    const onBlur = () => {
-        editor.update(() => {
-            // manually trigger state update to get our card deselection handling to trigger
-            const state = editor.getEditorState();
-            editor.setEditorState(state);
-        });
+    const onBlur = (event) => {
+        if (event?.relatedTarget?.className !== 'kg-prose') {
+            editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey});
+        }
     };
 
     return (

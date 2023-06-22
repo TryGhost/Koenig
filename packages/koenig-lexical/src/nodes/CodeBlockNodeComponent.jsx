@@ -1,7 +1,7 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
-import {$getNodeByKey} from 'lexical';
+import {$getNodeByKey, DESELECT_CARD_COMMAND} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {CodeBlockCard} from '../components/ui/cards/CodeBlockCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
@@ -34,12 +34,10 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
         setEditing(true);
     };
 
-    const onBlur = () => {
-        editor.update(() => {
-            // manually trigger state update to get our card deselection handling to trigger
-            const state = editor.getEditorState();
-            editor.setEditorState(state);
-        });
+    const onBlur = (event) => {
+        if (event?.relatedTarget?.className !== 'kg-prose') {
+            editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey});
+        }
     };
 
     return (
