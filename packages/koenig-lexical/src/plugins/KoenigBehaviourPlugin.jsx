@@ -405,12 +405,12 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 KEY_ARROW_UP_COMMAND,
                 (event) => {
                     // stick to default behaviour if a selection is being made
-                    if (event.shiftKey) {
+                    if (event?.shiftKey) {
                         return false;
                     }
 
                     // if we're in a nested editor, we need to move selection back to the parent editor
-                    if (event._fromCaptionEditor) {
+                    if (event?._fromCaptionEditor) {
                         $selectCard(editor, selectedCardKey);
                     }
 
@@ -494,7 +494,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     }
 
                     // if we're in a nested editor, we need to move selection back to the parent editor
-                    if (event._fromCaptionEditor) {
+                    if (event?._fromCaptionEditor) {
                         $selectCard(editor, selectedCardKey);
                     }
 
@@ -558,11 +558,14 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 const rects = range.getClientRects();
 
                                 if (rects.length > 0) {
-                                    const rangeRect = rects[0];
+                                    // rects.length will be 2 if at the start/end of a line and we should default to the new/second line for
+                                    //  determining if a card is below the cursor
+                                    const rangeRect = rects.length > 1 ? rects[1] : rects[0];
                                     const elemRect = nativeTopLevelElement.getBoundingClientRect();
 
                                     if (Math.abs(rangeRect.bottom - elemRect.bottom) < RANGE_TO_ELEMENT_BOUNDARY_THRESHOLD_PX) {
                                         const nextSibling = topLevelElement.getNextSibling();
+                                        // console.log(`nextSibling`,nextSibling)
                                         if ($isDecoratorNode(nextSibling)) {
                                             $selectDecoratorNode(nextSibling);
                                             return true;
