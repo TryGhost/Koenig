@@ -53,7 +53,7 @@ function FileNodeComponent({
         // reset original src so it can be replaced with preview and upload progress
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setSrc('');
+            node.src = '';
         });
 
         return await fileUploadHandler(files, nodeKey, editor, uploader.upload);
@@ -82,7 +82,7 @@ function FileNodeComponent({
 
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setFileTitle(title);
+            node.fileTitle = title;
         });
     };
 
@@ -91,7 +91,7 @@ function FileNodeComponent({
 
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.setFileCaption(desc);
+            node.fileCaption = desc;
         });
     };
 
