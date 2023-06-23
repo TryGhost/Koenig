@@ -65,7 +65,7 @@ export function BookmarkNodeComponent({author, nodeKey, url, icon, title, descri
         }
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.url = response.url;
+            node.url = href;
             node.author = response.metadata.author;
             node.icon = response.metadata.icon;
             node.title = response.metadata.title;
