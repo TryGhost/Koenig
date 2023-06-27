@@ -18,7 +18,6 @@ async function copyToClipboardWithMobiledoc(editor, event) {
     }
     // avoid processing card behaviours when an inner element has focus (e.g. nested editors)
     if (document.activeElement !== editor.getRootElement()) {
-        console.log(`stopped copy to mobiledoc because active element is not the editor`)
         return true;
     }
     await copyToClipboard(editor, event);
