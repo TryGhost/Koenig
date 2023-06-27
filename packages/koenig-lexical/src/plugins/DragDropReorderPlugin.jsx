@@ -14,7 +14,7 @@ function preventDefault(event) {
 
 function useDragDropReorder(editor, isEditable) {
     const koenig = React.useContext(KoenigComposerContext);
-    const {setIsDragging} = useKoenigSelectedCardContext();
+    const {isEditingCard, setIsDragging} = useKoenigSelectedCardContext();
 
     const cardContainer = React.useRef(null);
     const skipOnDropEnd = React.useRef(false);
@@ -28,6 +28,16 @@ function useDragDropReorder(editor, isEditable) {
     const onDragEnd = React.useRef(() => {
         setIsDragging(false);
     });
+
+    // prevent dnd when editing a card
+    // note: this only updates when the edit state updates, so users must exit edit mode to drag any card
+    React.useEffect(() => {
+        if (isEditingCard) {
+            cardContainer.current?.disableDrag();
+        } else {
+            cardContainer.current?.enableDrag();
+        }
+    }, [isEditingCard, cardContainer]);
 
     const getDraggableInfo = React.useRef((draggableElement) => {
         let draggableInfo;
@@ -43,7 +53,8 @@ function useDragDropReorder(editor, isEditable) {
                     nodeKey: cardNode.getKey(),
                     cardName: cardNode.getType(),
                     dataset: cardNode.getDataset?.(),
-                    Icon: cardNode.getIcon()
+                    Icon: cardNode.getIcon(),
+                    isEditing: isEditingCard
                 };
             }
         });
@@ -52,9 +63,9 @@ function useDragDropReorder(editor, isEditable) {
     });
 
     const createCardDragElement = React.useRef((draggableInfo) => {
-        const {cardName, Icon} = draggableInfo;
+        const {cardName, Icon, isEditing} = draggableInfo;
 
-        if (!cardName || cardName === 'image') {
+        if (!cardName || cardName === 'image' || isEditing) {
             return;
         }
 
