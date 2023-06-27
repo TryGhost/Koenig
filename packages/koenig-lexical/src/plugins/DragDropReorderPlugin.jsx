@@ -53,8 +53,7 @@ function useDragDropReorder(editor, isEditable) {
                     nodeKey: cardNode.getKey(),
                     cardName: cardNode.getType(),
                     dataset: cardNode.getDataset?.(),
-                    Icon: cardNode.getIcon(),
-                    isEditing: isEditingCard
+                    Icon: cardNode.getIcon()
                 };
             }
         });
@@ -63,9 +62,9 @@ function useDragDropReorder(editor, isEditable) {
     });
 
     const createCardDragElement = React.useRef((draggableInfo) => {
-        const {cardName, Icon, isEditing} = draggableInfo;
+        const {cardName, Icon} = draggableInfo;
 
-        if (!cardName || cardName === 'image' || isEditing) {
+        if (!cardName || cardName === 'image') {
             return;
         }
 
