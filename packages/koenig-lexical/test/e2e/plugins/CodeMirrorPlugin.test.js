@@ -29,15 +29,15 @@ test.describe('CodeMirrorPlugin', async () => {
             await expect(await page.locator('.cm-content[contenteditable="true"]')).toBeVisible();
     
             // Types slower. Codemirror can be slow and needs some time to place the cursor after entering text.
-            await page.keyboard.type('words', {delay: 100});
-            await expect(page.getByText('words')).toBeVisible();
+            await page.keyboard.type('SomeHtml', {delay: 100});
+            await expect(page.getByText('SomeHtml')).toBeVisible();
 
             await page.keyboard.press(`${ctrlOrCmd}+A`);
             await page.keyboard.press(`${ctrlOrCmd}+C`);
             await page.keyboard.press(`${ctrlOrCmd}+V`);
             await page.keyboard.press(`${ctrlOrCmd}+V`);
 
-            await expect(page.getByText('wordswords')).toBeVisible();
+            await expect(page.getByText('SomeHtmlSomeHtml')).toBeVisible();
         });
     });
 });
