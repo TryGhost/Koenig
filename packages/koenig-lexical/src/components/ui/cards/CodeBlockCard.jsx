@@ -3,6 +3,7 @@ import KoenigComposerContext from '../../../context/KoenigComposerContext';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {CardCaptionEditor} from '../CardCaptionEditor';
+import {CodeMirrorPlugin} from '../../../plugins/CodeMirrorPlugin';
 import {EditorView, keymap, lineNumbers} from '@codemirror/view';
 import {HighlightStyle, syntaxHighlighting} from '@codemirror/language';
 import {css} from '@codemirror/lang-css';
@@ -11,7 +12,6 @@ import {javascript} from '@codemirror/lang-javascript';
 import {minimalSetup} from '@uiw/codemirror-extensions-basic-setup';
 import {standardKeymap} from '@codemirror/commands';
 import {tags as t} from '@lezer/highlight';
-import { CodeMirrorPlugin } from '../../../plugins/CodeMirrorPlugin';
 
 export function CodeEditor({code, language, updateCode, updateLanguage, onBlur}) {
     const [showLanguage, setShowLanguage] = React.useState(true);
