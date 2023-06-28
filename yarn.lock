@@ -2975,14 +2975,15 @@
     "@sentry/utils" "7.53.1"
     tslib "^1.9.3"
 
-"@sentry/bundler-plugin-core@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.3.0.tgz#4d3e6bb92cd0954846cffa8bac74a724fae8842c"
-  integrity sha512-PiX3yJ8UFKBIPRfhytweYjVdGfcruYJYdwSlbwFNe28fSMTKYPAF9/IqAOav9G8izlICnJm7ROyXlFlfMw0gRA==
+"@sentry/bundler-plugin-core@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.4.0.tgz#78ff999ebd33f811e0601700453166fa631afce4"
+  integrity sha512-bcDNLSce34kncvrYHgl5+edzIF8Dru5f6+gpkK2Sm/RBg/4yitCrVkzftTVwIsxZqJf0pz/CqCeMAIadEtx8JQ==
   dependencies:
     "@sentry/cli" "^2.17.0"
     "@sentry/node" "7.53.1"
     "@sentry/utils" "7.53.1"
+    dotenv "^16.3.1"
     find-up "5.0.0"
     glob "9.3.2"
     magic-string "0.27.0"
@@ -3036,11 +3037,11 @@
     tslib "^1.9.3"
 
 "@sentry/vite-plugin@^2.2.2":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.3.0.tgz#21045fd8da69f5ca552ca2f612ea826de3bfc691"
-  integrity sha512-TUKj29cLT0RLUKg74GyP4YoAalvkYrVo9/7zW+L+gbgR/7sh+9iNBjn8IZbEuMwot+A7tG+2NBGLDVXvGrwIKA==
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.4.0.tgz#fd6d2323409862ed99f2136e98bf4869b3c87bde"
+  integrity sha512-j2MXX09zhZpw9/vNzYd4hDv74+YWMWdXMLSvces6+8HaQdNe9yoOq0ItLIM5PY8sP2sCAm1afTKZYxRqJk6wIw==
   dependencies:
-    "@sentry/bundler-plugin-core" "2.3.0"
+    "@sentry/bundler-plugin-core" "2.4.0"
     unplugin "1.0.1"
 
 "@sideway/address@^4.1.3":
@@ -8122,10 +8123,10 @@ dotenv-expand@^10.0.0:
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-10.0.0.tgz#12605d00fb0af6d0a592e6558585784032e4ef37"
   integrity sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==
 
-dotenv@^16.0.0:
-  version "16.0.3"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
-  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+dotenv@^16.0.0, dotenv@^16.3.1:
+  version "16.3.1"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.3.1.tgz#369034de7d7e5b120972693352a3bf112172cc3e"
+  integrity sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==
 
 dotenv@~10.0.0:
   version "10.0.0"
