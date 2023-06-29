@@ -16,6 +16,25 @@
                 "dev"
             ],
             "cwd": "${workspaceFolder}/packages/koenig-lexical/"
+        },
+        {
+          "name": "Run Lexical",
+          "type": "node",
+          "request": "launch",
+          "skipFiles": [
+            "${workspaceFolder}/node_modules/**/*.js"
+          ],
+          "cwd": "${workspaceFolder}/packages/koenig-lexical/",
+          "runtimeExecutable": "yarn",
+          "runtimeArgs": [
+            "dev"
+          ],
+          "serverReadyAction": {
+            "pattern": "Local:   http://localhost:(\\d+)/",
+            "uriFormat": "http://localhost:%s",
+            "action": "debugWithChrome",
+            "webRoot": "${workspaceFolder}/packages/koenig-lexical/"
+          }
         }
     ]
 }
