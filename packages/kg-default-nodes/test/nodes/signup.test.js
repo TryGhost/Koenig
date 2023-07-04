@@ -56,15 +56,13 @@ describe('SignupNode', function () {
         $isSignupNode(signupNode).should.be.true;
     }));
 
-    // describe('clone', function () {
-    //     it('clones the node', editorTest(function () {
-    //         const signupNode = $createSignupNode(dataset);
-    //         const clonedSignupNode = SignupNode.clone(signupNode);
-    //         $isSignupNode(clonedSignupNode).should.be.true;
-    //         clonedSignupNode.should.not.equal(signupNode);
-    //         checkGetters(signupNode, dataset);
-    //     }));
-    // });
+    describe('clone', function () {
+        it('clones the node', editorTest(function () {
+            const signupNode = $createSignupNode(dataset);
+            const clonedSignupNode = SignupNode.clone(signupNode);
+            clonedSignupNode.should.deepEqual(signupNode);
+        }));
+    });
 
     describe('hasEditMode', function () {
         it('returns true', editorTest(function () {
