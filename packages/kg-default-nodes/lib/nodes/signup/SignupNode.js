@@ -5,10 +5,10 @@ import {generateDecoratorNode} from '../../generate-decorator-node';
 export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
     properties: [
         {name: 'alignment', default: 'left'},
-        {name: 'backgroundColor', default: ''},
+        {name: 'backgroundColor', default: '#F0F0F0'},
         {name: 'backgroundImageSrc', default: ''},
         {name: 'backgroundSize', default: 'cover'},
-        {name: 'textColor', default: ''},
+        {name: 'textColor', default: '#000000'},
         {name: 'buttonColor', default: 'accent'},
         {name: 'buttonTextColor', default: '#FFFFFF'},
         {name: 'buttonText', default: 'Subscribe'},
