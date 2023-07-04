@@ -108,7 +108,7 @@ describe('SignupNode', function () {
             node.subheader = 'This is the new subheader';
             node.successMessage = 'This is the new success message';
             node.swapped = true;
-            // Labels are tested in a separate block below
+            // Labels are tested in a separate block below because they are handled differently
         }));
 
         describe('labels', function () {
@@ -371,7 +371,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses split layout correctly', editorTest(function () {
@@ -383,7 +382,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses split and swapped correctly', editorTest(function () {
@@ -394,7 +392,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses background size contain correctly', editorTest(function () {
@@ -405,7 +402,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses background size cover correctly', editorTest(function () {
@@ -416,7 +412,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses with empty elements removed', editorTest(function () {
@@ -431,7 +426,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses without image', editorTest(function () {
@@ -445,7 +439,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
 
         it('parses with accent button and background', editorTest(function () {
@@ -459,7 +452,6 @@ describe('SignupNode', function () {
             const dom = new JSDOM(element.outerHTML).window.document;
             const nodes = $generateNodesFromDOM(editor, dom);
             nodes.length.should.equal(1);
-            // checkGetters(nodes[0], dataset);
         }));
     });
 
@@ -514,8 +506,6 @@ describe('SignupNode', function () {
                     const [signupNode] = $getRoot().getChildren();
 
                     $isSignupNode(signupNode).should.be.true;
-                    // checkGetters(signupNode, dataset);
-
                     done();
                 } catch (e) {
                     done(e);
