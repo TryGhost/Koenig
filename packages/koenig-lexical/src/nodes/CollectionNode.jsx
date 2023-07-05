@@ -1,6 +1,7 @@
 import React from 'react';
 import {CollectionNode as BaseCollectionNode} from '@tryghost/kg-default-nodes';
-import {ReactComponent as CollectionCardIcon} from '../assets/icons/kg-card-type-collection.svg';
+// TODO: update icons
+import {ReactComponent as CollectionCardIcon} from '../assets/icons/kg-card-type-gallery.svg';
 import {CollectionNodeComponent} from './CollectionNodeComponent';
 import {KoenigCardWrapper} from '../index.js';
 import {createCommand} from 'lexical';
