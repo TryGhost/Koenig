@@ -57,8 +57,8 @@ describe('CollectionNode', function () {
 
         it ('has setters for all properties', editorTest(function () {
             const node = $createCollectionNode(dataset);
-            node.collection = 'latest';
-            node.collection.should.equal('latest');
+            node.collection = {title: 'latest', id: 123456};
+            node.collection.should.deepEqual({title: 'latest', id: 123456});
             node.postCount = 5;
             node.postCount.should.equal(5);
             node.layout = 'grid';

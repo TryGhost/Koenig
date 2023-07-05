@@ -1,51 +1,40 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {BookmarkIcon} from './BookmarkCard';
 import {ButtonGroupSetting, DropdownSetting, SettingsPanel} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
-import {ReactComponent as GalleryIcon} from '../../../assets/icons/kg-gallery-placeholder.svg';
+import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
 
 export function CollectionPost({
     post,
     options
 }) {
+    // may want options later for changing post display (like hiding feature img)
     return (
-        <div>
-            {options.hideFeatureImage
-                ? null
-                : <p>Feature Image</p>}
-            <p>Post Title: {post && post.title}</p>
-            {options.hideExcerpt
-                ? null
-                : <span>Excerpt</span>}
+        <div className='p-3'>
+            <img alt={post.title} src={post.image}></img>
+            <h6>{post.title}</h6>
+            <p>{post.author}</p>
+            <p>{post.excerpt}</p>
         </div>
     );
 }
 
 export function Collection({
-    collection,
+    posts,
     columns,
     postCount,
     layout,
     rows
 }) {
     // would apply appropriate container styles here for the respective format
-    const listPosts = () => {
-        collection.forEach((post) => {
-            return (
-                <div>
-                    <CollectionPost post={post} />
-                </div>
-            );
-        });
-    };
+    const ListPosts = posts.map((post) => {
+        return <CollectionPost key={post.id} post={post} />;
+    });
 
     return (
-        <div>
-            {listPosts}
-            <p>columns: {columns}</p>
-            <p>postCount: {postCount}</p>
-            <p>rows: {rows}</p>
-            <p>layout: {layout}</p>
+        <div className='flex flex-row justify-center'>
+            {ListPosts}
         </div>
     );
 }
@@ -55,63 +44,88 @@ export function CollectionCard({
     columns,
     layout,
     postCount,
+    posts,
     rows,
     handleCollectionChange,
+    handleColumnChange,
     handleLayoutChange,
+    handlePostCountChange,
+    handleRowChange,
     isEditing
 }) {
-    const dropdownOptions = [{
-        label: 'Free members',
-        name: 'status:free'
+    const collectionOptions = [{
+        label: 'Latest',
+        name: 123456
     }, {
-        label: 'Paid members',
-        name: 'status:-free'
+        label: 'Featured',
+        name: 987654
     }];
 
     const layoutOptions = [
         {
             label: 'Grid',
             name: 'grid',
-            Icon: GalleryIcon,
-            dataTestId: 'collection-layout-grid'
+            Icon: LeftAlignIcon
         },
         {
             label: 'List',
             name: 'list',
-            Icon: CenterAlignIcon,
-            dataTestId: 'collection-layout-list'
+            Icon: CenterAlignIcon
+        }
+    ];
+
+    const incrementerOptions = [
+        {
+            label: '-',
+            name: -1
+        },
+        {
+            label: '+',
+            name: 1
         }
     ];
 
     return (
         <>
             <div className="inline-block w-full">
-                <Collection collection={collection} columns={columns} layout={layout} postCount={postCount} rows={rows} />
+                <Collection columns={columns} layout={layout} postCount={postCount} posts={posts} rows={rows} />
             </div>
             {isEditing && (
                 <SettingsPanel>
                     <DropdownSetting
                         dataTestId='collections-dropdown'
-                        label='Collections'
-                        menu={dropdownOptions}
-                        placeholder=''
+                        label='Collection'
+                        menu={collectionOptions}
+                        value={collection?.id}
                         onChange={handleCollectionChange}
                     />
                     <ButtonGroupSetting
-                        collections={layoutOptions}
-                        label="Content alignment"
+                        buttons={layoutOptions}
+                        label="Layout"
                         selectedName={layout}
                         onClick={handleLayoutChange}
                     />
                     {layout === 'grid'
                     // TODO: add new settings component for +/-
-                        ? <div>
-                            <span>Columns: {columns}</span>
-                            <span>Rows: {rows}</span>
-                        </div>
-                        : <div>
-                            <span>Posts: {postCount}</span>
-                        </div>
+                        ?
+                        <>
+                            <ButtonGroupSetting
+                                buttons={incrementerOptions}
+                                label={`Rows: ${rows}`}
+                                onClick={handleRowChange}
+                            />
+                            <ButtonGroupSetting
+                                buttons={incrementerOptions}
+                                label={`Columns: ${columns}`}
+                                onClick={handleColumnChange}
+                            />
+                        </>
+                        :
+                        <ButtonGroupSetting
+                            buttons={incrementerOptions}
+                            label={`Number of posts: ${postCount}`}
+                            onClick={handlePostCountChange}
+                        />
                     }
                 </SettingsPanel>
             )}
@@ -120,25 +134,30 @@ export function CollectionCard({
 }
 
 CollectionPost.propTypes = {
+    key: PropTypes.number,
     post: PropTypes.object,
     options: PropTypes.object
 };
 
 CollectionCard.propTypes = {
-    collection: PropTypes.array,
+    collection: PropTypes.object,
     columns: PropTypes.number,
-    layout: PropTypes.oneOf(['grid, list']),
+    layout: PropTypes.oneOf(['grid', 'list']),
     postCount: PropTypes.number,
+    posts: PropTypes.array,
     rows: PropTypes.number,
     handleCollectionChange: PropTypes.func,
+    handleColumnChange: PropTypes.func,
     handleLayoutChange: PropTypes.func,
+    handlePostCountChange: PropTypes.func,
+    handleRowChange: PropTypes.func,
     isEditing: PropTypes.bool
 };
 
 Collection.propTypes = {
-    collection: PropTypes.array,
+    posts: PropTypes.array,
     columns: PropTypes.number,
-    layout: PropTypes.oneOf(['grid, list']),
+    layout: PropTypes.oneOf(['grid', 'list']),
     postCount: PropTypes.number,
     rows: PropTypes.number
 };
