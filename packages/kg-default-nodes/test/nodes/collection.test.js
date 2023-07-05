@@ -1,7 +1,7 @@
 // const {html} = require('../utils');
 const {createHeadlessEditor} = require('@lexical/headless');
 // const {$generateNodesFromDOM} = require('@lexical/html');
-const {JSDOM} = require('jsdom');
+// const {JSDOM} = require('jsdom');
 const {CollectionNode, $createCollectionNode, $isCollectionNode} = require('../../');
 
 const editorNodes = [CollectionNode];
