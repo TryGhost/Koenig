@@ -10,6 +10,7 @@ import {Input} from './Input';
 import {InputList} from './InputList';
 import {MediaUploader} from './MediaUploader';
 import {MultiSelectDropdown} from './MultiSelectDropdown';
+import {Slider} from './Slider.jsx';
 import {Toggle} from './Toggle';
 
 export function SettingsPanel({children, darkMode}) {
@@ -52,7 +53,7 @@ export function SliderSetting({label, onChange, max, min, value, dataTestId}) {
                 <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
                 <div className="text-grey-900 dark:text-grey-200">{value}</div>
             </div>
-            <input data-testid={dataTestId} max={max} min={min} type="range" value={value} onChange={onChange} />
+            <Slider dataTestId={dataTestId} max={max} min={min} value={value} onChange={onChange} />
         </div>
     );
 }

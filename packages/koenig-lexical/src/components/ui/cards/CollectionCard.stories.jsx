@@ -81,10 +81,21 @@ Empty.args = {
     postCount: 0
 };
 
-export const Populated = Template.bind({});
-Populated.args = {
+export const PopulatedList = Template.bind({});
+PopulatedList.args = {
     display: 'Editing',
     posts: mockPosts,
     collection: {id: 123456},
-    postCount: 3
+    postCount: 3,
+    layout: 'list'
+};
+
+export const PopulatedGrid = Template.bind({});
+PopulatedGrid.args = {
+    display: 'Editing',
+    posts: mockPosts,
+    collection: {id: 123456},
+    postCount: 3,
+    layout: 'grid',
+    columns: 2
 };
