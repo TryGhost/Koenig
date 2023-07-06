@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import trackEvent from '../../../utils/analytics';
+import {Button} from '../Button';
 import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
@@ -17,11 +18,11 @@ import {ReactComponent as LayoutSplitIcon} from '../../../assets/icons/kg-layout
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
 import {MediaUploader} from '../MediaUploader';
 import {ReactComponent as ShrinkIcon} from '../../../assets/icons/kg-shrink.svg';
-import {SubscribeForm} from '../SubscribeForm';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 
 export function HeaderCard2({alignment,
+    buttonEnabled,
     buttonText,
     showBackgroundImage,
     backgroundImageSrc,
@@ -34,6 +35,7 @@ export function HeaderCard2({alignment,
     fileUploader,
     handleAlignment,
     handleButtonText,
+    handleButtonEnabled,
     handleShowBackgroundImage,
     handleHideBackgroundImage,
     handleClearBackgroundImage,
@@ -42,10 +44,7 @@ export function HeaderCard2({alignment,
     handleLayout,
     handleTextColor,
     isPinturaEnabled,
-    labels,
     layout,
-    availableLabels,
-    handleLabels,
     onFileChange,
     openImageEditor,
     imageDragHandler,
@@ -111,25 +110,25 @@ export function HeaderCard2({alignment,
             label: 'Regular',
             name: 'regular',
             Icon: ImgRegularIcon,
-            dataTestId: 'signup-layout-regular'
+            dataTestId: 'header-layout-regular'
         },
         {
             label: 'Wide',
             name: 'wide',
             Icon: ImgWideIcon,
-            dataTestId: 'signup-layout-wide'
+            dataTestId: 'header-layout-wide'
         },
         {
             label: 'Full',
             name: 'full',
             Icon: ImgFullIcon,
-            dataTestId: 'signup-layout-full'
+            dataTestId: 'header-layout-full'
         },
         {
             label: 'Split',
             name: 'split',
             Icon: LayoutSplitIcon,
-            dataTestId: 'signup-layout-split'
+            dataTestId: 'header-layout-split'
         }
     ];
 
@@ -138,13 +137,13 @@ export function HeaderCard2({alignment,
             label: 'Left',
             name: 'left',
             Icon: LeftAlignIcon,
-            dataTestId: 'signup-alignment-left'
+            dataTestId: 'header-alignment-left'
         },
         {
             label: 'Center',
             name: 'center',
             Icon: CenterAlignIcon,
-            dataTestId: 'signup-alignment-center'
+            dataTestId: 'header-alignment-center'
         }
     ];
 
@@ -188,30 +187,35 @@ export function HeaderCard2({alignment,
         event.stopPropagation();
         if (backgroundSize === 'cover') {
             handleBackgroundSize('contain');
-            trackEvent('Signup Card Toggle Size', {size: 'contain'});
+            trackEvent('header Card Toggle Size', {size: 'contain'});
         } else {
             handleBackgroundSize('cover');
-            trackEvent('Signup Card Toggle Size', {size: 'cover'});
+            trackEvent('header Card Toggle Size', {size: 'cover'});
         }
     };
 
     const toggleSwapped = () => {
-        trackEvent('Signup Card Toggle Swapped', {swapped: !isSwapped});
+        trackEvent('header Card Toggle Swapped', {swapped: !isSwapped});
         handleSwapLayout();
+    };
+
+    const toggleButton = () => {
+        trackEvent('header card button toggled', {buttonEnabled: !buttonEnabled});
+        handleButtonEnabled();
     };
 
     const correctedBackgroundSize = backgroundSize === 'contain' && backgroundImageSrc ? 'contain' : 'cover';
 
     return (
         <>
-            <div className='flex w-full font-sans text-black transition-colors ease-in-out' data-testid={'signup-card-container'} style={wrapperStyle()}>
+            <div className='flex w-full font-sans text-black transition-colors ease-in-out' data-testid={'header-card-container'} style={wrapperStyle()}>
                 <div className={clsx(
                     'flex w-full flex-col transition-colors ease-in-out sm:flex-row',
                     (layout === 'split' && isSwapped) && 'flex-col-reverse sm:flex-row-reverse',
                     // This is needed to align the content with wide breakout width
                     (layout === 'full' || (layout === 'split' && (correctedBackgroundSize === 'contain'))) && 'mx-auto w-[calc(740px+4rem)] xs:w-[calc(740px+8rem)] md:w-[calc(740px+12rem)] lg:w-[calc(740px+22rem)] xl:w-[calc(740px+40rem)]',
                     (backgroundImageSrc && (layout === 'split') && (correctedBackgroundSize === 'contain')) && 'items-center',
-                )} data-testid={'signup-card-content'}>
+                )} data-testid={'header-card-content'}>
                     {layout === 'split' && (
                         <MediaUploader
                             additionalActions={<>
@@ -257,7 +261,7 @@ export function HeaderCard2({alignment,
                         {/* Heading */}
                         {<KoenigNestedEditor
                             autoFocus={true}
-                            dataTestId="signup-header-editor"
+                            dataTestId="header-header-editor"
                             focusNext={subheaderTextEditor}
                             hasSettingsPanel={true}
                             hiddenFormats={['bold']}
@@ -284,7 +288,7 @@ export function HeaderCard2({alignment,
 
                         {/* Subheading */}
                         {<KoenigNestedEditor
-                            dataTestId="signup-subheader-editor"
+                            dataTestId="header-subheader-editor"
                             hasSettingsPanel={true}
                             initialEditor={subheaderTextEditor}
                             initialEditorState={subheaderTextEditorInitialState}
@@ -309,33 +313,32 @@ export function HeaderCard2({alignment,
                             )}
                         />}
 
-                        {/* Subscribe form */}
-                        <div className={`w-full ${(layout === 'regular') ? 'peer-[.koenig-lexical]:mt-10' : (layout === 'wide') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3' : (layout === 'full') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3 peer-[.koenig-lexical]:md:mt-16 xl:w-1/2' : 'max-w-[500px] peer-[.koenig-lexical]:mt-10 peer-[.koenig-lexical]:md:mt-16'}`}>
-                            <SubscribeForm
-                                buttonSize={`${(layout === 'regular') ? 'medium' : 'large'}`}
-                                buttonStyle={buttonColor ? {
-                                    backgroundColor: hexColorValue(buttonColor),
-                                    color: hexColorValue(buttonTextColor)
-                                } : {backgroundColor: `#000000`,
-                                    color: `#ffffff`}}
-                                buttonText={buttonText}
-                                dataTestId='signup-card-button'
-                                disabled={true}
-                                placeholder='Your email'
-                            />
-                        </div>
+                        {/* Button */}
+
+                        {
+                            buttonEnabled && (
+                                <div className={`w-full ${(layout === 'regular') ? 'peer-[.koenig-lexical]:mt-10' : (layout === 'wide') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3' : (layout === 'full') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3 peer-[.koenig-lexical]:md:mt-16 xl:w-1/2' : 'max-w-[500px] peer-[.koenig-lexical]:mt-10 peer-[.koenig-lexical]:md:mt-16'}`}>
+                                    <Button 
+                                        dataTestId="header-card-button" 
+                                        disabled={true} 
+                                        placeholder='Click me' 
+                                        size={`${(layout === 'regular') ? 'medium' : 'large'}`}
+                                        style={buttonColor ? {
+                                            backgroundColor: hexColorValue(buttonColor),
+                                            color: hexColorValue(buttonTextColor)
+                                        } : {backgroundColor: `#000000`,
+                                            color: `#ffffff`}}
+                                        value={buttonText}
+                                    />
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
 
                 {/* Read-only overlay */}
                 {!isEditing && <div className="absolute top-0 z-10 !m-0 h-full w-full cursor-default p-0"></div>}
             </div>
-
-            {isEditing &&
-                <div className="!mt-0 flex items-center justify-center bg-grey-100 p-2 font-sans text-sm font-normal leading-none text-grey-600 dark:bg-grey-950 dark:text-grey-800">
-                    Only visible to logged out visitors, this card is not shown in emails or to existing members.
-                </div>
-            }
 
             {isEditing && (
                 <SettingsPanel className="mt-0">
@@ -355,7 +358,7 @@ export function HeaderCard2({alignment,
                     {
                         layout === 'split' && (
                             <ToggleSetting
-                                dataTestId='signup-swapped'
+                                dataTestId='header-swapped'
                                 isChecked={isSwapped}
                                 label='Flip Layout'
                                 onChange={toggleSwapped}
@@ -365,7 +368,7 @@ export function HeaderCard2({alignment,
                     }
 
                     <ColorPickerSetting
-                        dataTestId='signup-background-color'
+                        dataTestId='header-background-color'
                         eyedropper={layout === 'split'}
                         hasTransparentOption={true}
                         isExpanded={backgroundColorPickerExpanded}
@@ -379,7 +382,7 @@ export function HeaderCard2({alignment,
                                             `relative flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
                                             showBackgroundImage && 'outline outline-2 outline-green'
                                         )}
-                                        data-testid="signup-background-image-toggle"
+                                        data-testid="header-background-image-toggle"
                                         title="Image"
                                         type="button"
                                         onClick={() => {
@@ -444,49 +447,51 @@ export function HeaderCard2({alignment,
                             handleTextColor(matchingTextColor(backgroundColor));
                         }}
                     />
-                    <SettingsDivider />
 
-                    <ColorPickerSetting
-                        dataTestId='signup-button-color'
-                        eyedropper={layout === 'split'}
-                        isExpanded={buttonColorPickerExpanded}
+                    {/* Button settings */}
+                    <SettingsDivider />
+                    <ToggleSetting
+                        dataTestId='header-button'
+                        isChecked={buttonEnabled}
                         label='Button'
-                        swatches={[
-                            {title: 'White', hex: '#ffffff'},
-                            {title: 'Black', hex: '#000000'},
-                            {title: 'Brand color', accent: true}
-                        ]}
-                        value={buttonColor}
-                        onPickerChange={color => handleButtonColor(color, matchingTextColor(color))}
-                        onSwatchChange={(color) => {
-                            handleButtonColor(color, matchingTextColor(color));
-                            setButtonColorPickerExpanded(false);
-                        }}
-                        onTogglePicker={(isExpanded) => {
-                            setButtonColorPickerExpanded(isExpanded);
-                            if (isExpanded) {
-                                setBackgroundColorPickerExpanded(!isExpanded);
-                            }
-                        }}
+                        onChange={toggleButton}
                     />
-                    <InputSetting
-                        dataTestId='signup-button-text'
-                        label='Button text'
-                        placeholder='Add button text'
-                        value={buttonText}
-                        hideLabel
-                        onBlur={handleButtonTextBlur}
-                        onChange={handleButtonText}
-                    />
-                    <MultiSelectDropdownSetting
-                        availableItems={availableLabels}
-                        dataTestId='labels-dropdown'
-                        description='Added to members created using this form'
-                        items={labels}
-                        label='Labels'
-                        placeholder='Select'
-                        onChange={handleLabels}
-                    />
+                    {buttonEnabled && (
+                        <>
+                            <ColorPickerSetting
+                                dataTestId='header-button-color'
+                                eyedropper={layout === 'split'}
+                                isExpanded={buttonColorPickerExpanded}
+                                label='Button Color'
+                                swatches={[
+                                    {title: 'White', hex: '#ffffff'},
+                                    {title: 'Black', hex: '#000000'},
+                                    {title: 'Brand color', accent: true}
+                                ]}
+                                value={buttonColor}
+                                onPickerChange={color => handleButtonColor(color, matchingTextColor(color))}
+                                onSwatchChange={(color) => {
+                                    handleButtonColor(color, matchingTextColor(color));
+                                    setButtonColorPickerExpanded(false);
+                                }}
+                                onTogglePicker={(isExpanded) => {
+                                    setButtonColorPickerExpanded(isExpanded);
+                                    if (isExpanded) {
+                                        setBackgroundColorPickerExpanded(!isExpanded);
+                                    }
+                                }}
+                            />
+                            <InputSetting
+                                dataTestId='header-button-text'
+                                label='Button text'
+                                placeholder='Add button text'
+                                value={buttonText}
+                                hideLabel
+                                onBlur={handleButtonTextBlur}
+                                onChange={handleButtonText}
+                            />
+                        </>
+                    )}
                 </SettingsPanel>
             )}
         </>
@@ -498,6 +503,7 @@ HeaderCard2.propTypes = {
     buttonColor: PropTypes.string,
     buttonText: PropTypes.string,
     buttonTextColor: PropTypes.string,
+    buttonEnabled: PropTypes.bool,
     buttonPlaceholder: PropTypes.string,
     backgroundImageSrc: PropTypes.string,
     backgroundSize: PropTypes.oneOf(['cover', 'contain']),
@@ -516,11 +522,8 @@ HeaderCard2.propTypes = {
     handleShowBackgroundImage: PropTypes.func,
     handleHideBackgroundImage: PropTypes.func,
     handleButtonColor: PropTypes.func,
-    handleLabels: PropTypes.func,
     handleTextColor: PropTypes.func,
-    labels: PropTypes.arrayOf(PropTypes.string),
     layout: PropTypes.oneOf(['regular', 'wide', 'full', 'split']),
-    availableLabels: PropTypes.arrayOf(PropTypes.string),
     openFilePicker: PropTypes.func,
     onFileChange: PropTypes.func,
     openImageEditor: PropTypes.func,

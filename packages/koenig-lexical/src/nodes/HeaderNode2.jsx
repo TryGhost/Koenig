@@ -65,6 +65,8 @@ export class HeaderNode2 extends BaseHeaderNode {
             });
         }
 
+        console.log(json);
+
         return json;
     }
 
@@ -96,9 +98,15 @@ export class HeaderNode2 extends BaseHeaderNode {
     // {name: 'layout', default: 'wide'},
     // {name: 'swapped', default: false}
 
+    getCardWidth() {
+        const layout = this.layout;
+
+        return layout === 'split' ? 'full' : layout;
+    }
+
     decorate() {
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()} width={'full'}>
+            <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth()}>
                 <HeaderComponent2
                     alignment={this.alignment}
                     backgroundColor={this.backgroundColor}

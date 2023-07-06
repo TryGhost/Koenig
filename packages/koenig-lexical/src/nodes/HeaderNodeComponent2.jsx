@@ -195,13 +195,20 @@ function HeaderComponent2({
         });
     };
 
+    const handleButtonEnabled = () => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.buttonEnabled = !buttonEnabled;
+        });
+    };
+
     useEffect(() => {
         headerTextEditor.setEditable(isEditing);
         subheaderTextEditor.setEditable(isEditing);
     }, [isEditing, headerTextEditor, subheaderTextEditor]);
 
     return (
-        <>
+        <> 
             <HeaderCard2
                 alignment={alignment}
                 backgroundColor={backgroundColor}
@@ -217,6 +224,7 @@ function HeaderComponent2({
                 handleBackgroundColor={handleBackgroundColor}
                 handleBackgroundSize={handleBackgroundSize}
                 handleButtonColor={handleButtonColor}
+                handleButtonEnabled={handleButtonEnabled}
                 handleButtonText={handleButtonText}
                 handleButtonTextBlur={handleButtonTextBlur}
                 handleClearBackgroundImage={handleClearBackgroundImage}
