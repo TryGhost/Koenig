@@ -76,11 +76,15 @@ const Template = ({display, caption, ...args}) => {
 
 export const Empty = Template.bind({});
 Empty.args = {
-    display: 'Editing'
+    display: 'Editing',
+    collection: {id: 123456}, // we'll always return some collections, but may need a placeholder in case of no api access
+    postCount: 0
 };
 
 export const Populated = Template.bind({});
 Populated.args = {
     display: 'Editing',
-    posts: mockPosts
+    posts: mockPosts,
+    collection: {id: 123456},
+    postCount: 3
 };
