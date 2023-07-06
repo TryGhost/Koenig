@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {ButtonGroupSetting, DropdownSetting, SettingsPanel} from '../SettingsPanel';
-import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
-import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
+import {ReactComponent as GridLayoutIcon} from '../../../assets/icons/kg-layout-grid.svg';
+import {ReactComponent as ListLayoutIcon} from '../../../assets/icons/kg-layout-list.svg';
 
 export function CollectionPost({
     post,
@@ -12,17 +12,17 @@ export function CollectionPost({
     const {title, image, author, excerpt} = post;
     return (
         <div className='p-3'>
-            <div className="not-kg-prose relative flex min-h-[120px] w-full rounded border border-grey/40 bg-transparent font-sans dark:border-grey/20">
+            <div className="not-kg-prose relative flex min-h-[120px] w-full bg-transparent font-sans">
+                {image &&
+                        (<div className={'grow-1 relative m-0 min-w-[33%]'}>
+                            <img alt="" className="absolute inset-0 h-full w-full object-cover" src={image}/>
+                        </div>)
+                }
                 <div className="flex grow basis-full flex-col items-start justify-start p-5">
                     {title && <div className="text-[1.5rem] font-semibold leading-normal tracking-normal text-grey-900 dark:text-grey-100">{title}</div>}
                     {author && <span className="text-[1.3rem]">by {author}</span>}
                     {excerpt && <div className="mt-1 max-h-[44px] overflow-y-hidden text-sm font-normal leading-normal text-grey-800 line-clamp-2 dark:text-grey-600">{excerpt}</div>}
                 </div>
-                {image &&
-                        (<div className={'grow-1 relative m-0 min-w-[33%]'}>
-                            <img alt="" className="absolute inset-0 h-full w-full rounded-r-[.3rem] object-cover" src={image}/>
-                        </div>)
-                }
                 <div className="absolute inset-0 z-50 mt-0"></div>
             </div>
         </div>
@@ -33,8 +33,7 @@ export function Collection({
     posts,
     columns,
     postCount,
-    layout,
-    rows
+    layout
 }) {
     // would apply appropriate container styles here for the respective format
     // also need to figure out how to handle placeholders if we should have a specific # showing
@@ -56,12 +55,10 @@ export function CollectionCard({
     layout,
     postCount,
     posts,
-    rows,
     handleCollectionChange,
     handleColumnChange,
     handleLayoutChange,
     handlePostCountChange,
-    handleRowChange,
     isEditing
 }) {
     const collectionOptions = [{
@@ -74,14 +71,14 @@ export function CollectionCard({
 
     const layoutOptions = [
         {
-            label: 'Grid',
-            name: 'grid',
-            Icon: LeftAlignIcon
-        },
-        {
             label: 'List',
             name: 'list',
-            Icon: CenterAlignIcon
+            Icon: ListLayoutIcon
+        },
+        {
+            label: 'Grid',
+            name: 'grid',
+            Icon: GridLayoutIcon
         }
     ];
 
@@ -99,7 +96,7 @@ export function CollectionCard({
     return (
         <>
             <div className="inline-block w-full">
-                <Collection columns={columns} layout={layout} postCount={postCount} posts={posts} rows={rows} />
+                <Collection columns={columns} layout={layout} postCount={postCount} posts={posts} />
             </div>
             {isEditing && (
                 <SettingsPanel>
@@ -116,14 +113,20 @@ export function CollectionCard({
                         selectedName={layout}
                         onClick={handleLayoutChange}
                     />
-                    {layout === 'grid'
+                    {layout === 'list'
                     // TODO: add new settings component for +/-
                         ?
+                        <ButtonGroupSetting
+                            buttons={incrementerOptions}
+                            label={`Posts: ${postCount}`}
+                            onClick={handlePostCountChange}
+                        />
+                        :
                         <>
                             <ButtonGroupSetting
                                 buttons={incrementerOptions}
-                                label={`Rows: ${rows}`}
-                                onClick={handleRowChange}
+                                label={`Posts: ${postCount}`}
+                                onClick={handlePostCountChange}
                             />
                             <ButtonGroupSetting
                                 buttons={incrementerOptions}
@@ -131,12 +134,6 @@ export function CollectionCard({
                                 onClick={handleColumnChange}
                             />
                         </>
-                        :
-                        <ButtonGroupSetting
-                            buttons={incrementerOptions}
-                            label={`Number of posts: ${postCount}`}
-                            onClick={handlePostCountChange}
-                        />
                     }
                 </SettingsPanel>
             )}
@@ -152,10 +149,9 @@ CollectionPost.propTypes = {
 CollectionCard.propTypes = {
     collection: PropTypes.object,
     columns: PropTypes.number,
-    layout: PropTypes.oneOf(['grid', 'list']),
+    layout: PropTypes.oneOf(['list', 'grid']),
     postCount: PropTypes.number,
     posts: PropTypes.array,
-    rows: PropTypes.number,
     handleCollectionChange: PropTypes.func,
     handleColumnChange: PropTypes.func,
     handleLayoutChange: PropTypes.func,
@@ -167,7 +163,6 @@ CollectionCard.propTypes = {
 Collection.propTypes = {
     posts: PropTypes.array,
     columns: PropTypes.number,
-    layout: PropTypes.oneOf(['grid', 'list']),
-    postCount: PropTypes.number,
-    rows: PropTypes.number
+    layout: PropTypes.oneOf(['list', 'grid']),
+    postCount: PropTypes.number
 };
