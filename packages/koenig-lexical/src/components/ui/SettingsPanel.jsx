@@ -45,14 +45,14 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     );
 }
 
-export function IncrementerSetting({}) {
+export function SliderSetting({label, onChange, max, min, value, dataTestId}) {
     return (
-        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
-            <div className={hideLabel ? 'sr-only' : 'font-bold text-grey-900 dark:text-grey-200'}>{label}</div>
-            <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onBlur={onBlur} onChange={onChange} />
-            {description &&
-            <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
-            }
+        <div className="mt-2 flex w-full flex-col gap-1">
+            <div className="flex items-center justify-between font-sans text-[1.3rem] font-normal">
+                <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
+                <div className="text-grey-900 dark:text-grey-200">{value}</div>
+            </div>
+            <input data-testid={dataTestId} max={max} min={min} type="range" value={value} onChange={onChange} />
         </div>
     );
 }

@@ -29,8 +29,7 @@ describe('CollectionNode', function () {
             collection: 'featured',
             postCount: 3,
             layout: 'list',
-            columns: 1,
-            rows: 3
+            columns: 1
         };
 
         // exportOptions = {
@@ -52,7 +51,6 @@ describe('CollectionNode', function () {
             collectionNode.postCount.should.equal(dataset.postCount);
             collectionNode.layout.should.equal(dataset.layout);
             collectionNode.columns.should.equal(dataset.columns);
-            collectionNode.rows.should.equal(dataset.rows);
         }));
 
         it ('has setters for all properties', editorTest(function () {
@@ -65,8 +63,6 @@ describe('CollectionNode', function () {
             node.layout.should.equal('grid');
             node.columns = 2;
             node.columns.should.equal(2);
-            node.rows = 5;
-            node.rows.should.equal(5);
         }));
 
         it('has getDataset() method', editorTest(function () {

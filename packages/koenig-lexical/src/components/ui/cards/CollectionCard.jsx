@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {ButtonGroupSetting, DropdownSetting, SettingsPanel} from '../SettingsPanel';
+import {ButtonGroupSetting, DropdownSetting, SettingsPanel, SliderSetting} from '../SettingsPanel';
 import {ReactComponent as GridLayoutIcon} from '../../../assets/icons/kg-layout-grid.svg';
 import {ReactComponent as ListLayoutIcon} from '../../../assets/icons/kg-layout-list.svg';
 
@@ -82,17 +82,6 @@ export function CollectionCard({
         }
     ];
 
-    const incrementerOptions = [
-        {
-            label: '-',
-            name: -1
-        },
-        {
-            label: '+',
-            name: 1
-        }
-    ];
-
     return (
         <>
             <div className="inline-block w-full">
@@ -113,27 +102,22 @@ export function CollectionCard({
                         selectedName={layout}
                         onClick={handleLayoutChange}
                     />
-                    {layout === 'list'
-                    // TODO: add new settings component for +/-
-                        ?
-                        <ButtonGroupSetting
-                            buttons={incrementerOptions}
-                            label={`Posts: ${postCount}`}
-                            onClick={handlePostCountChange}
+                    <SliderSetting
+                        label="Post Count"
+                        max={12}
+                        min={1}
+                        value={postCount}
+                        onChange={handlePostCountChange}
+                    />
+                    {layout === 'grid' ?
+                        <SliderSetting
+                            label="Columns"
+                            max={4}
+                            min={1}
+                            value={columns}
+                            onChange={handleColumnChange}
                         />
-                        :
-                        <>
-                            <ButtonGroupSetting
-                                buttons={incrementerOptions}
-                                label={`Posts: ${postCount}`}
-                                onClick={handlePostCountChange}
-                            />
-                            <ButtonGroupSetting
-                                buttons={incrementerOptions}
-                                label={`Columns: ${columns}`}
-                                onClick={handleColumnChange}
-                            />
-                        </>
+                        : null
                     }
                 </SettingsPanel>
             )}

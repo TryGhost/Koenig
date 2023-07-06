@@ -8,16 +8,12 @@ import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function CollectionNodeComponent({collection, columns, layout, nodeKey, postCount, rows}) {
+export function CollectionNodeComponent({collection, columns, layout, nodeKey, postCount}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
     const [posts, setPosts] = React.useState([]);
-
-    const maxPosts = 12;
-    const maxRows = 6;
-    const maxColumns = 4;
 
     const mockPosts = [
         {
@@ -77,62 +73,19 @@ export function CollectionNodeComponent({collection, columns, layout, nodeKey, p
         });
     };
 
-    const handleColumnChange = (value) => {
-        const isPlus = value === 1;
-        if (isPlus) {
-            if (columns >= maxColumns) {
-                return;
-            }
-        } else if (columns <= 1) {
-            return;
-        }
+    const handleColumnChange = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.columns = isPlus ? columns + 1 : columns - 1;
+            node.columns = parseInt(event.target.value);
         });
     };
 
-    const handlePostCountChange = (value) => {
-        const isPlus = value === 1;
-        if (isPlus) {
-            if (postCount >= maxPosts) {
-                return;
-            }
-        } else if (postCount <= 1) {
-            return;
-        }
+    const handlePostCountChange = (event) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.postCount = isPlus ? postCount + 1 : postCount - 1;
+            node.postCount = parseInt(event.target.value);
         });
     };
-
-    const handleRowChange = (value) => {
-        // TODO: might need to show some kind of error when we max out the number of displayed posts
-        const isPlus = value === 1;
-        if (isPlus) {
-            if (rows >= maxRows) {
-                return;
-            }
-        } else if (rows <= 1) {
-            return;
-        }
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.rows = isPlus ? rows + 1 : rows - 1;
-        });
-        // if (canAddPosts(value, 'row')) {
-        //     editor.update(() => {
-        //         const node = $getNodeByKey(nodeKey);
-        //         node.rows = value;
-        //     });
-        // }
-    };
-
-    // const canAddPosts = (value, source) => {
-    //     if (source === 'rows') {
-    //         if (value)
-    //     }
 
     return (
         <>
@@ -143,12 +96,10 @@ export function CollectionNodeComponent({collection, columns, layout, nodeKey, p
                 handleColumnChange={handleColumnChange}
                 handleLayoutChange={handleLayoutChange}
                 handlePostCountChange={handlePostCountChange}
-                handleRowChange={handleRowChange}
                 isEditing={isEditing}
                 layout={layout}
                 postCount={postCount}
                 posts={posts}
-                rows={rows}
             />
             <ActionToolbar
                 data-kg-card-toolbar="collection"
