@@ -16,6 +16,7 @@ import {EmbedPlugin} from '../plugins/EmbedPlugin';
 import {FilePlugin} from '../plugins/FilePlugin';
 import {GalleryPlugin} from '../plugins/GalleryPlugin';
 import {HeaderPlugin} from '../plugins/HeaderPlugin';
+import {HeaderPlugin2} from './HeaderPlugin2';
 import {KoenigSnippetPlugin} from '../plugins/KoenigSnippetPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {PaywallPlugin} from '../plugins/PaywallPlugin';
@@ -57,6 +58,7 @@ export const AllDefaultPlugins = () => {
             <EmailPlugin />
             <EmbedPlugin />
             <SignupPlugin />
+            <HeaderPlugin2 />
 
             {/* Snippet Plugins */}
             <KoenigSnippetPlugin />

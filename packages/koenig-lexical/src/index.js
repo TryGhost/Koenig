@@ -17,6 +17,7 @@ import FilePlugin from './plugins/FilePlugin';
 import FloatingToolbarPlugin from './plugins/FloatingToolbarPlugin';
 import GalleryPlugin from './plugins/GalleryPlugin';
 import HeaderPlugin from './plugins/HeaderPlugin';
+import HeaderPlugin2 from './plugins/HeaderPlugin2';
 import HorizontalRulePlugin from './plugins/HorizontalRulePlugin';
 import HtmlOutputPlugin from './plugins/HtmlOutputPlugin';
 import ImagePlugin from './plugins/ImagePlugin';
@@ -85,6 +86,7 @@ export {
     TogglePlugin,
     VideoPlugin,
     WordCountPlugin,
+    HeaderPlugin2,
 
     AllDefaultPlugins,
 

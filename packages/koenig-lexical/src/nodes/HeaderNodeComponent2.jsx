@@ -5,15 +5,19 @@ import usePinturaEditor from '../hooks/usePinturaEditor';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar';
 import {EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
-import {SignupCard} from '../components/ui/cards/SignupCard.jsx';
+// import {SignupCard} from '../components/ui/cards/SignupCard.jsx';
+import {HeaderCard2} from '../components/ui/cards/HeaderCard2';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
 import {backgroundImageUploadHandler} from '../utils/imageUploadHandler';
 import {openFileSelection} from '../utils/openFileSelection';
 import {useContext, useEffect, useRef, useState} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+// {name: 'size', default: 'small'}, // v1
+// {name: 'style', default: 'dark'}, // v1
+// do we need these?
 
-function SignupNodeComponent({
+function HeaderComponent2({
     alignment,
     backgroundColor,
     backgroundImageSrc,
@@ -21,14 +25,12 @@ function SignupNodeComponent({
     buttonColor,
     buttonText,
     buttonTextColor,
+    buttonUrl,
+    buttonEnabled,
     nodeKey,
-    disclaimer,
-    disclaimerTextEditor,
-    disclaimerTextEditorInitialState,
     header,
     headerTextEditor,
     headerTextEditorInitialState,
-    labels,
     layout,
     subheader,
     subheaderTextEditor,
@@ -41,19 +43,18 @@ function SignupNodeComponent({
     const {fileUploader} = useContext(KoenigComposerContext);
     const {isEditing, isSelected} = useContext(CardContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = useState(false);
-    const [availableLabels, setAvailableLabels] = useState([]);
     const [showBackgroundImage, setShowBackgroundImage] = useState(Boolean(backgroundImageSrc));
     const [lastBackgroundImage, setLastBackgroundImage] = useState(backgroundImageSrc);
     const {isEnabled: isPinturaEnabled, openEditor: openImageEditor} = usePinturaEditor({config: cardConfig.pinturaConfig});
     const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        if (cardConfig?.fetchLabels) {
-            cardConfig.fetchLabels().then((options) => {
-                setAvailableLabels(options);
-            });
-        }
-    }, [cardConfig]);
+    // useEffect(() => {
+    //     if (cardConfig?.fetchLabels) {
+    //         cardConfig.fetchLabels().then((options) => {
+    //             setAvailableLabels(options);
+    //         });
+    //     }
+    // }, [cardConfig]);
 
     useEffect(() => {
         if (layout !== 'split') {
@@ -130,7 +131,7 @@ function SignupNodeComponent({
         if (!event.target.value) {
             editor.update(() => {
                 const node = $getNodeByKey(nodeKey);
-                node.buttonText = 'Subscribe';
+                node.buttonText = 'New Button';
             });
         }
     };
@@ -187,13 +188,6 @@ function SignupNodeComponent({
         });
     };
 
-    const handleLabels = (newLabels) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.setLabels(newLabels);
-        });
-    };
-
     const handleSwapLayout = () => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -204,23 +198,20 @@ function SignupNodeComponent({
     useEffect(() => {
         headerTextEditor.setEditable(isEditing);
         subheaderTextEditor.setEditable(isEditing);
-        disclaimerTextEditor.setEditable(isEditing);
-    }, [isEditing, headerTextEditor, subheaderTextEditor, disclaimerTextEditor]);
+    }, [isEditing, headerTextEditor, subheaderTextEditor]);
 
     return (
         <>
-            <SignupCard
+            <HeaderCard2
                 alignment={alignment}
-                availableLabels={availableLabels}
                 backgroundColor={backgroundColor}
                 backgroundImageSrc={backgroundImageSrc}
                 backgroundSize={backgroundSize}
                 buttonColor={buttonColor}
+                buttonEnabled={buttonEnabled}
                 buttonText={buttonText}
                 buttonTextColor={buttonTextColor}
-                disclaimer={disclaimer}
-                disclaimerTextEditor={disclaimerTextEditor}
-                disclaimerTextEditorInitialState={disclaimerTextEditorInitialState}
+                buttonUrl={buttonUrl}
                 fileUploader={imageUploader}
                 handleAlignment={handleAlignment}
                 handleBackgroundColor={handleBackgroundColor}
@@ -230,7 +221,6 @@ function SignupNodeComponent({
                 handleButtonTextBlur={handleButtonTextBlur}
                 handleClearBackgroundImage={handleClearBackgroundImage}
                 handleHideBackgroundImage={handleHideBackgroundImage}
-                handleLabels={handleLabels}
                 handleLayout={handleLayout}
                 handleShowBackgroundImage={handleShowBackgroundImage}
                 handleSwapLayout={handleSwapLayout}
@@ -242,7 +232,6 @@ function SignupNodeComponent({
                 isEditing={isEditing}
                 isPinturaEnabled={isPinturaEnabled}
                 isSwapped={isSwapped}
-                labels={labels}
                 layout={layout}
                 openImageEditor={openImageEditor}
                 setFileInputRef={ref => fileInputRef.current = ref}
@@ -281,4 +270,4 @@ function SignupNodeComponent({
     );
 }
 
-export default SignupNodeComponent;
+export default HeaderComponent2;

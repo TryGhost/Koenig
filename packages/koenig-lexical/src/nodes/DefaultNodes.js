@@ -10,6 +10,7 @@ import {EmbedNode} from './EmbedNode';
 import {FileNode} from './FileNode';
 import {GalleryNode} from './GalleryNode';
 import {HeaderNode} from './HeaderNode';
+import {HeaderNode2} from './HeaderNode2';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
 import {HtmlNode} from './HtmlNode';
@@ -49,7 +50,8 @@ const DEFAULT_NODES = [
     EmailCtaNode,
     EmbedNode,
     GalleryNode,
-    SignupNode
+    SignupNode,
+    HeaderNode2
 ];
 
 export default DEFAULT_NODES;
