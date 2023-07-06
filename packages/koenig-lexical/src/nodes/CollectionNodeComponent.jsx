@@ -21,28 +21,28 @@ export function CollectionNodeComponent({collection, columns, layout, nodeKey, p
 
     const mockPosts = [
         {
-            title: 'Post 1',
+            title: 'A Post For The Ages',
             id: 123456,
             url: 'https://www.google.com',
-            excerpt: 'This is the excerpt for post 1',
+            excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
             image: 'https://placekitten.com/250/250',
-            author: 'Author 1'
+            author: 'Author McAuthory'
         },
         {
-            title: 'Post 2',
+            title: 'Copilot Needs A Post',
             id: 234059,
             url: 'https://www.google.com',
-            excerpt: 'This is the excerpt for post 2',
+            excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
             image: 'https://placekitten.com/251/250',
-            author: 'Author 2'
+            author: 'Writer Writterson'
         },
         {
-            title: 'Post 3',
+            title: 'More Suggestions Please And Thank You',
             id: 129837,
             url: 'https://www.google.com',
-            excerpt: 'This is the excerpt for post 3',
+            excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
             image: 'https://placekitten.com/249/251',
-            author: 'Author 3'
+            author: 'Author McAuthory'
         }
     ];
 

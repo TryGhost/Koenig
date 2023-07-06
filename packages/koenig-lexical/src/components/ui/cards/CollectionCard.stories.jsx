@@ -2,6 +2,33 @@ import React from 'react';
 import {CardWrapper} from './../CardWrapper';
 import {CollectionCard} from './CollectionCard';
 
+const mockPosts = [
+    {
+        title: 'A Post For The Ages',
+        id: 123456,
+        url: 'https://www.google.com',
+        excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
+        image: 'https://placekitten.com/250/250',
+        author: 'Author McAuthory'
+    },
+    {
+        title: 'Copilot Needs A Post',
+        id: 234059,
+        url: 'https://www.google.com',
+        excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
+        image: 'https://placekitten.com/251/250',
+        author: 'Writer Writterson'
+    },
+    {
+        title: 'More Suggestions Please And Thank You',
+        id: 129837,
+        url: 'https://www.google.com',
+        excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
+        image: 'https://placekitten.com/249/251',
+        author: 'Author McAuthory'
+    }
+];
+
 const displayOptions = {
     Default: {isSelected: false, isEditing: false},
     Selected: {isSelected: true, isEditing: false},
@@ -54,5 +81,6 @@ Empty.args = {
 
 export const Populated = Template.bind({});
 Populated.args = {
-    display: 'Editing'
+    display: 'Editing',
+    posts: mockPosts
 };
