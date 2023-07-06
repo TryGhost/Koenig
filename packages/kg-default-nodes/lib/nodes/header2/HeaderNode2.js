@@ -4,10 +4,11 @@ import {parseHeaderNode} from './HeaderParser2';
 
 export class HeaderNode2 extends generateDecoratorNode(
     {nodeType: 'header2',
-        version: 2,
+        version: 2, // override version, which is 1 by default
         properties: [
             {name: 'size', default: 'small'}, // v1 only
-            {name: 'style', default: 'dark'}, // v1 only - these might be irrelevant in v2
+            {name: 'style', default: 'dark'}, // v1 only 
+            // we need backward compatibility for these props
             {name: 'buttonEnabled', default: false}, // v1
             {name: 'buttonUrl', default: '', urlType: 'url'}, // v1
             {name: 'buttonText', default: ''}, // v1
@@ -15,7 +16,7 @@ export class HeaderNode2 extends generateDecoratorNode(
             {name: 'subheader', default: '', urlType: 'html', wordCount: true}, // v1
             {name: 'backgroundImageSrc', default: '', urlType: 'url'}, // v1
             // enchanced new feature props
-            {name: 'alignment', default: 'left'}, // v2
+            {name: 'alignment', default: 'center'}, // v2
             {name: 'backgroundColor', default: '#F0F0F0'},
             {name: 'backgroundSize', default: 'cover'},
             {name: 'textColor', default: '#000000'},
@@ -25,6 +26,10 @@ export class HeaderNode2 extends generateDecoratorNode(
             {name: 'swapped', default: false}
         ]}
 ) {
+    constructor(version) {
+        super(version);
+        this.version = version;
+    }
     static importDOM() {
         return parseHeaderNode(this);
     }
