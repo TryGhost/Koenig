@@ -16,7 +16,8 @@ export class CollectionNode extends BaseCollectionNode {
         insertCommand: INSERT_COLLECTION_COMMAND,
         matches: ['collection', 'post'],
         priority: 18,
-        postType: 'page'
+        postType: 'page',
+        isHidden: ({config}) => !config?.feature?.collectionsCard || !config?.feature?.collections // hide if missing collections or collectionsCard flags
     }];
 
     getIcon() {
