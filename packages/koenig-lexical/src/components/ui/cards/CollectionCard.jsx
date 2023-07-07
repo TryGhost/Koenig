@@ -1,30 +1,33 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import clsx from 'clsx';
 import {ButtonGroupSetting, DropdownSetting, SettingsPanel, SliderSetting} from '../SettingsPanel';
 import {ReactComponent as GridLayoutIcon} from '../../../assets/icons/kg-layout-grid.svg';
 import {ReactComponent as ListLayoutIcon} from '../../../assets/icons/kg-layout-list.svg';
 
 export function CollectionPost({
     post,
+    layout,
     options
 }) {
     // may want options later for changing post display (like hiding feature img)
     const {title, image, author, excerpt} = post;
     return (
-        <div className='p-3'>
-            <div className="not-kg-prose relative flex min-h-[120px] w-full bg-transparent font-sans">
-                {image &&
+        <div className={clsx(
+            'not-kg-prose relative flex min-h-[120px] w-full gap-5 bg-transparent font-sans',
+            layout === 'grid' && 'flex-col'
+        )}>
+            {image &&
                         (<div className={'grow-1 relative m-0 min-w-[33%]'}>
-                            <img alt="" className="absolute inset-0 h-full w-full object-cover" src={image}/>
+                            <img alt="" className="h-full max-h-[136px] w-full object-cover" src={image}/>
                         </div>)
-                }
-                <div className="flex grow basis-full flex-col items-start justify-start p-5">
-                    {title && <div className="text-[1.5rem] font-semibold leading-normal tracking-normal text-grey-900 dark:text-grey-100">{title}</div>}
-                    {author && <span className="text-[1.3rem]">by {author}</span>}
-                    {excerpt && <div className="mt-1 max-h-[44px] overflow-y-hidden text-sm font-normal leading-normal text-grey-800 line-clamp-2 dark:text-grey-600">{excerpt}</div>}
-                </div>
-                <div className="absolute inset-0 z-50 mt-0"></div>
+            }
+            <div className="flex grow basis-full flex-col items-start justify-start">
+                {title && <div className="text-[1.5rem] font-semibold leading-normal tracking-normal text-grey-900 dark:text-grey-100">{title}</div>}
+                {author && <span className="text-[1.3rem]">by {author}</span>}
+                {excerpt && <div className="mt-1 max-h-[44px] overflow-y-hidden text-sm font-normal leading-normal text-grey-800 line-clamp-2 dark:text-grey-600">{excerpt}</div>}
             </div>
+            <div className="absolute inset-0 z-50 mt-0"></div>
         </div>
     );
 }
@@ -39,13 +42,13 @@ export function Collection({
     // also need to figure out how to handle placeholders if we should have a specific # showing
     //  in the editor vs. in the rendered post (handled by the renderer method)
     const ListPosts = posts && posts.map((post) => {
-        return <CollectionPost key={post.id} post={post} />;
+        return <CollectionPost key={post.id} layout={layout} post={post} />;
     });
 
     return (
-        <div>
+        <>
             {ListPosts}
-        </div>
+        </>
     );
 }
 
@@ -84,7 +87,11 @@ export function CollectionCard({
 
     return (
         <>
-            <div className="inline-block w-full">
+            <div className={clsx(
+                'w-full gap-4',
+                layout === 'list' && 'flex flex-col',
+                layout === 'grid' && 'grid grid-cols-3'
+            )}>
                 <Collection columns={columns} layout={layout} postCount={postCount} posts={posts} />
             </div>
             {isEditing && (
@@ -103,6 +110,7 @@ export function CollectionCard({
                         onClick={handleLayoutChange}
                     />
                     <SliderSetting
+                        defaultValue={3}
                         label="Post Count"
                         max={12}
                         min={1}
@@ -111,6 +119,7 @@ export function CollectionCard({
                     />
                     {layout === 'grid' ?
                         <SliderSetting
+                            defaultValue={3}
                             label="Columns"
                             max={4}
                             min={1}
