@@ -72,6 +72,7 @@
     "fast-average-color": "^9.3.0",
     "lexical": "^0.11.1",
     "lodash-es": "^4.17.21",
+    "luxon": "^3.3.0",
     "pluralize": "^8.0.0",
     "react": "^18.2.0",
     "react-colorful": "^5.6.1",

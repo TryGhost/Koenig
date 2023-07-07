@@ -2,13 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactSlider from 'react-slider';
 
-export function Slider({dataTestId, max, min, value, defaultValue, onChange}) {
+export function Slider({dataTestId, max, min, value, onChange}) {
     return (
-        // <input data-testid={dataTestId} max={max} min={min} type="range" value={value} onChange={onChange} />
+        // docs at https://zillow.github.io/react-slider/
         <ReactSlider
             className='h-[2px] w-full rounded-full bg-grey-200'
             data-testid={dataTestId}
-            defaultValue={defaultValue}
             markClassName='h-2 w-2 bg-blue-500 rounded-full' 
             max={max} 
             min={min} 
