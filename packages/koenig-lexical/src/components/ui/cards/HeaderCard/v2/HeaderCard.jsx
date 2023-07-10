@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import trackEvent from '../../../../../utils/analytics';
 import {Button} from '../../../Button';
-import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../../../SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../../../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../../../assets/icons/kg-align-center.svg';
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {ReactComponent as ExpandIcon} from '../../../../../assets/icons/kg-expand.svg';

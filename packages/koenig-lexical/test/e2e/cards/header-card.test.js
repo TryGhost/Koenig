@@ -13,7 +13,7 @@ async function createHeaderCard({page}) {
     await page.waitForSelector('[data-kg-card="header"]');
 }
 
-test.describe('Header card', async () => {
+test.describe('Header card V1', async () => {
     const ctrlOrCmd = isMac() ? 'Meta' : 'Control';
     let page;
 
@@ -33,6 +33,7 @@ test.describe('Header card', async () => {
         const contentParam = encodeURIComponent(JSON.stringify({
             root: {
                 children: [{
+                    version: 1,
                     type: 'header',
                     size: 'small',
                     style: 'image',
