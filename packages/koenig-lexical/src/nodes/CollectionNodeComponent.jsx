@@ -144,7 +144,6 @@ export function CollectionNodeComponent({collection, columns, layout, nodeKey, p
             // fetch collection data
             const postData = mockPosts;
             setPosts(postData);
-            console.log(`postData`, postData);
         }
     }, [collection]);
 
@@ -156,7 +155,6 @@ export function CollectionNodeComponent({collection, columns, layout, nodeKey, p
 
     const handleCollectionChange = (value) => {
         // TODO: need to refresh the collection data - so we need to make a content API request here
-        console.log(`collection change`,value);
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.collection = {id: value};
