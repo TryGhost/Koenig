@@ -21,6 +21,7 @@ import {ReactComponent as ShrinkIcon} from '../../../../../assets/icons/kg-shrin
 import {getAccentColor} from '../../../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../../../utils/isEditorEmpty';
 
+// Header Card Version 2
 export function HeaderCard({alignment,
     buttonEnabled,
     buttonText,

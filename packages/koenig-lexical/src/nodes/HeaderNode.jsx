@@ -30,7 +30,10 @@ export class HeaderNode extends BaseHeaderNode {
             priority: 17,
             insertParams: () => ({
                 version: 1
-            })
+            }),
+            isHidden: ({config}) => {
+                return config?.depreciated?.headerV1;
+            }
         },
         {
             label: 'Header v2',

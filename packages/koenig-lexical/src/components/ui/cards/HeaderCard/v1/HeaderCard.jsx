@@ -22,6 +22,7 @@ export const HEADER_TEXT_COLORS = {
     image: 'text-white caret-white'
 };
 
+// Header Card version 1
 export function HeaderCard({isEditing,
     size,
     subheader,
