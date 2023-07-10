@@ -38,12 +38,12 @@ export function IconButton({dataTestId, onClick, label, name, selectedName, Icon
                 onClick={handleClick}
                 onMouseDown={handleMousedown}
             >
-                {Icon ? <Icon className="fill-black dark:fill-white" /> : label}
+                {Icon ? <Icon className="h-4 w-4 fill-black dark:fill-white" /> : label}
             </button>
         </li>
     );
 }
 
 ButtonGroup.propTypes = {
-    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large'])
+    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large', 'grid', 'list'])
 };
