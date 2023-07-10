@@ -48,7 +48,7 @@ const cardConfig = {
     },
     // todo: figure out how to dynamically set this for testing to ensure we keep v1 tested
     depreciated: {
-        headerV1: true // if false, shows header v1 in the menu
+        headerV1: false // if false, shows header v1 in the menu
     }
 };
 
