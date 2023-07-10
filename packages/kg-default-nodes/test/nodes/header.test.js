@@ -6,7 +6,7 @@ const {HeaderNode, $createHeaderNode, $isHeaderNode} = require('../../');
 
 const editorNodes = [HeaderNode];
 
-describe('HeaderNode', function () {
+describe('HeaderNode v1', function () {
     let editor;
     let dataset;
     let exportOptions;
@@ -26,6 +26,7 @@ describe('HeaderNode', function () {
         editor = createHeadlessEditor({nodes: editorNodes});
 
         dataset = {
+            version: 1,
             backgroundImageSrc: 'https://example.com/image.jpg',
             buttonEnabled: true,
             buttonText: 'The button',
@@ -84,7 +85,16 @@ describe('HeaderNode', function () {
         it('has getDataset() method', editorTest(function () {
             const headerNode = $createHeaderNode(dataset);
             const nodeData = headerNode.getDataset();
-            nodeData.should.deepEqual(dataset);
+            // check that all v1 properties are present for backwards compatibility
+            nodeData.should.have.property('version', 1);
+            nodeData.should.have.property('backgroundImageSrc', 'https://example.com/image.jpg');
+            nodeData.should.have.property('buttonEnabled', true);
+            nodeData.should.have.property('buttonText', 'The button');
+            nodeData.should.have.property('buttonUrl', 'https://example.com/');
+            nodeData.should.have.property('header', 'This is the header card');
+            nodeData.should.have.property('size', 'small');
+            nodeData.should.have.property('style', 'image');
+            nodeData.should.have.property('subheader', 'hello');
         }));
     });
 
@@ -148,6 +158,7 @@ describe('HeaderNode', function () {
 
         it('renders a minimal header card', editorTest(function () {
             let payload = {
+                version: 1,
                 backgroundImageSrc: '',
                 buttonEnabled: false,
                 buttonText: 'The button',
@@ -166,6 +177,7 @@ describe('HeaderNode', function () {
 
         it('renders without subheader', editorTest(function () {
             let payload = {
+                version: 1,
                 backgroundImageSrc: '',
                 buttonEnabled: false,
                 buttonText: 'The button',
