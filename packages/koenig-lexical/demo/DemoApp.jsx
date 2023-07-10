@@ -43,6 +43,10 @@ const cardConfig = {
     membersEnabled: true,
     feature: {
         headerV2: true
+    },
+    // todo: figure out how to dynamically set this for testing to ensure we keep v1 tested
+    depreciated: {
+        headerV1: false // if false, shows header v1 in the menu
     }
 };
 

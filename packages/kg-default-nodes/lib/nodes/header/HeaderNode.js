@@ -1,7 +1,10 @@
 import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderHeaderNode} from './HeaderRenderer';
-import {parseHeaderNode} from './HeaderParser';
+import {renderHeaderNodeV1} from './renderers/v1/HeaderRenderer';
+import {parseHeaderNodeV1} from './parsers/v1/HeaderParser';
+// V2 imports below
+import {renderHeaderCardToDOM} from './renderers/v2/HeaderRenderer';
 
+// This is our first node that has a custom version property
 export class HeaderNode extends generateDecoratorNode({nodeType: 'header',
     properties: [
         {name: 'size', default: 'small'},
@@ -13,9 +16,11 @@ export class HeaderNode extends generateDecoratorNode({nodeType: 'header',
         {name: 'subheader', default: '', urlType: 'html', wordCount: true},
         {name: 'backgroundImageSrc', default: '', urlType: 'url'},
         // we need to initialize a new version property here so that we can separate v1 and v2
-        {name: 'version', default: 2},
+        // we should never remove old properties, only add new ones, as this could break & corrupt existing content
+        // ref https://lexical.dev/docs/concepts/serialization#versioning--breaking-changes
+        {name: 'version', default: 1},
         // v2 properties
-        {name: 'alignment', default: 'left'},
+        {name: 'alignment', default: 'center'},
         {name: 'backgroundColor', default: '#F0F0F0'},
         {name: 'backgroundSize', default: 'cover'},
         {name: 'textColor', default: '#000000'},
@@ -26,11 +31,17 @@ export class HeaderNode extends generateDecoratorNode({nodeType: 'header',
     ]}
 ) {
     static importDOM() {
-        return parseHeaderNode(this);
+        return parseHeaderNodeV1(this);
     }
 
     exportDOM(options = {}) {
-        return renderHeaderNode(this, options);
+        if (this.version === 1) {
+            return renderHeaderNodeV1(this, options);
+        }
+
+        if (this.version === 2) {
+            return renderHeaderCardToDOM(this, options);
+        }
     }
 }
 
