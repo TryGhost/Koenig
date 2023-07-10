@@ -2,7 +2,7 @@ import {generateDecoratorNode} from '../../generate-decorator-node';
 import {renderHeaderNodeV1} from './renderers/v1/HeaderRenderer';
 import {parseHeaderNodeV1} from './parsers/v1/HeaderParser';
 // V2 imports below
-import {renderHeaderCardToDOM} from './renderers/v2/HeaderRenderer';
+import {renderHeaderNodeV2} from './renderers/v2/HeaderRenderer';
 
 // This is our first node that has a custom version property
 export class HeaderNode extends generateDecoratorNode({nodeType: 'header',
@@ -40,7 +40,7 @@ export class HeaderNode extends generateDecoratorNode({nodeType: 'header',
         }
 
         if (this.version === 2) {
-            return renderHeaderCardToDOM(this, options);
+            return renderHeaderNodeV2(this, options);
         }
     }
 }
