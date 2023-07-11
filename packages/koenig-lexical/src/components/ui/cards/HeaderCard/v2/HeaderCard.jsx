@@ -25,6 +25,7 @@ import {isEditorEmpty} from '../../../../../utils/isEditorEmpty';
 export function HeaderCard({alignment,
     buttonEnabled,
     buttonText,
+    buttonUrl,
     showBackgroundImage,
     backgroundImageSrc,
     backgroundSize,
@@ -57,6 +58,8 @@ export function HeaderCard({alignment,
     handleSwapLayout,
     handleBackgroundSize,
     handleButtonTextBlur,
+    handleButtonUrlBlur,
+    handleButtonUrl,
     setFileInputRef}) {
     const [backgroundColorPickerExpanded, setBackgroundColorPickerExpanded] = useState(false);
     const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);
@@ -318,7 +321,7 @@ export function HeaderCard({alignment,
 
                         {
                             buttonEnabled && (
-                                <div className={`w-full ${(layout === 'regular') ? 'peer-[.koenig-lexical]:mt-10' : (layout === 'wide') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3' : (layout === 'full') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3 peer-[.koenig-lexical]:md:mt-16 xl:w-1/2' : 'max-w-[500px] peer-[.koenig-lexical]:mt-10 peer-[.koenig-lexical]:md:mt-16'}`}>
+                                <div className={`text-${alignment} w-full ${(layout === 'regular') ? 'peer-[.koenig-lexical]:mt-10' : (layout === 'wide') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3' : (layout === 'full') ? 'peer-[.koenig-lexical]:mt-12 md:w-2/3 peer-[.koenig-lexical]:md:mt-16 xl:w-1/2' : 'max-w-[500px] peer-[.koenig-lexical]:mt-10 peer-[.koenig-lexical]:md:mt-16'}`}>
                                     <Button 
                                         dataTestId="header-card-button" 
                                         disabled={true} 
@@ -490,6 +493,15 @@ export function HeaderCard({alignment,
                                 hideLabel
                                 onBlur={handleButtonTextBlur}
                                 onChange={handleButtonText}
+                            />
+                            <InputSetting
+                                dataTestId='header-button-text'
+                                label='Button Url'
+                                placeholder='Add a link to the button'
+                                value={buttonUrl}
+                                hideLabel
+                                onBlur={handleButtonUrlBlur}
+                                onChange={handleButtonUrl}
                             />
                         </>
                     )}

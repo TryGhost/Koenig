@@ -203,6 +203,22 @@ function HeaderNodeComponent({
         });
     };
 
+    const handleButtonUrl = (event) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.buttonUrl = event.target.value;
+        });
+    };
+
+    const handleButtonUrlBlur = (event) => {
+        if (!event.target.value) {
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.buttonUrl = 'https://';
+            });
+        }
+    };
+
     useEffect(() => {
         headerTextEditor.setEditable(isEditing);
         subheaderTextEditor.setEditable(isEditing);
@@ -228,6 +244,8 @@ function HeaderNodeComponent({
                 handleButtonEnabled={handleButtonEnabled}
                 handleButtonText={handleButtonText}
                 handleButtonTextBlur={handleButtonTextBlur}
+                handleButtonUrl={handleButtonUrl}
+                handleButtonUrlBlur={handleButtonUrlBlur}
                 handleClearBackgroundImage={handleClearBackgroundImage}
                 handleHideBackgroundImage={handleHideBackgroundImage}
                 handleLayout={handleLayout}
