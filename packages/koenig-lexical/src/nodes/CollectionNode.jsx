@@ -54,7 +54,7 @@ export class CollectionNode extends BaseCollectionNode {
 
     decorate() {
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()}>
+            <KoenigCardWrapper nodeKey={this.getKey()} width={this.layout === 'grid' ? 'wide' : null}>
                 <CollectionNodeComponent
                     collection={this.collection}
                     columns={this.columns}
