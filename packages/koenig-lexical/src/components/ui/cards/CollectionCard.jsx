@@ -40,7 +40,6 @@ export function CollectionPost({
 
 export function Collection({
     posts,
-    columns,
     postCount,
     layout
 }) {
@@ -109,7 +108,7 @@ export function CollectionCard({
                 columns === 3 && 'grid-cols-3',
                 columns === 4 && 'grid-cols-4'
             )}>
-                <Collection columns={columns} layout={layout} postCount={postCount} posts={posts} />
+                <Collection layout={layout} postCount={postCount} posts={posts} />
             </div>
             {isEditing && (
                 <SettingsPanel>
@@ -168,7 +167,6 @@ CollectionCard.propTypes = {
 
 Collection.propTypes = {
     posts: PropTypes.array,
-    columns: PropTypes.number,
     layout: PropTypes.oneOf(['list', 'grid']),
     postCount: PropTypes.number
 };
