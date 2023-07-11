@@ -19,7 +19,7 @@ export function renderCalloutNode(node, options = {}) {
     textElement.classList.add('kg-callout-text');
     
     const dom = new JSDOM(node.calloutText);
-    const allowedTags = ['A', 'STRONG', 'EM'];
+    const allowedTags = ['A', 'STRONG', 'EM', 'B', 'I'];
     
     const body = dom.window.document.body;
     cleanDOM(body, allowedTags);

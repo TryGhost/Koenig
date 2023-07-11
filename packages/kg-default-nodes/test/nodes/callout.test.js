@@ -125,8 +125,9 @@ describe('CalloutNode', function () {
                 <div class="kg-card kg-callout-card kg-callout-card-blue">
                     <div class="kg-callout-emoji">💡</div>
                     <div class="kg-callout-text">
-                        <strong>Hello!</strong>Check<em class="italic">this</em
-                        > <a href="https://ghost.org" rel="noopener">out</a>.
+                        <b><strong>Hello!</strong></b
+                        >Check<i><em class="italic">this</em></i
+                        ><a href="https://ghost.org" rel="noopener">out</a>.
                     </div>
                 </div>
                 `);
@@ -143,7 +144,8 @@ describe('CalloutNode', function () {
             element.outerHTML.should.prettifyTo(html`
                 <div class="kg-card kg-callout-card kg-callout-card-blue">
                     <div class="kg-callout-text">
-                        <strong>Hello!</strong>Check<em class="italic">this</em
+                        <b><strong>Hello!</strong></b
+                        >Check<i><em class="italic">this</em></i
                         ><a href="https://ghost.org" rel="noopener">out</a>.
                     </div>
                 </div>
