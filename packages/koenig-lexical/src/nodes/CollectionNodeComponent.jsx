@@ -87,7 +87,6 @@ export function CollectionNodeComponent({
                 handleColumnChange={handleColumnChange}
                 handleLayoutChange={handleLayoutChange}
                 handlePostCountChange={handlePostCountChange}
-                header={header}
                 headerTextEditor={headerTextEditor}
                 headerTextEditorInitialState={headerTextEditorInitialState}
                 isEditing={isEditing}
