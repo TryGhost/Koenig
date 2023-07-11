@@ -58,7 +58,6 @@ export class CollectionNode extends BaseCollectionNode {
                 <CollectionNodeComponent
                     collection={this.collection}
                     columns={this.columns}
-                    header={this.header}
                     headerTextEditor={this.__headerTextEditor}
                     headerTextEditorInitialState={this.__headerTextEditorInitialState}
                     layout={this.layout}
