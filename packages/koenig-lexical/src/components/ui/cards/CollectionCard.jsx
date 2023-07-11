@@ -163,7 +163,8 @@ CollectionCard.propTypes = {
     handleLayoutChange: PropTypes.func,
     handlePostCountChange: PropTypes.func,
     handleRowChange: PropTypes.func,
-    isEditing: PropTypes.bool
+    isEditing: PropTypes.bool,
+    isLoading: PropTypes.bool
 };
 
 Collection.propTypes = {
