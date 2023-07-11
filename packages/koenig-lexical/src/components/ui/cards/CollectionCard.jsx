@@ -74,23 +74,17 @@ export function CollectionCard({
     isLoading
 }) {
     const {cardConfig} = React.useContext(KoenigComposerContext);
+    console.log(`cardConfig.collections: `,cardConfig.collections);
 
     // collections should be passed in as the editor loads via cardConfig
     // TODO: we shouldn't be getting collections without posts from the editor load
-    const collectionOptions =
-        cardConfig?.collections?.filter(item => item.posts.length > 0)
-            .map((item) => {
-                return {
-                    label: item.title,
-                    name: item.slug // should be using slug instead of id
-                };
-            }) || [{
-            label: 'Latest',
-            name: 'latest'
-        }, {
-            label: 'Featured',
-            name: 'featured'
-        }];
+    const collectionOptions = cardConfig?.collections?.filter(item => item.posts.length > 0)
+        .map((item) => {
+            return {
+                label: item.title,
+                name: item.slug
+            };
+        });
 
     const layoutOptions = [
         {
@@ -157,12 +151,6 @@ export function CollectionCard({
         </>
     );
 }
-
-CollectionPost.propTypes = {
-    post: PropTypes.object,
-    layout: PropTypes.oneOf(['list', 'grid']),
-    options: PropTypes.object
-};
 
 CollectionCard.propTypes = {
     collection: PropTypes.object,
