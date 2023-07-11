@@ -1,10 +1,9 @@
-import {JSDOM} from 'jsdom';
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+import {cleanDOM} from '../../utils/clean-dom';
 
 export function renderCalloutNode(node, options = {}) {
     addCreateDocumentOption(options);
     const document = options.createDocument();
-
     const element = document.createElement('div');
     element.classList.add('kg-card', 'kg-callout-card', `kg-callout-card-${node.backgroundColor}`);
 
@@ -18,38 +17,14 @@ export function renderCalloutNode(node, options = {}) {
     const textElement = document.createElement('div');
     textElement.classList.add('kg-callout-text');
 
+    const temporaryContainer = document.createElement('div');
+    temporaryContainer.innerHTML = node.calloutText;
+
     const allowedTags = ['A', 'STRONG', 'EM', 'B', 'I', 'BR'];
-    
-    let body;
-    if (typeof window !== 'undefined') {
-        // We're in a browser environment
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(node.calloutText, 'text/html');
-        body = doc.body;
-    } else {
-        // We're in a Node.js environment
-        const dom = new JSDOM(node.calloutText);
-        body = dom.window.document.body;
-    }
-    cleanDOM(body, allowedTags);
-    
-    textElement.innerHTML = body.innerHTML;
+    cleanDOM(temporaryContainer, allowedTags);
+
+    textElement.innerHTML = temporaryContainer.innerHTML;
     element.appendChild(textElement);
 
     return {element};
-}
-
-function cleanDOM(node, allowedTags) {
-    for (let i = 0; i < node.childNodes.length; i++) {
-        let child = node.childNodes[i];
-        if (child.nodeType === 1 && !allowedTags.includes(child.tagName)) {
-            while (child.firstChild) {
-                node.insertBefore(child.firstChild, child);
-            }
-            node.removeChild(child);
-            i -= 1;
-        } else {
-            cleanDOM(child, allowedTags);
-        }
-    }
 }
