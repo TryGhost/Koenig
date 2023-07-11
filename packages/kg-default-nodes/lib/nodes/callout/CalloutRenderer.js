@@ -17,11 +17,20 @@ export function renderCalloutNode(node, options = {}) {
 
     const textElement = document.createElement('div');
     textElement.classList.add('kg-callout-text');
-    
-    const dom = new JSDOM(node.calloutText);
+
     const allowedTags = ['A', 'STRONG', 'EM', 'B', 'I', 'BR'];
     
-    const body = dom.window.document.body;
+    let body;
+    if (typeof window !== 'undefined') {
+        // We're in a browser environment
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(node.calloutText, 'text/html');
+        body = doc.body;
+    } else {
+        // We're in a Node.js environment
+        const dom = new JSDOM(node.calloutText);
+        body = dom.window.document.body;
+    }
     cleanDOM(body, allowedTags);
     
     textElement.innerHTML = body.innerHTML;
