@@ -21,7 +21,7 @@ export function renderImageNode(node, options = {}) {
         figureClasses += ` kg-width-${node.cardWidth}`;
     }
     if (node.caption) {
-        figureClasses += ' with-caption';
+        figureClasses += ' kg-card-hascaption';
     }
 
     figure.setAttribute('class', figureClasses);
