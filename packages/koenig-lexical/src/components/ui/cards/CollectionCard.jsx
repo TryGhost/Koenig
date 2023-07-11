@@ -1,3 +1,4 @@
+import KoenigComposerContext from '../../../context/KoenigComposerContext';
 import PropTypes from 'prop-types';
 import React from 'react';
 import clsx from 'clsx';
@@ -12,7 +13,7 @@ export function CollectionPost({
     options
 }) {
     // may want options later for changing post display (like hiding feature img)
-    const {title, image, publishDate, readTime, excerpt} = post;
+    const {title, feature_image: image, published_at: publishDate, reading_time: readTime, excerpt} = post;
     
     return (
         <div className={clsx(
@@ -29,8 +30,8 @@ export function CollectionPost({
                 {excerpt && <div className="mt-1 max-h-[44px] overflow-y-hidden text-sm font-normal leading-tight text-grey-800 line-clamp-2 dark:text-grey-600">{excerpt}</div>}
                 <div className="mt-1 flex">
                     {publishDate && <div className="mt-1 text-xs font-normal leading-normal text-grey-600 dark:text-grey-400">{DateTime.fromISO(publishDate).toLocaleString()}</div>}
-                    {publishDate && readTime && <div className="mt-1 text-xs font-semibold leading-normal text-grey-600 dark:text-grey-400">&nbsp;&middot;&nbsp;</div>}
-                    {readTime && <div className="mt-1 text-xs font-normal leading-normal text-grey-600 dark:text-grey-400">{readTime}</div>}
+                    {publishDate && readTime > 0 && <div className="mt-1 text-xs font-semibold leading-normal text-grey-600 dark:text-grey-400">&nbsp;&middot;&nbsp;</div>}
+                    {readTime > 0 && <div className="mt-1 text-xs font-normal leading-normal text-grey-600 dark:text-grey-400">{readTime} min</div>}
                 </div>
             </div>
         </div>
@@ -69,15 +70,27 @@ export function CollectionCard({
     handleColumnChange,
     handleLayoutChange,
     handlePostCountChange,
-    isEditing
+    isEditing,
+    isLoading
 }) {
-    const collectionOptions = [{
-        label: 'Latest',
-        name: 123456
-    }, {
-        label: 'Featured',
-        name: 987654
-    }];
+    const {cardConfig} = React.useContext(KoenigComposerContext);
+
+    // collections should be passed in as the editor loads via cardConfig
+    // TODO: we shouldn't be getting collections without posts from the editor load
+    const collectionOptions =
+        cardConfig?.collections?.filter(item => item.posts.length > 0)
+            .map((item) => {
+                return {
+                    label: item.title,
+                    name: item.slug // should be using slug instead of id
+                };
+            }) || [{
+            label: 'Latest',
+            name: 'latest'
+        }, {
+            label: 'Featured',
+            name: 'featured'
+        }];
 
     const layoutOptions = [
         {
@@ -111,7 +124,7 @@ export function CollectionCard({
                         dataTestId='collections-dropdown'
                         label='Collection'
                         menu={collectionOptions}
-                        value={collection?.id}
+                        value={collection?.slug}
                         onChange={handleCollectionChange}
                     />
                     <ButtonGroupSetting
