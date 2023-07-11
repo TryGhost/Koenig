@@ -74,7 +74,6 @@ export function CollectionCard({
     isLoading
 }) {
     const {cardConfig} = React.useContext(KoenigComposerContext);
-    console.log(`cardConfig.collections: `,cardConfig.collections);
 
     // collections should be passed in as the editor loads via cardConfig
     // TODO: we shouldn't be getting collections without posts from the editor load
