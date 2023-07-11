@@ -172,3 +172,9 @@ Collection.propTypes = {
     layout: PropTypes.oneOf(['list', 'grid']),
     postCount: PropTypes.number
 };
+
+CollectionPost.propTypes = {
+    post: PropTypes.object,
+    layout: PropTypes.oneOf(['list', 'grid']),
+    options: PropTypes.object
+};
