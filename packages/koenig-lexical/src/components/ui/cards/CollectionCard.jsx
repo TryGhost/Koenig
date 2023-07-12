@@ -124,9 +124,8 @@ export function CollectionCard({
     ];
 
     const onCollectionChange = (value) => {
-        console.log(`update collection to ${value}`);
-        handleCollectionChange(value);
         checkHeaderDefaults(value);
+        handleCollectionChange(value);
     };
 
     // only update the header if the user hasn't changed anything and is using the default collections & headers
@@ -135,24 +134,23 @@ export function CollectionCard({
             return;
         }
         const header = headerEditor.getEditorState().read(() => ($getRoot().getTextContent()));
-        console.log(`header getTextContent`, header);
         if (value === 'index' && header === 'Featured Posts') {
-            console.log(`update header to LATEST POSTS`);
             headerEditor.update(() => {
                 const newHeader = $createParagraphNode().append($createTextNode('Latest Posts'));
                 const root = $getRoot();
                 root.clear();
                 root.append(newHeader);
-            }, {discrete: true});
+                root.selectEnd();
+            });
         }
         if (value === 'featured' && header === 'Latest Posts') {
-            console.log(`update header to FEATURED POSTS`);
             headerEditor.update(() => {
                 const newHeader = $createParagraphNode().append($createTextNode('Featured Posts'));
                 const root = $getRoot();
                 root.clear();
                 root.append(newHeader);
-            }, {discrete: true});
+                root.selectEnd();
+            });
         }
     };
 

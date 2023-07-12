@@ -32,12 +32,14 @@ export class CollectionNode extends BaseCollectionNode {
 
         // populate nested editors on initial construction
         const header = dataset.header || this.header; // dataset is not set when inserting a new card
+        console.log(`* CONSTRUCTOR - header`,header,`dataset.header`,dataset.header);
         if (!dataset.headerEditor && header) {
             populateNestedEditor(this, '__headerEditor', `<p>${header}</p>`);
         }
     }
 
     exportJSON() {
+        console.log(`*** exportJSON()`);
         const json = super.exportJSON();
         if (this.__headerEditor) {
             this.__headerEditor.getEditorState().read(() => {
@@ -46,6 +48,7 @@ export class CollectionNode extends BaseCollectionNode {
                 json.header = cleanedHtml;
             });
         }
+        console.log(`*** - json.header`,json.header);
         return json;
     }
 
@@ -53,7 +56,17 @@ export class CollectionNode extends BaseCollectionNode {
         return CollectionCardIcon;
     }
 
+    getDataset() {
+        const dataset = super.getDataset();
+        const self = this.getLatest();
+
+        dataset.headerEditor = self.__headerEditor;
+
+        return dataset;
+    }
+
     decorate() {
+        console.log(`** decorate()`,this.header);
         return (
             <KoenigCardWrapper nodeKey={this.getKey()} width={this.layout === 'grid' ? 'wide' : null}>
                 <CollectionNodeComponent
