@@ -13,8 +13,52 @@ export function CollectionPost({
     post,
     layout,
     columns,
+    isPlaceholder,
     options
 }) {
+    if (isPlaceholder) {
+        return (
+            <div className={clsx(
+                'not-kg-prose relative flex min-h-[120px] w-full gap-5 bg-transparent font-sans',
+                layout === 'grid' && 'flex-col'
+            )}>
+                <div className={'grow-1 relative m-0 min-w-[33%]'}>
+                    <img alt="" className={clsx(
+                        'h-full w-full object-cover',
+                        columns === 1 || columns === 2 ? 'aspect-video' : 'aspect-[3/2]'
+                    )} src={'../../../assets/icons/kg-img-placeholder.svg'}/>
+                </div>
+                
+                <div className="flex grow basis-full flex-col items-start justify-start">
+                    <div className={clsx(
+                        'font-bold tracking-normal text-black dark:text-grey-100',
+                        columns === 1 && 'w-2/3 text-4xl leading-tight',
+                        columns === 2 && 'text-2xl leading-snug',
+                        columns === 3 && 'text-xl leading-snug',
+                        columns === 4 && 'text-[1.7rem] leading-snug'
+                    )}>PLACEHOLDER - Post Title</div>
+                    <div className={clsx(
+                        'max-h-[44px] overflow-y-hidden font-normal leading-snug text-grey-900 line-clamp-2 dark:text-grey-600',
+                        columns === 1 && 'mt-3 w-2/3 text-lg',
+                        columns === 2 && 'mt-3 text-[1.6rem]',
+                        columns === 3 && 'mt-2 text-md',
+                        columns === 4 && 'mt-2 text-md'
+                    )}>PLACEHOLDER - Post Excerpt</div>
+                    <div className={clsx(
+                        'flex font-normal leading-snug text-grey-600 dark:text-grey-400',
+                        columns === 1 && 'mt-3 w-2/3 text-lg',
+                        columns === 2 && 'mt-3 text-[1.6rem]',
+                        columns === 3 && 'mt-2 text-md',
+                        columns === 4 && 'mt-2 text-md'
+                    )}>
+                        <div>TIME</div>
+                        <div>&nbsp;&middot;&nbsp;</div>
+                        <div>5 min</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     // may want options later for changing post display (like hiding feature img)
     const {title, feature_image: image, published_at: publishDate, reading_time: readTime, excerpt} = post;
 
@@ -75,6 +119,12 @@ export function Collection({
         .map((post) => {
             return <CollectionPost key={post.id} columns={columns} layout={layout} post={post} />;
         });
+
+    if (posts.length < postCount) {
+        for (let i = posts.length; i < postCount; i++) {
+            ListPosts.push(<CollectionPost key={i} columns={columns} isPlaceholder={true} layout={layout} />);
+        }
+    }
 
     return (
         <>
@@ -247,5 +297,6 @@ CollectionPost.propTypes = {
     post: PropTypes.object,
     layout: PropTypes.oneOf(['list', 'grid']),
     options: PropTypes.object,
-    columns: PropTypes.number
+    columns: PropTypes.number,
+    isPlaceholder: PropTypes.bool
 };
