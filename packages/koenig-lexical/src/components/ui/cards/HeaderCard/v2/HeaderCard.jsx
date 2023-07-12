@@ -265,7 +265,7 @@ export function HeaderCard({alignment,
                         {/* Heading */}
                         {<KoenigNestedEditor
                             autoFocus={true}
-                            dataTestId="header-header-editor"
+                            dataTestId="header-heading-editor"
                             focusNext={subheaderTextEditor}
                             hasSettingsPanel={true}
                             hiddenFormats={['bold']}
@@ -325,7 +325,7 @@ export function HeaderCard({alignment,
                                     <Button 
                                         dataTestId="header-card-button" 
                                         disabled={true} 
-                                        placeholder='Click me' 
+                                        placeholder='Add button text' 
                                         size={`${(layout === 'regular') ? 'medium' : 'large'}`}
                                         style={buttonColor ? {
                                             backgroundColor: hexColorValue(buttonColor),
@@ -455,7 +455,7 @@ export function HeaderCard({alignment,
                     {/* Button settings */}
                     <SettingsDivider />
                     <ToggleSetting
-                        dataTestId='header-button'
+                        dataTestId='header-button-toggle'
                         isChecked={buttonEnabled}
                         label='Button'
                         onChange={toggleButton}
@@ -494,7 +494,7 @@ export function HeaderCard({alignment,
                                 onChange={handleButtonText}
                             />
                             <InputSetting
-                                dataTestId='header-button-text'
+                                dataTestId='header-button-url'
                                 label='Button Url'
                                 placeholder='Add a link to the button'
                                 value={buttonUrl}
