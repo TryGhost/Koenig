@@ -1,7 +1,7 @@
 import {$applyNodeReplacement} from 'lexical';
 import {HeadingNode} from '@lexical/rich-text';
 
-export class KoenigHeadingNode extends HeadingNode {
+export class CustomHeadingNode extends HeadingNode {
     __renderVersion = '4.0';
 
     constructor(tag, key) {
@@ -15,11 +15,11 @@ export class KoenigHeadingNode extends HeadingNode {
     }
 
     static clone(node) {
-        return new KoenigHeadingNode(node.__tag, node.__key);
+        return new CustomHeadingNode(node.__tag, node.__key);
     }
 
     static importJSON(serializedNode) {
-        const node = $createKoenigHeadingNode(serializedNode.tag);
+        const node = $createCustomHeadingNode(serializedNode.tag);
         node.setFormat(serializedNode.format);
         node.setIndent(serializedNode.indent);
         node.setDirection(serializedNode.direction);
@@ -47,10 +47,10 @@ export class KoenigHeadingNode extends HeadingNode {
     }
 }
 
-export const $createKoenigHeadingNode = (headingTag, renderVersion) => {
-    return $applyNodeReplacement(new KoenigHeadingNode(headingTag, renderVersion));
+export const $createCustomHeadingNode = (headingTag, renderVersion) => {
+    return $applyNodeReplacement(new CustomHeadingNode(headingTag, renderVersion));
 };
 
-export function $isKoenigHeadingNode(node) {
-    return node instanceof KoenigHeadingNode;
+export function $isCustomHeadingNode(node) {
+    return node instanceof CustomHeadingNode;
 }

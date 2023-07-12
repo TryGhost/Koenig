@@ -20,6 +20,7 @@ import * as gallery from './nodes/gallery/GalleryNode';
 import * as emailCta from './nodes/email-cta/EmailCtaNode';
 import * as signup from './nodes/signup/SignupNode';
 import * as collection from './nodes/collection/CollectionNode';
+import * as koenigheading from './nodes/custom/heading/CustomHeadingNode';
 
 // re-export everything for easier importing
 export * from './KoenigDecoratorNode';
@@ -46,6 +47,7 @@ export * from './nodes/gallery/GalleryNode';
 export * from './nodes/email-cta/EmailCtaNode';
 export * from './nodes/signup/SignupNode';
 export * from './nodes/collection/CollectionNode';
+export * from './nodes/custom/heading/CustomHeadingNode';
 
 // export convenience objects for use elsewhere
 export const DEFAULT_NODES = [
@@ -70,5 +72,6 @@ export const DEFAULT_NODES = [
     gallery.GalleryNode,
     emailCta.EmailCtaNode,
     signup.SignupNode,
-    collection.CollectionNode
+    collection.CollectionNode,
+    koenigheading.CustomHeadingNode
 ];

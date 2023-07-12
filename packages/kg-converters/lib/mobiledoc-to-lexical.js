@@ -14,27 +14,27 @@ const TAG_TO_LEXICAL_NODE = {
         type: 'paragraph'
     },
     h1: {
-        type: 'heading',
+        type: 'koenig-heading',
         tag: 'h1'
     },
     h2: {
-        type: 'heading',
+        type: 'koenig-heading',
         tag: 'h2'
     },
     h3: {
-        type: 'heading',
+        type: 'koenig-heading',
         tag: 'h3'
     },
     h4: {
-        type: 'heading',
+        type: 'koenig-heading',
         tag: 'h4'
     },
     h5: {
-        type: 'heading',
+        type: 'koenig-heading',
         tag: 'h5'
     },
     h6: {
-        type: 'heading',
+        type: 'koenig-heading',
         tag: 'h5'
     },
     blockquote: {
@@ -146,10 +146,11 @@ function addRootChild(child, mobiledoc, lexical) {
 function convertMarkupSectionToLexical(section, mobiledoc) {
     const tagName = section[1]; // e.g. 'p'
     const markers = section[2]; // e.g. [[0, [0], 0, "Hello world"]]
+    const ghostVersion = mobiledoc.ghostVersion;
 
     // Create an empty Lexical node from the tag name
     // We will add nodes to the children array later
-    const lexicalNode = createEmptyLexicalNode(tagName);
+    const lexicalNode = createEmptyLexicalNode(tagName, ghostVersion);
 
     populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc);
 
@@ -159,6 +160,7 @@ function convertMarkupSectionToLexical(section, mobiledoc) {
 function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
     const markups = mobiledoc.markups;
     const atoms = mobiledoc.atoms;
+    const ghostVersion = mobiledoc.ghostVersion;
 
     // Initiate some variables before looping over all the markers
     let openMarkups = []; // tracks which markup tags are open for the current marker
@@ -206,7 +208,7 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
             // Otherwise add the text to the parent node
             if (href) { // link is open
                 // Create an empty link node if it doesn't exist already
-                linkNode = linkNode !== undefined ? linkNode : createEmptyLexicalNode('a', {url: href});
+                linkNode = linkNode !== undefined ? linkNode : createEmptyLexicalNode('a', ghostVersion, {url: href});
 
                 // Create a text node and add it to the link node
                 const textNode = createTextNode(value, format);
@@ -248,7 +250,7 @@ function createTextNode(text, format) {
 }
 
 // Creates an empty Lexical node from the given tag name and additional attributes
-function createEmptyLexicalNode(tagName, attributes = {}) {
+function createEmptyLexicalNode(tagName, ghostVersion, attributes = {}) {
     const nodeParams = TAG_TO_LEXICAL_NODE[tagName];
     const node = {
         children: [],
@@ -259,6 +261,9 @@ function createEmptyLexicalNode(tagName, attributes = {}) {
         ...attributes,
         version: 1
     };
+    if (node.type === 'koenig-heading') {
+        node.renderVersion = ghostVersion;
+    }
     return node;
 }
 
@@ -289,10 +294,10 @@ function convertMarkupTagsToLexicalFormatBitmask(tags) {
 function convertListSectionToLexical(child, mobiledoc) {
     const tag = child[1];
     const listType = tag === 'ul' ? 'bullet' : 'number';
-    const listNode = createEmptyLexicalNode(tag, {tag, type: 'list', listType, start: 1, direction: 'ltr'});
+    const listNode = createEmptyLexicalNode(tag, mobiledoc.ghostVersion, {tag, type: 'list', listType, start: 1, direction: 'ltr'});
 
     child[2]?.forEach((listItem, i) => {
-        const listItemNode = createEmptyLexicalNode('li', {type: 'listitem', value: i + 1, direction: 'ltr'});
+        const listItemNode = createEmptyLexicalNode('li', mobiledoc.ghostVersion, {type: 'listitem', value: i + 1, direction: 'ltr'});
         populateLexicalNodeWithMarkers(listItemNode, listItem, mobiledoc);
         listNode.children.push(listItemNode);
     });
