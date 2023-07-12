@@ -382,7 +382,7 @@ test.describe('Header card V1', async () => {
 });
 
 test.describe('Header card V2', () => {
-    const ctrlOrCmd = isMac() ? 'Meta' : 'Control';
+    // const ctrlOrCmd = isMac() ? 'Meta' : 'Control';
     let page;
 
     test.beforeAll(async ({browser}) => {
