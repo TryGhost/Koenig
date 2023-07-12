@@ -1,11 +1,7 @@
 import React from 'react';
 import {$createBookmarkNode, BookmarkNode, INSERT_BOOKMARK_COMMAND} from '../nodes/BookmarkNode';
-import {
-    $getSelection,
-    $isRangeSelection,
-    COMMAND_PRIORITY_HIGH
-} from 'lexical';
-import {$insertAndSelectNode} from '../utils/$insertAndSelectNode';
+import {COMMAND_PRIORITY_LOW} from 'lexical';
+import {INSERT_CARD_COMMAND} from './KoenigBehaviourPlugin';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
@@ -21,21 +17,12 @@ export const BookmarkPlugin = () => {
             editor.registerCommand(
                 INSERT_BOOKMARK_COMMAND,
                 async (dataset) => {
-                    const selection = $getSelection();
-
-                    if (!$isRangeSelection(selection)) {
-                        return false;
-                    }
-
-                    const focusNode = selection.focus.getNode();
-                    if (focusNode !== null) {
-                        const bookmarkNode = $createBookmarkNode({...dataset, _openInEditMode: true});
-                        $insertAndSelectNode({selectedNode: focusNode, newNode: bookmarkNode});
-                    }
+                    const cardNode = $createBookmarkNode(dataset);
+                    editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
 
                     return true;
                 },
-                COMMAND_PRIORITY_HIGH
+                COMMAND_PRIORITY_LOW
             )
         );
     }, [editor]);
