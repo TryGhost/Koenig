@@ -1,5 +1,6 @@
 import {AsideNode} from './AsideNode';
 import {AudioNode} from './AudioNode';
+import {HeadingNode as BaseHeadingNode} from '@lexical/rich-text';
 import {BookmarkNode} from './BookmarkNode';
 import {ButtonNode} from './ButtonNode';
 import {CalloutNode} from './CalloutNode';
@@ -15,6 +16,7 @@ import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
 import {HtmlNode} from './HtmlNode';
 import {ImageNode} from './ImageNode';
+import {KoenigHeadingNode} from './KoenigHeadingNode';
 import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {MarkdownNode} from './MarkdownNode';
@@ -51,7 +53,9 @@ const DEFAULT_NODES = [
     EmbedNode,
     GalleryNode,
     SignupNode,
-    CollectionNode
+    CollectionNode,
+    KoenigHeadingNode,
+    {replace: BaseHeadingNode, with: node => new KoenigHeadingNode(node.getTag())}
 ];
 
 export default DEFAULT_NODES;
