@@ -61,9 +61,11 @@ test.describe('Header card', async () => {
                         <div data-kg="editor">
                         <div
                             contenteditable="false"
+                            role="textbox"
                             spellcheck="true"
                             data-lexical-editor="true"
-                            aria-autocomplete="none">
+                            aria-autocomplete="none"
+                            aria-readonly="true">
                             <p dir="ltr"><span data-lexical-text="true">hello world</span></p>
                         </div>
                         </div>
@@ -72,9 +74,11 @@ test.describe('Header card', async () => {
                         <div data-kg="editor">
                         <div
                             contenteditable="false"
+                            role="textbox"
                             spellcheck="true"
                             data-lexical-editor="true"
-                            aria-autocomplete="none">
+                            aria-autocomplete="none"
+                            aria-readonly="true">
                             <p dir="ltr"><span data-lexical-text="true">hello sub</span></p>
                         </div>
                         </div>
@@ -344,9 +348,11 @@ test.describe('Header card', async () => {
                             <div data-kg="editor">
                                 <div
                                     contenteditable="false"
+                                    role="textbox"
                                     spellcheck="true"
                                     data-lexical-editor="true"
-                                    aria-autocomplete="none">
+                                    aria-autocomplete="none"
+                                    aria-readonly="true">
                                     <p dir="ltr"><span data-lexical-text="true">Test title</span></p>
                                 </div>
                             </div>
@@ -355,9 +361,11 @@ test.describe('Header card', async () => {
                             <div data-kg="editor">
                                 <div
                                     contenteditable="false"
+                                role="textbox"
                                     spellcheck="true"
                                     data-lexical-editor="true"
-                                    aria-autocomplete="none">
+                                    aria-autocomplete="none"
+                                    aria-readonly="true">
                                     <p dir="ltr"><span data-lexical-text="true">Test description</span></p>
                                 </div>
                             </div>
