@@ -375,9 +375,13 @@ describe('HeaderNode', function () {
                 const headerNode = $createHeaderNode(dataset);
                 const {element} = headerNode.exportDOM(exportOptions);
 
-                const expected = html`<div>This is a v2 header</div>`;
+                // const expected = html``;
 
-                element.outerHTML.should.prettifyTo(expected);
+                // element.outerHTML.should.prettifyTo(expected);
+
+                // to add when we have design finalized
+
+                element.should.not.be.null;
             }));
 
             // it('renders nothing when header and subheader is undefined and the button is disabled', editorTest(function () {
