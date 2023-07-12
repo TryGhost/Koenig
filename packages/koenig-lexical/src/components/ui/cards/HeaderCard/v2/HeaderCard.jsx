@@ -490,7 +490,6 @@ export function HeaderCard({alignment,
                                 label='Button text'
                                 placeholder='Add button text'
                                 value={buttonText}
-                                hideLabel
                                 onBlur={handleButtonTextBlur}
                                 onChange={handleButtonText}
                             />
@@ -499,7 +498,6 @@ export function HeaderCard({alignment,
                                 label='Button Url'
                                 placeholder='Add a link to the button'
                                 value={buttonUrl}
-                                hideLabel
                                 onBlur={handleButtonUrlBlur}
                                 onChange={handleButtonUrl}
                             />
