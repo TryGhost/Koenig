@@ -96,7 +96,7 @@ export function CollectionPost({
                     columns === 3 && 'mt-2 text-md',
                     columns === 4 && 'mt-2 text-md'
                 )}>
-                    {publishDate && <div>{DateTime.fromISO(publishDate).toLocaleString()}</div>}
+                    {publishDate && <div>{DateTime.fromISO(publishDate).toFormat('d LLL yyyy')}</div>}
                     {publishDate && readTime > 0 && <div>&nbsp;&middot;&nbsp;</div>}
                     {readTime > 0 && <div>{readTime} min</div>}
                 </div>
@@ -151,7 +151,13 @@ export function CollectionCard({
 }) {
     // collections should be passed in as the editor loads via cardConfig
     // TODO: we shouldn't be getting collections without posts from the editor load
-    const collectionOptions = collections?.filter(item => item.posts.length > 0)
+    const collectionOptions = collections?.filter((item) => {
+        // always show default collections
+        if (item.slug === 'index' || item.slug === 'featured') {
+            return true;
+        }
+        return item.posts.length > 0;
+    })
         .map((item) => {
             return {
                 label: item.title,
