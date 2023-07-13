@@ -861,6 +861,8 @@
     }
 }
 
+/* stylelint-disable at-rule-disallowed-list */
+
 .koenig-lexical-collection-heading {
     .kg-prose {
         :where(
@@ -879,8 +881,6 @@
         }
     }
 }
-
-/* stylelint-disable at-rule-disallowed-list */
 
 .koenig-lexical-header-heading {
     .kg-prose {
