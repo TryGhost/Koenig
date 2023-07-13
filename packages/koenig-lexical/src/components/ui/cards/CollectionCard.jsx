@@ -51,7 +51,7 @@ export function CollectionPost({
                         columns === 3 && 'mt-2 text-md',
                         columns === 4 && 'mt-2 text-md'
                     )}>
-                        <div>TIME</div>
+                        <div>{DateTime.now().toFormat('d LLL yyyy')}</div>
                         <div>&nbsp;&middot;&nbsp;</div>
                         <div>5 min</div>
                     </div>
