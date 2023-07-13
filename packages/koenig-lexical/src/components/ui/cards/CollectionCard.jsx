@@ -114,21 +114,22 @@ export function Collection({
     // would apply appropriate container styles here for the respective format
     // also need to figure out how to handle placeholders if we should have a specific # showing
     //  in the editor vs. in the rendered post (handled by the renderer method)
-    const ListPosts = posts && posts
-        .filter((post, index) => index < postCount)
-        .map((post) => {
-            return <CollectionPost key={post.id} columns={columns} layout={layout} post={post} />;
-        });
 
-    if (posts.length < postCount) {
-        for (let i = posts.length; i < postCount; i++) {
-            ListPosts.push(<CollectionPost key={i} columns={columns} isPlaceholder={true} layout={layout} />);
+    function ListPosts() {
+        let postList = [];
+        for (let i = 0; i < postCount; i++) {
+            if (posts && posts[i]) {
+                postList.push(<CollectionPost key={posts[i].id} columns={columns} layout={layout} post={posts[i]} />);
+            } else {
+                postList.push(<CollectionPost key={i} columns={columns} isPlaceholder={true} layout={layout} />);
+            }
         }
+        return postList;
     }
 
     return (
         <>
-            {ListPosts}
+            {ListPosts()}
         </>
     );
 }
