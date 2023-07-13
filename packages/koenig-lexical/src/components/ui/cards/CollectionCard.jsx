@@ -26,7 +26,7 @@ export function CollectionPost({
                     <img alt="" className={clsx(
                         'h-full w-full object-cover',
                         columns === 1 || columns === 2 ? 'aspect-video' : 'aspect-[3/2]'
-                    )} src={'../../../assets/icons/kg-img-placeholder.svg'}/>
+                    )} src={null}/>
                 </div>
                 
                 <div className="flex grow basis-full flex-col items-start justify-start">
