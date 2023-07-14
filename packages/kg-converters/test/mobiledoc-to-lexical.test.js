@@ -1309,9 +1309,10 @@ describe('mobiledocToLexical', function () {
                             direction: 'ltr',
                             format: '',
                             indent: 0,
-                            type: 'heading',
+                            type: 'koenig-heading',
                             tag: 'h1',
-                            version: 1
+                            version: 1,
+                            renderVersion: '4.0'
                         }
                     ],
                     direction: 'ltr',
@@ -1353,9 +1354,10 @@ describe('mobiledocToLexical', function () {
                             direction: 'ltr',
                             format: '',
                             indent: 0,
-                            type: 'heading',
+                            type: 'koenig-heading',
                             tag: 'h2',
-                            version: 1
+                            version: 1,
+                            renderVersion: '4.0'
                         }
                     ],
                     direction: 'ltr',
@@ -1435,9 +1437,10 @@ describe('mobiledocToLexical', function () {
                             direction: 'ltr',
                             format: '',
                             indent: 0,
-                            type: 'heading',
+                            type: 'koenig-heading',
                             tag: 'h1',
-                            version: 1
+                            version: 1,
+                            renderVersion: '4.0'
                         }
                     ],
                     direction: 'ltr',

@@ -10,7 +10,8 @@ class LexicalHTMLRenderer {
     async render(lexicalState, userOptions = {}) {
         const {createHeadlessEditor} = require('@lexical/headless');
         const {ListItemNode, ListNode} = require('@lexical/list');
-        const {HeadingNode, QuoteNode} = require('@lexical/rich-text');
+        const {QuoteNode} = require('@lexical/rich-text');
+        const {CustomHeadingNode} = require('@tryghost/kg-default-nodes');
         const {LinkNode} = require('@lexical/link');
         const {$convertToHtmlString} = require('./convert-to-html-string');
 
@@ -21,7 +22,7 @@ class LexicalHTMLRenderer {
         const options = Object.assign({}, defaultOptions, userOptions);
 
         const DEFAULT_NODES = [
-            HeadingNode,
+            CustomHeadingNode,
             ListNode,
             ListItemNode,
             QuoteNode,
