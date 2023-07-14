@@ -93,7 +93,8 @@ export function CollectionNodeComponent({
                 headerEditor={headerEditor}
                 headerEditorInitialState={headerEditorInitialState}
                 isEditing={isEditing}
-                isLoading={isLoading}
+                // isLoading={isLoading}
+                isLoading={true}
                 layout={layout}
                 postCount={postCount}
                 posts={posts}
