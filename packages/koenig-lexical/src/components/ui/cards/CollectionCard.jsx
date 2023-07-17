@@ -40,7 +40,7 @@ function PostTitle({title, layout, columns, isLoading}) {
             (layout === 'grid' && columns === 2) && 'text-2xl leading-snug',
             (layout === 'grid' && columns === 3) && 'text-xl leading-snug',
             (layout === 'grid' && columns === 4) && 'text-[1.7rem] leading-snug',
-            isLoading && 'w-full animate-pulse rounded bg-grey-200'
+            isLoading && 'h-3 w-full animate-pulse rounded-full bg-grey-200'
         )}>
             {isLoading ? ' ' : title}</div>
     );
@@ -55,10 +55,10 @@ function PostExcerpt({excerpt, layout, columns, isLoading}) {
             (layout === 'grid' && columns === 2) && 'mt-3 max-h-[66px] text-[1.6rem] line-clamp-3',
             (layout === 'grid' && columns === 3) && 'mt-2 max-h-[42px] text-md line-clamp-2',
             (layout === 'grid' && columns === 4) && 'mt-2 max-h-[42px] text-md line-clamp-2',
-            isLoading && 'w-full animate-pulse rounded bg-grey-200'
+            isLoading && 'w-1/2 animate-pulse rounded-full bg-grey-200'
         )}>
             {isLoading ? 
-                <div className="h-4"></div>
+                <div className="h-3"></div>
                 : excerpt}
         </div>
     );
