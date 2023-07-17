@@ -135,10 +135,6 @@ export function Collection({
     columns,
     isLoading
 }) {
-    // would apply appropriate container styles here for the respective format
-    // also need to figure out how to handle placeholders if we should have a specific # showing
-    //  in the editor vs. in the rendered post (handled by the renderer method)
-
     function ListPosts() {
         let postList = [];
         for (let i = 0; i < postCount; i++) {

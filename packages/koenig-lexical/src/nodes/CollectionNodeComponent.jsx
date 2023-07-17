@@ -38,6 +38,7 @@ export function CollectionNodeComponent({
 
     const fetchCollectionPosts = async (collectionSlug) => {
         setIsLoading(true);
+        setPosts([]);
         const response = await cardConfig?.fetchCollectionPosts(collectionSlug);
         setPosts(response);
         setIsLoading(false);
@@ -93,8 +94,7 @@ export function CollectionNodeComponent({
                 headerEditor={headerEditor}
                 headerEditorInitialState={headerEditorInitialState}
                 isEditing={isEditing}
-                // isLoading={isLoading}
-                isLoading={true}
+                isLoading={isLoading}
                 layout={layout}
                 postCount={postCount}
                 posts={posts}
