@@ -2176,7 +2176,7 @@
     write-pkg "4.0.0"
     yargs "16.2.0"
 
-"@lexical/clipboard@0.11.3", "@lexical/clipboard@^0.11.0", "@lexical/clipboard@^0.11.1":
+"@lexical/clipboard@0.11.3", "@lexical/clipboard@^0.11.1", "@lexical/clipboard@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/clipboard/-/clipboard-0.11.3.tgz#f4bfac8fad1f41d43a45c4e1ffc79542757314f9"
   integrity sha512-6xggT8b0hd4OQy25mBH+yiJsr3Bm8APHjDOd3yINCGeiiHXIC+2qKQn3MG70euxQQuyzq++tYHcSsFq42g8Jyw==
@@ -2186,7 +2186,7 @@
     "@lexical/selection" "0.11.3"
     "@lexical/utils" "0.11.3"
 
-"@lexical/code@0.11.3", "@lexical/code@^0.11.0":
+"@lexical/code@0.11.3", "@lexical/code@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/code/-/code-0.11.3.tgz#4a5ef193655557859c63dd4a54012c78580585fa"
   integrity sha512-BIMPd2op65iP4N9SkKIUVodZoWeSsnk6skNJ8UHBO/Rg0ZxyAqxLpnBhEgHq2QOoTBbEW6OEFtkc7/+f9LINZg==
@@ -2206,7 +2206,7 @@
   dependencies:
     "@lexical/utils" "0.11.3"
 
-"@lexical/headless@^0.11.0":
+"@lexical/headless@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/headless/-/headless-0.11.3.tgz#83220ec13996e014632c725c4249b28810cd938a"
   integrity sha512-VO6yhVemvAZT1Wa7dzia6LasppW4s3AKDtcN9oGKlOwUZA0Ajk7Z7ETlQ43AolpKIjmQE0femHiq9oSTyF4mQw==
@@ -2218,21 +2218,21 @@
   dependencies:
     "@lexical/utils" "0.11.3"
 
-"@lexical/html@0.11.3", "@lexical/html@^0.11.0":
+"@lexical/html@0.11.3", "@lexical/html@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/html/-/html-0.11.3.tgz#c02b38f512eb808726922c8215dd2374df6b77cc"
   integrity sha512-+8AYnxxml9PneZLkGfdTenqDjE2yD1ZfCmQLrD/L1TEn22OjZh4uvKVHb13wEhgUZTuLKF0PNdnuecko9ON/aQ==
   dependencies:
     "@lexical/selection" "0.11.3"
 
-"@lexical/link@0.11.3", "@lexical/link@^0.11.0":
+"@lexical/link@0.11.3", "@lexical/link@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/link/-/link-0.11.3.tgz#7efab94e3b061a84639314eaec0b915d3457329c"
   integrity sha512-stAjIrDrF18dPKK25ExPwMCcMe0KKD0FWVzo3F7ejh9DvrQcLFeBPcs8ze71chS3D5fQDB/CzdwvMjEViKmq2A==
   dependencies:
     "@lexical/utils" "0.11.3"
 
-"@lexical/list@0.11.3", "@lexical/list@^0.11.0", "@lexical/list@^0.11.1":
+"@lexical/list@0.11.3", "@lexical/list@^0.11.1", "@lexical/list@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/list/-/list-0.11.3.tgz#d158ac4b4b42d772b30a1cd2a42ca0462a5a154e"
   integrity sha512-Cs9071wDfqi4j1VgodceiR1jTHj13eCoEJDhr3e/FW0x5we7vfbTMtWlOWbveIoryAh+rQNgiD5e8SrAm6Zs3g==
@@ -2297,7 +2297,7 @@
     "@lexical/yjs" "0.11.3"
     react-error-boundary "^3.1.4"
 
-"@lexical/rich-text@0.11.3", "@lexical/rich-text@^0.11.0":
+"@lexical/rich-text@0.11.3", "@lexical/rich-text@^0.11.3":
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/@lexical/rich-text/-/rich-text-0.11.3.tgz#9501789bfe9671c220da7e95bf8589fa92cecf8c"
   integrity sha512-fBFs6wMS7GFLbk+mzIWtwpP+EmnTZZ5bHpveuQ5wXONBuUuLcsYF5KO7UhLxXNLmiViV6lxatZPavEzgZdW7oQ==
@@ -12732,7 +12732,7 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lexical@^0.11.0, lexical@^0.11.1:
+lexical@^0.11.1, lexical@^0.11.3:
   version "0.11.3"
   resolved "https://registry.yarnpkg.com/lexical/-/lexical-0.11.3.tgz#1ad1a56a657eb55d1b9644733f271bf75a65cbe9"
   integrity sha512-xsMKgx/Fa+QHg/nweemU04lCy7TnEr8LyeDtsKUC7fIDN9wH3GqbnQ0+e3Hbg4FmxlhDCiPPt0GcZAROq3R8uw==

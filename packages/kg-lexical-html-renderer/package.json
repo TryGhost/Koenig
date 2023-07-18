@@ -27,15 +27,15 @@
     "sinon": "15.0.4"
   },
   "dependencies": {
-    "@lexical/clipboard": "^0.11.0",
-    "@lexical/code": "^0.11.0",
-    "@lexical/headless": "^0.11.0",
-    "@lexical/link": "^0.11.0",
-    "@lexical/list": "^0.11.0",
-    "@lexical/rich-text": "^0.11.0",
+    "@lexical/clipboard": "^0.11.3",
+    "@lexical/code": "^0.11.3",
+    "@lexical/headless": "^0.11.3",
+    "@lexical/link": "^0.11.3",
+    "@lexical/list": "^0.11.3",
+    "@lexical/rich-text": "^0.11.3",
     "@tryghost/kg-default-nodes": "^0.1.10",
     "jsdom": "^22.1.0",
-    "lexical": "^0.11.0",
+    "lexical": "^0.11.3",
     "prettier": "^2.7.1"
   },
   "gitHead": "1b25c63a23285d60d8c938c95240c9f70fd705de"
