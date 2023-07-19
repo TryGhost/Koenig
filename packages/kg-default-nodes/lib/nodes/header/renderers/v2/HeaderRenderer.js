@@ -1,8 +1,4 @@
-// This is a little fork from the header Form that we can reuse as a base to create a new header card.
-
 import {addCreateDocumentOption} from '../../../../utils/add-create-document-option';
-
-// THIS IS WIP FOR THE V2 HEADER CARD
 
 function cardTemplate(nodeData) {
     const cardClasses = getCardClasses(nodeData).join(' ');
@@ -57,8 +53,6 @@ export function renderHeaderNodeV2(dataset, options = {}) {
     }
 
     const htmlString = cardTemplate(node);
-
-    // const htmlString = `<div>This is a v2 header</div>`;
 
     const element = document.createElement('div');
     element.innerHTML = htmlString?.trim();
