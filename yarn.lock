@@ -4105,9 +4105,9 @@
     unidecode "^0.1.8"
 
 "@tryghost/url-utils@^4.0.0":
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.3.tgz#1fba8634a08f8afd4838a0d6dce321e75a1aa59a"
-  integrity sha512-ZbqtSpVcv+U57BvVd0FtAhuoirw+Qhz0SOszdxPCGuFTJ2C4X6dQSmDf/qVpb7XNCPdhJSmibGEtR3mmYlQfQA==
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.4.tgz#6c170e775b70319e1c0bdc262dd849b22f53667c"
+  integrity sha512-8H1G2d72hTt5Qt/uYipqFV/+u0JsFXoTjxNLLI1mDrU1+smfpF11QhiD0Pp3oUjgawxQMtHm9FlYI0oscFJrwA==
   dependencies:
     cheerio "^0.22.0"
     lodash "^4.17.21"
