@@ -2,12 +2,12 @@ import {$applyNodeReplacement} from 'lexical';
 import {HeadingNode} from '@lexical/rich-text';
 
 export class CustomHeadingNode extends HeadingNode {
-    __renderVersion = '4.0';
+    __version = 1;
 
     constructor(tag, key) {
         super(key);
         this.__tag = tag;
-        this.__renderVersion = '4.0';
+        this.__version = 1;
     }
 
     static getType() {
@@ -23,7 +23,7 @@ export class CustomHeadingNode extends HeadingNode {
         node.setFormat(serializedNode.format);
         node.setIndent(serializedNode.indent);
         node.setDirection(serializedNode.direction);
-        node.setRenderVersion(serializedNode.renderVersion);
+        node.setVersion(serializedNode.version);
         return node;
     }
 
@@ -31,24 +31,23 @@ export class CustomHeadingNode extends HeadingNode {
         return {
             ...super.exportJSON(),
             type: 'koenig-heading',
-            renderVersion: this.__renderVersion,
-            version: 1
+            version: this.__version
         };
     }
 
-    getRenderVersion() {
+    getVersion() {
         const self = this.getLatest();
-        return self.__renderVersion;
+        return self.__version;
     }
 
-    setRenderVersion(version) {
+    setVersion(version) {
         const writable = this.getWritable();
-        writable.__renderVersion = version;
+        writable.__version = version;
     }
 }
 
-export const $createCustomHeadingNode = (headingTag, renderVersion) => {
-    return $applyNodeReplacement(new CustomHeadingNode(headingTag, renderVersion));
+export const $createCustomHeadingNode = (headingTag, version = 1) => {
+    return $applyNodeReplacement(new CustomHeadingNode(headingTag, version));
 };
 
 export function $isCustomHeadingNode(node) {

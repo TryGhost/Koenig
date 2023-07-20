@@ -8,9 +8,13 @@ module.exports = {
         }
 
         const tag = node.getTag();
-        const renderVersion = node.getRenderVersion();
+        const version = node.getVersion();
 
-        const id = generateId(node.getTextContent(), {...options, ghostVersion: renderVersion});
+        if (typeof version !== 'number') {
+            options.ghostVersion = version;
+        }
+
+        const id = generateId(node.getTextContent(), options);
 
         return `<${tag} id="${id}">${exportChildren(node)}</${tag}>`;
     }
