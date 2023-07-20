@@ -88,7 +88,7 @@ test.describe('Collection Card', async () => {
         centerAligncollection.click();
         await expect(collectionCard).toHaveClass(/grid w-full grid-cols-3 gap-8/);
     });
-
+    // more tests
     // test sliders somehow?
     //  post count
     //  columns
