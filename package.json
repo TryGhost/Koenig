@@ -17,8 +17,8 @@
     "test": "lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
-    "ship": "lerna publish --git-remote ${KOENIG_UPSTREAM:-origin}",
-    "main": "git checkout main && git pull ${KOENIG_UPSTREAM:-origin} main && yarn"
+    "ship": "lerna publish --git-remote ${GHOST_UPSTREAM:-origin}",
+    "main": "git checkout main && git pull ${GHOST_UPSTREAM:-origin} main && yarn"
   },
   "devDependencies": {
     "eslint": "8.40.0",
