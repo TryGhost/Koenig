@@ -72,7 +72,7 @@ test.describe('Collection Card', async () => {
         await expect(await page.getByTestId('collection-columns-slider')).toBeVisible();
     });
 
-    test.only('layout buttons work', async function () {
+    test('layout buttons work', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'collection'});
 
