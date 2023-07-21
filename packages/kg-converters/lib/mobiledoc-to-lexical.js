@@ -262,7 +262,7 @@ function createEmptyLexicalNode(tagName, ghostVersion, attributes = {}) {
         version: 1
     };
     if (node.type === 'koenig-heading') {
-        node.renderVersion = ghostVersion;
+        node.version = ghostVersion;
     }
     return node;
 }
