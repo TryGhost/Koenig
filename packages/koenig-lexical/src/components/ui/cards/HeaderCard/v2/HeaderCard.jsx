@@ -344,7 +344,7 @@ export function HeaderCard({alignment,
                                         dataTestId="header-card-button" 
                                         disabled={true} 
                                         placeholder='Add button text' 
-                                        size={`${(layout === 'regular') ? 'medium' : 'large'}`}
+                                        size={getButtonSize(layout)}
                                         style={buttonColor ? {
                                             backgroundColor: hexColorValue(buttonColor),
                                             color: hexColorValue(buttonTextColor)
