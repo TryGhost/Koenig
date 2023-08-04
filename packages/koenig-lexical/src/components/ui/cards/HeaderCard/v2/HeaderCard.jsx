@@ -210,16 +210,16 @@ export function HeaderCard({alignment,
 
     const correctedBackgroundSize = backgroundSize === 'contain' && backgroundImageSrc ? 'contain' : 'cover';
 
-    const getButtonSize = (layout) => {
-        if (layout === 'regular') {
+    const getButtonSize = (layoutString) => {
+        if (layoutString === 'regular') {
             return 'small';
         }
 
-        if (layout === 'wide') {
+        if (layoutString === 'wide') {
             return 'medium';
         }
 
-        if (layout === 'full') {
+        if (layoutString === 'full') {
             return 'large';
         }
 
