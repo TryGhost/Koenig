@@ -17,6 +17,7 @@
     "test": "lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
+    "fix": "yarn cache clean && rm -rf node_modules && yarn",
     "ship": "lerna publish --git-remote ${GHOST_UPSTREAM:-origin}",
     "main": "git checkout main && git pull ${GHOST_UPSTREAM:-origin} main && yarn"
   },
