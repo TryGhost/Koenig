@@ -3099,12 +3099,12 @@
     "@sentry/utils" "7.60.0"
     tslib "^2.4.1 || ^1.9.3"
 
-"@sentry/bundler-plugin-core@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.5.0.tgz#9ac413a9109f7f74b559544dc6744b941447b74d"
-  integrity sha512-UNjeTSf0Irt/RsC1Xsfxa+RC92mBvjzuWQnvHJ5c+mXwUt+jLcFgGMCSVK/FCDZO+gAeKzmU1+G2UexbsNAP8w==
+"@sentry/bundler-plugin-core@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.6.0.tgz#e7e5b2ab25e2650900008d594d44335e56add0df"
+  integrity sha512-3oYJKacxzKg4Xw5t2crsJCeE1/wsN1g3p5o2mesNm+KvP6ovgz8+cqxq5dJigNYqfR9KTSUFo+ZLhOy/pyfkmw==
   dependencies:
-    "@sentry/cli" "^2.17.0"
+    "@sentry/cli" "^2.20.1"
     "@sentry/node" "^7.60.0"
     "@sentry/utils" "^7.60.0"
     dotenv "^16.3.1"
@@ -3113,10 +3113,10 @@
     magic-string "0.27.0"
     unplugin "1.0.1"
 
-"@sentry/cli@^2.17.0":
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.19.1.tgz#68ea7098c4078fb0c910844fa26209af71cc0d4c"
-  integrity sha512-7RVwOUwVoOplsG1Jqo8YCke2BEQpGU+AvXAhl1HP6S4qB4mFat6Asr9EhvapPZvufpC85RvLt22h3q0yakRgaA==
+"@sentry/cli@^2.20.1":
+  version "2.20.4"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.20.4.tgz#755719aeaa58dbd3910ee23cc020decc16f5a5bf"
+  integrity sha512-mycBCKQmLdaJpSKpXc3IXrQwb5HLxrdjgJgLGbb8saFHIkXl/1ePH171j+REq4dIP1uetu0bdDgEYj6AQjkleQ==
   dependencies:
     https-proxy-agent "^5.0.0"
     node-fetch "^2.6.7"
@@ -3161,11 +3161,11 @@
     tslib "^2.4.1 || ^1.9.3"
 
 "@sentry/vite-plugin@^2.2.2":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.5.0.tgz#58b16c888dcad641a3223356d58a164b3a6e8a14"
-  integrity sha512-u5lfIysy6UVzUGn/adyDcRXfzFyip4mLGThTnKeOeA9rCgmJUVnErH8TD8xhTKdpq/MBiQ+KqrC6xG9pKCa96g==
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.6.0.tgz#a98aa59e6c3aeff5d6d915eff5530d784a3b2533"
+  integrity sha512-SPQfXsB1xQs9dR/dX6dBT9CWlmfg2tdDPvvNuCeLmMmr8R9CJoMi+QE83nvJCYH3pY9S5kZlpq/4WSGE34oasA==
   dependencies:
-    "@sentry/bundler-plugin-core" "2.5.0"
+    "@sentry/bundler-plugin-core" "2.6.0"
     unplugin "1.0.1"
 
 "@sideway/address@^4.1.3":
