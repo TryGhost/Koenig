@@ -38,7 +38,6 @@ module.exports = {
     type: 'dom',
 
     render({payload, env: {dom}, options = {}}) {
-        console.log(`rendering mobiledoc`);
         if (!payload.metadata || !payload.url || !payload.metadata.title) {
             return dom.createTextNode('');
         }
