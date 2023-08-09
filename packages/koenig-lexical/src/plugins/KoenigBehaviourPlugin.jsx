@@ -373,34 +373,23 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             // when leaving edit mode, ensure focus moves back to the editor
                             // otherwise focus can be left on removed elements preventing further key events
                             if (isEditingCard) {
+                                editor.getRootElement().focus({preventScroll: true});
+
                                 if (cardNode.isEmpty?.()) {
                                     if ($getRoot().getLastChild().is(cardNode)) {
-                                        editor.getRootElement().focus({preventScroll: true});
-
                                         // we don't have anything to select after the card, so create a new paragraph
                                         const paragraph = $createParagraphNode();
                                         $getRoot().append(paragraph);
                                         paragraph.select();
-
-                                        cardNode.remove();
                                     } else {
-                                        if (document.activeElement.contentEditable === 'true' && document.activeElement.closest('[contenteditable="true"]')) {
-                                            // a nested editor has focus, we need to make sure it doesn't trigger
-                                            // any on-blur behaviour when it's removed so we set a data attribute
-                                            // flag to indicate it's being removed
-                                            document.activeElement.dataset.kgRemoving = 'true';
-                                        }
-
-                                        editor.getRootElement().focus({preventScroll: true});
-
                                         // reselect card to ensure we have a selection for the next steps
                                         $selectCard(editor, selectedCardKey);
 
                                         // select the next paragraph or card
                                         editor.dispatchCommand(KEY_ARROW_DOWN_COMMAND);
-
-                                        cardNode.remove();
                                     }
+
+                                    cardNode.remove();
                                 } else {
                                     // re-create the node selection because the focus will place the cursor at
                                     // the beginning of the doc
