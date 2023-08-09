@@ -96,6 +96,11 @@ function KoenigNestedEditorPlugin({
             editor.registerCommand(
                 BLUR_COMMAND,
                 () => {
+                    // do nothing if the card is being removed
+                    if (editor.getRootElement().dataset.kgRemoving === 'true') {
+                        return true;
+                    }
+
                     // when the nested editor is selected, the parent editor loose selection
                     // return selection to the card when nested editor blurred
                     if (hasSettingsPanel && editor._parentEditor) {
