@@ -38,6 +38,7 @@ module.exports = {
     type: 'dom',
 
     render({payload, env: {dom}, options = {}}) {
+        console.log(`rendering mobiledoc`);
         if (!payload.metadata || !payload.url || !payload.metadata.title) {
             return dom.createTextNode('');
         }
@@ -137,8 +138,8 @@ module.exports = {
                             <div class="kg-bookmark-description">{{metadata.description}}</div>
                             <div class="kg-bookmark-metadata">
                                 {{#if metadata.icon}}<img class="kg-bookmark-icon" src="{{metadata.icon}}" alt="">{{/if}}
-                                {{#if metadata.publisher}}<span class="kg-bookmark-publisher">{{metadata.publisher}}</span>{{/if}}
-                                {{#if metadata.author}}<span class="kg-bookmark-author">{{metadata.author}}</span>{{/if}}
+                                {{#if metadata.publisher}}<span class="kg-bookmark-author">{{metadata.publisher}}</span>{{/if}}
+                                {{#if metadata.author}}<span class="kg-bookmark-publisher">{{metadata.author}}</span>{{/if}}
                             </div>
                         </div>
                         {{#if metadata.thumbnail}}
