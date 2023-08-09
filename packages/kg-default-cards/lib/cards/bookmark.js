@@ -129,6 +129,7 @@ module.exports = {
             `;
             const juicedOutlookHtml = juice(outlookHtml);
 
+            // NOTE: Publisher and author classes are swapped for theme backwards-compatibility.
             template = hbs`
                 {{#if isEmail}}<!--[if !mso !vml]-->{{/if}}
                 <figure class="kg-card kg-bookmark-card{{#if caption}} kg-card-hascaption{{/if}}">
