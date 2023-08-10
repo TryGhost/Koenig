@@ -13,7 +13,7 @@
     "dev": "yarn workspace @tryghost/koenig-lexical dev",
     "prepare": "husky install .github/hooks",
     "presetup": "yarn",
-    "setup": "lerna bootstrap && lerna run build",
+    "setup": "yarn && lerna run build",
     "test": "lerna run test",
     "lint": "lerna run lint",
     "preship": "yarn test",
