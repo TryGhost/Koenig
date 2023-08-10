@@ -12785,10 +12785,10 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
-lexical@^0.11.0, lexical@^0.11.1:
-  version "0.11.3"
-  resolved "https://registry.yarnpkg.com/lexical/-/lexical-0.11.3.tgz#1ad1a56a657eb55d1b9644733f271bf75a65cbe9"
-  integrity sha512-xsMKgx/Fa+QHg/nweemU04lCy7TnEr8LyeDtsKUC7fIDN9wH3GqbnQ0+e3Hbg4FmxlhDCiPPt0GcZAROq3R8uw==
+lexical@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/lexical/-/lexical-0.12.0.tgz#b715fb061f6394814761a07ba5b4fd4c2aa3f9cd"
+  integrity sha512-ixp8+5D9UJueZSjh9a7Z0eiiKm8MZmf//+mr0rZSCXermhdIcn1lglDGbff1KGwO1ONnFlycWJV12m8Zvtgggg==
 
 lib0@^0.2.31, lib0@^0.2.42, lib0@^0.2.52, lib0@^0.2.74:
   version "0.2.80"

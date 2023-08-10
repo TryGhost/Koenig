@@ -35,7 +35,7 @@
     "@lexical/rich-text": "^0.11.0",
     "@tryghost/kg-default-nodes": "^0.1.19",
     "jsdom": "^22.1.0",
-    "lexical": "^0.11.0",
+    "lexical": "^0.12.0",
     "prettier": "^3.0.0"
   },
   "gitHead": "1b25c63a23285d60d8c938c95240c9f70fd705de"
