@@ -46,9 +46,9 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     );
 }
 
-export function SliderSetting({label, onChange, max, min, value, defaultValue, dataTestId}) {
+export function SliderSetting({label, onChange, max, min, value, defaultValue, ariaLabel, dataTestId}) {
     return (
-        <div className="my-2 flex w-full flex-col gap-1">
+        <div className="my-2 flex w-full flex-col gap-1" data-testid={dataTestId}>
             <div className="flex items-center justify-between font-sans text-[1.3rem] font-normal">
                 <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
                 <div className="text-grey-500 dark:text-grey-600">
@@ -56,7 +56,7 @@ export function SliderSetting({label, onChange, max, min, value, defaultValue, d
                     <span className="px-[2px]">/</span>{max}
                 </div>
             </div>
-            <Slider dataTestId={dataTestId} defaultValue={defaultValue} max={max} min={min} value={value} onChange={onChange} />
+            <Slider ariaLabel={ariaLabel} defaultValue={defaultValue} max={max} min={min} value={value} onChange={onChange} />
         </div>
     );
 }
@@ -125,11 +125,12 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
     );
 }
 
-export function DropdownSetting({label, description, value, menu, onChange}) {
+export function DropdownSetting({label, description, value, menu, onChange, dataTestId}) {
     return (
         <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
             <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
             <Dropdown
+                dataTestId={dataTestId}
                 menu={menu}
                 value={value}
                 onChange={onChange}

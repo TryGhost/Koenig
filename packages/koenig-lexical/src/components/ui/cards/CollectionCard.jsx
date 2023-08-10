@@ -124,7 +124,8 @@ export function CollectionPost({
             (layout === 'grid' && columns === 2) && 'gap-4',
             (layout === 'grid' && columns === 3) && 'gap-3',
             (layout === 'grid' && columns === 4) && 'gap-3'
-        )}>
+        )}
+        >
             {image && <PostImage columns={columns} image={image} isLoading={isLoading} layout={layout} />}
             <div className="col-span-2 flex flex-col items-start justify-start">
                 {title && <PostTitle columns={columns} isLoading={isLoading} layout={layout} title={title} />}
@@ -197,12 +198,14 @@ export function CollectionCard({
         {
             label: 'List',
             name: 'list',
-            Icon: ListLayoutIcon
+            Icon: ListLayoutIcon,
+            dataTestId: 'collection-layout-list'
         },
         {
             label: 'Grid',
             name: 'grid',
-            Icon: GridLayoutIcon
+            Icon: GridLayoutIcon,
+            dataTestId: 'collection-layout-grid'
         }
     ];
 
@@ -259,13 +262,15 @@ export function CollectionCard({
                 (layout === 'grid' && columns === 2) && 'grid-cols-2 gap-10',
                 (layout === 'grid' && columns === 3) && 'grid-cols-3 gap-8',
                 (layout === 'grid' && columns === 4) && 'grid-cols-4 gap-6'
-            )}>
+            )}
+            data-testid='collection-post-container'
+            >
                 <Collection columns={columns} isLoading={isLoading} layout={layout} postCount={postCount} posts={posts} />
             </div>
             {isEditing && (
                 <SettingsPanel>
                     <DropdownSetting
-                        dataTestId='collections-dropdown'
+                        dataTestId='collection-dropdown'
                         label='Collection'
                         menu={collectionOptions}
                         value={collection?.slug}
@@ -278,6 +283,8 @@ export function CollectionCard({
                         onClick={handleLayoutChange}
                     />
                     <SliderSetting
+                        ariaLabel={'collection-postCount-slider'}
+                        dataTestId={'collection-postCount-slider'}
                         defaultValue={3}
                         label="Post Count"
                         max={12}
@@ -287,6 +294,8 @@ export function CollectionCard({
                     />
                     {layout === 'grid' ?
                         <SliderSetting
+                            ariaLabel={'collection-columns-slider'}
+                            dataTestId={'collection-columns-slider'}
                             defaultValue={3}
                             label="Columns"
                             max={4}

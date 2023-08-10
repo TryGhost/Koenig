@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactSlider from 'react-slider';
 
-export function Slider({dataTestId, max, min, value, onChange}) {
+export function Slider({ariaLabel, max, min, value, onChange}) {
     return (
         // docs at https://zillow.github.io/react-slider/
         <ReactSlider
+            ariaLabel={ariaLabel}
             className='h-3 w-full rounded-full py-[5px]'
-            data-testid={dataTestId}
             max={max} 
             min={min} 
             thumbActiveClassName='!h-3 !w-3 border-2 border-white dark:border-black !top-[-1px] shadow-[0_0_0_2px_rgba(0,0,0,1)] dark:shadow-[0_0_0_2px_rgba(255,255,255,1)]' 
@@ -19,6 +19,7 @@ export function Slider({dataTestId, max, min, value, onChange}) {
 }
 
 Slider.propTypes = {
+    ariaLabel: PropTypes.string,
     max: PropTypes.number,
     min: PropTypes.number,
     value: PropTypes.number,
