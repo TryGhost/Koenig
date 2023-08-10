@@ -18,7 +18,6 @@ import {
     $isParagraphNode,
     $isRangeSelection,
     $isTextNode,
-    $selectAll,
     $setSelection,
     COMMAND_PRIORITY_LOW,
     DELETE_LINE_COMMAND,
@@ -35,7 +34,6 @@ import {
     KEY_MODIFIER_COMMAND,
     KEY_TAB_COMMAND,
     PASTE_COMMAND,
-    SELECT_ALL_COMMAND,
     createCommand
 } from 'lexical';
 import {$insertAndSelectNode} from '../utils/$insertAndSelectNode';
