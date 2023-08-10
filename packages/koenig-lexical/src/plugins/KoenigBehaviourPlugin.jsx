@@ -228,14 +228,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 }
             }),
             editor.registerCommand(
-                SELECT_ALL_COMMAND,
-                () => {
-                    $selectAll();
-                    return true;
-                },
-                COMMAND_PRIORITY_LOW
-            ),
-            editor.registerCommand(
                 INSERT_CARD_COMMAND,
                 ({cardNode, openInEditMode}) => {
                     let focusNode;
