@@ -1,6 +1,7 @@
 import FloatingToolbar from '../../components/ui/FloatingToolbar';
 import FormatToolbar from './FormatToolbar';
 import React from 'react';
+import {$getSelection, $isRangeSelection} from 'lexical';
 import {LinkActionToolbar} from './LinkActionToolbar.jsx';
 import {SnippetActionToolbar} from './SnippetActionToolbar';
 
@@ -32,6 +33,7 @@ export function FloatingFormatToolbar({
     // shouldn't display until selection via mouse is complete to avoid toolbar re-positioning while dragging
     const toggleVisibility = React.useCallback(() => {
         if (toolbarItemType && toolbarRef.current.style.opacity === '0') {
+            console.log(`making visible`);
             toolbarRef.current.style.opacity = '1';
             updateArrowStyles();
         }
@@ -48,16 +50,29 @@ export function FloatingFormatToolbar({
     }, [toggleVisibility]);
 
     React.useEffect(() => {
-        const shiftUp = (e) => {
-            if (e.key === 'Shift') {
-                toggleVisibility();
+        const onMouseMove = (e) => {
+            // ignore drag events
+            if (e?.buttons > 0) {
+                return;
             }
+            // should not show floating toolbar when we don't have a text selection
+            editor.getEditorState().read(() => {
+                const selection = $getSelection();
+                console.log(`onMouseMove`, selection.getTextContent());
+                if (selection === null || !$isRangeSelection(selection)) {
+                    return;
+                }
+                if (selection.getTextContent() !== null) {
+                    toggleVisibility();
+                }
+            });
         };
-        document.addEventListener('keyup', shiftUp);
+        // note: debouncing this has conflicts >10ms or so, not sure it's worth it
+        document.addEventListener('mousemove', onMouseMove);
         return () => {
-            document.removeEventListener('keyup', shiftUp);
+            document.removeEventListener('mousemove', onMouseMove);
         };
-    }, [toggleVisibility]);
+    }, [editor, toggleVisibility]);
 
     const handleActionToolbarClose = () => {
         setToolbarItemType(null);

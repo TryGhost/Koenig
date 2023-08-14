@@ -18,6 +18,7 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
     const [href, setHref] = React.useState(null);
 
     const setToolbarType = React.useCallback(() => {
+        console.log(`setting toolbar type from selection change`);
         editor.getEditorState().read(() => {
             // Should not to pop up the floating toolbar when using IME input
             if (editor.isComposing()) {
@@ -77,8 +78,10 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
         if (!!toolbarItemType && toolbarItemType !== toolbarItemTypes.text) {
             return;
         }
+        console.log(`...adding listener for selection change`);
         document.addEventListener('selectionchange', setToolbarType);
         return () => {
+            console.log(`...removing listener for selection change`);
             document.removeEventListener('selectionchange', setToolbarType);
         };
     }, [setToolbarType, toolbarItemType]);
