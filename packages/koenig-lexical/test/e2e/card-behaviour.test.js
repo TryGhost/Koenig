@@ -1590,7 +1590,7 @@ test.describe('Card behaviour', async () => {
     });
 
     test.describe('inner editors', function () {
-        test.only('can use the delete key to remove text', async function () {
+        test('can use the delete key to remove text', async function () {
             await focusEditor(page);
             await page.keyboard.type('/image https://example.com/image.jpg');
             await page.waitForSelector('[data-kg-card-menu-item="Image"][data-kg-cardmenu-selected="true"]');
