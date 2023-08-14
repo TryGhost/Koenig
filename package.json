@@ -26,7 +26,7 @@
     "eslint-plugin-ghost": "3.3.0",
     "husky": "8.0.3",
     "lerna": "7.1.5",
-    "lint-staged": "13.2.3"
+    "lint-staged": "13.3.0"
   },
   "renovate": {
     "extends": [
