@@ -4,6 +4,7 @@ import React from 'react';
 import {$getSelection, $isRangeSelection} from 'lexical';
 import {LinkActionToolbar} from './LinkActionToolbar.jsx';
 import {SnippetActionToolbar} from './SnippetActionToolbar';
+import {debounce} from 'lodash-es';
 
 export const toolbarItemTypes = {
     snippet: 'snippet',
@@ -33,11 +34,12 @@ export function FloatingFormatToolbar({
     // shouldn't display until selection via mouse is complete to avoid toolbar re-positioning while dragging
     const toggleVisibility = React.useCallback(() => {
         if (toolbarItemType && toolbarRef.current.style.opacity === '0') {
-            console.log(`making visible`);
             toolbarRef.current.style.opacity = '1';
             updateArrowStyles();
         }
     }, [toolbarItemType, updateArrowStyles]);
+
+    // TODO: Arrow not updating position on selection change (select all)
 
     React.useEffect(() => {
         document.addEventListener('mouseup', toggleVisibility); // desktop
@@ -58,7 +60,6 @@ export function FloatingFormatToolbar({
             // should not show floating toolbar when we don't have a text selection
             editor.getEditorState().read(() => {
                 const selection = $getSelection();
-                console.log(`onMouseMove`, selection.getTextContent());
                 if (selection === null || !$isRangeSelection(selection)) {
                     return;
                 }
@@ -67,10 +68,10 @@ export function FloatingFormatToolbar({
                 }
             });
         };
-        // note: debouncing this has conflicts >10ms or so, not sure it's worth it
-        document.addEventListener('mousemove', onMouseMove);
+        const debouncedOnMouseMove = debounce(onMouseMove, 10);
+        document.addEventListener('mousemove', debouncedOnMouseMove);
         return () => {
-            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mousemove', debouncedOnMouseMove);
         };
     }, [editor, toggleVisibility]);
 

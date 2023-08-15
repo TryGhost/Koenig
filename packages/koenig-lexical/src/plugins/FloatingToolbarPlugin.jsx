@@ -18,7 +18,6 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
     const [href, setHref] = React.useState(null);
 
     const setToolbarType = React.useCallback(() => {
-        console.log(`setting toolbar type from selection change`);
         editor.getEditorState().read(() => {
             // Should not to pop up the floating toolbar when using IME input
             if (editor.isComposing()) {
@@ -72,31 +71,14 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
         });
     }, [editor, toolbarItemType]);
 
-    useEffect(() => {
-        // Add a listener if the text toolbar is active. It helps to prevent events bubbling
-        // when a user is interacting with inputs in the link/snippets toolbar
-        if (!!toolbarItemType && toolbarItemType !== toolbarItemTypes.text) {
-            return;
-        }
-        console.log(`...adding listener for selection change`);
-        document.addEventListener('selectionchange', setToolbarType);
-        return () => {
-            console.log(`...removing listener for selection change`);
-            document.removeEventListener('selectionchange', setToolbarType);
-        };
-    }, [setToolbarType, toolbarItemType]);
-
     React.useEffect(() => {
+        // we need to attach the listener to the editor because it intercepts some events (like keyboard selection)
         return editor.registerUpdateListener(() => {
             editor.getEditorState().read(() => {
-                const selection = $getSelection();
-                // save selection range rect to calculate toolbar arrow position
-                if (toolbarItemType) {
-                    setSelectionRangeRect($getSelectionRangeRect({selection, editor}));
-                }
+                setToolbarType();
             });
         });
-    }, [editor, toolbarItemType]);
+    }, [editor, setToolbarType, toolbarItemType]);
 
     React.useEffect(() => {
         editor.registerCommand(
