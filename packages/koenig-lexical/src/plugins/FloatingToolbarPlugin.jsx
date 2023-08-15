@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {$getSelection, $isParagraphNode, $isRangeSelection, $isTextNode, COMMAND_PRIORITY_LOW, FORMAT_TEXT_COMMAND, KEY_MODIFIER_COMMAND} from 'lexical';
 import {$getSelectionRangeRect} from '../utils/$getSelectionRangeRect';
 import {$isLinkNode} from '@lexical/link';
