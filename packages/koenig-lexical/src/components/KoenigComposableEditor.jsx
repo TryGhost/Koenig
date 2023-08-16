@@ -51,6 +51,7 @@ const KoenigComposableEditor = ({
 
     const {onChange: sharedOnChange} = useSharedOnChangeContext();
     const _onChange = React.useCallback((editorState) => {
+        console.log(`onChange`);
         if (sharedOnChange) {
             // sharedOnChange is called for the main editor and nested editors, we want to
             // make sure we don't accidentally serialize only the contents of the nested
@@ -100,7 +101,7 @@ const KoenigComposableEditor = ({
                 placeholder={placeholder || <EditorPlaceholder className={placeholderClassName} text={placeholderText} />}
             />
             <LinkPlugin />
-            <OnChangePlugin ignoreSelectionChange={true} onChange={_onChange} />
+            <OnChangePlugin ignoreHistoryMergeTagChange={false} ignoreSelectionChange={true} onChange={_onChange} />
             {!isCollabActive && <HistoryPlugin externalHistoryState={historyState} />} {/* adds undo/redo, in multiplayer that's handled by yjs */}
             <KoenigBehaviourPlugin containerElem={editorContainerRef} cursorDidExitAtTop={cursorDidExitAtTop} isNested={isNested} />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
