@@ -4,6 +4,7 @@ import {Button} from '../Button';
 import {ButtonGroupSetting, InputSetting, InputUrlSetting, SettingsPanel} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
+import {ReactComponent as RightAlignIcon} from '../../../assets/icons/kg-align-right.svg';
 
 export function ButtonCard({
     alignment,
@@ -27,13 +28,23 @@ export function ButtonCard({
             name: 'center',
             Icon: CenterAlignIcon,
             dataTestId: 'button-align-center'
+        },
+        {
+            label: 'Right',
+            name: 'right',
+            Icon: RightAlignIcon,
+            dataTestId: 'button-align-right'
         }
     ];
+
+    let alignmentClass = "justify-start";
+    if (alignment === "center") alignmentClass = "justify-center";
+    if (alignment === "right") alignmentClass = "justify-end";
 
     return (
         <>
             <div className="inline-block w-full">
-                <div className={`my-3 flex h-10 items-center ${isEditing || buttonUrl ? 'opacity-100' : 'opacity-50'} ${alignment === 'left' ? 'justify-start' : 'justify-center'} `} data-testid="button-card">
+                <div className={`my-3 flex h-10 items-center ${isEditing || buttonUrl ? 'opacity-100' : 'opacity-50'} ${alignmentClass}`} data-testid="button-card">
                     <Button dataTestId="button-card-btn" href={buttonUrl} placeholder={buttonPlaceholder} value={buttonText} />
                 </div>
             </div>
