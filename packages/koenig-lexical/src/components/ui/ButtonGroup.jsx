@@ -45,5 +45,5 @@ export function IconButton({dataTestId, onClick, label, name, selectedName, Icon
 }
 
 ButtonGroup.propTypes = {
-    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large', 'grid', 'list'])
+    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'right', 'small', 'medium', 'large', 'grid', 'list'])
 };

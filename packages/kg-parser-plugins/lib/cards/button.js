@@ -12,7 +12,13 @@ export function fromKoenigCard() {
             return;
         }
 
-        const alignment = node.classList.contains('kg-align-center') ? 'center' : 'left';
+        let alignment = 'left';
+        if (node.classList.contains('kg-align-center')) {
+            alignment = 'center';
+        }
+        if (node.classList.contains('kg-align-right')) {
+            alignment = 'right';
+        }
 
         const anchor = node.querySelector('a');
 
