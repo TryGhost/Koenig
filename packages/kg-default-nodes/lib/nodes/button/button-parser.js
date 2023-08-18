@@ -5,7 +5,7 @@ export function parseButtonNode(ButtonNode) {
             if (nodeElem.tagName === 'DIV' && isButtonCard) {
                 return {
                     conversion(domNode) {
-                        const alignmentClass = nodeElem.className.match(/kg-align-(left|center)/);
+                        const alignmentClass = nodeElem.className.match(/kg-align-(left|center|right)/);
 
                         let alignment;
                         if (alignmentClass) {

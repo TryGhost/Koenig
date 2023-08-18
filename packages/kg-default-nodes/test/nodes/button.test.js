@@ -69,6 +69,8 @@ describe('ButtonNode', function () {
             buttonNode.alignment.should.equal('center');
             buttonNode.alignment = 'left';
             buttonNode.alignment.should.equal('left');
+            buttonNode.alignment = 'right';
+            buttonNode.alignment.should.equal('right');
         }));
 
         it('has getDataset() convenience method', editorTest(function () {
