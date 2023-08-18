@@ -32,6 +32,19 @@ describe('Button card', function () {
 
             serializer.serialize(card.render(opts)).should.equal('<div class="kg-card kg-button-card kg-align-center"><a href="https://ghost.org/" class="kg-btn kg-btn-accent">Click me!</a></div>');
         });
+
+        it('adds right classes when right aligned', function () {
+            let opts = {
+                env: {dom: new SimpleDom.Document()},
+                payload: {
+                    buttonUrl: 'https://ghost.org/',
+                    buttonText: 'Click me!',
+                    alignment: 'right'
+                }
+            };
+
+            serializer.serialize(card.render(opts)).should.equal('<div class="kg-card kg-button-card kg-align-right"><a href="https://ghost.org/" class="kg-btn kg-btn-accent">Click me!</a></div>');
+        });
     });
 
     describe('email render', function () {
