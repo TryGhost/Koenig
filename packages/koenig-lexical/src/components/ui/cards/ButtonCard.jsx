@@ -37,9 +37,13 @@ export function ButtonCard({
         }
     ];
 
-    let alignmentClass = "justify-start";
-    if (alignment === "center") alignmentClass = "justify-center";
-    if (alignment === "right") alignmentClass = "justify-end";
+    let alignmentClass = 'justify-start';
+    if (alignment === 'center') {
+        alignmentClass = 'justify-center';
+    }
+    if (alignment === 'right') {
+        alignmentClass = 'justify-end';
+    }
 
     return (
         <>
