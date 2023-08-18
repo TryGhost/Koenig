@@ -66,6 +66,7 @@ test.describe('Button Card', async () => {
         await expect(await page.getByTestId('settings-panel')).toBeVisible();
         await expect(await page.getByTestId('button-align-left')).toBeVisible();
         await expect(await page.getByTestId('button-align-center')).toBeVisible();
+        await expect(await page.getByTestId('button-align-right')).toBeVisible();
         await expect(await page.getByTestId('button-input-text')).toBeVisible();
         await expect(await page.getByTestId('button-input-url')).toBeVisible();
     });
@@ -85,6 +86,10 @@ test.describe('Button Card', async () => {
         const centerAlignButton = await page.getByTestId('button-align-center');
         centerAlignButton.click();
         await expect(buttonCard).toHaveClass(/justify-center/);
+
+        const rightAlignButton = await page.getByTestId('button-align-right');
+        rightAlignButton.click();
+        await expect(buttonCard).toHaveClass(/justify-end/);
     });
 
     test('default settings are appropriate', async function () {
