@@ -70,6 +70,25 @@ describe('parser-plugins: button card', function () {
             });
         });
 
+        it('parses right alignment class into payload', function () {
+            const dom = buildDOM(`
+                <div class="kg-button-card kg-align-right">
+                    <a href="https://example.com" class="kg-btn kg-btn-accent">
+                        Testing  button
+                    </a>
+                </div>
+            `);
+            const [section] = parser.parse(dom).sections.toArray();
+
+            section.type.should.equal('card-section');
+            section.name.should.equal('button');
+            section.payload.should.deepEqual({
+                buttonUrl: 'https://example.com/',
+                buttonText: 'Testing button',
+                alignment: 'right'
+            });
+        });
+
         it('handles arbitrary whitespace in button content', function () {
             const dom = buildDOM(`
                 <div class="kg-button-card">
