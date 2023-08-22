@@ -13202,9 +13202,9 @@ ltgt@^2.1.2:
   integrity sha512-AI2r85+4MquTw9ZYqabu4nMwy9Oftlfa/e/52t9IjtfG+mGBbTNdAoZ3RQKLHR6r0wQnwZnPIEh/Ya6XTWAKNA==
 
 luxon@^3.0.0, luxon@^3.3.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.0.tgz#17cb754efecbf76994f05b2a3f1f91fad7ddfde7"
-  integrity sha512-7eDo4Pt7aGhoCheGFIuq4Xa2fJm4ZpmldpGhjTYBNUYNCN6TIEP6v7chwwwt3KRp7YR+rghbfvjyo3V5y9hgBw==
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.1.tgz#9147374b2c539e7893f906c420e9b080b59c5457"
+  integrity sha512-2USspxOCXWGIKHwuQ9XElxPPYrDOJHDQ5DQ870CoD+CxJbBnRDIBCfhioUJJjct7BKOy80Ia8cVstIcIMb/0+Q==
 
 lz-string@^1.5.0:
   version "1.5.0"
