@@ -260,7 +260,7 @@ test.describe('Card behaviour', async () => {
         });
 
         //test.fixme('lazy click puts card in edit mode');
-        test.only('clicking in the space between cards selects the card under it', async function () {
+        test('clicking in the space between cards selects the card under it', async function () {
             await focusEditor(page);
             await page.keyboard.type('---');
             await page.keyboard.type('```javascript ');
