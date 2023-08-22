@@ -705,7 +705,7 @@
         :where(
             hr
         ):not(:where(.not-kg-prose, [class~='not-kg-prose'] *)) {
-            padding: 1.6rem 0;
+            margin: 1.6rem 0;
         }
 
         /* Code
