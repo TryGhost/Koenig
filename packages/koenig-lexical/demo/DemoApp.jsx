@@ -189,9 +189,8 @@ function DemoComposer({editorType, isMultiplayer, setWordCount}) {
         }
 
         // when clicking between cards, put focus on the next card
-        const clickedOnDragAndDrop = (event.target.closest('[data-koenig-dnd-draggable]') !== null) || event.target.hasAttribute('data-kg-draggable'); // could also look at first child having data-kg-card
         const clickedOnKoenigCard = (event.target.closest('[data-kg-card]') !== null) || event.target.hasAttribute('data-kg-card');
-        if (editorAPI && clickedOnDragAndDrop && !clickedOnKoenigCard) {
+        if (editorAPI && clickedOnDecorator && !clickedOnKoenigCard) {
             let editor = editorAPI.editorInstance;
             event.preventDefault();
             editor.update(() => {
