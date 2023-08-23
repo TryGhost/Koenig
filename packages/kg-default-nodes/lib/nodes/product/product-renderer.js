@@ -37,7 +37,7 @@ export function cardTemplate({data}) {
         `
         <div class="kg-card kg-product-card">
             <div class="kg-product-card-container">
-
+                ${data.productImageSrc ? `<img src="${data.productImageSrc}" ${data.productImageWidth ? `width="${data.productImageWidth}"` : ''} ${data.productImageHeight ? `height="${data.productImageHeight}"` : ''} class="kg-product-card-image" loading="lazy" />` : ''}
                 <div class="kg-product-card-title-container">
                     <h4 class="kg-product-card-title">${data.productTitle}</h4>
                 </div>
