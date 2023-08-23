@@ -37,7 +37,7 @@ export function cardTemplate({data}) {
         `
         <div class="kg-card kg-product-card">
             <div class="kg-product-card-container">
-                ${data.productImageSrc ? `<img src="${data.productImageSrc}" ${data.productImageWidth ? `width="${data.productImageWidth}"` : ''} ${data.productImageHeight ? `height="${data.productImageHeight}"` : ''} class="kg-product-card-image" loading="lazy" />` : ''}
+
                 <div class="kg-product-card-title-container">
                     <h4 class="kg-product-card-title">${data.productTitle}</h4>
                 </div>
@@ -68,7 +68,7 @@ export function emailCardTemplate({data}) {
             ${data.productImageSrc ? `
                 <tr>
                     <td align="center" style="padding-top:0; padding-bottom:0; margin-bottom:0; padding-bottom:0;">
-                        <img src="${data.productImageSrc}" ${data.productImageWidth ? `width="${data.productImageWidth}"` : ''} ${data.productImageHeight ? `height="${data.productImageHeight}"` : ''} style="height: auto; border: none; padding-bottom: 16px;" border="0"/>
+                        <img src="${data.productImageSrc}" ${data.productImageWidth ? `width="${data.productImageWidth}"` : ''} ${data.productImageHeight ? `height="${data.productImageHeight}"` : ''} style="width: 100%; height: auto; border: none; padding-bottom: 16px;" border="0"/>
                     </td>
                 </tr>
             ` : ''}
