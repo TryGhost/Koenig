@@ -1,5 +1,5 @@
-import * as React from 'react';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
+import React from 'react';
 import {HorizontalRuleNode as BaseHorizontalRuleNode} from '@tryghost/kg-default-nodes';
 import {ReactComponent as DividerCardIcon} from '../assets/icons/kg-card-type-divider.svg';
 import {HorizontalRuleNodeComponent} from './HorizontalRuleNodeComponent';
@@ -32,8 +32,9 @@ export class HorizontalRuleNode extends BaseHorizontalRuleNode {
                 wrapperStyle="wide"
             >
                 <HorizontalRuleNodeComponent
-                    alignment={this.alignment}
+                    color={this.color}
                     nodeKey={this.getKey()}
+                    size={this.size}
                 />
             </KoenigCardWrapper>
         );

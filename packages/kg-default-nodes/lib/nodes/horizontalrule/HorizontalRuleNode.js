@@ -3,7 +3,18 @@ import {generateDecoratorNode} from '../../generate-decorator-node';
 import {renderHorizontalRuleNode} from './horizontalrule-renderer';
 import {parseHorizontalRuleNode} from './horizontalrule-parser';
 
-export class HorizontalRuleNode extends generateDecoratorNode({nodeType: 'horizontalrule'}) {
+export class HorizontalRuleNode extends generateDecoratorNode({nodeType: 'horizontalrule',
+    properties: [
+        {name: 'size', default: 1},
+        {name: 'color', default: 'grey'}
+    ]}
+) {
+    /* override */
+    constructor({color} = {}, key) {
+        super(key);
+        this.__size = size || 1;
+        this.__color = color || 'grey';
+    }
     static importDOM() {
         return parseHorizontalRuleNode(this);
     }
@@ -14,10 +25,6 @@ export class HorizontalRuleNode extends generateDecoratorNode({nodeType: 'horizo
 
     getTextContent() {
         return '---\n\n';
-    }
-
-    hasEditMode() {
-        return false;
     }
 }
 

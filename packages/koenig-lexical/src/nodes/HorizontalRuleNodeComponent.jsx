@@ -8,7 +8,11 @@ import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function HorizontalRuleNodeComponent({alignment, nodeKey}) {
+export function HorizontalRuleNodeComponent({
+    color, 
+    nodeKey,
+    size 
+}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -20,16 +24,27 @@ export function HorizontalRuleNodeComponent({alignment, nodeKey}) {
         setEditing(true);
     };
 
-    const handleAlignmentChange = (value) => {
+    const handleSizeChange = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.alignment = value;
+            node.size = value;
+        });
+    };
+
+    const handleColorChange = (color) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.color = color;
         });
     };
 
     return (
         <>
-            <HorizontalRuleCard 
+            <HorizontalRuleCard
+                size={size}
+                handleSizeChange={handleSizeChange}
+                color={color}
+                handleColorChange={handleColorChange}
                 isEditing={isEditing}
             />
             <ActionToolbar
