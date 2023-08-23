@@ -2,7 +2,7 @@ import * as React from 'react';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import {HorizontalRuleNode as BaseHorizontalRuleNode} from '@tryghost/kg-default-nodes';
 import {ReactComponent as DividerCardIcon} from '../assets/icons/kg-card-type-divider.svg';
-import {HorizontalRuleCard} from '../components/ui/cards/HorizontalRuleCard';
+import {HorizontalRuleNodeComponent} from './HorizontalRuleNodeComponent';
 import {createCommand} from 'lexical';
 
 export const INSERT_HORIZONTAL_RULE_COMMAND = createCommand();
@@ -13,9 +13,13 @@ export class HorizontalRuleNode extends BaseHorizontalRuleNode {
         desc: 'Insert a dividing line',
         Icon: DividerCardIcon,
         insertCommand: INSERT_HORIZONTAL_RULE_COMMAND,
-        matches: ['divider', 'horizontal-rule', 'hr'],
+        matches: ['divider', 'horizontal-rule', 'hr', 'separator'],
         priority: 5
     };
+
+    static getType() {
+        return 'horizontalrule';
+    }
 
     getIcon() {
         return DividerCardIcon;
@@ -23,15 +27,21 @@ export class HorizontalRuleNode extends BaseHorizontalRuleNode {
 
     decorate() {
         return (
-            <KoenigCardWrapper className="inline-block" nodeKey={this.getKey()}>
-                <HorizontalRuleCard />
+            <KoenigCardWrapper
+                nodeKey={this.getKey()}
+                wrapperStyle="wide"
+            >
+                <HorizontalRuleNodeComponent
+                    alignment={this.alignment}
+                    nodeKey={this.getKey()}
+                />
             </KoenigCardWrapper>
         );
     }
 }
 
-export function $createHorizontalRuleNode() {
-    return new HorizontalRuleNode();
+export function $createHorizontalRuleNode(dataset) {
+    return new HorizontalRuleNode(dataset);
 }
 
 export function $isHorizontalRuleNode(node) {
