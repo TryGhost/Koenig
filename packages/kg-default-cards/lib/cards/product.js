@@ -58,7 +58,7 @@ module.exports = {
             {{#if productImageEnabled}}
             <tr>
                 <td align="center" style="padding-top:0; padding-bottom:0; margin-bottom:0; padding-bottom:0;">
-                    <img {{{productImageAttrs}}} style="height: auto; border: none; padding-bottom: 16px;" border="0">
+                    <img {{{productImageAttrs}}} style="width: 100%; height: auto; border: none; padding-bottom: 16px;" border="0">
                 </td>
             </tr>
             {{/if}}
