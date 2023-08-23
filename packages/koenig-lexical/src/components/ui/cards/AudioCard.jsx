@@ -9,6 +9,7 @@ import {ImageUploadForm} from '../ImageUploadForm';
 import {MediaPlaceholder} from '../MediaPlaceholder';
 import {MediaPlayer} from '../MediaPlayer';
 import {ProgressBar} from '../ProgressBar';
+import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {TextInput} from '../TextInput';
 import {openFileSelection} from '../../../utils/openFileSelection';
 
@@ -114,7 +115,7 @@ function AudioThumbnail({
             <div className="group relative flex aspect-square h-20 items-center justify-center rounded-sm bg-purple">
                 <img alt="Audio thumbnail" className="h-full w-full rounded-sm object-cover transition ease-in" data-testid="audio-thumbnail" src={src} />
                 {isEditing && (
-                    <div className="absolute top-2 right-2 flex opacity-0 transition-all group-hover:opacity-100">
+                    <div className="absolute right-2 top-2 flex opacity-0 transition-all group-hover:opacity-100">
                         <IconButton dataTestId='remove-thumbnail' Icon={DeleteIcon} onClick={removeThumbnail} />
                     </div>
                 )}
@@ -177,38 +178,41 @@ function PopulatedAudioCard({
     };
 
     return (
-        <div
-            ref={thumbnailDragHandler.setRef}
-            className="flex rounded border border-grey/30 p-2"
-            data-testid="audio-card-populated"
-        >
-            <AudioThumbnail
-                errors={errors}
-                isDraggedOver={thumbnailDragHandler.isDraggedOver}
-                isEditing={isEditing}
-                isUploading={isUploading}
-                mimeTypes={thumbnailMimeTypes}
-                progress={progress}
-                removeThumbnail={removeThumbnail}
-                setFileInputRef={setFileInputRef}
-                src={thumbnailSrc}
-                onFileChange={onFileChange}
-            />
-            <div className="flex h-20 w-full flex-col justify-between px-4">
-                {(isEditing || title) && (
-                    <TextInput
-                        className="font-sans text-lg font-bold text-black"
-                        data-testid="audio-title"
-                        name="title"
-                        placeholder={placeholder}
-                        readOnly={!isEditing}
-                        value={title}
-                        onChange={handleChange}
-                    />
-                )}
-                <MediaPlayer duration={formatDuration(duration)} theme='dark' />
+        <>
+            <div
+                ref={thumbnailDragHandler.setRef}
+                className="flex rounded border border-grey/30 p-2"
+                data-testid="audio-card-populated"
+            >
+                <AudioThumbnail
+                    errors={errors}
+                    isDraggedOver={thumbnailDragHandler.isDraggedOver}
+                    isEditing={isEditing}
+                    isUploading={isUploading}
+                    mimeTypes={thumbnailMimeTypes}
+                    progress={progress}
+                    removeThumbnail={removeThumbnail}
+                    setFileInputRef={setFileInputRef}
+                    src={thumbnailSrc}
+                    onFileChange={onFileChange}
+                />
+                <div className="flex h-20 w-full flex-col justify-between px-4">
+                    {(isEditing || title) && (
+                        <TextInput
+                            className="font-sans text-lg font-bold text-black"
+                            data-testid="audio-title"
+                            name="title"
+                            placeholder={placeholder}
+                            readOnly={!isEditing}
+                            value={title}
+                            onChange={handleChange}
+                        />
+                    )}
+                    <MediaPlayer duration={formatDuration(duration)} theme='dark' />
+                </div>
             </div>
-        </div>
+            {!isEditing && <ReadOnlyOverlay />}
+        </>
     );
 }
 

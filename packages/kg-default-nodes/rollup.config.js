@@ -1,6 +1,6 @@
 /* eslint-env node */
 import pkg from './package.json';
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel';
 
 const dependencies = Object.keys(pkg.dependencies);
 
@@ -28,6 +28,7 @@ export default [
         },
         plugins: [
             babel({
+                babelHelpers: 'bundled',
                 presets: [
                     ['@babel/preset-env', {
                         modules: false,

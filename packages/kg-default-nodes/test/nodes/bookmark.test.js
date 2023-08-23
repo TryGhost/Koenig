@@ -3,7 +3,7 @@ const {$getRoot} = require('lexical');
 const {createHeadlessEditor} = require('@lexical/headless');
 const {$generateNodesFromDOM} = require('@lexical/html');
 const {JSDOM} = require('jsdom');
-const Prettier = require('prettier');
+const Prettier = require('@prettier/sync');
 
 const {BookmarkNode, $createBookmarkNode, $isBookmarkNode} = require('../../');
 
@@ -173,8 +173,8 @@ describe('BookmarkNode', function () {
                             <div class="kg-bookmark-description">${dataset.metadata.description}</div>
                             <div class="kg-bookmark-metadata">
                                 <img class="kg-bookmark-icon" src="${dataset.metadata.icon}" alt="">
-                                <span class="kg-bookmark-publisher">${dataset.metadata.publisher}</span>
-                                <span class="kg-bookmark-author">${dataset.metadata.author}</span>
+                                <span class="kg-bookmark-author">${dataset.metadata.publisher}</span>
+                                <span class="kg-bookmark-publisher">${dataset.metadata.author}</span>
                             </div>
                         </div>
                         <div class="kg-bookmark-thumbnail">
@@ -297,8 +297,8 @@ describe('BookmarkNode', function () {
                             <div class="kg-bookmark-description">${dataset.metadata.description}</div>
                             <div class="kg-bookmark-metadata">
                                 <img class="kg-bookmark-icon" src="${dataset.metadata.icon}" alt="">
-                                <span class="kg-bookmark-author">${dataset.metadata.author}</span>
-                                <span class="kg-bookmark-publisher">${dataset.metadata.publisher}</span>
+                                <span class="kg-bookmark-author">${dataset.metadata.publisher}</span>
+                                <span class="kg-bookmark-publisher">${dataset.metadata.author}</span>
                             </div>
                         </div>
                         <div class="kg-bookmark-thumbnail">

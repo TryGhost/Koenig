@@ -9,7 +9,7 @@ import WordCount from './components/WordCount';
 import basicContent from './content/basic-content.json';
 import content from './content/content.json';
 import minimalContent from './content/minimal-content.json';
-import {$getRoot, $isDecoratorNode} from 'lexical';
+import {$createNodeSelection, $getNearestNodeFromDOMNode, $getRoot, $isDecoratorNode, $setSelection} from 'lexical';
 import {
     BASIC_NODES, BASIC_TRANSFORMERS, KoenigComposableEditor,
     KoenigComposer, KoenigEditor, MINIMAL_NODES, MINIMAL_TRANSFORMERS,
@@ -43,11 +43,10 @@ const cardConfig = {
     siteDescription: `There's a whole lot to discover in this editor. Let us help you settle in.`,
     membersEnabled: true,
     feature: {
-        headerV2: true,
         collections: true,
         collectionsCard: true
     },
-    // todo: figure out how to dynamically set this for testing to ensure we keep v1 tested
+    // we keep header v1 visible in the demo to ensure it remains tested till we full deprecate it in the future
     depreciated: {
         headerV1: false // if false, shows header v1 in the menu
     }
@@ -157,10 +156,10 @@ function DemoComposer({editorType, isMultiplayer, setWordCount}) {
 
         if (editorAPI && !clickedOnDecorator && !clickedOnSlashMenu) {
             let editor = editorAPI.editorInstance;
-            let {bottom} = editor._rootElement.getBoundingClientRect();
 
             // if a mousedown and subsequent mouseup occurs below the editor
             // canvas, focus the editor and put the cursor at the end of the document
+            let {bottom} = editor._rootElement.getBoundingClientRect();
             if (event.pageY > bottom && event.clientY > bottom) {
                 event.preventDefault();
 
@@ -187,6 +186,19 @@ function DemoComposer({editorType, isMultiplayer, setWordCount}) {
                 //scroll to the bottom of the container
                 containerRef.current.scrollTop = containerRef.current.scrollHeight;
             }
+        }
+
+        // when clicking between cards, put focus on the next card
+        const clickedOnKoenigCard = (event.target.closest('[data-kg-card]') !== null) || event.target.hasAttribute('data-kg-card');
+        if (editorAPI && clickedOnDecorator && !clickedOnKoenigCard) {
+            let editor = editorAPI.editorInstance;
+            event.preventDefault();
+            editor.update(() => {
+                const node = $getNearestNodeFromDOMNode(event.target);
+                const nodeSelection = $createNodeSelection();
+                nodeSelection.add(node.getKey());
+                $setSelection(nodeSelection);
+            });
         }
     }
 
@@ -241,7 +253,7 @@ function DemoComposer({editorType, isMultiplayer, setWordCount}) {
                 }
                 <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
                 <div ref={containerRef} className="h-full overflow-auto overflow-x-hidden" onClick={focusEditor}>
-                    <div className="mx-auto max-w-[740px] py-[15vmin] px-6 lg:px-0">
+                    <div className="mx-auto max-w-[740px] px-6 py-[15vmin] lg:px-0">
                         {showTitle
                             ? <TitleTextBox ref={titleRef} editorAPI={editorAPI} setTitle={setTitle} title={title} />
                             : null

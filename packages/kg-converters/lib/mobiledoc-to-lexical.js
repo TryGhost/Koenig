@@ -35,7 +35,7 @@ const TAG_TO_LEXICAL_NODE = {
     },
     h6: {
         type: 'heading',
-        tag: 'h5'
+        tag: 'h6'
     },
     blockquote: {
         type: 'quote'
@@ -65,6 +65,7 @@ const MARKUP_TO_FORMAT = {
     em: 1 << 1,
     i: 1 << 1,
     s: 1 << 2,
+    u: 1 << 3,
     code: 1 << 4,
     sub: 1 << 5,
     sup: 1 << 6
@@ -164,6 +165,8 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
     let openMarkups = []; // tracks which markup tags are open for the current marker
     let linkNode = undefined; // tracks current link node or undefined if no a tag is open
     let href = undefined; // tracks the href for the current link node or undefined if no a tag is open
+    let rel = undefined; //tracks the rel attribute for the current link node or undefined if no a tag is open
+    let openLinkMarkup = false; // tracks whether the current node is a link node
 
     // loop over markers and convert each one to lexical
     for (let i = 0; i < markers.length; i++) {
@@ -192,21 +195,28 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
             const markup = markups[markupIndex];
             // Extract the href from the markup if it's a link
             if (markup[0] === 'a') {
-                href = markup[1][1];
+                openLinkMarkup = true;
+                if (markup[1] && markup[1][0] === 'href') {
+                    href = markup[1][1];
+                }
+
+                if (markup[1] && markup[1][2] === 'rel') {
+                    rel = markup[1][3];
+                }
             }
             // Add the markup to the list of open markups
             openMarkups.push(markup);
         });
 
-        if (value) {
+        if (value !== undefined) {
             // Convert the open markups to a bitmask compatible with Lexical
             const format = convertMarkupTagsToLexicalFormatBitmask(openMarkups);
 
             // If there is an open link tag, add the text to the link node
             // Otherwise add the text to the parent node
-            if (href) { // link is open
+            if (openLinkMarkup) { // link is open
                 // Create an empty link node if it doesn't exist already
-                linkNode = linkNode !== undefined ? linkNode : createEmptyLexicalNode('a', {url: href});
+                linkNode = linkNode !== undefined ? linkNode : createEmptyLexicalNode('a', {url: href, rel: rel || null});
 
                 // Create a text node and add it to the link node
                 const textNode = createTextNode(value, format);
@@ -225,8 +235,9 @@ function populateLexicalNodeWithMarkers(lexicalNode, markers, mobiledoc) {
 
             // If we're closing a link tag, add the linkNode to the node
             // Reset href and linkNode for the next markup
-            if (markup[0] === 'a') {
+            if (markup && markup[0] === 'a') {
                 embedChildNode(lexicalNode, linkNode);
+                openLinkMarkup = false;
                 href = undefined;
                 linkNode = undefined;
             }
@@ -264,11 +275,15 @@ function createEmptyLexicalNode(tagName, attributes = {}) {
 
 // Adds a child node to a parent node
 function embedChildNode(parentNode, childNode) {
+    // If there is no child node, do nothing
+    if (!childNode) {
+        return;
+    }
     // Add textNode to node's children
     parentNode.children.push(childNode);
 
     // If there is any text (e.g. not a blank text node), set the direction to ltr
-    if ('text' in childNode && childNode.text) {
+    if (childNode && 'text' in childNode && childNode.text) {
         parentNode.direction = 'ltr';
     }
 }
@@ -316,6 +331,7 @@ function convertCardSectionToLexical(child, mobiledoc) {
         }
     }
 
+    delete payload.type;
     const decoratorNode = {type: cardName, ...payload};
 
     return decoratorNode;

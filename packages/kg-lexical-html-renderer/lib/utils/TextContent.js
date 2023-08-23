@@ -75,7 +75,13 @@ class TextContent {
 
         const a = this.doc.createElement('a');
 
-        a.setAttribute('href', node.getURL());
+        // Only set the href if we have a URL, otherwise we get a link to the current page
+        if (node.getURL()) {
+            a.setAttribute('href', node.getURL());            
+        }
+        if (node.getRel()) {
+            a.setAttribute('rel', node.getRel());
+        }
         a.innerHTML = exportChildren(node, options);
 
         this.currentNode.append(a);

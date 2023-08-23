@@ -16,6 +16,7 @@ import {ReactComponent as ImgWideIcon} from '../../../assets/icons/kg-img-wide.s
 import {ReactComponent as LayoutSplitIcon} from '../../../assets/icons/kg-layout-split.svg';
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
 import {MediaUploader} from '../MediaUploader';
+import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {ReactComponent as ShrinkIcon} from '../../../assets/icons/kg-shrink.svg';
 import {SubscribeForm} from '../SubscribeForm';
 import {getAccentColor} from '../../../utils/getAccentColor';
@@ -225,7 +226,7 @@ export function SignupCard({alignment,
                             className={clsx(
                                 'sm:w-1/2',
                                 (correctedBackgroundSize === 'contain') && 'sm:my-10 md:my-14',
-                                (!isSwapped && (correctedBackgroundSize === 'contain')) && 'mt-10 px-[calc(32px-(4rem/2))] xs:px-[calc(92px-(8rem/2))] sm:pr-0 sm:pl-[calc(92px-(12rem/2))] md:pl-[calc(92px-(12rem/2))] lg:pl-0',
+                                (!isSwapped && (correctedBackgroundSize === 'contain')) && 'mt-10 px-[calc(32px-(4rem/2))] xs:px-[calc(92px-(8rem/2))] sm:pl-[calc(92px-(12rem/2))] sm:pr-0 md:pl-[calc(92px-(12rem/2))] lg:pl-0',
                                 (isSwapped && (correctedBackgroundSize === 'contain')) && 'mb-10 px-[calc(32px-(4rem/2))] xs:px-[calc(92px-(8rem/2))] sm:pl-0 sm:pr-[calc(92px-(12rem/2))] md:pr-[calc(92px-(12rem/2))] lg:pr-0',
                             )}
                             desc='Click to select an image'
@@ -250,9 +251,9 @@ export function SignupCard({alignment,
                         className={clsx(
                             'mx-auto flex w-full flex-1 flex-col justify-center',
                             (alignment === 'center') && 'items-center',
-                            (layout === 'regular') && 'p-[4rem] sm:py-[6rem] md:py-[8rem] md:px-[6rem] lg:px-[8rem]',
-                            (layout === 'wide') && 'max-w-[740px] p-[4rem] sm:py-[6rem] md:py-[10rem] md:px-[8rem] lg:px-0',
-                            (layout === 'full') && 'py-[4rem] px-[calc(32px-(4rem/2))] xs:px-[calc(92px-(8rem/2))] sm:py-[6rem] md:py-[12rem] md:px-[calc(92px-(12rem/2))] lg:py-[14rem] lg:px-0 xl:py-[18rem]',
+                            (layout === 'regular') && 'p-[4rem] sm:py-[6rem] md:px-[6rem] md:py-[8rem] lg:px-[8rem]',
+                            (layout === 'wide') && 'max-w-[740px] p-[4rem] sm:py-[6rem] md:px-[8rem] md:py-[10rem] lg:px-0',
+                            (layout === 'full') && 'px-[calc(32px-(4rem/2))] py-[4rem] xs:px-[calc(92px-(8rem/2))] sm:py-[6rem] md:px-[calc(92px-(12rem/2))] md:py-[12rem] lg:px-0 lg:py-[14rem] xl:py-[18rem]',
                             (layout === 'split') && 'p-[4rem] sm:py-[6rem] md:px-[6rem] md:py-[12rem] lg:px-[8rem] lg:py-[16rem] xl:py-[18rem]',
                             (!isSwapped && layout === 'split' && correctedBackgroundSize === 'contain') && 'px-[calc(32px-(4rem/2))] xs:px-[calc(92px-(8rem/2))] sm:px-[calc(92px-(12rem/2))] md:pr-[calc(92px-(12rem/2))] lg:pr-0',
                             (isSwapped && layout === 'split' && correctedBackgroundSize === 'contain') && 'px-[calc(32px-(4rem/2))] xs:px-[calc(92px-(8rem/2))] sm:px-[calc(92px-(12rem/2))] md:pl-[calc(92px-(12rem/2))] lg:pl-0',
@@ -350,7 +351,7 @@ export function SignupCard({alignment,
                 </div>
 
                 {/* Read-only overlay */}
-                {!isEditing && <div className="absolute top-0 z-10 !m-0 h-full w-full cursor-default p-0"></div>}
+                {!isEditing && <ReadOnlyOverlay />}
             </div>
 
             {isEditing &&

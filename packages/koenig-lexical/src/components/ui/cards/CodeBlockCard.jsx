@@ -193,7 +193,7 @@ export function CodeEditor({code, language, updateCode, updateLanguage, onBlur})
             />
             <input
                 aria-label="Code card language"
-                className={`z-999 absolute top-1.5 right-1.5 w-1/5 rounded border border-grey-300 p-1 font-sans text-[1.3rem] leading-4 text-grey-900 transition-opacity focus-visible:outline-none ${showLanguage ? 'opacity-100' : 'opacity-0'}`}
+                className={`z-999 absolute right-1.5 top-1.5 w-1/5 rounded border border-grey-300 p-1 font-sans text-[1.3rem] leading-4 text-grey-900 transition-opacity focus-visible:outline-none ${showLanguage ? 'opacity-100' : 'opacity-0'}`}
                 data-testid="code-card-language"
                 placeholder="Language..."
                 type="text"
@@ -206,8 +206,8 @@ export function CodeEditor({code, language, updateCode, updateLanguage, onBlur})
 
 export function CodeBlock({code, darkMode, language}) {
     const preClass = darkMode
-        ? `rounded border border-grey-950 bg-grey-950 px-2 py-[6px] font-mono text-[1.6rem] leading-9 text-grey-400`
-        : `rounded border border-grey-200 bg-grey-100 px-2 py-[6px] font-mono text-[1.6rem] leading-9 text-grey-900`;
+        ? `rounded border border-grey-950 bg-grey-950 px-2 py-[6px] font-mono text-[1.6rem] leading-9 text-grey-400 whitespace-pre-wrap`
+        : `rounded border border-grey-200 bg-grey-100 px-2 py-[6px] font-mono text-[1.6rem] leading-9 text-grey-900 whitespace-pre-wrap`;
     return (
         <div className="not-kg-prose">
             <pre className={preClass}>
@@ -215,7 +215,7 @@ export function CodeBlock({code, darkMode, language}) {
                     {code}
                 </code>
             </pre>
-            <div className="absolute top-2 right-2 flex items-center justify-center px-1">
+            <div className="absolute right-2 top-2 flex items-center justify-center px-1">
                 <span className="block font-sans text-sm font-medium leading-normal text-grey">{language}</span>
             </div>
         </div>

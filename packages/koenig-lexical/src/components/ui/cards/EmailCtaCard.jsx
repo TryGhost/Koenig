@@ -5,6 +5,7 @@ import {Button} from '../Button';
 import {ButtonGroupSetting, DropdownSetting, InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';
 import {ReactComponent as LeftAlignIcon} from '../../../assets/icons/kg-align-left.svg';
+import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 
 export function EmailCtaCard({
     alignment,
@@ -52,7 +53,7 @@ export function EmailCtaCard({
         <>
             <div className="w-full pb-6">
                 {/* Segment */}
-                <div className="pt-1 pb-7 font-sans text-xs font-semibold uppercase leading-8 tracking-tight text-grey dark:text-grey-800">
+                <div className="pb-7 pt-1 font-sans text-xs font-semibold uppercase leading-8 tracking-tight text-grey dark:text-grey-800">
                     {segmentName}
                 </div>
 
@@ -79,10 +80,10 @@ export function EmailCtaCard({
                 }
 
                 {/* Bottom divider */}
-                {showDividers && <hr className="mt-12 mb-0 block border-t-grey-300 dark:border-t-grey-900" data-testid="bottom-divider" />}
+                {showDividers && <hr className="mb-0 mt-12 block border-t-grey-300 dark:border-t-grey-900" data-testid="bottom-divider" />}
 
                 {/* Read-only overlay */}
-                {!isEditing && <div className="absolute top-0 z-10 !m-0 h-full w-full cursor-default p-0"></div>}
+                {!isEditing && <ReadOnlyOverlay />}
             </div>
 
             {isEditing && (

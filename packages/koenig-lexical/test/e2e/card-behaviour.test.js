@@ -260,6 +260,41 @@ test.describe('Card behaviour', async () => {
         });
 
         //test.fixme('lazy click puts card in edit mode');
+        test('clicking in the space between cards selects the card under it', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('---');
+            await page.keyboard.type('```javascript ');
+            await page.waitForSelector('[data-kg-card="codeblock"] .cm-editor');
+            await page.keyboard.type('import React from "react"');
+            await page.keyboard.press('Meta+Enter');
+            await page.keyboard.press('ArrowUp');
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="codeblock">
+                    </div>
+                </div>
+            `, {ignoreCardContents: true});
+            
+            await page.mouse.click(275, 275);
+
+            await assertHTML(page, html`
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="horizontalrule">
+                        <hr>
+                    </div>
+                </div>
+                <div data-lexical-decorator="true" contenteditable="false">
+                    <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="codeblock">
+                    </div>
+                </div>
+            `, {ignoreCardContents: true});
+        });
     });
 
     test.describe('LEFT', function () {
@@ -1211,6 +1246,25 @@ test.describe('Card behaviour', async () => {
             expect(await page.locator('[data-kg-card-selected="true"]')).not.toBeNull();
             expect(await page.locator('[data-kg-card-editing="true"]')).not.toBeNull();
         });
+
+        test('cursor position when deselecting empty card with nested editor', async function () {
+            // Focus/cursor position was not correct when a card with a nested editor was deselected+removed,
+            // an extra reset was occurring putting the cursor at the start of the document.
+            // See https://github.com/TryGhost/Product/issues/3430
+            await focusEditor(page);
+            await page.keyboard.type('Testing');
+            await page.keyboard.press('Enter');
+            await insertCard(page, {cardName: 'product'});
+            await page.keyboard.press('Meta+Enter');
+
+            // focus is on blank paragraph that's left after empty card is removed
+            await assertSelection(page, {
+                anchorOffset: 0,
+                anchorPath: [1],
+                focusOffset: 0,
+                focusPath: [1]
+            });
+        });
     });
 
     test.describe('ESCAPE', function () {
@@ -1571,6 +1625,20 @@ test.describe('Card behaviour', async () => {
     });
 
     test.describe('inner editors', function () {
+        test('can use the delete key to remove text', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/image https://example.com/image.jpg');
+            await page.waitForSelector('[data-kg-card-menu-item="Image"][data-kg-cardmenu-selected="true"]');
+            await page.keyboard.press('Enter');
+            await page.waitForSelector('[data-kg-card="image"]');
+            await page.keyboard.type('Caption value');
+            await page.keyboard.press('ArrowLeft');
+            // await page.keyboard.press('Fn+Backspace'); // note: this is the delete key for macs, but playwright doesn't recognize "Fn" even when running on a mac :(
+            await page.keyboard.press('Delete');
+
+            await expect(page.locator('[data-kg-card="image"] figcaption [data-kg="editor"]')).toHaveText('Caption valu');
+        });
+
         test.describe('codemirror', function () {
             // Skipped because CodeMirror does not pick up the copy/paste properly inside Playwright - manual testing is working
             test.skip('can copy/paste', async function () {
