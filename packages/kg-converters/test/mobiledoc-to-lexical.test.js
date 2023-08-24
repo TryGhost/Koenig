@@ -271,6 +271,72 @@ describe('mobiledocToLexical', function () {
             }));
         });
 
+        it('converts a paragraph with underlined text', function () {
+            const result = mobiledocToLexical(JSON.stringify({
+                version: MOBILEDOC_VERSION,
+                ghostVersion: GHOST_VERSION,
+                atoms: [],
+                cards: [],
+                markups: [
+                    ['u']
+                ],
+                sections: [
+                    [1, 'p', [
+                        [0, [], 0, 'Hello, '],
+                        [0, [0], 1, 'world'],
+                        [0, [], 0, '!']
+                    ]]
+                ]
+            }));
+            assert.equal(result, JSON.stringify({
+                root: {
+                    children: [
+                        {
+                            children: [
+                                {
+                                    detail: 0,
+                                    format: 0,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: 'Hello, ',
+                                    type: 'text',
+                                    version: 1
+                                },
+                                {
+                                    detail: 0,
+                                    format: 8,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: 'world',
+                                    type: 'text',
+                                    version: 1
+                                },
+                                {
+                                    detail: 0,
+                                    format: 0,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: '!',
+                                    type: 'text',
+                                    version: 1
+                                }
+                            ],
+                            direction: 'ltr',
+                            format: '',
+                            indent: 0,
+                            type: 'paragraph',
+                            version: 1
+                        }
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    type: 'root',
+                    version: 1
+                }
+            }));
+        });
+
         it('converts a paragraph with strong and italic text', function () {
             const result = mobiledocToLexical(JSON.stringify({
                 version: MOBILEDOC_VERSION,
@@ -1279,92 +1345,50 @@ describe('mobiledocToLexical', function () {
             }));
         });
 
-        it('converts H1s', function () {
-            const result = mobiledocToLexical(JSON.stringify({
-                version: MOBILEDOC_VERSION,
-                ghostVersion: GHOST_VERSION,
-                atoms: [],
-                cards: [],
-                markups: [],
-                sections: [
-                    [1, 'h1', [[0, [], 0, 'Heading 1']]]
-                ]
-            }));
-
-            assert.equal(result, JSON.stringify({
-                root: {
-                    children: [
-                        {
-                            children: [
-                                {
-                                    detail: 0,
-                                    format: 0,
-                                    mode: 'normal',
-                                    style: '',
-                                    text: 'Heading 1',
-                                    type: 'text',
-                                    version: 1
-                                }
-                            ],
-                            direction: 'ltr',
-                            format: '',
-                            indent: 0,
-                            type: 'heading',
-                            tag: 'h1',
-                            version: 1
-                        }
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    type: 'root',
-                    version: 1
-                }
-            }));
-        });
-
-        it('converts H2s', function () {
-            const result = mobiledocToLexical(JSON.stringify({
-                version: MOBILEDOC_VERSION,
-                ghostVersion: GHOST_VERSION,
-                atoms: [],
-                cards: [],
-                markups: [],
-                sections: [
-                    [1, 'h2', [[0, [], 0, 'Heading 2']]]
-                ]
-            }));
-
-            assert.equal(result, JSON.stringify({
-                root: {
-                    children: [
-                        {
-                            children: [
-                                {
-                                    detail: 0,
-                                    format: 0,
-                                    mode: 'normal',
-                                    style: '',
-                                    text: 'Heading 2',
-                                    type: 'text',
-                                    version: 1
-                                }
-                            ],
-                            direction: 'ltr',
-                            format: '',
-                            indent: 0,
-                            type: 'heading',
-                            tag: 'h2',
-                            version: 1
-                        }
-                    ],
-                    direction: 'ltr',
-                    format: '',
-                    indent: 0,
-                    type: 'root',
-                    version: 1
-                }
-            }));
+        it('converts all headings', function () {
+            for (let i = 1; i < 7; i++) {
+                const result = mobiledocToLexical(JSON.stringify({
+                    version: MOBILEDOC_VERSION,
+                    ghostVersion: GHOST_VERSION,
+                    atoms: [],
+                    cards: [],
+                    markups: [],
+                    sections: [
+                        [1, `h${i}`, [[0, [], 0, `Heading ${i}`]]]
+                    ]
+                }));
+    
+                assert.equal(result, JSON.stringify({
+                    root: {
+                        children: [
+                            {
+                                children: [
+                                    {
+                                        detail: 0,
+                                        format: 0,
+                                        mode: 'normal',
+                                        style: '',
+                                        text: `Heading ${i}`,
+                                        type: 'text',
+                                        version: 1
+                                    }
+                                ],
+                                direction: 'ltr',
+                                format: '',
+                                indent: 0,
+                                type: 'heading',
+                                tag: `h${i}`,
+                                version: 1
+                            }
+                        ],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        type: 'root',
+                        version: 1
+                    }
+                }));
+            }
         });
 
         it('converts headings with links and formatting', function () {
@@ -2038,6 +2062,136 @@ describe('mobiledocToLexical', function () {
                 }
             }));
         });
+
+        it('converts successfully when mobiledoc has missing values', function () {
+            const result = mobiledocToLexical(JSON.stringify({version: '0.3.1',
+                atoms: [],
+                cards: [],
+                markups: [
+                    ['a']
+                ],
+                sections: [
+                    [1,'p',[
+                        [0,[0],1,'Blah Blah']
+                    ]]
+                ],
+                ghostVersion: '3.0'}
+            ));
+
+            assert.equal(result, JSON.stringify({root: {
+                children: [{
+                    children: [{
+                        children: [{
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: 'Blah Blah',
+                            type: 'text',
+                            version: 1
+                        }],
+                        direction: 'ltr',
+                        format: '',
+                        indent: 0,
+                        type: 'link',
+                        rel: null,
+                        target: null,
+                        title: null,
+                        version: 1
+                    }],
+                    direction: null,
+                    format: '',
+                    indent: 0,
+                    type: 'paragraph',
+                    version: 1
+                }],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1
+            }}));
+        });
+
+        it('converts a paragraph with a link with a rel attribute', function () {
+            const result = mobiledocToLexical(JSON.stringify({
+                version: MOBILEDOC_VERSION,
+                ghostVersion: GHOST_VERSION,
+                atoms: [],
+                cards: [],
+                markups: [
+                    ['a', ['href', 'https://koenig.ghost.org', 'rel', 'noopener noreferrer']]
+                ],
+                sections: [
+                    [1, 'p', [
+                        [0, [], 0, 'Hello, '],
+                        [0, [0], 1, 'world'],
+                        [0, [], 0, '!']
+                    ]]
+                ]
+            }));
+
+            assert.equal(result, JSON.stringify({
+                root: {
+                    children: [
+                        {
+                            children: [
+                                {
+                                    detail: 0,
+                                    format: 0,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: 'Hello, ',
+                                    type: 'text',
+                                    version: 1
+                                },
+                                {
+                                    children: [
+                                        {
+                                            detail: 0,
+                                            format: 0,
+                                            mode: 'normal',
+                                            style: '',
+                                            text: 'world',
+                                            type: 'text',
+                                            version: 1
+                                        }
+                                    ],
+                                    direction: 'ltr',
+                                    format: '',
+                                    indent: 0,
+                                    type: 'link',
+                                    rel: 'noopener noreferrer',
+                                    target: null,
+                                    title: null,
+                                    url: 'https://koenig.ghost.org',
+                                    version: 1
+                                },
+                                {
+                                    detail: 0,
+                                    format: 0,
+                                    mode: 'normal',
+                                    style: '',
+                                    text: '!',
+                                    type: 'text',
+                                    version: 1
+                                }
+                            ],
+                            direction: 'ltr',
+                            format: '',
+                            indent: 0,
+                            type: 'paragraph',
+                            version: 1
+                        }
+                    ],
+                    direction: 'ltr',
+                    format: '',
+                    indent: 0,
+                    type: 'root',
+                    version: 1
+                }
+            }));
+        });
     });
 
     describe('cards', function () {
@@ -2186,6 +2340,38 @@ describe('mobiledocToLexical', function () {
                         indent: 0,
                         type: 'paragraph',
                         version: 1
+                    }],
+                    direction: null,
+                    format: '',
+                    indent: 0,
+                    type: 'root',
+                    version: 1
+                }
+            }));
+        });
+
+        it('does not overwrite the type property', function () {
+            const result = mobiledocToLexical(JSON.stringify({
+                version: '0.3.2',
+                atoms: [],
+                cards: [
+                    ['image',{src: 'https://media.tenor.com/images/90daac539a399e176dd7c69def020b1f/tenor.gif',width: 398,height: 224,caption: '',type: 'gif',href: 'https://dailyposter.outpost.pub/gift_subscription#/'}]
+                ],
+                markups: [],
+                sections: [
+                    [10, 0]
+                ]
+            }));
+
+            assert.equal(result, JSON.stringify({
+                root: {
+                    children: [{
+                        type: 'image',
+                        src: 'https://media.tenor.com/images/90daac539a399e176dd7c69def020b1f/tenor.gif',
+                        width: 398,
+                        height: 224,
+                        caption: '',
+                        href: 'https://dailyposter.outpost.pub/gift_subscription#/'
                     }],
                     direction: null,
                     format: '',
