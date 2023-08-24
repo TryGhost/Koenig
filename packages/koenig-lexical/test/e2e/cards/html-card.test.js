@@ -112,7 +112,7 @@ test.describe('Html card', async () => {
         await expect(page.getByText('Here are some words')).toBeVisible();
     });
 
-    test.only('goes into display mode when losing focus', async function () {
+    test('goes into display mode when losing focus', async function () {
         await focusEditor(page);
         // insert new card
         await page.keyboard.type('/html');
