@@ -33,10 +33,10 @@ export class HorizontalRuleNode extends BaseHorizontalRuleNode {
             >
                 <HorizontalRuleNodeComponent
                     color={this.color}
-                    nodeKey={this.getKey()}
                     height={this.height}
-                    width={this.width}
+                    nodeKey={this.getKey()}
                     style={this.style}
+                    width={this.width}
                 />
             </KoenigCardWrapper>
         );

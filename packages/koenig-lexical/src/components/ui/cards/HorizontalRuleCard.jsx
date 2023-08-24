@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {ColorOptionSetting, DropdownSetting, SettingsPanel, SliderSetting} from '../SettingsPanel';
+import {ColorOptionSetting, DropdownSetting, SettingsPanel} from '../SettingsPanel';
 
 export const HORIZONTAL_RULE_COLORS = {
     grey: 'border-grey-300',
@@ -66,11 +66,11 @@ const dropdownHeightOptions = [
     {
         label: '1px',
         name: '1'
-    }, 
+    },
     {
         label: '2px',
         name: '2'
-    }, 
+    },
     {
         label: '4px',
         name: '4'
@@ -81,11 +81,11 @@ const dropdownWidthOptions = [
     {
         label: '2%',
         name: '2'
-    }, 
+    },
     {
         label: '3%',
         name: '3'
-    }, 
+    },
     {
         label: '4%',
         name: '4'
@@ -93,51 +93,51 @@ const dropdownWidthOptions = [
     {
         label: '5%',
         name: '5'
-    }, 
+    },
     {
         label: '6%',
         name: '6'
-    }, 
+    },
     {
         label: '7%',
         name: '7'
-    }, 
+    },
     {
         label: '8%',
         name: '8'
-    }, 
+    },
     {
         label: '9%',
         name: '9'
-    }, 
+    },
     {
         label: '10%',
         name: '10'
-    }, 
+    },
     {
         label: '12%',
         name: '12'
-    }, 
+    },
     {
         label: '14%',
         name: '14'
-    }, 
+    },
     {
         label: '16%',
         name: '16'
-    }, 
+    },
     {
         label: '20%',
         name: '20'
-    }, 
+    },
     {
         label: '32%',
         name: '32'
-    }, 
+    },
     {
         label: '100%',
         name: '100'
-    }, 
+    }
 ];
 
 const dropdownStyleOptions = [
@@ -156,7 +156,7 @@ const dropdownStyleOptions = [
     {
         label: 'solid',
         name: 'border-solid'
-    },
+    }
 ];
 
 export function HorizontalRuleCard({
@@ -172,7 +172,7 @@ export function HorizontalRuleCard({
 }) {
     return (
         <>
-            <hr className={`m-0 justify-center block w-${width} h-[1px] ${style} border-${height} border-t ${HORIZONTAL_RULE_COLORS[color]}`} />
+            <hr className={`m-0 block h-[1px] w-${width} ${style} border-${height} border-t ${HORIZONTAL_RULE_COLORS[color]}`} />
             {isEditing && (
                 <SettingsPanel>
                     <ColorOptionSetting
@@ -184,24 +184,24 @@ export function HorizontalRuleCard({
                         onClick={handleColorChange}
                     />
                     <DropdownSetting
-                        defaultValue={'1'}
                         dataTestId='horizontalrule-height-dropdown'
+                        defaultValue={'1'}
                         label='Height'
                         menu={dropdownHeightOptions}
                         value={height}
                         onChange={handleHeightChange}
                     />
                     <DropdownSetting
-                        defaultValue={'100'}
                         dataTestId='horizontalrule-width-dropdown'
+                        defaultValue={'100'}
                         label='Width'
                         menu={dropdownWidthOptions}
                         value={width}
                         onChange={handleWidthChange}
                     />
                     <DropdownSetting
-                        defaultValue={'border-solid'}
                         dataTestId='horizontalrule-style-dropdown'
+                        defaultValue={'border-solid'}
                         label='Style'
                         menu={dropdownStyleOptions}
                         value={style}
@@ -222,7 +222,7 @@ HorizontalRuleCard.propTypes = {
     handleWidthChange: PropTypes.func,
     style: PropTypes.string,
     handleStyleChange: PropTypes.func,
-    isEditing: PropTypes.bool,
+    isEditing: PropTypes.bool
 };
 
 HorizontalRuleCard.defaultProps = {

@@ -26,46 +26,46 @@ export function HorizontalRuleNodeComponent({
         setEditing(true);
     };
 
-    const handleColorChange = (color) => {
+    const handleColorChange = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.color = color;
+            node.color = value;
         });
     };
 
-    const handleHeightChange = (height) => {
+    const handleHeightChange = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.height = height;
+            node.height = value;
         });
     };
 
-    const handleWidthChange = (width) => {
+    const handleWidthChange = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.width = width;
+            node.width = value;
         });
     };
 
-    const handleStyleChange = (style) => {
+    const handleStyleChange = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.style = style;
+            node.style = value;
         });
     };
 
     return (
         <>
             <HorizontalRuleCard
-                height={height}
-                handleHeightChange={handleHeightChange}
-                width={width}
-                handleWidthChange={handleWidthChange}
                 color={color}
                 handleColorChange={handleColorChange}
-                style={style}
+                handleHeightChange={handleHeightChange}
                 handleStyleChange={handleStyleChange}
+                handleWidthChange={handleWidthChange}
+                height={height}
                 isEditing={isEditing}
+                style={style}
+                width={width}
             />
             <ActionToolbar
                 data-kg-card-toolbar="horizontalrule"
