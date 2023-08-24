@@ -1,59 +1,59 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {ColorOptionSetting, SettingsPanel, SliderSetting} from '../SettingsPanel';
+import {ColorOptionSetting, DropdownSetting, SettingsPanel, SliderSetting} from '../SettingsPanel';
 
 export const HORIZONTAL_RULE_COLORS = {
-    grey: 'bg-grey/10',
-    white: 'bg-white/10',
-    blue: 'bg-blue/10',
-    green: 'bg-green/10',
-    yellow: 'bg-yellow/10',
-    red: 'bg-red/10',
-    pink: 'bg-pink/10',
-    purple: 'bg-purple/10',
-    accent: 'bg-accent'
+    grey: 'border-grey-300',
+    white: 'border-white',
+    blue: 'border-blue',
+    green: 'border-green',
+    yellow: 'border-yellow',
+    red: 'border-red',
+    pink: 'border-pink',
+    purple: 'border-purple',
+    accent: 'border-accent'
 };
 
-export const horizontalRuleColorPicker = [
+export const buttonColors = [
     {
         label: 'Grey',
         name: 'grey',
-        color: 'bg-grey/10'
+        color: 'bg-grey/30'
     },
     {
         label: 'White',
         name: 'white',
-        color: 'bg-white/10'
+        color: 'bg-white'
     },
     {
         label: 'Blue',
         name: 'blue',
-        color: 'bg-blue/10'
+        color: 'bg-blue'
     },
     {
         label: 'Green',
         name: 'green',
-        color: 'bg-green/10'
+        color: 'bg-green'
     },
     {
         label: 'Yellow',
         name: 'yellow',
-        color: 'bg-yellow/10'
+        color: 'bg-yellow'
     },
     {
         label: 'Red',
         name: 'red',
-        color: 'bg-red/10'
+        color: 'bg-red'
     },
     {
         label: 'Pink',
         name: 'pink',
-        color: 'bg-pink/10'
+        color: 'bg-pink'
     },
     {
         label: 'Purple',
         name: 'purple',
-        color: 'bg-purple/10'
+        color: 'bg-purple'
     },
     {
         label: 'Accent',
@@ -62,34 +62,150 @@ export const horizontalRuleColorPicker = [
     }
 ];
 
+const dropdownHeightOptions = [
+    {
+        label: '1px',
+        name: '1'
+    }, 
+    {
+        label: '2px',
+        name: '2'
+    }, 
+    {
+        label: '4px',
+        name: '4'
+    }
+];
+
+const dropdownWidthOptions = [
+    {
+        label: '2%',
+        name: '2'
+    }, 
+    {
+        label: '3%',
+        name: '3'
+    }, 
+    {
+        label: '4%',
+        name: '4'
+    },
+    {
+        label: '5%',
+        name: '5'
+    }, 
+    {
+        label: '6%',
+        name: '6'
+    }, 
+    {
+        label: '7%',
+        name: '7'
+    }, 
+    {
+        label: '8%',
+        name: '8'
+    }, 
+    {
+        label: '9%',
+        name: '9'
+    }, 
+    {
+        label: '10%',
+        name: '10'
+    }, 
+    {
+        label: '12%',
+        name: '12'
+    }, 
+    {
+        label: '14%',
+        name: '14'
+    }, 
+    {
+        label: '16%',
+        name: '16'
+    }, 
+    {
+        label: '20%',
+        name: '20'
+    }, 
+    {
+        label: '32%',
+        name: '32'
+    }, 
+    {
+        label: '100%',
+        name: '100'
+    }, 
+];
+
+const dropdownStyleOptions = [
+    {
+        label: 'dashed',
+        name: 'border-dashed'
+    },
+    {
+        label: 'dotted',
+        name: 'border-dotted'
+    },
+    {
+        label: 'double',
+        name: 'border-double'
+    },
+    {
+        label: 'solid',
+        name: 'border-solid'
+    },
+];
+
 export function HorizontalRuleCard({
     color,
-    size,
-    handleSizeChange,
     handleColorChange,
+    height,
+    handleHeightChange,
+    width,
+    handleWidthChange,
+    style,
+    handleStyleChange,
     isEditing
 }) {
-    // border-grey-300 was the default color for hr
     return (
         <>
-            <hr className={`m-0 block h-[${size}px] border-0 border-t ${HORIZONTAL_RULE_COLORS[color]}`} />
+            <hr className={`m-0 justify-center block w-${width} h-[1px] ${style} border-${height} border-t ${HORIZONTAL_RULE_COLORS[color]}`} />
             {isEditing && (
                 <SettingsPanel>
                     <ColorOptionSetting
-                        buttons={horizontalRuleColorPicker}
+                        buttons={buttonColors}
                         dataTestId='horizontalrule-color-picker'
                         label='Color'
                         layout='stacked'
                         selectedName={color}
                         onClick={handleColorChange}
                     />
-                    <SliderSetting
-                        defaultValue={1}
-                        label="Size"
-                        max={100}
-                        min={1}
-                        value={size}
-                        onChange={handleSizeChange}
+                    <DropdownSetting
+                        defaultValue={'1'}
+                        dataTestId='horizontalrule-height-dropdown'
+                        label='Height'
+                        menu={dropdownHeightOptions}
+                        value={height}
+                        onChange={handleHeightChange}
+                    />
+                    <DropdownSetting
+                        defaultValue={'100'}
+                        dataTestId='horizontalrule-width-dropdown'
+                        label='Width'
+                        menu={dropdownWidthOptions}
+                        value={width}
+                        onChange={handleWidthChange}
+                    />
+                    <DropdownSetting
+                        defaultValue={'border-solid'}
+                        dataTestId='horizontalrule-style-dropdown'
+                        label='Style'
+                        menu={dropdownStyleOptions}
+                        value={style}
+                        onChange={handleStyleChange}
                     />
                 </SettingsPanel>
             )}
@@ -99,13 +215,19 @@ export function HorizontalRuleCard({
 
 HorizontalRuleCard.propTypes = {
     color: PropTypes.oneOf(['grey', 'white', 'blue', 'green', 'yellow', 'red', 'pink', 'purple', 'accent']),
-    size: PropTypes.number,
-    handleSizeChange: PropTypes.func,
     handleColorChange: PropTypes.func,
+    height: PropTypes.string,
+    handleHeightChange: PropTypes.func,
+    width: PropTypes.string,
+    handleWidthChange: PropTypes.func,
+    style: PropTypes.string,
+    handleStyleChange: PropTypes.func,
     isEditing: PropTypes.bool,
 };
 
 HorizontalRuleCard.defaultProps = {
     color: 'grey',
-    size: 1
+    height: '1',
+    width: '100',
+    style: 'border-solid'
 };

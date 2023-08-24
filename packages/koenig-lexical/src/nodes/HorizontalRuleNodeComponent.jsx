@@ -9,9 +9,11 @@ import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 export function HorizontalRuleNodeComponent({
-    color, 
+    color,
     nodeKey,
-    size 
+    height,
+    width,
+    style
 }) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
@@ -24,13 +26,6 @@ export function HorizontalRuleNodeComponent({
         setEditing(true);
     };
 
-    const handleSizeChange = (value) => {
-        editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
-            node.size = value;
-        });
-    };
-
     const handleColorChange = (color) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -38,13 +33,38 @@ export function HorizontalRuleNodeComponent({
         });
     };
 
+    const handleHeightChange = (height) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.height = height;
+        });
+    };
+
+    const handleWidthChange = (width) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.width = width;
+        });
+    };
+
+    const handleStyleChange = (style) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.style = style;
+        });
+    };
+
     return (
         <>
             <HorizontalRuleCard
-                size={size}
-                handleSizeChange={handleSizeChange}
+                height={height}
+                handleHeightChange={handleHeightChange}
+                width={width}
+                handleWidthChange={handleWidthChange}
                 color={color}
                 handleColorChange={handleColorChange}
+                style={style}
+                handleStyleChange={handleStyleChange}
                 isEditing={isEditing}
             />
             <ActionToolbar

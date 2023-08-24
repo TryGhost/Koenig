@@ -5,15 +5,19 @@ import {parseHorizontalRuleNode} from './horizontalrule-parser';
 
 export class HorizontalRuleNode extends generateDecoratorNode({nodeType: 'horizontalrule',
     properties: [
-        {name: 'size', default: 1},
-        {name: 'color', default: 'grey'}
+        {name: 'color', default: 'grey'},
+        {name: 'height', default: '1'},
+        {name: 'width', default: '100'},
+        {name: 'style', default: 'border-solid'}
     ]}
 ) {
     /* override */
-    constructor({color} = {}, key) {
+    constructor({color, height, width, style} = {}, key) {
         super(key);
-        this.__size = size || 1;
         this.__color = color || 'grey';
+        this.__height = height || '1';
+        this.__width = width || '100';
+        this.__style = style || 'border-solid';
     }
     static importDOM() {
         return parseHorizontalRuleNode(this);
