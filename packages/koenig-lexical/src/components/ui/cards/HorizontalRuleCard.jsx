@@ -172,7 +172,7 @@ export function HorizontalRuleCard({
 }) {
     return (
         <>
-            <hr className={`m-0 block h-[1px] w-${width} ${style} border-${height} border-t ${HORIZONTAL_RULE_COLORS[color]}`} />
+            <hr className={`border-${height} w-${width} ${style} ${HORIZONTAL_RULE_COLORS[color]} m-0 block h-[1px] border-t`} />
             {isEditing && (
                 <SettingsPanel>
                     <ColorOptionSetting
