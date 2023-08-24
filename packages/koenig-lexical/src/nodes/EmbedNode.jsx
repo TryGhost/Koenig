@@ -38,7 +38,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: YouTubeIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['youtube'],
+        matches: ['embed','youtube','video'],
         priority: 1
     },
     {
@@ -48,7 +48,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: TwitterIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['twitter'],
+        matches: ['embed','twitter'],
         priority: 2
     },
     {
@@ -58,7 +58,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: VimeoIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['vimeo'],
+        matches: ['embed','vimeo','video'],
         priority: 4
     },
     {
@@ -68,7 +68,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: CodePenIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['codepen'],
+        matches: ['embed','codepen'],
         priority: 5
     },
     {
@@ -78,7 +78,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: SpotifyIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['spotify'],
+        matches: ['embed','spotify'],
         priority: 6
     },
     {
@@ -88,7 +88,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: SoundCloudIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['soundcloud'],
+        matches: ['embed','soundcloud'],
         priority: 7
     }];
 
