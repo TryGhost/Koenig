@@ -34,13 +34,14 @@ export default function generateEditorState({editor, initialHtml}) {
             if (filteredNodes.length) {
                 $setSelection(null);
             }
-        }, {discrete: true, tag: 'history-merge'});
+            console.log(`generate editor state, merge`);
+        }, {discrete: true, tag: 'history-merge'}); // use history merge to prevent undo clearing the initial state
     } else {
         // for empty initial values, create a paragraph because a completely empty
         // root won't accept focus
         editor.update(() => {
             $getRoot().append($createParagraphNode());
-        }, {discrete: true, tag: 'history-merge'});
+        }, {discrete: true, tag: 'history-merge'}); // use history merge to prevent undo clearing the initial state
     }
 
     return editor.getEditorState();
