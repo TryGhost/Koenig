@@ -904,14 +904,14 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 for (const tag of Object.keys(SPECIAL_MARKUPS)) {
                                     if (anchorNode.hasFormat(tag)) {
                                         const markup = SPECIAL_MARKUPS[tag];
-                                        const newText = markup + textContent + markup;
+                                        let newText = markup + textContent + markup;
+                                        newText = newText.slice(0,-1); // remove last markup character
 
                                         // manually clear formatting and push offset to accommodate for the added markup
                                         anchorNode.setFormat(0);
                                         anchorNode.setTextContent(newText);
                                         selection.anchor.offset = selection.anchor.offset + newText.length - textContent.length;
                                         selection.focus.offset = selection.focus.offset + newText.length - textContent.length;
-                                        selection.format = 0;
 
                                         event.preventDefault();
                                         return true;

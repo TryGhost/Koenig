@@ -134,7 +134,7 @@ test.describe('Markdown', async () => {
                 await pasteText(page, testCase.text);
                 await assertHTML(page, testCase.html);
                 await page.keyboard.press('Backspace');
-                await assertHTML(page, html`<p dir="ltr"><span data-lexical-text="true">${testCase.text}</span></p>`);
+                await assertHTML(page, html`<p dir="ltr"><span data-lexical-text="true">${testCase.text.slice(0,-1)}</span></p>`);
             });
         });
     });
