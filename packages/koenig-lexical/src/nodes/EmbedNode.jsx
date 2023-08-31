@@ -48,7 +48,7 @@ export class EmbedNode extends BaseEmbedNode {
         Icon: TwitterIcon,
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
-        matches: ['embed','twitter'],
+        matches: ['embed','twitter','x'],
         priority: 2
     },
     {
