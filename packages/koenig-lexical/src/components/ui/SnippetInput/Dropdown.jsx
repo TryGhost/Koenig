@@ -15,9 +15,10 @@ export const Dropdown = ({
 
     React.useEffect(() => {
         if (isCreateButtonActive) {
-            buttonRef.current?.focus();
+            // buttonRef.current?.focus();
+            buttonRef.current?.style.setProperty('outline', 'solid 2px var(--green)');
         } else {
-            buttonRef.current?.blur();
+            buttonRef.current?.style.setProperty('outline', 'none');
         }
     }, [isCreateButtonActive]);
 
@@ -78,9 +79,11 @@ const DropdownItem = ({onClick, name, active, index}) => {
     React.useEffect(() => {
         const isFocused = active === index;
         if (isFocused) {
-            buttonRef.current?.focus();
+            // buttonRef.current?.focus();
+            buttonRef.current?.style.setProperty('outline', 'solid 2px var(--green)');
         } else {
-            buttonRef.current?.blur();
+            // buttonRef.current?.blur();
+            buttonRef.current?.style.setProperty('outline', 'none');
         }
     }, [active, index]);
 
