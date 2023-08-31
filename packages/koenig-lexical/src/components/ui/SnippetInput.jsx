@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 import {Dropdown} from './SnippetInput/Dropdown';
 import {Input} from './SnippetInput/Input';
-import {set} from 'lodash-es';
 
 export function SnippetInput({
     value,
@@ -54,6 +53,10 @@ export function SnippetInput({
         if (event.key === 'ArrowDown' || event.key === 'Down') {
             event.stopPropagation();
             event.preventDefault();
+
+            if (suggestedList.length === 0) {
+                return;
+            }
             
             // handle first arrow down from input
             if (activeMenuItem === -1 && !isCreateButtonActive) {
@@ -76,6 +79,10 @@ export function SnippetInput({
         if (event.key === 'ArrowUp' || event.key === 'Up') {
             event.stopPropagation();
             event.preventDefault();
+
+            if (suggestedList.length === 0) {
+                return;
+            }
 
             if (isCreateButtonActive) {
                 setActiveMenuItem(suggestedList.length - 1);
