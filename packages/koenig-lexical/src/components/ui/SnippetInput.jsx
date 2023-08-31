@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, {useRef, useState} from 'react';
 import {Dropdown} from './SnippetInput/Dropdown';
 import {Input} from './SnippetInput/Input';
+import {set} from 'lodash-es';
 
 export function SnippetInput({
     value,
@@ -15,11 +16,20 @@ export function SnippetInput({
     const snippetRef = useRef(null);
     const [isCreateButtonActive, setIsCreateButtonActive] = useState(true);
     const [activeMenuItem, setActiveMenuItem] = useState(-1);
-    const getSuggestedList = () => {
-        return snippets.filter(snippet => snippet.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-    };
+    const [suggestedList, setSuggestedList] = useState([]);
 
-    const suggestedList = getSuggestedList();
+    // default to first snippet or create new button
+    React.useEffect(() => {
+        const newSuggestedList = snippets.filter(snippet => snippet.name.toLowerCase().includes(value.toLowerCase()));
+        if (newSuggestedList.length === 0) {
+            setIsCreateButtonActive(true);
+            setActiveMenuItem(-1);
+        } else {
+            setIsCreateButtonActive(false);
+            setActiveMenuItem(0);
+        }
+        setSuggestedList(newSuggestedList);
+    }, [value, snippets]);
 
     // close snippets menu if clicked outside the input/dropdown
     React.useEffect(() => {
@@ -95,15 +105,6 @@ export function SnippetInput({
                 event.preventDefault();
                 onUpdateSnippet(suggestedList[activeMenuItem].name);
             }
-        }
-
-        // move selection to first match or create button if input value changes
-        if (suggestedList.length === 0 && !isCreateButtonActive) {
-            setIsCreateButtonActive(true);
-            setActiveMenuItem(-1);
-        } else if (suggestedList.length > 0) {
-            setIsCreateButtonActive(false);
-            setActiveMenuItem(0);
         }
     };
 
