@@ -441,7 +441,7 @@ describe('HeaderNode', function () {
                 // Assuming outerHTML gets the full HTML string of the element
                 const renderedHtml = _.replace(element.outerHTML, /\s/g, '');
                 const expectedHtml = `
-                <div class="kg-card kg-header-card kg-v2 kg-width-full " style=";" data-background-color="#F0F0F0">
+                <div class="kg-card kg-header-card kg-v2 kg-width-full kg-content-wide " style=";" data-background-color="#F0F0F0">
                 <picture><img class="kg-header-card-image" src="https://example.com/image.jpg" alt=""></picture>
                     <div class="kg-header-card-content">
                         <div class="kg-header-card-text kg-align-center">
