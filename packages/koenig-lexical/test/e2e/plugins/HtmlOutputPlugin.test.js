@@ -29,7 +29,7 @@ test.describe('Html Output Plugin', async function () {
         `);
     });
 
-    test.only('can parse editor state to html', async function () {
+    test('can parse editor state to html', async function () {
         const ctrl = isMac() ? 'Meta' : 'Control';
         await focusEditor(page);
 
