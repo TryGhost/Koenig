@@ -1,16 +1,21 @@
 import React from 'react';
 import trackEvent from '../../utils/analytics';
+import {ReactComponent as ExternalLinkIcon} from '../../assets/icons/kg-arrow-top-right.svg';
 import {ReactComponent as TrashCardIcon} from '../../assets/icons/kg-trash-outline.svg';
 
 export const CardMenuSection = ({label, children, ...props}) => {
     return (
         <li className="flex shrink-0 flex-col justify-center border-t border-grey-200 text-[1.1rem] font-semibold tracking-wide text-grey first-of-type:border-t-0 dark:text-grey-800" role="separator" {...props}>
             <span
-                className="block px-5 pt-4 pb-3 uppercase"
+                className="flex items-center justify-between px-5 pb-2 pt-3 uppercase"
                 data-card-menu-section="label"
                 style={{minWidth: 'calc(100% - 3.2rem)'}}
-            >{label}</span>
-            <ul className="md:grid md:grid-cols-2 md:gap-x-2 md:gap-y-1 md:px-2" role="menu">
+            >{label}
+                <a href='https://ghost.org/help/cards/' rel="noreferrer" target='_blank'>
+                    <ExternalLinkIcon className="h-5 w-5 cursor-pointer stroke-[2.5] p-1 transition-all hover:text-green-600" />
+                </a>
+            </span>
+            <ul className="md:grid md:gap-x-2 md:gap-y-1 md:px-2" role="menu">
                 {children}
             </ul>
         </li>
@@ -48,8 +53,9 @@ export const CardMenuItem = ({label, desc, isSelected, onClick, Icon, ...props})
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-white text-grey-900">
                     <Icon className="h-[1.8rem] w-[1.8rem]" />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex w-full justify-between">
                     <div className="m-0 truncate text-sm font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
+                    <div className="invisible m-0 truncate text-sm font-medium leading-snug tracking-[.02rem] text-grey-500 group-hover:visible dark:text-grey-200">/youtube [video url]</div>
                 </div>
             </button>
         </li>
@@ -154,7 +160,7 @@ export const CardMenu = ({menu = new Map(), insert = () => {}, selectedItemIndex
     }
 
     return (
-        <ul className="not-kg-prose z-[9999999] m-0 mb-3 max-h-[420px] w-[312px] flex-col overflow-y-auto rounded-md bg-white bg-clip-padding p-0 font-sans text-sm shadow-md after:block after:pb-4 dark:bg-grey-950 md:w-[480px]" role="menu">
+        <ul className="not-kg-prose z-[9999999] m-0 mb-3 max-h-[420px] w-[312px] flex-col overflow-y-auto rounded-md bg-white bg-clip-padding p-0 font-sans text-sm shadow-md after:block after:pb-1 dark:bg-grey-950 md:w-[360px]" role="menu">
             {CardMenuSections}
         </ul>
     );
