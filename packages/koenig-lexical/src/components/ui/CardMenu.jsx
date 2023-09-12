@@ -1,21 +1,21 @@
 import React from 'react';
 import trackEvent from '../../utils/analytics';
-import {ReactComponent as ExternalLinkIcon} from '../../assets/icons/kg-arrow-top-right.svg';
+import {ReactComponent as ExternalLinkIcon} from '../../assets/icons/kg-help.svg';
 import {ReactComponent as TrashCardIcon} from '../../assets/icons/kg-trash-outline.svg';
 
 export const CardMenuSection = ({label, children, ...props}) => {
     return (
-        <li className="flex shrink-0 flex-col justify-center border-t border-grey-200 text-[1.1rem] font-semibold tracking-wide text-grey first-of-type:border-t-0 dark:text-grey-800" role="separator" {...props}>
+        <li className="flex shrink-0 flex-col justify-center border-t border-grey-200 text-[1.1rem] font-semibold tracking-wide text-grey-600 first-of-type:border-t-0 dark:text-grey-800" role="separator" {...props}>
             <span
                 className="flex items-center justify-between px-5 pb-2 pt-3 uppercase"
                 data-card-menu-section="label"
                 style={{minWidth: 'calc(100% - 3.2rem)'}}
             >{label}
                 <a href='https://ghost.org/help/cards/' rel="noreferrer" target='_blank'>
-                    <ExternalLinkIcon className="h-5 w-5 cursor-pointer stroke-[2.5] p-1 transition-all hover:text-green-600" />
+                    <ExternalLinkIcon className="h-6 w-6 cursor-pointer p-1 transition-all hover:text-green-600" />
                 </a>
             </span>
-            <ul className="md:grid md:gap-x-2 md:gap-y-1 md:px-2" role="menu">
+            <ul className="md:grid md:gap-y-[.2rem] md:px-2" role="menu">
                 {children}
             </ul>
         </li>
@@ -41,7 +41,7 @@ export const CardMenuItem = ({label, desc, isSelected, onClick, Icon, ...props})
         <li className="mb-0" role="presentation">
             <button
                 ref={buttonRef}
-                className={`group flex w-full cursor-pointer flex-row items-center gap-3 border border-transparent px-3 py-2 text-left text-grey-800 hover:bg-grey-100 dark:hover:bg-grey-900 md:rounded  ${isSelected ? 'bg-grey-100 dark:bg-grey-900' : ''}`}
+                className={`group flex w-full cursor-pointer flex-row items-center gap-3 border border-transparent px-2 py-[.6rem] text-left text-grey-800 hover:bg-grey-100 dark:hover:bg-grey-900 md:rounded  ${isSelected ? 'bg-grey-100 dark:bg-grey-900' : ''}`}
                 data-kg-card-menu-item={label}
                 data-kg-cardmenu-selected={isSelected}
                 role="menuitem"
@@ -54,8 +54,8 @@ export const CardMenuItem = ({label, desc, isSelected, onClick, Icon, ...props})
                     <Icon className="h-[1.8rem] w-[1.8rem]" />
                 </div>
                 <div className="flex w-full justify-between">
-                    <div className="m-0 truncate text-sm font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
-                    <div className="invisible m-0 truncate text-sm font-medium leading-snug tracking-[.02rem] text-grey-500 group-hover:visible dark:text-grey-200">/youtube [video url]</div>
+                    <div className="m-0 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
+                    <div className="invisible m-0 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-500 group-hover:visible dark:text-grey-200">/youtube [video url]</div>
                 </div>
             </button>
         </li>
@@ -86,7 +86,7 @@ export const CardSnippetItem = ({label, isSelected, Icon, onRemove, closeMenu, .
         <li className="mb-0 md:col-span-2" role="presentation">
             <div
                 ref={itemRef}
-                className={`kg-cardmenu-card-hover group flex w-full cursor-pointer flex-row items-center border border-transparent px-4 py-[1rem] text-grey-800 hover:bg-grey-100 dark:hover:bg-grey-900 ${isSelected ? 'bg-grey-100 dark:bg-grey-900' : ''}`}
+                className={`kg-cardmenu-card-hover group flex w-full cursor-pointer flex-row items-center border border-transparent px-2 py-1 text-grey-800 hover:bg-grey-100 dark:hover:bg-grey-900 ${isSelected ? 'bg-grey-100 dark:bg-grey-900' : ''}`}
                 data-kg-cardmenu-selected={isSelected}
                 role="menuitem"
                 onMouseDown={handleMouseDown}
@@ -95,7 +95,7 @@ export const CardSnippetItem = ({label, isSelected, Icon, onRemove, closeMenu, .
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-white">
                     <Icon className="h-[1.8rem] w-[1.8rem]" />
                 </div>
-                <div className="m-0 ml-4 truncate text-sm font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
+                <div className="m-0 ml-4 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
                 {
                     !!onRemove && (
                         <button className="ml-auto cursor-pointer rounded p-[4px] hover:bg-grey-200 group-hover:block dark:hover:bg-grey-950" title="Remove snippet" type="button" onClick={handleSnippetRemove}>
@@ -160,7 +160,7 @@ export const CardMenu = ({menu = new Map(), insert = () => {}, selectedItemIndex
     }
 
     return (
-        <ul className="not-kg-prose z-[9999999] m-0 mb-3 max-h-[420px] w-[312px] flex-col overflow-y-auto rounded-md bg-white bg-clip-padding p-0 font-sans text-sm shadow-md after:block after:pb-1 dark:bg-grey-950 md:w-[360px]" role="menu">
+        <ul className="not-kg-prose z-[9999999] m-0 mb-3 max-h-[420px] w-[312px] flex-col overflow-y-auto rounded-md bg-white bg-clip-padding p-0 font-sans text-sm shadow-md after:block after:pb-1 dark:bg-grey-950 md:w-[348px]" role="menu">
             {CardMenuSections}
         </ul>
     );
