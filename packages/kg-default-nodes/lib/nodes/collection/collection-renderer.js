@@ -20,19 +20,19 @@ function cardTemplate(node) {
     //  so for now, we'll just push in some test data
     const posts = testPostData;
 
-    const headerClass = 'koenig-lexical-collection-heading whitespace-normal text-black dark:text-grey-50 opacity-100 pt-2 pb-4';
-    const collectionClass = 'grid w-full'
-        + (layout === 'list' ? ' gap-5' : '')
-        + ((layout === 'grid' && columns === 1) ? ' grid-cols-1 gap-y-12' : '')
-        + ((layout === 'grid' && columns === 2) ? ' grid-cols-2 gap-10' : '')
-        + ((layout === 'grid' && columns === 3) ? ' grid-cols-3 gap-8' : '')
-        + ((layout === 'grid' && columns === 4) ? ' grid-cols-4 gap-6' : '');
+    const cardClass = 'kg-card kg-collection-card'
+        + (layout === 'grid' && ' kg-width-wide');
+    const headerClass = 'kg-collection-card-title';
+    const collectionClass = 'kg-collection-card-feed'
+        + (layout === 'list' ? ' kg-collection-card-list' : ' kg-collection-card-grid')
+        + ((layout === 'grid' && columns === 1) ? ' columns-1' : '')
+        + ((layout === 'grid' && columns === 2) ? ' columns-2' : '')
+        + ((layout === 'grid' && columns === 3) ? ' columns-3' : '')
+        + ((layout === 'grid' && columns === 4) ? ' columns-4' : '');
 
     return (
-        `<div class="kg-card kg-collection-card" data-collection-slug="${collection.slug} data-collection-limit="${postCount}">
-            <div class="kg-collection-card-header">
-                <h2 class="${headerClass}">${header}</h2>
-            </div>
+        `<div class="${cardClass} data-collection-slug="${collection.slug} data-collection-limit="${postCount}">
+            <h4 class="${headerClass}">${header}</h4>
             <div class="${collectionClass}">
                 ${posts.map(post => postTemplate(post, layout, columns)).join('')}
             </div>
@@ -43,28 +43,13 @@ function cardTemplate(node) {
 function postTemplate(post, layout, columns) {
     const {title, published_at: publishDate, excerpt, feature_image: image, reading_time: readTime} = post;
 
-    const imageWrapperClass = 'relative flex w-full items-center justify-center bg-grey-200 dark:bg-grey-950';
-    const imageClass = 'w-full object-cover' 
+    const imageWrapperClass = 'kg-collection-card-img';
+    const imageClass = '' 
         + ((layout === 'grid' && (columns === 1 || columns === 2)) ? ' aspect-video' : ' aspect-[3/2]')
         + (image === null ? ' invisible' : '');
-    const titleClass = 'font-bold tracking-normal text-black dark:text-grey-100'
-        + (layout === 'list' ? ' text-xl leading-snug' : '')
-        + ((layout === 'grid' && columns === 1) ? ' text-4xl leading-tight' : '')
-        + ((layout === 'grid' && columns === 2) ? ' text-2xl leading-snug' : '')
-        + ((layout === 'grid' && columns === 3) ? ' text-xl leading-snug' : '')
-        + ((layout === 'grid' && columns === 4) ? ' text-[1.7rem] leading-snug' : '');
-    const excerptClass = 'overflow-y-hidden font-normal leading-snug text-grey-900 dark:text-grey-600'
-        + (layout === 'list' ? ' mt-2 max-h-[62px] text-md line-clamp-3' : '')
-        + ((layout === 'grid' && columns === 1) ? ' mt-3 max-h-[75px] text-lg line-clamp-3' : '')
-        + ((layout === 'grid' && columns === 2) ? ' mt-3 max-h-[66px] text-[1.6rem] line-clamp-3' : '')
-        + ((layout === 'grid' && columns === 3) ? ' mt-2 max-h-[42px] text-md line-clamp-2' : '')
-        + ((layout === 'grid' && columns === 4) ? ' mt-2 max-h-[42px] text-md line-clamp-2' : '');
-    const metaClass = 'flex font-normal leading-snug text-grey-600 dark:text-grey-400'
-        + (layout === 'list' ? ' mt-2 text-md' : '')
-        + ((layout === 'grid' && columns === 1) ? ' mt-3 text-lg' : '')
-        + ((layout === 'grid' && columns === 2) ? ' mt-3 text-[1.6rem]' : '')
-        + ((layout === 'grid' && columns === 3) ? ' mt-2 text-md' : '')
-        + ((layout === 'grid' && columns === 4) ? ' mt-2 text-md' : '');
+    const titleClass = 'kg-collection-card-post-title';
+    const excerptClass = 'kg-collection-card-post-excerpt';
+    const metaClass = 'kg-collection-card-post-meta';
 
     return (
         `<div class="kg-collection-card-post">
@@ -72,11 +57,13 @@ function postTemplate(post, layout, columns) {
                 `<div class=${imageWrapperClass}>
                     <img class=${imageClass} src="${image}" alt="${title}" />
                 </div>`}
-            <div class=${titleClass}>${title}</div>
-            <div class=${excerptClass}>${excerpt}</div>
-            <div class=${metaClass}>
-                ${publishDate && `<div>${DateTime.fromISO(publishDate).toFormat('d LLL yyyy')}</div>`}
-                ${readTime > 0 && `<div>&nbsp;&middot; ${readTime} min</div>`}
+            <div class="kg-collection-card-content">
+                <h2 class=${titleClass}>${title}</h2>
+                <p class=${excerptClass}>${excerpt}</p>
+                <div class=${metaClass}>
+                    ${publishDate && `<p>${DateTime.fromISO(publishDate).toFormat('d LLL yyyy')}</p>`}
+                    ${readTime > 0 ? `<p>&nbsp;&middot; ${readTime} min</p>` : ''}
+                </div>
             </div>
         </div>`
     );
