@@ -18,7 +18,7 @@ function cardTemplate(node) {
 
     // we need to fetch and pass in post data to the renderer; unclear how we will implement this
     //  so for now, we'll just push in some test data
-    const posts = testPostData;
+    const posts = testPostData.slice(0, postCount);
 
     const cardClass = 'kg-card kg-collection-card'
         + (layout === 'grid' && ' kg-width-wide');
