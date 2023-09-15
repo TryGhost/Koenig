@@ -91,10 +91,10 @@ test.describe('Video card', async () => {
                             <div>
                               <div data-kg="editor">
                                 <div
-                                  contenteditable="true"
                                   role="textbox"
                                   spellcheck="true"
                                   data-lexical-editor="true"
+                                  contenteditable="true"
                                 >
                                   <p dir="ltr">
                                     <span data-lexical-text="true">This is a caption</span>
@@ -462,10 +462,10 @@ test.describe('Video card', async () => {
                             <div>
                               <div data-kg="editor">
                                 <div
-                                  contenteditable="true"
                                   role="textbox"
                                   spellcheck="true"
                                   data-lexical-editor="true"
+                                  contenteditable="true"
                                 >
                                   <p dir="ltr">
                                     <span data-lexical-text="true">Test caption</span>
