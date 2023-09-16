@@ -12,6 +12,7 @@ import {ReactComponent as LinkIcon} from '../../assets/icons/kg-link.svg';
 import {ReactComponent as QuoteIcon} from '../../assets/icons/kg-quote.svg';
 import {ReactComponent as QuoteOneIcon} from '../../assets/icons/kg-quote-1.svg';
 import {ReactComponent as QuoteTwoIcon} from '../../assets/icons/kg-quote-2.svg';
+import {ReactComponent as ShrinkIcon} from '../../assets/icons/kg-shrink.svg';
 import {ReactComponent as SnippetIcon} from '../../assets/icons/kg-snippet.svg';
 import {ReactComponent as TrashIcon} from '../../assets/icons/kg-trash.svg';
 
@@ -27,6 +28,7 @@ export const TOOLBAR_ICONS = {
     imgRegular: ImgRegularIcon,
     imgWide: ImgWideIcon,
     imgFull: ImgFullIcon,
+    imgHalf: ShrinkIcon,
     imgReplace: ImgReplaceIcon,
     add: AddIcon,
     edit: EditIcon,
