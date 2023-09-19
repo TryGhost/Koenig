@@ -53,7 +53,7 @@ function postTemplate(post, layout, columns) {
     const titleClass = 'kg-collection-card-post-title';
     const excerptClass = 'kg-collection-card-post-excerpt';
     const metaClass = 'kg-collection-card-post-meta';
-    const postWrapperClass = 'kg-collection-card-post';
+    const postWrapperClass = 'kg-collection-card-post-wrapper';
 
     return (
         `<a href=${url} class=${postWrapperClass}>
