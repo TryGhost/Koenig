@@ -301,6 +301,11 @@ export function CollectionCard({
                         value={postCount}
                         onChange={handlePostCountChange}
                     />
+                    {(!isLoading && postCount > posts.length) && 
+                        <div className="text-[1.3rem]">
+                            This collection has {posts.length} posts, and will continue to fill in as you publish more.
+                        </div>
+                    }
                     {layout === 'grid' ?
                         <SliderSetting
                             dataTestId={'collection-columns'}
