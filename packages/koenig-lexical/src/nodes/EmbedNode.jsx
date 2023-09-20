@@ -29,7 +29,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         matches: ['embed'],
         queryParams: ['url'],
-        priority: 100
+        priority: 100,
+        shortcut: '/embed [url]'
     },
     {
         section: 'Embed',
@@ -39,7 +40,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
         matches: ['youtube'],
-        priority: 1
+        priority: 1,
+        shortcut: '/youtube [url]'
     },
     {
         section: 'Embed',
@@ -49,7 +51,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
         matches: ['twitter'],
-        priority: 2
+        priority: 2,
+        shortcut: '/twitter [url]'
     },
     {
         section: 'Embed',
@@ -59,7 +62,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
         matches: ['vimeo'],
-        priority: 4
+        priority: 4,
+        shortcut: '/vimeo [url]'
     },
     {
         section: 'Embed',
@@ -69,7 +73,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
         matches: ['codepen'],
-        priority: 5
+        priority: 5,
+        shortcut: '/codepen [url]'
     },
     {
         section: 'Embed',
@@ -79,7 +84,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
         matches: ['spotify'],
-        priority: 6
+        priority: 6,
+        shortcut: '/spotify [url]'
     },
     {
         section: 'Embed',
@@ -89,7 +95,8 @@ export class EmbedNode extends BaseEmbedNode {
         insertCommand: INSERT_EMBED_COMMAND,
         queryParams: ['url'],
         matches: ['soundcloud'],
-        priority: 7
+        priority: 7,
+        shortcut: '/soundcloud [url]'
     }];
 
     getIcon() {

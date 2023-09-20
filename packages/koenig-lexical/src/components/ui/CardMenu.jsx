@@ -22,7 +22,7 @@ export const CardMenuSection = ({label, children, ...props}) => {
     );
 };
 
-export const CardMenuItem = ({label, desc, isSelected, onClick, Icon, ...props}) => {
+export const CardMenuItem = ({label, shortcut, desc, isSelected, onClick, Icon, ...props}) => {
     const buttonRef = React.useRef(null);
 
     React.useEffect(() => {
@@ -55,7 +55,7 @@ export const CardMenuItem = ({label, desc, isSelected, onClick, Icon, ...props})
                 </div>
                 <div className="flex w-full justify-between">
                     <div className="m-0 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
-                    <div className="invisible m-0 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-500 group-hover:visible dark:text-grey-200">/youtube [video url]</div>
+                    <div className="invisible m-0 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-500 group-hover:visible dark:text-grey-200">{shortcut}</div>
                 </div>
             </button>
         </li>
@@ -135,6 +135,7 @@ export const CardMenu = ({menu = new Map(), insert = () => {}, selectedItemIndex
                         Icon={item.Icon}
                         isSelected={isSelected}
                         label={item.label}
+                        shortcut={item.shortcut}
                         onClick={onClick}
                     />
                 );
