@@ -22,7 +22,7 @@ export class EmbedNode extends BaseEmbedNode {
     __createdWithUrl;
 
     static kgMenu = [{
-        section: 'Embed',
+        section: 'Embeds',
         label: 'Other...',
         desc: '/embed [url]',
         Icon: EmbedCardIcon,
@@ -33,7 +33,7 @@ export class EmbedNode extends BaseEmbedNode {
         shortcut: '/embed [url]'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'YouTube',
         desc: '/youtube [video url]',
         Icon: YouTubeIcon,
@@ -44,7 +44,7 @@ export class EmbedNode extends BaseEmbedNode {
         shortcut: '/youtube [url]'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'Twitter',
         desc: '/twitter [tweet url]',
         Icon: TwitterIcon,
@@ -55,7 +55,7 @@ export class EmbedNode extends BaseEmbedNode {
         shortcut: '/twitter [url]'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'Vimeo',
         desc: '/vimeo [video url]',
         Icon: VimeoIcon,
@@ -66,7 +66,7 @@ export class EmbedNode extends BaseEmbedNode {
         shortcut: '/vimeo [url]'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'CodePen',
         desc: '/codepen [pen url]',
         Icon: CodePenIcon,
@@ -77,7 +77,7 @@ export class EmbedNode extends BaseEmbedNode {
         shortcut: '/codepen [url]'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'Spotify',
         desc: '/spotify [track or playlist url]',
         Icon: SpotifyIcon,
@@ -88,7 +88,7 @@ export class EmbedNode extends BaseEmbedNode {
         shortcut: '/spotify [url]'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'SoundCloud',
         desc: '/soundcloud [track or playlist url]',
         Icon: SoundCloudIcon,

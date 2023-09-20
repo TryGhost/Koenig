@@ -34,7 +34,7 @@ export class ImageNode extends BaseImageNode {
         shortcut: '/image'
     },
     {
-        section: 'Embed',
+        section: 'Embeds',
         label: 'Unsplash',
         desc: '/unsplash [search term or url]',
         Icon: UnsplashIcon,

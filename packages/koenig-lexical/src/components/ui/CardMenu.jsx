@@ -4,6 +4,13 @@ import {ReactComponent as ExternalLinkIcon} from '../../assets/icons/kg-help.svg
 import {ReactComponent as TrashCardIcon} from '../../assets/icons/kg-trash-outline.svg';
 
 export const CardMenuSection = ({label, children, ...props}) => {
+    let helpLink = '';
+    if (label === 'Primary') {
+        helpLink = 'https://ghost.org/help/cards/';
+    } else if (label === 'Snippets') {
+        helpLink = 'https://ghost.org/help/snippets/';
+    }
+
     return (
         <li className="flex shrink-0 flex-col justify-center border-t border-grey-200 text-[1.1rem] font-semibold tracking-wide text-grey-600 first-of-type:border-t-0 dark:text-grey-800" role="separator" {...props}>
             <span
@@ -11,9 +18,9 @@ export const CardMenuSection = ({label, children, ...props}) => {
                 data-card-menu-section="label"
                 style={{minWidth: 'calc(100% - 3.2rem)'}}
             >{label}
-                <a href='https://ghost.org/help/cards/' rel="noreferrer" target='_blank'>
+                {helpLink && <a href={helpLink} rel="noreferrer" target='_blank'>
                     <ExternalLinkIcon className="h-6 w-6 cursor-pointer p-1 transition-all hover:text-green-600" />
-                </a>
+                </a>}
             </span>
             <ul className="md:grid md:gap-y-[.2rem] md:px-2" role="menu">
                 {children}
