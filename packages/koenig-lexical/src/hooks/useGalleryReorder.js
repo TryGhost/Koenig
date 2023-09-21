@@ -1,5 +1,6 @@
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
+import {getImageFilenameFromSrc} from '../utils/getImageFilenameFromSrc';
 import {pick} from 'lodash-es';
 
 export default function useGalleryReorder({images, updateImages, isSelected = false, maxImages = 9, disabled = false}) {
@@ -16,8 +17,6 @@ export default function useGalleryReorder({images, updateImages, isSelected = fa
         if (isImageDrag && draggableInfo.dataset.src && images.length !== maxImages) {
             dragDropContainer.current.enableDrag();
         }
-
-        setIsDraggedOver(true);
     };
 
     const onDragEnd = () => {
@@ -56,11 +55,7 @@ export default function useGalleryReorder({images, updateImages, isSelected = fa
                 // image card datasets may not have all of the details we need but we can fill them in
                 dataset.width = dataset.width || img.naturalWidth;
                 dataset.height = dataset.height || img.naturalHeight;
-                if (!dataset.fileName) {
-                    const url = new URL(dataset.src || img.src);
-                    const fileName = url.pathname.match(/\/([^/]*)$/)[1];
-                    dataset.fileName = fileName;
-                }
+                dataset.fileName = dataset?.fileName || getImageFilenameFromSrc(dataset.src);
 
                 updatedImages.splice(insertIndex, 0, dataset);
             } else {

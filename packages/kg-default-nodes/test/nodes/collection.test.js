@@ -1,7 +1,7 @@
-// const {html} = require('../utils');
+const {html} = require('../utils');
 const {createHeadlessEditor} = require('@lexical/headless');
-// const {$generateNodesFromDOM} = require('@lexical/html');
-// const {JSDOM} = require('jsdom');
+const {$generateNodesFromDOM} = require('@lexical/html');
+const {JSDOM} = require('jsdom');
 const {CollectionNode, $createCollectionNode, $isCollectionNode} = require('../../');
 
 const editorNodes = [CollectionNode];
@@ -9,7 +9,40 @@ const editorNodes = [CollectionNode];
 describe('CollectionNode', function () {
     let editor;
     let dataset;
-    // let exportOptions;
+    let exportOptions;
+
+    const postData = [
+        {
+            title: 'The Secret Life of Kittens: Uncovering Their Mischievous Master Plans',
+            id: 1,
+            url: 'https://www.google.com',
+            published_at: '2023-07-08T16:26:13.846-05:00',
+            excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
+            feature_image: 'https://placekitten.com/230/250',
+            reading_time: 3,
+            author: 'Author McAuthory'
+        },
+        {
+            title: 'Kittens Gone Wild: Epic Adventures of Feline Daredevils',
+            id: 2,
+            url: 'https://www.google.com',
+            published_at: '2023-08-17T16:26:13.858-05:00',
+            excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
+            feature_image: 'https://placekitten.com/251/250',
+            reading_time: 5,
+            author: 'Writer Writterson'
+        },
+        {
+            title: 'The Kitten Olympics: Hilarious Competitions and Paw-some Winners',
+            id: 3,
+            url: 'https://www.google.com',
+            published_at: '2023-09-11T16:26:13.858-05:00',
+            excerpt: 'Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet',
+            feature_image: 'https://placekitten.com/249/251',
+            reading_time: 9,
+            author: 'Author McAuthory'
+        }
+    ];
 
     const editorTest = testFn => function (done) {
         editor.update(() => {
@@ -33,11 +66,12 @@ describe('CollectionNode', function () {
             header: 'Featured Posts'
         };
 
-        // exportOptions = {
-        //     createDocument() {
-        //         return (new JSDOM()).window.document;
-        //     }
-        // };
+        exportOptions = {
+            createDocument() {
+                return (new JSDOM()).window.document;
+            },
+            renderData: new Map()
+        };
     });
 
     it('matches node with $isCollectionNode', editorTest(function () {
@@ -57,8 +91,8 @@ describe('CollectionNode', function () {
 
         it ('has setters for all properties', editorTest(function () {
             const node = $createCollectionNode(dataset);
-            node.collection = {title: 'latest', id: 123456};
-            node.collection.should.deepEqual({title: 'latest', id: 123456});
+            node.collection = 'latest';
+            node.collection.should.deepEqual('latest');
             node.postCount = 5;
             node.postCount.should.equal(5);
             node.layout = 'grid';
@@ -100,85 +134,134 @@ describe('CollectionNode', function () {
         }));
     });
 
-    // describe('exportDOM', function () {
-    //     it('can render to HTML', editorTest(function () {
-    //         const collectionNode = $createCollectionNode(dataset);
-    //         const {element} = collectionNode.exportDOM(exportOptions);
-    //         const expectedElement = html`
-    //             <div class="kg-card kg-collection-card kg-width-full kg-size-small kg-style-image" data-kg-background-image="https://example.com/image.jpg" style="background-image: url(https://example.com/image.jpg)">
-    //                 <h2 class="kg-collection-card-collection" id="this-is-the-collection-card">This is the collection card</h2>
-    //                 <h3 class="kg-collection-card-subcollection" id="hello">hello</h3>
-    //                 <a class="kg-collection-card-button" href="https://example.com/">The button</a>
-    //             </div>
-    //     `;
-    //         element.outerHTML.should.prettifyTo(expectedElement);
-    //     }));
-
-    //     it('renders nothing when collection and subcollection is undefined and the button is disabled', editorTest(function () {
-    //         const node = $createCollectionNode(dataset);
-    //         node.collection = null;
-    //         node.subcollection = null;
-    //         node.buttonEnabled = false;
-    //         const {element} = node.exportDOM(exportOptions);
-    //         element.should.be.null;
-    //     }));
-
-    //     it('renders a minimal collection card', editorTest(function () {
-    //         let payload = {
-    //             backgroundImageSrc: '',
-    //             buttonEnabled: false,
-    //             buttonText: 'The button',
-    //             buttonUrl: 'https://example.com/',
-    //             collection: 'hello world',
-    //             size: 'small',
-    //             style: 'dark',
-    //             subcollection: 'hello sub world'
-    //         };
-    //         const node = $createCollectionNode(payload);
-
-    //         const {element} = node.exportDOM(exportOptions);
-    //         const expectedElement = `<div class="kg-card kg-collection-card kg-width-full kg-size-small kg-style-dark" data-kg-background-image="" style=""><h2 class="kg-collection-card-collection" id="hello-world">hello world</h2><h3 class="kg-collection-card-subcollection" id="hello-sub-world">hello sub world</h3></div>`;
-    //         element.outerHTML.should.equal(expectedElement);
-    //     }));
-
-    //     it('renders without subcollection', editorTest(function () {
-    //         let payload = {
-    //             backgroundImageSrc: '',
-    //             buttonEnabled: false,
-    //             buttonText: 'The button',
-    //             buttonUrl: 'https://example.com/',
-    //             collection: 'hello world',
-    //             size: 'small',
-    //             style: 'dark',
-    //             subcollection: ''
-    //         };
-    //         const node = $createCollectionNode(payload);
-
-    //         const {element} = node.exportDOM(exportOptions);
-    //         const expectedElement = `<div class="kg-card kg-collection-card kg-width-full kg-size-small kg-style-dark" data-kg-background-image="" style=""><h2 class="kg-collection-card-collection" id="hello-world">hello world</h2></div>`;
-    //         element.outerHTML.should.equal(expectedElement);
-    //     }));
-    // });
-    // describe('importDOM', function () {
-    //     it('parses a collection card', editorTest(function () {
-    //         const htmlstring = `
-    //         <div class="kg-card kg-collection-card kg-size-large kg-style-image" data-kg-background-image="https://example.com/image.jpg" style="background-image: url(https://example.com/image.jpg)">
-    //             <h2 class="kg-collection-card-collection" id="collection-slug">Collection</h2>
-    //             <h3 class="kg-collection-card-subcollection" id="subcollection-slug">Subcollection</h3>
-    //             <a class="kg-collection-card-button" href="https://example.com">Button</a>
-    //         </div>`;
-    //         const dom = new JSDOM(htmlstring).window.document;
-    //         const nodes = $generateNodesFromDOM(editor, dom);
-    //         nodes.length.should.equal(1);
-    //         const node = nodes[0];
-    //         node.size.should.equal('large');
-    //         node.style.should.equal('image');
-    //         node.backgroundImageSrc.should.equal('https://example.com/image.jpg');
-    //         node.collection.should.equal('Collection');
-    //         node.subcollection.should.equal('Subcollection');
-    //         node.buttonEnabled.should.be.true;
-    //         node.buttonUrl.should.equal('https://example.com');
-    //         node.buttonText.should.equal('Button');
-    //     }));
-    // });
+    describe('exportDOM', function () {
+        // because the renderer requires outside data, we need to mock it
+        //  we can't mock the endpoint because that is called by the renderer, not exportDOM
+        it('can render to HTML', editorTest(function () {
+            const collectionNode = $createCollectionNode(dataset);
+            const nodeKey = collectionNode.getKey();
+            const renderData = new Map();
+            renderData.set(nodeKey, postData);
+            exportOptions.renderData = renderData;
+            const {element} = collectionNode.exportDOM(exportOptions);
+            const expectedElement = html`
+                <div class="kg-card kg-collection-card kg-width-wide" data-kg-collection-slug="featured" data-kg-collection-limit="3">
+                    <h4 class="kg-collection-card-title">Featured Posts</h4>
+                    <div class="kg-collection-card-feed kg-collection-card-list">
+                        <a href="https://www.google.com" class="kg-collection-card-post-wrapper">
+                            <div class="kg-collection-card-post">
+                                <div class="kg-collection-card-img">
+                                    <img class="aspect-[3/2]" src="https://placekitten.com/230/250" alt="The Secret Life of Kittens: Uncovering Their Mischievous Master Plans">
+                                </div>
+                                <div class="kg-collection-card-content">
+                                    <h2 class="kg-collection-card-post-title">The Secret Life of Kittens: Uncovering Their Mischievous Master Plans</h2>
+                                    <p class="kg-collection-card-post-excerpt">Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet</p>
+                                    <div class="kg-collection-card-post-meta">
+                                        <p>8 Jul 2023</p>
+                                        <p>&nbsp;· 3 min</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://www.google.com" class="kg-collection-card-post-wrapper">
+                            <div class="kg-collection-card-post">
+                                <div class="kg-collection-card-img">
+                                    <img class="aspect-[3/2]" src="https://placekitten.com/251/250" alt="Kittens Gone Wild: Epic Adventures of Feline Daredevils">
+                                </div>
+                                <div class="kg-collection-card-content">
+                                    <h2 class="kg-collection-card-post-title">Kittens Gone Wild: Epic Adventures of Feline Daredevils</h2>
+                                    <p class="kg-collection-card-post-excerpt">Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet</p>
+                                    <div class="kg-collection-card-post-meta">
+                                        <p>17 Aug 2023</p>
+                                        <p>&nbsp;· 5 min</p>
+                                    </div>
+                               </div>
+                           </div>
+                        </a>
+                        <a href="https://www.google.com" class="kg-collection-card-post-wrapper">
+                            <div class="kg-collection-card-post">
+                                <div class="kg-collection-card-img">
+                                    <img class="aspect-[3/2]" src="https://placekitten.com/249/251" alt="The Kitten Olympics: Hilarious Competitions and Paw-some Winners">
+                                </div>
+                                <div class="kg-collection-card-content">
+                                    <h2 class="kg-collection-card-post-title">The Kitten Olympics: Hilarious Competitions and Paw-some Winners</h2>
+                                    <p class="kg-collection-card-post-excerpt">Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet</p>
+                                    <div class="kg-collection-card-post-meta">
+                                        <p>11 Sep 2023</p>
+                                        <p>&nbsp;· 9 min</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            `;
+            element.outerHTML.should.prettifyTo(expectedElement);
+        }));
+    });
+    
+    describe('importDOM', function () {
+        it('parses a collection card', editorTest(function () {
+            const htmlstring = `
+                <div class="kg-card kg-collection-card kg-width-wide" data-kg-collection-slug="latest" data-kg-collection-limit="3">
+                    <h4 class="kg-collection-card-title"><span style="white-space: pre-wrap;">Latest</span></h4>
+                    <div class="kg-collection-card-feed kg-collection-card-grid columns-3">
+                        <a href="https://www.google.com" class="kg-collection-card-post-wrapper">
+                            <div class="kg-collection-card-post">
+                                <div class="kg-collection-card-img">
+                                    <img class="aspect-[3/2]" src="https://placekitten.com/230/250" alt="The Secret Life of Kittens: Uncovering Their Mischievous Master Plans">
+                                </div>
+                                <div class="kg-collection-card-content">
+                                    <h2 class="kg-collection-card-post-title">The Secret Life of Kittens: Uncovering Their Mischievous Master Plans</h2>
+                                    <p class="kg-collection-card-post-excerpt">Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet</p>
+                                    <div class="kg-collection-card-post-meta">
+                                        <p>8 Sep 2023</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="https://www.google.com" class="kg-collection-card-post-wrapper">
+                            <div class="kg-collection-card-post">
+                                <div class="kg-collection-card-img">
+                                    <img class="aspect-[3/2]" src="https://placekitten.com/251/250" alt="Kittens Gone Wild: Epic Adventures of Feline Daredevils">
+                                </div>
+                                <div class="kg-collection-card-content">
+                                    <h2 class="kg-collection-card-post-title">Kittens Gone Wild: Epic Adventures of Feline Daredevils</h2>
+                                    <p class="kg-collection-card-post-excerpt">Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet</p>
+                                    <div class="kg-collection-card-post-meta">
+                                        <p>9 Jun 2023</p>
+                                        <p>&nbsp;· 2 min</p>
+                                    </div>
+                               </div>
+                           </div>
+                        </a>
+                        <a href="https://www.google.com" class="kg-collection-card-post-wrapper">
+                            <div class="kg-collection-card-post">
+                                <div class="kg-collection-card-img">
+                                    <img class="aspect-[3/2]" src="https://placekitten.com/249/251" alt="The Kitten Olympics: Hilarious Competitions and Paw-some Winners">
+                                </div>
+                                <div class="kg-collection-card-content">
+                                    <h2 class="kg-collection-card-post-title">The Kitten Olympics: Hilarious Competitions and Paw-some Winners</h2>
+                                    <p class="kg-collection-card-post-excerpt">Lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet lorem ipsum dolor amet</p>
+                                    <div class="kg-collection-card-post-meta">
+                                        <p>17 Aug 2023</p>
+                                        <p>&nbsp;· 8 min</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            `;
+            const dom = new JSDOM(htmlstring).window.document;
+            const nodes = $generateNodesFromDOM(editor, dom);
+            nodes.length.should.equal(1);
+            const node = nodes[0];
+            node.collection.should.equal('latest');
+            node.layout.should.equal('grid');
+            node.postCount.should.equal(3);
+            node.columns.should.equal(3);
+            node.header.should.equal('Latest');
+        }));
+    });
 });

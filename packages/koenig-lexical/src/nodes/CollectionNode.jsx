@@ -23,7 +23,8 @@ export class CollectionNode extends BaseCollectionNode {
         priority: 18,
         postType: 'page',
         isHidden: ({config}) => !config?.feature?.collectionsCard || !config?.feature?.collections, // hide if missing collections or collectionsCard flags
-        shortcut: '/collection'
+        shortcut: '/collection',
+        insertParams: () => ({header: 'Latest'})
     }];
 
     constructor(dataset = {}, key) {
@@ -67,7 +68,7 @@ export class CollectionNode extends BaseCollectionNode {
         return (
             <KoenigCardWrapper
                 nodeKey={this.getKey()}
-                width={this.layout === 'grid' ? 'wide' : null}
+                width={'wide'}
             >
                 <CollectionNodeComponent
                     collection={this.collection}
