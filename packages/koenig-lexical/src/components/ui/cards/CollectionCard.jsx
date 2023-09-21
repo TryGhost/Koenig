@@ -295,17 +295,13 @@ export function CollectionCard({
                     <SliderSetting
                         dataTestId={'collection-post-count'}
                         defaultValue={3}
+                        description={(!isLoading && postCount > posts.length) && `This collection has ${posts.length} posts, and will continue to fill in as you publish more.`}
                         label="Post Count"
                         max={12}
                         min={1}
                         value={postCount}
                         onChange={handlePostCountChange}
                     />
-                    {(!isLoading && postCount > posts.length) && 
-                        <div className="text-[1.3rem]">
-                            This collection has {posts.length} posts, and will continue to fill in as you publish more.
-                        </div>
-                    }
                     {layout === 'grid' ?
                         <SliderSetting
                             dataTestId={'collection-columns'}
