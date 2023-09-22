@@ -17,6 +17,8 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
         return {x: x + origin.x, y: y + origin.y};
     }
 
+    const windowWidthAdjustment = parseInt(window.getComputedStyle(panelElem).getPropertyValue('--kg-breakout-adjustment') || 0, 10);
+
     // Take previous position into account, and adjust the spacing to allow negative spacing if the previous position was offscreen
     if (lastSpacing && lastSpacing.top < topSpacing) {
         topSpacing = lastSpacing.top;
@@ -39,7 +41,7 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
 
     const topIsOffscreen = y < topSpacing;
     const bottomIsOffscreen = window.innerHeight - bottom < bottomSpacing;
-    const rightIsOffscreen = window.innerWidth - right < rightSpacing;
+    const rightIsOffscreen = window.innerWidth - right - windowWidthAdjustment < rightSpacing;
     const leftIsOffscreen = x < leftSpacing;
     let yAdjustment = 0;
     let xAdjustment = 0;
@@ -53,7 +55,7 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
     }
 
     if (rightIsOffscreen) {
-        xAdjustment = -(rightSpacing - (window.innerWidth - right));
+        xAdjustment = -(rightSpacing - (window.innerWidth - right - windowWidthAdjustment));
     }
 
     if (leftIsOffscreen) {
