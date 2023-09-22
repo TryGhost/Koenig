@@ -182,13 +182,7 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
             return;
         }
         setPosition(getInitialPosition(ref.current));
-    }, [getInitialPosition, setPosition, ref]);
-
-    useLayoutEffect(() => {
-        if (ref && ref.current && cardWidth === 'wide') {
-            setPosition(getInitialPosition(ref.current));
-        }
-    }, [getInitialPosition, setPosition, cardWidth, ref]);
+    }, [getInitialPosition, setPosition, ref, cardWidth]);
 
     return {ref};
 }
