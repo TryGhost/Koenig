@@ -91,6 +91,7 @@ function keepWithinSpacingOnResize(panelElem, {x, y, origin, lastSpacing}) {
 export default function useSettingsPanelReposition({positionToRef} = {}, cardWidth) {
     const {ref, getPosition, setPosition} = useMovable({adjustOnResize: keepWithinSpacingOnResize, adjustOnDrag: keepWithinSpacingOnDrag});
     const previousViewport = useRef({width: window.innerWidth, height: window.innerHeight});
+    const previousCardWidth = useRef(cardWidth);
 
     const getInitialPosition = useCallback((panelElem) => {
         const panelHeight = panelElem.offsetHeight;
@@ -182,7 +183,17 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
             return;
         }
         setPosition(getInitialPosition(ref.current));
-    }, [getInitialPosition, setPosition, ref, cardWidth]);
+    }, [getInitialPosition, setPosition, ref]);
+
+    // account for wide cards using a transform so we need to adjust the origin position
+    useLayoutEffect(() => {
+        if (cardWidth === 'wide' && previousCardWidth.current !== 'wide') {
+            setPosition(getInitialPosition(ref.current));
+        } else if (previousCardWidth.current === 'wide' && cardWidth !== 'wide') {
+            setPosition(getInitialPosition(ref.current));
+        }
+        previousCardWidth.current = cardWidth;
+    }, [cardWidth, getInitialPosition, setPosition, ref]);
 
     return {ref};
 }

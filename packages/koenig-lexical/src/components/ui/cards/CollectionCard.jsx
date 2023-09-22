@@ -277,7 +277,7 @@ export function CollectionCard({
                 <Collection columns={columns} isLoading={isLoading} layout={layout} postCount={postCount} posts={posts} />
             </div>
             {isEditing && (
-                <SettingsPanel>
+                <SettingsPanel cardWidth={layout}>
                     <DropdownSetting
                         dataTestId='collections-dropdown'
                         label='Collection'
