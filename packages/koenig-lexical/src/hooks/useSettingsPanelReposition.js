@@ -88,7 +88,7 @@ function keepWithinSpacingOnResize(panelElem, {x, y, origin, lastSpacing}) {
     return keepWithinSpacingOnDrag(panelElem, keepWithinSpacing(panelElem, {x, y, origin, topSpacing: MIN_TOP_SPACING, bottomSpacing: MIN_BOTTOM_SPACING, rightSpacing: MIN_RIGHT_SPACING, leftSpacing: MIN_LEFT_SPACING, lastSpacing}));
 }
 
-export default function useSettingsPanelReposition({positionToRef} = {}) {
+export default function useSettingsPanelReposition({positionToRef} = {}, cardWidth) {
     const {ref, getPosition, setPosition} = useMovable({adjustOnResize: keepWithinSpacingOnResize, adjustOnDrag: keepWithinSpacingOnDrag});
     const previousViewport = useRef({width: window.innerWidth, height: window.innerHeight});
 
@@ -181,11 +181,14 @@ export default function useSettingsPanelReposition({positionToRef} = {}) {
         if (!ref || !ref.current) {
             return;
         }
-
         setPosition(getInitialPosition(ref.current));
     }, [getInitialPosition, setPosition, ref]);
 
-    return {
-        ref
-    };
+    useLayoutEffect(() => {
+        if (ref && ref.current && cardWidth === 'wide') {
+            setPosition(getInitialPosition(ref.current));
+        }
+    }, [getInitialPosition, setPosition, cardWidth, ref]);
+
+    return {ref};
 }
