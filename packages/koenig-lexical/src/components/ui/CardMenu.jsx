@@ -12,7 +12,7 @@ export const CardMenuSection = ({label, children, ...props}) => {
     }
 
     return (
-        <li className="flex shrink-0 flex-col justify-center border-t border-grey-200 text-[1.1rem] font-semibold tracking-wide text-grey-600 first-of-type:border-t-0 dark:text-grey-800" role="separator" {...props}>
+        <li className="mb-2 flex shrink-0 flex-col justify-center border-t border-grey-200 text-[1.1rem] font-semibold tracking-wide text-grey-600 first-of-type:border-t-0 dark:text-grey-800" role="separator" {...props}>
             <span
                 className="flex items-center justify-between px-5 pb-2 pt-3 uppercase"
                 data-card-menu-section="label"
