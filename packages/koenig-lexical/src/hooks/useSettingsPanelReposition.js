@@ -12,9 +12,9 @@ function isMobile() {
     return window.innerWidth < 768 && window.innerHeight > window.innerWidth;
 }
 
-function keepWithinSpacing(panelElem, {x, y, topSpacing, bottomSpacing, rightSpacing, leftSpacing, lastSpacing}) {
+function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, bottomSpacing, rightSpacing, leftSpacing, lastSpacing}) {
     if (!panelElem) {
-        return {x, y};
+        return {x: x + origin.x, y: y + origin.y};
     }
 
     // Take previous position into account, and adjust the spacing to allow negative spacing if the previous position was offscreen
@@ -60,11 +60,14 @@ function keepWithinSpacing(panelElem, {x, y, topSpacing, bottomSpacing, rightSpa
         xAdjustment = leftSpacing - x;
     }
 
+    xAdjustment = xAdjustment - origin.x;
+    yAdjustment = yAdjustment - origin.y;
+
     // no adjustment needed
     return {x: x + xAdjustment, y: y + yAdjustment};
 }
 
-function keepWithinSpacingOnDrag(panelElem, {x, y}) {
+function keepWithinSpacingOnDrag(panelElem, {x, y, origin}) {
     const width = panelElem.offsetWidth;
     const height = panelElem.offsetHeight;
 
@@ -76,11 +79,11 @@ function keepWithinSpacingOnDrag(panelElem, {x, y}) {
     const leftSpacing = MINIMUM_VISIBLE - width;
 
     // Last spacing is ignored
-    return keepWithinSpacing(panelElem, {x, y, topSpacing, bottomSpacing, rightSpacing, leftSpacing, lastSpacing: undefined});
+    return keepWithinSpacing(panelElem, {x, y, origin, topSpacing, bottomSpacing, rightSpacing, leftSpacing, lastSpacing: undefined});
 }
 
-function keepWithinSpacingOnResize(panelElem, {x, y, lastSpacing}) {
-    return keepWithinSpacingOnDrag(panelElem, keepWithinSpacing(panelElem, {x, y, topSpacing: MIN_TOP_SPACING, bottomSpacing: MIN_BOTTOM_SPACING, rightSpacing: MIN_RIGHT_SPACING, leftSpacing: MIN_LEFT_SPACING, lastSpacing}));
+function keepWithinSpacingOnResize(panelElem, {x, y, origin, lastSpacing}) {
+    return keepWithinSpacingOnDrag(panelElem, keepWithinSpacing(panelElem, {x, y, origin, topSpacing: MIN_TOP_SPACING, bottomSpacing: MIN_BOTTOM_SPACING, rightSpacing: MIN_RIGHT_SPACING, leftSpacing: MIN_LEFT_SPACING, lastSpacing}));
 }
 
 export default function useSettingsPanelReposition({positionToRef} = {}) {
@@ -110,12 +113,21 @@ export default function useSettingsPanelReposition({positionToRef} = {}) {
         // if we already have top set, leave it so that toggling additional settings doesn't cause the panel to jump (unless it would be offscreen)
         const containerMiddle = containerRect.top + (visibleHeight / 2);
 
-        const y = containerMiddle - (panelHeight) / 2;
+        let y = containerMiddle - (panelHeight) / 2;
 
         // position to right of panel
-        const x = containerRect.right + CARD_SPACING;
+        let x = containerRect.right + CARD_SPACING;
 
-        return keepWithinSpacingOnResize(panelElem, {x, y});
+        // if the card element has a transform applied (e.g. wide cards) our panel elem becomes positioned
+        // relative to the card element rather than the window
+        const cardStyles = window.getComputedStyle(cardElement);
+        const origin = {x: 0, y: 0};
+        if (cardStyles.transform !== 'none') {
+            origin.x = containerRect.left;
+            origin.y = containerRect.top;
+        }
+
+        return keepWithinSpacingOnResize(panelElem, {x, y, origin});
     }, [positionToRef]);
 
     const onResize = useCallback((panelElem) => {
