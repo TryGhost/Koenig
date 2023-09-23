@@ -92,6 +92,7 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
     const {ref, getPosition, setPosition} = useMovable({adjustOnResize: keepWithinSpacingOnResize, adjustOnDrag: keepWithinSpacingOnDrag});
     const previousViewport = useRef({width: window.innerWidth, height: window.innerHeight});
     const previousCardWidth = useRef(cardWidth);
+    const previousCardOrigin = useRef({x: 0, y: 0});
 
     const getInitialPosition = useCallback((panelElem) => {
         const panelHeight = panelElem.offsetHeight;
@@ -186,14 +187,29 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
     }, [getInitialPosition, setPosition, ref]);
 
     // account for wide cards using a transform so we need to adjust the origin position
+    //  NOTE: we want to make sure this doesn't happen on the first render so previousCardWidth must start as undefined
     useLayoutEffect(() => {
+        // console.log(`getPosition`,getPosition());
         if (cardWidth === 'wide' && previousCardWidth.current !== 'wide') {
-            setPosition(getInitialPosition(ref.current));
+            // offset origin to account for wide card (origin = card origin)
+            const cardElement = document.querySelector('[data-kg-card-editing="true"]');
+            if (!cardElement) {
+                return;
+            }
+            const containerRect = cardElement.getBoundingClientRect();
+            const origin = {x: containerRect.left, y: containerRect.top};
+            previousCardOrigin.current = origin;
+
+            const {x,y} = getPosition();
+            setPosition(keepWithinSpacingOnResize(ref.current, {x, y, origin}));
         } else if (previousCardWidth.current === 'wide' && cardWidth !== 'wide') {
-            setPosition(getInitialPosition(ref.current));
+            // reset origin to window origin
+            const x = getPosition().x + previousCardOrigin.current.x;
+            const y = getPosition().y + previousCardOrigin.current.y;
+            setPosition(keepWithinSpacingOnResize(ref.current, {x, y, origin: {x: 0, y: 0}}));
         }
         previousCardWidth.current = cardWidth;
-    }, [cardWidth, getInitialPosition, setPosition, ref]);
+    }, [cardWidth, getPosition, getInitialPosition, setPosition, ref]);
 
     return {ref};
 }
