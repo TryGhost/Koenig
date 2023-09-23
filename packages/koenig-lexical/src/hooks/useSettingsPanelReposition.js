@@ -189,7 +189,6 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
     // account for wide cards using a transform so we need to adjust the origin position
     //  NOTE: we want to make sure this doesn't happen on the first render so previousCardWidth must start as undefined
     useLayoutEffect(() => {
-        // console.log(`getPosition`,getPosition());
         if (cardWidth === 'wide' && previousCardWidth.current !== 'wide') {
             // offset origin to account for wide card (origin = card origin)
             const cardElement = document.querySelector('[data-kg-card-editing="true"]');
@@ -206,7 +205,7 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
             // reset origin to window origin
             const x = getPosition().x + previousCardOrigin.current.x;
             const y = getPosition().y + previousCardOrigin.current.y;
-            setPosition(keepWithinSpacingOnResize(ref.current, {x, y, origin: {x: 0, y: 0}}));
+            setPosition(keepWithinSpacingOnResize(ref.current, {x, y}));
         }
         previousCardWidth.current = cardWidth;
     }, [cardWidth, getPosition, getInitialPosition, setPosition, ref]);
