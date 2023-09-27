@@ -410,6 +410,42 @@ describe('buildCardMenu', function () {
             expect(cardMenu.menu).deep.equal(new Map());
         });
 
+        it('shows all snippets when query is "snippets"', async function () {
+            const snippets = [{name: 'test1'}, {name: 'test2'}];
+            const cardMenu = buildCardMenu([], {query: 'snippets', config: {snippets}});
+
+            console.log(`cardMenu.menu`,cardMenu.menu)
+
+            expect(cardMenu.menu).equal(new Map([
+                ['Snippets', [
+                    {
+                        Icon: expect.any(Function),
+                        insertCommand: {},
+                        insertParams: {
+                            name: 'test1'
+                        },
+                        label: 'test1',
+                        matches: expect.any(Function),
+                        onRemove: expect.any(Function),
+                        section: 'Snippets',
+                        type: 'snippet'
+                    },
+                    {
+                        Icon: expect.any(Function),
+                        insertCommand: {},
+                        insertParams: {
+                            name: 'test2'
+                        },
+                        label: 'test2',
+                        matches: expect.any(Function),
+                        onRemove: expect.any(Function),
+                        section: 'Snippets',
+                        type: 'snippet'
+                    }
+                ]]
+            ]));
+        });
+
         it('can filter based on the post type', async function () {
             const config = {post: {displayName: 'post'}}; 
             const nodes = [
