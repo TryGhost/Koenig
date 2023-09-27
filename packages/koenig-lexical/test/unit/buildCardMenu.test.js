@@ -410,21 +410,19 @@ describe('buildCardMenu', function () {
             expect(cardMenu.menu).deep.equal(new Map());
         });
 
-        it('shows all snippets when query is "snippets"', async function () {
-            const snippets = [{name: 'test1'}, {name: 'test2'}];
+        it('shows all snippets when typing /snippets', async function () {
+            const snippets = [{name: 'Test1'}, {name: 'Test2'}];
             const cardMenu = buildCardMenu([], {query: 'snippets', config: {snippets}});
 
-            console.log(`cardMenu.menu`,cardMenu.menu)
-
-            expect(cardMenu.menu).equal(new Map([
+            expect(cardMenu.menu).toEqual(new Map([
                 ['Snippets', [
                     {
                         Icon: expect.any(Function),
                         insertCommand: {},
                         insertParams: {
-                            name: 'test1'
+                            name: 'Test1'
                         },
-                        label: 'test1',
+                        label: 'Test1',
                         matches: expect.any(Function),
                         onRemove: expect.any(Function),
                         section: 'Snippets',
@@ -434,9 +432,9 @@ describe('buildCardMenu', function () {
                         Icon: expect.any(Function),
                         insertCommand: {},
                         insertParams: {
-                            name: 'test2'
+                            name: 'Test2'
                         },
-                        label: 'test2',
+                        label: 'Test2',
                         matches: expect.any(Function),
                         onRemove: expect.any(Function),
                         section: 'Snippets',
