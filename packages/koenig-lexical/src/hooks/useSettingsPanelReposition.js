@@ -12,7 +12,27 @@ function isMobile() {
     return window.innerWidth < 768 && window.innerHeight > window.innerWidth;
 }
 
+const getSelectedCardOrigin = () => {
+    const cardElement = document.querySelector('[data-kg-card-editing="true"]');
+    if (!cardElement) {
+        return {x: 0, y: 0};
+    }
+    const containerRect = cardElement.getBoundingClientRect();
+
+    // if the card element has a transform applied (e.g. wide cards) our panel elem becomes positioned
+    // relative to the card element rather than the window
+    const cardStyles = window.getComputedStyle(cardElement);
+    const origin = {x: 0, y: 0};
+    if (cardStyles.transform !== 'none') {
+        origin.x = containerRect.left;
+        origin.y = containerRect.top;
+    }
+    return origin;
+};
+
 function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, bottomSpacing, rightSpacing, leftSpacing, lastSpacing}) {
+    origin = getSelectedCardOrigin();
+
     if (!panelElem) {
         return {x: x + origin.x, y: y + origin.y};
     }
@@ -36,10 +56,10 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
     const width = panelElem.offsetWidth;
     const height = panelElem.offsetHeight;
 
-    const right = x + width;
-    const bottom = y + height;
+    const right = x + width + origin.x;
+    const bottom = y + height + origin.y;
 
-    const topIsOffscreen = y < topSpacing;
+    const topIsOffscreen = (y + origin.y) < topSpacing;
     const bottomIsOffscreen = window.innerHeight - bottom < bottomSpacing;
     const rightIsOffscreen = window.innerWidth - right - windowWidthAdjustment < rightSpacing;
     const leftIsOffscreen = x < leftSpacing;
@@ -47,7 +67,7 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
     let xAdjustment = 0;
 
     if (topIsOffscreen && !bottomIsOffscreen) {
-        yAdjustment = topSpacing - y;
+        yAdjustment = topSpacing - y - origin.y;
     }
 
     if (bottomIsOffscreen && !topIsOffscreen) {
@@ -59,13 +79,9 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
     }
 
     if (leftIsOffscreen) {
-        xAdjustment = leftSpacing - x;
+        xAdjustment = leftSpacing - x - origin.x;
     }
 
-    xAdjustment = xAdjustment - origin.x;
-    yAdjustment = yAdjustment - origin.y;
-
-    // no adjustment needed
     return {x: x + xAdjustment, y: y + yAdjustment};
 }
 
@@ -196,16 +212,17 @@ export default function useSettingsPanelReposition({positionToRef} = {}, cardWid
                 return;
             }
             const containerRect = cardElement.getBoundingClientRect();
-            const origin = {x: containerRect.left, y: containerRect.top};
+            const origin = {x: containerRect.left + 2, y: containerRect.top + 1}; // not sure why 2,1 offsets mild bounce in positioning
             previousCardOrigin.current = origin;
 
-            const {x,y} = getPosition();
+            const x = getPosition().x - origin.x;
+            const y = getPosition().y - origin.y;
             setPosition(keepWithinSpacingOnResize(ref.current, {x, y, origin}));
         } else if (previousCardWidth.current === 'wide' && cardWidth !== 'wide') {
             // reset origin to window origin
             const x = getPosition().x + previousCardOrigin.current.x;
             const y = getPosition().y + previousCardOrigin.current.y;
-            setPosition(keepWithinSpacingOnResize(ref.current, {x, y}));
+            setPosition(keepWithinSpacingOnResize(ref.current, {x, y, origin: {x: 0, y: 0}}));
         }
         previousCardWidth.current = cardWidth;
     }, [cardWidth, getPosition, getInitialPosition, setPosition, ref]);
