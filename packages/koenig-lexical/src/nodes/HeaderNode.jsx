@@ -33,7 +33,7 @@ export class HeaderNode extends BaseHeaderNode {
                 version: 1
             }),
             isHidden: ({config}) => {
-                return config?.deprecated?.headerV1 ? config.deprecated.headerV1 : true;
+                return config?.deprecated?.headerV1 ?? true;
             },
             shortcut: '/header'
         },
