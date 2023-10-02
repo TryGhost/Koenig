@@ -25,6 +25,21 @@ export function wrapReplacementStrings(html) {
  * @param {string} html
  * @returns {string}
  */
-export function removeCodeWrappers(html) {
-    return html.replace(/<code\b[^>]*>((.*?){.*?}(.*?))<\/code>/gi, '$1');
+export function removeCodeWrappersFromHelpers(html,document) {
+    // parse html to make patterns easier to match
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    const codeElements = tempDiv.querySelectorAll('code');
+    codeElements.forEach((codeElement) => {
+        const codeTextContent = codeElement.textContent;
+        // extract the content of the code element if it follows the helper pattern (e.g. {foo})
+        if (codeTextContent.match(/((.*?){.*?}(.*?))/gi)) {
+            const codeContent = codeElement.innerHTML; 
+            codeElement.parentNode.replaceChild(document.createRange().createContextualFragment(codeContent), codeElement);
+        }
+    });
+
+    const cleanedHtml = tempDiv.innerHTML;
+    return cleanedHtml;
 }

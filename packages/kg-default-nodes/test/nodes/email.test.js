@@ -400,7 +400,7 @@ describe('EmailNode', function () {
 
         it(`leaves <code> elements when not used with a placeholder`, editorTest(function () {
             const payload = {
-                html: '<p>First paragraph</p><code>Some code</code><p>Third paragraph</p>'
+                html: '<p>First paragraph</p><code>Some code</code><p>Third paragraph</p><code>{helper, "test"}</code>'
             };
 
             const options = {
@@ -415,6 +415,7 @@ describe('EmailNode', function () {
                 <p>First paragraph</p>
                 <code>Some code</code>
                 <p>Third paragraph</p>
+                %%{helper, "test"}%%
             `);
         }));
     });
