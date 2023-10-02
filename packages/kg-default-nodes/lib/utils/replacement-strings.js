@@ -17,3 +17,14 @@ export function removeSpaces(html) {
 export function wrapReplacementStrings(html) {
     return html.replace(/\{(\w*?)(?:,? *"(.*?)")?\}/g, '%%$&%%');
 }
+
+/**
+ * Removes any <code> wrappers around replacement strings {foo}
+ * Example input:  <code><span>{foo}</span></code>
+ * Example output:       <span>{foo}</span>
+ * @param {string} html
+ * @returns {string}
+ */
+export function removeCodeWrappers(html) {
+    return html.replace(/<code\b[^>]*>((.*?){.*?}(.*?))<\/code>/gi, '$1');
+}
