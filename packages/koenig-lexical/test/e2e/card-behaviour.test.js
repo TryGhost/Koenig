@@ -1209,7 +1209,8 @@ test.describe('Card behaviour', async () => {
         });
     });
 
-    test.describe('CMD+BACKSPACE', function () {
+    // this behaviour changes between mac and windows
+    test.describe.skip('CMD+BACKSPACE', function () {
         test('on an populated paragraph after a card', async function () {
             await focusEditor(page);
             await page.keyboard.type('---');
