@@ -127,10 +127,27 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
         );
     }, [editor]);
 
+    // use native mousedown event so the toolbar can close when something is
+    // clicked outside of the editor and the selection is lost
+    React.useEffect(() => {
+        const handleMousedown = (event) => {
+            if (!anchorElem.contains(event.target)) {
+                setToolbarItemType(null);
+            }
+        };
+
+        document.addEventListener('mousedown', handleMousedown);
+
+        return () => {
+            document.removeEventListener('mousedown', handleMousedown);
+        };
+    });
+
     const handleLinkEdit = (data) => {
         setToolbarItemType(toolbarItemTypes.link);
         setHref(data?.href);
     };
+
     return (
         <>
             <FloatingFormatToolbar
