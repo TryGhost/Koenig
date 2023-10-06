@@ -12,7 +12,6 @@
 /* Global Koenig content styles
 /* -------------------------------------------------------------------- */
 
-/* TODO: will these clash with consuming apps? */
 .koenig-lexical {
     --white: #FFF;
 
