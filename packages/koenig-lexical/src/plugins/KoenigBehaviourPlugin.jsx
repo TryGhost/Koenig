@@ -15,6 +15,7 @@ import {
     $insertNodes,
     $isDecoratorNode,
     $isElementNode,
+    $isInlineElementOrDecoratorNode,
     $isLineBreakNode,
     $isNodeSelection,
     $isParagraphNode,
@@ -57,6 +58,7 @@ import {mergeRegister} from '@lexical/utils';
 import {shouldIgnoreEvent} from '../utils/shouldIgnoreEvent';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import { $isHorizontalRuleNode } from '../nodes/HorizontalRuleNode';
 
 export const INSERT_CARD_COMMAND = createCommand('INSERT_CARD_COMMAND');
 export const SELECT_CARD_COMMAND = createCommand('SELECT_CARD_COMMAND');
@@ -1353,6 +1355,22 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 if (node.getFormatType() !== '') {
                     node.setFormat('');
                 }
+            })
+        );
+    }, [editor]);
+
+    // any child non-inline nodes should be moved to the top level
+    React.useEffect(() => {
+        return mergeRegister(
+            editor.registerNodeTransform(ParagraphNode, (node) => {
+                let foundIncorrectChild = false; // use this to move all children after the first incorrect one to the parent level
+                const children = node.getChildren();
+                children.forEach((child) => {
+                    if (foundIncorrectChild || $isDecoratorNode(child) || $isHeadingNode(child) || $isListNode(child) || $isHorizontalRuleNode(child)) {
+                        child.remove();
+                        node.insertAfter(child);
+                    }
+                });
             })
         );
     }, [editor]);
