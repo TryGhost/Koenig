@@ -1358,12 +1358,13 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
         );
     }, [editor]);
 
-    // any child non-inline nodes should be moved to the top level
+    // validate child nodes of ParagraphNode - e.g. no headings, lists, horizontal rules, etc
     React.useEffect(() => {
         return mergeRegister(
             editor.registerNodeTransform(ParagraphNode, (node) => {
-                let incorrectChildIndex = false; // use this to move all children after the first incorrect one to the parent level
+                let incorrectChildIndex = false;
                 const children = node.getChildren();
+                // check for incorrect child node
                 children.forEach((child) => {
                     if (!incorrectChildIndex && ($isDecoratorNode(child) || $isHeadingNode(child) || $isListNode(child) || $isHorizontalRuleNode(child))) {
                         incorrectChildIndex = child.getIndexWithinParent();
