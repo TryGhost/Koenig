@@ -15,7 +15,6 @@ import {
     $insertNodes,
     $isDecoratorNode,
     $isElementNode,
-    $isInlineElementOrDecoratorNode,
     $isLineBreakNode,
     $isNodeSelection,
     $isParagraphNode,
@@ -1363,14 +1362,18 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
     React.useEffect(() => {
         return mergeRegister(
             editor.registerNodeTransform(ParagraphNode, (node) => {
-                let foundIncorrectChild = false; // use this to move all children after the first incorrect one to the parent level
+                let incorrectChildIndex = false; // use this to move all children after the first incorrect one to the parent level
                 const children = node.getChildren();
                 children.forEach((child) => {
-                    if (foundIncorrectChild || $isDecoratorNode(child) || $isHeadingNode(child) || $isListNode(child) || $isHorizontalRuleNode(child)) {
-                        child.remove();
-                        node.insertAfter(child);
+                    if (!incorrectChildIndex && ($isDecoratorNode(child) || $isHeadingNode(child) || $isListNode(child) || $isHorizontalRuleNode(child))) {
+                        incorrectChildIndex = child.getIndexWithinParent();
                     }
                 });
+                // looping backwards, remove every child until the incorrect child index and append to the parent level
+                for (let i = children.length - 1; i >= incorrectChildIndex; i--) {
+                    children[i].remove();
+                    node.insertAfter(children[i]);
+                }
             })
         );
     }, [editor]);
