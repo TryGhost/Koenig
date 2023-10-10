@@ -7,21 +7,24 @@ function replacementStringTransform(node) {
     if (node.hasFormat('code')) { // prevent infinite loop
         return;
     }
-    const regex = /{{.*?}}/g;
     const textContent = node.getTextContent();
-    // replace {{placeholder}} with a new text node that has the code format applied
-    const replacementString = textContent.match(regex);
-    console.log(`replacementString`,replacementString);
-    if (replacementString) {        
-        const replacementTextNode = new ExtendedTextNode(replacementString);
-        replacementTextNode.setFormat('code');
-
-        // todo: split node in case someone puts placeholder in the middle of the string
-        node.setTextContent(node.getTextContent().replace(replacementString, ''));
-        node.insertAfter(replacementTextNode);
-        // todo: fix selection not going to end....
-        replacementTextNode.select();
+    const replacementString = textContent.match(/{{.*?}}/);
+    if (!replacementString) {
+        return;
     }
+    // split the text content into an array including the matched string
+    const splitContent = textContent.split(/({{.*?}})/g).filter(e => e !== '');
+
+    // create a new text node for each string in the array
+    splitContent.reverse().forEach((text) => {
+        const newNode = new ExtendedTextNode(text);
+        if (text === replacementString[0]) {
+            newNode.setFormat('code');
+            newNode.select();
+        }
+        node.insertAfter(newNode);
+    });
+    node.remove();
 }
 
 function useReplacementStrings(editor) {
