@@ -57,7 +57,6 @@ import {mergeRegister} from '@lexical/utils';
 import {shouldIgnoreEvent} from '../utils/shouldIgnoreEvent';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import { $isHorizontalRuleNode } from '../nodes/HorizontalRuleNode';
 
 export const INSERT_CARD_COMMAND = createCommand('INSERT_CARD_COMMAND');
 export const SELECT_CARD_COMMAND = createCommand('SELECT_CARD_COMMAND');
@@ -1362,18 +1361,43 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
     React.useEffect(() => {
         return mergeRegister(
             editor.registerNodeTransform(ParagraphNode, (node) => {
-                let incorrectChildIndex = false;
                 const children = node.getChildren();
-                // check for incorrect child node
+
+                // we need a temporary detached paragraph node to hold any non-inline nodes
+                // otherwise we trigger an infinite loop with the transform continually
+                // re-running on each child move
+                let tempParagraph = null;
+
+                // find any non-inline children as we don't support those in paragraphs,
+                // put them in a temporary node when found
                 children.forEach((child) => {
-                    if (!incorrectChildIndex && ($isDecoratorNode(child) || $isHeadingNode(child) || $isListNode(child) || $isHorizontalRuleNode(child))) {
-                        incorrectChildIndex = child.getIndexWithinParent();
+                    if (child.isInline && !child.isInline()) {
+                        if (!tempParagraph) {
+                            tempParagraph = $createParagraphNode();
+                        }
+                        tempParagraph.append(child);
                     }
                 });
-                // looping backwards, remove every child until the incorrect child index and append to the parent level
-                for (let i = children.length - 1; i >= incorrectChildIndex; i--) {
-                    children[i].remove();
-                    node.insertAfter(children[i]);
+
+                // we have some invalid children, move them out and after the current paragraph
+                if (tempParagraph) {
+                    // reverse because we can only insertAfter the current paragraph
+                    // so we need to insert the first child last to maintain order
+                    tempParagraph.getChildren().reverse().forEach((child) => {
+                        node.insertAfter(child);
+                    });
+
+                    // if we have no valid children left, remove the paragraph
+                    // TODO: we haven't seen a case where inline+non-inline nodes are mixed
+                    //       but if we do we'll need to check this to make sure we don't
+                    //       end up with incorrect ordering
+                    if (node.getChildren().length === 0) {
+                        node.remove();
+                    }
+
+                    // clean up the temporary paragraph immediately, although it should be
+                    // cleaned up by the reconciler's garbage collection of detached nodes
+                    tempParagraph.remove();
                 }
             })
         );

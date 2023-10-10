@@ -1,8 +1,8 @@
-import {assertHTML, html, initialize} from '../../utils/e2e';
+import {assertHTML, html, initialize} from '../utils/e2e';
 // import {calloutColorPicker} from '../../../src/components/ui/cards/CalloutCardx';
 import {test} from '@playwright/test';
 
-test.describe('Callout Card', async () => {
+test.describe('Node transforms', async () => {
     let page;
 
     test.beforeAll(async ({browser}) => {
@@ -17,7 +17,7 @@ test.describe('Callout Card', async () => {
         await page.close();
     });
 
-    test('test bad nodes', async function () {
+    test('nested elements in paragraph nodes 1', async function () {
         await page.evaluate(() => {
             const serializedState = JSON.stringify({
                 root: {
@@ -76,7 +76,7 @@ test.describe('Callout Card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test('test bad nodes2', async function () {
+    test('nested elements in paragraph nodes 2', async function () {
         await page.evaluate(() => {
             const serializedState = JSON.stringify({
                 root: {
