@@ -8,7 +8,7 @@ function replacementStringTransform(node) {
         return;
     }
     const textContent = node.getTextContent();
-    const replacementString = textContent.match(/{{.*?}}/);
+    const replacementString = textContent.match(/{{.*?}}/)?.[0];
     if (!replacementString) {
         return;
     }
@@ -18,7 +18,7 @@ function replacementStringTransform(node) {
     // create a new text node for each string in the array
     splitContent.reverse().forEach((text) => {
         const newNode = new ExtendedTextNode(text);
-        if (text === replacementString[0]) {
+        if (text === replacementString) {
             newNode.setFormat('code');
             newNode.select();
         }
