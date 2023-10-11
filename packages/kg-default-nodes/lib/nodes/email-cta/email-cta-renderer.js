@@ -28,7 +28,7 @@ export function renderEmailCtaNode(node, options = {}) {
         element.appendChild(document.createElement('hr'));
     }
 
-    const cleanedHtml = wrapReplacementStrings(removeCodeWrappersFromHelpers(removeSpaces(html)));
+    const cleanedHtml = wrapReplacementStrings(removeCodeWrappersFromHelpers(removeSpaces(html),document));
     element.innerHTML = element.innerHTML + cleanedHtml;
 
     if (hasButton) {
@@ -47,7 +47,7 @@ export function renderEmailCtaNode(node, options = {}) {
             <p></p>
         `; // the inline <p> element is so we get a line break if there's no separators/hr used
 
-        const cleanedButton = wrapReplacementStrings(removeCodeWrappersFromHelpers(removeSpaces(buttonTemplate)));
+        const cleanedButton = wrapReplacementStrings(removeCodeWrappersFromHelpers(removeSpaces(buttonTemplate),document));
         element.innerHTML = element.innerHTML + cleanedButton;
     }
 
