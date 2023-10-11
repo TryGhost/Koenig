@@ -1,6 +1,5 @@
 import KoenigNestedEditorPlugin from '../plugins/KoenigNestedEditorPlugin.jsx';
 import React from 'react';
-import ReplacementStringsPlugin from '../plugins/ReplacementStringsPlugin.jsx';
 import {BASIC_NODES, BASIC_TRANSFORMERS, KoenigComposableEditor, KoenigNestedComposer, MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin} from '../index.js';
 
 const Placeholder = ({text = 'Type here', className = ''}) => {
@@ -24,9 +23,9 @@ const KoenigNestedEditor = ({
     singleParagraph = false,
     hasSettingsPanel = false,
     defaultKoenigEnterBehaviour = false,
-    useReplacementStrings = false,
     hiddenFormats = [],
-    dataTestId
+    dataTestId,
+    children
 }) => {
     const initialNodes = nodes === 'minimal' ? MINIMAL_NODES : BASIC_NODES;
     const markdownTransformers = nodes === 'minimal' ? MINIMAL_TRANSFORMERS : BASIC_TRANSFORMERS;
@@ -48,7 +47,7 @@ const KoenigNestedEditor = ({
             >
                 {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
 
-                {useReplacementStrings && <ReplacementStringsPlugin />}
+                {children}
 
                 <KoenigNestedEditorPlugin
                     autoFocus={autoFocus}
