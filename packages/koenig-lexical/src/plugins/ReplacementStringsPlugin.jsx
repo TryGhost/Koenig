@@ -7,7 +7,9 @@ function replacementStringTransform(node) {
         return;
     }
     const textContent = node.getTextContent();
-    const replacementString = textContent.match(/{.*?}/)?.[0];
+    // const replacementString = textContent.match(/{.*?}/)?.[0];
+    const replacementString = textContent.match(/\{(\w*?)(?:,? *"(.*?)")?\}/)?.[0];
+
     if (!replacementString) {
         return;
     }
