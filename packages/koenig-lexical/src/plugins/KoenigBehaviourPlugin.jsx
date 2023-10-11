@@ -997,9 +997,9 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 for (const tag of Object.keys(SPECIAL_MARKUPS)) {
                                     if (anchorNode.hasFormat(tag)) {
                                         const markup = SPECIAL_MARKUPS[tag];
-                                        // for placeholders {{variable}} we shouldn't add the markup
+                                        // for replacement strings e.g. {{variable}} we shouldn't add the markup (assumes use of ReplacementStringsPlugin)
                                         let newText = textContent;
-                                        if (tag === 'code' && textContent.match(/{{.*?}}(?!\s)/)) {
+                                        if (tag === 'code' && textContent.match(/{{.*?}}(?![A-Za-z\s])/)) {
                                             newText = newText.slice(0,-1);
                                         } else {
                                             newText = markup + newText + markup;
