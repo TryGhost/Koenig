@@ -8,12 +8,12 @@ function replacementStringTransform(node) {
         return;
     }
     const textContent = node.getTextContent();
-    const replacementString = textContent.match(/{{.*?}}/)?.[0];
+    const replacementString = textContent.match(/{.*?}/)?.[0];
     if (!replacementString) {
         return;
     }
     // split the text content into an array including the matched string
-    const splitContent = textContent.split(/({{.*?}})/g).filter(e => e !== '');
+    const splitContent = textContent.split(/({.*?})/g).filter(e => e !== '');
 
     // create a new text node for each string in the array
     splitContent.reverse().forEach((text) => {
