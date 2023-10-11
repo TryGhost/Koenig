@@ -1,5 +1,4 @@
-import {ExtendedTextNode} from '@tryghost/kg-default-nodes';
-// import {TextNode} from 'lexical';
+import {TextNode} from 'lexical';
 import {useEffect} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
@@ -17,7 +16,7 @@ function replacementStringTransform(node) {
 
     // create a new text node for each string in the array
     splitContent.reverse().forEach((text) => {
-        const newNode = new ExtendedTextNode(text);
+        const newNode = new TextNode(text);
         if (text === replacementString) {
             newNode.setFormat('code');
             newNode.select();
@@ -29,18 +28,11 @@ function replacementStringTransform(node) {
 
 function useReplacementStrings(editor) {
     useEffect(() => {
-        const removeTransform = editor.registerNodeTransform(ExtendedTextNode, replacementStringTransform);
+        const removeTransform = editor.registerNodeTransform(TextNode, replacementStringTransform);
         return () => {
             removeTransform();
         };
     }, [editor]);
-
-    // useEffect(() => {
-    //     const removeTransform = editor.registerNodeTransform(TextNode, replacementStringTransform);
-    //     return () => {
-    //         removeTransform();
-    //     };
-    // }, [editor]);
 }
 
 export default function ReplacementStringsPlugin() {

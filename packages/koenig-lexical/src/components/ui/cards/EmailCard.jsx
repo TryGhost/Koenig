@@ -13,6 +13,7 @@ export function EmailCard({htmlEditor, htmlEditorInitialState, isEditing}) {
                 initialEditorState={htmlEditorInitialState}
                 nodes='basic'
                 textClassName='kg-email-html whitespace-normal pb-1'
+                useReplacementStrings={true}
             />
 
             {isEditing &&
