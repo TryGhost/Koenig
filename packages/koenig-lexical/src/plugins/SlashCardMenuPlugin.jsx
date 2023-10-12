@@ -33,6 +33,18 @@ function useSlashCardMenu(editor) {
         }
     }
 
+    function getSelectionElement() {
+        const nativeSelection = window.getSelection();
+        let selectionElem;
+
+        if (nativeSelection.anchorNode.nodeType === Node.TEXT_NODE) {
+            selectionElem = nativeSelection.anchorNode.parentNode.closest('p');
+        } else {
+            selectionElem = nativeSelection.anchorNode;
+        }
+        return selectionElem;
+    }
+
     function moveCursorToCachedRange() {
         if (!cachedRange.current) {
             return;
@@ -300,6 +312,22 @@ function useSlashCardMenu(editor) {
         setSelectedItemIndex(0);
     }, [editor, query, insert, setCardMenu, setSelectedItemIndex, cardConfig]);
 
+    // attach a resize observer to call setMenuPosition when the window resizes
+    React.useEffect(() => {
+        if (!isShowingMenu) {
+            return;
+        }
+
+        const resizeObserver = new ResizeObserver(() => {
+            setMenuPosition(getSelectionElement());
+        });
+        resizeObserver.observe(window.document.body);
+
+        return () => {
+            resizeObserver.disconnect();
+        };
+    }, [isShowingMenu]);
+
     // use this to position the menu based on the window size
     React.useLayoutEffect(() => {
         if (!isShowingMenu) {
@@ -310,16 +338,7 @@ function useSlashCardMenu(editor) {
             return;
         }
         
-        const nativeSelection = window.getSelection();
-        let selectionElem;
-
-        if (nativeSelection.anchorNode.nodeType === Node.TEXT_NODE) {
-            selectionElem = nativeSelection.anchorNode.parentNode.closest('p');
-        } else {
-            selectionElem = nativeSelection.anchorNode;
-        }
-
-        setMenuPosition(selectionElem);
+        setMenuPosition(getSelectionElement());
     }, [isShowingMenu]);
 
     if (cardMenu.menu?.size === 0) {
