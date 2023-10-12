@@ -11,7 +11,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 function useSlashCardMenu(editor) {
     const [isShowingMenu, setIsShowingMenu] = React.useState(false);
-    const [topPosition, setTopPosition] = React.useState(0);
+    const [position, setPosition] = React.useState({});
     const [query, setQuery] = React.useState('');
     const [commandParams, setCommandParams] = React.useState([]);
     const [cardMenu, setCardMenu] = React.useState({});
@@ -20,11 +20,17 @@ function useSlashCardMenu(editor) {
     const containerRef = React.useRef(null);
     const {cardConfig} = React.useContext(KoenigComposerContext);
 
-    function getTopPosition(elem) {
-        const elemRect = elem.getBoundingClientRect();
-        const containerRect = elem.parentNode.getBoundingClientRect();
-
-        return elemRect.bottom - containerRect.top;
+    function setMenuPosition(elem) {
+        const focusedElementRect = elem.getBoundingClientRect();
+        const menuRect = containerRef.current.getBoundingClientRect();
+        const wouldBeOffscreenBottom = focusedElementRect.bottom + menuRect.height > window.innerHeight;
+        const wouldBeOffscreenTop = focusedElementRect.top - menuRect.height < 0;
+        
+        if (wouldBeOffscreenBottom && !wouldBeOffscreenTop) {
+            setPosition({top: null, left: focusedElementRect.left, bottom: window.innerHeight - focusedElementRect.top});
+        } else {
+            setPosition({top: focusedElementRect.bottom, left: focusedElementRect.left, bottom: null});
+        }
     }
 
     function moveCursorToCachedRange() {
@@ -174,16 +180,6 @@ function useSlashCardMenu(editor) {
                 );
 
                 if (isEmptyParagraph || isFullParagraphSelection) {
-                    const nativeSelection = window.getSelection();
-                    let selectionElem;
-
-                    if (nativeSelection.anchorNode.nodeType === Node.TEXT_NODE) {
-                        selectionElem = nativeSelection.anchorNode.parentNode.closest('p');
-                    } else {
-                        selectionElem = nativeSelection.anchorNode;
-                    }
-
-                    setTopPosition(getTopPosition(selectionElem));
                     openMenu();
                 }
             });
@@ -193,7 +189,7 @@ function useSlashCardMenu(editor) {
         return () => {
             window.removeEventListener('keypress', triggerMenu);
         };
-    }, [editor, isShowingMenu, setTopPosition, openMenu]);
+    }, [editor, isShowingMenu, openMenu]);
 
     // close the menu when Escape is pressed
     React.useEffect(() => {
@@ -304,13 +300,35 @@ function useSlashCardMenu(editor) {
         setSelectedItemIndex(0);
     }, [editor, query, insert, setCardMenu, setSelectedItemIndex, cardConfig]);
 
+    // use this to position the menu based on the window size
+    React.useLayoutEffect(() => {
+        if (!isShowingMenu) {
+            return;
+        }
+
+        if (!containerRef || !containerRef.current) {
+            return;
+        }
+        
+        const nativeSelection = window.getSelection();
+        let selectionElem;
+
+        if (nativeSelection.anchorNode.nodeType === Node.TEXT_NODE) {
+            selectionElem = nativeSelection.anchorNode.parentNode.closest('p');
+        } else {
+            selectionElem = nativeSelection.anchorNode;
+        }
+
+        setMenuPosition(selectionElem);
+    }, [isShowingMenu]);
+
     if (cardMenu.menu?.size === 0) {
         return null;
     }
 
     if (isShowingMenu) {
         return (
-            <div ref={containerRef} className="absolute -left-2 z-50 mt-2" style={{top: `${topPosition}px`}} data-kg-slash-container>
+            <div ref={containerRef} className="fixed -left-2 z-50 mt-2" style={position} data-kg-slash-container>
                 <SlashMenu>
                     <CardMenu
                         closeMenu={closeMenu}
