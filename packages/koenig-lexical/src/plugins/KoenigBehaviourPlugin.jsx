@@ -55,6 +55,7 @@ import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDE
 import {$setBlocksType} from '@lexical/selection';
 import {MIME_TEXT_HTML, MIME_TEXT_PLAIN, PASTE_MARKDOWN_COMMAND} from './MarkdownPastePlugin.jsx';
 import {mergeRegister} from '@lexical/utils';
+import {registerDefaultTransforms, registerDenestTransform, registerStripAlignmentTransform} from '@tryghost/kg-default-transforms';
 import {shouldIgnoreEvent} from '../utils/shouldIgnoreEvent';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -1371,108 +1372,9 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
         );
     }, [editor]);
 
-    // strip text-align formats that can arrive when pasting from external sources
-    // we don't support text alignment in Koenig
+    // remove alignment formats and denest invalid node nesting
     React.useEffect(() => {
-        function stripAlignmentStyle(node) {
-            // on element nodes format===text-align in Lexical
-            if (node.getFormatType() !== '') {
-                node.setFormat('');
-            }
-        }
-
-        function registerStripAlignmentTransform(nodeType) {
-            if (editor.hasNodes([nodeType])) {
-                return editor.registerNodeTransform(nodeType, stripAlignmentStyle);
-            }
-
-            return () => {};
-        }
-
-        return mergeRegister(
-            registerStripAlignmentTransform(ParagraphNode),
-            registerStripAlignmentTransform(HeadingNode),
-            registerStripAlignmentTransform(ExtendedHeadingNode),
-            registerStripAlignmentTransform(QuoteNode)
-        );
-    }, [editor]);
-
-    // validate child nodes of ParagraphNode - e.g. no headings, lists, horizontal rules, etc
-    React.useEffect(() => {
-        function denestNestedElementNodes(node, createNode) {
-            const children = node.getChildren();
-
-            const hasInvalidChild = children.some((child) => {
-                return child.isInline && !child.isInline();
-            });
-
-            if (!hasInvalidChild) {
-                return;
-            }
-
-            // we need a temporary detached node to hold any moved nodes otherwise
-            // we can trigger an infinite loop with the transform continually
-            // re-running on each child move
-            const tempParagraph = $createParagraphNode();
-
-            // we need a new node of the current node type to collect inline
-            // children so we can maintain order when moving the non-inline children
-            // out. Will be appended and replaced with a new node each time we
-            // find a non-inline child
-            let currentElementNode = createNode(node);
-
-            // pull out any non-inline children as we don't support nested element nodes
-            children.forEach((child) => {
-                if (child.isInline && !child.isInline()) {
-                    if (currentElementNode.getChildrenSize() > 0) {
-                        tempParagraph.append(currentElementNode);
-                        currentElementNode = createNode(node);
-                    }
-                    tempParagraph.append(child);
-                } else {
-                    currentElementNode.append(child);
-                }
-            });
-
-            // append any remaining text nodes
-            if (currentElementNode.getChildrenSize() > 0) {
-                tempParagraph.append(currentElementNode);
-            }
-
-            // reverse because we can only insertAfter the current paragraph
-            // so we need to insert the first child last to maintain order
-            tempParagraph.getChildren().reverse().forEach((child) => {
-                node.insertAfter(child);
-            });
-
-            // remove the original paragraph
-            node.remove();
-
-            // clean up the temporary paragraph immediately, although it should be
-            // cleaned up by the reconciler's garbage collection of detached nodes
-            tempParagraph.remove();
-        }
-
-        function registerDenestTransform(nodeType, createNode) {
-            if (editor.hasNodes([nodeType])) {
-                return editor.registerNodeTransform(nodeType, (node) => {
-                    denestNestedElementNodes(node, createNode);
-                });
-            }
-
-            return () => {};
-        }
-
-        return mergeRegister(
-            registerDenestTransform(ParagraphNode, $createParagraphNode),
-            registerDenestTransform(HeadingNode, (node) => {
-                return $createHeadingNode(node.getTag());
-            }),
-            registerDenestTransform(ExtendedHeadingNode, (node) => {
-                return $createParagraphNode(node.getTag());
-            }),
-            registerDenestTransform(QuoteNode, $createQuoteNode)
-        );
+        return registerDefaultTransforms(editor);
     }, [editor]);
 
     return null;
