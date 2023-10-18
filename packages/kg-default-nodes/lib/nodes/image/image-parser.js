@@ -46,6 +46,21 @@ export function parseImageNode(ImageNode) {
                 };
             }
             return null;
+        },
+        a: (nodeElem) => {
+            const img = nodeElem.querySelector('img');
+            if (img) {
+                return {
+                    conversion(domNode) {
+                        const href = domNode.getAttribute('href');
+                        const {src, width, height, alt, title} = readImageAttributesFromElement(img);
+
+                        const node = new ImageNode({alt, src, title, width, height, href});
+                        return {node};
+                    },
+                    priority: 0
+                };
+            }
         }
     };
 }
