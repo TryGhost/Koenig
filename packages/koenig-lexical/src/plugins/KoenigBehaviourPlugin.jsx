@@ -2,7 +2,7 @@ import React from 'react';
 import {$createAsideNode, $isAsideNode} from '../nodes/AsideNode';
 import {$createCodeBlockNode} from '../nodes/CodeBlockNode';
 import {$createEmbedNode} from '../nodes/EmbedNode';
-import {$createHeadingNode, $createQuoteNode, $isHeadingNode, $isQuoteNode, HeadingNode, QuoteNode} from '@lexical/rich-text';
+import {$createHeadingNode, $createQuoteNode, $isHeadingNode, $isQuoteNode} from '@lexical/rich-text';
 import {$createLinkNode} from '@lexical/link';
 import {
     $createNodeSelection,
@@ -40,7 +40,6 @@ import {
     KEY_MODIFIER_COMMAND,
     KEY_TAB_COMMAND,
     PASTE_COMMAND,
-    ParagraphNode,
     createCommand
 } from 'lexical';
 import {$insertAndSelectNode} from '../utils/$insertAndSelectNode';
@@ -50,12 +49,12 @@ import {
     $selectDecoratorNode,
     getTopLevelNativeElement
 } from '../utils/';
-import {$isKoenigCard, ExtendedHeadingNode, ImageNode} from '@tryghost/kg-default-nodes';
+import {$isKoenigCard, ImageNode} from '@tryghost/kg-default-nodes';
 import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, ListNode} from '@lexical/list';
 import {$setBlocksType} from '@lexical/selection';
 import {MIME_TEXT_HTML, MIME_TEXT_PLAIN, PASTE_MARKDOWN_COMMAND} from './MarkdownPastePlugin.jsx';
 import {mergeRegister} from '@lexical/utils';
-import {registerDefaultTransforms, registerDenestTransform, registerStripAlignmentTransform} from '@tryghost/kg-default-transforms';
+import {registerDefaultTransforms} from '@tryghost/kg-default-transforms';
 import {shouldIgnoreEvent} from '../utils/shouldIgnoreEvent';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';

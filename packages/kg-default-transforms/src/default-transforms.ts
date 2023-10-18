@@ -1,9 +1,9 @@
-import {LexicalEditor} from 'lexical/LexicalEditor.js';
+import {LexicalEditor} from 'lexical';
 import {registerDenestTransform} from './transforms/denest.js';
 import {registerRemoveAlignmentTransform} from './transforms/remove-alignment.js';
-import {mergeRegister} from '@lexical/utils/index.js';
-import {$createParagraphNode, ParagraphNode} from 'lexical/index.js';
-import {$createHeadingNode, $createQuoteNode, HeadingNode, QuoteNode} from '@lexical/rich-text/index.js';
+import {mergeRegister} from '@lexical/utils';
+import {$createParagraphNode, ParagraphNode} from 'lexical';
+import {$createHeadingNode, $createQuoteNode, HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {ExtendedHeadingNode} from '@tryghost/kg-default-nodes';
 
 export * from './transforms/denest.js';
