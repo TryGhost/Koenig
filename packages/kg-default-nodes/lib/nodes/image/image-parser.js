@@ -6,9 +6,9 @@ export function parseImageNode(ImageNode) {
         img: () => ({
             conversion(domNode) {
                 if (domNode.tagName === 'IMG') {
-                    const {src, width, height, alt, title} = readImageAttributesFromElement(domNode);
+                    const {src, width, height, alt, title, href} = readImageAttributesFromElement(domNode);
 
-                    const node = new ImageNode({alt, src, title, width, height});
+                    const node = new ImageNode({alt, src, title, width, height, href});
                     return {node};
                 }
 
@@ -46,21 +46,6 @@ export function parseImageNode(ImageNode) {
                 };
             }
             return null;
-        },
-        a: (nodeElem) => {
-            const img = nodeElem.querySelector('img');
-            if (img) {
-                return {
-                    conversion(domNode) {
-                        const href = domNode.getAttribute('href');
-                        const {src, width, height, alt, title} = readImageAttributesFromElement(img);
-
-                        const node = new ImageNode({alt, src, title, width, height, href});
-                        return {node};
-                    },
-                    priority: 0
-                };
-            }
         }
     };
 }
