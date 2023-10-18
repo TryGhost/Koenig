@@ -941,11 +941,13 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             const anchorNode = anchor.getNode();
                             const topLevelElement = anchorNode.getTopLevelElement();
                             const previousSibling = topLevelElement.getPreviousSibling();
-
+                            
+                            const anchorNodeParent = anchorNode.getParent();
                             const atStartOfElement =
                                 selection.anchor.offset === 0 &&
                                 selection.focus.offset === 0 &&
-                                anchorNode.getParent().getFirstChild().is(anchorNode);
+                                anchorNodeParent === topLevelElement && // handles lists, where the parent node is not the paragraph
+                                anchorNodeParent.getFirstChild().is(anchorNode); // handles child nodes in paragraphs, e.g. LinkNode and HorizontalRule
 
                             // convert empty top level list items to paragraphs
                             if (
