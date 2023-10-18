@@ -3,7 +3,7 @@ import {$createAsideNode, $isAsideNode} from '../nodes/AsideNode';
 import {$createCodeBlockNode} from '../nodes/CodeBlockNode';
 import {$createEmbedNode} from '../nodes/EmbedNode';
 import {$createHeadingNode, $createQuoteNode, $isHeadingNode, $isQuoteNode, HeadingNode, QuoteNode} from '@lexical/rich-text';
-import {$createLinkNode} from '@lexical/link';
+import {$createLinkNode, $isLinkNode} from '@lexical/link';
 import {
     $createNodeSelection,
     $createParagraphNode,
@@ -945,7 +945,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             const atStartOfElement =
                                 selection.anchor.offset === 0 &&
                                 selection.focus.offset === 0 &&
-                                !$isLineBreakNode(anchorNode.getPreviousSibling());
+                                anchorNode.getParent().getFirstChild().is(anchorNode);
 
                             // convert empty top level list items to paragraphs
                             if (
