@@ -1329,27 +1329,9 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
         );
     });
 
-    // merge list nodes of the same type when next to each other
-    React.useEffect(() => {
-        // not all editors have lists (e.g. caption inputs) and registering a transform
-        // for a node that isn't loaded in the editor will throw an error
-        if (!editor.hasNodes([ListNode])) {
-            return;
-        }
-
-        return mergeRegister(
-            editor.registerNodeTransform(ListNode, (node) => {
-                const nextSibling = node.getNextSibling();
-
-                if ($isListNode(nextSibling) && nextSibling.getListType() === node.getListType()) {
-                    node.append(...nextSibling.getChildren());
-                    nextSibling.remove();
-                }
-            })
-        );
-    }, [editor]);
-
-    // remove alignment formats and denest invalid node nesting
+    // remove alignment formats,
+    // denest invalid node nesting,
+    // merge list nodes of same type
     React.useEffect(() => {
         return registerDefaultTransforms(editor);
     }, [editor]);
