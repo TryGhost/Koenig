@@ -3,7 +3,7 @@ import {$createAsideNode, $isAsideNode} from '../nodes/AsideNode';
 import {$createCodeBlockNode} from '../nodes/CodeBlockNode';
 import {$createEmbedNode} from '../nodes/EmbedNode';
 import {$createHeadingNode, $createQuoteNode, $isHeadingNode, $isQuoteNode, HeadingNode, QuoteNode} from '@lexical/rich-text';
-import {$createLinkNode, $isLinkNode} from '@lexical/link';
+import {$createLinkNode} from '@lexical/link';
 import {
     $createNodeSelection,
     $createParagraphNode,
