@@ -32,6 +32,7 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
+    "@lexical/list": "^0.12.2",
     "@lexical/rich-text": "^0.12.2",
     "@lexical/utils": "^0.12.2",
     "@tryghost/kg-default-nodes": "^0.2.3",

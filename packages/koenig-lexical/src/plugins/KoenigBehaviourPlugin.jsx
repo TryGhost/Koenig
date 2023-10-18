@@ -1349,28 +1349,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
         );
     }, [editor]);
 
-    // make sure ImageNode is a top-level node
-    React.useEffect(() => {
-        if (!editor.hasNodes([ImageNode])) {
-            return;
-        }
-        return mergeRegister(
-            editor.registerNodeTransform(ImageNode, (node) => {
-                // return if ImageNode is already a top-level node
-                if (node.getParent() === $getRoot()) {
-                    return;
-                }
-
-                let parent = node;
-                while (parent.getParent() !== $getRoot()) {
-                    parent = parent.getParent();
-                }
-
-                parent.insertAfter(node);
-            })
-        );
-    }, [editor]);
-
     // remove alignment formats and denest invalid node nesting
     React.useEffect(() => {
         return registerDefaultTransforms(editor);

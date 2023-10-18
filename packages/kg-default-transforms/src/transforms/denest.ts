@@ -1,4 +1,5 @@
-import {ElementNode, $createParagraphNode, LexicalEditor, LexicalNode, Klass} from 'lexical';
+import {$isListItemNode, $isListNode} from '@lexical/list';
+import {ElementNode, $createParagraphNode, LexicalEditor, LexicalNode, Klass, $getRoot} from 'lexical';
 
 export type CreateNodeFn<T extends LexicalNode> = (originalNode: T) => T;
 
@@ -6,7 +7,7 @@ export function denestTransform<T extends ElementNode>(node: T, createNode: Crea
     const children = node.getChildren();
 
     const hasInvalidChild = children.some((child: LexicalNode) => {
-        return child.isInline && !child.isInline();
+        return !$isListNode(child) && !$isListItemNode(child) && child.isInline && !child.isInline();
     });
 
     if (!hasInvalidChild) {
@@ -26,7 +27,7 @@ export function denestTransform<T extends ElementNode>(node: T, createNode: Crea
 
     // pull out any non-inline children as we don't support nested element nodes
     children.forEach((child: LexicalNode) => {
-        if (child.isInline && !child.isInline()) {
+        if (!$isListNode(child) && !$isListItemNode(child) && child.isInline && !child.isInline()) {
             if (currentElementNode.getChildrenSize() > 0) {
                 tempParagraph.append(currentElementNode);
                 currentElementNode = createNode(node);
@@ -42,10 +43,17 @@ export function denestTransform<T extends ElementNode>(node: T, createNode: Crea
         tempParagraph.append(currentElementNode);
     }
 
+    // find the top-level parent to insert nodes after in case of deeper nesting,
+    // e.g. images inside lists
+    let parent = node;
+    while (parent.getParent() && parent.getParent() !== $getRoot()) {
+        parent = parent.getParentOrThrow();
+    }
+
     // reverse because we can only insertAfter the current paragraph
-    // so we need to insert the first child last to maintain order
+    // so we need to insert the first child last to maintain order.
     tempParagraph.getChildren().reverse().forEach((child) => {
-        node.insertAfter(child);
+        parent.insertAfter(child);
     });
 
     // remove the original paragraph
