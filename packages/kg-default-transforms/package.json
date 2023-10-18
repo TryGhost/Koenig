@@ -1,6 +1,5 @@
 {
   "name": "@tryghost/kg-default-transforms",
-  "type": "module",
   "version": "0.0.0",
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-default-transforms",
   "author": "Ghost Foundation",
