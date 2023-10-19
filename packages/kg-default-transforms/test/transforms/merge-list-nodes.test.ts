@@ -1,53 +1,12 @@
-import {assertTransform, createEditor} from './utils';
-import {registerDefaultTransforms} from '../';
+import {LexicalEditor, ParagraphNode, TextNode} from 'lexical';
+import {registerMergeListNodesTransform} from '../../build';
+import {assertTransform, createEditor} from '../utils';
 
-describe('Default transforms', function () {
-    it('registerDefaultTransforms() registers all transforms', function () {
-        const editor = createEditor();
-
-        // "invalid" editor state that should be transformed
+describe('Merge adjacent lists transform', function () {
+    it('handles adjacent ULs', function () {
         const before = {
             root: {
                 children: [
-                    // nested paragraphs
-                    {
-                        children: [
-                            {
-                                detail: 0,
-                                format: 0,
-                                mode: 'normal',
-                                style: '',
-                                text: 'Normal',
-                                type: 'extended-text',
-                                version: 1
-                            },
-                            {
-                                children: [
-                                    {
-                                        detail: 0,
-                                        format: 0,
-                                        mode: 'normal',
-                                        style: '',
-                                        text: 'Nested',
-                                        type: 'extended-text',
-                                        version: 1
-                                    }
-                                ],
-                                direction: 'ltr',
-                                format: '',
-                                indent: 0,
-                                type: 'paragraph',
-                                version: 1
-                            }
-                        ],
-                        direction: 'ltr',
-                        format: '',
-                        indent: 0,
-                        type: 'paragraph',
-                        version: 1
-                    },
-
-                    // adjacent lists
                     {
                         children: [
                             {
@@ -109,27 +68,6 @@ describe('Default transforms', function () {
                         listType: 'bullet',
                         start: 1,
                         tag: 'ul'
-                    },
-
-                    // heading with center alignment
-                    {
-                        children: [
-                            {
-                                detail: 0,
-                                format: 0,
-                                mode: 'normal',
-                                style: '',
-                                text: 'Aligned header',
-                                type: 'extended-text',
-                                version: 1
-                            }
-                        ],
-                        direction: 'ltr',
-                        format: 'center',
-                        indent: 0,
-                        type: 'heading',
-                        version: 1,
-                        tag: 'h1'
                     }
                 ],
                 direction: 'ltr',
@@ -143,45 +81,6 @@ describe('Default transforms', function () {
         const after = {
             root: {
                 children: [
-                    // de-nested paragraphs
-                    {
-                        children: [
-                            {
-                                detail: 0,
-                                format: 0,
-                                mode: 'normal',
-                                style: '',
-                                text: 'Normal',
-                                type: 'extended-text',
-                                version: 1
-                            }
-                        ],
-                        direction: null,
-                        format: '',
-                        indent: 0,
-                        type: 'paragraph',
-                        version: 1
-                    },
-                    {
-                        children: [
-                            {
-                                detail: 0,
-                                format: 0,
-                                mode: 'normal',
-                                style: '',
-                                text: 'Nested',
-                                type: 'extended-text',
-                                version: 1
-                            }
-                        ],
-                        direction: 'ltr',
-                        format: '',
-                        indent: 0,
-                        type: 'paragraph',
-                        version: 1
-                    },
-
-                    // adjacent lists merged
                     {
                         children: [
                             {
@@ -233,27 +132,6 @@ describe('Default transforms', function () {
                         listType: 'bullet',
                         start: 1,
                         tag: 'ul'
-                    },
-
-                    // heading with alignment format reset
-                    {
-                        children: [
-                            {
-                                detail: 0,
-                                format: 0,
-                                mode: 'normal',
-                                style: '',
-                                text: 'Aligned header',
-                                type: 'extended-text',
-                                version: 1
-                            }
-                        ],
-                        direction: 'ltr',
-                        format: '',
-                        indent: 0,
-                        type: 'extended-heading',
-                        version: 1,
-                        tag: 'h1'
                     }
                 ],
                 direction: 'ltr',
@@ -264,6 +142,52 @@ describe('Default transforms', function () {
             }
         };
 
-        assertTransform(editor, registerDefaultTransforms, before, after);
+        const registerTransforms = (editor: LexicalEditor) => {
+            registerMergeListNodesTransform(editor);
+        };
+
+        const editor = createEditor();
+
+        assertTransform(editor, registerTransforms, before, after);
+    });
+
+    it('handles not having list nodes in the editor', function () {
+        const unchangedState = {
+            root: {
+                children: [
+                    {
+                        children: [
+                            {
+                                detail: 0,
+                                format: 0,
+                                mode: 'normal',
+                                style: '',
+                                text: 'Testing',
+                                type: 'text',
+                                version: 1
+                            }
+                        ],
+                        direction: null,
+                        format: '',
+                        indent: 0,
+                        type: 'paragraph',
+                        version: 1
+                    }
+                ],
+                direction: null,
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1
+            }
+        };
+
+        const registerTransforms = (editor: LexicalEditor) => {
+            registerMergeListNodesTransform(editor);
+        };
+
+        const editor = createEditor({nodes: [ParagraphNode, TextNode]});
+
+        assertTransform(editor, registerTransforms, unchangedState, unchangedState);
     });
 });
