@@ -49,8 +49,8 @@ import {
     $selectDecoratorNode,
     getTopLevelNativeElement
 } from '../utils/';
-import {$isKoenigCard, ImageNode} from '@tryghost/kg-default-nodes';
-import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, ListNode} from '@lexical/list';
+import {$isKoenigCard} from '@tryghost/kg-default-nodes';
+import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND} from '@lexical/list';
 import {$setBlocksType} from '@lexical/selection';
 import {MIME_TEXT_HTML, MIME_TEXT_PLAIN, PASTE_MARKDOWN_COMMAND} from './MarkdownPastePlugin.jsx';
 import {mergeRegister} from '@lexical/utils';
@@ -941,7 +941,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             const anchorNode = anchor.getNode();
                             const topLevelElement = anchorNode.getTopLevelElement();
                             const previousSibling = topLevelElement.getPreviousSibling();
-                            
+
                             const atStartOfElement =
                                 selection.anchor.offset === 0 &&
                                 selection.focus.offset === 0;
@@ -981,7 +981,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             const anchorNodeParent = anchorNode.getParent();
                             if (
                                 atStartOfElement &&
-                                $isDecoratorNode(previousSibling) && 
+                                $isDecoratorNode(previousSibling) &&
                                 anchorNodeParent === topLevelElement && // handles lists, where the parent node is not the paragraph
                                 anchorNodeParent.getFirstChild().is(anchorNode) // handles child nodes in paragraphs, e.g. LinkNode and HorizontalRule
                             ) {
