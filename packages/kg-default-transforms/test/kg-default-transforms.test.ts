@@ -1,44 +1,10 @@
 import assert from 'assert/strict';
-import {HeadingNode, QuoteNode} from '@lexical/rich-text';
-import {ListItemNode, ListNode} from '@lexical/list';
-import {LinkNode} from '@lexical/link';
-import {DEFAULT_NODES} from '@tryghost/kg-default-nodes';
-import {createHeadlessEditor} from '@lexical/headless';
-import {CreateEditorArgs} from 'lexical';
+import {createEditor} from './utils';
 import {registerDefaultTransforms} from '../';
-
-const defaultNodes: any[] = [
-    // basic HTML nodes
-    HeadingNode,
-    LinkNode,
-    ListItemNode,
-    ListNode,
-    QuoteNode,
-
-    // Koenig nodes
-    ...DEFAULT_NODES
-];
-
-const defaultEditorConfig: CreateEditorArgs = {
-    nodes: defaultNodes,
-    onError(e: Error) {
-        throw e;
-    }
-};
-
-const createEditor = function (config?: CreateEditorArgs) {
-    const editorConfig: CreateEditorArgs = Object.assign({}, defaultEditorConfig, config);
-    const editor = createHeadlessEditor(editorConfig);
-
-    return editor;
-};
 
 describe('Default transforms', function () {
     it('registerDefaultTransforms() registers all transforms', function () {
         const editor = createEditor();
-
-        // method under test
-        registerDefaultTransforms(editor);
 
         // "invalid" editor state that should be transformed
         const state = JSON.stringify({
@@ -166,14 +132,29 @@ describe('Default transforms', function () {
                         version: 1,
                         tag: 'h1'
                     }
-                ]
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1
             }
         });
 
         const editorState = editor.parseEditorState(state);
         editor.setEditorState(editorState);
 
+        // method under test
+        // - for some reason setEditorState is not calling the transforms as expected
+        //   so we need to register them here instead then they are called as they're added
+        registerDefaultTransforms(editor);
+
+        // trigger a discrete update to make sure we're comparing finalised editor state
+        // because the transforms get batched and run "async"
+        editor.update(() => {}, {discrete: true});
+
         const transformedEditorState = editor.getEditorState().toJSON();
+
         assert.deepEqual(transformedEditorState, {
             root: {
                 children: [
@@ -190,7 +171,7 @@ describe('Default transforms', function () {
                                 version: 1
                             }
                         ],
-                        direction: 'ltr',
+                        direction: null,
                         format: '',
                         indent: 0,
                         type: 'paragraph',
@@ -219,6 +200,7 @@ describe('Default transforms', function () {
                     {
                         children: [
                             {
+                                checked: undefined,
                                 children: [
                                     {
                                         detail: 0,
@@ -238,6 +220,7 @@ describe('Default transforms', function () {
                                 value: 1
                             },
                             {
+                                checked: undefined,
                                 children: [
                                     {
                                         detail: 0,
@@ -283,11 +266,16 @@ describe('Default transforms', function () {
                         direction: 'ltr',
                         format: '',
                         indent: 0,
-                        type: 'heading',
+                        type: 'extended-heading',
                         version: 1,
                         tag: 'h1'
                     }
-                ]
+                ],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1
             }
         });
     });
