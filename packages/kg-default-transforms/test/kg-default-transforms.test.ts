@@ -1,5 +1,4 @@
-import assert from 'assert/strict';
-import {createEditor} from './utils';
+import {assertTransform, createEditor} from './utils';
 import {registerDefaultTransforms} from '../';
 
 describe('Default transforms', function () {
@@ -7,7 +6,7 @@ describe('Default transforms', function () {
         const editor = createEditor();
 
         // "invalid" editor state that should be transformed
-        const state = JSON.stringify({
+        const before = {
             root: {
                 children: [
                     // nested paragraphs
@@ -139,23 +138,9 @@ describe('Default transforms', function () {
                 type: 'root',
                 version: 1
             }
-        });
+        };
 
-        const editorState = editor.parseEditorState(state);
-        editor.setEditorState(editorState);
-
-        // method under test
-        // - for some reason setEditorState is not calling the transforms as expected
-        //   so we need to register them here instead then they are called as they're added
-        registerDefaultTransforms(editor);
-
-        // trigger a discrete update to make sure we're comparing finalised editor state
-        // because the transforms get batched and run "async"
-        editor.update(() => {}, {discrete: true});
-
-        const transformedEditorState = editor.getEditorState().toJSON();
-
-        assert.deepEqual(transformedEditorState, {
+        const after = {
             root: {
                 children: [
                     // de-nested paragraphs
@@ -277,6 +262,8 @@ describe('Default transforms', function () {
                 type: 'root',
                 version: 1
             }
-        });
+        };
+
+        assertTransform(editor, registerDefaultTransforms, before, after);
     });
 });
