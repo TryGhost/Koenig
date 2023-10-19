@@ -13,8 +13,8 @@ export function parseButtonNode(ButtonNode) {
                         }
 
                         const buttonNode = domNode?.querySelector('.kg-btn');
-                        const buttonUrl = buttonNode.href;
-                        const buttonText = buttonNode.textContent;
+                        const buttonUrl = buttonNode.getAttribute('href');
+                        const buttonText = buttonNode.getTextContent();
 
                         const payload = {
                             buttonText: buttonText,
