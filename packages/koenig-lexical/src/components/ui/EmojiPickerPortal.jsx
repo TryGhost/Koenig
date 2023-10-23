@@ -4,15 +4,16 @@ import Portal from './Portal';
 import PropTypes from 'prop-types';
 import React from 'react';
 import data from '@emoji-mart/data';
+import {SearchIndex, init} from '@emoji-mart';
 
-const EmojiPickerPortal = ({onEmojiClick, buttonRef, ...props}) => {
+const EmojiPickerPortal = ({onEmojiClick, positionRef, value, ...props}) => {
     const [position, setPosition] = React.useState(null);
     const {darkMode} = React.useContext(KoenigComposerContext);
 
     const shiftPixels = 35; // how many pixels we want to move it up when it's at the bottom of the screen
     const handleScroll = React.useCallback(() => {
-        if (buttonRef.current) {
-            const rect = buttonRef.current.getBoundingClientRect();
+        if (positionRef?.current) {
+            const rect = positionRef.current.getBoundingClientRect();
             const scrollX = document.documentElement.scrollLeft;
             const scrollY = document.documentElement.scrollTop;
             const windowHeight = window.innerHeight;
@@ -26,7 +27,7 @@ const EmojiPickerPortal = ({onEmojiClick, buttonRef, ...props}) => {
 
             setPosition({x: (rect.left + scrollX) / 1.5, y: adjustedTop});
         }
-    }, [buttonRef]);
+    }, [positionRef]);
 
     React.useEffect(() => {
         handleScroll();
@@ -44,6 +45,20 @@ const EmojiPickerPortal = ({onEmojiClick, buttonRef, ...props}) => {
     const handleClick = (e) => {
         e.stopPropagation();
     };
+
+    init({data});
+
+    async function search() {
+        const emojis = await SearchIndex.search(value);
+        const results = emojis.map((emoji) => {
+            return emoji.skins[0].native;
+        });
+        console.log(results);
+    }
+
+    if (value) {
+        search(value);
+    }
 
     const style = {
         left: x,
@@ -83,7 +98,7 @@ export default EmojiPickerPortal;
 
 EmojiPickerPortal.propTypes = {
     onEmojiClick: PropTypes.func.isRequired,
-    buttonRef: PropTypes.object,
+    positionRef: PropTypes.object,
     autoFocus: PropTypes.bool,
     dynamicWidth: PropTypes.bool,
     emojiButtonColors: PropTypes.arrayOf(PropTypes.string),
