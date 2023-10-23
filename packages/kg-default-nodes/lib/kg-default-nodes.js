@@ -22,6 +22,7 @@ import * as signup from './nodes/signup/SignupNode';
 import * as collection from './nodes/collection/CollectionNode';
 import * as textnode from './nodes/ExtendedTextNode';
 import * as headingnode from './nodes/ExtendedHeadingNode';
+import * as emoji from './nodes/emoji/EmojiNode';
 
 // re-export everything for easier importing
 export * from './KoenigDecoratorNode';
@@ -49,6 +50,7 @@ export * from './nodes/signup/SignupNode';
 export * from './nodes/collection/CollectionNode';
 export * from './nodes/ExtendedTextNode';
 export * from './nodes/ExtendedHeadingNode';
+export * from './nodes/emoji/EmojiNode';
 
 // export convenience objects for use elsewhere
 export const DEFAULT_NODES = [
@@ -77,5 +79,6 @@ export const DEFAULT_NODES = [
     gallery.GalleryNode,
     emailCta.EmailCtaNode,
     signup.SignupNode,
-    collection.CollectionNode
+    collection.CollectionNode,
+    emoji.EmojiNode
 ];

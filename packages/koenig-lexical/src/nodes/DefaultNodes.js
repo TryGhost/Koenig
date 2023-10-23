@@ -1,4 +1,5 @@
 import {
+    EmojiNode,
     ExtendedHeadingNode,
     ExtendedTextNode,
     extendedHeadingNodeReplacement,
@@ -62,7 +63,8 @@ const DEFAULT_NODES = [
     EmbedNode,
     GalleryNode,
     SignupNode,
-    CollectionNode
+    CollectionNode,
+    EmojiNode
 ];
 
 export default DEFAULT_NODES;

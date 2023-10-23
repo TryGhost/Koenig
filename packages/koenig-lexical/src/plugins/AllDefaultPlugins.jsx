@@ -1,5 +1,6 @@
 import CollectionPlugin from '../plugins/CollectionPlugin';
 import EmEnDashPlugin from '../plugins/EmEnDashPlugin';
+import EmojisPlugin from './EmojisPlugin';
 import HorizontalRulePlugin from '../plugins/HorizontalRulePlugin';
 import HtmlPlugin from './HtmlPlugin';
 import ImagePlugin from '../plugins/ImagePlugin';
@@ -59,6 +60,8 @@ export const AllDefaultPlugins = () => {
             <EmbedPlugin />
             <SignupPlugin />
             <CollectionPlugin />
+
+            <EmojisPlugin />
 
             {/* Snippet Plugins */}
             <KoenigSnippetPlugin />
