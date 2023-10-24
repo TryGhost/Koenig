@@ -82,6 +82,7 @@ export function EmojiPickerPlugin() {
 
                 return (
                     <EmojiPickerPortal
+                        navPosition='none' // hide the category tabs, they're disabled when searching
                         positionRef={anchorElementRef}
                         searchPosition='none'
                         setInstanceRef={setPickerInstance}
