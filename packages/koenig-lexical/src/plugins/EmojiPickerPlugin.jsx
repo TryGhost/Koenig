@@ -1,7 +1,7 @@
 import EmojiPickerPortal from '../components/ui/EmojiPickerPortal';
 import React from 'react';
 import emojiData from '@emoji-mart/data';
-import {$createTextNode, $getSelection, $isRangeSelection} from 'lexical';
+import {$getSelection, $isRangeSelection} from 'lexical';
 import {
     LexicalTypeaheadMenuPlugin,
     useBasicTypeaheadTriggerMatch
@@ -44,7 +44,6 @@ export function EmojiPickerPlugin() {
                 row.push(emoji);
             }
 
-            console.log(pickerInstance.current);
             pickerInstance.current?.component.setState({searchResults: grid, pos: [0, 0]});
             setSearchResults(grid);
         }
@@ -99,6 +98,8 @@ export function EmojiPickerPlugin() {
             options={searchResults}
             triggerFn={checkForTriggerMatch}
             onQueryChange={setQueryString}
+            // TODO: add a way to close the emoji picker when the user presses escape
+            // TODO: select the emoji on enter
         />
     );
 }
