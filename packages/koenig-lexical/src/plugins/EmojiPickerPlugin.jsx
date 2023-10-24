@@ -60,8 +60,14 @@ export function EmojiPickerPlugin() {
                 return;
             }
 
-            selection.insertNodes([$createTextNode(emoji.native)]);
+            // replace the text with the emoji
+            const node = selection.anchor.getNode();
+            const nodeText = node.getTextContent();
+            const cursorPosition = selection.anchor.offset;
+            const startPosition = nodeText.lastIndexOf(':', cursorPosition);
+            node.spliceText(startPosition, cursorPosition - startPosition, emoji.native, true);
 
+            // reset the emoji picker
             pickerInstance.current?.component.setState({searchResults: null, pos: [-1, -1]});
             setSearchResults(null); // closes the emoji picker
         });
