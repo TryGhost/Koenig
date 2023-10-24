@@ -4,9 +4,8 @@ import Portal from './Portal';
 import PropTypes from 'prop-types';
 import React from 'react';
 import data from '@emoji-mart/data';
-import {SearchIndex, init} from '@emoji-mart';
 
-const EmojiPickerPortal = ({onEmojiClick, positionRef, value, ...props}) => {
+const EmojiPickerPortal = ({onEmojiClick, positionRef, ...props}) => {
     const [position, setPosition] = React.useState(null);
     const {darkMode} = React.useContext(KoenigComposerContext);
 
@@ -45,20 +44,6 @@ const EmojiPickerPortal = ({onEmojiClick, positionRef, value, ...props}) => {
     const handleClick = (e) => {
         e.stopPropagation();
     };
-
-    init({data});
-
-    async function search() {
-        const emojis = await SearchIndex.search(value);
-        const results = emojis.map((emoji) => {
-            return emoji.skins[0].native;
-        });
-        console.log(results);
-    }
-
-    if (value) {
-        search(value);
-    }
 
     const style = {
         left: x,
