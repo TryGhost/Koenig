@@ -1,5 +1,5 @@
 import KoenigComposerContext from '../../context/KoenigComposerContext';
-import Picker from '@emoji-mart/react';
+import Picker from './EmojiPicker';
 import Portal from './Portal';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -104,6 +104,7 @@ EmojiPickerPortal.propTypes = {
     previewPosition: PropTypes.oneOf(['top', 'bottom', 'none']),
     searchPosition: PropTypes.oneOf(['sticky', 'static', 'none']),
     set: PropTypes.oneOf(['native', 'apple', 'facebook', 'google', 'twitter']),
+    setInstanceRef: PropTypes.func,
     skin: PropTypes.oneOf([1, 2, 3, 4, 5, 6]),
     skinTonePosition: PropTypes.oneOf(['preview', 'search', 'none']),
     theme: PropTypes.oneOf(['auto', 'light', 'dark'])
