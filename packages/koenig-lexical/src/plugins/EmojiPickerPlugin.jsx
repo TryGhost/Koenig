@@ -98,7 +98,6 @@ export function EmojiPickerPlugin() {
             options={searchResults}
             triggerFn={checkForTriggerMatch}
             onQueryChange={setQueryString}
-            // TODO: add a way to close the emoji picker when the user presses escape
             // TODO: select the emoji on enter
         />
     );

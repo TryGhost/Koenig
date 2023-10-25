@@ -1162,7 +1162,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         const hasIndentedNode = nodes.some((node) => {
                             return node.getIndent && node.getIndent() > 0;
                         });
-                        
+
                         if (!hasIndentedNode) {
                             event.preventDefault();
                             cursorDidExitAtTop();
@@ -1216,15 +1216,16 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 KEY_ESCAPE_COMMAND,
                 (event) => {
                     if (selectedCardKey && isEditingCard) {
+                        event.preventDefault();
                         (editor._parentEditor || editor).dispatchCommand(SELECT_CARD_COMMAND, {cardKey: selectedCardKey});
+                        return true;
                     }
 
                     if (editor._parentEditor) {
+                        event.preventDefault();
                         editor._parentEditor.getRootElement().focus();
+                        return true;
                     }
-
-                    event.preventDefault();
-                    return true;
                 },
                 COMMAND_PRIORITY_LOW
             ),
