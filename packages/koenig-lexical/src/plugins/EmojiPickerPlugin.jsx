@@ -14,7 +14,7 @@ const EmojiMenuItem = function ({index, isSelected, onClick, onMouseEnter, emoji
         <li
             key={emoji.id}
             aria-selected={isSelected}
-            className={`flex cursor-pointer items-center gap-2 whitespace-nowrap rounded px-2 py-1 font-sans text-sm tracking-wide text-grey-800 ${isSelected ? 'bg-grey-100 text-grey-900' : ''}`}
+            className={`mb-0 flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded font-sans text-xl leading-[3.6rem] tracking-wide text-grey-800 ${isSelected ? 'bg-grey-100 text-grey-900' : ''}`}
             data-testid={'emoji-option-' + index}
             id={'emoji-option-' + index}
             role="option"
@@ -22,8 +22,8 @@ const EmojiMenuItem = function ({index, isSelected, onClick, onMouseEnter, emoji
             onClick={onClick}
             onMouseEnter={onMouseEnter}
         >
-            <span className="text-lg">{emoji.skins[0].native}</span>
-            <span className="truncate">{emoji.id}</span>
+            {emoji.skins[0].native}
+            {/* <span className="truncate">{emoji.id}</span> */}
         </li>
     );
 };
@@ -90,24 +90,27 @@ export function EmojiPickerPlugin() {
 
                 return (
                     <Portal to={anchorElementRef.current}>
-                        <ul className="absolute top-[25px] max-h-[196px] w-[240px] list-none overflow-y-auto bg-white p-1 shadow" data-testid="emoji-menu">
-                            {searchResults.map((emoji, index) => (
-                                <div key={emoji.id}>
-                                    <EmojiMenuItem
-                                        emoji={emoji}
-                                        index={index}
-                                        isSelected={selectedIndex === index}
-                                        onClick={() => {
-                                            setHighlightedIndex(index);
-                                            selectOptionAndCleanUp(emoji);
-                                        }}
-                                        onMouseEnter={() => {
-                                            setHighlightedIndex(index);
-                                        }}
-                                    />
-                                </div>
-                            ))}
-                        </ul>
+                        <div className="relative top-[25px] w-[268px] bg-white shadow">
+                            <ul className="grid max-h-[212px] list-none grid-cols-7 overflow-y-auto bg-white p-2" data-testid="emoji-menu">
+                                {searchResults.map((emoji, index) => (
+                                    <div key={emoji.id}>
+                                        <EmojiMenuItem
+                                            emoji={emoji}
+                                            index={index}
+                                            isSelected={selectedIndex === index}
+                                            onClick={() => {
+                                                setHighlightedIndex(index);
+                                                selectOptionAndCleanUp(emoji);
+                                            }}
+                                            onMouseEnter={() => {
+                                                setHighlightedIndex(index);
+                                            }}
+                                        />
+                                    </div>
+                                ))}
+                            </ul>
+                            <div className="w-full border-t border-grey-200 bg-white px-3 py-2 text-xs font-medium text-grey-600">slight_smiley_face</div>
+                        </div>
                     </Portal>
                 );
             }}
