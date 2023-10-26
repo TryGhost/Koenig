@@ -121,7 +121,7 @@ test.describe('Emoji Picker Plugin', async function () {
         await page.keyboard.press('Enter');
         await page.keyboard.type('s for all', {delay: 10});
 
-        await assertHTML(page, '<p dir="ltr"><span data-lexical-text="true">🌮🌮</span></p>');
+        await assertHTML(page, '<p dir="ltr"><span data-lexical-text="true">🌮🌮s for all</span></p>');
     });
 
     test(`can use emojis in nested editors`, async function () {
