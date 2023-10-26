@@ -73,18 +73,21 @@ test.describe('Emoji Picker Plugin', async function () {
     test('filters the emoji menu when typing', async function () {
         await focusEditor(page);
 
-        await page.keyboard.type(':-');
+        await page.keyboard.type(':t');
         await expect(page.getByTestId('emoji-menu')).toBeVisible();
-        await expect(page.getByTestId('emoji-option-0')).toBeVisible();
-        await expect(page.getByTestId('emoji-option-1')).toBeVisible();
+        await expect(page.getByTestId('emoji-option-0')).toHaveText('🦖t-rex');
+        await expect(page.getByTestId('emoji-option-1')).toHaveText('🏓table_tennis_paddle_and_ball');
 
-        await page.keyboard.type('1');
-        await expect(page.getByTestId('emoji-menu')).toBeVisible();
-        await expect(page.getByTestId('emoji-option-0')).toBeVisible();
+        await page.keyboard.type('a');
+        await expect(page.getByTestId('emoji-option-0')).toHaveText('🏓table_tennis_paddle_and_ball');
+        await expect(page.getByTestId('emoji-option-1')).toHaveText('🌮taco');
+
+        await page.keyboard.type('c');
+        await expect(page.getByTestId('emoji-option-0')).toHaveText('🌮taco');
         await expect(page.getByTestId('emoji-option-1')).not.toBeVisible();
 
         await page.keyboard.press('Enter');
-        await assertHTML(page, '<p dir="ltr"><span data-lexical-text="true">👎</span></p>');
+        await assertHTML(page, '<p dir="ltr"><span data-lexical-text="true">🌮</span></p>');
     });
     
     test('can use the mouse to select an emoji', async function () {
