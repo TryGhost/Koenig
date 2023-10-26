@@ -4333,9 +4333,9 @@
     unidecode "^0.1.8"
 
 "@tryghost/url-utils@^4.0.0":
-  version "4.4.4"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.4.tgz#6c170e775b70319e1c0bdc262dd849b22f53667c"
-  integrity sha512-8H1G2d72hTt5Qt/uYipqFV/+u0JsFXoTjxNLLI1mDrU1+smfpF11QhiD0Pp3oUjgawxQMtHm9FlYI0oscFJrwA==
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.5.tgz#e749190725910ed552bb919565b9a3aa50ef19a1"
+  integrity sha512-MSVP35OTyerxriHiiK+j/D8nOKjli5HgUstN7ZXjZSHSYbQEEnYVP3FRjr2pdS9i/j1OGHOliyXoPWTkWagYxA==
   dependencies:
     cheerio "^0.22.0"
     lodash "^4.17.21"
