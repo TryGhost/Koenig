@@ -45,7 +45,7 @@ export function EmojiPickerPlugin() {
             let filteredEmojis = [];
             if ([')','-)'].includes(queryString)) {
                 filteredEmojis = await SearchIndex.search('smile');
-            } else if (['(',':-('].includes(queryString)) {
+            } else if (['(','-('].includes(queryString)) {
                 filteredEmojis = await SearchIndex.search('frown');
             } else {
                 filteredEmojis = await SearchIndex.search(queryString);
