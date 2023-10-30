@@ -39,6 +39,23 @@ export function EmojiPickerPlugin() {
 
     const checkForTriggerMatch = useTypeaheadTriggerMatch(':', {minLength: 1});
 
+    // NOTE: this feels a little hacky, as the built-in Lexical component doesn't have a way to trigger the selection manually (it calls functions private to the component)
+    const handleCompletionInsertion = React.useCallback((emoji) => {
+        editor.update(() => {
+            const selection = $getSelection();
+
+            if (!$isRangeSelection(selection) || emoji === null) {
+                return;
+            }
+
+            const currentNode = selection.anchor.getNode();
+
+            // need to replace the last text matching the :test: pattern with a single emoji
+            const shortcodeLength = emoji.id.length + 2; // +2 for the colons
+            currentNode.spliceText(selection.anchor.offset - shortcodeLength, shortcodeLength, emoji.skins[0].native, true);
+        });
+    }, [editor]);
+
     React.useEffect(() => {
         if (!queryString) {
             setSearchResults(null);
@@ -51,6 +68,12 @@ export function EmojiPickerPlugin() {
                 filteredEmojis = await SearchIndex.search('smile');
             } else if (['(','-('].includes(queryString)) {
                 filteredEmojis = await SearchIndex.search('frown');
+            } else if (queryString.endsWith(':')) {
+                const checkString = queryString.replace(/:/g, '');
+                filteredEmojis = await SearchIndex.search(checkString);
+                if (filteredEmojis.length > 0 && filteredEmojis[0].id === checkString) {
+                    handleCompletionInsertion(filteredEmojis[0]);
+                }
             } else {
                 filteredEmojis = await SearchIndex.search(queryString);
             }
@@ -58,7 +81,7 @@ export function EmojiPickerPlugin() {
         }
 
         searchEmojis();
-    }, [queryString]);
+    }, [queryString, handleCompletionInsertion]);
 
     const onEmojiSelect = React.useCallback((selectedOption, nodeToRemove, closeMenu) => {
         editor.update(() => {
