@@ -7,17 +7,14 @@ export default function useBasicTypeaheadTriggerMatch(trigger,{minLength = 1, ma
     return useCallback(
         (text) => {
             const invalidChars = '[^' + trigger + '\\s]'; // escaped set - these cannot be present in the matched string
-            // const TypeaheadTriggerRegex = new RegExp(
-            //     '[' + trigger + ']' +
-            //     '(' +
-            //         '(?:' + invalidChars + ')' +
-            //         '{0,' + maxLength + '}' +
-            //     ')$',
-            // );
-            const TypeaheadTriggerRegex = new RegExp(/[:]((?:[^:\s]){0,75}[:]?)$/);
+            const TypeaheadTriggerRegex = new RegExp(
+                '[' + trigger + ']' +
+                '(' +
+                    '(?:' + invalidChars + ')' +
+                    '{0,' + maxLength + '}' +
+                ')$',
+            );
             const match = TypeaheadTriggerRegex.exec(text);
-            console.log(`replaceableString`,match?.[0]);
-            console.log(`match`,match);
             if (match !== null) {
                 const matchingString = match[1];
                 if (matchingString.length >= minLength) {
