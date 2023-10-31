@@ -92,7 +92,6 @@ export function EmojiPickerPlugin() {
         }
 
         async function searchEmojis() {
-            console.log(`searchEmojis`,queryString);
             let filteredEmojis = [];
             if ([')','-)'].includes(queryString)) {
                 filteredEmojis = await SearchIndex.search('smile');
