@@ -4295,11 +4295,12 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@tryghost/color-utils@^0.1.26":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.1.27.tgz#dee55f3c48130d3fc34aa7f0c1be171592e52469"
-  integrity sha512-4aWwiiD+MIWQ0sghMcQ1+g2mhhWWS4ux8RQPMsaAXy6SR4EHnPzsCBaKuWMKTCwJkGUNTduyCLDnaWySt4iMEw==
+"@tryghost/color-utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.0.tgz#c8a2cf06ec9fb8a7b4ed9bcfc2a96b1237b58eda"
+  integrity sha512-wvv/JwZYV/sy8hoNcXo0xRezUqOV/YLki1OqKUbJGPhqhv9PXsyauezXOyB+lSbhccPvZCuGQRE571VNf1JCfQ==
   dependencies:
+    "@types/color" "3.0.2"
     color "^3.2.1"
 
 "@tryghost/helpers@^1.1.81":
@@ -4435,6 +4436,25 @@
   version "4.3.6"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.6.tgz#7b489e8baf393d5dd1266fb203ddd4ea941259e6"
   integrity sha512-VOVRLM1mBxIRxydiViqPcKn6MIxZytrbMpd6RJLIWKxUNr3zux8no0Oc7kJx0WAPIitgZ0gkrDS+btlqQpubpw==
+
+"@types/color-convert@*":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/color-convert/-/color-convert-2.0.2.tgz#a5fa5da9b866732f8bf86b01964869011e2a2356"
+  integrity sha512-KGRIgCxwcgazts4MXRCikPbIMzBpjfdgEZSy8TRHU/gtg+f9sOfHdtK8unPfxIoBtyd2aTTwINVLSNENlC8U8A==
+  dependencies:
+    "@types/color-name" "*"
+
+"@types/color-name@*":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.2.tgz#bdeeb6fdcb78969033767951ab0cb26c7514a658"
+  integrity sha512-JWO/ZyxTKk0bLuOhAavGjnwLR73rUE7qzACnU7gMeyA/gdrSHm2xJwqNPipw2MtaZUaqQ2UG/q7pP6AQiZ8mqw==
+
+"@types/color@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/color/-/color-3.0.2.tgz#3779043e782f562aa9157b5fc6bd07e14fd8e7f3"
+  integrity sha512-INiJl6sfNn8iyC5paxVzqiVUEj2boIlFki02uRTAkKwAj++7aAF+ZfEv/XrIeBa0XI/fTZuDHW8rEEcEVnON+Q==
+  dependencies:
+    "@types/color-convert" "*"
 
 "@types/connect@*":
   version "3.4.36"
