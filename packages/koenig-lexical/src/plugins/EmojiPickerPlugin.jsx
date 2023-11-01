@@ -175,3 +175,5 @@ export function EmojiPickerPlugin() {
         />
     );
 }
+
+export default EmojiPickerPlugin;
