@@ -160,7 +160,6 @@ test.describe('Card behaviour', async () => {
             expect(editorHasFocus).toEqual(true);
         });
 
-
         test('clicking outside the empty edit mode card removes the card', async function () {
             await focusEditor(page);
             await page.keyboard.type('```javascript ');
