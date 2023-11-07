@@ -4582,9 +4582,9 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jsdom@^21.1.2":
-  version "21.1.4"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-21.1.4.tgz#82105c8fb5a1072265dde1a180336ca74a8fbabf"
-  integrity sha512-NzAMLEV0KQ4cBaDx3Ls8VfJUElyDUm1xrtYRmcMK0gF8L5xYbujFVaQlJ50yinQ/d47j2rEP1XUzkiYrw4YRFA==
+  version "21.1.5"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-21.1.5.tgz#b5d0bccd2436a2bc166dbe235f1dc43a1f922d40"
+  integrity sha512-sBK/3YjS3uuPj+HzZyhB4GGTnFmk0mdyQfhzZ/sqs9ciyG41QJdZZdwcPa6OfW97OTNTwl5tBAsfEOm/dui9pQ==
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
