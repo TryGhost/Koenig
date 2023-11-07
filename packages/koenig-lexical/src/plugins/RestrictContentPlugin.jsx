@@ -11,9 +11,9 @@ import {
 } from 'lexical';
 import {$isListNode} from '@lexical/list';
 import {MIME_TEXT_HTML, MIME_TEXT_PLAIN, PASTE_MARKDOWN_COMMAND} from './MarkdownPastePlugin.jsx';
+import {PASTE_LINK_COMMAND} from './KoenigBehaviourPlugin.jsx';
 import {mergeRegister} from '@lexical/utils';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import { PASTE_LINK_COMMAND } from './KoenigBehaviourPlugin.jsx';
 
 export const RestrictContentPlugin = ({paragraphs, allowBr}) => {
     const [editor] = useLexicalComposerContext();
