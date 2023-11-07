@@ -38,10 +38,10 @@ function cardTemplate(nodeData) {
             <div class="kg-signup-card-content">
                 ${nodeData.layout === 'split' ? imgTemplate : ''}
                 <div class="kg-signup-card-text ${alignment}">
-                    <h2 class="kg-signup-card-heading" style="color: ${nodeData.textColor};">${nodeData.header}</h2>
-                    <p class="kg-signup-card-subheading" style="color: ${nodeData.textColor};">${nodeData.subheader}</p>
+                    <h2 class="kg-signup-card-heading" ${nodeData.backgroundColor !== 'transparent' ? `style="color: ${nodeData.textColor};` : ''}">${nodeData.header}</h2>
+                    <p class="kg-signup-card-subheading" ${nodeData.backgroundColor !== 'transparent' ? `style="color: ${nodeData.textColor};` : ''}">${nodeData.subheader}</p>
                     ${formTemplate}
-                    <p class="kg-signup-card-disclaimer" style="color: ${nodeData.textColor};">${nodeData.disclaimer}</p>
+                    <p class="kg-signup-card-disclaimer" ${nodeData.backgroundColor !== 'transparent' ? `style="color: ${nodeData.textColor};` : ''}">${nodeData.disclaimer}</p>
                 </div>
             </div>
         </div>

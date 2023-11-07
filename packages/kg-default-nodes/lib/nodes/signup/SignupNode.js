@@ -21,6 +21,26 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         {name: 'successMessage', default: 'Email sent! Check your inbox to complete your signup.'},
         {name: 'swapped', default: false}
     ]}) {
+    // /* override */
+    constructor({alignment, backgroundColor, backgroundImageSrc, backgroundSize, textColor, buttonColor, buttonTextColor, buttonText, disclaimer, header, labels, layout, subheader, successMessage, swapped} = {}, key) {
+        super(key);
+        this.__alignment = alignment || 'left';
+        this.__backgroundColor = backgroundColor || '#F0F0F0';
+        this.__backgroundImageSrc = backgroundImageSrc || '';
+        this.__backgroundSize = backgroundSize || 'cover';
+        this.__textColor = backgroundColor === 'transparent' ? '' : textColor || '#000000';
+        this.__buttonColor = buttonColor || 'accent';
+        this.__buttonTextColor = buttonTextColor || '#FFFFFF';
+        this.__buttonText = buttonText || 'Subscribe';
+        this.__disclaimer = disclaimer || '';
+        this.__header = header || '';
+        this.__labels = labels || [];
+        this.__layout = layout || 'wide';
+        this.__subheader = subheader || '';
+        this.__successMessage = successMessage || 'Email sent! Check your inbox to complete your signup.';
+        this.__swapped = swapped || false;
+    }
+
     static importDOM() {
         return signupParser(this);
     }
