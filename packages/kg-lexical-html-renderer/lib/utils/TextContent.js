@@ -93,9 +93,9 @@ class TextContent {
                 currentNode.append(node.getTextContent());
 
                 // close tags in correct order if next node doesn't have the format
-                const nextNode = remainingNodes.find(n => $isTextNode(n));
+                const nextNode = remainingNodes.find(n => $isTextNode(n) || $isLinkNode(n));
                 [...openFormats].forEach((format) => {
-                    if (!nextNode || !nextNode.hasFormat(format)) {
+                    if (!nextNode || $isLinkNode(nextNode) || !nextNode.hasFormat(format)) {
                         currentNode = currentNode.parentNode;
                         openFormats.pop();
                     }
