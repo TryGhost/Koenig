@@ -67,9 +67,13 @@ class TextContent {
                 // re-order formats to open based on next nodes - we want to make
                 // sure tags that will be kept open for later nodes are opened first
                 const remainingNodes = this.nodes.slice(i + 1);
+                // avoid checking any nodes after a link node because those cause all formats to close
+                const nextLinkNodeIndex = remainingNodes.findIndex(n => $isLinkNode(n));
+                const remainingSortNodes = nextLinkNodeIndex === -1 ? remainingNodes : remainingNodes.slice(0, nextLinkNodeIndex);
+
                 formatsToOpen.sort((a, b) => {
-                    const aIndex = remainingNodes.findIndex(n => n.hasFormat(a));
-                    const bIndex = remainingNodes.findIndex(n => n.hasFormat(b));
+                    const aIndex = remainingSortNodes.findIndex(n => n.hasFormat(a));
+                    const bIndex = remainingSortNodes.findIndex(n => n.hasFormat(b));
 
                     if (aIndex === -1) {
                         return 1;
@@ -93,6 +97,7 @@ class TextContent {
                 currentNode.append(node.getTextContent());
 
                 // close tags in correct order if next node doesn't have the format
+                // links are their own formatting islands so all formats need to close before a link
                 const nextNode = remainingNodes.find(n => $isTextNode(n) || $isLinkNode(n));
                 [...openFormats].forEach((format) => {
                     if (!nextNode || $isLinkNode(nextNode) || !nextNode.hasFormat(format)) {
