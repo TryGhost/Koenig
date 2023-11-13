@@ -928,10 +928,8 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             editor.registerCommand(
                 KEY_BACKSPACE_COMMAND,
                 (event) => {
-                    console.log(`backspace`);
                     // avoid processing card behaviours when an inner element has focus
                     if (document.activeElement !== editor.getRootElement()) {
-                        console.log(`suppressed`, document.activeElement);
                         return true;
                     }
 
@@ -967,6 +965,8 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 return true;
                             }
 
+                            // see https://github.com/facebook/lexical/issues/5226
+                            // upstream bug with firefox only
                             if (
                                 atStartOfElement && 
                                 $isLinkNode(anchorNode.getPreviousSibling())
@@ -981,7 +981,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
 
                             // delete empty paragraphs and select card if preceded by card
                             if ($isParagraphNode(anchorNode) && anchorNode.isEmpty() && $isDecoratorNode(previousSibling)) {
-                                console.log(`remove top level element - blank paragraph`);
                                 topLevelElement.remove();
                                 $selectDecoratorNode(previousSibling);
                                 return true;
@@ -1023,7 +1022,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 anchorNodeParent === topLevelElement && // handles lists, where the parent node is not the paragraph
                                 anchorNodeParent.getFirstChild().is(anchorNode) // handles child nodes in paragraphs, e.g. LinkNode and HorizontalRule
                             ) {
-                                console.log(`remove previous sibling`);
                                 event.preventDefault();
                                 previousSibling.remove();
                                 return true;
@@ -1033,8 +1031,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             const atEndOfElement =
                                 selection.anchor.offset === anchorNodeLength &&
                                 selection.focus.offset === anchorNodeLength;
-
-                            console.log(`at end of element`,atEndOfElement);
 
                             // undo any markdown special formats when deleting at the end of a formatted text node
                             if (atEndOfElement && $isTextNode(anchorNode)) {
@@ -1065,7 +1061,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             }
                         }
                     }
-                    console.log(`return false`);
                     return false;
                 },
                 COMMAND_PRIORITY_LOW
