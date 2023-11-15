@@ -4222,11 +4222,11 @@
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
 "@tryghost/color-utils@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.0.tgz#c8a2cf06ec9fb8a7b4ed9bcfc2a96b1237b58eda"
-  integrity sha512-wvv/JwZYV/sy8hoNcXo0xRezUqOV/YLki1OqKUbJGPhqhv9PXsyauezXOyB+lSbhccPvZCuGQRE571VNf1JCfQ==
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.1.tgz#8fb90e61d16b7968163f58bbeb033fabd08536da"
+  integrity sha512-rjLM0hrW+ifRBmhJ3OIpfdlMtXEK3wU34Z1aEzmtVZCGLsAyHudvpwy30xo8MQseLA6AhYjgZGcj3KxAuAyUCg==
   dependencies:
-    "@types/color" "3.0.2"
+    "@types/color" "3.0.6"
     color "^3.2.1"
 
 "@tryghost/helpers@^1.1.81":
@@ -4375,10 +4375,10 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.2.tgz#bdeeb6fdcb78969033767951ab0cb26c7514a658"
   integrity sha512-JWO/ZyxTKk0bLuOhAavGjnwLR73rUE7qzACnU7gMeyA/gdrSHm2xJwqNPipw2MtaZUaqQ2UG/q7pP6AQiZ8mqw==
 
-"@types/color@3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@types/color/-/color-3.0.2.tgz#3779043e782f562aa9157b5fc6bd07e14fd8e7f3"
-  integrity sha512-INiJl6sfNn8iyC5paxVzqiVUEj2boIlFki02uRTAkKwAj++7aAF+ZfEv/XrIeBa0XI/fTZuDHW8rEEcEVnON+Q==
+"@types/color@3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@types/color/-/color-3.0.6.tgz#29c27a99d4de2975e1676712679a0bd7f646a3fb"
+  integrity sha512-NMiNcZFRUAiUUCCf7zkAelY8eV3aKqfbzyFQlXpPIEeoNDbsEHGpb854V3gzTsGKYj830I5zPuOwU/TP5/cW6A==
   dependencies:
     "@types/color-convert" "*"
 
