@@ -94,7 +94,7 @@ test.describe('Editor keyboard shortcuts', async () => {
             </p>`);
         });
 
-        test.only('inline code', async function () {
+        test('inline code', async function () {
             await focusEditor(page);
 
             await page.keyboard.type('test');
