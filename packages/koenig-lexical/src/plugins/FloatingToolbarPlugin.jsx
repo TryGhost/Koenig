@@ -1,5 +1,5 @@
 import React from 'react';
-import {$getSelection, $isParagraphNode, $isRangeSelection, $isTextNode, COMMAND_PRIORITY_LOW, FORMAT_TEXT_COMMAND, KEY_MODIFIER_COMMAND} from 'lexical';
+import {$getSelection, $isParagraphNode, $isRangeSelection, $isTextNode, COMMAND_PRIORITY_LOW, KEY_MODIFIER_COMMAND} from 'lexical';
 import {$getSelectionRangeRect} from '../utils/$getSelectionRangeRect';
 import {$isLinkNode} from '@lexical/link';
 import {FloatingFormatToolbar, toolbarItemTypes} from '../components/ui/FloatingFormatToolbar';
@@ -101,7 +101,7 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
         editor.registerCommand(
             KEY_MODIFIER_COMMAND,
             (event) => {
-                const {keyCode, ctrlKey, metaKey, shiftKey, altKey} = event;
+                const {keyCode, ctrlKey, metaKey, shiftKey} = event;
                 // ctrl/cmd K with selected text should prompt for link insertion
                 if (!shiftKey && keyCode === 75 && (ctrlKey || metaKey)) {
                     const selection = $getSelection();
