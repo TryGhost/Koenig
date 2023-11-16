@@ -111,16 +111,6 @@ function useFloatingFormatToolbar(editor, anchorElem, isSnippetsEnabled, hiddenF
                         return true;
                     }
                 }
-                // ctrl/cmd shift K should format text as code
-                if (shiftKey && keyCode === 75 && (ctrlKey || metaKey)) {
-                    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'code');
-                    return true;
-                }
-                // ctrl/cmd alt U should strikethrough
-                if (altKey && keyCode === 85 && (ctrlKey || metaKey)) {
-                    editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
-                    return true;
-                }
                 return false;
             },
             COMMAND_PRIORITY_LOW
