@@ -3001,12 +3001,12 @@
     "@sentry/utils" "7.70.0"
     tslib "^2.4.1 || ^1.9.3"
 
-"@sentry/bundler-plugin-core@2.10.0":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.10.0.tgz#2f866ffe4a4cd1983897c5eac6d7823ec954d678"
-  integrity sha512-bjcYvMrCQgqTiRRkWGNpeZ7EJOu0JQFYj+rrcQpwaVO+ll1eWNGW1nNveU+8vpnXrlaIAvieBxCrcCj5V9y1+Q==
+"@sentry/bundler-plugin-core@2.10.1":
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.10.1.tgz#1a40f88bef37970249550e59b48e854bd040b671"
+  integrity sha512-cT8cs90NnoTC3gJ6syaUOdogn7jjI27HyIiE5G750956sw5bUKy4Yw5S2S6RFBW7460yPQ1oR6f/WVhyDYrTYA==
   dependencies:
-    "@sentry/cli" "^2.21.2"
+    "@sentry/cli" "^2.21.4"
     "@sentry/node" "^7.60.0"
     "@sentry/utils" "^7.60.0"
     dotenv "^16.3.1"
@@ -3015,10 +3015,10 @@
     magic-string "0.27.0"
     unplugin "1.0.1"
 
-"@sentry/cli@^2.21.2":
-  version "2.21.2"
-  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.21.2.tgz#89e5633ff48a83d078c76c6997fffd4b68b2da1c"
-  integrity sha512-X1nye89zl+QV3FSuQDGItfM51tW9PQ7ce0TtV/12DgGgTVEgnVp5uvO3wX5XauHvulQzRPzwUL3ZK+yS5bAwCw==
+"@sentry/cli@^2.21.4":
+  version "2.21.5"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.21.5.tgz#9ee4c51b267ac5ba8cdbf9bb9d4e8b74410d9669"
+  integrity sha512-RqKBqE10pb7zh0G/YiYVdX/MqenDYIgLGcaCqbszTAfW2SSLyp9EczsnmHtRgO1fO1OQq76+gaK7UdC1TEIGqQ==
   dependencies:
     https-proxy-agent "^5.0.0"
     node-fetch "^2.6.7"
@@ -3063,11 +3063,11 @@
     tslib "^2.4.1 || ^1.9.3"
 
 "@sentry/vite-plugin@^2.2.2":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.10.0.tgz#76f319702171244aa20ab2dabae71714ba92c3cb"
-  integrity sha512-jOJQnu3ox+HcD1HCul5LBy6YEhS0oVFjrFshoFD2PtHI5sMldbwNWrkkTXcknNy/0o4d5cAtdsEuVzEnbdd+Gg==
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.10.1.tgz#b1dec4f71eb3d81ee9f8446d9ea9d801245a74fd"
+  integrity sha512-xVQEv27xE/kt/5LYWIJ+dFLeKytNCGBriUMRyoVGYhWAAS6T2Rs0iA4ri6FqMznz/Yhm6k3HzCivzKF8Z4ac5Q==
   dependencies:
-    "@sentry/bundler-plugin-core" "2.10.0"
+    "@sentry/bundler-plugin-core" "2.10.1"
     unplugin "1.0.1"
 
 "@sideway/address@^4.1.3":
