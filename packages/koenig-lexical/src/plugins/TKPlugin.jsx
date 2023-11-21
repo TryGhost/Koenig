@@ -54,7 +54,7 @@ export default function TKPlugin() {
         e.stopPropagation();
         editor.update(() => {
             const node = $getNodeByKey(e.target.dataset.key);
-            node.select(0,0);
+            node.select(0, node.getTextContentSize());
         });
     };
 
@@ -73,6 +73,7 @@ export default function TKPlugin() {
             const editorWidth = editorParent.offsetWidth;
 
             // create an element
+            // TODO: styles can migrated to use tailwind/themes
             const indicator = document.createElement('div');
             indicator.style.position = 'absolute';
             indicator.style.left = `${editorWidth + 10}px`;
