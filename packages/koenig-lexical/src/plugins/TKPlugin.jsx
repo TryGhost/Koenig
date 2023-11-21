@@ -1,6 +1,6 @@
 import {$createTKNode, TKNode} from '@tryghost/kg-default-nodes';
 import {$getNodeByKey, $getRoot, $isElementNode, $isTextNode} from 'lexical';
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useLexicalTextEntity} from '../hooks/useExtendedTextEntity';
 
@@ -8,6 +8,7 @@ const REGEX = new RegExp(/(?<!\w)TK(?!\w)/);
 
 export default function TKPlugin() {
     const [editor] = useLexicalComposerContext();
+    const [tkNodes, setTkNodes] = useState([]);
 
     useEffect(() => {
         if (!editor.hasNodes([TKNode])) {
@@ -57,14 +58,14 @@ export default function TKPlugin() {
         });
     };
 
-    const renderIndicators = useCallback((tkNodes) => {
+    const renderIndicators = useCallback((nodes) => {
         // clean up existing indicators
         document.body.querySelectorAll('.tk-indicator').forEach((el) => {
             el.remove(); 
         });
 
         // add indicators to the dom
-        tkNodes.forEach((node) => {
+        nodes.forEach((node) => {
             const element = editor.getElementByKey(node.getKey());
             const editorParent = editor.getRootElement().parentElement;
             const editorParentTop = editorParent.getBoundingClientRect().top;
@@ -76,10 +77,12 @@ export default function TKPlugin() {
             indicator.style.position = 'absolute';
             indicator.style.left = `${editorWidth + 10}px`;
             indicator.style.top = `${tkParentTop - editorParentTop}px`;
-            indicator.style.marginTop = '3px';
+            indicator.style.padding = '.5rem';
             indicator.textContent = 'TK';
             indicator.classList.add('tk-indicator');
             indicator.dataset.key = node.getKey();
+            indicator.style.color = 'darkgray';
+            indicator.style.fontSize = '1.3rem';
 
             indicator.onclick = indicatorOnClick;
 
@@ -89,8 +92,9 @@ export default function TKPlugin() {
     }, [editor]);
 
     // run once on mount and then let the editor state listener handle updates
-    useEffect(() => {
+    useLayoutEffect(() => {
         const foundNodes = getTKNodesForIndicators(editor.getEditorState());
+        setTkNodes(foundNodes);
         renderIndicators(foundNodes);
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
     }, []);
@@ -99,13 +103,17 @@ export default function TKPlugin() {
     useEffect(() => {
         const removeListener = editor.registerUpdateListener(({editorState}) => {
             const foundNodes = getTKNodesForIndicators(editorState);
-            renderIndicators(foundNodes);
+            // this is a simple way to check that the nodes actually changed before we re-render indicators on the dom
+            if (foundNodes.toString() !== tkNodes.toString()) {
+                setTkNodes(foundNodes);
+                renderIndicators(foundNodes);
+            }
         });
 
         return () => {
             removeListener();
         };
-    }, [editor, renderIndicators, getTKNodesForIndicators]);
+    }, [editor, renderIndicators, getTKNodesForIndicators, setTkNodes, tkNodes]);
 
     const createTKNode = useCallback((textNode) => {
         return $createTKNode(textNode.getTextContent());
