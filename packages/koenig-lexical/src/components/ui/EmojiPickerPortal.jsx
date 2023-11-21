@@ -8,7 +8,6 @@ import defaultData from '@emoji-mart/data';
 const EmojiPickerPortal = ({onEmojiClick, positionRef, data = defaultData, ...props}) => {
     const [position, setPosition] = React.useState(null);
     const {darkMode} = React.useContext(KoenigComposerContext);
-
     const shiftPixels = 35; // how many pixels we want to move it up when it's at the bottom of the screen
     const handleScroll = React.useCallback(() => {
         if (positionRef.current) {
@@ -63,7 +62,6 @@ const EmojiPickerPortal = ({onEmojiClick, positionRef, data = defaultData, ...pr
     };
 
     const mergedProps = {...defaultProps, ...props};
-
     return (
         <Portal>
             <div className='z-10 mr-9 mt-10 rounded-md bg-white' data-testid="emoji-picker-container" style={style} onClick={handleClick}>
@@ -128,6 +126,5 @@ EmojiPickerPortal.defaultProps = {
     searchPosition: 'sticky',
     set: 'native',
     skin: 1,
-    skinTonePosition: 'preview',
-    theme: 'light'
+    skinTonePosition: 'preview'
 };
