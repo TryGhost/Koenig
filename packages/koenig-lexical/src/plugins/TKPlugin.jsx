@@ -43,7 +43,7 @@ export default function TKPlugin({setTkCount = () => {}}) {
 
     const renderIndicators = useCallback((nodes) => {
         // clean up existing indicators
-        document.body.querySelectorAll('[data-kg-has-tk').forEach((el) => {
+        document.body.querySelectorAll('[data-kg-has-tk]').forEach((el) => {
             el.remove();
         });
 
