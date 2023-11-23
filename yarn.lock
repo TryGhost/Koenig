@@ -4253,9 +4253,9 @@
     mobiledoc-text-renderer "0.4.0"
 
 "@tryghost/string@^0.2.0":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.8.tgz#3d09aaabc6cdeb70333008c668ba21dc1a218374"
-  integrity sha512-/nWa8dghz8Bt0L5NIjvlld0Xxfaepi1Yt3W70TkZYvFtY5WurXwfrvcjA9u+kx3RiVl7ha0zIqvNMv6ECoyZqg==
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.11.tgz#6c55af09d55ebede5731ca9b6ba2c24c537a51db"
+  integrity sha512-fXA9Vbr133Mx3w55jPuQ2gkZFrGszwIGiV7R+4Rr3jiUnQF3ecyazx+LJ0tVbI3ayzl9EY5eAG7PhcGEc6BlSA==
   dependencies:
     unidecode "^0.1.8"
 
