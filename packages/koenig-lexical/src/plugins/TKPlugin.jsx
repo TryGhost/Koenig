@@ -43,12 +43,12 @@ export default function TKPlugin({setTkCount = () => {}}) {
 
     const indicatorOnMouseEnter = (e) => {
         const classes = editor._config.theme.tkHighlighted?.split(' ') || [];
-        editor.getElementByKey(e.target.dataset.key).classList.add(classes);
+        editor.getElementByKey(e.target.dataset.key).classList.add(...classes);
     };
 
     const indicatorOnMouseLeave = (e) => {
         const classes = editor._config.theme.tkHighlighted?.split(' ') || [];
-        editor.getElementByKey(e.target.dataset.key).classList.remove(classes);
+        editor.getElementByKey(e.target.dataset.key).classList.remove(...classes);
     };
 
     const renderIndicators = useCallback((nodes) => {
