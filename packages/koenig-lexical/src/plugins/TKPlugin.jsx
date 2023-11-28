@@ -65,19 +65,13 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     // set up an observer to reposition the indicator when the TK node containing
     // element moves relative to the root element
     useEffect(() => {
-        const recalculateTop = () => {
-            setTop(calculateTop());
-        };
+        const observer = new ResizeObserver(() => (setTop(calculateTop())));
 
-        const rootObserver = new ResizeObserver(recalculateTop);
-        const containerObserver = new ResizeObserver(recalculateTop);
-
-        rootObserver.observe(rootElement);
-        containerObserver.observe(containingElement);
+        observer.observe(rootElement);
+        observer.observe(containingElement);
 
         return () => {
-            rootObserver.disconnect();
-            containerObserver.disconnect();
+            observer.disconnect();
         };
     }, [rootElement, containingElement, calculateTop]);
 
