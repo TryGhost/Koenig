@@ -82,6 +82,7 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     return (
         <div
             className="absolute -right-14 cursor-pointer p-1 text-xs font-medium text-grey-600"
+            data-testid="tk-indicator"
             style={style}
             onClick={onClick}
             onMouseEnter={onMouseEnter}
