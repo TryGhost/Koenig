@@ -16,8 +16,6 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
         const rootElementRect = rootElement.getBoundingClientRect();
         const containerElementRect = containingElement.getBoundingClientRect();
 
-        console.log(`containingElement`,containingElement);
-
         return containerElementRect.top - rootElementRect.top + 4;
     }, [rootElement, containingElement]);
 
@@ -181,8 +179,6 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
     const editorRoot = editor._parentEditor ? editor._parentEditor.getRootElement() : editor.getRootElement();
     const editorRootParent = editorRoot?.parentElement;
 
-    console.log('TKPlugin', editorRoot, editorRootParent);
-
     if (!editorRootParent) {
         return null;
     }
@@ -193,7 +189,6 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
         editor.getEditorState().read(() => {
             tkNodes.forEach((tkNode) => {
                 const parentKey = tkNode.getParent().getKey();
-                console.log(`tkNode`,tkNode,tkNode.getTopLevelElement());
 
                 // prevent duplication, add node keys to existing indicator
                 // for nodes that are contained in the same parent
@@ -207,23 +202,11 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
         });
     }
 
-    const getContainingElement = (nodeKey) => {
-        if (editor._parentEditor) {
-            // let el = editor.getElementByKey(nodeKey);
-            // while ((el = el.parentElement) && !el.hasAttribute('data-kg-card')) {
-            //     // do nothing - this loop is to iterate over the parent elements until we get a child of the root editor
-            // }
-            // return el;
-            // return editor._parentEditor.getElementByKey(nodeKey);
-        }
-        return editor.getElementByKey(nodeKey);
-    };
-
     const TKIndicators = Object.entries(tkParentNodesMap).map(([parentKey, nodeKeys]) => {
         return (
             <TKIndicator
                 key={parentKey}
-                containingElement={getContainingElement(parentKey)}
+                containingElement={editor.getElementByKey(parentKey)}
                 editor={editor}
                 nodeKeys={nodeKeys}
                 rootElement={editorRoot}
