@@ -18,6 +18,7 @@ import {
     TKPlugin,
     WordCountPlugin
 } from '../src';
+import {ExtendedTextNode} from '@tryghost/kg-default-nodes';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
@@ -104,7 +105,7 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
         >
             <MobiledocCopyPlugin />
             <WordCountPlugin onChange={setWordCount} />
-            <TKPlugin />
+            <TKPlugin nodeType={ExtendedTextNode} />
         </KoenigEditor>
     );
 }

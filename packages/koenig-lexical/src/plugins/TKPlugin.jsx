@@ -1,9 +1,9 @@
-import {$createTKNode, $isTKNode, TKNode} from '@tryghost/kg-default-nodes';
+import {$createTKNode, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
 import {$getNodeByKey, $getSelection, $isRangeSelection, $nodesOfType} from 'lexical';
 import {createPortal} from 'react-dom';
 import {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import {useKoenigTextEntity} from '../hooks/useKoenigTextEntity';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {useLexicalTextEntity} from '../hooks/useExtendedTextEntity';
 
 const REGEX = new RegExp(/(^|.)([^a-zA-Z0-9\s]?(TK)+[^a-zA-Z0-9\s]?)($|.)/);
 
@@ -12,14 +12,18 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
 
     // position element relative to the TK Node containing element
-    const calculateTop = useCallback(() => {
+    const calculatePosition = useCallback(() => {
         const rootElementRect = rootElement.getBoundingClientRect();
         const containerElementRect = containingElement.getBoundingClientRect();
 
-        return containerElementRect.top - rootElementRect.top + 4;
+        const top = containerElementRect.top - rootElementRect.top + 4;
+
+        const left = rootElementRect.right + 4;
+
+        return {top, left};
     }, [rootElement, containingElement]);
 
-    const [top, setTop] = useState(calculateTop());
+    const [position, setPosition] = useState(calculatePosition());
 
     // select the TK node when the indicator is clicked,
     // cycle selection through associated TK nodes when clicked multiple times
@@ -65,7 +69,7 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     // set up an observer to reposition the indicator when the TK node containing
     // element moves relative to the root element
     useEffect(() => {
-        const observer = new ResizeObserver(() => (setTop(calculateTop())));
+        const observer = new ResizeObserver(() => (setPosition(calculatePosition())));
 
         observer.observe(rootElement);
         observer.observe(containingElement);
@@ -73,15 +77,16 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
         return () => {
             observer.disconnect();
         };
-    }, [rootElement, containingElement, calculateTop]);
+    }, [rootElement, containingElement, calculatePosition]);
 
     const style = {
-        top: `${top}px`
+        top: `${position.top}px`,
+        left: `${position.left}px`
     };
 
     return (
         <div
-            className="absolute -right-14 cursor-pointer p-1 text-xs font-medium text-grey-600"
+            className="absolute cursor-pointer p-1 text-xs font-medium text-grey-600"
             data-testid="tk-indicator"
             style={style}
             onClick={onClick}
@@ -91,7 +96,7 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     );
 }
 
-export default function TKPlugin({onCountChange = () => {}}) {
+export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedTextNode}) {
     const [editor] = useLexicalComposerContext();
     const [tkNodes, setTkNodes] = useState([]);
 
@@ -169,10 +174,11 @@ export default function TKPlugin({onCountChange = () => {}}) {
         };
     }, []);
 
-    useLexicalTextEntity(
+    useKoenigTextEntity(
         getTKMatch,
         TKNode,
         createTKNode,
+        nodeType
     );
 
     const editorRoot = editor.getRootElement();
