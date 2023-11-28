@@ -7,7 +7,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const REGEX = new RegExp(/(^|.)([^a-zA-Z0-9\s]?(TK)+[^a-zA-Z0-9\s]?)($|.)/);
 
-function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
+function TKIndicator({editor, rootElement, containingElement, nodeKeys, parentNodeKey}) {
     const tkClasses = editor._config.theme.tk?.split(' ') || [];
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
 
@@ -209,6 +209,7 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
                 containingElement={editor.getElementByKey(parentKey)}
                 editor={editor}
                 nodeKeys={nodeKeys}
+                parentNodeKey={parentKey}
                 rootElement={editorRoot}
             />
         );
