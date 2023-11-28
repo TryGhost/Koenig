@@ -12,18 +12,14 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
 
     // position element relative to the TK Node containing element
-    const calculatePosition = useCallback(() => {
+    const calculateTop = useCallback(() => {
         const rootElementRect = rootElement.getBoundingClientRect();
         const containerElementRect = containingElement.getBoundingClientRect();
 
-        const top = containerElementRect.top - rootElementRect.top + 4;
-
-        const left = rootElementRect.right + 4;
-
-        return {top, left};
+        return containerElementRect.top - rootElementRect.top + 4;
     }, [rootElement, containingElement]);
 
-    const [position, setPosition] = useState(calculatePosition());
+    const [top, setTop] = useState(calculateTop());
 
     // select the TK node when the indicator is clicked,
     // cycle selection through associated TK nodes when clicked multiple times
@@ -69,7 +65,7 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     // set up an observer to reposition the indicator when the TK node containing
     // element moves relative to the root element
     useEffect(() => {
-        const observer = new ResizeObserver(() => (setPosition(calculatePosition())));
+        const observer = new ResizeObserver(() => (setTop(calculateTop())));
 
         observer.observe(rootElement);
         observer.observe(containingElement);
@@ -77,16 +73,15 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
         return () => {
             observer.disconnect();
         };
-    }, [rootElement, containingElement, calculatePosition]);
+    }, [rootElement, containingElement, calculateTop]);
 
     const style = {
-        top: `${position.top}px`,
-        left: `${position.left}px`
+        top: `${top}px`
     };
 
     return (
         <div
-            className="absolute cursor-pointer p-1 text-xs font-medium text-grey-600"
+            className="absolute -right-14 cursor-pointer p-1 text-xs font-medium text-grey-600"
             data-testid="tk-indicator"
             style={style}
             onClick={onClick}
@@ -173,6 +168,8 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
             start: startOffset
         };
     }, []);
+
+    console.log(`nodeType`, nodeType);
 
     useKoenigTextEntity(
         getTKMatch,
