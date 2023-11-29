@@ -253,6 +253,10 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
         return null;
     }
 
+    if (editor._parentEditor) {
+        return null;
+    }
+
     console.log(`TKNodeMap`, tkNodeMap);
     const TKIndicators = Object.entries(tkNodeMap).map(([parentKey, {tkNodeKeys}]) => {
         console.log(`TKIndicators`,parentKey, tkNodeKeys);
