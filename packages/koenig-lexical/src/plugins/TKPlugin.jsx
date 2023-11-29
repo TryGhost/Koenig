@@ -211,11 +211,21 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
         }
     }, [editor, selectedCardKey, tkNodeMap, setTkNodeMap]);
 
+    const calculateNodeCount = useCallback(() => {
+        let count = 0;
+        Object.entries(tkNodeMap).forEach(([parentKey, {tkNodeKeys}]) => {
+            count += tkNodeKeys.length;
+        }
+        );
+        onCountChange(count);
+    }, [tkNodeMap, onCountChange]);
+
     // run once on mount and then let the editor state listener handle updates
     useLayoutEffect(() => {
         const nodes = getTKNodesForIndicators(editor.getEditorState()); 
         setTkNodes(nodes);
-        onCountChange(nodes.length);
+        buildTkNodeMap(nodes);
+        calculateNodeCount();
         /* eslint-disable-next-line react-hooks/exhaustive-deps */
     }, []);
 
@@ -227,10 +237,10 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
             if (JSON.stringify(foundNodes) !== JSON.stringify(tkNodes)) {
                 setTkNodes(foundNodes);
                 buildTkNodeMap(foundNodes);
-                onCountChange(foundNodes.length);
+                calculateNodeCount();
             }
         });
-    }, [editor, getTKNodesForIndicators, setTkNodes, tkNodes, onCountChange, buildTkNodeMap]);
+    }, [editor, getTKNodesForIndicators, setTkNodes, tkNodes, onCountChange, buildTkNodeMap, calculateNodeCount]);
 
     const createTKNode = useCallback((textNode) => {
         return $createTKNode(textNode.getTextContent());
