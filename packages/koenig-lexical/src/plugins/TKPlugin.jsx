@@ -253,6 +253,7 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
         return null;
     }
 
+    // only the root editor should render the indicators (prevent duplicates)
     if (editor._parentEditor) {
         return null;
     }
