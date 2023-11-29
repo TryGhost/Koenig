@@ -101,7 +101,7 @@ const KoenigComposer = ({
         return provider;
     }, [multiplayerEndpoint, multiplayerDocId, multiplayerDebug]);
 
-    const [tkNodes,setTkNodes] = React.useState([]);
+    const [tkNodeMap, setTkNodeMap] = React.useState({});
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
@@ -116,8 +116,8 @@ const KoenigComposer = ({
                 multiplayerUsername,
                 createWebsocketProvider,
                 onWordCountChangeRef,
-                tkNodes,
-                setTkNodes
+                tkNodeMap,
+                setTkNodeMap
             }}>
                 <KoenigSelectedCardContext>
                     {enableMultiplayer ? (
