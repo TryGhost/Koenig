@@ -1,6 +1,7 @@
 import KoenigComposerContext from '../context/KoenigComposerContext';
-import {$createTKNode, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
+import {$createTKNode, $isKoenigCard, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
 import {$getNodeByKey, $getSelection, $isRangeSelection, $nodesOfType} from 'lexical';
+import {EDIT_CARD_COMMAND} from './KoenigBehaviourPlugin';
 import {createPortal} from 'react-dom';
 import {useCallback, useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
@@ -9,7 +10,7 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 const REGEX = new RegExp(/(^|.)([^a-zA-Z0-9\s]?(TK)+[^a-zA-Z0-9\s]?)($|.)/);
 
-function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
+function TKIndicator({editor, rootElement, containingElement, nodeKeys, parentKey}) {
     const tkClasses = editor._config.theme.tk?.split(' ') || [];
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
 
@@ -31,6 +32,11 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
         e.stopPropagation();
 
         editor.update(() => {
+            if ($isKoenigCard($getNodeByKey(parentKey))) {
+                editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: parentKey});
+                return;
+            }
+
             let nodeKeyToSelect = nodeKeys[0];
 
             // if there is a selection, and it is a TK node, select the next one
@@ -51,6 +57,16 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
 
     // highlight all associated TK nodes when the indicator is hovered
     const onMouseEnter = (e) => {
+        // TODO: this isn't going to work for cards/nested editors unless we crawl each nested editor instance and apply styles
+        let isCard = false;
+        editor.getEditorState().read(() => {
+            if ($isKoenigCard($getNodeByKey(parentKey))) {
+                isCard = true;
+            }
+        });
+        if (isCard) {
+            return;
+        }
         nodeKeys.forEach((key) => {
             editor.getElementByKey(key).classList.remove(...tkClasses);
             editor.getElementByKey(key).classList.add(...tkHighlightClasses);
@@ -58,6 +74,16 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     };
 
     const onMouseLeave = (e) => {
+        // TODO: this isn't going to work for cards/nested editors unless we crawl each nested editor instance and apply styles
+        let isCard = false;
+        editor.getEditorState().read(() => {
+            if ($isKoenigCard($getNodeByKey(parentKey))) {
+                isCard = true;
+            }
+        });
+        if (isCard) {
+            return;
+        }
         nodeKeys.forEach((key) => {
             editor.getElementByKey(key).classList.add(...tkClasses);
             editor.getElementByKey(key).classList.remove(...tkHighlightClasses);
@@ -267,7 +293,7 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
                 containingElement={editor._parentEditor ? editor._parentEditor.getElementByKey(parentKey) : editor.getElementByKey(parentKey)}
                 editor={editor}
                 nodeKeys={tkNodeKeys}
-                parentNodeKey={parentKey}
+                parentKey={parentKey}
                 rootElement={editorRoot}
             />
         );
