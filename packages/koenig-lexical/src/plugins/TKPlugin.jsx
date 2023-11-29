@@ -1,7 +1,8 @@
+import KoenigComposerContext from '../context/KoenigComposerContext';
 import {$createTKNode, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
 import {$getNodeByKey, $getSelection, $isRangeSelection, $nodesOfType} from 'lexical';
 import {createPortal} from 'react-dom';
-import {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import {useCallback, useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {useKoenigTextEntity} from '../hooks/useKoenigTextEntity';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
@@ -93,8 +94,9 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys, parentNo
 
 export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedTextNode}) {
     const [editor] = useLexicalComposerContext();
+    // const {tkNodes, setTkNodes} = useContext(KoenigComposerContext);
     const [tkNodes, setTkNodes] = useState([]);
-
+    
     useEffect(() => {
         if (!editor.hasNodes([TKNode])) {
             throw new Error('TKPlugin: TKNode not registered on editor');
@@ -127,7 +129,9 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
     // update TKs on editor state updates
     useEffect(() => {
         return editor.registerUpdateListener(({editorState}) => {
+            console.log(`editor update`);
             const foundNodes = getTKNodesForIndicators(editorState);
+            console.log(`foundNodes`, foundNodes);
             // this is a simple way to check that the nodes actually changed before we re-render indicators on the dom
             if (JSON.stringify(foundNodes) !== JSON.stringify(tkNodes)) {
                 setTkNodes(foundNodes);
