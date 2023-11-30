@@ -1,5 +1,5 @@
 import React from 'react';
-import {$createRangeSelection, $getSelection, $setSelection} from 'lexical';
+import {$createRangeSelection, $getSelection, $setSelection, FOCUS_COMMAND} from 'lexical';
 import {LinkInput} from './LinkInput.jsx';
 import {TOGGLE_LINK_COMMAND} from '@lexical/link';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -19,11 +19,19 @@ export function LinkActionToolbar({href, onClose, ...props}) {
             onClose();
         });
     };
+
+    const updateFocus = () => {
+        editor.dispatchCommand(FOCUS_COMMAND);
+    };
+
     return (
         <LinkInput
             cancel={onClose}
             href={href}
             update={onLinkUpdate}
+            onFocus={() => {
+                updateFocus();
+            }}
             {...props}
         />
     );
