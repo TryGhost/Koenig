@@ -148,40 +148,48 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
     }, []);
 
     const buildTkNodeMap = useCallback((nodes) => {
-        // this is the structure we want to create for T
-        /*
-        {
-            indicatorNodeKey: {
-                editor?: LexicalEditor,
-                nodes: [nodeKeys]
-            }
-        }
-        */
         let nodeForIndicator;
 
         // nested editors all roll up to the containing card as the parent
         if (editor._parentEditor) {
+            /* 
+            tkNodeMap = {
+                [nodeForIndicator.getKey()]: {
+                    [editorKey]: {
+                        nodes: tkNodeKeys
+                    },
+                }
+            }
+            */ 
+
             // if this is a nested editor, we want to get the selected card from the parent editor    
             editor._parentEditor.getEditorState().read(() => {
                 nodeForIndicator = $getNodeByKey(selectedCardKey);
             });
 
-            // if there is already a node for this parent, combine the node keys into one array
-            let existingNodeKeys = tkNodeMap[nodeForIndicator.getKey()]?.nodes || [];
-            let newNodeKeys = nodes.map(node => node.getKey());
-
-            // dedupe the node keys
-            let dedupedNodeKeys = [...new Set([...existingNodeKeys, ...newNodeKeys])];
-
-            let returnedObj = {
-                node: nodeForIndicator,
-                editor: editor._parentEditor ? editor : null, // only store ref to nested editor if this is a nested editor
-                tkNodeKeys: dedupedNodeKeys
+            // build the map of the editor instance
+            let tkNodeKeys = nodes.map(node => node.getKey());
+            let newTkNodeMap = {
+                [editor.getKey()]: {
+                    tkNodeKeys
+                }
             };
 
-            setTkNodeMap(Object.assign({}, tkNodeMap, {[nodeForIndicator.getKey()]: returnedObj}));
+            // if there's already an entry for this parent key, we need to merge the new editor instance into the existing map
+            if (tkNodeMap[nodeForIndicator.getKey()]) {
+                newTkNodeMap = Object.assign({}, tkNodeMap[nodeForIndicator.getKey()], newTkNodeMap);
+            }
+
+            setTkNodeMap(Object.assign({}, tkNodeMap, {[nodeForIndicator.getKey()]: newTkNodeMap}));
         // otherwise, we need to parse the set of nodes and group by parents to build the data for the indicator(s)
         } else {
+            /*
+            tkNodeMap = {
+                [parentKey]: {
+                    tkNodeKeys: [nodeKeys]
+                }
+            } 
+            */
             // build the map of parent nodes to child nodes
             editor.getEditorState().read(() => {
                 let tkParentNodesMap = {};
@@ -199,13 +207,11 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
                 });
                 // then push each parent to the tkNodeMap
                 Object.entries(tkParentNodesMap).forEach(([parentKey, nodeKeys]) => {
-                    let returnedObj = {
-                        node: $getNodeByKey(parentKey),
-                        editor: editor._parentEditor ? editor : null, // only store ref to nested editor if this is a nested editor
+                    let newTkNodeMap = {
                         tkNodeKeys: nodeKeys
                     };
     
-                    setTkNodeMap(Object.assign({}, tkNodeMap, {[parentKey]: returnedObj}));
+                    setTkNodeMap(Object.assign({}, tkNodeMap, {[parentKey]: newTkNodeMap}));
                 });
             });
         }
@@ -214,11 +220,22 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
     const calculateNodeCount = useCallback(() => {
         let count = 0;
         Object.entries(tkNodeMap).forEach(([parentKey, {tkNodeKeys}]) => {
-            count += tkNodeKeys.length;
-        }
-        );
+            let editorInstance = editor._parentEditor ? editor._parentEditor : editor;
+            editorInstance.getEditorState().read(() => {
+                let parent = $getNodeByKey(parentKey);
+                if ($isKoenigCard(parent)) {
+                    // need to loop over nested editor instances
+                    Object.entries(tkNodeMap[parentKey]).forEach(([editorKey, e]) => {
+                        count += e.tkNodeKeys.length;
+                    });
+                } else {
+                    count += tkNodeKeys.length;
+                }
+            });
+        });
+        console.log(`count`,count); // TODO: seems to be one behind, doesn't re-calculate with the nodeTransform
         onCountChange(count);
-    }, [tkNodeMap, onCountChange]);
+    }, [tkNodeMap, onCountChange, editor]);
 
     // run once on mount and then let the editor state listener handle updates
     useLayoutEffect(() => {
@@ -296,7 +313,6 @@ export default function TKPlugin({onCountChange = () => {}, nodeType = ExtendedT
 
     console.log(`TKNodeMap`, tkNodeMap);
     const TKIndicators = Object.entries(tkNodeMap).map(([parentKey, {tkNodeKeys}]) => {
-        console.log(`TKIndicators`,parentKey, tkNodeKeys);
         return (
             <TKIndicator
                 key={parentKey}
