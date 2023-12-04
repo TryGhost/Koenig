@@ -21,21 +21,21 @@
   },
   "devDependencies": {
     "c8": "8.0.1",
-    "jsdom": "^22.1.0",
+    "jsdom": "^23.0.0",
     "mocha": "10.2.0",
     "should": "13.2.3",
     "sinon": "17.0.1"
   },
   "dependencies": {
-    "@lexical/clipboard": "^0.12.2",
-    "@lexical/code": "^0.12.2",
-    "@lexical/headless": "^0.12.2",
-    "@lexical/link": "^0.12.2",
-    "@lexical/list": "^0.12.2",
-    "@lexical/rich-text": "^0.12.2",
+    "@lexical/clipboard": "0.12.2",
+    "@lexical/code": "0.12.2",
+    "@lexical/headless": "0.12.2",
+    "@lexical/link": "0.12.2",
+    "@lexical/list": "0.12.2",
+    "@lexical/rich-text": "0.12.2",
     "@tryghost/kg-default-nodes": "^0.2.12",
-    "jsdom": "^22.1.0",
-    "lexical": "^0.12.2",
+    "jsdom": "^23.0.0",
+    "lexical": "0.12.2",
     "prettier": "^3.0.0"
   },
   "gitHead": "1b25c63a23285d60d8c938c95240c9f70fd705de"

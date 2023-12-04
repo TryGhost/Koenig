@@ -11,7 +11,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     strategy:
       matrix:
-        node: ['16.14.0', '18.12.1' ]
+        node: ['18.12.1' ]
     env:
       FORCE_COLOR: 1
       # https://github.com/vitejs/vite/issues/2433
@@ -19,7 +19,7 @@ jobs:
       CI: true
     name: Node ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           fetch-depth: 0
 
