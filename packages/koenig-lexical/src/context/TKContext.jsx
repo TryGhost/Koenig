@@ -31,13 +31,13 @@ export const TKContext = ({children}) => {
         let tkCount = 0;
 
         Object.entries(editorTkNodeMap).forEach(([editorKey, nodeMap]) => {
-            nodeMap.forEach(({topLevelNodeKey, tkNodes}) => {
-                tkCount = tkCount + tkNodes.length;
+            nodeMap.forEach(({topLevelNodeKey, tkNodeKeys}) => {
+                tkCount = tkCount + tkNodeKeys.length;
 
                 if (tkNodeMap[topLevelNodeKey] === undefined) {
-                    tkNodeMap[topLevelNodeKey] = [...tkNodes];
+                    tkNodeMap[topLevelNodeKey] = [...tkNodeKeys];
                 } else {
-                    tkNodeMap[topLevelNodeKey].push(...tkNodes);
+                    tkNodeMap[topLevelNodeKey].push(...tkNodeKeys);
                 }
             });
         });

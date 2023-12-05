@@ -128,16 +128,16 @@ export default function TKPlugin() {
                 const topLevelNodeKey = tkNode.getTopLevelElement()?.getKey();
 
                 if (internalNodeMap[topLevelNodeKey] === undefined) {
-                    internalNodeMap[topLevelNodeKey] = [tkNode];
+                    internalNodeMap[topLevelNodeKey] = [tkNode.getKey()];
                 } else {
-                    internalNodeMap[topLevelNodeKey].push(tkNode);
+                    internalNodeMap[topLevelNodeKey].push(tkNode.getKey());
                 }
             });
         });
 
         // convert to array of {topLevelNodeKey, tkNodes: [nodeKeys]} pairs
-        return Object.entries(internalNodeMap).map(([topLevelNodeKey, tkNodes]) => {
-            return {topLevelNodeKey: parentEditorNodeKey || topLevelNodeKey, tkNodes};
+        return Object.entries(internalNodeMap).map(([topLevelNodeKey, tkNodeKeys]) => {
+            return {topLevelNodeKey: parentEditorNodeKey || topLevelNodeKey, tkNodeKeys};
         });
     }, [parentEditorNodeKey]);
 
