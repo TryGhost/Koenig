@@ -98,7 +98,7 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
     );
 }
 
-export default function TKPlugin({isNested}) {
+export default function TKPlugin() {
     const [editor] = useLexicalComposerContext();
     const {tkNodeMap, editorTkNodeMap, setEditorTkNodes} = useTKContext();
     const {nodeKey: parentEditorNodeKey} = useContext(CardContext);
@@ -231,6 +231,11 @@ export default function TKPlugin({isNested}) {
         createTKNode,
         nodeType
     );
+
+    // we only want to render TK indicators for the top level editor
+    if (parentEditorNodeKey) {
+        return null;
+    }
 
     const editorRoot = editor.getRootElement();
     const editorRootParent = editor.getRootElement()?.parentElement;

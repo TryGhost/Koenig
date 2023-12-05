@@ -115,7 +115,7 @@ const KoenigComposableEditor = ({
             {onBlur && <KoenigBlurPlugin onBlur={onBlur} />}
             {onFocus && <KoenigFocusPlugin onFocus={onFocus} />}
             <MarkdownPastePlugin />
-            {isTKEnabled && <TKPlugin isNested={isNested} />}
+            {isTKEnabled && <TKPlugin />}
             {children}
         </div>
     );
