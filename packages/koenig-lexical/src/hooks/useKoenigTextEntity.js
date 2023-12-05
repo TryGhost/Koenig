@@ -1,22 +1,22 @@
 // see lexical useLexicalTextEntity hook
 
-import {$createTextNode, $isTextNode} from 'lexical';
+import {$createTextNode, $isTextNode, TextNode} from 'lexical';
 import {ExtendedTextNode} from '@tryghost/kg-default-nodes';
 import {mergeRegister} from '@lexical/utils';
 import {useEffect} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function useLexicalTextEntity(getMatch,targetNode,createNode) {
+export function useKoenigTextEntity(getMatch, targetNode, createNode, nodeType = TextNode) {
     const [editor] = useLexicalComposerContext();
 
     useEffect(() => {
         return mergeRegister(
-            ...registerExtendedTextEntity(editor, getMatch, targetNode, createNode),
+            ...registerExtendedTextEntity(editor, getMatch, targetNode, createNode, nodeType),
         );
-    }, [createNode, editor, getMatch, targetNode]);
+    }, [createNode, editor, getMatch, targetNode, nodeType]);
 }
 
-function registerExtendedTextEntity(editor,getMatch,targetNode,createNode) {
+function registerExtendedTextEntity(editor, getMatch, targetNode, createNode, nodeType) {
     const isTargetNode = (node) => {
         return node instanceof targetNode;
     };
@@ -114,8 +114,8 @@ function registerExtendedTextEntity(editor,getMatch,targetNode,createNode) {
 
             if (
                 match.start === 0 &&
-        $isTextNode(prevSibling) &&
-        prevSibling.isTextEntity()
+                $isTextNode(prevSibling) &&
+                prevSibling.isTextEntity()
             ) {
                 continue;
             }
@@ -178,7 +178,7 @@ function registerExtendedTextEntity(editor,getMatch,targetNode,createNode) {
     };
 
     const removePlainTextTransform = editor.registerNodeTransform(
-        ExtendedTextNode,
+        nodeType,
         textNodeTransform,
     );
     const removeReverseNodeTransform = editor.registerNodeTransform(
