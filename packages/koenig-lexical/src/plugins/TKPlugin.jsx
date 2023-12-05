@@ -1,6 +1,7 @@
 import CardContext from '../context/CardContext';
 import {$createTKNode, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
-import {$getNodeByKey, $getSelection, $isRangeSelection, $nodesOfType, TextNode} from 'lexical';
+import {$getNodeByKey, $getSelection, $isDecoratorNode, $isRangeSelection, $nodesOfType, TextNode} from 'lexical';
+import {SELECT_CARD_COMMAND} from './KoenigBehaviourPlugin';
 import {createPortal} from 'react-dom';
 import {useCallback, useContext, useEffect, useLayoutEffect, useState} from 'react';
 import {useKoenigTextEntity} from '../hooks/useKoenigTextEntity';
@@ -10,9 +11,11 @@ import {useTKContext} from '../context/TkContext';
 const REGEX = new RegExp(/(^|.)([^\p{L}\p{N}\s]*(TK)+[^\p{L}\p{N}\s]*)(.)?/u);
 const WORD_CHAR_REGEX = new RegExp(/\p{L}|\p{N}/u);
 
-function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
+function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
     const tkClasses = editor._config.theme.tk?.split(' ') || [];
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
+
+    const containingElement = editor.getElementByKey(parentKey);
 
     // position element relative to the TK Node containing element
     const calculateTop = useCallback(() => {
@@ -36,6 +39,11 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
         e.stopPropagation();
 
         editor.update(() => {
+            if ($isDecoratorNode($getNodeByKey(parentKey))) {
+                editor.dispatchCommand(SELECT_CARD_COMMAND, {cardKey: parentKey});
+                return;
+            }
+
             let nodeKeyToSelect = nodeKeys[0];
 
             // if there is a selection, and it is a TK node, select the next one
@@ -54,19 +62,37 @@ function TKIndicator({editor, rootElement, containingElement, nodeKeys}) {
         });
     };
 
-    // highlight all associated TK nodes when the indicator is hovered
-    const onMouseEnter = (e) => {
+    const toggleHighlightClasses = (isHighlighted) => {
+        let isCard;
+
+        editor.getEditorState().read(() => {
+            if ($isDecoratorNode($getNodeByKey(parentKey))) {
+                isCard = true;
+            }
+        });
+
+        if (isCard) {
+            return;
+        }
+
         nodeKeys.forEach((key) => {
-            editor.getElementByKey(key).classList.remove(...tkClasses);
-            editor.getElementByKey(key).classList.add(...tkHighlightClasses);
+            if (isHighlighted) {
+                editor.getElementByKey(key).classList.remove(...tkClasses);
+                editor.getElementByKey(key).classList.add(...tkHighlightClasses);
+            } else {
+                editor.getElementByKey(key).classList.add(...tkClasses);
+                editor.getElementByKey(key).classList.remove(...tkHighlightClasses);
+            }
         });
     };
 
+    // highlight all associated TK nodes when the indicator is hovered
+    const onMouseEnter = (e) => {
+        toggleHighlightClasses(true);
+    };
+
     const onMouseLeave = (e) => {
-        nodeKeys.forEach((key) => {
-            editor.getElementByKey(key).classList.add(...tkClasses);
-            editor.getElementByKey(key).classList.remove(...tkHighlightClasses);
-        });
+        toggleHighlightClasses(false);
     };
 
     // set up an observer to reposition the indicator when the TK node containing
@@ -254,9 +280,9 @@ export default function TKPlugin() {
         return (
             <TKIndicator
                 key={parentKey}
-                containingElement={parentContainer}
                 editor={editor}
                 nodeKeys={nodeKeys}
+                parentKey={parentKey}
                 rootElement={editorRoot}
             />
         );
