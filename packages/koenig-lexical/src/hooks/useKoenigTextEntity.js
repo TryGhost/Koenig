@@ -1,7 +1,6 @@
 // see lexical useLexicalTextEntity hook
 
 import {$createTextNode, $isTextNode, TextNode} from 'lexical';
-import {ExtendedTextNode} from '@tryghost/kg-default-nodes';
 import {mergeRegister} from '@lexical/utils';
 import {useEffect} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
