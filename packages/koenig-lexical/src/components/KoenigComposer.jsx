@@ -6,7 +6,7 @@ import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
 import {Doc} from 'yjs';
 import {KoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import {TKContext} from '../context/TkContext';
+import {TKContext} from '../context/TKContext';
 import {WebsocketProvider} from 'y-websocket';
 
 // Catch any errors that occur during Lexical updates and log them

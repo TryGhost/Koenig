@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTKContext} from '../context/TkContext';
+import {useTKContext} from '../context/TKContext';
 
 export default function TKCountPlugin({onChange}) {
     const {tkCount} = useTKContext();
