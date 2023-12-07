@@ -88,25 +88,19 @@ function $selectCard(editor, nodeKey) {
 
 // remove empty cards when they are deselected
 function $deselectCard(editor, nodeKey) {
-    console.log(`deselect`,`nodekey`,nodeKey);
     const cardNode = $getNodeByKey(nodeKey);
-    console.log(`cardNode`,cardNode,cardNode?.isEmpty?.());
     if (cardNode?.isEmpty?.()) {
-        console.log(`isEmpty`);
         $removeOrReplaceNodeWithParagraph(editor, cardNode);
     }
 }
 
 function $removeOrReplaceNodeWithParagraph(editor, node) {
     if ($getRoot().getLastChild().is(node)) {
-        console.log(`one`);
         const paragraph = $createParagraphNode();
         $getRoot().append(paragraph);
         paragraph.select();
     } else {
-        console.log(`two`);
         const nextNode = node.getNextSibling();
-        console.log(`nextNode`,nextNode);
         if ($isDecoratorNode(nextNode)) {
             $selectDecoratorNode(nextNode);
             // selecting a decorator node does not change the
@@ -343,12 +337,12 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                             cardNode.selectPrevious();
                         }
                     } else if (nextSibling) {
-                        if (nextSibling.selectStart) {
-                            nextSibling.selectStart();
-                        } else if ($isDecoratorNode(nextSibling)) {
+                        if ($isDecoratorNode(nextSibling)) {
                             const nodeSelection = $createNodeSelection();
                             nodeSelection.add(nextSibling.getKey());
                             $setSelection(nodeSelection);
+                        } else if (nextSibling.selectStart) { // decorator nodes have selectStart, so this needs to come after that check
+                            nextSibling.selectStart();
                         } else {
                             cardNode.selectNext();
                         }
