@@ -39,7 +39,7 @@ export const AllDefaultPlugins = () => {
 
             {/* Koenig Plugins */}
             <CardMenuPlugin />
-            {cardConfig.feature?.emojiPicker ? <EmojiPickerPlugin /> : null}
+            <EmojiPickerPlugin />
 
             {/* Card Plugins */}
             <AudioPlugin />
