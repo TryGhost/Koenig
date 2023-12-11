@@ -17990,9 +17990,9 @@ style-mod@^4.0.0, style-mod@^4.1.0:
   integrity sha512-Ca5ib8HrFn+f+0n4N4ScTIA9iTOQ7MaGS1ylHcoVqW9J7w2w8PzN6g9gKmTYgGEBH8e120+RCmhpje6jC5uGWA==
 
 stylelint@^16.0.0:
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-16.0.1.tgz#613ad8841f78e10bef48bf953d759e0f73d3e153"
-  integrity sha512-nPO7f7JBxX0gPwdQs1fBQL+b0PabHykxSQ9HtpobbtV7pe2lb/nmlqxKepPUwHJTi9P9iu+Hkwt1mdmOnkkTVw==
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-16.0.2.tgz#fe49e9ff7460d9ae98501e9116884238432ea31e"
+  integrity sha512-SxA/rg3VWxdoHZlW0nmVueWO1E7TAKW4W6mmA3iTxxEF9bIeQdFZu2oiBlQYyNe1pGnOamOqo2XYnI7cs5Bgow==
   dependencies:
     "@csstools/css-parser-algorithms" "^2.3.2"
     "@csstools/css-tokenizer" "^2.2.1"
