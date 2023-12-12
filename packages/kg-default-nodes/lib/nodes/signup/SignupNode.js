@@ -9,7 +9,7 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         {name: 'backgroundColor', default: '#F0F0F0'},
         {name: 'backgroundImageSrc', default: ''},
         {name: 'backgroundSize', default: 'cover'},
-        {name: 'textColor', default: '#000000'},
+        {name: 'textColor', default: ''},
         {name: 'buttonColor', default: 'accent'},
         {name: 'buttonTextColor', default: '#FFFFFF'},
         {name: 'buttonText', default: 'Subscribe'},
@@ -28,7 +28,7 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         this.__backgroundColor = backgroundColor || '#F0F0F0';
         this.__backgroundImageSrc = backgroundImageSrc || '';
         this.__backgroundSize = backgroundSize || 'cover';
-        this.__textColor = textColor || (backgroundColor === 'transparent' ? '' : '#000000');
+        this.__textColor = backgroundColor === 'transparent' ? '' : textColor;
         this.__buttonColor = buttonColor || 'accent';
         this.__buttonTextColor = buttonTextColor || '#FFFFFF';
         this.__buttonText = buttonText || 'Subscribe';
