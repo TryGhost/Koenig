@@ -32,7 +32,8 @@ export function SnippetActionToolbar({onClose, ...props}) {
                 const selection = $getSelection();
                 let nodeJson;
 
-                if (selection.getNodes().length === 1 && $isTextNode(selection.getNodes()[0])) {
+                const selectedNodes = selection.getNodes();
+                if (selectedNodes.length === 1 && $isTextNode(selectedNodes[0])) {
                     const node = selection.getNodes()[0];
                     const parentNode = node.getParent(); // textNodes must have a parent
                     if ($isQuoteNode(parentNode)) {
