@@ -5,7 +5,7 @@ import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 function cardTemplate(nodeData) {
     const cardClasses = getCardClasses(nodeData).join(' ');
 
-    const backgroundAccent = nodeData.backgroundColor === 'accent' && !nodeData.backgroundImageSrc ? 'kg-style-accent' : ''; // don't apply accent style if there's a background image
+    const backgroundAccent = getAccentClass(nodeData); // don't apply accent style if there's a background image
     const buttonAccent = nodeData.buttonColor === 'accent' ? 'kg-style-accent' : '';
     const buttonStyle = nodeData.buttonColor !== 'accent' ? `background-color: ${nodeData.buttonColor};` : ``;
     const alignment = nodeData.alignment === 'center' ? 'kg-align-center' : '';
@@ -149,3 +149,15 @@ export function getCardClasses(nodeData) {
 
     return cardClasses;
 }
+
+// In general, we don't want to apply the accent style if there's a background image
+//  but with the split format we display both an image and a background color
+const getAccentClass = (nodeData) => {
+    if (nodeData.layout === 'split' && nodeData.backgroundColor === 'accent') {
+        return 'kg-style-accent';
+    } else if (nodeData.layout !== 'split' && !nodeData.backgroundImageSrc && nodeData.backgroundColor === 'accent') {
+        return 'kg-style-accent';
+    } else {
+        return '';
+    }
+};
