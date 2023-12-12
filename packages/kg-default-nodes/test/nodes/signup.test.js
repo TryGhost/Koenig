@@ -55,9 +55,11 @@ describe('SignupNode', function () {
 
     describe('clone', function () {
         it('clones the node', editorTest(function () {
+            dataset.backgroundColor = '#000000';
             const signupNode = $createSignupNode(dataset);
             const clonedSignupNode = SignupNode.clone(signupNode);
-            clonedSignupNode.should.deepEqual(signupNode);
+            const cloneDataset = clonedSignupNode.getDataset();
+            cloneDataset.should.deepEqual(dataset);
         }));
     });
 
