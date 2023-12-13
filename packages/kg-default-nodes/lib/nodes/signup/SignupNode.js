@@ -28,7 +28,7 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         this.__backgroundColor = backgroundColor || '#F0F0F0';
         this.__backgroundImageSrc = backgroundImageSrc || '';
         this.__backgroundSize = backgroundSize || 'cover';
-        this.__textColor = backgroundColor === 'transparent' ? '' : textColor;
+        this.__textColor = backgroundColor === 'transparent' ? '' : textColor || '#000000';
         this.__buttonColor = buttonColor || 'accent';
         this.__buttonTextColor = buttonTextColor || '#FFFFFF';
         this.__buttonText = buttonText || 'Subscribe';
