@@ -28,7 +28,7 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         this.__backgroundColor = backgroundColor || '#F0F0F0';
         this.__backgroundImageSrc = backgroundImageSrc || '';
         this.__backgroundSize = backgroundSize || 'cover';
-        this.__textColor = backgroundColor === 'transparent' ? '' : textColor || '#000000';
+        this.__textColor = (backgroundColor === 'transparent' && (layout === 'split' || !backgroundImageSrc)) ? '' : textColor || '#000000'; // text color should inherit with a transparent bg color unless we're using an image for the background (which supercedes the bg color)
         this.__buttonColor = buttonColor || 'accent';
         this.__buttonTextColor = buttonTextColor || '#FFFFFF';
         this.__buttonText = buttonText || 'Subscribe';
