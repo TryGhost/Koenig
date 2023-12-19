@@ -13637,10 +13637,10 @@ markdown-it-footnote@^3.0.3:
   resolved "https://registry.yarnpkg.com/markdown-it-footnote/-/markdown-it-footnote-3.0.3.tgz#e0e4c0d67390a4c5f0c75f73be605c7c190ca4d8"
   integrity sha512-YZMSuCGVZAjzKMn+xqIco9d1cLGxbELHZ9do/TSYVzraooV8ypsppKNmUJ0fVH5ljkCInQAtFpm8Rb3eXSrt5w==
 
-markdown-it-image-lazy-loading@^1.1.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/markdown-it-image-lazy-loading/-/markdown-it-image-lazy-loading-1.2.0.tgz#dc86c7a1c72d18ecd7fe1c285a34611c84c3e11a"
-  integrity sha512-/aeNoa7DxCe3Ey01sF68shdj5JML+ixzr0adWAliwJZp0lpezl84iLCWybhcmCmSZgX0RcO7wGKzXMOI57RbKQ==
+markdown-it-image-lazy-loading@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/markdown-it-image-lazy-loading/-/markdown-it-image-lazy-loading-2.0.1.tgz#bfc233281864c43bfa2ea6535c457c88b4b7cafb"
+  integrity sha512-IN1DNE2ubw8yn0I7G2conoxSz0R5GgMuOczbxtV+k20MtXeHrDvMQPkQYYGQSd+ejy4eSKQOhqu3gk676Ca//A==
   dependencies:
     image-size "^1.0.0"
 
