@@ -8993,7 +8993,6 @@ eslint-plugin-es-x@^7.1.0:
 
 eslint-plugin-filenames@allouis/eslint-plugin-filenames#15dc354f4e3d155fc2d6ae082dbfc26377539a18:
   version "1.3.2"
-  uid "15dc354f4e3d155fc2d6ae082dbfc26377539a18"
   resolved "https://codeload.github.com/allouis/eslint-plugin-filenames/tar.gz/15dc354f4e3d155fc2d6ae082dbfc26377539a18"
   dependencies:
     lodash.camelcase "4.3.0"
@@ -17050,14 +17049,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rollup@2.79.1:
-  version "2.79.1"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.79.1.tgz#bedee8faef7c9f93a2647ac0108748f497f081c7"
-  integrity sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==
-  optionalDependencies:
-    fsevents "~2.3.2"
-
-"rollup@^2.25.0 || ^3.3.0", rollup@^3.21.0:
+rollup@3.29.4, "rollup@^2.25.0 || ^3.3.0", rollup@^3.21.0:
   version "3.29.4"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.29.4.tgz#4d70c0f9834146df8705bfb69a9a19c9e1109981"
   integrity sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==
