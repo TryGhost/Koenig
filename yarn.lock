@@ -17049,14 +17049,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rollup@3.29.4, "rollup@^2.25.0 || ^3.3.0", rollup@^3.21.0:
-  version "3.29.4"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.29.4.tgz#4d70c0f9834146df8705bfb69a9a19c9e1109981"
-  integrity sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==
-  optionalDependencies:
-    fsevents "~2.3.2"
-
-rollup@^4.2.0:
+rollup@4.9.2, rollup@^4.2.0:
   version "4.9.2"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-4.9.2.tgz#19d730219b7ec5f51372c6cf15cfb841990489fe"
   integrity sha512-66RB8OtFKUTozmVEh3qyNfH+b+z2RXBVloqO2KCC/pjFaGaHtxP9fVfOQKPSGXg2mElmjmxjW/fZ7iKrEpMH5Q==
@@ -17074,6 +17067,13 @@ rollup@^4.2.0:
     "@rollup/rollup-win32-arm64-msvc" "4.9.2"
     "@rollup/rollup-win32-ia32-msvc" "4.9.2"
     "@rollup/rollup-win32-x64-msvc" "4.9.2"
+    fsevents "~2.3.2"
+
+"rollup@^2.25.0 || ^3.3.0", rollup@^3.21.0:
+  version "3.29.4"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.29.4.tgz#4d70c0f9834146df8705bfb69a9a19c9e1109981"
+  integrity sha512-oWzmBZwvYrU0iJHtDmhsm662rC15FRXmcjCk1xD771dFDx5jJ02ufAQQTn0etB2emNk4J9EZg/yWKpsn9BWGRw==
+  optionalDependencies:
     fsevents "~2.3.2"
 
 rrweb-cssom@^0.6.0:
