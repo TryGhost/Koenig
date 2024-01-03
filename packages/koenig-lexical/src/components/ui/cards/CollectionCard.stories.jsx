@@ -222,7 +222,8 @@ PopulatedList.args = {
     collections: mockCollections,
     header: 'Latest',
     postCount: 6,
-    layout: 'list'
+    layout: 'list',
+    cardWidth: 'wide'
 };
 
 export const PopulatedGrid = Template.bind({});
