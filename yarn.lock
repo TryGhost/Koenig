@@ -20110,9 +20110,9 @@ y-protocols@^1.0.5:
     lib0 "^0.2.85"
 
 y-websocket@^1.5.0:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/y-websocket/-/y-websocket-1.5.2.tgz#349f87fc4c8d0b6ac9acfba0a4755479e62a7699"
-  integrity sha512-fdNmnunjYsLkNZmQiOuo56/RAhMVHoJv9fqVn1gNvFd2wHl4ifGAjc1goIzIvUz4LBocGJS19u9AD44G38pO4Q==
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/y-websocket/-/y-websocket-1.5.3.tgz#1648ae43e820639307237e92f8bde2ac067a41f6"
+  integrity sha512-wVpKunsDUnVApOymp/ZtaXVyb1Q3csxGdono8Lx6E5k11OfupKUJZV86Eb16mpdUTkEdi7I7L1LVBlZlwd92bA==
   dependencies:
     lib0 "^0.2.52"
     lodash.debounce "^4.0.8"
