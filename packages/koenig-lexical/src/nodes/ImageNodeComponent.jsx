@@ -90,6 +90,7 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
     }, [editor, imageUploader.isLoading, imageUploader.upload, nodeKey, src]);
 
     React.useEffect(() => {
+        // If an initial file is provided, upload it
         const uploadInitialFile = async (file) => {
             if (file && !src) {
                 await imageUploadHandler([file], nodeKey, editor, imageUploader.upload);
@@ -98,26 +99,20 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
 
         uploadInitialFile(initialFile);
 
-        // We only do this for init
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    React.useEffect(() => {
-        const populateImageDimensions = async (imageSrc) => {
-            return await getImageDimensions(imageSrc);
-        };
-
-        // If we're just given a URL, try to populate the width/height
-        // This occurs if the user runs /image [URL] or pastes a HTML image
-        if (src && !initialFile && !triggerFileDialog) {
-            populateImageDimensions(src).then(({width, height}) => {
+        // If we're given a URL instead of a file, populate the image dimensions
+        const populateImageDimensions = async () => {
+            if (src && !initialFile && !triggerFileDialog) {
+                const {width, height} = await getImageDimensions(src);
                 editor.update(() => {
                     const node = $getNodeByKey(nodeKey);
                     node.width = width;
                     node.height = height;
                 });
-            });
-        }
+            }
+        };
+
+        populateImageDimensions();
+
         // We only do this for init
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
