@@ -13,6 +13,7 @@ import {LinkInput} from '../components/ui/LinkInput';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
 import {dataSrcToFile} from '../utils/dataSrcToFile.js';
+import {getImageDimensions} from '../utils/getImageDimensions.js';
 import {getImageFilenameFromSrc} from '../utils/getImageFilenameFromSrc';
 import {imageUploadHandler} from '../utils/imageUploadHandler';
 import {isGif} from '../utils/isGif';
@@ -97,6 +98,26 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
 
         uploadInitialFile(initialFile);
 
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        const populateImageDimensions = async (imageSrc) => {
+            return await getImageDimensions(imageSrc);
+        };
+
+        // If we're just given a URL, try to populate the width/height
+        // This occurs if the user runs /image [URL] or pastes a URL into the editor
+        if (src && !initialFile && !triggerFileDialog) {
+            populateImageDimensions(src).then(({width, height}) => {
+                editor.update(() => {
+                    const node = $getNodeByKey(nodeKey);
+                    node.width = width;
+                    node.height = height;
+                });
+            });
+        }
         // We only do this for init
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
