@@ -108,7 +108,7 @@ export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionE
         };
 
         // If we're just given a URL, try to populate the width/height
-        // This occurs if the user runs /image [URL] or pastes a URL into the editor
+        // This occurs if the user runs /image [URL] or pastes a HTML image
         if (src && !initialFile && !triggerFileDialog) {
             populateImageDimensions(src).then(({width, height}) => {
                 editor.update(() => {
