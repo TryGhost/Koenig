@@ -59,16 +59,13 @@ typings/
 # dotenv environment variables file
 .env
 
-# vscode local config/prefs
-.vscode/settings.json
-
 # IDE
 .idea/*
 *.iml
 *.sublime-*
 .vscode/*
 !.vscode/launch.json
-!.vscode/settings.json
+#!.vscode/settings.json
 
 # OSX
 .DS_Store
