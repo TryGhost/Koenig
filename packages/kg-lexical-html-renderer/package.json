@@ -4,12 +4,16 @@
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-lexical-html-renderer",
   "author": "Ghost Foundation",
   "license": "MIT",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
-    "test": "NODE_ENV=testing c8 --all --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
-    "lint:code": "eslint *.js lib/ --ext .js --cache",
+    "build": "tsc",
+    "prepare": "tsc",
+    "test": "yarn test:unit && yarn test:types",
+    "test:unit": "NODE_ENV=testing c8 --all --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
+    "test:types": "tsc --noEmit",
     "lint": "yarn lint:code && yarn lint:test",
-    "lint:test": "eslint -c test/.eslintrc.js test/ --ext .js --cache",
+    "lint:code": "eslint *.js lib/ --ext .ts --cache",
+    "lint:test": "eslint -c test/.eslintrc.js test/ --ext .ts --cache",
     "posttest": "yarn lint"
   },
   "files": [

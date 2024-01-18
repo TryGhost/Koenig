@@ -1,0 +1,21 @@
+{
+  // required for tests to find module declarations in the src folder
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+
+    /* JavaScript Support */
+    "allowJs": true,          /* Allow javascript files to be compiled. */
+    /* Language and Environment */
+    "target": "es5",
+    /* Emit */
+    "outDir": "build",
+    "declaration": true,      /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    /* Type Checking */
+    "strict": true,           /* Enable all strict type-checking options. */
+    "noImplicitAny": true,    /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+  },
+  "include": ["./lib/**/*"]
+}

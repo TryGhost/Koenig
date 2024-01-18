@@ -1,7 +1,12 @@
-const {$isLinkNode} = require('@lexical/link');
-const {$isTextNode, $isLineBreakNode} = require('lexical');
+import {$isLinkNode} from '@lexical/link';
+import {$isTextNode, $isLineBreakNode} from 'lexical';
+import type {LexicalNode, TextFormatType} from 'lexical';
+import {RendererOptions} from '../convert-to-html-string';
 
-const FORMAT_TAG_MAP = {
+type TextFormatAbbreviation = 'STRONG' | 'EM' | 'S' | 'U' | 'CODE' | 'SUB' | 'SUP' | 'MARK';
+type ExportChildren = (node: LexicalNode, options: RendererOptions) => string;
+
+const FORMAT_TAG_MAP: Record<TextFormatType, TextFormatAbbreviation> = {
     bold: 'STRONG',
     italic: 'EM',
     strikethrough: 'S',
@@ -15,23 +20,30 @@ const FORMAT_TAG_MAP = {
 // Builds and renders text content, useful to ensure proper format tag opening/closing
 // and html escaping
 class TextContent {
-    constructor(exportChildren, options) {
+    nodes: LexicalNode[];
+    exportChildren: ExportChildren;
+    options: RendererOptions;
+
+    constructor(exportChildren: ExportChildren, options: RendererOptions) {
         this.exportChildren = exportChildren;
         this.options = options;
 
         this.nodes = [];
     }
 
-    addNode(node) {
+    addNode(node: LexicalNode): void {
         this.nodes.push(node);
     }
 
-    render() {
-        const document = this.options.dom.window.document;
-        const root = document.createElement('div');
+    render(): string {
+        // NOTE: dom would always be defined here because this is called by the renderer, which instantiates it if it's not passed in
+        //  so this needs to be cleaned up.. maybe by a new interface for TextContent
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const document: Document = this.options.dom.window.document;
+        const root: HTMLElement = document.createElement('div');
 
         let currentNode = root;
-        const openFormats = [];
+        const openFormats: TextFormatType[] = [];
 
         for (let i = 0; i < this.nodes.length; i++) {
             const node = this.nodes[i];
@@ -56,7 +68,7 @@ class TextContent {
                 }
 
                 // open format tags in correct order
-                const formatsToOpen = [];
+                const formatsToOpen: TextFormatType[] = [];
 
                 // get base list of formats that need to open
                 Object.entries(FORMAT_TAG_MAP).forEach(([format]) => {
@@ -127,7 +139,7 @@ class TextContent {
 
     // PRIVATE -----------------------------------------------------------------
 
-    _buildAnchorElement(anchor, node) {
+    _buildAnchorElement(anchor: HTMLElement, node: LexicalNode) {
         // Only set the href if we have a URL, otherwise we get a link to the current page
         if (node.getURL()) {
             anchor.setAttribute('href', node.getURL());

@@ -1,6 +1,20 @@
+import {SerializedEditorState, LexicalEditor, LexicalNode} from 'lexical';
+
+interface RenderOptions {
+    target?: 'html' | 'plaintext';
+    dom?: import('jsdom').JSDOM;
+    // TODO: we should define some standard here once we move to more cards with dynamic data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    renderData?: Map<number, any>;
+}
+
 class LexicalHTMLRenderer {
-    constructor({dom, nodes} = {}) {
+    dom: import('jsdom').JSDOM;
+    nodes: LexicalNode[];
+
+    constructor({dom, nodes}: {dom?: import('jsdom').JSDOM, nodes?: LexicalNode[]} = {}) {
         if (!dom) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const jsdom = require('jsdom');
             const {JSDOM} = jsdom;
 
@@ -12,15 +26,22 @@ class LexicalHTMLRenderer {
         this.nodes = nodes || [];
     }
 
-    async render(lexicalState, userOptions = {}) {
+    async render(lexicalState: SerializedEditorState | string, userOptions: RenderOptions = {}) {
+        // TODO: we can't move these to imports unless they are top level
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {createHeadlessEditor} = require('@lexical/headless');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {ListItemNode, ListNode} = require('@lexical/list');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {HeadingNode, QuoteNode} = require('@lexical/rich-text');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {LinkNode} = require('@lexical/link');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {$convertToHtmlString} = require('./convert-to-html-string');
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const {getDynamicDataNodes} = require('./get-dynamic-data-nodes');
 
-        const defaultOptions = {
+        const defaultOptions: RenderOptions = {
             target: 'html',
             dom: this.dom
         };
@@ -35,7 +56,7 @@ class LexicalHTMLRenderer {
             ...this.nodes
         ];
 
-        const editor = createHeadlessEditor({
+        const editor: LexicalEditor = createHeadlessEditor({
             nodes: DEFAULT_NODES
         });
 
@@ -45,8 +66,8 @@ class LexicalHTMLRenderer {
         const dynamicDataNodes = getDynamicDataNodes(editorState);
 
         // fetch dynamic data
-        let renderData = new Map();
-        await Promise.all(dynamicDataNodes.map(async (node) => {
+        const renderData = new Map();
+        await Promise.all(dynamicDataNodes.map(async (node: LexicalNode) => {
             const {key, data} = await node.getDynamicData(options);
             renderData.set(key, data);
         }));
