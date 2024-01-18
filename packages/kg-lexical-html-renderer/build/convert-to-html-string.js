@@ -2,8 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var lexical_1 = require("lexical");
 var link_1 = require("@lexical/link");
-var kg_default_nodes_1 = require("@tryghost/kg-default-nodes");
-var TextContent = require("./utils/TextContent");
+// TODO: update once kg-default-nodes is typescript
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+var $isKoenigCard = require('@tryghost/kg-default-nodes').$isKoenigCard;
+var TextContent_1 = require("./utils/TextContent");
 var transformers_1 = require("./transformers");
 function $convertToHtmlString(options) {
     if (options === void 0) { options = {}; }
@@ -27,10 +29,9 @@ function $convertToHtmlString(options) {
 }
 exports.default = $convertToHtmlString;
 function exportTopLevelElementOrDecorator(node, options) {
-    if ((0, kg_default_nodes_1.$isKoenigCard)(node)) {
+    if ($isKoenigCard(node)) {
         // NOTE: kg-default-nodes appends type in rare cases to make use of this functionality... with moving to typescript,
         //  we should change this implementation because it's confusing, or we should override the DOMExportOutput type
-        // eslint-disable-next-line
         var _a = node.exportDOM(options), element = _a.element, type = _a.type;
         switch (type) {
             case 'inner':
@@ -42,7 +43,7 @@ function exportTopLevelElementOrDecorator(node, options) {
         }
     }
     // note: unsure why this type isn't being picked up from the import
-    for (var _i = 0, elementTransformers_1 = transformers_1.elementTransformers; _i < elementTransformers_1.length; _i++) {
+    for (var _i = 0, elementTransformers_1 = transformers_1.default; _i < elementTransformers_1.length; _i++) {
         var transformer = elementTransformers_1[_i];
         if (transformer.export !== null) {
             var result = transformer.export(node, options, function (_node) { return exportChildren(_node, options); });
@@ -56,7 +57,7 @@ function exportTopLevelElementOrDecorator(node, options) {
 function exportChildren(node, options) {
     var output = [];
     var children = node.getChildren();
-    var textContent = new TextContent(exportChildren, options);
+    var textContent = new TextContent_1.default(exportChildren, options);
     for (var _i = 0, children_2 = children; _i < children_2.length; _i++) {
         var child = children_2[_i];
         if (!textContent.isEmpty() && !(0, lexical_1.$isLineBreakNode)(child) && !(0, lexical_1.$isTextNode)(child) && !(0, link_1.$isLinkNode)(child)) {

@@ -8,7 +8,7 @@ interface RenderOptions {
     renderData?: Map<number, any>;
 }
 
-class LexicalHTMLRenderer {
+export default class LexicalHTMLRenderer {
     dom: import('jsdom').JSDOM;
     nodes: LexicalNode[];
 
@@ -85,5 +85,3 @@ class LexicalHTMLRenderer {
         return html;
     }
 }
-
-module.exports = LexicalHTMLRenderer;

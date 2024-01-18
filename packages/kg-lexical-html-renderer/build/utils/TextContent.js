@@ -35,7 +35,6 @@ var TextContent = /** @class */ (function () {
     TextContent.prototype.render = function () {
         // NOTE: dom would always be defined here because this is called by the renderer, which instantiates it if it's not passed in
         //  so this needs to be cleaned up.. maybe by a new interface for TextContent
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         var document = this.options.dom.window.document;
         var root = document.createElement('div');
         var currentNode = root;
@@ -132,4 +131,4 @@ var TextContent = /** @class */ (function () {
     };
     return TextContent;
 }());
-module.exports = TextContent;
+exports.default = TextContent;

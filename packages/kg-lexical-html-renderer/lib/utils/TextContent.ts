@@ -19,7 +19,7 @@ const FORMAT_TAG_MAP: Record<TextFormatType, TextFormatAbbreviation> = {
 
 // Builds and renders text content, useful to ensure proper format tag opening/closing
 // and html escaping
-class TextContent {
+export default class TextContent {
     nodes: LexicalNode[];
     exportChildren: ExportChildren;
     options: RendererOptions;
@@ -38,7 +38,6 @@ class TextContent {
     render(): string {
         // NOTE: dom would always be defined here because this is called by the renderer, which instantiates it if it's not passed in
         //  so this needs to be cleaned up.. maybe by a new interface for TextContent
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const document: Document = this.options.dom.window.document;
         const root: HTMLElement = document.createElement('div');
 
@@ -150,5 +149,3 @@ class TextContent {
         anchor.innerHTML = this.exportChildren(node, this.options);
     }
 }
-
-module.exports = TextContent;

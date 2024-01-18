@@ -122,4 +122,4 @@ var LexicalHTMLRenderer = /** @class */ (function () {
     };
     return LexicalHTMLRenderer;
 }());
-module.exports = LexicalHTMLRenderer;
+exports.default = LexicalHTMLRenderer;
