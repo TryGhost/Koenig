@@ -30,10 +30,16 @@
   },
   "renovate": {
     "extends": [
-      "@tryghost:quietJS",
-      "@tryghost:automergeDevDependencies"
+      "github>tryghost/renovate-config:quiet"
     ],
     "packageRules": [
+      {
+        "depTypeList": [
+          "devDependencies"
+        ],
+        "automerge": true,
+        "automergeType": "branch"
+      },
       {
         "groupName": "rollup + plugins",
         "packagePatterns": [
