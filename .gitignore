@@ -59,6 +59,9 @@ typings/
 # dotenv environment variables file
 .env
 
+# vscode local config/prefs
+.vscode/settings.json
+
 # IDE
 .idea/*
 *.iml
