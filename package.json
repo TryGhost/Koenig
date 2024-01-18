@@ -60,9 +60,6 @@
           "^@vitest"
         ]
       }
-    ],
-    "ignoreDeps": [
-      "vite"
     ]
   }
 }
