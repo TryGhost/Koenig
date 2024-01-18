@@ -1,5 +1,12 @@
 import {SerializedEditorState, LexicalEditor, LexicalNode} from 'lexical';
 
+import {createHeadlessEditor} from '@lexical/headless';
+import {ListItemNode, ListNode} from '@lexical/list';
+import {HeadingNode, QuoteNode} from '@lexical/rich-text';
+import {LinkNode} from '@lexical/link';
+import $convertToHtmlString from './convert-to-html-string';
+import getDynamicDataNodes from './get-dynamic-data-nodes';
+
 interface RenderOptions {
     target?: 'html' | 'plaintext';
     dom?: import('jsdom').JSDOM;
@@ -27,20 +34,6 @@ export default class LexicalHTMLRenderer {
     }
 
     async render(lexicalState: SerializedEditorState | string, userOptions: RenderOptions = {}) {
-        // TODO: we can't move these to imports unless they are top level
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {createHeadlessEditor} = require('@lexical/headless');
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {ListItemNode, ListNode} = require('@lexical/list');
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {HeadingNode, QuoteNode} = require('@lexical/rich-text');
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {LinkNode} = require('@lexical/link');
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {$convertToHtmlString} = require('./convert-to-html-string');
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const {getDynamicDataNodes} = require('./get-dynamic-data-nodes');
-
         const defaultOptions: RenderOptions = {
             target: 'html',
             dom: this.dom

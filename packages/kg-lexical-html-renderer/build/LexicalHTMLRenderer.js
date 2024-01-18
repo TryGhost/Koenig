@@ -45,6 +45,12 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var headless_1 = require("@lexical/headless");
+var list_1 = require("@lexical/list");
+var rich_text_1 = require("@lexical/rich-text");
+var link_1 = require("@lexical/link");
+var convert_to_html_string_1 = require("./convert-to-html-string");
+var get_dynamic_data_nodes_1 = require("./get-dynamic-data-nodes");
 var LexicalHTMLRenderer = /** @class */ (function () {
     function LexicalHTMLRenderer(_a) {
         var _b = _a === void 0 ? {} : _a, dom = _b.dom, nodes = _b.nodes;
@@ -62,34 +68,28 @@ var LexicalHTMLRenderer = /** @class */ (function () {
     LexicalHTMLRenderer.prototype.render = function (lexicalState, userOptions) {
         if (userOptions === void 0) { userOptions = {}; }
         return __awaiter(this, void 0, void 0, function () {
-            var createHeadlessEditor, _a, ListItemNode, ListNode, _b, HeadingNode, QuoteNode, LinkNode, $convertToHtmlString, getDynamicDataNodes, defaultOptions, options, DEFAULT_NODES, editor, editorState, dynamicDataNodes, renderData, html;
+            var defaultOptions, options, DEFAULT_NODES, editor, editorState, dynamicDataNodes, renderData, html;
             var _this = this;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        createHeadlessEditor = require('@lexical/headless').createHeadlessEditor;
-                        _a = require('@lexical/list'), ListItemNode = _a.ListItemNode, ListNode = _a.ListNode;
-                        _b = require('@lexical/rich-text'), HeadingNode = _b.HeadingNode, QuoteNode = _b.QuoteNode;
-                        LinkNode = require('@lexical/link').LinkNode;
-                        $convertToHtmlString = require('./convert-to-html-string').$convertToHtmlString;
-                        getDynamicDataNodes = require('./get-dynamic-data-nodes').getDynamicDataNodes;
                         defaultOptions = {
                             target: 'html',
                             dom: this.dom
                         };
                         options = Object.assign({}, defaultOptions, userOptions);
                         DEFAULT_NODES = __spreadArray([
-                            HeadingNode,
-                            ListNode,
-                            ListItemNode,
-                            QuoteNode,
-                            LinkNode
+                            rich_text_1.HeadingNode,
+                            list_1.ListNode,
+                            list_1.ListItemNode,
+                            rich_text_1.QuoteNode,
+                            link_1.LinkNode
                         ], this.nodes, true);
-                        editor = createHeadlessEditor({
+                        editor = (0, headless_1.createHeadlessEditor)({
                             nodes: DEFAULT_NODES
                         });
                         editorState = editor.parseEditorState(lexicalState);
-                        dynamicDataNodes = getDynamicDataNodes(editorState);
+                        dynamicDataNodes = (0, get_dynamic_data_nodes_1.default)(editorState);
                         renderData = new Map();
                         return [4 /*yield*/, Promise.all(dynamicDataNodes.map(function (node) { return __awaiter(_this, void 0, void 0, function () {
                                 var _a, key, data;
@@ -104,14 +104,14 @@ var LexicalHTMLRenderer = /** @class */ (function () {
                                 });
                             }); }))];
                     case 1:
-                        _c.sent();
+                        _a.sent();
                         options.renderData = renderData;
                         // render nodes
                         editor.setEditorState(editorState);
                         html = '';
                         editor.update(function () { return __awaiter(_this, void 0, void 0, function () {
                             return __generator(this, function (_a) {
-                                html = $convertToHtmlString(options);
+                                html = (0, convert_to_html_string_1.default)(options);
                                 return [2 /*return*/];
                             });
                         }); });
