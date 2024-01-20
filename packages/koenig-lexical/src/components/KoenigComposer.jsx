@@ -2,13 +2,13 @@ import DEFAULT_NODES from '../nodes/DefaultNodes';
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import defaultTheme from '../themes/default';
+import providers from '../utils/multiplayer/providers';
 import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
 import {DEFAULT_CONFIG} from '@tryghost/kg-default-nodes';
 import {Doc} from 'yjs';
 import {KoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import {TKContext} from '../context/TKContext';
-import {WebsocketProvider} from 'y-websocket';
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -36,6 +36,7 @@ const KoenigComposer = ({
     multiplayerDebug = true,
     multiplayerDocId,
     multiplayerUsername,
+    multiplayerProvider = 'y-websocket',
     children
 }) => {
     const initialConfig = React.useMemo(() => {
@@ -88,12 +89,7 @@ const KoenigComposer = ({
             doc.load();
         }
 
-        const provider = new WebsocketProvider(
-            multiplayerEndpoint,
-            multiplayerDocId + '/' + id,
-            doc,
-            {connect: false}
-        );
+        const provider = providers[multiplayerProvider](doc, multiplayerEndpoint, multiplayerDocId, id);
 
         if (multiplayerDebug) {
             provider.on('status', (event) => {

@@ -51,6 +51,11 @@ import {
     MINIMAL_TRANSFORMERS
 } from './plugins/MarkdownShortcutPlugin';
 
+import * as lexical from 'lexical';
+import {LexicalComposerContext, createLexicalComposerContext, useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {OnChangePlugin} from '@lexical/react/LexicalOnChangePlugin';
+import {TreeView} from '@lexical/react/LexicalTreeView';
+
 /* Exports ------------------------------------------------------------------ */
 
 export * from './utils';
@@ -102,7 +107,14 @@ export {
 
     DEFAULT_TRANSFORMERS,
     BASIC_TRANSFORMERS,
-    MINIMAL_TRANSFORMERS
+    MINIMAL_TRANSFORMERS,
+
+    lexical,
+    OnChangePlugin,
+    TreeView,
+    LexicalComposerContext,
+    createLexicalComposerContext,
+    useLexicalComposerContext
 };
 
 // eslint-disable-next-line no-undef
