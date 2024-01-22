@@ -43,14 +43,6 @@ function exportTopLevelElementOrDecorator(node: LexicalNode | typeof KoenigDecor
         //  we should change this implementation because it's confusing, or we should override the DOMExportOutput type
         const {element, type} = node.exportDOM(options);
 
-        if (element === null) {
-            return null;
-        }
-
-        if (element instanceof Text) {
-            return element.textContent;
-        }
-
         switch (type) {
         case 'inner':
             return element.innerHTML;
