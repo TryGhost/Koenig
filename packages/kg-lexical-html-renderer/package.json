@@ -5,7 +5,9 @@
   "author": "Ghost Foundation",
   "license": "MIT",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
+    "dev": "tsc --watch --preserveWatchOutput --sourceMap",
     "build": "tsc",
     "prepare": "tsc",
     "test": "yarn test:unit && yarn test:types",
@@ -17,8 +19,9 @@
     "posttest": "yarn lint"
   },
   "files": [
-    "index.js",
-    "lib"
+    "build",
+    "LICENSE",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -41,6 +44,5 @@
     "jsdom": "^23.0.0",
     "lexical": "0.12.2",
     "prettier": "^3.0.0"
-  },
-  "gitHead": "1b25c63a23285d60d8c938c95240c9f70fd705de"
+  }
 }
