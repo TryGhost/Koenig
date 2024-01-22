@@ -3,7 +3,7 @@ import {$getRoot, $isElementNode, $isLineBreakNode, $isParagraphNode, $isTextNod
 import {$isLinkNode} from '@lexical/link';
 // TODO: update once kg-default-nodes is typescript
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const {$isKoenigCard} = require('@tryghost/kg-default-nodes');
+const {$isKoenigCard, KoenigDecoratorNode} = require('@tryghost/kg-default-nodes');
 import TextContent from './utils/TextContent';
 import elementTransformers from './transformers';
 
@@ -37,11 +37,20 @@ export default function $convertToHtmlString(options: RendererOptions = {}): str
     return output.join('');
 }
 
-function exportTopLevelElementOrDecorator(node: LexicalNode, options: RendererOptions): string | null {
+function exportTopLevelElementOrDecorator(node: LexicalNode | typeof KoenigDecoratorNode, options: RendererOptions): string | null {
     if ($isKoenigCard(node)) {
         // NOTE: kg-default-nodes appends type in rare cases to make use of this functionality... with moving to typescript,
         //  we should change this implementation because it's confusing, or we should override the DOMExportOutput type
         const {element, type} = node.exportDOM(options);
+
+        if (element === null) {
+            return null;
+        }
+
+        if (element instanceof Text) {
+            return element.textContent;
+        }
+
         switch (type) {
         case 'inner':
             return element.innerHTML;

@@ -1,4 +1,4 @@
-import {SerializedEditorState, LexicalEditor, LexicalNode} from 'lexical';
+import {SerializedEditorState, LexicalEditor, LexicalNode, Klass} from 'lexical';
 
 import {createHeadlessEditor} from '@lexical/headless';
 import {ListItemNode, ListNode} from '@lexical/list';
@@ -17,9 +17,9 @@ interface RenderOptions {
 
 export default class LexicalHTMLRenderer {
     dom: import('jsdom').JSDOM;
-    nodes: LexicalNode[];
+    nodes: Klass<LexicalNode>[];
 
-    constructor({dom, nodes}: {dom?: import('jsdom').JSDOM, nodes?: LexicalNode[]} = {}) {
+    constructor({dom, nodes}: {dom?: import('jsdom').JSDOM, nodes?: Klass<LexicalNode>[]} = {}) {
         if (!dom) {
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const jsdom = require('jsdom');
@@ -40,7 +40,7 @@ export default class LexicalHTMLRenderer {
         };
         const options = Object.assign({}, defaultOptions, userOptions);
 
-        const DEFAULT_NODES = [
+        const DEFAULT_NODES: Array<Klass<LexicalNode>> = [
             HeadingNode,
             ListNode,
             ListItemNode,

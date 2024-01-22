@@ -17,16 +17,30 @@ const FORMAT_TAG_MAP: Record<TextFormatType, TextFormatAbbreviation> = {
     highlight: 'MARK'
 };
 
+type Entries<T> = {
+    [K in keyof T]: [K, T[K]];
+}[keyof T][];
+
+type RequiredKeys<T, K extends keyof T> = Exclude<T, K> & Required<Pick<T, K>>
+
+const ensureDomProperty = (options: RendererOptions): options is RequiredKeys<RendererOptions, 'dom'> => {
+    return !!options.dom;
+};
+
 // Builds and renders text content, useful to ensure proper format tag opening/closing
 // and html escaping
 export default class TextContent {
     nodes: LexicalNode[];
     exportChildren: ExportChildren;
-    options: RendererOptions;
+    options: RequiredKeys<RendererOptions, 'dom'>;
 
     constructor(exportChildren: ExportChildren, options: RendererOptions) {
+        if (ensureDomProperty(options) === false) {
+            // eslint-disable-next-line ghost/ghost-custom/no-native-error
+            throw new Error('TextContent requires a dom property in the options argument');
+        }
         this.exportChildren = exportChildren;
-        this.options = options;
+        this.options = options as RequiredKeys<RendererOptions, 'dom'>;
 
         this.nodes = [];
     }
@@ -36,8 +50,6 @@ export default class TextContent {
     }
 
     render(): string {
-        // NOTE: dom would always be defined here because this is called by the renderer, which instantiates it if it's not passed in
-        //  so this needs to be cleaned up.. maybe by a new interface for TextContent
         const document: Document = this.options.dom.window.document;
         const root: HTMLElement = document.createElement('div');
 
@@ -70,7 +82,7 @@ export default class TextContent {
                 const formatsToOpen: TextFormatType[] = [];
 
                 // get base list of formats that need to open
-                Object.entries(FORMAT_TAG_MAP).forEach(([format]) => {
+                (Object.entries(FORMAT_TAG_MAP) as Entries<typeof FORMAT_TAG_MAP>).forEach(([format]) => {
                     if (node.hasFormat(format) && !openFormats.includes(format)) {
                         formatsToOpen.push(format);
                     }
@@ -116,7 +128,7 @@ export default class TextContent {
                 const nextNode = remainingNodes.find(n => $isTextNode(n) || $isLinkNode(n));
                 [...openFormats].forEach((format) => {
                     if (!nextNode || $isLinkNode(nextNode) || !nextNode.hasFormat(format)) {
-                        currentNode = currentNode.parentNode;
+                        currentNode = currentNode.parentNode as HTMLElement;
                         openFormats.pop();
                     }
                 });
