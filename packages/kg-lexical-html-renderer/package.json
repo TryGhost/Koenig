@@ -16,7 +16,7 @@
     "test:types": "tsc --noEmit",
     "lint": "yarn lint:code && yarn lint:test",
     "lint:code": "eslint *.js lib/ --ext .ts --cache",
-    "lint:test": "eslint -c test/.eslintrc.js test/ --ext .ts --cache",
+    "lint:test": "eslint -c test/.eslintrc.js test/ --ext .js --cache",
     "posttest": "yarn lint"
   },
   "files": [
