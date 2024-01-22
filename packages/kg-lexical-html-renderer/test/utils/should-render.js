@@ -1,6 +1,6 @@
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const Renderer = require('../../build/LexicalHTMLRenderer').default;
+const Renderer = require('../../');
 
 const dom = new JSDOM();
 

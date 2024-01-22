@@ -1,6 +1,6 @@
 const {JSDOM} = require('jsdom');
 const Prettier = require('prettier');
-const Renderer = require('./../build/LexicalHTMLRenderer').default;
+const Renderer = require('../');
 const {ImageNode, PaywallNode, HtmlNode} = require('@tryghost/kg-default-nodes');
 
 const nodes = [ImageNode, PaywallNode, HtmlNode];
