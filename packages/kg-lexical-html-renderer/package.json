@@ -10,6 +10,7 @@
     "dev": "tsc --watch --preserveWatchOutput --sourceMap",
     "build": "tsc",
     "prepare": "tsc",
+    "pretest": "yarn build",
     "test": "yarn test:unit && yarn test:types",
     "test:unit": "NODE_ENV=testing c8 --lib --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test:types": "tsc --noEmit",
