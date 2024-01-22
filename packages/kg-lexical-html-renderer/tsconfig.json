@@ -14,7 +14,7 @@
 
     /* Modules */
     "module": "commonjs",                     /* Specify what module code is generated. */
-    "rootDir": "src",                         /* Specify the root folder within your source files. */
+    "rootDir": "lib",                         /* Specify the root folder within your source files. */
     "resolveJsonModule": true,                /* Enable importing .json files. */
 
     /* JavaScript Support */
@@ -31,5 +31,5 @@
     "strict": true,                           /* Enable all strict type-checking options. */
     "noImplicitAny": true,                    /* Enable error reporting for expressions and declarations with an implied 'any' type. */
   },
-  "include": ["src/**/*"]
+  "include": ["lib/**/*"]
 }
