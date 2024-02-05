@@ -1,10 +1,10 @@
-import {$isLinkNode} from '@lexical/link';
+import {$isLinkNode, LinkNode} from '@lexical/link';
 import {$isTextNode, $isLineBreakNode} from 'lexical';
-import type {LexicalNode, TextFormatType} from 'lexical';
+import type {ElementNode, TextFormatType} from 'lexical';
 import {RendererOptions} from '../convert-to-html-string';
 
 type TextFormatAbbreviation = 'STRONG' | 'EM' | 'S' | 'U' | 'CODE' | 'SUB' | 'SUP' | 'MARK';
-type ExportChildren = (node: LexicalNode, options: RendererOptions) => string;
+type ExportChildren = (node: ElementNode, options: RendererOptions) => string;
 
 const FORMAT_TAG_MAP: Record<TextFormatType, TextFormatAbbreviation> = {
     bold: 'STRONG',
@@ -30,7 +30,7 @@ const ensureDomProperty = (options: RendererOptions): options is RequiredKeys<Re
 // Builds and renders text content, useful to ensure proper format tag opening/closing
 // and html escaping
 export default class TextContent {
-    nodes: LexicalNode[];
+    nodes: ElementNode[];
     exportChildren: ExportChildren;
     options: RequiredKeys<RendererOptions, 'dom'>;
 
@@ -45,7 +45,7 @@ export default class TextContent {
         this.nodes = [];
     }
 
-    addNode(node: LexicalNode): void {
+    addNode(node: ElementNode): void {
         this.nodes.push(node);
     }
 
@@ -150,13 +150,13 @@ export default class TextContent {
 
     // PRIVATE -----------------------------------------------------------------
 
-    _buildAnchorElement(anchor: HTMLElement, node: LexicalNode) {
+    _buildAnchorElement(anchor: HTMLElement, node: LinkNode) {
         // Only set the href if we have a URL, otherwise we get a link to the current page
         if (node.getURL()) {
             anchor.setAttribute('href', node.getURL());
         }
         if (node.getRel()) {
-            anchor.setAttribute('rel', node.getRel());
+            anchor.setAttribute('rel', node.getRel() || '');
         }
         anchor.innerHTML = this.exportChildren(node, this.options);
     }
