@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/kg-converters",
-  "version": "0.0.22",
+  "version": "1.0.1",
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-converters",
   "author": "Ghost Foundation",
   "license": "MIT",
@@ -31,9 +31,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-babel": "6.0.4",
-    "c8": "8.0.1",
+    "c8": "9.1.0",
     "mocha": "10.2.0",
-    "rollup": "2.79.1",
+    "rollup": "4.9.5",
     "sinon": "17.0.1"
   },
   "dependencies": {

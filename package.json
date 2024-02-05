@@ -22,18 +22,24 @@
     "main": "git checkout main && git pull ${GHOST_UPSTREAM:-origin} main && yarn"
   },
   "devDependencies": {
-    "eslint": "8.55.0",
+    "eslint": "8.56.0",
     "eslint-plugin-ghost": "3.4.0",
     "husky": "8.0.3",
-    "lerna": "8.0.0",
+    "lerna": "8.0.2",
     "lint-staged": "15.2.0"
   },
   "renovate": {
     "extends": [
-      "@tryghost:quietJS",
-      "@tryghost:automergeDevDependencies"
+      "github>tryghost/renovate-config:quiet"
     ],
     "packageRules": [
+      {
+        "depTypeList": [
+          "devDependencies"
+        ],
+        "automerge": true,
+        "automergeType": "branch"
+      },
       {
         "groupName": "rollup + plugins",
         "packagePatterns": [
@@ -54,9 +60,6 @@
           "^@vitest"
         ]
       }
-    ],
-    "ignoreDeps": [
-      "vite"
     ]
   }
 }

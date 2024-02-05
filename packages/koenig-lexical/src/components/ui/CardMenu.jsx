@@ -19,7 +19,7 @@ export const CardMenuSection = ({label, children, ...props}) => {
                 style={{minWidth: 'calc(100% - 3.2rem)'}}
             >{label}
                 {helpLink && <a href={helpLink} rel="noreferrer" target='_blank'>
-                    <ExternalLinkIcon className="-m-1 h-6 w-6 cursor-pointer p-1 transition-all hover:text-green-600" />
+                    <ExternalLinkIcon className="-m-1 size-6 cursor-pointer p-1 transition-all hover:text-green-600" />
                 </a>}
             </span>
             <ul className="md:grid md:gap-y-[.2rem] md:px-2" role="menu">
@@ -58,8 +58,8 @@ export const CardMenuItem = ({label, shortcut, desc, isSelected, scrollToItem, o
                 onMouseDown={preventMouseDown}
                 {...props}
             >
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-white text-grey-900 dark:bg-transparent dark:text-grey-500">
-                    <Icon className="h-[1.8rem] w-[1.8rem]" />
+                <div className="flex size-7 shrink-0 items-center justify-center rounded bg-white text-grey-900 dark:bg-transparent dark:text-grey-500">
+                    <Icon className="size-[1.8rem]" />
                 </div>
                 <div className="flex w-full justify-between">
                     <div className="m-0 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
@@ -101,14 +101,14 @@ export const CardSnippetItem = ({label, isSelected, scrollToItem, Icon, onRemove
                 onMouseDown={handleMouseDown}
                 {...props}
             >
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-white text-grey-900 dark:bg-transparent dark:text-grey-500">
-                    <Icon className="h-[1.8rem] w-[1.8rem]" />
+                <div className="flex size-7 shrink-0 items-center justify-center rounded bg-white text-grey-900 dark:bg-transparent dark:text-grey-500">
+                    <Icon className="size-[1.8rem]" />
                 </div>
                 <div className="m-0 ml-4 truncate text-[1.35rem] font-medium leading-snug tracking-[.02rem] text-grey-900 dark:text-grey-200">{label}</div>
                 {
                     !!onRemove && (
                         <button className="ml-auto cursor-pointer rounded p-[4px] hover:bg-grey-200 group-hover:block dark:hover:bg-grey-950" title="Remove snippet" type="button" onClick={handleSnippetRemove}>
-                            <TrashCardIcon className="h-[1.8rem] w-[1.8rem] stroke-red text-red" />
+                            <TrashCardIcon className="size-[1.8rem] stroke-red text-red" />
                         </button>
                     )
                 }

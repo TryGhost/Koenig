@@ -9,7 +9,7 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         {name: 'backgroundColor', default: '#F0F0F0'},
         {name: 'backgroundImageSrc', default: ''},
         {name: 'backgroundSize', default: 'cover'},
-        {name: 'textColor', default: '#000000'},
+        {name: 'textColor', default: ''},
         {name: 'buttonColor', default: 'accent'},
         {name: 'buttonTextColor', default: '#FFFFFF'},
         {name: 'buttonText', default: 'Subscribe'},
@@ -21,6 +21,26 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         {name: 'successMessage', default: 'Email sent! Check your inbox to complete your signup.'},
         {name: 'swapped', default: false}
     ]}) {
+    /* override */
+    constructor({alignment, backgroundColor, backgroundImageSrc, backgroundSize, textColor, buttonColor, buttonTextColor, buttonText, disclaimer, header, labels, layout, subheader, successMessage, swapped} = {}, key) {
+        super(key);
+        this.__alignment = alignment || 'left';
+        this.__backgroundColor = backgroundColor || '#F0F0F0';
+        this.__backgroundImageSrc = backgroundImageSrc || '';
+        this.__backgroundSize = backgroundSize || 'cover';
+        this.__textColor = (backgroundColor === 'transparent' && (layout === 'split' || !backgroundImageSrc)) ? '' : textColor || '#000000'; // text color should inherit with a transparent bg color unless we're using an image for the background (which supercedes the bg color)
+        this.__buttonColor = buttonColor || 'accent';
+        this.__buttonTextColor = buttonTextColor || '#FFFFFF';
+        this.__buttonText = buttonText || 'Subscribe';
+        this.__disclaimer = disclaimer || '';
+        this.__header = header || '';
+        this.__labels = labels || [];
+        this.__layout = layout || 'wide';
+        this.__subheader = subheader || '';
+        this.__successMessage = successMessage || 'Email sent! Check your inbox to complete your signup.';
+        this.__swapped = swapped || false;
+    }
+
     static importDOM() {
         return signupParser(this);
     }

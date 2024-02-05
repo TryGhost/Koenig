@@ -13,7 +13,6 @@ import {$getRoot, $isDecoratorNode} from 'lexical';
 import {
     BASIC_NODES, BASIC_TRANSFORMERS, KoenigComposableEditor,
     KoenigComposer, KoenigEditor, MINIMAL_NODES, MINIMAL_TRANSFORMERS,
-    MobiledocCopyPlugin,
     RestrictContentPlugin,
     TKCountPlugin,
     WordCountPlugin
@@ -45,8 +44,7 @@ const cardConfig = {
     membersEnabled: true,
     feature: {
         collections: true,
-        collectionsCard: true,
-        emojiPicker: true
+        collectionsCard: true
     },
     deprecated: {
         headerV1: process.env.NODE_ENV === 'test' ? false : true // show header v1 only for tests
@@ -102,7 +100,6 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
             darkMode={darkMode}
             registerAPI={registerAPI}
         >
-            <MobiledocCopyPlugin />
             <WordCountPlugin onChange={setWordCount} />
             <TKCountPlugin onChange={setTKCount} />
         </KoenigEditor>
