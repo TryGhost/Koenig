@@ -1,7 +1,7 @@
 import {$isListNode, ListNode} from '@lexical/list';
-import {LexicalEditor, LexicalNode} from 'lexical';
+import {LexicalEditor} from 'lexical';
 
-export function mergeListNodesTransform(node: LexicalNode) {
+export function mergeListNodesTransform(node: ListNode) {
     const nextSibling = node.getNextSibling();
 
     if ($isListNode(nextSibling) && $isListNode(node) && nextSibling.getListType() === node.getListType()) {

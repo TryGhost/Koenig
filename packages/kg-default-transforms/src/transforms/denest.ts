@@ -97,7 +97,7 @@ export function denestTransform<T extends ElementNode>(node: T, createNode: Crea
     // meaning first child needs to be inserted last to maintain order.
     tempParagraph.getChildren().reverse().forEach((child) => {
         // ensure we don't add list items directly into root node
-        // TODO: can we handle this elsewhere/more genericly?
+        // TODO: can we handle this elsewhere/more generically?
         if ($isRootNode(parent.getParent()) && $isListItemNode(child)) {
             const paragraphNode = $createParagraphNode();
             paragraphNode.append(...child.getChildren());
