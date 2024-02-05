@@ -1,5 +1,5 @@
 import {$isListItemNode, $isListNode} from '@lexical/list';
-import {ElementNode, $createParagraphNode, LexicalEditor, LexicalNode, Klass, $getRoot, $isRootNode} from 'lexical';
+import {ElementNode, $createParagraphNode, LexicalEditor, LexicalNode, Klass, $getRoot, $isRootNode, $isTextNode, $isLineBreakNode} from 'lexical';
 
 export type CreateNodeFn<T extends LexicalNode> = (originalNode: T) => T;
 
@@ -43,6 +43,9 @@ function $isInvalidListItemNode(node: LexicalNode) {
 // non-inline nodes can only exist at top-level inside a root node
 // ignore list and list item nodes because they aren't inline but can be nested inside each other
 function $isInvalidChildNode(node: LexicalNode) {
+    if ($isLineBreakNode(node) || $isTextNode(node)) { // line break and text nodes don't have an isInline method
+        return false;
+    }
     return $isInvalidListNode(node)
         || $isInvalidListItemNode(node)
         || node.isInline && !node.isInline() && !$isListNode(node) && !$isListItemNode(node);
