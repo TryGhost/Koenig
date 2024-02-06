@@ -1,7 +1,7 @@
 import {$isLinkNode, LinkNode} from '@lexical/link';
 import {$isTextNode, $isLineBreakNode, TextNode} from 'lexical';
 import type {ElementNode, LexicalNode, TextFormatType} from 'lexical';
-import {RendererOptions} from '../convert-to-html-string';
+import type {RendererOptions} from '@tryghost/kg-default-nodes';
 
 type TextFormatAbbreviation = 'STRONG' | 'EM' | 'S' | 'U' | 'CODE' | 'SUB' | 'SUP' | 'MARK';
 type ExportChildren = (node: ElementNode, options: RendererOptions) => string;
@@ -125,9 +125,9 @@ export default class TextContent {
 
                 // close tags in correct order if next node doesn't have the format
                 // links are their own formatting islands so all formats need to close before a link
-                const nextNode: TextNode | LinkNode = remainingNodes.find(n => $isTextNode(n) || $isLinkNode(n));
+                const nextNode = remainingNodes.find(n => $isTextNode(n) || $isLinkNode(n));
                 [...openFormats].forEach((format) => {
-                    if (!nextNode || $isLinkNode(nextNode) || !nextNode.hasFormat(format)) {
+                    if (!nextNode || $isLinkNode(nextNode) || (nextNode instanceof TextNode && !nextNode.hasFormat(format))) {
                         currentNode = currentNode.parentNode as HTMLElement;
                         openFormats.pop();
                     }
