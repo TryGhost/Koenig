@@ -6,15 +6,15 @@
   "license": "MIT",
   "main": "cjs/kg-default-nodes.js",
   "module": "es/kg-default-nodes.js",
-  "source": "lib/kg-default-nodes.js",
+  "source": "build/kg-default-nodes.js",
   "scripts": {
-    "dev": "rollup -c -w",
-    "build": "rollup -c",
+    "dev": "tsc && rollup -c -w",
+    "build": "tsc && rollup -c",
     "prepare": "NODE_ENV=production yarn build",
     "pretest": "yarn build",
     "test:unit": "NODE_ENV=testing c8 --all --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
-    "lint:code": "eslint *.js lib/ --ext .js --cache",
+    "lint:code": "eslint *.js lib/ --ext .js --cache && eslint *.ts lib/ --ext .ts --cache",
     "lint": "yarn lint:code && yarn lint:test",
     "lint:test": "eslint -c test/.eslintrc.js test/ --ext .js --cache"
   },
@@ -41,7 +41,8 @@
     "prettier": "^3.0.1",
     "rollup": "4.9.5",
     "should": "13.2.3",
-    "sinon": "17.0.1"
+    "sinon": "17.0.1",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@lexical/clipboard": "0.12.2",
