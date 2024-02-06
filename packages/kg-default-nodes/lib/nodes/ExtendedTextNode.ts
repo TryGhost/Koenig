@@ -51,6 +51,10 @@ export class ExtendedTextNode extends TextNode {
             this.__mode === 0
         );
     }
+
+    isInline() {
+        return true;
+    }
 }
 
 // ignore no implicit any
