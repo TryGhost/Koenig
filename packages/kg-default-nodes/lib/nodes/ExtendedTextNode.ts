@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {$isTextNode, DOMConversionFn, DOMConversionMap, NodeKey, SerializedTextNode, TextNode} from 'lexical';
+import {$isTextNode, DOMConversion, DOMConversionFn, DOMConversionMap, LexicalNode, NodeKey, SerializedTextNode, TextNode} from 'lexical';
 
 // Since the TextNode is foundational to all Lexical packages, including the
 // plain text use case. Handling any rich text logic is undesirable. This creates
@@ -57,10 +57,8 @@ export class ExtendedTextNode extends TextNode {
     }
 }
 
-// ignore no implicit any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function patchConversion(originalDOMConverter: any, convertFn: any): DOMConversionFn {
-    return (node: Node) => {
+function patchConversion(originalDOMConverter: DOMConversion, convertFn: DOMConversionFn) {
+    return (node: HTMLElement) => {
         const original = originalDOMConverter?.(node);
         if (!original) {
             return null;
