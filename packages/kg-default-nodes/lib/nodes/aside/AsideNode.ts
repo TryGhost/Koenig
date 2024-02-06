@@ -1,13 +1,19 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {ElementNode} from 'lexical';
+import {ElementFormatType, ElementNode, LexicalNode, NodeKey, SerializedLexicalNode, Spread} from 'lexical';
 import {AsideParser} from './AsideParser';
 
+export type SerializedAsideNode = Spread<{
+    format: ElementFormatType,
+    indent: number,
+    direction: 'ltr' | 'rtl' | null
+}, SerializedLexicalNode>;
+
 export class AsideNode extends ElementNode {
-    static getType() {
+    static getType(): string {
         return 'aside';
     }
 
-    static clone(node) {
+    static clone(node: AsideNode): AsideNode {
         return new this(
             node.__key
         );
@@ -17,11 +23,11 @@ export class AsideNode extends ElementNode {
         return {};
     }
 
-    constructor(key) {
+    constructor(key?: NodeKey) {
         super(key);
     }
 
-    static importJSON(serializedNode) {
+    static importJSON(serializedNode: SerializedAsideNode): AsideNode {
         const node = new this();
         node.setFormat(serializedNode.format);
         node.setIndent(serializedNode.indent);
@@ -44,28 +50,28 @@ export class AsideNode extends ElementNode {
     }
 
     /* c8 ignore start */
-    createDOM() {
+    createDOM(): HTMLElement {
         return document.createElement('div');
     }
 
-    updateDOM() {
+    updateDOM(): false {
         return false;
     }
 
-    isInline() {
+    isInline(): false {
         return false;
     }
 
-    extractWithChild() {
+    extractWithChild(): true {
         return true;
     }
     /* c8 ignore stop */
 }
 
-export function $createAsideNode() {
+export function $createAsideNode(): AsideNode {
     return new AsideNode();
 }
 
-export function $isAsideNode(node) {
+export function $isAsideNode(node: LexicalNode | null): node is AsideNode {
     return node instanceof AsideNode;
 }
