@@ -12,7 +12,7 @@
     "build": "tsc && rollup -c",
     "prepare": "NODE_ENV=production yarn build",
     "pretest": "yarn build",
-    "test:unit": "NODE_ENV=testing c8 --all --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
+    "test:unit": "NODE_ENV=testing c8 --lib --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
     "lint:code": "eslint *.js lib/ --ext .js --cache && eslint *.ts lib/ --ext .ts --cache",
     "lint": "yarn lint:code && yarn lint:test",
