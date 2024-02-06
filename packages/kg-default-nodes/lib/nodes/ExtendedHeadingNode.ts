@@ -1,5 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {HeadingNode} from '@lexical/rich-text';
+import {HeadingNode, SerializedHeadingNode} from '@lexical/rich-text';
+import { DOMConversion, DOMConversionFn, DOMConversionMap, DOMConversionOutput, Spread } from 'lexical';
 
 // Since the HeadingNode is foundational to Lexical rich-text, only using a
 // custom HeadingNode is undesirable as it means every package would need to
@@ -9,45 +10,48 @@ import {HeadingNode} from '@lexical/rich-text';
 //
 // https://lexical.dev/docs/concepts/serialization#handling-extended-html-styling
 
-export const extendedHeadingNodeReplacement = {replace: HeadingNode, with: node => new ExtendedHeadingNode(node.__tag)};
+export const extendedHeadingNodeReplacement = {replace: HeadingNode, with: (node: HeadingNode) => new ExtendedHeadingNode(node.__tag)};
+
+type HeadingTagType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export class ExtendedHeadingNode extends HeadingNode {
-    constructor(tag, key) {
+    constructor(tag: HeadingTagType, key?: string) {
         super(tag, key);
     }
 
-    static getType() {
+    static getType(): string {
         return 'extended-heading';
     }
 
-    static clone(node) {
+    static clone(node: ExtendedHeadingNode): ExtendedHeadingNode {
         return new ExtendedHeadingNode(node.__tag, node.__key);
     }
 
-    static importDOM() {
+    static importDOM(): DOMConversionMap | null {
         const importers = HeadingNode.importDOM();
+        const originalParagraphImporter = importers?.p as DOMConversionFn;
         return {
             ...importers,
-            p: patchParagraphConversion(importers?.p)
+            p: patchParagraphConversion(originalParagraphImporter)
         };
     }
 
-    static importJSON(serializedNode) {
+    static importJSON(serializedNode: SerializedHeadingNode): ExtendedHeadingNode {
         return HeadingNode.importJSON(serializedNode);
     }
 
-    exportJSON() {
+    exportJSON(): SerializedHeadingNode {
         const json = super.exportJSON();
         json.type = 'extended-heading';
         return json;
     }
 }
 
-function patchParagraphConversion(originalDOMConverter) {
-    return (node) => {
+function patchParagraphConversion(originalDOMConverter: DOMConversionFn): DOMConversion | null {
+    return (node: HTMLElement) => {
         // Original matches Google Docs p node to a null conversion so it's
         // child span is parsed as a heading. Don't prevent that here
-        const original = originalDOMConverter?.(node);
+        const original = originalDOMConverter(node);
         if (original) {
             return original;
         }
@@ -62,10 +66,11 @@ function patchParagraphConversion(originalDOMConverter) {
         if (hasAriaHeadingRole && hasAriaLevel) {
             const level = parseInt(hasAriaLevel, 10);
             if (level > 0 && level < 7) {
+                const tag: HeadingTagType = `h${level}` as HeadingTagType;
                 return {
                     conversion: () => {
                         return {
-                            node: new ExtendedHeadingNode(`h${level}`)
+                            node: new ExtendedHeadingNode(tag)
                         };
                     },
                     priority: 1

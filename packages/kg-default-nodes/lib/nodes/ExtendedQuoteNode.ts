@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {QuoteNode} from '@lexical/rich-text';
-import {$createLineBreakNode, $isParagraphNode} from 'lexical';
+import {QuoteNode, SerializedQuoteNode} from '@lexical/rich-text';
+import {$createLineBreakNode, $isParagraphNode, DOMConversionMap, NodeKey} from 'lexical';
 
 // Since the QuoteNode is foundational to Lexical rich-text, only using a
 // custom QuoteNode is undesirable as it means every package would need to
@@ -13,7 +13,7 @@ import {$createLineBreakNode, $isParagraphNode} from 'lexical';
 export const extendedQuoteNodeReplacement = {replace: QuoteNode, with: () => new ExtendedQuoteNode()};
 
 export class ExtendedQuoteNode extends QuoteNode {
-    constructor(key) {
+    constructor(key?: NodeKey) {
         super(key);
     }
 
@@ -21,11 +21,11 @@ export class ExtendedQuoteNode extends QuoteNode {
         return 'extended-quote';
     }
 
-    static clone(node) {
+    static clone(node: ExtendedQuoteNode): ExtendedQuoteNode {
         return new ExtendedQuoteNode(node.__key);
     }
 
-    static importDOM() {
+    static importDOM(): DOMConversionMap | null {
         const importers = QuoteNode.importDOM();
         return {
             ...importers,
@@ -33,18 +33,18 @@ export class ExtendedQuoteNode extends QuoteNode {
         };
     }
 
-    static importJSON(serializedNode) {
+    static importJSON(serializedNode: SerializedQuoteNode): ExtendedQuoteNode {
         return QuoteNode.importJSON(serializedNode);
     }
 
-    exportJSON() {
+    exportJSON(): SerializedQuoteNode {
         const json = super.exportJSON();
         json.type = 'extended-quote';
         return json;
     }
 
     /* c8 ignore start */
-    extractWithChild() {
+    extractWithChild(): true {
         return true;
     }
     /* c8 ignore end */

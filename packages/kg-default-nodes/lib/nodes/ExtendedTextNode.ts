@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {$isTextNode, TextNode} from 'lexical';
+import {$isTextNode, DOMConversion, DOMConversionFn, DOMConversionMap, LexicalNode, NodeKey, SerializedTextNode, TextNode} from 'lexical';
 
 // Since the TextNode is foundational to all Lexical packages, including the
 // plain text use case. Handling any rich text logic is undesirable. This creates
@@ -8,22 +8,22 @@ import {$isTextNode, TextNode} from 'lexical';
 //
 // https://lexical.dev/docs/concepts/serialization#handling-extended-html-styling
 
-export const extendedTextNodeReplacement = {replace: TextNode, with: node => new ExtendedTextNode(node.__text)};
+export const extendedTextNodeReplacement = {replace: TextNode, with: (node: TextNode) => new ExtendedTextNode(node.__text)};
 
 export class ExtendedTextNode extends TextNode {
-    constructor(text, key) {
+    constructor(text: string, key?: NodeKey) {
         super(text, key);
     }
 
-    static getType() {
+    static getType(): string {
         return 'extended-text';
     }
 
-    static clone(node) {
+    static clone(node: ExtendedTextNode): ExtendedTextNode {
         return new ExtendedTextNode(node.__text, node.__key);
     }
 
-    static importDOM() {
+    static importDOM(): DOMConversionMap | null {
         const importers = TextNode.importDOM();
         return {
             ...importers,
@@ -34,17 +34,17 @@ export class ExtendedTextNode extends TextNode {
         };
     }
 
-    static importJSON(serializedNode) {
+    static importJSON(serializedNode: SerializedTextNode): ExtendedTextNode {
         return TextNode.importJSON(serializedNode);
     }
 
-    exportJSON() {
+    exportJSON(): SerializedTextNode {
         const json = super.exportJSON();
         json.type = 'extended-text';
         return json;
     }
 
-    isSimpleText() {
+    isSimpleText(): boolean {
         return (
             (this.__type === 'text' || this.__type === 'extended-text') &&
             this.__mode === 0
@@ -52,8 +52,8 @@ export class ExtendedTextNode extends TextNode {
     }
 }
 
-function patchConversion(originalDOMConverter, convertFn) {
-    return (node) => {
+function patchConversion(originalDOMConverter: DOMConversion, convertFn: DOMConversionFn) {
+    return (node: HTMLElement) => {
         const original = originalDOMConverter?.(node);
         if (!original) {
             return null;
@@ -78,7 +78,7 @@ function patchConversion(originalDOMConverter, convertFn) {
     };
 }
 
-function convertSpanElement(lexicalNode, domNode) {
+function convertSpanElement(lexicalNode: ExtendedTextNode, domNode: HTMLElement): ExtendedTextNode {
     const span = domNode;
 
     // Word uses span tags + font-weight for bold text
