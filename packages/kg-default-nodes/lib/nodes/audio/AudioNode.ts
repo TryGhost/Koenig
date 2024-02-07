@@ -13,7 +13,7 @@ export type AudioNodeDataset = {
 };
 
 export class AudioNode extends GeneratedKoenigDecoratorNode {
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     constructor(data: AudioNodeDataset) {
         super(
             {  

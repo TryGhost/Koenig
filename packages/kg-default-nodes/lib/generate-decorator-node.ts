@@ -54,6 +54,7 @@ type GenerateKoenigDecoratorNodeOptions = {
 type SerializedKoenigDecoratorNode = {
     type: string;
     version: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 };
 
@@ -75,6 +76,7 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
 
     class GeneratedDecoratorNode extends KoenigDecoratorNode {
         // allow any type here for ease of use
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         constructor(data: any = {}, key?: NodeKey) {
             super(key);
             __properties.forEach((prop) => {
@@ -100,7 +102,8 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
          * @see https://github.com/TryGhost/SDK/tree/main/packages/url-utils
          */
         static get urlTransformMap() {
-            let map: any = {};
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const map: any = {};
 
             __properties.forEach((prop) => {
                 if (prop.urlType) {
@@ -117,8 +120,8 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
          */
         getDataset() {
             const self = this.getLatest();
-
-            let dataset: any = {};
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const dataset: any = {};
             __properties.forEach((prop) => {
                 dataset[prop.name] = self[prop.privateName];
             });
@@ -134,6 +137,7 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
          */
 
         static importJSON(serializedNode: SerializedKoenigDecoratorNode): KoenigDecoratorNode {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const data: any = {};
 
             __properties.forEach((prop) => {
@@ -152,6 +156,7 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
             const dataset = {
                 type: nodeType,
                 version: version,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 ...__properties.reduce((obj: any, prop) => {
                     obj[prop.name] = this[prop.name];
                     return obj;
@@ -233,4 +238,4 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
     });
 
     return GeneratedDecoratorNode;
-}
+};

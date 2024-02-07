@@ -1,11 +1,11 @@
-import { DOMConversion, DOMConversionMap, DOMConversionOutput } from "lexical";
-import { $createButtonNode } from "./ButtonNode";
-import { KoenigDecoratorNode } from "../../KoenigDecoratorNode";
+import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical';
+import {$createButtonNode} from './ButtonNode';
+import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
 
 // TODO: This is a workaround for the moment until we can get the generator fn output to be recognized as an extended KoenigDecoratorNode
 type ButtonNode = KoenigDecoratorNode;
 
-export const parseButtonNode = (ButtonNode: ButtonNode): DOMConversionMap | null => {
+export const parseButtonNode = (): DOMConversionMap | null => {
     return {
         div: (nodeElem: HTMLElement): DOMConversion | null => {
             const isButtonCard = nodeElem.classList?.contains('kg-button-card');
@@ -38,4 +38,4 @@ export const parseButtonNode = (ButtonNode: ButtonNode): DOMConversionMap | null
             return null;
         }
     };
-}
+};

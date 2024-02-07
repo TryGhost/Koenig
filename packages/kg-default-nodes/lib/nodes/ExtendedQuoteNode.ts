@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {QuoteNode, SerializedQuoteNode} from '@lexical/rich-text';
-import {$createLineBreakNode, $isParagraphNode, DOMConversion, DOMConversionMap, DOMConversionOutput, LexicalNode, NodeKey} from 'lexical';
+import {$createLineBreakNode, $isParagraphNode, DOMConversion, DOMConversionMap, LexicalNode, NodeKey} from 'lexical';
 
 // Since the QuoteNode is foundational to Lexical rich-text, only using a
 // custom QuoteNode is undesirable as it means every package would need to

@@ -1,20 +1,15 @@
 module.exports = {
     plugins: ['ghost'],
     extends: [
-        'plugin:ghost/node'
+        'plugin:ghost/node',
+        'plugin:ghost/ts'
     ],
-    parser: '@babel/eslint-parser',
-    parserOptions: {
-        sourceType: 'module',
-        requireConfigFile: false,
-        babelOptions: {
-            plugins: [
-                '@babel/plugin-syntax-import-assertions'
-            ]
-        }
-    },
     env: {
         browser: true,
         node: true
+    },
+    // this fouls up with Lexical's need to prefix with '$' for lifecycle hooks
+    rules: {
+        'ghost/filenames/match-exported-class': 'off'
     }
 };

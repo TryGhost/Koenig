@@ -15,7 +15,7 @@
     "test:unit": "NODE_ENV=testing c8 --lib --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test": "yarn test:unit",
     "test:noc8": "NODE_ENV=testing mocha './test/**/*.test.js'",
-    "lint:code": "eslint *.js lib/ --ext .js --cache && eslint *.ts lib/ --ext .ts --cache",
+    "lint:code": "eslint lib/ --ext .js --cache && eslint lib/ --ext .ts --cache",
     "lint": "yarn lint:code && yarn lint:test",
     "lint:test": "eslint -c test/.eslintrc.js test/ --ext .js --cache"
   },

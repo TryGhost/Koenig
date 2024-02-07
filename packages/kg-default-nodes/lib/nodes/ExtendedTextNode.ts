@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {$isTextNode, DOMChildConversion, DOMConversion, DOMConversionFn, DOMConversionMap, LexicalNode, NodeKey, SerializedTextNode, TextNode} from 'lexical';
+import {$isTextNode, DOMConversionFn, DOMConversionMap, NodeKey, SerializedTextNode, TextNode} from 'lexical';
 
 // Since the TextNode is foundational to all Lexical packages, including the
 // plain text use case. Handling any rich text logic is undesirable. This creates

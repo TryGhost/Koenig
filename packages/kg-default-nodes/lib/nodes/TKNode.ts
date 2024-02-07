@@ -19,7 +19,7 @@ export class TKNode extends TextNode {
         const element = super.createDOM(config);
         const classes = config.theme.tk?.split(' ') || [];
         element.classList.add(...classes);
-        element.dataset.kgTk = "true";
+        element.dataset.kgTk = 'true';
         return element;
     }
 

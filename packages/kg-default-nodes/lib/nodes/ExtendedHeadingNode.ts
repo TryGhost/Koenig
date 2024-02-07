@@ -32,7 +32,7 @@ export class ExtendedHeadingNode extends HeadingNode {
         return {
             ...importers,
             p: patchParagraphConversion(importers?.p)
-        }
+        };
     }
 
     static importJSON(serializedNode: SerializedHeadingNode): ExtendedHeadingNode {
