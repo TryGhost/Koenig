@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {HeadingNode, SerializedHeadingNode} from '@lexical/rich-text';
-import { DOMConversion, DOMConversionFn, DOMConversionMap, DOMConversionOutput, Spread } from 'lexical';
+import {DOMConversionMap} from 'lexical';
 
 // Since the HeadingNode is foundational to Lexical rich-text, only using a
 // custom HeadingNode is undesirable as it means every package would need to
@@ -29,11 +29,10 @@ export class ExtendedHeadingNode extends HeadingNode {
 
     static importDOM(): DOMConversionMap | null {
         const importers = HeadingNode.importDOM();
-        const originalParagraphImporter = importers?.p as DOMConversionFn;
         return {
             ...importers,
-            p: patchParagraphConversion(originalParagraphImporter)
-        };
+            p: patchParagraphConversion(importers?.p)
+        }
     }
 
     static importJSON(serializedNode: SerializedHeadingNode): ExtendedHeadingNode {
@@ -47,16 +46,16 @@ export class ExtendedHeadingNode extends HeadingNode {
     }
 }
 
-function patchParagraphConversion(originalDOMConverter: DOMConversionFn): DOMConversion | null {
-    return (node: HTMLElement) => {
+// ignore no explicit any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function patchParagraphConversion(originalDOMConverter: any) {
+    return (node: Node) => {
+        const p = node as HTMLParagraphElement;
         // Original matches Google Docs p node to a null conversion so it's
         // child span is parsed as a heading. Don't prevent that here
-        const original = originalDOMConverter(node);
-        if (original) {
-            return original;
+        if (originalDOMConverter) {
+            return originalDOMConverter(p);
         }
-
-        const p = node;
 
         // Word uses paragraphs with role="heading" to represent headings
         // and an aria-level="x" to represent the heading level

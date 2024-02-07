@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {$isTextNode, DOMConversion, DOMConversionFn, DOMConversionMap, LexicalNode, NodeKey, SerializedTextNode, TextNode} from 'lexical';
+import {$isTextNode, DOMChildConversion, DOMConversion, DOMConversionFn, DOMConversionMap, LexicalNode, NodeKey, SerializedTextNode, TextNode} from 'lexical';
 
 // Since the TextNode is foundational to all Lexical packages, including the
 // plain text use case. Handling any rich text logic is undesirable. This creates
@@ -25,10 +25,11 @@ export class ExtendedTextNode extends TextNode {
 
     static importDOM(): DOMConversionMap | null {
         const importers = TextNode.importDOM();
+        const importersSpanConversion = importers?.span;
         return {
             ...importers,
             span: () => ({
-                conversion: patchConversion(importers?.span, convertSpanElement),
+                conversion: patchConversion(importersSpanConversion, convertSpanElement),
                 priority: 1
             })
         };
@@ -52,8 +53,10 @@ export class ExtendedTextNode extends TextNode {
     }
 }
 
-function patchConversion(originalDOMConverter: DOMConversion, convertFn: DOMConversionFn) {
-    return (node: HTMLElement) => {
+// ignore no implicit any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function patchConversion(originalDOMConverter: any, convertFn: any): DOMConversionFn {
+    return (node: Node) => {
         const original = originalDOMConverter?.(node);
         if (!original) {
             return null;
@@ -67,7 +70,7 @@ function patchConversion(originalDOMConverter: DOMConversion, convertFn: DOMConv
         return {
             ...originalOutput,
             forChild: (lexicalNode, parent) => {
-                const originalForChild = originalOutput?.forChild ?? (x => x);
+                const originalForChild = originalOutput?.forChild;
                 const result = originalForChild(lexicalNode, parent);
                 if ($isTextNode(result)) {
                     return convertFn(result, node);

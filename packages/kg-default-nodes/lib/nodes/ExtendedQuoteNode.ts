@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {QuoteNode, SerializedQuoteNode} from '@lexical/rich-text';
-import {$createLineBreakNode, $isParagraphNode, DOMConversionMap, NodeKey} from 'lexical';
+import {$createLineBreakNode, $isParagraphNode, DOMConversion, DOMConversionMap, DOMConversionOutput, LexicalNode, NodeKey} from 'lexical';
 
 // Since the QuoteNode is foundational to Lexical rich-text, only using a
 // custom QuoteNode is undesirable as it means every package would need to
@@ -34,7 +34,8 @@ export class ExtendedQuoteNode extends QuoteNode {
     }
 
     static importJSON(serializedNode: SerializedQuoteNode): ExtendedQuoteNode {
-        return QuoteNode.importJSON(serializedNode);
+        const json = QuoteNode.importJSON(serializedNode) as ExtendedQuoteNode;
+        return json;
     }
 
     exportJSON(): SerializedQuoteNode {
@@ -50,7 +51,7 @@ export class ExtendedQuoteNode extends QuoteNode {
     /* c8 ignore end */
 }
 
-function convertBlockquoteElement() {
+function convertBlockquoteElement(): DOMConversion {
     return {
         conversion: () => {
             const node = new ExtendedQuoteNode();
@@ -61,7 +62,7 @@ function convertBlockquoteElement() {
                     // editor we parsed all of the nested paragraphs into a single blockquote
                     // separating each paragraph with two line breaks. We replicate that
                     // here so we don't have a breaking change in conversion behaviour.
-                    const newChildNodes = [];
+                    const newChildNodes: LexicalNode[] = [];
 
                     childNodes.forEach((child) => {
                         if ($isParagraphNode(child)) {
