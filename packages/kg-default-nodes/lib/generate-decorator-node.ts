@@ -57,7 +57,7 @@ type SerializedKoenigDecoratorNode = {
     [key: string]: any;
 };
 
-class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
+export class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
     constructor(data: GenerateKoenigDecoratorNodeOptions) {
         super();
         this.generateDecoratorNode(data);

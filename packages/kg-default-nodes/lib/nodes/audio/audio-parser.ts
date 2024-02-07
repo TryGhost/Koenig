@@ -1,16 +1,10 @@
 import { DOMConversion, DOMConversionMap, DOMConversionOutput } from "lexical";
-import { $createAudioNode } from "./AudioNode";
+import { $createAudioNode, AudioNodeDataset } from "./AudioNode";
 import { KoenigDecoratorNode } from "../../KoenigDecoratorNode";
 
 // TODO: This is a workaround for the moment until we can get the generator fn output to be recognized as an extended KoenigDecoratorNode
 type AudioNode = KoenigDecoratorNode;
 
-type AudioPayload = {
-    src: string | null;
-    title: string | null;
-    thumbnailSrc?: string;
-    duration?: number;
-};
 
 export function parseAudioNode(): DOMConversionMap | null {
     return {
@@ -27,10 +21,12 @@ export function parseAudioNode(): DOMConversionMap | null {
                         const audioSrc = audioNode && audioNode.src;
                         const thumbnailSrc = thumbnailNode && thumbnailNode.src;
                         const durationText = durationNode && durationNode.innerHTML.trim();
-                        const payload: AudioPayload = {
-                            src: audioSrc,
-                            title: title
+                        
+                        const payload: AudioNodeDataset = {
+                            src: audioSrc || undefined,
+                            title: title || undefined
                         };
+
                         if (thumbnailSrc) {
                             payload.thumbnailSrc = thumbnailSrc;
                         }
