@@ -1,55 +1,75 @@
+import {NodeKey} from 'lexical';
 import {KoenigDecoratorNode} from './KoenigDecoratorNode';
 import readTextContent from './utils/read-text-content';
 /**
  * Validates the required arguments passed to `generateDecoratorNode`
+ * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
 */
-function validateArguments(nodeType, properties) {
+
+// NOTE: There's some liberal use of 'any' in this file despite moving it to typescript. This is a difficult one to get right
+//  because we're generating classes.
+
+export type KoenigDecoratorProperty = {
+    name: string;
+    default?: number | string | boolean | null;
+    urlType?: 'url'|'html'|'markdown';
+    wordCount?: boolean;
+};
+
+export type KoenigDecoratorNodeProperties = KoenigDecoratorProperty[];
+
+function validateArguments(nodeType: string, properties: KoenigDecoratorNodeProperties) {
     /* eslint-disable ghost/ghost-custom/no-native-error */
     /* c8 ignore start */
     if (!nodeType) {
-        throw new Error({message: '[generateDecoratorNode] A unique "nodeType" should be provided'});
+        throw new Error('[generateDecoratorNode] A unique "nodeType" should be provided');
     }
 
     properties.forEach((prop) => {
         if (!('name' in prop) || !('default' in prop)){
-            throw new Error({message: '[generateDecoratorNode] Properties should have both "name" and "default" attributes.'});
+            throw new Error('[generateDecoratorNode] Properties should have both "name" and "default" attributes.');
         }
 
         if (prop.urlType && !['url', 'html', 'markdown'].includes(prop.urlType)) {
-            throw new Error({message: '[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"'});
+            throw new Error('[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"');
         }
 
         if ('wordCount' in prop && typeof prop.wordCount !== 'boolean') {
-            throw new Error({message: '[generateDecoratorNode] "wordCount" should be of boolean type.'});
+            throw new Error('[generateDecoratorNode] "wordCount" should be of boolean type.');
         }
     });
     /* c8 ignore stop */
 }
 
-/**
- * @typedef {Object} DecoratorNodeProperty
- * @property {string} name - The property's name.
- * @property {*} default - The property's default value
- * @property {('url'|'html'|'markdown'|null)} urlType - If the property contains a URL, the URL's type: 'url', 'html' or 'markdown'. Use 'url' is the property contains only a URL, 'html' or 'markdown' if the property contains HTML or markdown code, that may contain URLs.
- * @property {boolean} wordCount - Whether the property should be counted in the word count
- *
- * @param {string} nodeType – The node's type (must be unique)
- * @param {DecoratorNodeProperty[]} properties - An array of properties for the generated class
- * @returns {Object} - The generated class.
- */
-export function generateDecoratorNode({nodeType, properties = [], version = 1}) {
+// expand the properties to include a privateName field
+type PrivateKoenigProperty = KoenigDecoratorProperty & {privateName: string};
+
+type GenerateKoenigDecoratorNodeFn = (options: {
+    nodeType: string;
+    properties?: KoenigDecoratorNodeProperties;
+    version?: number;
+}) => typeof KoenigDecoratorNode;
+
+type SerializedKoenigDecoratorNode = {
+    type: string;
+    version: number;
+    [key: string]: any;
+};
+
+export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, properties = [], version = 1}) => {
     validateArguments(nodeType, properties);
 
     // Adds a `privateName` field to the properties for convenience (e.g. `__name`):
     // properties: [{name: 'name', privateName: '__name', type: 'string', default: 'hello'}, {...}]
-    properties = properties.map((prop) => {
+    const __properties: PrivateKoenigProperty[] = properties.map((prop) => {
         return {...prop, privateName: `__${prop.name}`};
     });
 
     class GeneratedDecoratorNode extends KoenigDecoratorNode {
-        constructor(data = {}, key) {
+        // allow any type here for ease of use
+        constructor(data: any = {}, key?: NodeKey) {
             super(key);
-            properties.forEach((prop) => {
+            __properties.forEach((prop) => {
                 if (typeof prop.default === 'boolean') {
                     this[prop.privateName] = data[prop.name] ?? prop.default;
                 } else {
@@ -58,22 +78,11 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
             });
         }
 
-        /**
-         * Returns the node's unique type
-         * @extends DecoratorNode
-         * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
-         * @returns {string}
-         */
-        static getType() {
+        static getType(): string {
             return nodeType;
         }
 
-        /**
-         * Creates a copy of an existing node with all its properties
-         * @extends DecoratorNode
-         * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
-         */
-        static clone(node) {
+        static clone(node: KoenigDecoratorNode) {
             return new this(node.getDataset(), node.__key);
         }
 
@@ -83,9 +92,9 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
          * @see https://github.com/TryGhost/SDK/tree/main/packages/url-utils
          */
         static get urlTransformMap() {
-            let map = {};
+            let map: any = {};
 
-            properties.forEach((prop) => {
+            __properties.forEach((prop) => {
                 if (prop.urlType) {
                     map[prop.name] = prop.urlType;
                 }
@@ -101,8 +110,8 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
         getDataset() {
             const self = this.getLatest();
 
-            let dataset = {};
-            properties.forEach((prop) => {
+            let dataset: any = {};
+            __properties.forEach((prop) => {
                 dataset[prop.name] = self[prop.privateName];
             });
 
@@ -115,10 +124,11 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
          * @extends DecoratorNode
          * @param {Object} serializedNode - Lexical's representation of the node, in JSON format
          */
-        static importJSON(serializedNode) {
-            const data = {};
 
-            properties.forEach((prop) => {
+        static importJSON(serializedNode: SerializedKoenigDecoratorNode): KoenigDecoratorNode {
+            const data: any = {};
+
+            __properties.forEach((prop) => {
                 data[prop.name] = serializedNode[prop.name];
             });
 
@@ -130,11 +140,11 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
          * @extends DecoratorNode
          * @see https://lexical.dev/docs/concepts/serialization#lexicalnodeexportjson
          */
-        exportJSON() {
+        exportJSON(): SerializedKoenigDecoratorNode {
             const dataset = {
                 type: nodeType,
                 version: version,
-                ...properties.reduce((obj, prop) => {
+                ...__properties.reduce((obj: any, prop) => {
                     obj[prop.name] = this[prop.name];
                     return obj;
                 }, {})
@@ -143,56 +153,37 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
         }
 
         /* c8 ignore start */
-        /**
-         * Inserts node in the DOM. Required when extending the DecoratorNode.
-         * @extends DecoratorNode
-         * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
-         */
-        createDOM() {
+        createDOM(): HTMLElement {
             return document.createElement('div');
         }
 
-        /**
-         * Required when extending the DecoratorNode
-         * @extends DecoratorNode
-         * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
-         */
-        updateDOM() {
+        updateDOM(): false {
             return false;
         }
 
-        /**
-         * Defines whether a node is a top-level block.
-         * @see https://lexical.dev/docs/api/classes/lexical.DecoratorNode#isinline
-         */
-        isInline() {
+        // Defines whether a node is a top-level block.
+        isInline(): false {
             // All our cards are top-level blocks. Override if needed.
             return false;
         }
         /* c8 ignore stop */
 
-        /**
-         * Defines whether a node has dynamic data that needs to be fetched from the server when rendering
-         */
-        hasDynamicData() {
+        // Defines whether a node has dynamic data that needs to be fetched from the server when rendering
+        hasDynamicData(): false {
             return false;
         }
 
-        /**
-         * Defines whether a node has an edit mode in the editor UI
-         */
-        hasEditMode() {
+        // Defines whether a node has an edit mode in the editor UI
+        hasEditMode(): true {
             // Most of our cards have an edit mode. Override if needed.
             return true;
         }
 
-        /*
-        * Returns the text content of the node, used by the editor to calculate the word count
-        * This method filters out properties without `wordCount: true`
-        */
-        getTextContent() {
+        // Returns the text content of the node, used by the editor to calculate the word count
+        // This method filters out properties without `wordCount: true`
+        getTextContent(): string {
             const self = this.getLatest();
-            const propertiesWithText = properties.filter(prop => !!prop.wordCount);
+            const propertiesWithText = __properties.filter(prop => !!prop.wordCount);
 
             const text = propertiesWithText.map(
                 prop => readTextContent(self, prop.name)
@@ -220,7 +211,7 @@ export function generateDecoratorNode({nodeType, properties = [], version = 1}) 
      *
      * They can be used as `node.content` (getter) and `node.content = 'new value'` (setter)
      */
-    properties.forEach((prop) => {
+    __properties.forEach((prop) => {
         Object.defineProperty(GeneratedDecoratorNode.prototype, prop.name, {
             get: function () {
                 const self = this.getLatest();

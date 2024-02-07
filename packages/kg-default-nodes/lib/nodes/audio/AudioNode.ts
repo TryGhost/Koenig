@@ -1,4 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
+import { LexicalNode } from 'lexical';
 import {generateDecoratorNode} from '../../generate-decorator-node';
 import {parseAudioNode} from './audio-parser';
 import {renderAudioNode} from './audio-renderer';
@@ -21,10 +22,14 @@ export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
     }
 }
 
-export const $createAudioNode = (dataset) => {
+// TODO: Not sure how to handle the 'any' here; it's a result of the `generateDecoratorNode` function
+//  and the fact that the constructor is obscured, so it's pulling from the DecoratorNode class
+// 
+// Given that we call the $create methods in koenig-lexical, we really want to have type safety on the dataset properties
+export const $createAudioNode = (dataset: any) => {
     return new AudioNode(dataset);
 };
 
-export function $isAudioNode(node) {
+export function $isAudioNode(node: LexicalNode) {
     return node instanceof AudioNode;
 }
