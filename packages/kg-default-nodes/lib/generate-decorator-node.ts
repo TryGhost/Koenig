@@ -44,17 +44,27 @@ function validateArguments(nodeType: string, properties: KoenigDecoratorNodeProp
 // expand the properties to include a privateName field
 type PrivateKoenigProperty = KoenigDecoratorProperty & {privateName: string};
 
-type GenerateKoenigDecoratorNodeFn = (options: {
+type GenerateKoenigDecoratorNodeFn = (options: GenerateKoenigDecoratorNodeOptions) => typeof GeneratedKoenigDecoratorNode;
+
+type GenerateKoenigDecoratorNodeOptions = {
     nodeType: string;
     properties?: KoenigDecoratorNodeProperties;
     version?: number;
-}) => typeof KoenigDecoratorNode;
+};
 
 type SerializedKoenigDecoratorNode = {
     type: string;
     version: number;
     [key: string]: any;
 };
+
+class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
+    
+    constructor(data: GenerateKoenigDecoratorNodeOptions) {
+        super();
+        this.generateDecoratorNode(data);
+    }
+}
 
 export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, properties = [], version = 1}) => {
     validateArguments(nodeType, properties);
