@@ -13,7 +13,7 @@ export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
     ]}
 ) {
     static importDOM() {
-        return parseAudioNode(this);
+        return parseAudioNode();
     }
 
     exportDOM(options = {}) {

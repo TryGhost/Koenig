@@ -1,19 +1,33 @@
-export function parseAudioNode(AudioNode) {
+import { DOMConversion, DOMConversionMap, DOMConversionOutput } from "lexical";
+import { $createAudioNode } from "./AudioNode";
+import { KoenigDecoratorNode } from "../../KoenigDecoratorNode";
+
+// TODO: This is a workaround for the moment until we can get the generator fn output to be recognized as an extended KoenigDecoratorNode
+type AudioNode = KoenigDecoratorNode;
+
+type AudioPayload = {
+    src: string | null;
+    title: string | null;
+    thumbnailSrc?: string;
+    duration?: number;
+};
+
+export function parseAudioNode(): DOMConversionMap | null {
     return {
-        div: (nodeElem) => {
+        div: (nodeElem: HTMLElement): DOMConversion | null => {
             const isKgAudioCard = nodeElem.classList?.contains('kg-audio-card');
             if (nodeElem.tagName === 'DIV' && isKgAudioCard) {
                 return {
-                    conversion(domNode) {
+                    conversion(domNode: HTMLElement): DOMConversionOutput {
                         const titleNode = domNode?.querySelector('.kg-audio-title');
-                        const audioNode = domNode?.querySelector('.kg-audio-player-container audio');
+                        const audioNode = domNode?.querySelector('.kg-audio-player-container audio') as HTMLAudioElement | null;
                         const durationNode = domNode?.querySelector('.kg-audio-duration');
-                        const thumbnailNode = domNode?.querySelector('.kg-audio-thumbnail');
+                        const thumbnailNode = domNode?.querySelector('.kg-audio-thumbnail') as HTMLImageElement | null;
                         const title = titleNode && titleNode.innerHTML.trim();
                         const audioSrc = audioNode && audioNode.src;
                         const thumbnailSrc = thumbnailNode && thumbnailNode.src;
                         const durationText = durationNode && durationNode.innerHTML.trim();
-                        const payload = {
+                        const payload: AudioPayload = {
                             src: audioSrc,
                             title: title
                         };
@@ -22,7 +36,7 @@ export function parseAudioNode(AudioNode) {
                         }
 
                         if (durationText) {
-                            const [minutes, seconds = 0] = durationText.split(':');
+                            const [minutes, seconds = '0'] = durationText.split(':');
                             try {
                                 payload.duration = parseInt(minutes) * 60 + parseInt(seconds);
                             } catch (e) {
@@ -30,7 +44,7 @@ export function parseAudioNode(AudioNode) {
                             }
                         }
 
-                        const node = new AudioNode(payload);
+                        const node = $createAudioNode(payload) as AudioNode;
                         return {node};
                     },
                     priority: 1
