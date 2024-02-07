@@ -5,16 +5,16 @@ import {parseAudioNode} from './audio-parser';
 import {renderAudioNode} from './audio-renderer';
 
 type AudioNodeProperties = KoenigDecoratorNodeProperties & {
-    duration: number;
-    mimeType: string;
-    src: string;
-    title: string;
-    thumbnailSrc: string;
+    duration?: number;
+    mimeType?: string;
+    src?: string;
+    title?: string;
+    thumbnailSrc?: string;
 };
 
 type AudioNodeDataset = {
     nodeType: 'audio';
-    properties: AudioNodeProperties;
+    properties?: AudioNodeProperties;
 };
 
 export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
@@ -39,7 +39,7 @@ export class AudioNode extends generateDecoratorNode({nodeType: 'audio',
 //  and the fact that the constructor is obscured, so it's pulling from the DecoratorNode class
 // 
 // Given that we call the $create methods in koenig-lexical, we really want to have type safety on the dataset properties
-export const $createAudioNode = (dataset: AudioNodeDataset) => {
+export const $createAudioNode = (dataset: any) => {
     return new AudioNode(dataset);
 };
 

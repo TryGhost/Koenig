@@ -41,7 +41,6 @@ function validateArguments(nodeType: string, properties: KoenigDecoratorNodeProp
     /* c8 ignore stop */
 }
 
-// expand the properties to include a privateName field
 type PrivateKoenigProperty = KoenigDecoratorProperty & {privateName: string};
 
 type GenerateKoenigDecoratorNodeFn = (options: GenerateKoenigDecoratorNodeOptions) => typeof GeneratedKoenigDecoratorNode;
@@ -59,7 +58,6 @@ type SerializedKoenigDecoratorNode = {
 };
 
 class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
-    
     constructor(data: GenerateKoenigDecoratorNodeOptions) {
         super();
         this.generateDecoratorNode(data);
