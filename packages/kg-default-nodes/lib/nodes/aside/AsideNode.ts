@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {ElementFormatType, ElementNode, LexicalNode, NodeKey, SerializedLexicalNode, Spread} from 'lexical';
-import {AsideParser} from './AsideParser';
+import {parseAsideNode} from './aside-parser';
 
 export type SerializedAsideNode = Spread<{
     format: ElementFormatType,
@@ -45,8 +45,7 @@ export class AsideNode extends ElementNode {
     }
 
     static importDOM() {
-        const parser = new AsideParser(this);
-        return parser.DOMConversionMap;
+        return parseAsideNode();
     }
 
     /* c8 ignore start */

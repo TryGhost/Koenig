@@ -1,10 +1,17 @@
-export function parseButtonNode(ButtonNode) {
+import { DOMConversion, DOMConversionMap, DOMConversionOutput } from "lexical";
+import { $createButtonNode } from "./ButtonNode";
+import { KoenigDecoratorNode } from "../../KoenigDecoratorNode";
+
+// TODO: This is a workaround for the moment until we can get the generator fn output to be recognized as an extended KoenigDecoratorNode
+type ButtonNode = KoenigDecoratorNode;
+
+export const parseButtonNode = (ButtonNode: ButtonNode): DOMConversionMap | null => {
     return {
-        div: (nodeElem) => {
+        div: (nodeElem: HTMLElement): DOMConversion | null => {
             const isButtonCard = nodeElem.classList?.contains('kg-button-card');
             if (nodeElem.tagName === 'DIV' && isButtonCard) {
                 return {
-                    conversion(domNode) {
+                    conversion(domNode: HTMLElement): DOMConversionOutput {
                         const alignmentClass = nodeElem.className.match(/kg-align-(left|center)/);
 
                         let alignment;
@@ -13,8 +20,8 @@ export function parseButtonNode(ButtonNode) {
                         }
 
                         const buttonNode = domNode?.querySelector('.kg-btn');
-                        const buttonUrl = buttonNode.getAttribute('href');
-                        const buttonText = buttonNode.textContent;
+                        const buttonUrl = buttonNode?.getAttribute('href');
+                        const buttonText = buttonNode?.textContent;
 
                         const payload = {
                             buttonText: buttonText,
@@ -22,7 +29,7 @@ export function parseButtonNode(ButtonNode) {
                             buttonUrl: buttonUrl
                         };
 
-                        const node = new ButtonNode(payload);
+                        const node = $createButtonNode(payload) as ButtonNode;
                         return {node};
                     },
                     priority: 1
