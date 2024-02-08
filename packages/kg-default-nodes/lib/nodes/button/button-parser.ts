@@ -1,5 +1,5 @@
 import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical';
-import {$createButtonNode} from './ButtonNode';
+import {$createButtonNode, ButtonNodeDataset} from './ButtonNode';
 
 export const parseButtonNode = (): DOMConversionMap | null => {
     return {
@@ -20,10 +20,10 @@ export const parseButtonNode = (): DOMConversionMap | null => {
                         const buttonText = buttonNode?.textContent;
 
                         const payload = {
-                            buttonText: buttonText,
-                            alignment: alignment,
-                            buttonUrl: buttonUrl
-                        };
+                            buttonText,
+                            alignment,
+                            buttonUrl
+                        } as ButtonNodeDataset;
 
                         const node = $createButtonNode(payload);
                         return {node};

@@ -1,9 +1,5 @@
 import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical';
 import {$createAudioNode, AudioNodeDataset} from './AudioNode';
-import {KoenigDecoratorNode} from '../../KoenigDecoratorNode';
-
-// TODO: This is a workaround for the moment until we can get the generator fn output to be recognized as an extended KoenigDecoratorNode
-type AudioNode = KoenigDecoratorNode;
 
 export function parseAudioNode(): DOMConversionMap | null {
     return {
@@ -39,7 +35,7 @@ export function parseAudioNode(): DOMConversionMap | null {
                             }
                         }
 
-                        const node = $createAudioNode(payload) as AudioNode;
+                        const node = $createAudioNode(payload);
                         return {node};
                     },
                     priority: 1

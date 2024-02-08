@@ -2,7 +2,7 @@
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {renderCalloutNode} from './callout-renderer';
 import {parseCalloutNode} from './callout-parser';
-import {LexicalNode, NodeKey} from 'lexical';
+import {DOMConversionMap, LexicalNode, NodeKey} from 'lexical';
 
 export type CalloutNodeDataset = {
     calloutText?: string;
@@ -33,8 +33,8 @@ export class CalloutNode extends generateDecoratorNode(calloutNodeProps) {
         this.__backgroundColor = backgroundColor || 'blue';
     }
 
-    static importDOM() {
-        return parseCalloutNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseCalloutNode();
     }
 
     exportDOM(options = {}) {

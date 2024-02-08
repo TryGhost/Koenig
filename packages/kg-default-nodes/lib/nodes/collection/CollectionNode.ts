@@ -2,7 +2,7 @@
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {renderCollectionNode} from './collection-renderer';
 import {collectionParser} from './collection-parser';
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 
 export type CollectionNodeDataset = {
     collection?: string;
@@ -29,8 +29,8 @@ const collectionNodeProps: CollectionNodeProps = {
 };
 
 export class CollectionNode extends generateDecoratorNode(collectionNodeProps) {
-    static importDOM() {
-        return collectionParser(this);
+    static importDOM(): DOMConversionMap | null {
+        return collectionParser();
     }
 
     exportDOM(options = {}) {

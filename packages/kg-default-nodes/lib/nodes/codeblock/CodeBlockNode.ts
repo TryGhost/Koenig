@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseCodeBlockNode} from './codeblock-parser';
 import {renderCodeBlockNode} from './codeblock-renderer';
@@ -25,8 +25,8 @@ const codeBlockNodeProps: CodeBlockNodeProps = {
 };
 
 export class CodeBlockNode extends generateDecoratorNode(codeBlockNodeProps) {
-    static importDOM() {
-        return parseCodeBlockNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseCodeBlockNode();
     }
 
     exportDOM(options = {}) {

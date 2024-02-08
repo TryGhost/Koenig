@@ -1,4 +1,7 @@
-function getLayout(domNode) {
+import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical';
+import {$createCollectionNode, CollectionNodeDataset} from './CollectionNode';
+
+function getLayout(domNode: HTMLElement) {
     if (domNode.classList.contains('kg-collection-card-list')) {
         return 'list';
     } else { // should have kg-collection-card-grid
@@ -6,7 +9,7 @@ function getLayout(domNode) {
     }
 }
 
-function getColumns(domNode) {
+function getColumns(domNode: HTMLElement) {
     if (domNode.classList.contains('columns-1')) {
         return 1;
     }
@@ -21,14 +24,14 @@ function getColumns(domNode) {
     }
 }
 
-export function collectionParser(CollectionNode) {
+export function collectionParser(): DOMConversionMap | null {
     return {
-        div: (nodeElem) => {
+        div: (nodeElem: HTMLElement): DOMConversion | null => {
             const isCollectionNode = nodeElem.classList?.contains('kg-collection-card');
             if (nodeElem.tagName === 'DIV' && isCollectionNode) {
                 return {
-                    conversion(domNode) {
-                        const postCount = parseInt(domNode.getAttribute('data-kg-collection-limit'));
+                    conversion(domNode: HTMLElement): DOMConversionOutput {
+                        const postCount = parseInt(domNode.getAttribute('data-kg-collection-limit') || '');
                         const collection = domNode.getAttribute('data-kg-collection-slug');
                         const layout = getLayout(domNode);
                         const header = domNode.querySelector('.kg-collection-card-title')?.textContent || '';
@@ -40,9 +43,9 @@ export function collectionParser(CollectionNode) {
                             layout,
                             columns,
                             header
-                        };
+                        } as CollectionNodeDataset;
 
-                        const node = new CollectionNode(payload);
+                        const node = $createCollectionNode(payload);
                         return {node};
                     },
                     priority: 1

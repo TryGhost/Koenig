@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode, NodeKey, SerializedLexicalNode, Spread} from 'lexical';
+import {DOMConversionMap, LexicalNode, NodeKey, SerializedLexicalNode, Spread} from 'lexical';
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseBookmarkNode} from './bookmark-parser';
 import {renderBookmarkNode} from './bookmark-renderer';
@@ -39,8 +39,8 @@ const bookmarkNodeProps: BookmarkNodeProps = {
 };
 
 export class BookmarkNode extends generateDecoratorNode(bookmarkNodeProps) {
-    static importDOM() {
-        return parseBookmarkNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseBookmarkNode();
     }
 
     exportDOM(options = {}) {

@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseEmbedNode} from './embed-parser';
 import {renderEmbedNode} from './embed-renderer';
@@ -29,8 +29,8 @@ const embedNodeProps: EmbedNodeProps = {
 };
 
 export class EmbedNode extends generateDecoratorNode(embedNodeProps) {
-    static importDOM() {
-        return parseEmbedNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseEmbedNode();
     }
 
     exportDOM(options = {}) {

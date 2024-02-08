@@ -3,14 +3,14 @@ import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../genera
 import {renderFileNode} from './file-renderer';
 import {parseFileNode} from './file-parser';
 import {bytesToSize} from '../../utils/size-byte-converter';
-import {LexicalNode, SerializedLexicalNode, Spread} from 'lexical';
+import {DOMConversionMap, LexicalNode, SerializedLexicalNode, Spread} from 'lexical';
 
 export type FileNodeDataset = {
     src?: string;
     fileTitle?: string;
     fileCaption?: string;
     fileName?: string;
-    fileSize?: string;
+    fileSize?: number;
 };
 
 type FileNodeProps = {
@@ -48,8 +48,8 @@ export class FileNode extends generateDecoratorNode(fileNodeProps) {
         };
     }
 
-    static importDOM() {
-        return parseFileNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseFileNode();
     }
 
     exportDOM(options = {}) {
