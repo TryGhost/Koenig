@@ -71,8 +71,7 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
 
     // Adds a `privateName` field to the properties for convenience (e.g. `__name`):
     // properties: [{name: 'name', privateName: '__name', type: 'string', default: 'hello'}, {...}]
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const __properties: PrivateKoenigProperty[] = properties.map((prop: any) => {
+    const __properties: PrivateKoenigProperty[] = properties.map((prop) => {
         return {...prop, privateName: `__${prop.name}`};
     });
 
