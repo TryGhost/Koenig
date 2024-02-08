@@ -1,8 +1,27 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {generateDecoratorNode} from '../../generate-decorator-node';
+import {LexicalNode} from 'lexical';
+import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseImageNode} from './image-parser';
 import {renderImageNode} from './image-renderer';
-export class ImageNode extends generateDecoratorNode({nodeType: 'image',
+
+export type ImageNodeDataset = {
+    src?: string;
+    caption?: string;
+    title?: string;
+    alt?: string;
+    cardWidth?: string;
+    width?: number;
+    height?: number;
+    href?: string;
+};
+
+type ImageNodeProps = {
+    nodeType: 'image';
+    properties: KoenigDecoratorNodeProperties;
+};
+
+const imageNodeProps: ImageNodeProps = {
+    nodeType: 'image',
     properties: [
         {name: 'src', default: '', urlType: 'url'},
         {name: 'caption', default: '', urlType: 'html', wordCount: true},
@@ -12,8 +31,10 @@ export class ImageNode extends generateDecoratorNode({nodeType: 'image',
         {name: 'width', default: null},
         {name: 'height', default: null},
         {name: 'href', default: '', urlType: 'url'}
-    ]}
-) {
+    ]
+};
+
+export class ImageNode extends generateDecoratorNode(imageNodeProps) {
     /* @override */
     exportJSON() {
         // checks if src is a data string
@@ -48,10 +69,10 @@ export class ImageNode extends generateDecoratorNode({nodeType: 'image',
     }
 }
 
-export const $createImageNode = (dataset) => {
+export const $createImageNode = (dataset: ImageNodeDataset) => {
     return new ImageNode(dataset);
 };
 
-export function $isImageNode(node) {
+export function $isImageNode(node: LexicalNode) {
     return node instanceof ImageNode;
 }

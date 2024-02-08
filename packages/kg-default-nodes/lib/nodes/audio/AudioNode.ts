@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 import {generateDecoratorNode, KoenigDecoratorNodeProperties} from '../../generate-decorator-node';
 import {parseAudioNode} from './audio-parser';
 import {renderAudioNode} from './audio-renderer';
@@ -33,7 +33,7 @@ export class AudioNode extends generateDecoratorNode(audioNodeProps) {
         super(dataset);    
     }
 
-    static importDOM() {
+    static importDOM(): DOMConversionMap | null {
         return parseAudioNode();
     }
 

@@ -1,8 +1,32 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {generateDecoratorNode} from '../../generate-decorator-node';
+import {LexicalNode} from 'lexical';
+import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseVideoNode} from './video-parser';
 import {renderVideoNode} from './video-renderer';
-export class VideoNode extends generateDecoratorNode({nodeType: 'video',
+
+export type VideoNodeDataset = {
+    src?: string;
+    caption?: string;
+    fileName?: string;
+    mimeType?: string;
+    width?: number;
+    height?: number;
+    duration?: number;
+    thumbnailSrc?: string;
+    customThumbnailSrc?: string;
+    thumbnailWidth?: number;
+    thumbnailHeight?: number;
+    cardWidth?: string;
+    loop?: boolean;
+};
+
+type VideoNodeProps = {
+    nodeType: 'video';
+    properties: KoenigDecoratorNodeProperties;
+};
+
+const videoNodeProps: VideoNodeProps = {
+    nodeType: 'video',
     properties: [
         {name: 'src', default: '', urlType: 'url'},
         {name: 'caption', default: '', urlType: 'html', wordCount: true},
@@ -17,8 +41,10 @@ export class VideoNode extends generateDecoratorNode({nodeType: 'video',
         {name: 'thumbnailHeight', default: null},
         {name: 'cardWidth', default: 'regular'},
         {name: 'loop', default: false}
-    ]}
-) {
+    ]
+};
+
+export class VideoNode extends generateDecoratorNode(videoNodeProps) {
     /* override */
     exportJSON() {
         // checks if src is a data string
@@ -62,10 +88,10 @@ export class VideoNode extends generateDecoratorNode({nodeType: 'video',
     }
 }
 
-export const $createVideoNode = (dataset) => {
+export const $createVideoNode = (dataset: VideoNodeDataset) => {
     return new VideoNode(dataset);
 };
 
-export function $isVideoNode(node) {
+export function $isVideoNode(node: LexicalNode) {
     return node instanceof VideoNode;
 }

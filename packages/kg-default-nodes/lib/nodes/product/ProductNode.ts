@@ -1,9 +1,29 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {generateDecoratorNode} from '../../generate-decorator-node';
+import {LexicalNode} from 'lexical';
+import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseProductNode} from './product-parser';
 import {renderProductNode} from './product-renderer';
 
-export class ProductNode extends generateDecoratorNode({nodeType: 'product',
+export type ProductNodeDataset = {
+    productImageSrc?: string;
+    productImageWidth?: number;
+    productImageHeight?: number;
+    productTitle?: string;
+    productDescription?: string;
+    productRatingEnabled?: boolean;
+    productStarRating?: number;
+    productButtonEnabled?: boolean;
+    productButton?: string;
+    productUrl?: string;
+};
+
+type ProductNodeProps = {
+    nodeType: 'product';
+    properties: KoenigDecoratorNodeProperties;
+};
+
+const productNodeProps: ProductNodeProps = {
+    nodeType: 'product',
     properties: [
         {name: 'productImageSrc', default: '', urlType: 'url'},
         {name: 'productImageWidth', default: null},
@@ -15,8 +35,10 @@ export class ProductNode extends generateDecoratorNode({nodeType: 'product',
         {name: 'productButtonEnabled', default: false},
         {name: 'productButton', default: ''},
         {name: 'productUrl', default: ''}
-    ]}
-) {
+    ]
+};
+
+export class ProductNode extends generateDecoratorNode(productNodeProps) {
     /* override */
     exportJSON() {
         // checks if src is a data string
@@ -49,16 +71,16 @@ export class ProductNode extends generateDecoratorNode({nodeType: 'product',
         return renderProductNode(this, options);
     }
 
-    isEmpty() {
+    isEmpty(): boolean {
         const isButtonFilled = this.__productButtonEnabled && this.__productUrl && this.__productButton;
         return !this.__productTitle && !this.__productDescription && !isButtonFilled && !this.__productImageSrc && !this.__productRatingEnabled;
     }
 }
 
-export const $createProductNode = (dataset) => {
+export const $createProductNode = (dataset: ProductNodeDataset) => {
     return new ProductNode(dataset);
 };
 
-export function $isProductNode(node) {
+export function $isProductNode(node: LexicalNode) {
     return node instanceof ProductNode;
 }

@@ -1,9 +1,34 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {signupParser} from './signup-parser';
 import {renderSignupCardToDOM} from './signup-renderer';
-import {generateDecoratorNode} from '../../generate-decorator-node';
+import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
+import {LexicalNode, NodeKey} from 'lexical';
 
-export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
+export type SignupNodeDataset = {
+    alignment?: string;
+    backgroundColor?: string;
+    backgroundImageSrc?: string;
+    backgroundSize?: string;
+    textColor?: string;
+    buttonColor?: string;
+    buttonTextColor?: string;
+    buttonText?: string;
+    disclaimer?: string;
+    header?: string;
+    labels?: string[];
+    layout?: string;
+    subheader?: string;
+    successMessage?: string;
+    swapped?: boolean;
+};
+
+type SignupNodeProps = {
+    nodeType: 'signup';
+    properties: KoenigDecoratorNodeProperties;
+};
+
+const signupNodeProps: SignupNodeProps = {
+    nodeType: 'signup',
     properties: [
         {name: 'alignment', default: 'left'},
         {name: 'backgroundColor', default: '#F0F0F0'},
@@ -20,9 +45,12 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         {name: 'subheader', default: '', wordCount: true},
         {name: 'successMessage', default: 'Email sent! Check your inbox to complete your signup.'},
         {name: 'swapped', default: false}
-    ]}) {
+    ]
+};
+
+export class SignupNode extends generateDecoratorNode(signupNodeProps) {
     /* override */
-    constructor({alignment, backgroundColor, backgroundImageSrc, backgroundSize, textColor, buttonColor, buttonTextColor, buttonText, disclaimer, header, labels, layout, subheader, successMessage, swapped} = {}, key) {
+    constructor({alignment, backgroundColor, backgroundImageSrc, backgroundSize, textColor, buttonColor, buttonTextColor, buttonText, disclaimer, header, labels, layout, subheader, successMessage, swapped}: SignupNodeDataset = {}, key?: NodeKey) {
         super(key);
         this.__alignment = alignment || 'left';
         this.__backgroundColor = backgroundColor || '#F0F0F0';
@@ -50,8 +78,7 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
     }
 
     // keeping some custom methods for labels as it requires some special handling
-
-    setLabels(labels) {
+    setLabels(labels: string[]) {
         if (!Array.isArray(labels) || !labels.every(item => typeof item === 'string')) {
             throw new Error('Invalid argument: Expected an array of strings.'); // eslint-disable-line
         }
@@ -60,21 +87,21 @@ export class SignupNode extends generateDecoratorNode({nodeType: 'signup',
         writable.__labels = labels;
     }
 
-    addLabel(label) {
+    addLabel(label: string) {
         const writable = this.getWritable();
         writable.__labels.push(label);
     }
 
-    removeLabel(label) {
+    removeLabel(label: string) {
         const writable = this.getWritable();
-        writable.__labels = writable.__labels.filter(l => l !== label);
+        writable.__labels = writable.__labels.filter((l: string) => l !== label);
     }
 }
 
-export const $createSignupNode = (dataset) => {
+export const $createSignupNode = (dataset: SignupNodeDataset) => {
     return new SignupNode(dataset);
 };
 
-export function $isSignupNode(node) {
+export function $isSignupNode(node: LexicalNode) {
     return node instanceof SignupNode;
 }

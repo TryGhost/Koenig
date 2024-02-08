@@ -11,7 +11,7 @@ import readTextContent from './utils/read-text-content';
 
 export type KoenigDecoratorProperty = {
     name: string;
-    default?: number | string | boolean | null;
+    default?: number | string | boolean | null | object;
     urlType?: 'url'|'html'|'markdown';
     wordCount?: boolean;
 };
@@ -62,7 +62,7 @@ type SerializedKoenigDecoratorNode = {
 };
 class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    constructor(data: any) {
+    constructor(data?: any) {
         super();
         this.generateDecoratorNode(data);
     }

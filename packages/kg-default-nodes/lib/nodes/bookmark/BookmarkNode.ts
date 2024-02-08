@@ -1,9 +1,31 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {generateDecoratorNode} from '../../generate-decorator-node';
+import {LexicalNode, NodeKey, SerializedLexicalNode, Spread} from 'lexical';
+import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseBookmarkNode} from './bookmark-parser';
 import {renderBookmarkNode} from './bookmark-renderer';
 
-export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
+export type BookmarkNodeDataset = {
+    url?: string;
+    metadata?: {
+        icon?: string;
+        title?: string;
+        description?: string;
+        author?: string;
+        publisher?: string;
+        thumbnail?: string;
+    };
+    caption?: string;
+};
+
+export type SerializedBookmarkNode = Spread<BookmarkNodeDataset, SerializedLexicalNode>;
+
+type BookmarkNodeProps = {
+    nodeType: 'bookmark';
+    properties: KoenigDecoratorNodeProperties
+};
+
+const bookmarkNodeProps: BookmarkNodeProps = {
+    nodeType: 'bookmark',
     properties: [
         {name: 'title', default: '', wordCount: true},
         {name: 'description', default: '', wordCount: true},
@@ -13,8 +35,10 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
         {name: 'publisher', default: ''},
         {name: 'icon', default: '', urlType: 'url'},
         {name: 'thumbnail', default: '', urlType: 'url'}
-    ]}
-) {
+    ]
+};
+
+export class BookmarkNode extends generateDecoratorNode(bookmarkNodeProps) {
     static importDOM() {
         return parseBookmarkNode(this);
     }
@@ -24,7 +48,7 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
     }
 
     /* override */
-    constructor({url, metadata, caption} = {}, key) {
+    constructor({url, metadata, caption}: BookmarkNodeDataset = {}, key?: NodeKey) {
         super(key);
         this.__url = url || '';
         this.__icon = metadata?.icon || '';
@@ -37,7 +61,7 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
     }
 
     /* @override */
-    getDataset() {
+    getDataset(): BookmarkNodeDataset {
         const self = this.getLatest();
         return {
             url: self.__url,
@@ -54,7 +78,7 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
     }
 
     /* @override */
-    static importJSON(serializedNode) {
+    static importJSON(serializedNode: SerializedBookmarkNode): BookmarkNode {
         const {url, metadata, caption} = serializedNode;
         const node = new this({
             url,
@@ -65,7 +89,7 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
     }
 
     /* @override */
-    exportJSON() {
+    exportJSON(): SerializedBookmarkNode {
         const dataset = {
             type: 'bookmark',
             version: 1,
@@ -83,15 +107,15 @@ export class BookmarkNode extends generateDecoratorNode({nodeType: 'bookmark',
         return dataset;
     }
 
-    isEmpty() {
+    isEmpty(): boolean {
         return !this.url;
     }
 }
 
-export const $createBookmarkNode = (dataset) => {
+export const $createBookmarkNode = (dataset: BookmarkNodeDataset) => {
     return new BookmarkNode(dataset);
 };
 
-export function $isBookmarkNode(node) {
+export function $isBookmarkNode(node: LexicalNode) {
     return node instanceof BookmarkNode;
 }

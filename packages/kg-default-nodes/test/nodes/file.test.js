@@ -208,6 +208,7 @@ describe('FileNode', function () {
             const json = fileNode.exportJSON();
             json.should.deepEqual({
                 type: 'file',
+                version: 1,
                 ...dataset
             });
         }));
