@@ -59,7 +59,8 @@ type SerializedKoenigDecoratorNode = {
 };
 
 export class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
-    constructor(data: GenerateKoenigDecoratorNodeOptions) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(data: any) {
         super();
         this.generateDecoratorNode(data);
     }
@@ -70,7 +71,8 @@ export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, 
 
     // Adds a `privateName` field to the properties for convenience (e.g. `__name`):
     // properties: [{name: 'name', privateName: '__name', type: 'string', default: 'hello'}, {...}]
-    const __properties: PrivateKoenigProperty[] = properties.map((prop) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const __properties: PrivateKoenigProperty[] = properties.map((prop: any) => {
         return {...prop, privateName: `__${prop.name}`};
     });
 
