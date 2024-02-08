@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {LexicalNode} from 'lexical';
-import {GeneratedKoenigDecoratorNode} from '../../generate-decorator-node';
+import {generateDecoratorNode} from '../../generate-decorator-node';
 import {parseAudioNode} from './audio-parser';
 import {renderAudioNode} from './audio-renderer';
 
@@ -12,23 +12,18 @@ export type AudioNodeDataset = {
     thumbnailSrc?: string;
 };
 
-export class AudioNode extends GeneratedKoenigDecoratorNode {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    constructor(data: AudioNodeDataset) {
-        super(
-            {  
-                nodeType: 'audio',
-                properties: [
-                    {name: 'duration', default: 0},
-                    {name: 'mimeType', default: ''},
-                    {name: 'src', default: '', urlType: 'url'},
-                    {name: 'title', default: ''},
-                    {name: 'thumbnailSrc', default: ''} 
-                ]
-            }
-        );
+export class AudioNode extends generateDecoratorNode(
+    {
+        nodeType: 'audio',
+        properties: [
+            {name: 'duration', default: 0},
+            {name: 'mimeType', default: ''},
+            {name: 'src', default: '', urlType: 'url'},
+            {name: 'title', default: ''},
+            {name: 'thumbnailSrc', default: ''}
+        ]
     }
-
+) {
     static importDOM() {
         return parseAudioNode();
     }
@@ -42,7 +37,8 @@ export class AudioNode extends GeneratedKoenigDecoratorNode {
 //  and the fact that the constructor is obscured, so it's pulling from the DecoratorNode class
 // 
 // Given that we call the $create methods in koenig-lexical, we really want to have type safety on the dataset properties
-export const $createAudioNode = (dataset: AudioNodeDataset) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const $createAudioNode = (dataset: any) => {
     return new AudioNode(dataset);
 };
 
