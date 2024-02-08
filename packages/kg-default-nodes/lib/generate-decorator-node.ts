@@ -43,6 +43,9 @@ function validateArguments(nodeType: string, properties: KoenigDecoratorNodeProp
 
 type PrivateKoenigProperty = KoenigDecoratorProperty & {privateName: string};
 
+// NOTE: This is really what the return type is, but we wrap it in the GeneratedKoenigDecoratorNode class to make it a bit easier to interpret
+//   the 'magic' behind the scenes that generates the KoenigDecoratorNode classes.
+// type GenerateKoenigDecoratorNodeFn = (options: GenerateKoenigDecoratorNodeOptions) => typeof generateDecoratorNode.prototype;
 type GenerateKoenigDecoratorNodeFn = (options: GenerateKoenigDecoratorNodeOptions) => typeof GeneratedKoenigDecoratorNode;
 
 type GenerateKoenigDecoratorNodeOptions = {
@@ -57,15 +60,13 @@ type SerializedKoenigDecoratorNode = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 };
-
-export class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
+class GeneratedKoenigDecoratorNode extends KoenigDecoratorNode {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(data: any) {
         super();
         this.generateDecoratorNode(data);
     }
 }
-
 export const generateDecoratorNode: GenerateKoenigDecoratorNodeFn = ({nodeType, properties = [], version = 1}) => {
     validateArguments(nodeType, properties);
 
