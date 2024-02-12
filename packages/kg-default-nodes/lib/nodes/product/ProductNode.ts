@@ -1,13 +1,13 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseProductNode} from './product-parser';
 import {renderProductNode} from './product-renderer';
 
 export type ProductNodeDataset = {
     productImageSrc?: string;
-    productImageWidth?: number;
-    productImageHeight?: number;
+    productImageWidth?: string;
+    productImageHeight?: string;
     productTitle?: string;
     productDescription?: string;
     productRatingEnabled?: boolean;
@@ -63,8 +63,8 @@ export class ProductNode extends generateDecoratorNode(productNodeProps) {
         return dataset;
     }
 
-    static importDOM() {
-        return parseProductNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseProductNode();
     }
 
     exportDOM(options = {}) {

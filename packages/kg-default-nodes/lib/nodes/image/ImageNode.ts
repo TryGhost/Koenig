@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {parseImageNode} from './image-parser';
 import {renderImageNode} from './image-renderer';
@@ -56,8 +56,8 @@ export class ImageNode extends generateDecoratorNode(imageNodeProps) {
         return dataset;
     }
 
-    static importDOM() {
-        return parseImageNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseImageNode();
     }
 
     exportDOM(options = {}) {

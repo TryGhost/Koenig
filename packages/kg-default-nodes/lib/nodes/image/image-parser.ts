@@ -1,14 +1,16 @@
+import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical/LexicalNode.js';
 import {readCaptionFromElement} from '../../utils/read-caption-from-element.js';
 import {readImageAttributesFromElement} from '../../utils/read-image-attributes-from-element.js';
+import {$createImageNode, ImageNodeDataset} from './ImageNode.js';
 
-export function parseImageNode(ImageNode) {
+export function parseImageNode(): DOMConversionMap | null {
     return {
-        img: () => ({
-            conversion(domNode) {
+        img: (): DOMConversion => ({
+            conversion(domNode: HTMLElement): DOMConversionOutput | null {
                 if (domNode.tagName === 'IMG') {
-                    const {src, width, height, alt, title, href} = readImageAttributesFromElement(domNode);
+                    const payload: ImageNodeDataset = readImageAttributesFromElement(domNode as HTMLImageElement);
 
-                    const node = new ImageNode({alt, src, title, width, height, href});
+                    const node = $createImageNode(payload);
                     return {node};
                 }
 
@@ -16,11 +18,11 @@ export function parseImageNode(ImageNode) {
             },
             priority: 1
         }),
-        figure: (nodeElem) => {
+        figure: (nodeElem: HTMLElement): DOMConversion | null => {
             const img = nodeElem.querySelector('img');
             if (img) {
                 return {
-                    conversion(domNode) {
+                    conversion(domNode: HTMLElement): DOMConversionOutput | null {
                         const kgClass = domNode.className.match(/kg-width-(wide|full)/);
                         const grafClass = domNode.className.match(/graf--layout(FillWidth|OutsetCenter)/);
 
@@ -28,7 +30,7 @@ export function parseImageNode(ImageNode) {
                             return null;
                         }
 
-                        const payload = readImageAttributesFromElement(img);
+                        const payload: ImageNodeDataset = readImageAttributesFromElement(img);
 
                         if (kgClass) {
                             payload.cardWidth = kgClass[1];
@@ -38,8 +40,7 @@ export function parseImageNode(ImageNode) {
 
                         payload.caption = readCaptionFromElement(domNode);
 
-                        const {src, width, height, alt, title, caption, cardWidth, href} = payload;
-                        const node = new ImageNode({alt, src, title, width, height, caption, cardWidth, href});
+                        const node = $createImageNode(payload);
                         return {node};
                     },
                     priority: 0 // since we are generically parsing figure elements, we want this to run after others (like the gallery)

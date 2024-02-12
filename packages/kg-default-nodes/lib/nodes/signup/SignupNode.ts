@@ -2,7 +2,7 @@
 import {signupParser} from './signup-parser';
 import {renderSignupCardToDOM} from './signup-renderer';
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
-import {LexicalNode, NodeKey} from 'lexical';
+import {DOMConversionMap, LexicalNode, NodeKey} from 'lexical';
 
 export type SignupNodeDataset = {
     alignment?: string;
@@ -69,8 +69,8 @@ export class SignupNode extends generateDecoratorNode(signupNodeProps) {
         this.__swapped = swapped || false;
     }
 
-    static importDOM() {
-        return signupParser(this);
+    static importDOM(): DOMConversionMap | null {
+        return signupParser();
     }
 
     exportDOM(options = {}) {

@@ -1,5 +1,5 @@
 /* eslint-disable ghost/filenames/match-exported-class */
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 import {generateDecoratorNode} from '../../generate-decorator-node';
 import {parsePaywallNode} from './paywall-parser';
 import {renderPaywallNode} from './paywall-renderer';
@@ -15,8 +15,8 @@ const paywallNodeProps: PaywallNodeProps = {
 };
 
 export class PaywallNode extends generateDecoratorNode(paywallNodeProps) {
-    static importDOM() {
-        return parsePaywallNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parsePaywallNode();
     }
 
     exportDOM(options = {}) {

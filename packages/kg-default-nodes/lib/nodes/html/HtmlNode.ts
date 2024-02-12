@@ -2,7 +2,7 @@
 import {KoenigDecoratorNodeProperties, generateDecoratorNode} from '../../generate-decorator-node';
 import {renderHtmlNode} from './html-renderer';
 import {parseHtmlNode} from './html-parser';
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 
 export type HtmlNodeDataset = {
     html?: string;
@@ -21,8 +21,8 @@ const htmlNodeProps: HtmlNodeProps = {
 };
 
 export class HtmlNode extends generateDecoratorNode(htmlNodeProps) {
-    static importDOM() {
-        return parseHtmlNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseHtmlNode();
     }
 
     exportDOM(options = {}) {

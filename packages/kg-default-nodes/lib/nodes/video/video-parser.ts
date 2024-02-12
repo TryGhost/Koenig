@@ -1,13 +1,18 @@
+import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical';
 import {readCaptionFromElement} from '../../utils/read-caption-from-element';
+import {$createVideoNode, VideoNodeDataset} from './VideoNode';
 
-export function parseVideoNode(VideoNode) {
+export function parseVideoNode(): DOMConversionMap | null {
     return {
-        figure: (nodeElem) => {
+        figure: (nodeElem: HTMLElement): DOMConversion | null => {
             const isKgVideoCard = nodeElem.classList?.contains('kg-video-card');
             if (nodeElem.tagName === 'FIGURE' && isKgVideoCard) {
                 return {
-                    conversion(domNode) {
-                        const videoNode = domNode.querySelector('.kg-video-container video');
+                    conversion(domNode: HTMLElement): DOMConversionOutput | null {
+                        const videoNode = domNode.querySelector('.kg-video-container video') as HTMLVideoElement;
+                        if (!videoNode) {
+                            return null;
+                        }
                         const durationNode = domNode.querySelector('.kg-video-duration');
                         const videoSrc = videoNode && videoNode.src;
                         const videoWidth = videoNode && videoNode.width;
@@ -19,7 +24,7 @@ export function parseVideoNode(VideoNode) {
                             return null;
                         }
 
-                        const payload = {
+                        const payload: VideoNodeDataset = {
                             src: videoSrc,
                             loop: !!videoNode.loop,
                             cardWidth: getCardWidth(videoNode)
@@ -54,7 +59,7 @@ export function parseVideoNode(VideoNode) {
                             payload.height = videoHeight;
                         }
 
-                        const node = new VideoNode(payload);
+                        const node = $createVideoNode(payload);
                         return {node};
                     },
                     priority: 1
@@ -65,7 +70,7 @@ export function parseVideoNode(VideoNode) {
     };
 }
 
-function getCardWidth(domNode) {
+function getCardWidth(domNode: HTMLElement): string {
     if (domNode.classList.contains('kg-width-full')) {
         return 'full';
     } else if (domNode.classList.contains('kg-width-wide')) {

@@ -1,16 +1,18 @@
+import {DOMConversion, DOMConversionMap, DOMConversionOutput} from 'lexical';
 import {readCaptionFromElement} from '../../utils/read-caption-from-element';
+import {$createProductNode, ProductNodeDataset} from './ProductNode';
 
-export function parseProductNode(ProductNode) {
+export function parseProductNode(): DOMConversionMap | null {
     return {
-        div: (nodeElem) => {
+        div: (nodeElem: HTMLElement): DOMConversion | null => {
             const isKgProductCard = nodeElem.classList?.contains('kg-product-card');
             if (nodeElem.tagName === 'DIV' && isKgProductCard) {
                 return {
-                    conversion(domNode) {
+                    conversion(domNode: HTMLElement): DOMConversionOutput | null {
                         const title = readCaptionFromElement(domNode, {selector: '.kg-product-card-title'});
                         const description = readCaptionFromElement(domNode, {selector: '.kg-product-card-description'});
 
-                        const payload = {
+                        const payload: ProductNodeDataset = {
                             productButtonEnabled: false,
                             productRatingEnabled: false,
                             productTitle: title,
@@ -19,15 +21,14 @@ export function parseProductNode(ProductNode) {
 
                         const img = domNode.querySelector('.kg-product-card-image');
                         if (img && img.getAttribute('src')) {
-                            payload.productImageSrc = img.getAttribute('src');
+                            const imgSrc = img.getAttribute('src');
+                            payload.productImageSrc = imgSrc ? imgSrc : undefined;
 
-                            if (img.getAttribute('width')) {
-                                payload.productImageWidth = img.getAttribute('width');
-                            }
+                            const width = img.getAttribute('width');
+                            payload.productImageWidth = width ? width : undefined;
 
-                            if (img.getAttribute('height')) {
-                                payload.productImageHeight = img.getAttribute('height');
-                            }
+                            const height = img.getAttribute('height');
+                            payload.productImageHeight = height ? height : undefined;
                         }
 
                         const stars = [...domNode.querySelectorAll('.kg-product-card-rating-active')].length;
@@ -53,7 +54,7 @@ export function parseProductNode(ProductNode) {
                             return null;
                         }
 
-                        const node = new ProductNode(payload);
+                        const node = $createProductNode(payload);
                         return {node};
                     },
                     priority: 1
@@ -64,7 +65,7 @@ export function parseProductNode(ProductNode) {
     };
 }
 
-function getButtonText(node) {
+function getButtonText(node: HTMLElement): string | null {
     let buttonText = node.textContent;
     if (buttonText) {
         buttonText = buttonText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();

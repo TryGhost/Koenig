@@ -2,7 +2,7 @@
 import {generateDecoratorNode} from '../../generate-decorator-node';
 import {renderHorizontalRuleNode} from './horizontalrule-renderer';
 import {parseHorizontalRuleNode} from './horizontalrule-parser';
-import {LexicalNode} from 'lexical';
+import {DOMConversionMap, LexicalNode} from 'lexical';
 
 type HorizontalRuleNodeProps = {
     nodeType: 'horizontalrule';
@@ -13,8 +13,8 @@ const horizontalRuleNodeProps: HorizontalRuleNodeProps = {
 };
 
 export class HorizontalRuleNode extends generateDecoratorNode(horizontalRuleNodeProps) {
-    static importDOM() {
-        return parseHorizontalRuleNode(this);
+    static importDOM(): DOMConversionMap | null {
+        return parseHorizontalRuleNode();
     }
 
     exportDOM(options = {}) {
