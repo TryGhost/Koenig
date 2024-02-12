@@ -1,8 +1,8 @@
-import {$getRoot} from 'lexical';
+import {$getRoot, LexicalNode} from 'lexical';
 
 // when used nodes are used client-side their data attributes may be an editor
 // instance rather than a string in the case of nested editors
-export default function readTextContent(node, property) {
+export default function readTextContent(node: LexicalNode, property: string): string {
     const propertyName = `__${property}`;
     const propertyEditorName = `${propertyName}Editor`;
 

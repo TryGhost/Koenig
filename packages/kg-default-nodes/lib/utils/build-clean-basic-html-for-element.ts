@@ -1,9 +1,9 @@
 import cleanBasicHtml from '@tryghost/kg-clean-basic-html';
 
-export function buildCleanBasicHtmlForElement(domNode) {
-    return function _cleanBasicHtml(html) {
+export function buildCleanBasicHtmlForElement(domNode: HTMLElement) {
+    return function _cleanBasicHtml(html: string): string {
         const cleanedHtml = cleanBasicHtml(html, {
-            createDocument: (_html) => {
+            createDocument: (_html: string): Document => {
                 const newDoc = domNode.ownerDocument.implementation.createHTMLDocument();
                 newDoc.body.innerHTML = _html;
                 return newDoc;

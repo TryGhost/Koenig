@@ -1,4 +1,4 @@
-export function slugify(str) {
+export function slugify(str: string): string {
     // Remove HTML tags
     str = str.replace(/<[^>]*>?/gm, '');
 

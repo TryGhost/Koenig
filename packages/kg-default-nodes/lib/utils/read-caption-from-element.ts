@@ -1,9 +1,9 @@
 import {buildCleanBasicHtmlForElement} from './build-clean-basic-html-for-element';
 
-export function readCaptionFromElement(element, {selector = 'figcaption'} = {}) {
+export function readCaptionFromElement(element: HTMLElement, {selector = 'figcaption'} = {}): string | undefined {
     const cleanBasicHtml = buildCleanBasicHtmlForElement(element);
 
-    let caption;
+    let caption: string | undefined;
 
     const figcaptions = Array.from(element.querySelectorAll(selector));
     if (figcaptions.length) {
