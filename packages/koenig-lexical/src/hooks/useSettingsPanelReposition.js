@@ -86,15 +86,12 @@ function keepWithinSpacing(panelElem, {x, y, origin = {x: 0, y: 0}, topSpacing, 
 }
 
 function keepWithinSpacingOnDrag(panelElem, {x, y, origin}) {
-    const width = panelElem.offsetWidth;
-    const height = panelElem.offsetHeight;
+    const DISTANCE_FROM_BOUNDARY = 10;
 
-    // Make sure at least 40px is still visible
-    const MINIMUM_VISIBLE = isMobile() ? 100 : 40;
-    const topSpacing = MINIMUM_VISIBLE - height;
-    const bottomSpacing = MINIMUM_VISIBLE - height;
-    const rightSpacing = MINIMUM_VISIBLE - width;
-    const leftSpacing = MINIMUM_VISIBLE - width;
+    const topSpacing = DISTANCE_FROM_BOUNDARY;
+    const bottomSpacing = DISTANCE_FROM_BOUNDARY;
+    const rightSpacing = DISTANCE_FROM_BOUNDARY;
+    const leftSpacing = DISTANCE_FROM_BOUNDARY;
 
     // Last spacing is ignored
     return keepWithinSpacing(panelElem, {x, y, origin, topSpacing, bottomSpacing, rightSpacing, leftSpacing, lastSpacing: undefined});
