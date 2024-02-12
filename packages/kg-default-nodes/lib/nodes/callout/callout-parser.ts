@@ -18,8 +18,8 @@ export function parseCalloutNode(): DOMConversionMap | null {
                         const color = getColorTag(domNode);
 
                         const payload = {
-                            calloutText: textNode && textNode.innerHTML.trim(),
-                            calloutEmoji: emojiNode && emojiNode.innerHTML.trim(),
+                            calloutText: textNode && textNode.innerHTML.trim() || '',
+                            calloutEmoji: emojiNode && emojiNode.innerHTML.trim() || '',
                             backgroundColor: color
                         } as CalloutNodeDataset;
 
