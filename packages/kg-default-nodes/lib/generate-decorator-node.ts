@@ -16,6 +16,11 @@ export type KoenigDecoratorProperty = {
     wordCount?: boolean;
 };
 
+export type KoenigDecoratorRendererOutput = {
+    element: HTMLElement,
+    type?: 'inner' | 'value'; 
+}
+
 export type KoenigDecoratorNodeProperties = KoenigDecoratorProperty[];
 
 function validateArguments(nodeType: string, properties: KoenigDecoratorNodeProperties) {

@@ -1,3 +1,5 @@
+import {KoenigDecoratorRendererOutput} from '../generate-decorator-node';
+
 /*
  * Renders an empty container element
  * In the returned object, `type: 'inner'` is picked up by the `@tryghost/kg-lexical-html-renderer` package
@@ -6,7 +8,7 @@
  * @see @tryghost/kg-lexical-html-renderer package
  * @see https://github.com/TryGhost/Koenig/blob/e14c008e176f7a1036fe3f3deb924ed69a69191f/packages/kg-lexical-html-renderer/lib/convert-to-html-string.js#L29
  */
-export function renderEmptyContainer(document: Document) {
+export function renderEmptyContainer(document: Document): KoenigDecoratorRendererOutput {
     const emptyContainer = document.createElement('span');
     return {element: emptyContainer, type: 'inner'};
 }

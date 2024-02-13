@@ -1,10 +1,17 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {removeSpaces, removeCodeWrappersFromHelpers, wrapReplacementStrings} from '../../utils/replacement-strings';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {EmailNode} from './EmailNode';
+import {RendererOptions} from '../../types';
+import {KoenigDecoratorRendererOutput} from '../../generate-decorator-node';
 
-export function renderEmailNode(node, options = {}) {
+export function renderEmailNode(node: EmailNode, options: RendererOptions): KoenigDecoratorRendererOutput | null {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument && options.createDocument();
+
+    if (!document) {
+        return null;
+    }
 
     const html = node.html;
 
