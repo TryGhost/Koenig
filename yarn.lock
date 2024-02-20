@@ -20177,9 +20177,9 @@ y-protocols@^1.0.5:
     lib0 "^0.2.85"
 
 y-websocket@^1.5.0:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/y-websocket/-/y-websocket-1.5.3.tgz#1648ae43e820639307237e92f8bde2ac067a41f6"
-  integrity sha512-wVpKunsDUnVApOymp/ZtaXVyb1Q3csxGdono8Lx6E5k11OfupKUJZV86Eb16mpdUTkEdi7I7L1LVBlZlwd92bA==
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/y-websocket/-/y-websocket-1.5.4.tgz#d14d4033e102a5191c7e78ddcd5da005ef818336"
+  integrity sha512-Y3021uy0anOIHqAPyAZbNDoR05JuMEGjRNI8c+K9MHzVS8dWoImdJUjccljAznc8H2L7WkIXhRHZ1igWNRSgPw==
   dependencies:
     lib0 "^0.2.52"
     lodash.debounce "^4.0.8"
