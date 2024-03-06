@@ -1,4 +1,10 @@
-export const getAvailableImageWidths = function (image, imageSizes) {
+interface ImageSizes {
+    [key: string]: {
+        width: number;
+    };
+}
+
+export const getAvailableImageWidths = function (image: HTMLImageElement, imageSizes: ImageSizes) {
     // get a sorted list of the available responsive widths
     const imageWidths = Object.values(imageSizes)
         .map(({width}) => width)

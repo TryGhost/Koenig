@@ -1,4 +1,9 @@
-export const resizeImage = function (image, {width: desiredWidth, height: desiredHeight} = {}) {
+interface ImageProps {
+    width?: number;
+    height?: number;
+}
+
+export const resizeImage = function (image: HTMLImageElement, {width: desiredWidth, height: desiredHeight}: ImageProps = {}) {
     const {width, height} = image;
     const ratio = width / height;
 
