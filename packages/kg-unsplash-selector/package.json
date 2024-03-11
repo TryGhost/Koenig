@@ -35,7 +35,7 @@
     "lint": "eslint src --ext .js,.ts,.jsx,.tsx --cache",
     "test": "yarn test:unit && yarn test:acceptance",
     "test:unit": "yarn nx build && vitest run",
-    "test:acceptance": "NODE_OPTIONS='--experimental-specifier-resolution=node --no-warnings' && npx playwright test",
+    "test:acceptance": "NODE_OPTIONS='--experimental-specifier-resolution=node --no-warnings' && playwright test",
     "test:acceptance:slowmo": "TIMEOUT=100000 PLAYWRIGHT_SLOWMO=100 yarn test:acceptance --headed",
     "test:acceptance:full": "ALL_BROWSERS=1 yarn test:acceptance"
   },
