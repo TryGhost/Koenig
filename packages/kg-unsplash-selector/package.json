@@ -1,22 +1,22 @@
 {
   "name": "@tryghost/kg-unsplash-selector",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/TryGhost/Koenig/tree/master/packages/kg-unsplash-selector"
   },
-  "types": "./types/index.d.ts",
+  "types": "types/index.d.ts",
   "author": "Ghost Foundation",
   "files": [
     "LICENSE",
     "README.md",
     "dist/"
   ],
-  "main": "./dist/unsplash-selector.cjs.js",
-  "module": "./dist/unsplash-selector.esm.js",
-  "unpkg": "./dist/unsplash-selector.umd.js",
+  "main": "dist/unsplash-selector.cjs.js",
+  "module": "dist/unsplash-selector.esm.js",
+  "unpkg": "dist/unsplash-selector.umd.js",
   "exports": {
     ".": {
       "import": "./dist/unsplash-selector.esm.js",
