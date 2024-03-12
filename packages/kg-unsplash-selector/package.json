@@ -17,7 +17,7 @@
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "vite",
+    "dev": "VITE_APP_DEV=true vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .js,.ts,.jsx,.tsx --cache",
