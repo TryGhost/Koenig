@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/kg-unsplash-selector",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "license": "MIT",
   "repository": {
@@ -14,15 +14,13 @@
     "README.md",
     "dist/"
   ],
-  "main": "./dist/unsplash-selector.cjs",
-  "module": "./dist/unsplash-selector.es.js",
+  "main": "./dist/unsplash-selector.cjs.js",
+  "module": "./dist/unsplash-selector.esm.js",
   "unpkg": "./dist/unsplash-selector.umd.js",
   "exports": {
     ".": {
       "import": "./dist/unsplash-selector.esm.js",
-      "require": "./dist/unsplash-selector.cjs",
-      "umd": "./dist/unsplash-selector.umd.js",
-      "types": "./types/index.d.ts"
+      "require": "./dist/unsplash-selector.cjs.js"
     },
     "./styles/index.css": "./dist/index.css"
   },
