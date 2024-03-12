@@ -1,4 +1,4 @@
-// for testing purposes
+// Mock provider for testing purposes
 import {IUnsplashProvider} from './IUnsplashProvider';
 import {Photo} from '../UnsplashTypes';
 import {fixturePhotos} from './unsplashFixtures';
