@@ -24,7 +24,7 @@
     "posttest": "yarn lint"
   },
   "engines": {
-    "node": "^18.12.1"
+    "node": "^20.0.0"
   },
   "publishConfig": {
     "access": "public"
