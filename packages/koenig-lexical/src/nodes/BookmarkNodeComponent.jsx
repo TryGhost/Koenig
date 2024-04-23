@@ -1,6 +1,6 @@
-import CardContext from '../context/CardContext';
+// import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {$createLinkNode} from '@lexical/link';
 import {$createParagraphNode, $createTextNode, $getNodeByKey, $isParagraphNode} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
@@ -8,17 +8,25 @@ import {BookmarkCard} from '../components/ui/cards/BookmarkCard';
 import {BookmarkCardWithSearch} from '../components/ui/cards/BookmarkCardWithSearch.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu.jsx';
+import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 export function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor, captionEditorInitialState, createdWithUrl}) {
     const [editor] = useLexicalComposerContext();
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
-    const {isSelected} = React.useContext(CardContext);
     const [urlInputValue, setUrlInputValue] = React.useState(url);
     const [loading, setLoading] = React.useState(false);
     const [urlError, setUrlError] = React.useState(false);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+
+    // Since the node isn't triggered by the input field, we need to set the selected card key manually
+    const {selectedCardKey, setSelectedCardKey} = useKoenigSelectedCardContext();
+    useEffect(() => {
+        setSelectedCardKey(nodeKey);
+    }, [nodeKey, setSelectedCardKey]);
+
+    const isSelected = selectedCardKey === nodeKey;
 
     const handleUrlChange = (eventOrUrl) => {
         // TODO: change this so we only get given URL strings - child components should handle their own events
