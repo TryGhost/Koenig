@@ -27,8 +27,9 @@ export function InputListItem({dataTestId, item, selected, onClick}) {
     };
 
     return (
-        <li className={`${selectionClass} my-[.2rem] cursor-pointer rounded-md px-4 py-2 text-left hover:bg-grey-100 dark:hover:bg-grey-900`} data-testid={`${dataTestId}-listOption`} onMouseDownCapture={handleMouseDown}>
-            <span className="block text-sm font-medium leading-snug text-black dark:text-white" data-testid={`${dataTestId}-listOption-${item.label}`}>{item.label}</span>
+        <li className={`${selectionClass} group my-[.2rem] flex cursor-pointer justify-between gap-3 rounded-md px-4 py-2 text-left hover:bg-grey-100 dark:hover:bg-grey-900`} data-testid={`${dataTestId}-listOption`} onMouseDownCapture={handleMouseDown}>
+            <span className="block truncate text-sm font-medium leading-snug text-black dark:text-white" data-testid={`${dataTestId}-listOption-${item.label}`}>{item.label}</span>
+            <span className="hidden text-sm leading-snug text-grey-500 group-hover:!visible group-hover:!block group-hover:shrink-0 dark:text-white">2 May 2024</span>
         </li>
     );
 }
