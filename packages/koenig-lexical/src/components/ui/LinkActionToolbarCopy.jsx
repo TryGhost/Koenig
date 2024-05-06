@@ -10,10 +10,14 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 export function LinkActionToolbarCopy({anchorElem, href, onClose, ...props}) {
     const [editor] = useLexicalComposerContext();
 
+    const [portalContainer] = React.useState(() => {
+        return getScrollParent(editor.getRootElement());
+    });
+
     const linkToolbarRef = React.useRef(null);
 
-    // position the link input and search results when they open
-    // appears below the selected text, the full-width of the editor canvas
+    // Position the link input and search results when they open.
+    // By default appears below the selected text.
     const updateLinkToolbarPosition = React.useCallback(() => {
         editor.update(() => {
             const toolbarElement = linkToolbarRef.current;
@@ -46,6 +50,29 @@ export function LinkActionToolbarCopy({anchorElem, href, onClose, ...props}) {
         updateLinkToolbarPosition();
     }, [updateLinkToolbarPosition]);
 
+    // update padding on the portal container so the portal can always be scrolled
+    // into view when it would otherwise be cut off at the bottom of the screen
+    React.useEffect(() => {
+        const toolbarElement = linkToolbarRef.current;
+
+        if (toolbarElement) {
+            const resizeObserver = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                    if (entry.target === toolbarElement) {
+                        portalContainer.style.paddingBottom = `${entry.contentRect.height}px`;
+                    }
+                }
+            });
+
+            resizeObserver.observe(toolbarElement);
+
+            return () => {
+                resizeObserver.unobserve(toolbarElement);
+                portalContainer.style.paddingBottom = null;
+            };
+        }
+    }, [portalContainer]);
+
     React.useEffect(() => {
         const scrollElement = getScrollParent(anchorElem);
 
@@ -74,8 +101,9 @@ export function LinkActionToolbarCopy({anchorElem, href, onClose, ...props}) {
             onClose();
         });
     };
+
     return (
-        <Portal>
+        <Portal to={portalContainer}>
             <div ref={linkToolbarRef} className="not-kg-prose fixed z-[10000]">
                 <LinkInputCopy
                     cancel={onClose}
