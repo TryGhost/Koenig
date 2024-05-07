@@ -1,3 +1,4 @@
+import LockIcon from '../../assets/icons/kg-lock.svg?react';
 import React from 'react';
 import {DropdownContainerCopy} from './DropdownContainerCopy';
 import {Input} from './Input';
@@ -29,7 +30,10 @@ export function InputListItem({dataTestId, item, selected, onClick}) {
     return (
         <li className={`${selectionClass} group my-[.2rem] flex cursor-pointer justify-between gap-3 rounded-md px-4 py-2 text-left hover:bg-grey-100 dark:hover:bg-grey-900`} data-testid={`${dataTestId}-listOption`} onMouseDownCapture={handleMouseDown}>
             <span className="block truncate text-sm font-medium leading-snug text-black dark:text-white" data-testid={`${dataTestId}-listOption-${item.label}`}>{item.label}</span>
-            <span className="hidden text-sm leading-snug text-grey-500 group-hover:!visible group-hover:!block group-hover:shrink-0 dark:text-white">2 May 2024</span>
+            <span className="hidden items-center gap-1 text-sm leading-snug text-grey-700 group-hover:!visible group-hover:!flex group-hover:shrink-0 dark:text-white">
+                <LockIcon className="mb-[1px] size-[1.4rem]" />
+                <span>Paid members • 2 May 2024</span>
+            </span>
         </li>
     );
 }
