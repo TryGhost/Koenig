@@ -2,7 +2,7 @@ import React from 'react';
 import debounce from 'lodash/debounce';
 
 const DEBOUNCE_MS = 200;
-const IGNORE_QUERY_REGEX = /^http/;
+const URL_QUERY_REGEX = /^http/;
 
 function convertSearchResultsToListOptions(results) {
     return results.map((result) => {
@@ -15,6 +15,16 @@ function convertSearchResultsToListOptions(results) {
 
         return {...result, items};
     });
+}
+
+function urlQueryOptions(query) {
+    return [{
+        label: 'Link to web page',
+        items: [{
+            label: query,
+            value: query
+        }]
+    }];
 }
 
 export const useSearchLinks = (query, searchLinks) => {
@@ -33,7 +43,7 @@ export const useSearchLinks = (query, searchLinks) => {
 
     // Fetch default search results when first rendering
     React.useEffect(() => {
-        if (IGNORE_QUERY_REGEX.test(query)) {
+        if (URL_QUERY_REGEX.test(query)) {
             return;
         }
 
@@ -49,8 +59,8 @@ export const useSearchLinks = (query, searchLinks) => {
     }, []);
 
     React.useEffect(() => {
-        if (IGNORE_QUERY_REGEX.test(query)) {
-            setListOptions([]);
+        if (URL_QUERY_REGEX.test(query)) {
+            setListOptions(urlQueryOptions(query));
         } else {
             debouncedSearch(query);
         }
