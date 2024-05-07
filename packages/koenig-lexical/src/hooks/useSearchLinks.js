@@ -32,14 +32,24 @@ export const useSearchLinks = (query, searchLinks) => {
     const [listOptions, setListOptions] = React.useState([]);
     const [isSearching, setIsSearching] = React.useState(false);
 
-    const debouncedSearch = React.useMemo(() => {
-        return debounce(async (term) => {
+    const search = React.useMemo(() => {
+        return async function _search(term) {
+            if (URL_QUERY_REGEX.test(term)) {
+                setListOptions(urlQueryOptions(term));
+                return;
+            }
+
             setIsSearching(true);
             const results = await searchLinks(term);
             setListOptions(convertSearchResultsToListOptions(results));
             setIsSearching(false);
-        }, DEBOUNCE_MS);
+        };
     }, [searchLinks]);
+
+    const debouncedSearch = React.useMemo(() => {
+        console.log({search});
+        return debounce(search, DEBOUNCE_MS);
+    }, [search]);
 
     // Fetch default search results when first rendering
     React.useEffect(() => {
@@ -59,12 +69,14 @@ export const useSearchLinks = (query, searchLinks) => {
     }, []);
 
     React.useEffect(() => {
+        // perform a non-debounced search if the query is a URL so the
+        // "Link to web page" option updates more responsively
         if (URL_QUERY_REGEX.test(query)) {
-            setListOptions(urlQueryOptions(query));
+            search(query);
         } else {
             debouncedSearch(query);
         }
-    }, [query, debouncedSearch]);
+    }, [query, search, debouncedSearch]);
 
     const displayedListOptions = query ? listOptions : defaultListOptions;
 
