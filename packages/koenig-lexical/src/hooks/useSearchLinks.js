@@ -49,7 +49,6 @@ export const useSearchLinks = (query, searchLinks) => {
     }, [searchLinks]);
 
     const debouncedSearch = React.useMemo(() => {
-        console.log({search});
         return debounce(search, DEBOUNCE_MS);
     }, [search]);
 
