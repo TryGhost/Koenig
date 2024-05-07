@@ -1,3 +1,4 @@
+import EarthIcon from '../assets/icons/kg-earth.svg?react';
 import React from 'react';
 import debounce from 'lodash/debounce';
 
@@ -22,7 +23,8 @@ function urlQueryOptions(query) {
         label: 'Link to web page',
         items: [{
             label: query,
-            value: query
+            value: query,
+            Icon: EarthIcon
         }]
     }];
 }
