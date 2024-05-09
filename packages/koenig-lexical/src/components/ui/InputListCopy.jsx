@@ -34,7 +34,7 @@ export function InputListItem({dataTestId, item, selected, onClick, onMouseOver,
     };
 
     const HighlightedLabel = () => {
-        if (!highlightString) {
+        if (!highlightString || item.highlight === false) {
             return item.label;
         }
 
