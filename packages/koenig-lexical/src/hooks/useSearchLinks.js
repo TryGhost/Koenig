@@ -29,9 +29,9 @@ function noResultOptions(query) {
     }];
 }
 
-function convertSearchResultsToListOptions(results) {
+function convertSearchResultsToListOptions(results, {showNoResults = true} = {}) {
     if (!results || !results.length) {
-        return noResultOptions();
+        return showNoResults ? noResultOptions() : [];
     }
 
     return results.map((result) => {
@@ -49,7 +49,9 @@ function convertSearchResultsToListOptions(results) {
     });
 }
 
-export const useSearchLinks = (query, searchLinks) => {
+export const useSearchLinks = (query, searchLinks, options = {}) => {
+    const _options = React.useMemo(() => ({showNoResults: true, showUrlResult: true, ...options}), [options]);
+
     const [defaultListOptions, setDefaultListOptions] = React.useState([]);
     const [listOptions, setListOptions] = React.useState([]);
     const [isSearching, setIsSearching] = React.useState(false);
@@ -57,16 +59,16 @@ export const useSearchLinks = (query, searchLinks) => {
     const search = React.useMemo(() => {
         return async function _search(term) {
             if (URL_QUERY_REGEX.test(term)) {
-                setListOptions(urlQueryOptions(term));
+                _options.showUrlResult ? setListOptions(urlQueryOptions(term)) : setListOptions([]);
                 return;
             }
 
             setIsSearching(true);
             const results = await searchLinks(term);
-            setListOptions(convertSearchResultsToListOptions(results));
+            setListOptions(convertSearchResultsToListOptions(results, _options));
             setIsSearching(false);
         };
-    }, [searchLinks]);
+    }, [searchLinks, _options]);
 
     const debouncedSearch = React.useMemo(() => {
         return debounce(search, DEBOUNCE_MS);
@@ -79,8 +81,8 @@ export const useSearchLinks = (query, searchLinks) => {
             // we still want to load the default options in the background so
             // they're available when the query is cleared
             !query && setIsSearching(true);
-            const results = await searchLinks();
-            setDefaultListOptions(convertSearchResultsToListOptions(results));
+            const results = await searchLinks(null);
+            setDefaultListOptions(convertSearchResultsToListOptions(results, _options));
             !query && setIsSearching(false);
         };
 

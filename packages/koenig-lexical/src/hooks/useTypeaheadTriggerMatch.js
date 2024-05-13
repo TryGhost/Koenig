@@ -3,10 +3,10 @@ import {useCallback} from 'react';
 // adapted from lexical-react/src/LexicalTypeaheadMenuPlugin
 //  we need the ability to match on punctuation, as well as a leading space, which was not possible using lexical's version
 
-export default function useBasicTypeaheadTriggerMatch(trigger,{minLength = 1, maxLength = 75}) {
+export default function useBasicTypeaheadTriggerMatch(trigger, {minLength = 1, maxLength = 75, allowSpace = false}) {
     return useCallback(
         (text) => {
-            const invalidChars = '[^' + trigger + '\\s]'; // escaped set - these cannot be present in the matched string
+            const invalidChars = '[^' + trigger + (allowSpace ? ']' : '\\s]'); // escaped set - these cannot be present in the matched string
             const TypeaheadTriggerRegex = new RegExp(
                 '[' + trigger + ']' +
                 '(' +
@@ -27,6 +27,6 @@ export default function useBasicTypeaheadTriggerMatch(trigger,{minLength = 1, ma
             }
             return null;
         },
-        [maxLength, minLength, trigger],
+        [allowSpace, maxLength, minLength, trigger],
     );
 }
