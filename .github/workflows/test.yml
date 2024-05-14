@@ -62,7 +62,7 @@ jobs:
         run: npx playwright install-deps
 
       - run: yarn test
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
 
       - name: Upload test results
         if: always()
