@@ -59,6 +59,10 @@
           "^vitest",
           "^@vitest"
         ]
+      },
+      {
+        "matchPackageNames": ["@tryghost/mobiledoc-kit"],
+        "enabled": false
       }
     ]
   }
