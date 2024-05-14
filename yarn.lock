@@ -2740,10 +2740,12 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.24.tgz#58601079e11784d20f82d0585865bb42305c4df3"
   integrity sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==
 
-"@prettier/sync@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@prettier/sync/-/sync-0.3.0.tgz#91f2cfc23490a21586d1cf89c6f72157c000ca1e"
-  integrity sha512-3dcmCyAxIcxy036h1I7MQU/uEEBq8oLwf1CE3xeze+MPlgkdlb/+w6rGR/1dhp6Hqi17fRS6nvwnOzkESxEkOw==
+"@prettier/sync@^0.5.0":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@prettier/sync/-/sync-0.5.2.tgz#f8401e45b667e8d6207015fd03619ea2c2e3e680"
+  integrity sha512-Yb569su456XNx5BsH/Vyem7xD6g/y9iLmLUzRKM1a/dhU/D7HqqvkAG72znulXlMXztbV0iiu9O5AL8K98TzZQ==
+  dependencies:
+    make-synchronized "^0.2.8"
 
 "@radix-ui/number@1.0.1":
   version "1.0.1"
@@ -14067,6 +14069,11 @@ make-iterator@^1.0.0:
   integrity sha512-pxiuXh0iVEq7VM7KMIhs5gxsfxCux2URptUQaXo4iZZJxBAzTPOLE2BumO5dbfVYq/hBJFBR/a1mFDmOx5AGmw==
   dependencies:
     kind-of "^6.0.2"
+
+make-synchronized@^0.2.8:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/make-synchronized/-/make-synchronized-0.2.9.tgz#edcbe2d8e7aeac8e0f41a0bb25b05cc7a7e2e8e4"
+  integrity sha512-4wczOs8SLuEdpEvp3vGo83wh8rjJ78UsIk7DIX5fxdfmfMJGog4bQzxfvOwq7Q3yCHLC4jp1urPHIxRS/A93gA==
 
 makeerror@1.0.12:
   version "1.0.12"
