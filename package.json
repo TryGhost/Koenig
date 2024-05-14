@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "dev": "yarn workspace @tryghost/koenig-lexical dev",
-    "prepare": "husky install .github/hooks",
+    "prepare": "husky .github/hooks",
     "presetup": "yarn",
     "setup": "yarn && lerna run build",
     "test": "lerna run test",
