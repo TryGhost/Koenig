@@ -34,7 +34,7 @@ export const KoenigSnippetPlugin = () => {
                         if (lastNode && $isKoenigCard(lastNode) && !lastNode.getNextSibling()) {
                             try {
                                 const paragraph = $createParagraphNode();
-                                lastNode?.getTopLevelElementOrThrow().insertAfter(paragraph);
+                                lastNode.getTopLevelElementOrThrow().insertAfter(paragraph);
                             } catch (e) {
                                 console.log(e);  // eslint-disable-line
                             }
