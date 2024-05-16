@@ -3,6 +3,9 @@
     "npmClient": "yarn",
     "packages": ["packages/*"],
     "command": {
+        "version": {
+          "exact": true
+        },
         "publish": {
             "allowBranch": "main",
             "message": "Published new versions"
