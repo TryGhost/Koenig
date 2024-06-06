@@ -4,6 +4,7 @@ import {Delayed} from './Delayed';
 import {DropdownContainerCopy} from './DropdownContainerCopy';
 import {Input} from './Input';
 import {KeyboardSelectionWithGroups} from './KeyboardSelectionWithGroups';
+import {Spinner} from './Spinner';
 
 export function InputListLoadingItem({dataTestId}) {
     return (
@@ -83,7 +84,7 @@ export function InputListItem({dataTestId, item, selected, onClick, onMouseOver,
 
 export function InputListGroup({dataTestId, group}) {
     return (
-        <li className="mb-0 mt-2 flex items-center justify-between border-t border-grey-200 px-4 pb-2 pt-3 text-[1.1rem] font-semibold uppercase tracking-wide text-grey-600 first-of-type:mt-0 first-of-type:border-t-0 dark:border-grey-900" data-testid={`${dataTestId}-listGroup`}>{group.label}</li>
+        <li className="mb-0 mt-2 flex items-center justify-between border-t border-grey-200 px-4 pb-2 pt-3 text-[1.1rem] font-semibold uppercase tracking-wide text-grey-600 first-of-type:mt-0 first-of-type:border-t-0 dark:border-grey-900" data-testid={`${dataTestId}-listGroup`}><div className="flex items-center gap-1.5"><Spinner size='mini' /> {group.label}</div></li>
     );
 }
 
