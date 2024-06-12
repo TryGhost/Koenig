@@ -1,4 +1,5 @@
 import EarthIcon from '../assets/icons/kg-earth.svg?react';
+import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import debounce from 'lodash/debounce';
 
@@ -29,7 +30,7 @@ function defaultNoResultOptions(query) {
     }];
 }
 
-function convertSearchResultsToListOptions(results, {noResultOptions} = {}) {
+function convertSearchResultsToListOptions(results, {noResultOptions, showExcerpt} = {}) {
     if (!results || !results.length) {
         return (noResultOptions || defaultNoResultOptions)();
     }
@@ -38,6 +39,7 @@ function convertSearchResultsToListOptions(results, {noResultOptions} = {}) {
         const items = result.items.map((item) => {
             return {
                 label: item.title,
+                excerpt: showExcerpt ? item.excerpt : undefined,
                 value: item.url,
                 Icon: item.Icon,
                 metaText: item.metaText,
@@ -51,9 +53,12 @@ function convertSearchResultsToListOptions(results, {noResultOptions} = {}) {
 }
 
 export const useSearchLinks = (query, searchLinks, {noResultOptions} = {}) => {
+    const {cardConfig} = React.useContext(KoenigComposerContext);
     const [defaultListOptions, setDefaultListOptions] = React.useState([]);
     const [listOptions, setListOptions] = React.useState([]);
     const [isSearching, setIsSearching] = React.useState(false);
+
+    const showExcerpt = cardConfig.feature?.internalLinkingExcerpts;
 
     const search = React.useMemo(() => {
         return async function _search(term) {
@@ -73,10 +78,10 @@ export const useSearchLinks = (query, searchLinks, {noResultOptions} = {}) => {
                 return;
             }
 
-            setListOptions(convertSearchResultsToListOptions(results, {noResultOptions}));
+            setListOptions(convertSearchResultsToListOptions(results, {noResultOptions, showExcerpt}));
             setIsSearching(false);
         };
-    }, [searchLinks, noResultOptions]);
+    }, [searchLinks, noResultOptions, showExcerpt]);
 
     const debouncedSearch = React.useMemo(() => {
         return debounce(search, DEBOUNCE_MS);
@@ -90,7 +95,7 @@ export const useSearchLinks = (query, searchLinks, {noResultOptions} = {}) => {
             // they're available when the query is cleared
             !query && setIsSearching(true);
             const results = await searchLinks();
-            setDefaultListOptions(convertSearchResultsToListOptions(results));
+            setDefaultListOptions(convertSearchResultsToListOptions(results, {showExcerpt}));
             !query && setIsSearching(false);
         };
 

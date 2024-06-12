@@ -47,7 +47,8 @@ const defaultCardConfig = {
     feature: {
         collections: true,
         collectionsCard: true,
-        internalLinking: false // default off, can be enabled with `?labs=internalLinking
+        internalLinking: false, // default off, can be enabled with `?labs=internalLinking
+        internalLinkingExcerpts: false // default off, can be enabled with `?labs=internalLinking
     },
     deprecated: {
         headerV1: process.env.NODE_ENV === 'test' ? false : true // show header v1 only for tests
@@ -58,10 +59,44 @@ const defaultCardConfig = {
         if (!term) {
             return [
                 {label: 'Latest posts', key: 'latest-posts', items: [
-                    {id: '1', groupName: 'Latest posts', title: 'Remote Work\'s Impact on Job Markets and Employment', url: 'https://source.ghost.io/remote-works-impact-on-job-markets/', metaText: '8 May 2024', MetaIcon: LockIcon, metaIconTitle: 'Members only'},
-                    {id: '2', groupName: 'Latest posts', title: 'Robotics Renaissance: How Automation is Transforming Industries', url: 'https://source-newsletter.ghost.io/mental-health-awareness-in-the-workplace/', metaText: '2 May 2024', MetaIcon: DollarIcon, metaIconTitle: 'Specific tiers only'},
-                    {id: '3', groupName: 'Latest posts', title: 'Biodiversity Conservation in Fragile Ecosystems', url: 'https://source.ghost.io/biodiversity-conservation-in-fragile-ecosystems/', metaText: '26 June 2024', MetaIcon: DollarIcon, metaIconTitle: 'Paid-members only'},
-                    {id: '4', groupName: 'Latest posts', title: 'Unveiling the Crisis of Plastic Pollution: Analyzing Its Profound Impact on the Environment', url: 'https://source.ghost.io/plastic-pollution-crisis-deepens/', metaText: '16 Aug 2023'}
+                    {
+                        id: '1',
+                        groupName: 'Latest posts',
+                        title: 'Remote Work\'s Impact on Job Markets and Employment',
+                        url: 'https://source.ghost.io/remote-works-impact-on-job-markets/',
+                        excerpt: 'The surge in remote work prompts a reevaluation of traditional office dynamics, impacting employment trends and urban development.',
+                        metaText: '8 May 2024',
+                        MetaIcon: LockIcon,
+                        metaIconTitle: 'Members only'
+                    },
+                    {
+                        id: '2',
+                        groupName: 'Latest posts',
+                        title: 'Robotics Renaissance: How Automation is Transforming Industries',
+                        url: 'https://source-newsletter.ghost.io/mental-health-awareness-in-the-workplace/',
+                        excerpt: 'The rise of automation and AI technologies is reshaping industries, creating new opportunities and challenges for businesses and workers alike.',
+                        metaText: '2 May 2024',
+                        MetaIcon: DollarIcon,
+                        metaIconTitle: 'Specific tiers only'
+                    },
+                    {
+                        id: '3',
+                        groupName: 'Latest posts',
+                        title: 'Biodiversity Conservation in Fragile Ecosystems',
+                        url: 'https://source.ghost.io/biodiversity-conservation-in-fragile-ecosystems/',
+                        excerpt: 'Amidst the backdrop of ongoing ecological shifts, conservationists labor tirelessly to safeguard the world\'s biodiversity hotspots.',
+                        metaText: '26 June 2024',
+                        MetaIcon: DollarIcon,
+                        metaIconTitle: 'Paid-members only'
+                    },
+                    {
+                        id: '4',
+                        groupName: 'Latest posts',
+                        title: 'Unveiling the Crisis of Plastic Pollution: Analyzing Its Profound Impact on the Environment',
+                        url: 'https://source.ghost.io/plastic-pollution-crisis-deepens/',
+                        excerpt: 'The world finds itself engulfed in a battle against plastic pollution, an environmental crisis that demands collective action. As plastic waste accumulates in landfills and oceans, the urgent need for solutions intensifies.',
+                        metaText: '16 Aug 2023'
+                    }
                 ]}
             ];
         }
@@ -70,16 +105,16 @@ const defaultCardConfig = {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const posts = [
-                    {id: '1', groupName: 'Posts', title: 'TK Reminders', url: 'https://ghost.org/changelog/tk-reminders/'},
-                    {id: '2', groupName: 'Posts', title: '✨ Emoji autocomplete ✨', url: 'https://ghost.org/changelog/emoji-picker/'}
+                    {id: '1', groupName: 'Posts', title: 'TK Reminders', url: 'https://ghost.org/changelog/tk-reminders/', excerpt: 'A small detail designed to save you from frustrating mistakes, so you can publish with confidence. Didn\'t even need AI for this one.'},
+                    {id: '2', groupName: 'Posts', title: '✨ Emoji autocomplete ✨', url: 'https://ghost.org/changelog/emoji-picker/', excerpt: 'For those of us that like an emoji or two in their posts 🙋 the Ghost Editor just got a little more streamlined.'}
                 ].filter(item => item.title.toLowerCase().includes(term.toLowerCase()));
 
                 const pages = [
-                    {id: '3', groupName: 'Pages', title: 'How to update Ghost', url: 'https://ghost.org/docs/update/'}
+                    {id: '3', groupName: 'Pages', title: 'How to update Ghost', url: 'https://ghost.org/docs/update/', excerpt: 'Learn how to update your self-hosted Ghost install to the latest version'}
                 ].filter(item => item.title.toLowerCase().includes(term.toLowerCase()));
 
                 const tags = [
-                    {id: '4', groupName: 'Tags', title: 'Improved', url: 'https://ghost.org/changelog/tag/improved/'}
+                    {id: '4', groupName: 'Tags', title: 'Improved', url: 'https://ghost.org/changelog/tag/improved/', excerpt: 'Read about all of the latest new features and improvements in Ghost'}
                 ].filter(item => item.title.toLowerCase().includes(term.toLowerCase()));
 
                 const groups = [];
@@ -305,7 +340,8 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
         feature: {
             ...defaultCardConfig.feature,
             internalLinking: searchParams.get('labs')?.includes('internalLinking'),
-            internalLinkingAtLinks: searchParams.get('labs')?.includes('internalLinking')
+            internalLinkingAtLinks: searchParams.get('labs')?.includes('internalLinking'),
+            internalLinkingExcerpts: searchParams.get('labs')?.includes('internalLinking')
         }
     };
 
