@@ -4502,7 +4502,7 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@tryghost/color-utils@^0.2.0":
+"@tryghost/color-utils@0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.2.tgz#29db40ec9c0a13cb6112e99ede558fb434d98903"
   integrity sha512-/QuiczF/Ql811aw5zGf33nRRpIF1/9Ul/h8CVC0yfEk8oOELgKrtaOG8bK1uq5RHKot/U1AhmWKIE+9szpFVSw==
@@ -4510,7 +4510,7 @@
     "@types/color" "3.0.6"
     color "^3.2.1"
 
-"@tryghost/helpers@^1.1.81":
+"@tryghost/helpers@1.1.90":
   version "1.1.90"
   resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.90.tgz#a00765fdd235529eea98153db9d21ee29bdb312a"
   integrity sha512-fHSAF9Sch9AfvZcqkHBV/LInL28HDMbzYqzvcGEP5f1qKzRVyPfyyHO2oGhZba2rHujnlF/MiwZTrNMvfA5Qmg==
@@ -4533,14 +4533,14 @@
     mobiledoc-dom-renderer "0.7.0"
     mobiledoc-text-renderer "0.4.0"
 
-"@tryghost/string@^0.2.0":
+"@tryghost/string@0.2.12":
   version "0.2.12"
   resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.12.tgz#fc0e06939e7b43922e2471135ed9af4f22ddcd54"
   integrity sha512-1ygv+nOycupvFX/lwvRbThcGzwlMlwNXUUQn3HqWnKYZmDAA2FOP5SvlcY/BkOLzpPQUlBgSs3PvjOurCIZU7g==
   dependencies:
     unidecode "^0.1.8"
 
-"@tryghost/url-utils@^4.0.0":
+"@tryghost/url-utils@4.4.8":
   version "4.4.8"
   resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.8.tgz#fb867d8bd59a640dc67ab61c1a3d921bd12a8c2b"
   integrity sha512-kheB4cdGZ9WqmWGzDCJ3JMCDO1fQOGIR44FFalbUhukj8Xl7g+QeHFsiwQg77KvrrL58x0nIZ4uwmo9K1aE/Ew==
