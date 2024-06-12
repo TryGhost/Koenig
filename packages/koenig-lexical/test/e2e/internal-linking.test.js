@@ -194,7 +194,7 @@ test.describe('Internal linking', async () => {
                     <span>
                         <span data-lexical-text="true">‌</span>
                         <span
-                            data-placeholder="Search for a link"
+                            data-placeholder="Type to search"
                             data-lexical-text="true"
                         ></span>
                     </span>
