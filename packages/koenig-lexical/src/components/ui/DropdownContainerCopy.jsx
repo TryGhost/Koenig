@@ -56,7 +56,7 @@ export function DropdownContainerCopy({dataTestId, children, ...props}) {
     }, []);
 
     return (
-        <ul ref={divRef} className={`absolute ${placementClasses} z-[-1] max-h-[30vh] w-full overflow-y-auto bg-white px-2 py-1 shadow-md dark:bg-grey-950`} data-testid={`${dataTestId}-dropdown`} {...props}>
+        <ul ref={divRef} className={`absolute ${placementClasses} z-[-1] max-h-[40vh] w-full overflow-y-auto bg-white px-2 py-1 shadow-md dark:bg-grey-950`} data-testid={`${dataTestId}-dropdown`} {...props}>
             {children}
         </ul>
     );

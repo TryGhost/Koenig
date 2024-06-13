@@ -67,20 +67,20 @@ export function InputListItem({dataTestId, item, selected, onClick, onMouseOver,
     const Icon = item.Icon;
 
     return (
-        <li ref={itemRef} aria-selected={selected} className={`${selectionClass} my-[.2rem] flex cursor-pointer flex-col rounded-md px-4 py-2 text-left text-black dark:text-white`} data-testid={`${dataTestId}-listOption`} role="option" onMouseDownCapture={handleMouseDown} onMouseOver={onMouseOver}>
-            <div className="flex items-center justify-between gap-3">
+        <li ref={itemRef} aria-selected={selected} className={`${selectionClass} my-[.2rem] flex cursor-pointer flex-col gap-[.2rem] rounded-md px-4 py-2 text-left text-black dark:text-white`} data-testid={`${dataTestId}-listOption`} role="option" onMouseDownCapture={handleMouseDown} onMouseOver={onMouseOver}>
+            <div className="flex items-center justify-between gap-4">
                 <span className="line-clamp-1 flex items-center gap-[.6rem]">
                     {Icon && <Icon className="size-[1.4rem] stroke-[1.5px]" />}
                     <span className="block truncate text-sm font-medium leading-snug" data-testid={`${dataTestId}-listOption-label`}><HighlightedLabel /></span>
                 </span>
                 {selected && (item.metaText || item.MetaIcon) && (
-                    <span className="flex shrink-0 items-center gap-[.6rem] text-[1.3rem] leading-snug tracking-tight text-grey-600 dark:text-grey-500" data-testid={`${dataTestId}-listOption-meta`}>
-                        <span title={item.metaIconTitle}>{item.MetaIcon && <item.MetaIcon className="size-[1.4rem]" />}</span>
+                    <span className="flex shrink-0 items-center gap-1 text-[1.1rem] font-semibold uppercase leading-snug tracking-wide text-grey-600 dark:text-grey-500" data-testid={`${dataTestId}-listOption-meta`}>
+                        <span title={item.metaIconTitle}>{item.MetaIcon && <item.MetaIcon className="size-3" />}</span>
                         {item.metaText && <span>{item.metaText}</span>}
                     </span>
                 )}
             </div>
-            {item.excerpt && <span className="block text-xs text-grey-600 dark:text-grey-500">{item.excerpt}</span>}
+            {item.excerpt && <span className="line-clamp-1 text-sm font-normal text-grey-600 dark:text-grey-500">{item.excerpt}</span>}
         </li>
     );
 }

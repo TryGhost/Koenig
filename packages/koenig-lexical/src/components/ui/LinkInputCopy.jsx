@@ -97,7 +97,7 @@ export function LinkInputCopy({href, update, cancel}) {
             />
             {showSuggestions && (
                 <>
-                    <ul className="max-h-[30vh] w-full overflow-y-auto bg-white py-1 dark:bg-grey-950">
+                    <ul className="max-h-[40vh] w-full overflow-y-auto bg-white py-1 dark:bg-grey-950">
                         {isSearching && !listOptions.length && <InputListLoadingItem dataTestId={testId}/>}
                         <KeyboardSelectionWithGroups
                             getGroup={getGroup}
