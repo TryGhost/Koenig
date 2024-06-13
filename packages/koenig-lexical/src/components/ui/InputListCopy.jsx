@@ -16,6 +16,56 @@ export function InputListLoadingItem({dataTestId}) {
     );
 }
 
+const HighlightedString = ({highlightString, string, truncateStart}) => {
+    if (!highlightString) {
+        return string;
+    }
+
+    const matchRegex = new RegExp(escapeRegExp(highlightString), 'gi');
+    const indexes = [];
+
+    // populate indexes with all the matches, having a start and end index
+    let match;
+    while ((match = matchRegex.exec(string)) !== null) {
+        indexes.push({start: match.index, end: match.index + highlightString.length});
+    }
+
+    const parts = [];
+
+    // if the match is later than 50 characters, truncate the start so it's more
+    // likely the match will be visible when the string is truncated
+    const startIndex = truncateStart && indexes[0]?.start >= 50 ? indexes[0].start - 20 : 0;
+    if (startIndex > 0) {
+        parts.push('...');
+        parts.push(string.slice(startIndex, indexes[0]?.start));
+    } else {
+        parts.push(string.slice(0, indexes[0]?.start));
+    }
+
+    // add all parts of the string
+    indexes.forEach((index, i) => {
+        parts.push(string.slice(index.start, index.end));
+        if (i < indexes.length - 1) {
+            parts.push(string.slice(index.end, indexes[i + 1].start));
+        } else {
+            parts.push(string.slice(index.end));
+        }
+    });
+
+    return (
+        <>
+            {parts.map((part, index) => {
+                if (part.toLowerCase() === highlightString.toLowerCase()) {
+                    // eslint-disable-next-line react/no-array-index-key
+                    return <span key={index} className="font-bold">{part}</span>;
+                }
+
+                return part;
+            })}
+        </>
+    );
+};
+
 export function InputListItem({dataTestId, item, selected, onClick, onMouseOver, highlightString, scrollIntoView}) {
     const itemRef = React.useRef(null);
 
@@ -48,19 +98,24 @@ export function InputListItem({dataTestId, item, selected, onClick, onMouseOver,
             return item.label;
         }
 
-        const parts = item.label.split(new RegExp(`(${escapeRegExp(highlightString)})`, 'gi'));
+        return <HighlightedString highlightString={highlightString} string={item.label} />;
+    };
+
+    const HighlightedExcerpt = () => {
+        if (!item.excerpt) {
+            return null;
+        }
+
+        let shouldHighlight = true;
+
+        if (!highlightString || item.highlight === false) {
+            shouldHighlight = false;
+        }
 
         return (
-            <>
-                {parts.map((part, index) => {
-                    if (part.toLowerCase() === highlightString.toLowerCase()) {
-                        // eslint-disable-next-line react/no-array-index-key
-                        return <span key={index} className="font-bold">{part}</span>;
-                    }
-
-                    return part;
-                })}
-            </>
+            <span className="line-clamp-1 text-sm font-normal text-grey-600 dark:text-grey-500">
+                {shouldHighlight ? <HighlightedString highlightString={highlightString} string={item.excerpt} truncateStart={true} /> : item.excerpt}
+            </span>
         );
     };
 
@@ -80,7 +135,7 @@ export function InputListItem({dataTestId, item, selected, onClick, onMouseOver,
                     </span>
                 )}
             </div>
-            {item.excerpt && <span className="line-clamp-1 text-sm font-normal text-grey-600 dark:text-grey-500">{item.excerpt}</span>}
+            <HighlightedExcerpt />
         </li>
     );
 }
