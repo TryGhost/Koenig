@@ -46,13 +46,14 @@ export class AtLinkNode extends ElementNode {
     // }
 
     createDOM(config) {
+        const atLinkIconClasses = config.theme.atLinkIcon?.split(' ') || [];
         const span = document.createElement('span');
         span.classList.add(...config.theme.atLink.split(' '));
 
         // Insert SVG content directly into the span
         const svgWrapper = document.createElement('span');
         svgWrapper.innerHTML = linkSVG;
-        svgWrapper.classList.add('kg-link-svg');
+        svgWrapper.classList.add(...atLinkIconClasses);
 
         span.appendChild(svgWrapper);
 
