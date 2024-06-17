@@ -361,7 +361,8 @@ describe('EmbedNode', function () {
                 embedType: dataset.embedType,
                 html: dataset.html,
                 metadata: dataset.metadata,
-                caption: dataset.caption
+                caption: dataset.caption,
+                visibility: null
             });
         }));
     });

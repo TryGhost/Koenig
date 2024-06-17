@@ -109,6 +109,7 @@ describe('CalloutNode', function () {
             json.should.deepEqual({
                 type: 'callout',
                 version: 1,
+                visibility: null,
                 ...dataset
             });
         }));

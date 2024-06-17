@@ -646,7 +646,8 @@ describe('SignupNode', function () {
                 layout: dataset.layout,
                 subheader: dataset.subheader,
                 successMessage: dataset.successMessage,
-                swapped: dataset.swapped
+                swapped: dataset.swapped,
+                visibility: null
             });
         }));
     });

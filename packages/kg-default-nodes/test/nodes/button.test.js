@@ -150,7 +150,8 @@ describe('ButtonNode', function () {
                 version: 1,
                 buttonUrl: dataset.buttonUrl,
                 buttonText: dataset.buttonText,
-                alignment: dataset.alignment
+                alignment: dataset.alignment,
+                visibility: null
             });
         }));
     });

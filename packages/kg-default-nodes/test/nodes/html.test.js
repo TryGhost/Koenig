@@ -204,7 +204,8 @@ describe('HtmlNode', function () {
             json.should.deepEqual({
                 type: 'html',
                 version: 1,
-                html: '<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>'
+                html: '<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>',
+                visibility: null
             });
         }));
     });

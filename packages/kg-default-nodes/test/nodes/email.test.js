@@ -106,7 +106,8 @@ describe('EmailNode', function () {
             json.should.deepEqual({
                 type: 'email',
                 version: 1,
-                html: dataset.html
+                html: dataset.html,
+                visibility: null
             });
         }));
     });

@@ -108,7 +108,8 @@ describe('CodeBlockNode', function () {
                     version: 1,
                     code: '<script></script>',
                     language: 'javascript',
-                    caption: 'A code block'
+                    caption: 'A code block',
+                    visibility: null
                 }
             ]);
             done();

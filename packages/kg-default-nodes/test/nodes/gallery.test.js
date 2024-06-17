@@ -222,7 +222,8 @@ describe('GalleryNode', function () {
                 type: 'gallery',
                 version: 1,
                 images: dataset.images,
-                caption: dataset.caption
+                caption: dataset.caption,
+                visibility: null
             });
         }));
     });

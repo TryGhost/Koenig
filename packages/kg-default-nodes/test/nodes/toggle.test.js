@@ -118,7 +118,8 @@ describe('ToggleNode', function () {
                 type: 'toggle',
                 version: 1,
                 heading: dataset.heading,
-                content: dataset.content
+                content: dataset.content,
+                visibility: null
             });
         }));
     });
