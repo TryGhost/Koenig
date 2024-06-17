@@ -97,7 +97,7 @@ export function MultiSelectDropdown({placeholder = '', items = [], availableItem
             filteredItems.unshift({name: filter, label: <>Add <strong>&quot;{filter}&quot;...</strong></>});
         }
     } else if (!filter) {
-        prefixItem = getItem({name: '', label: 'Find a post, tag or author'}, false);
+        prefixItem = getItem({name: '', label: 'Type to search'}, false);
     }
 
     return (
