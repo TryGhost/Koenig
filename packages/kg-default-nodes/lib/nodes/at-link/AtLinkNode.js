@@ -1,6 +1,6 @@
 /* eslint-disable ghost/filenames/match-exported-class */
 import {$applyNodeReplacement, ElementNode} from 'lexical';
-
+import linkSVG from './kg-link.svg';
 // Container element for a link search query. Temporary node used only inside
 // the editor that will be replaced with a LinkNode when the search is complete.
 export class AtLinkNode extends ElementNode {
@@ -38,11 +38,19 @@ export class AtLinkNode extends ElementNode {
     }
 
     createDOM(config) {
+        const div = document.createElement('div');
         const span = document.createElement('span');
-
         span.classList.add(...config.theme.atLink.split(' '));
 
-        return span;
+        // Create a container for the SVG and set its innerHTML to the imported SVG content
+        const svgContainer = document.createElement('div');
+        svgContainer.innerHTML = linkSVG;
+        svgContainer.classList.add('kg-link-svg');
+
+        div.appendChild(svgContainer);
+        div.appendChild(span);
+
+        return div;
     }
 
     updateDOM() {
