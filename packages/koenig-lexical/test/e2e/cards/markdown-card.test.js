@@ -38,6 +38,7 @@ test.describe('Markdown card', async () => {
                     children: [{
                         type: 'markdown',
                         version: 1,
+                        visibility: null,
                         markdown: '# This is a heading'
                     }],
                     direction: null,
@@ -214,6 +215,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '![large-image.png](blob:...)'
             },
             {
@@ -240,6 +242,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '**bold text**'
             },
             {
@@ -274,6 +277,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '**bold**'
             },
             {
@@ -300,6 +304,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '*italic text*'
             },
             {
@@ -336,6 +341,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '*italic*'
             },
             {
@@ -362,6 +368,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '~~text~~'
             },
             {
@@ -396,6 +403,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '~~text~~'
             },
             {
@@ -422,6 +430,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '# Heading text'
             },
             {
@@ -448,6 +457,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '# Heading'
             },
             {
@@ -474,6 +484,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '> quote'
             },
             {
@@ -500,6 +511,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '> quote'
             },
             {
@@ -526,6 +538,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '* First list item'
             },
             {
@@ -552,6 +565,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '* A list item'
             },
             {
@@ -578,6 +592,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '1. First list item'
             },
             {
@@ -604,6 +619,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '1. A list item'
             },
             {
@@ -629,6 +645,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '[](http://)'
             },
             {
@@ -663,6 +680,7 @@ test.describe('Markdown card', async () => {
             {
                 type: 'markdown',
                 version: 1,
+                visibility: null,
                 markdown: '[link](http://)'
             },
             {
