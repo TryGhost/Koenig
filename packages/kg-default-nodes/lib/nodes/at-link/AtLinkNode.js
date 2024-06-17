@@ -37,20 +37,26 @@ export class AtLinkNode extends ElementNode {
         };
     }
 
+    // createDOM(config) {
+    //     const span = document.createElement('span');
+
+    //     span.classList.add(...config.theme.atLink.split(' '));
+
+    //     return span;
+    // }
+
     createDOM(config) {
-        const div = document.createElement('div');
         const span = document.createElement('span');
         span.classList.add(...config.theme.atLink.split(' '));
 
-        // Create a container for the SVG and set its innerHTML to the imported SVG content
-        const svgContainer = document.createElement('div');
-        svgContainer.innerHTML = linkSVG;
-        svgContainer.classList.add('kg-link-svg');
+        // Insert SVG content directly into the span
+        const svgWrapper = document.createElement('span');
+        svgWrapper.innerHTML = linkSVG;
+        svgWrapper.classList.add('kg-link-svg');
 
-        div.appendChild(svgContainer);
-        div.appendChild(span);
+        span.appendChild(svgWrapper);
 
-        return div;
+        return span;
     }
 
     updateDOM() {
