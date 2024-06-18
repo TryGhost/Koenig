@@ -37,21 +37,15 @@ export class AtLinkNode extends ElementNode {
         };
     }
 
-    // createDOM(config) {
-    //     const span = document.createElement('span');
-
-    //     span.classList.add(...config.theme.atLink.split(' '));
-
-    //     return span;
-    // }
-
     createDOM(config) {
         const span = document.createElement('span');
-        span.classList.add(...config.theme.atLink.split(' '));
+        const atLinkClasses = (config.theme.atLink || '').split(' ').filter(Boolean);
+        const atLinkIconClasses = (config.theme.atLinkIcon || '').split(' ').filter(Boolean);
 
-        // Directly insert and style the SVG content
+        span.classList.add(...atLinkClasses);
+
         const svgElement = new DOMParser().parseFromString(linkSVG, 'image/svg+xml').documentElement;
-        svgElement.classList.add(...config.theme.atLinkIcon.split(' '));
+        svgElement.classList.add(...atLinkIconClasses);
 
         span.appendChild(svgElement);
 
