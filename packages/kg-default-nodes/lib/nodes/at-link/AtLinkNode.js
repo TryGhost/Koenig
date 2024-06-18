@@ -46,16 +46,14 @@ export class AtLinkNode extends ElementNode {
     // }
 
     createDOM(config) {
-        const atLinkIconClasses = config.theme.atLinkIcon?.split(' ') || [];
         const span = document.createElement('span');
         span.classList.add(...config.theme.atLink.split(' '));
 
-        // Insert SVG content directly into the span
-        const svgWrapper = document.createElement('span');
-        svgWrapper.innerHTML = linkSVG;
-        svgWrapper.classList.add(...atLinkIconClasses);
+        // Directly insert and style the SVG content
+        const svgElement = new DOMParser().parseFromString(linkSVG, 'image/svg+xml').documentElement;
+        svgElement.classList.add(...config.theme.atLinkIcon.split(' '));
 
-        span.appendChild(svgWrapper);
+        span.appendChild(svgElement);
 
         return span;
     }
