@@ -20,6 +20,7 @@ import {
     ToolbarMenuItem,
     ToolbarMenuSeparator
 } from './ToolbarMenu';
+import {altOrOption, ctrlOrCmdSymbol, ctrlOrSymbol} from '../../utils/shortcutSymbols';
 import {getSelectedNode} from '../../utils/getSelectedNode';
 
 const blockTypeToBlockName = {
@@ -180,15 +181,15 @@ export default function FormatToolbar({
                 icon="bold"
                 isActive={isBold}
                 label="Bold"
-                shortcutKeys={['⌘', 'B']}
+                shortcutKeys={[ctrlOrCmdSymbol(), 'B']}
                 onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold')}
             />
             <ToolbarMenuItem
                 data-kg-toolbar-button="italic"
                 icon="italic"
                 isActive={isItalic}
-                label="Italics"
-                shortcutKeys={['⌘', 'I']}
+                label="Emphasize"
+                shortcutKeys={[ctrlOrCmdSymbol(), 'I']}
                 onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic')}
             />
             <ToolbarMenuItem
@@ -197,7 +198,7 @@ export default function FormatToolbar({
                 icon="headingTwo"
                 isActive={blockType === 'h2'}
                 label="Heading 2"
-                shortcutKeys={['⌃', '⌥', '2']}
+                shortcutKeys={[ctrlOrSymbol(), altOrOption(), '2']}
                 onClick={() => (blockType === 'h2' ? formatParagraph() : formatHeading('h2'))}
             />
             <ToolbarMenuItem
@@ -206,7 +207,7 @@ export default function FormatToolbar({
                 icon="headingThree"
                 isActive={blockType === 'h3'}
                 label="Heading 3"
-                shortcutKeys={['⌃', '⌥', '3']}
+                shortcutKeys={[ctrlOrSymbol(), altOrOption(), '3']}
                 onClick={() => (blockType === 'h3' ? formatParagraph() : formatHeading('h3'))}
             />
             <ToolbarMenuSeparator hide={hideQuotes} />
@@ -216,7 +217,7 @@ export default function FormatToolbar({
                 icon={quoteIcon(blockType)}
                 isActive={blockType.endsWith?.('quote') || blockType.endsWith?.('aside')}
                 label="Quote"
-                shortcutKeys={['Ctrl', 'Q']}
+                shortcutKeys={[ctrlOrSymbol(), 'Q']}
                 onClick={formatQuote}
             />
 
@@ -225,7 +226,7 @@ export default function FormatToolbar({
                 icon="link"
                 isActive={!!isLinkSelected}
                 label="Link"
-                shortcutKeys={['⌘', 'K']}
+                shortcutKeys={[ctrlOrCmdSymbol(), 'K']}
                 onClick={onLinkClick}
             />
 
