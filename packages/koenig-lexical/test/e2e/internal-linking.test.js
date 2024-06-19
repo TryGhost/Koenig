@@ -283,7 +283,7 @@ test.describe('Internal linking', async () => {
             `);
         });
 
-        test.only('removes at-linking when backspacing', async function () {
+        test('removes at-linking when backspacing', async function () {
             await focusEditor(page);
             await page.keyboard.type('@');
             await page.keyboard.type('AB');
