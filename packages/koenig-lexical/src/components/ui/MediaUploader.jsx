@@ -1,7 +1,7 @@
 import DeleteIcon from '../../assets/icons/kg-trash.svg?react';
-import EnhanceIcon from '../../assets/icons/kg-wand.svg?react';
 import ImageUploadForm from './ImageUploadForm';
 import PropTypes from 'prop-types';
+import WandIcon from '../../assets/icons/kg-wand.svg?react';
 import clsx from 'clsx';
 import {IconButton} from './IconButton';
 import {MediaPlaceholder} from './MediaPlaceholder';
@@ -87,7 +87,7 @@ export function MediaUploader({
             {!isLoading && (
                 <div className="absolute right-2 top-2 flex space-x-2 opacity-0 transition-all group-hover/image:opacity-100">
                     {additionalActions}
-                    { isPinturaEnabled && <IconButton Icon={EnhanceIcon} label="Enhance" onClick={() => openImageEditor({
+                    { isPinturaEnabled && <IconButton Icon={WandIcon} label="Edit" onClick={() => openImageEditor({
                         image: src,
                         handleSave: (editedImage) => {
                             onFileChange({

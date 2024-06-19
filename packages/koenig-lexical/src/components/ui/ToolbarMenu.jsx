@@ -1,7 +1,6 @@
 import AddIcon from '../../assets/icons/kg-add.svg?react';
 import BoldIcon from '../../assets/icons/kg-bold.svg?react';
 import EditIcon from '../../assets/icons/kg-edit.svg?react';
-import EnhanceIcon from '../../assets/icons/kg-wand.svg?react';
 import HeadingThreeIcon from '../../assets/icons/kg-heading-3.svg?react';
 import HeadingTwoIcon from '../../assets/icons/kg-heading-2.svg?react';
 import ImgFullIcon from '../../assets/icons/kg-img-full.svg?react';
@@ -15,6 +14,7 @@ import QuoteOneIcon from '../../assets/icons/kg-quote-1.svg?react';
 import QuoteTwoIcon from '../../assets/icons/kg-quote-2.svg?react';
 import SnippetIcon from '../../assets/icons/kg-snippet.svg?react';
 import TrashIcon from '../../assets/icons/kg-trash.svg?react';
+import WandIcon from '../../assets/icons/kg-wand.svg?react';
 import {Tooltip} from './Tooltip';
 
 export const TOOLBAR_ICONS = {
@@ -32,7 +32,7 @@ export const TOOLBAR_ICONS = {
     imgReplace: ImgReplaceIcon,
     add: AddIcon,
     edit: EditIcon,
-    enhance: EnhanceIcon,
+    wand: WandIcon,
     snippet: SnippetIcon,
     remove: TrashIcon
 };
@@ -60,7 +60,7 @@ export function ToolbarMenuItem({label, isActive, onClick, icon, shortcutKeys, s
         <li className="group relative m-0 flex p-0 first:m-0" {...props}>
             <button
                 aria-label={label}
-                className={`my-1 flex h-8 w-9 cursor-pointer items-center justify-center rounded-lg transition hover:bg-grey-200/80 ${isActive ? 'bg-grey-200/80' : 'bg-white'}`}
+                className={`my-1 flex h-8 w-9 cursor-pointer items-center justify-center rounded-md transition hover:bg-grey-200/80 ${isActive ? 'bg-grey-200/80' : 'bg-white'}`}
                 data-kg-active={isActive}
                 data-testid={dataTestId}
                 type="button"

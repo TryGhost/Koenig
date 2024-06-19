@@ -7,7 +7,7 @@ import {usePreviousFocus} from '../../hooks/usePreviousFocus';
 export function ButtonGroup({buttons = [], selectedName, onClick}) {
     return (
         <div className="flex">
-            <ul className="flex items-center justify-evenly rounded-md bg-grey-100 font-sans text-md font-normal text-white dark:bg-black">
+            <ul className="flex items-center justify-evenly rounded-lg bg-grey-100 font-sans text-md font-normal text-white dark:bg-black">
                 {buttons.map(({label, name, Icon, dataTestId}) => (
                     <IconButton
                         key={`${name}-${label}`}

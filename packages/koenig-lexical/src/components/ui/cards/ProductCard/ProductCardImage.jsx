@@ -1,6 +1,6 @@
 import DeleteIcon from '../../../../assets/icons/kg-trash.svg?react';
-import EnhanceIcon from '../../../../assets/icons/kg-wand.svg?react';
 import React from 'react';
+import WandIcon from '../../../../assets/icons/kg-wand.svg?react';
 import {IconButton} from '../../IconButton.jsx';
 import {MediaPlaceholder} from '../../MediaPlaceholder.jsx';
 import {ProgressBar} from '../../ProgressBar.jsx';
@@ -82,7 +82,7 @@ export function ProductCardImage({
                                 isEditing && isPinturaEnabled && (
                                     <>
                                         <div className="absolute right-16 top-5 flex opacity-0 transition-all group-hover/image:opacity-100">
-                                            <IconButton dataTestId="replace-product-image" Icon={EnhanceIcon} label="Enhance" onClick={() => openImageEditor({
+                                            <IconButton dataTestId="replace-product-image" Icon={WandIcon} label="Edit" onClick={() => openImageEditor({
                                                 image: imgSrc,
                                                 handleSave: (editedImage) => {
                                                     onImgChange({
