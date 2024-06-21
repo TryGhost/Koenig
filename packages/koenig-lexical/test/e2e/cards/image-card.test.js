@@ -280,7 +280,8 @@ test.describe('Image card', async () => {
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
                     <figure data-kg-card-width="regular">
                         <div>
-                            <img alt="" src="blob:...">
+                            <img alt="" src="blob:..." />
+                            <div><div></div></div>
                         </div>
                         <figcaption>
                             <div data-testid="image-caption-editor" data-kg-allow-clickthrough="true">
@@ -451,7 +452,8 @@ test.describe('Image card', async () => {
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
                     <figure data-kg-card-width="regular">
                         <div>
-                            <img alt="" src="blob:...">
+                            <img alt="" src="blob:..." />
+                            <div><div></div></div>
                         </div>
                         <figcaption>
                             <div data-testid="image-caption-editor" data-kg-allow-clickthrough="true">
@@ -586,6 +588,7 @@ test.describe('Image card', async () => {
                     <figure data-kg-card-width="regular">
                         <div>
                             <img alt="" src="blob:..." />
+                            <div><div></div></div>
                         </div>
                     </figure>
                 </div>
@@ -749,6 +752,7 @@ test.describe('Image card', async () => {
                             <img
                                 alt="a group of people walking down a street next to tall buildings"
                                 src="http://127.0.0.1:5173/Koenig-editor-1.png" />
+                            <div><div></div></div>
                         </div>
                         <figcaption>
                             <div data-testid="image-caption-editor" data-kg-allow-clickthrough="true">
