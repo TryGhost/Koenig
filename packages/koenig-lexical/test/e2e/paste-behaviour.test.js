@@ -189,7 +189,6 @@ test.describe('Paste behaviour', async () => {
                       <button
                         aria-label="Edit"
                         data-kg-active="false"
-                        title="Edit"
                         type="button">
                         <svg></svg>
                       </button>
@@ -197,14 +196,13 @@ test.describe('Paste behaviour', async () => {
                     <li></li>
                     <li>
                       <button
-                        aria-label="Create snippet"
+                        aria-label="Save as snippet"
                         data-kg-active="false"
-                        title="Create snippet"
                         type="button">
                         <svg></svg>
                       </button>
+                      <div><span>Save as snippet</span></div>
                     </li>
-                    <li></li>
                   </ul>
                 </div>
               </div>
