@@ -64,7 +64,10 @@ test.describe('Image card', async () => {
             <div data-lexical-decorator="true" contenteditable="false" data-kg-card-width="wide">
                 <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="image">
                     <figure data-kg-card-width="wide">
-                        <div><img alt="" src="/content/images/2022/11/koenig-lexical.jpg" /></div>
+                        <div>
+                            <img alt="" src="/content/images/2022/11/koenig-lexical.jpg" />
+                            <div><div></div></div>
+                        </div>
                         <figcaption>
                             <div data-kg-allow-clickthrough="true">
                                 <div>
@@ -217,7 +220,10 @@ test.describe('Image card', async () => {
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
                     <figure data-kg-card-width="regular">
-                        <div><img alt="" src="blob:..." /></div>
+                        <div>
+                            <img alt="" src="blob:..." />
+                            <div><div></div></div>
+                        </div>
                         <figcaption>
                             <input placeholder="Type alt text for image (optional)" value=""/>
                             <button name="alt-toggle-button" type="button">Alt</button>
