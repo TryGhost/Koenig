@@ -199,6 +199,7 @@ test.describe('Emoji Picker Plugin', async function () {
                     type="button">
                     <svg></svg>
                   </button>
+                  <div><span>Edit</span></div>
                 </li>
                 <li></li>
                 <li>
@@ -268,6 +269,7 @@ test.describe('Emoji Picker Plugin', async function () {
                         type="button">
                         <svg></svg>
                     </button>
+                    <div><span>Edit</span></div>
                     </li>
                     <li></li>
                     <li>

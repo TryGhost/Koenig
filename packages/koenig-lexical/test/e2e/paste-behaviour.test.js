@@ -192,6 +192,7 @@ test.describe('Paste behaviour', async () => {
                         type="button">
                         <svg></svg>
                       </button>
+                      <div><span>Edit</span></div>
                     </li>
                     <li></li>
                     <li>
