@@ -431,13 +431,13 @@ test.describe('Image card', async () => {
 
         expect(await page.locator('[data-kg-card-toolbar="image"]')).not.toBeNull();
 
-        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Wide"]');
+        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Wide width"]');
         expect (await page.locator('[data-kg-card-width="wide"]')).not.toBeNull();
 
-        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Full"]');
+        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Full width"]');
         expect (await page.locator('[data-kg-card-width="full"]')).not.toBeNull();
 
-        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular"]');
+        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular width"]');
         expect (await page.locator('[data-kg-card-width="regular"]')).not.toBeNull();
     });
 
@@ -461,7 +461,7 @@ test.describe('Image card', async () => {
 
         await page.click('figure');
 
-        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular"]');
+        await page.click('[data-kg-card-toolbar="image"] button[aria-label="Regular width"]');
 
         expect(await page.locator('[data-kg-card-toolbar="image"]')).not.toBeNull();
     });
