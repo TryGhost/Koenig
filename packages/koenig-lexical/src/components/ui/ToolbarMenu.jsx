@@ -1,6 +1,7 @@
 import AddIcon from '../../assets/icons/kg-add.svg?react';
 import BoldIcon from '../../assets/icons/kg-bold.svg?react';
 import EditIcon from '../../assets/icons/kg-edit.svg?react';
+import EyeIcon from '../../assets/icons/kg-eye.svg?react';
 import HeadingThreeIcon from '../../assets/icons/kg-heading-3.svg?react';
 import HeadingTwoIcon from '../../assets/icons/kg-heading-2.svg?react';
 import ImgFullIcon from '../../assets/icons/kg-img-full.svg?react';
@@ -33,6 +34,7 @@ export const TOOLBAR_ICONS = {
     add: AddIcon,
     edit: EditIcon,
     wand: WandIcon,
+    visibility: EyeIcon,
     snippet: SnippetIcon,
     remove: TrashIcon
 };
@@ -66,7 +68,7 @@ export function ToolbarMenuItem({label, isActive, onClick, icon, shortcutKeys, s
                 type="button"
                 onClick={onClick}
             >
-                <Icon className={` size-4 transition ${secondary ? 'stroke-2' : 'stroke-[2.5]'} ${isActive ? 'text-green-600' : 'text-black'} `} />
+                <Icon className={`size-4 overflow-visible transition ${secondary ? 'stroke-2' : 'stroke-[2.5]'} ${isActive ? 'text-green-600' : 'text-black'}`} />
             </button>
             <Tooltip label={label} shortcutKeys={shortcutKeys} />
         </li>
