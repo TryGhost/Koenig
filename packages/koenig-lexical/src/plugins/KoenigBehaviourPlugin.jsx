@@ -43,6 +43,7 @@ import {
     createCommand
 } from 'lexical';
 import {$insertAndSelectNode} from '../utils/$insertAndSelectNode';
+import {$insertDataTransferForRichText} from '@lexical/clipboard';
 import {
     $isAtStartOfDocument,
     $isAtTopOfNode,
@@ -1281,6 +1282,30 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
 
                     const text = clipboardEvent?.clipboardData?.getData(MIME_TEXT_PLAIN);
                     const html = clipboardEvent?.clipboardData?.getData(MIME_TEXT_HTML);
+                    const lexical = clipboardEvent?.clipboardData?.getData('application/x-lexical-editor');
+
+                    if (lexical) {
+                        const selection = $getSelection();
+                        const {namespace, nodes: pastedNodes} = JSON.parse(lexical);
+                        // if current selection is an empty quote, make sure a
+                        // paste with a single paragraph doesn't clear the quote formatting
+                        if (namespace === 'KoenigEditor' && selection && $isRangeSelection(selection) && selection.isCollapsed()) {
+                            const anchorNode = selection.anchor.getNode();
+                            if (($isQuoteNode(anchorNode) || $isAsideNode(anchorNode)) && anchorNode.isEmpty()) {
+                                // completely empty paragraph nodes can be copied when selection hits end of paragraph,
+                                // exclude those so they don't interfere
+                                const filteredNodes = pastedNodes?.filter?.(n => n.type === 'paragraph' && n.children.length > 0) || [];
+
+                                if (filteredNodes.length === 1 && filteredNodes[0].type === 'paragraph') {
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.setData('application/x-lexical-editor', JSON.stringify({namespace: 'KoenigEditor', nodes: filteredNodes[0].children}));
+                                    $insertDataTransferForRichText(dataTransfer, selection, editor);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+
                     // TODO: replace with better regex to include more protocols like mailto, ftp, etc
                     const linkMatch = text?.match(/^(https?:\/\/[^\s]+)$/);
 
