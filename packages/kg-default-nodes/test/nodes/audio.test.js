@@ -136,7 +136,8 @@ describe('AudioNode', function () {
                 title: dataset.title,
                 duration: dataset.duration,
                 mimeType: dataset.mimeType,
-                thumbnailSrc: dataset.thumbnailSrc
+                thumbnailSrc: dataset.thumbnailSrc,
+                visibility: null
             });
         }));
     });

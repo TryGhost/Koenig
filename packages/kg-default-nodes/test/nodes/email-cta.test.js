@@ -149,7 +149,8 @@ describe('EmailCtaNode', function () {
                 html: dataset.html,
                 segment: dataset.segment,
                 showButton: dataset.showButton,
-                showDividers: dataset.showDividers
+                showDividers: dataset.showDividers,
+                visibility: null
             });
         }));
     });

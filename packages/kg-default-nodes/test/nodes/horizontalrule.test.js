@@ -72,7 +72,8 @@ describe('HorizontalNode', function () {
 
             json.should.deepEqual({
                 type: 'horizontalrule',
-                version: 1
+                version: 1,
+                visibility: null
             });
         }));
     });

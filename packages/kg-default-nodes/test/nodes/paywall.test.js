@@ -50,7 +50,8 @@ describe('PaywallNode', function () {
 
             json.should.deepEqual({
                 type: 'paywall',
-                version: 1
+                version: 1,
+                visibility: null
             });
         }));
     });

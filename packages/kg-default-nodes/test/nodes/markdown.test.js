@@ -138,7 +138,8 @@ describe('MarkdownNode', function () {
             json.should.deepEqual({
                 type: 'markdown',
                 version: 1,
-                markdown: '#HEADING\r\n- list\r\n- items'
+                markdown: '#HEADING\r\n- list\r\n- items',
+                visibility: null
             });
         }));
     });
