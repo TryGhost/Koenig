@@ -14,6 +14,7 @@ const EMPTY_PARAGRAPH: SerializedParagraphNode = {
     children: [],
     direction: null,
     format: '',
+    textFormat: 0,
     indent: 0,
     type: 'paragraph',
     version: 1

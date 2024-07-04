@@ -2,7 +2,7 @@ import {LexicalEditor} from 'lexical';
 import {assertTransform, createEditor} from '../utils';
 import {ListNode} from '@lexical/list';
 
-// Since Lexical 0.14.3 the default List nodes have a built-in transform
+// Since Lexical 0.14.5 the default List nodes have a built-in transform
 // for merging adjacent lists. This test has been kept as a regression test.
 
 describe('Merge adjacent lists transform', function () {
