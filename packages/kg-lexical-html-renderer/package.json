@@ -1,21 +1,18 @@
 {
   "name": "@tryghost/kg-lexical-html-renderer",
-  "version": "1.1.8",
+  "version": "1.1.6",
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-lexical-html-renderer",
   "author": "Ghost Foundation",
   "license": "MIT",
-  "main": "cjs/index.js",
-  "module": "es/index.js",
-  "types": "types/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput --sourceMap",
-    "compile": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
-    "build:clean": "rm -rf ./cjs ./es ./types ./*.tsbuildinfo",
-    "build": "yarn compile",
-    "prepare": "yarn build:clean && yarn build",
-    "pretest": "tsc",
+    "build": "tsc",
+    "prepare": "tsc",
+    "pretest": "yarn build",
     "test": "yarn test:unit && yarn test:types",
-    "test:unit": "NODE_ENV=testing c8 --src cjs --all --check-coverage --lines 96.57 --reporter text --reporter cobertura mocha './test/**/*.test.js'",
+    "test:unit": "NODE_ENV=testing c8 --lib --check-coverage --reporter text --reporter cobertura mocha './test/**/*.test.js'",
     "test:types": "tsc --noEmit",
     "lint": "yarn lint:code && yarn lint:test",
     "lint:code": "eslint *.js lib/ --ext .ts --cache",
@@ -23,11 +20,9 @@
     "posttest": "yarn lint"
   },
   "files": [
+    "build",
     "LICENSE",
-    "README.md",
-    "cjs/",
-    "es/",
-    "types/"
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -41,15 +36,15 @@
     "sinon": "17.0.1"
   },
   "dependencies": {
-    "@lexical/clipboard": "0.14.3",
-    "@lexical/code": "0.14.3",
-    "@lexical/headless": "0.14.3",
-    "@lexical/link": "0.14.3",
-    "@lexical/list": "0.14.3",
-    "@lexical/rich-text": "0.14.3",
-    "@tryghost/kg-default-nodes": "1.1.7",
-    "@tryghost/kg-default-transforms": "1.1.8",
+    "@lexical/clipboard": "0.13.1",
+    "@lexical/code": "0.13.1",
+    "@lexical/headless": "0.13.1",
+    "@lexical/link": "0.13.1",
+    "@lexical/list": "0.13.1",
+    "@lexical/rich-text": "0.13.1",
+    "@tryghost/kg-default-nodes": "1.1.5",
+    "@tryghost/kg-default-transforms": "1.1.6",
     "jsdom": "^24.0.0",
-    "lexical": "0.14.3"
+    "lexical": "0.13.1"
   }
 }

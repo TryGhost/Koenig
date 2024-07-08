@@ -1,20 +1,17 @@
 {
   "name": "@tryghost/kg-default-transforms",
-  "version": "1.1.8",
+  "version": "1.1.6",
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-default-transforms",
   "author": "Ghost Foundation",
   "license": "MIT",
-  "main": "cjs/index.js",
-  "module": "es/index.js",
-  "types": "types/index.d.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "dev": "tsc --watch --preserveWatchOutput --sourceMap",
-    "compile": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.types.json",
-    "build:clean": "rm -rf ./cjs ./es ./types ./*.tsbuildinfo",
-    "build": "yarn compile",
-    "prepare": "yarn build:clean && yarn build",
-    "pretest": "yarn prepare",
-    "test:unit": "NODE_ENV=testing c8 --src cjs --all --check-coverage --100 --reporter text --reporter cobertura mocha -r ts-node/register './test/**/*.test.ts'",
+    "build": "tsc",
+    "prepare": "tsc",
+    "pretest": "tsc",
+    "test:unit": "NODE_ENV=testing c8 --src build --all --check-coverage --100 --reporter text --reporter cobertura mocha -r ts-node/register './test/**/*.test.ts'",
     "test": "yarn test:types && yarn test:unit",
     "test:types": "tsc --noEmit",
     "lint:code": "eslint src/ --ext .ts --cache",
@@ -22,18 +19,14 @@
     "lint:test": "eslint -c test/.eslintrc.js test/ --ext .ts --cache"
   },
   "files": [
-    "LICENSE",
-    "README.md",
-    "cjs/",
-    "es/",
-    "types/"
+    "build"
   ],
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@lexical/headless": "0.14.3",
-    "@lexical/link": "0.14.3",
+    "@lexical/headless": "0.13.1",
+    "@lexical/link": "0.13.1",
     "c8": "9.1.0",
     "mocha": "10.4.0",
     "sinon": "17.0.1",
@@ -41,10 +34,10 @@
     "typescript": "5.4.5"
   },
   "dependencies": {
-    "@lexical/list": "0.14.3",
-    "@lexical/rich-text": "0.14.3",
-    "@lexical/utils": "0.14.3",
-    "@tryghost/kg-default-nodes": "1.1.7",
-    "lexical": "0.14.3"
+    "@lexical/list": "0.13.1",
+    "@lexical/rich-text": "0.13.1",
+    "@lexical/utils": "0.13.1",
+    "@tryghost/kg-default-nodes": "1.1.5",
+    "lexical": "0.13.1"
   }
 }

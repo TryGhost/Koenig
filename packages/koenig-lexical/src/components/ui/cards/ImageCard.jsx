@@ -115,7 +115,6 @@ const ImageHolder = ({
                 openImageEditor={openImageEditor}
                 previewSrc={previewSrc}
                 src={src}
-                onFileChange={onFileChange}
             />
         );
     } else {
@@ -210,11 +209,11 @@ PopulatedImageCard.propTypes = {
     alt: PropTypes.string,
     previewSrc: PropTypes.string,
     imageUploader: PropTypes.object,
+    onFileChange: PropTypes.func,
     imageCardDragHandler: PropTypes.object,
     imageFileDragHandler: PropTypes.object,
     isPinturaEnabled: PropTypes.bool,
-    openImageEditor: PropTypes.func,
-    onFileChange: PropTypes.func
+    openImageEditor: PropTypes.func
 };
 
 EmptyImageCard.propTypes = {
