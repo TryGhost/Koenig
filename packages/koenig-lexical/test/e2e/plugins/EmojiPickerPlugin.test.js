@@ -93,10 +93,10 @@ test.describe('Emoji Picker Plugin', async function () {
     test('can use the mouse to select an emoji', async function () {
         await focusEditor(page);
 
-        await page.keyboard.type(':t');
+        await await page.keyboard.type(':taco');
         await expect(page.getByTestId('emoji-menu')).toBeVisible();
 
-        await page.click('[data-testid="emoji-option-2"]');
+        await page.click('[data-testid="emoji-option-0"]');
 
         await expect(page.getByTestId('emoji-menu')).not.toBeVisible();
         await assertHTML(page, '<p dir="ltr"><span data-lexical-text="true">🌮</span></p>');
