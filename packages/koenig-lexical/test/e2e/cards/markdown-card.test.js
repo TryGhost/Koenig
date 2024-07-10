@@ -109,13 +109,19 @@ test.describe('Markdown card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test('should open unsplash dialog on Cmd-Alt-O', async function () {
+    test.only('should open unsplash dialog on Cmd-Alt-O', async function ({browserName}) {
         await focusEditor(page);
         await page.keyboard.type('/');
         await page.click('[data-kg-card-menu-item="Markdown"]');
         await page.click('[data-kg-card="markdown"]');
 
-        await page.keyboard.press(`Control+Alt+O`);
+        if (browserName === 'chromium') {
+            await page.keyboard.press(`Control+Alt+O`);
+        }
+
+        if (browserName === 'webkit') {
+            await page.keyboard.press(`Meta+Alt+O`);
+        }
         await page.waitForSelector('[data-kg-modal="unsplash"]');
     });
 
