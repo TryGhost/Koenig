@@ -207,7 +207,7 @@ test.describe('Markdown card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test('can upload an image', async function () {
+    test('can upload an image', async function ({browserName}) {
         const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
         await focusEditor(page);
         const fileChooserPromise = page.waitForEvent('filechooser');
@@ -215,7 +215,14 @@ test.describe('Markdown card', async () => {
         await page.keyboard.type('/');
         await page.click('[data-kg-card-menu-item="Markdown"]');
         await page.waitForSelector('[data-kg-card="markdown"] .editor-toolbar');
-        await page.keyboard.press(`Control+Alt+I`);
+
+        if (browserName === 'chromium') {
+            await page.keyboard.press(`Control+Alt+I`);
+        }
+
+        if (browserName === 'webkit') {
+            await page.keyboard.press(`Meta+Alt+I`);
+        }
 
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles(filePath);
