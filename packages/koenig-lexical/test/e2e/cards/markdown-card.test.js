@@ -109,7 +109,7 @@ test.describe('Markdown card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test.only('should open unsplash dialog on Cmd-Alt-O', async function ({browserName}) {
+    test('should open unsplash dialog on Cmd-Alt-O', async function ({browserName}) {
         await focusEditor(page);
         await page.keyboard.type('/');
         await page.click('[data-kg-card-menu-item="Markdown"]');
@@ -125,12 +125,19 @@ test.describe('Markdown card', async () => {
         await page.waitForSelector('[data-kg-modal="unsplash"]');
     });
 
-    test('should toggle spellcheck on Cmd-Alt-S', async function () {
+    test('should toggle spellcheck on Cmd-Alt-S', async function ({browserName}) {
         await focusEditor(page);
         await insertCard(page, {cardName: 'markdown'});
 
         await expect(page.locator('[title*="Spellcheck"]')).not.toBeNull();
-        await page.keyboard.press(`Control+Alt+S`);
+        if (browserName === 'chromium') {
+            await page.keyboard.press(`Control+Alt+S`);
+        }
+
+        if (browserName === 'webkit') {
+            await page.keyboard.press(`Meta+Alt+S`);
+        }
+
         await expect(page.locator('[title*="Spellcheck"][class*="active"]')).toHaveCount(1);
     });
 
