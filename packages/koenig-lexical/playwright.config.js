@@ -42,6 +42,11 @@ export default defineConfig({
             name: 'firefox',
             use: {...devices['Desktop Firefox']},
             testMatch: /.*firefox.test.js/
+        },
+        {
+            name: 'webkit',
+            use: {...devices['Desktop Safari']},
+            testIgnore: /.*firefox.test.js/
         }
     ],
 
