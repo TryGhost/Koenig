@@ -141,13 +141,19 @@ test.describe('Markdown card', async () => {
         await expect(page.locator('[title*="Spellcheck"][class*="active"]')).toHaveCount(1);
     });
 
-    test('should open image upload dialog on Cmd-Alt-I', async function () {
+    test('should open image upload dialog on Cmd-Alt-I', async function ({browserName}) {
         const fileChooserPromise = page.waitForEvent('filechooser');
         await focusEditor(page);
         await page.keyboard.type('/');
         await page.click('[data-kg-card-menu-item="Markdown"]');
         await page.click('[data-kg-card="markdown"]');
-        await page.keyboard.press(`Control+Alt+I`);
+        if (browserName === 'chromium') {
+            await page.keyboard.press(`Control+Alt+I`);
+        }
+
+        if (browserName === 'webkit') {
+            await page.keyboard.press(`Meta+Alt+I`);
+        }
         await fileChooserPromise;
     });
 
