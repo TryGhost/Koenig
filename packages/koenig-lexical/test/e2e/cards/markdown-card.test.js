@@ -115,7 +115,7 @@ test.describe('Markdown card', async () => {
         await page.click('[data-kg-card-menu-item="Markdown"]');
         await page.click('[data-kg-card="markdown"]');
 
-        if (browserName === 'chromium') {
+        if (browserName === 'chromium' || browserName === 'firefox') {
             await page.keyboard.press(`Control+Alt+O`);
         }
 
@@ -130,7 +130,7 @@ test.describe('Markdown card', async () => {
         await insertCard(page, {cardName: 'markdown'});
 
         await expect(page.locator('[title*="Spellcheck"]')).not.toBeNull();
-        if (browserName === 'chromium') {
+        if (browserName === 'chromium' || browserName === 'firefox') {
             await page.keyboard.press(`Control+Alt+S`);
         }
 
@@ -147,7 +147,7 @@ test.describe('Markdown card', async () => {
         await page.keyboard.type('/');
         await page.click('[data-kg-card-menu-item="Markdown"]');
         await page.click('[data-kg-card="markdown"]');
-        if (browserName === 'chromium') {
+        if (browserName === 'chromium' || browserName === 'firefox') {
             await page.keyboard.press(`Control+Alt+I`);
         }
 
@@ -216,7 +216,7 @@ test.describe('Markdown card', async () => {
         await page.click('[data-kg-card-menu-item="Markdown"]');
         await page.waitForSelector('[data-kg-card="markdown"] .editor-toolbar');
 
-        if (browserName === 'chromium') {
+        if (browserName === 'chromium' || browserName === 'firefox') {
             await page.keyboard.press(`Control+Alt+I`);
         }
 
