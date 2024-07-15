@@ -62,13 +62,13 @@ export function ToolbarMenuItem({label, isActive, onClick, icon, shortcutKeys, s
         <li className="group relative m-0 flex p-0 first:m-0" {...props}>
             <button
                 aria-label={label}
-                className={`my-1 flex h-8 w-9 cursor-pointer items-center justify-center rounded-md transition hover:bg-grey-200/80 ${isActive ? 'bg-grey-200/80' : 'bg-white'}`}
+                className={`my-1 flex h-8 w-9 cursor-pointer items-center justify-center rounded-md transition hover:bg-grey-200/80 dark:bg-grey-950 ${isActive ? 'bg-grey-200/80' : 'bg-white'}`}
                 data-kg-active={isActive}
                 data-testid={dataTestId}
                 type="button"
                 onClick={onClick}
             >
-                <Icon className={`size-4 overflow-visible transition ${secondary ? 'stroke-2' : 'stroke-[2.5]'} ${isActive ? 'text-green-600' : 'text-black'}`} />
+                <Icon className={`size-4 overflow-visible transition dark:text-white ${secondary ? 'stroke-2' : 'stroke-[2.5]'} ${isActive ? 'text-green-600' : 'text-black'}`} />
             </button>
             <Tooltip label={label} shortcutKeys={shortcutKeys} />
         </li>
@@ -81,6 +81,6 @@ export function ToolbarMenuSeparator({hide}) {
     }
 
     return (
-        <li className="m-0 w-px self-stretch bg-grey-300/80"></li>
+        <li className="m-0 w-px self-stretch bg-grey-300/80 dark:bg-grey-900"></li>
     );
 }
