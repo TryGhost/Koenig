@@ -46,6 +46,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
                 nodeKey={nodeKey}
                 unsplashConf={cardConfig.unsplash}
                 updateHtml={updateHtml}
+                isContentVisibilityEnabled
                 onBlur={onBlur}
             />
 

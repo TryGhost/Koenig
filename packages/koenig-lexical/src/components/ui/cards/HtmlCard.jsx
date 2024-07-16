@@ -2,20 +2,28 @@ import '@tryghost/kg-simplemde/dist/simplemde.min.css';
 import HtmlEditor from './HtmlCard/HtmlEditor';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {SettingsPanel} from '../SettingsPanel.jsx';
+import {VisibilityDropdown} from '../VisibilityDropdown.jsx';
 import {sanitizeHtml} from '../../../utils/sanitize-html';
 
-export function HtmlCard({html, updateHtml, isEditing, darkMode}) {
+export function HtmlCard({html, updateHtml, isEditing, darkMode, isContentVisibilityEnabled}) {
     return (
         <>
             {isEditing
                 ? (
-                    <HtmlEditor
-                        darkMode={darkMode}
-                        html={html}
-                        updateHtml={updateHtml}
-                    />
+                    <>
+                        <HtmlEditor
+                            darkMode={darkMode}
+                            html={html}
+                            updateHtml={updateHtml}
+                        />
+                    </>
                 )
                 : <div><HtmlDisplay html={html} /><div className="absolute inset-0 z-50 mt-0"></div></div>
+            }
+
+            {
+                isEditing && isContentVisibilityEnabled && <SettingsPanel><VisibilityDropdown/></SettingsPanel>
             }
         </>
     );
@@ -35,5 +43,6 @@ HtmlCard.propTypes = {
     html: PropTypes.string,
     updateHtml: PropTypes.func,
     isEditing: PropTypes.bool,
-    darkMode: PropTypes.bool
+    darkMode: PropTypes.bool,
+    isContentVisibilityEnabled: PropTypes.bool
 };
