@@ -5,16 +5,20 @@ import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
 import {HtmlCard} from '../components/ui/cards/HtmlCard';
+import {SettingsPanel} from '../components/ui/SettingsPanel.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
+import {VisibilityDropdown} from '../components/ui/VisibilityDropdown.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {useVisibilityToggle} from '../utils/visibilityToggle.js';
 
-export function HtmlNodeComponent({nodeKey, html}) {
+export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
+    const [localVisibility, toggleVisibility] = useVisibilityToggle(nodeKey, visibility);
 
     const updateHtml = (value) => {
         editor.update(() => {
@@ -40,13 +44,13 @@ export function HtmlNodeComponent({nodeKey, html}) {
     return (
         <>
             <HtmlCard
+                contentVisibility={cardContext.isEditing && isContentVisibilityEnabled && <SettingsPanel><VisibilityDropdown isChecked={localVisibility} onChange={toggleVisibility}/></SettingsPanel>}
                 darkMode={darkMode}
                 html={html}
                 isEditing={cardContext.isEditing}
                 nodeKey={nodeKey}
                 unsplashConf={cardConfig.unsplash}
                 updateHtml={updateHtml}
-                isContentVisibilityEnabled
                 onBlur={onBlur}
             />
 

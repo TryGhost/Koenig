@@ -33,6 +33,7 @@ export class HtmlNode extends BaseHtmlNode {
                 <HtmlNodeComponent
                     html={this.__html}
                     nodeKey={this.getKey()}
+                    visibility={this.visibility}
                 />
             </KoenigCardWrapper>
         );

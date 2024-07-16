@@ -6,21 +6,21 @@ export function VisibilityDropdown({isChecked, onChange}) {
         <div className="flex w-[254px] flex-col gap-1 rounded-lg bg-white p-6 shadow-md">
             <div className="text-sm font-bold">Visibility</div>
             <ToggleSetting 
-                dataTestId='visibility-toggle'
-                isChecked={isChecked}
+                dataTestId='visibility-toggle-email-only'
+                isChecked={isChecked?.emailOnly}
                 label="Show in email only"
-                onChange={onChange} />
+                onChange={event => onChange('emailOnly')} />
             <hr className="mt-1 border-grey-250 pb-1 dark:border-white/5" />
             <ToggleSetting 
-                dataTestId='visibility-toggle'
-                isChecked={isChecked}
+                dataTestId='visibility-toggle-free-members'
+                isChecked={isChecked?.freeMembers}
                 label="Free members"
-                onChange={onChange} />
+                onChange={event => onChange('freeMembers')} />
             <ToggleSetting 
-                dataTestId='visibility-toggle'
-                isChecked={isChecked}
+                dataTestId='visibility-toggle-paid-members'
+                isChecked={isChecked?.paidMembers}
                 label="Paid members"
-                onChange={onChange} />
+                onChange={event => onChange('paidMembers')} />
         </div>
     );
 }
