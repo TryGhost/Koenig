@@ -170,6 +170,37 @@ describe('HtmlNode', function () {
 
             element.value.should.equal('\n<!--kg-card-begin: html-->\n<div data-graph-name=\'The "all-in" cost of a grant\'>Test</div>\n<!--kg-card-end: html-->\n');
         }));
+
+        it('renders data-gh-segment attribute paid-members-only', editorTest(function () {
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {paidMembers: true}});
+            const {element, type} = htmlNode.exportDOM(exportOptions);
+            type.should.equal('value');
+        
+            // check if element has data-gh-segment attribute with value 'status:paid'
+            element.value.should.equal('\n<!--kg-card-begin: html-->\n<div>Test</div>\n<!--kg-card-end: html-->\n');
+        
+            // Ensure the attribute is set correctly
+            const dataGhSegment = element.getAttribute('data-gh-segment');
+            dataGhSegment.should.equal('status:paid');
+        }));
+
+        it('renders data-gh-segment attribute free-members-only', editorTest(function () {
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {freeMembers: true}});
+            const {element, type} = htmlNode.exportDOM(exportOptions);
+            type.should.equal('value');
+
+            element.value.should.equal('\n<!--kg-card-begin: html-->\n<div>Test</div>\n<!--kg-card-end: html-->\n');
+            const dataGhSegment = element.getAttribute('data-gh-segment');
+            dataGhSegment.should.equal('status:free');
+        }));
+
+        it('renders an empty span if target is not email and is emailOnly', editorTest(function () {
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {emailOnly: true}});
+            const {element, type} = htmlNode.exportDOM(exportOptions);
+            type.should.equal('inner');
+
+            element.outerHTML.should.equal('<span></span>');
+        }));
     });
 
     describe('importDOM', function () {
