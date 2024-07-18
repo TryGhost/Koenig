@@ -33,8 +33,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     };
 
     const onBlur = (event) => {
-        // deselect if clicking outside the card
-        //  this check results in deferring to the Cmd+Enter handling in KoenigBehaviourPlugin when the cause of the blur
         if (event?.relatedTarget?.className !== 'kg-prose') {
             editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey});
         }
@@ -56,7 +54,7 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
                 cardContext.isEditing && isContentVisibilityEnabled && 
                 (
                     <SettingsPanel>
-                        <VisibilityDropdown nodeKey={nodeKey} visibility={visibility} />
+                        <VisibilityDropdown editor={editor} nodeKey={nodeKey} visibility={visibility} />
                     </SettingsPanel>
                 )
             }

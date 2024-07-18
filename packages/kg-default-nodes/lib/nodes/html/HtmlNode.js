@@ -9,6 +9,15 @@ export class HtmlNode extends generateDecoratorNode({nodeType: 'html',
         {name: 'visibility', default: {emailOnly: false, segment: null}}
     ]}
 ) {
+    constructor({
+        html = '',
+        visibility = {emailOnly: false, segment: null}
+    } = {}, key) {
+        super(key);
+        this.html = html;
+        this.visibility = visibility;
+    }
+
     static importDOM() {
         return parseHtmlNode(this);
     }
