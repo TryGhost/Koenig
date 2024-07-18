@@ -10,7 +10,7 @@ import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {VisibilityDropdown} from '../components/ui/VisibilityDropdown.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {useVisibilityToggle} from '../utils/visibilityToggle.js';
+// import {useVisibilityToggle} from '../utils/visibilityToggle.js';
 
 export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const [editor] = useLexicalComposerContext();
@@ -18,7 +18,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
-    const [emailVisibility, toggleEmail, toggleMembers, freeMemberVisibility, paidMemberVisibility] = useVisibilityToggle(editor, nodeKey, visibility);
 
     const updateHtml = (value) => {
         editor.update(() => {
@@ -44,7 +43,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     return (
         <>
             <HtmlCard
-                contentVisibility={cardContext.isEditing && isContentVisibilityEnabled && <SettingsPanel><VisibilityDropdown emailVisibility={emailVisibility} freeMemberVisibility={freeMemberVisibility} paidMemberVisibility={paidMemberVisibility} toggleEmail={toggleEmail} toggleMembers={toggleMembers} /></SettingsPanel>}
                 darkMode={darkMode}
                 html={html}
                 isEditing={cardContext.isEditing}
@@ -53,6 +51,15 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
                 updateHtml={updateHtml}
                 onBlur={onBlur}
             />
+
+            {
+                cardContext.isEditing && isContentVisibilityEnabled && 
+                (
+                    <SettingsPanel>
+                        <VisibilityDropdown nodeKey={nodeKey} visibility={visibility} />
+                    </SettingsPanel>
+                )
+            }
 
             <ActionToolbar
                 data-kg-card-toolbar="html"

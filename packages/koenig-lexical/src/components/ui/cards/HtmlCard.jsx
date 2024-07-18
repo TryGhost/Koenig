@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {sanitizeHtml} from '../../../utils/sanitize-html';
 
-export function HtmlCard({html, updateHtml, isEditing, darkMode, contentVisibility}) {
+export function HtmlCard({html, updateHtml, isEditing, darkMode}) {
     return (
         <>
             {isEditing
@@ -19,7 +19,6 @@ export function HtmlCard({html, updateHtml, isEditing, darkMode, contentVisibili
                 )
                 : <div><HtmlDisplay html={html} /><div className="absolute inset-0 z-50 mt-0"></div></div>
             }
-            <>{contentVisibility}</>
         </>
     );
 }

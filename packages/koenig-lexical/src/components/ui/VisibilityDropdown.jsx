@@ -1,7 +1,11 @@
 import React from 'react';
 import {Toggle} from './Toggle';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {useVisibilityToggle} from '../../utils/visibilityToggle.js';
 
-export function VisibilityDropdown({emailVisibility, freeMemberVisibility, toggleEmail, toggleMembers, paidMemberVisibility}) {
+export function VisibilityDropdown({nodeKey, visibility}) {
+    const [editor] = useLexicalComposerContext();
+    const [emailVisibility, toggleEmail, toggleMembers, freeMemberVisibility, paidMemberVisibility] = useVisibilityToggle(editor, nodeKey, visibility);
     return (
         <div className="flex w-[254px] flex-col gap-1 rounded-lg bg-white p-6 shadow-md">
             <div className="text-sm font-bold">Visibility</div>
