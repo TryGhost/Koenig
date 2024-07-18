@@ -65,8 +65,7 @@ describe('HtmlNode', function () {
                 ...dataset,
                 visibility: {
                     emailOnly: false,
-                    freeMembers: true,
-                    paidMembers: true
+                    segment: null
                 }
             });
         }));
@@ -172,7 +171,7 @@ describe('HtmlNode', function () {
         }));
 
         it('renders data-gh-segment attribute paid-members-only', editorTest(function () {
-            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {paidMembers: true}});
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {segment: 'status:paid'}});
             const {element, type} = htmlNode.exportDOM(exportOptions);
             type.should.equal('value');
         
@@ -185,7 +184,7 @@ describe('HtmlNode', function () {
         }));
 
         it('renders data-gh-segment attribute free-members-only', editorTest(function () {
-            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {freeMembers: true}});
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {segment: 'status:free'}});
             const {element, type} = htmlNode.exportDOM(exportOptions);
             type.should.equal('value');
 
@@ -243,8 +242,7 @@ describe('HtmlNode', function () {
                 html: '<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>',
                 visibility: {
                     emailOnly: false,
-                    freeMembers: true,
-                    paidMembers: true
+                    segment: null
                 }
             });
         }));

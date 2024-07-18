@@ -1,6 +1,5 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
-import {determineSegment} from '../../utils/determine-segment';
 
 export function renderHtmlNode(node, options = {}) {
     addCreateDocumentOption(options);
@@ -8,7 +7,7 @@ export function renderHtmlNode(node, options = {}) {
 
     const html = node.html;
 
-    const segment = determineSegment(node.visibility);
+    const segment = node.visibility.segment || null;
 
     const isEmailOnly = node.visibility.emailOnly;
 

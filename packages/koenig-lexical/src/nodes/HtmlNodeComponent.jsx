@@ -18,7 +18,7 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
-    const [localVisibility, toggleVisibility] = useVisibilityToggle(nodeKey, visibility);
+    const [emailVisibility, toggleEmail, toggleMembers, freeMemberVisibility, paidMemberVisibility] = useVisibilityToggle(editor, nodeKey, visibility);
 
     const updateHtml = (value) => {
         editor.update(() => {
@@ -44,7 +44,7 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     return (
         <>
             <HtmlCard
-                contentVisibility={cardContext.isEditing && isContentVisibilityEnabled && <SettingsPanel><VisibilityDropdown isChecked={localVisibility} onChange={toggleVisibility}/></SettingsPanel>}
+                contentVisibility={cardContext.isEditing && isContentVisibilityEnabled && <SettingsPanel><VisibilityDropdown emailVisibility={emailVisibility} freeMemberVisibility={freeMemberVisibility} paidMemberVisibility={paidMemberVisibility} toggleEmail={toggleEmail} toggleMembers={toggleMembers} /></SettingsPanel>}
                 darkMode={darkMode}
                 html={html}
                 isEditing={cardContext.isEditing}

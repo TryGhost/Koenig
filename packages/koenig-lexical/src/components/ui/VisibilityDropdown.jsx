@@ -1,26 +1,28 @@
 import React from 'react';
 import {Toggle} from './Toggle';
 
-export function VisibilityDropdown({isChecked, onChange}) {
+export function VisibilityDropdown({emailVisibility, freeMemberVisibility, toggleEmail, toggleMembers, paidMemberVisibility}) {
     return (
         <div className="flex w-[254px] flex-col gap-1 rounded-lg bg-white p-6 shadow-md">
             <div className="text-sm font-bold">Visibility</div>
             <ToggleSetting 
                 dataTestId='visibility-toggle-email-only'
-                isChecked={isChecked?.emailOnly}
+                isChecked={emailVisibility}
                 label="Show in email only"
-                onChange={event => onChange('emailOnly')} />
+                onChange={e => toggleEmail(e)} />
             <hr className="mt-1 border-grey-250 pb-1 dark:border-white/5" />
             <ToggleSetting 
                 dataTestId='visibility-toggle-free-members'
-                isChecked={isChecked?.freeMembers}
+                isChecked={freeMemberVisibility}
                 label="Free members"
-                onChange={event => onChange('freeMembers')} />
+                onChange={e => toggleMembers(e, 'free')}
+            />
             <ToggleSetting 
                 dataTestId='visibility-toggle-paid-members'
-                isChecked={isChecked?.paidMembers}
+                isChecked={paidMemberVisibility}
                 label="Paid members"
-                onChange={event => onChange('paidMembers')} />
+                onChange={e => toggleMembers(e, 'paid')}
+            />
         </div>
     );
 }

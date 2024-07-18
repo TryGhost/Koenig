@@ -6,7 +6,7 @@ import {parseHtmlNode} from './html-parser';
 export class HtmlNode extends generateDecoratorNode({nodeType: 'html',
     properties: [
         {name: 'html', default: '', urlType: 'html', wordCount: true},
-        {name: 'visibility', default: {emailOnly: false, freeMembers: true, paidMembers: true}}
+        {name: 'visibility', default: {emailOnly: false, segment: null}}
     ]}
 ) {
     static importDOM() {
