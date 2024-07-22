@@ -1,6 +1,10 @@
 import fs from 'fs';
-import {assertHTML, ctrlOrCmd, focusEditor, html, initialize, insertCard, paste, pasteHtml, pasteText} from '../utils/e2e';
+import path from 'path';
+import {assertHTML, createDataTransfer, ctrlOrCmd,focusEditor, html, initialize, insertCard, paste, pasteFiles, pasteHtml, pasteText} from '../utils/e2e';
 import {expect, test} from '@playwright/test';
+import {fileURLToPath} from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test.describe('Paste behaviour', async () => {
     let page;
@@ -509,6 +513,67 @@ test.describe('Paste behaviour', async () => {
                 </div>
                 <p><br /></p>
             `, {ignoreCardContents: false});
+        });
+    });
+
+    test.describe('Files', function () {
+        test('pastes an .png file as Image card', async function () {
+            const filePath = path.relative(process.cwd(), __dirname + '/fixtures/large-image.png');
+
+            await focusEditor(page);
+            await pasteFiles(page, [{filePath, fileName: 'large-image.png', fileType: 'image/png'}]);
+
+            const imageCard = await page.locator('[data-kg-card="image"]');
+            expect(imageCard).not.toBeNull();
+        });
+
+        test('pastes an .jpeg file as Image card', async function () {
+            const filePath = path.relative(process.cwd(), __dirname + '/fixtures/large-image.jpeg');
+
+            await focusEditor(page);
+            await pasteFiles(page, [{filePath, fileName: 'large-image.jpeg', fileType: 'image/jpeg'}]);
+
+            const imageCard = await page.locator('[data-kg-card="image"]');
+            expect(imageCard).not.toBeNull();
+        });
+
+        test('pastes an .mp4 file as Video card', async function () {
+            const filePath = path.relative(process.cwd(), __dirname + '/fixtures/video.mp4');
+
+            await focusEditor(page);
+            await pasteFiles(page, [{filePath, fileName: 'video.mp4', fileType: 'video/mp4'}]);
+
+            const videoCard = await page.locator('[data-kg-card="video"]');
+            expect(videoCard).not.toBeNull();
+        });
+
+        // By default, Lexical dispatches the file paste command (DRAG_DROP_PASTE) only if there is no text content in the clipboard
+        // We override this behaviour in KoenigBehaviourPlugin > PASTE_COMMAND, to support copy/pasting files from e.g. Slack
+        test('pastes a file, regardless of whether there is text content in the clipboard', async function () {
+            const filePath = path.relative(process.cwd(), __dirname + '/fixtures/large-image.png');
+            const dataTransfer = await createDataTransfer(page, [{filePath, fileName: 'large-image.png', fileType: 'image/png'}]);
+
+            await focusEditor(page);
+            await page.evaluate(async (clipboardData) => {
+                clipboardData.setData('text/html', '<img src="https://remote-image-src.com">');
+                clipboardData.setData('text/plain', 'some text');
+
+                document.activeElement.dispatchEvent(new ClipboardEvent('paste', {
+                    clipboardData: clipboardData,
+                    bubbles: true,
+                    cancelable: true
+                }));
+
+                clipboardData.clearData();
+            }, dataTransfer);
+
+            const imageCard = await page.locator('[data-kg-card="image"]');
+            const imgSrc = await page.locator('[data-kg-card="image"] img').getAttribute('src');
+
+            expect(imageCard).not.toBeNull();
+
+            // Check that the image src is not coming from the text/html content
+            expect(imgSrc).not.toEqual('https://remote-image-src.com');
         });
     });
 });

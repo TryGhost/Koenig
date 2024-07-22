@@ -301,6 +301,20 @@ export async function pasteLexical(page, content) {
     await paste(page, {'application/x-lexical-editor': content});
 }
 
+export async function pasteFiles(page, files) {
+    const dataTransfer = await createDataTransfer(page, files);
+
+    await page.evaluate(async (clipboardData) => {
+        document.activeElement.dispatchEvent(new ClipboardEvent('paste', {
+            clipboardData: clipboardData,
+            bubbles: true,
+            cancelable: true
+        }));
+
+        clipboardData.clearData();
+    }, dataTransfer);
+}
+
 export async function dragMouse(
     page,
     fromBoundingBox,
