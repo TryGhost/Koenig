@@ -1,10 +1,18 @@
 import {$getNodeByKey} from 'lexical';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 export const useVisibilityToggle = (editor, nodeKey, initialVisibility) => {
     const [emailVisibility, setEmailVisibility] = useState(false);
     const [freeMemberVisibility, setFreeMemberVisibility] = useState(true);
     const [paidMemberVisibility, setPaidMemberVisibility] = useState(true);
+
+    // Ref to track the initial render
+    const isInitialRender = useRef(true);
+
+    useEffect(() => {
+        setEmailVisibility(initialVisibility.emailOnly);
+        parseNqlString(initialVisibility.segment);
+    }, [initialVisibility]);
 
     const getNqlString = useCallback(() => {
         if (freeMemberVisibility && paidMemberVisibility) {
@@ -34,24 +42,24 @@ export const useVisibilityToggle = (editor, nodeKey, initialVisibility) => {
         }
     };
 
-    useEffect(() => {
-        setEmailVisibility(initialVisibility.emailOnly);
-        parseNqlString(initialVisibility.segment);
-    }, [initialVisibility]);
-
     const toggleEmail = (e) => {
         editor.update(() => {
             setEmailVisibility(e.target.checked);
             const node = $getNodeByKey(nodeKey);
-            node.visibility.emailOnly = e.target.checked;
+            node.visibility = {...node.visibility, emailOnly: e.target.checked};
         });
     };
 
     useEffect(() => {
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
+        }
+
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             const nqlString = getNqlString();
-            node.visibility.segment = nqlString;
+            node.visibility = {...node.visibility, segment: nqlString};
         });
     }, [freeMemberVisibility, paidMemberVisibility, editor, nodeKey, getNqlString]);
 
