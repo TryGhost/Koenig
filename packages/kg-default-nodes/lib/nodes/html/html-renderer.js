@@ -18,7 +18,7 @@ export function renderHtmlNode(node, options = {}) {
     const textarea = document.createElement('textarea');
     textarea.value = `\n<!--kg-card-begin: html-->\n${html}\n<!--kg-card-end: html-->\n`;
 
-    if (segment) {
+    if (segment && isEmailOnly) {
         textarea.setAttribute('data-gh-segment', segment);
     }
 

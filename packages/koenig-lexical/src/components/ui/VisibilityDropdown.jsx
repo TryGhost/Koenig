@@ -15,24 +15,30 @@ export function VisibilityDropdown({editor, nodeKey, visibility, isActive}) {
             <SettingsPanel>
                 <div className="flex w-[254px] flex-col gap-1 rounded-lg bg-white p-6 shadow-md">
                     <div className="text-sm font-bold">Visibility</div>
-                    <ToggleSetting 
+                    <ToggleSetting
                         dataTestId='visibility-toggle-email-only'
                         isChecked={emailVisibility}
                         label="Show in email only"
                         onChange={e => toggleEmail(e)} />
-                    <hr className="mt-1 border-grey-250 pb-1 dark:border-white/5" />
-                    <ToggleSetting 
-                        dataTestId='visibility-toggle-free-members'
-                        isChecked={freeMemberVisibility}
-                        label="Free members"
-                        onChange={e => toggleMembers(e, 'free')}
-                    />
-                    <ToggleSetting 
-                        dataTestId='visibility-toggle-paid-members'
-                        isChecked={paidMemberVisibility}
-                        label="Paid members"
-                        onChange={e => toggleMembers(e, 'paid')}
-                    />
+                    {
+                        emailVisibility && (
+                            <>
+                                <hr className="mt-1 border-grey-250 pb-1 dark:border-white/5" />
+                                <ToggleSetting
+                                    dataTestId='visibility-toggle-free-members'
+                                    isChecked={freeMemberVisibility}
+                                    label="Free members"
+                                    onChange={e => toggleMembers(e, 'free')}
+                                />
+                                <ToggleSetting
+                                    dataTestId='visibility-toggle-paid-members'
+                                    isChecked={paidMemberVisibility}
+                                    label="Paid members"
+                                    onChange={e => toggleMembers(e, 'paid')}
+                                />
+                            </>
+                        )
+                    }
                 </div>
             </SettingsPanel>
         );
