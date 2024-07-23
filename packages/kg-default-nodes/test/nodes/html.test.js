@@ -65,7 +65,7 @@ describe('HtmlNode', function () {
                 ...dataset,
                 visibility: {
                     emailOnly: false,
-                    segment: null
+                    segment: ''
                 }
             });
         }));
@@ -242,7 +242,7 @@ describe('HtmlNode', function () {
                 html: '<p>Paragraph with:</p><ul><li>list</li><li>items</li></ul>',
                 visibility: {
                     emailOnly: false,
-                    segment: null
+                    segment: ''
                 }
             });
         }));
