@@ -1310,14 +1310,19 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         return true;
                     }
 
-                    // Override Lexical's default paste behaviour for files:
-                    // Lexical ignores files if there is text/html or text/plain content in the clipboard
-                    // This causes images copied from e.g. Slack to not paste correctly
+                    // Override Lexical's default paste behaviour when copy/pasting images:
+                    //   - By default, Lexical ignores files if there is text/html or text/plain content in the clipboard
+                    //   - This causes images copied from e.g. Slack to not paste correctly
+                    //   - With this override, we allow pasting images when there is a single image file in the clipboard and if the text/html contains a <img /> tag
+                    //
                     // Lexical code:
                     // https://github.com/facebook/lexical/blob/main/packages/lexical-rich-text/src/index.ts#L492-L494
                     // https://github.com/facebook/lexical/blob/main/packages/lexical-rich-text/src/index.ts#L1035
                     const files = clipboardData.files ? Array.from(clipboardData.files) : [];
-                    if (files.length > 0) {
+                    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+                    const imgTagMatch = html && !!html.match(/<\s*img\b/gi);
+
+                    if (imageFiles.length === 1 && imgTagMatch) {
                         clipboardEvent.preventDefault();
                         editor.dispatchCommand(DRAG_DROP_PASTE, files);
 

@@ -315,6 +315,24 @@ export async function pasteFiles(page, files) {
     }, dataTransfer);
 }
 
+export async function pasteFilesWithText(page, files, text = {}) {
+    const dataTransfer = await createDataTransfer(page, files);
+
+    await page.evaluate(async ({clipboardData, textData}) => {
+        Object.keys(textData).forEach((mimeType) => {
+            clipboardData.setData(mimeType, textData[mimeType]);
+        });
+
+        document.activeElement.dispatchEvent(new ClipboardEvent('paste', {
+            clipboardData: clipboardData,
+            bubbles: true,
+            cancelable: true
+        }));
+
+        clipboardData.clearData();
+    }, {clipboardData: dataTransfer, textData: text});
+}
+
 export async function dragMouse(
     page,
     fromBoundingBox,

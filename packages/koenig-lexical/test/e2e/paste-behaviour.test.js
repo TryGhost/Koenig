@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {assertHTML, createDataTransfer, ctrlOrCmd,focusEditor, html, initialize, insertCard, paste, pasteFiles, pasteHtml, pasteText} from '../utils/e2e';
+import {assertHTML, ctrlOrCmd, focusEditor,html, initialize, insertCard, paste, pasteFiles, pasteFilesWithText, pasteHtml, pasteText} from '../utils/e2e';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -524,7 +524,7 @@ test.describe('Paste behaviour', async () => {
             await pasteFiles(page, [{filePath, fileName: 'large-image.png', fileType: 'image/png'}]);
 
             const imageCard = await page.locator('[data-kg-card="image"]');
-            expect(imageCard).not.toBeNull();
+            await expect(imageCard).toHaveCount(1);
         });
 
         test('pastes an .jpeg file as Image card', async function () {
@@ -534,7 +534,7 @@ test.describe('Paste behaviour', async () => {
             await pasteFiles(page, [{filePath, fileName: 'large-image.jpeg', fileType: 'image/jpeg'}]);
 
             const imageCard = await page.locator('[data-kg-card="image"]');
-            expect(imageCard).not.toBeNull();
+            await expect(imageCard).toHaveCount(1);
         });
 
         test('pastes an .mp4 file as Video card', async function () {
@@ -544,36 +544,41 @@ test.describe('Paste behaviour', async () => {
             await pasteFiles(page, [{filePath, fileName: 'video.mp4', fileType: 'video/mp4'}]);
 
             const videoCard = await page.locator('[data-kg-card="video"]');
-            expect(videoCard).not.toBeNull();
+            await expect(videoCard).toHaveCount(1);
+        });
+
+        test('does not paste an image file if there is text/html content in the clipboard', async function () {
+            const filePath = path.relative(process.cwd(), __dirname + '/fixtures/large-image.png');
+            const files = [{filePath, fileName: 'large-image.png', fileType: 'image/png'}];
+            const textHtml = {'text/html': '<p>Some text</p>'};
+
+            await focusEditor(page);
+            await pasteFilesWithText(page, files, textHtml);
+
+            const text = await page.locator('p').filter({hasText: 'Some text'});
+            expect(text).not.toBeNull();
+
+            const imageCard = await page.locator('[data-kg-card="image"]');
+            await expect(imageCard).toHaveCount(0);
         });
 
         // By default, Lexical dispatches the file paste command (DRAG_DROP_PASTE) only if there is no text content in the clipboard
         // We override this behaviour in KoenigBehaviourPlugin > PASTE_COMMAND, to support copy/pasting files from e.g. Slack
-        test('pastes a file, regardless of whether there is text content in the clipboard', async function () {
+        test('pastes a image file if the clipboard contains a single image file and text/html with a <img> tag', async function () {
             const filePath = path.relative(process.cwd(), __dirname + '/fixtures/large-image.png');
-            const dataTransfer = await createDataTransfer(page, [{filePath, fileName: 'large-image.png', fileType: 'image/png'}]);
+            const files = [{filePath, fileName: 'large-image.png', fileType: 'image/png'}];
+            const textHtml = {'text/html': '<img src="https://files.slack.com/foo-bar" />'};
 
             await focusEditor(page);
-            await page.evaluate(async (clipboardData) => {
-                clipboardData.setData('text/html', '<img src="https://remote-image-src.com">');
-                clipboardData.setData('text/plain', 'some text');
-
-                document.activeElement.dispatchEvent(new ClipboardEvent('paste', {
-                    clipboardData: clipboardData,
-                    bubbles: true,
-                    cancelable: true
-                }));
-
-                clipboardData.clearData();
-            }, dataTransfer);
+            await pasteFilesWithText(page, files, textHtml);
 
             const imageCard = await page.locator('[data-kg-card="image"]');
             const imgSrc = await page.locator('[data-kg-card="image"] img').getAttribute('src');
 
-            expect(imageCard).not.toBeNull();
+            await expect(imageCard).toHaveCount(1);
 
             // Check that the image src is not coming from the text/html content
-            expect(imgSrc).not.toEqual('https://remote-image-src.com');
+            expect(imgSrc).not.toContain('https://files.slack.com/foo-bar');
         });
     });
 });
