@@ -1,16 +1,14 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
 import {HtmlCard} from '../components/ui/cards/HtmlCard';
-import {SettingsPanel} from '../components/ui/SettingsPanel.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {VisibilityDropdown} from '../components/ui/VisibilityDropdown.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-// import {useVisibilityToggle} from '../utils/visibilityToggle.js';
 
 export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const [editor] = useLexicalComposerContext();
@@ -18,6 +16,7 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
+    const [showVisibilityDropdown, setShowVisibilityDropdown] = React.useState(false);
 
     const updateHtml = (value) => {
         editor.update(() => {
@@ -38,6 +37,18 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
         }
     };
 
+    const handleVisibilityToggle = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setShowVisibilityDropdown(!showVisibilityDropdown);
+    };
+
+    useEffect(() => {
+        if (!cardContext.isSelected || !cardContext.isEditing) {
+            setShowVisibilityDropdown(false);
+        }
+    }, [cardContext.isSelected, cardContext.isEditing]);
+
     return (
         <>
             <HtmlCard
@@ -51,11 +62,11 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
             />
 
             {
-                cardContext.isEditing && isContentVisibilityEnabled && 
+                isContentVisibilityEnabled &&
                 (
-                    <SettingsPanel>
-                        <VisibilityDropdown editor={editor} nodeKey={nodeKey} visibility={visibility} />
-                    </SettingsPanel>
+
+                    <VisibilityDropdown editor={editor} isActive={showVisibilityDropdown} nodeKey={nodeKey} visibility={visibility} />
+
                 )
             }
 
@@ -68,16 +79,18 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
 
             <ActionToolbar
                 data-kg-card-toolbar="html"
-                isVisible={cardContext.isSelected && !cardContext.isEditing && !showSnippetToolbar}
+                isVisible={(cardContext.isSelected && !showSnippetToolbar && !cardContext.isEditing) || showVisibilityDropdown}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
-                    {isContentVisibilityEnabled && 
+                    {
+                        isContentVisibilityEnabled &&
                         <>
-                            <ToolbarMenuItem icon="visibility" isActive={false} label="Visibility" onClick={() => {}} />
+                            <ToolbarMenuItem icon="visibility" isActive={showVisibilityDropdown && cardContext.isSelected} label="Visibility" onClick={handleVisibilityToggle} />
                             <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
-                        </>}
+                        </>
+                    }
                     <ToolbarMenuItem
                         dataTestId="create-snippet"
                         hide={!cardConfig.createSnippet}
