@@ -171,8 +171,12 @@ describe('HtmlNode', function () {
         }));
 
         it('renders data-gh-segment attribute paid-members-only', editorTest(function () {
-            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {segment: 'status:paid'}});
-            const {element, type} = htmlNode.exportDOM(exportOptions);
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {emailOnly: true, segment: 'status:paid'}});
+            const options = {
+                target: 'email'
+            };
+            const mergedOptions = {...exportOptions, ...options};
+            const {element, type} = htmlNode.exportDOM(mergedOptions);
             type.should.equal('value');
         
             // check if element has data-gh-segment attribute with value 'status:paid'
@@ -184,8 +188,12 @@ describe('HtmlNode', function () {
         }));
 
         it('renders data-gh-segment attribute free-members-only', editorTest(function () {
-            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {segment: 'status:free'}});
-            const {element, type} = htmlNode.exportDOM(exportOptions);
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {emailOnly: true, segment: 'status:free'}});
+            const options = {
+                target: 'email'
+            };
+            const mergedOptions = {...exportOptions, ...options}; 
+            const {element, type} = htmlNode.exportDOM(mergedOptions);
             type.should.equal('value');
 
             element.value.should.equal('\n<!--kg-card-begin: html-->\n<div>Test</div>\n<!--kg-card-end: html-->\n');

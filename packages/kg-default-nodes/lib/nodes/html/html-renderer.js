@@ -7,7 +7,7 @@ export function renderHtmlNode(node, options = {}) {
 
     const html = node.html;
 
-    const segment = node.visibility.segment || null;
+    const segment = node.visibility.segment || '';
 
     const isEmailOnly = node.visibility.emailOnly;
 
