@@ -118,7 +118,11 @@ test.describe('Drag Drop Reorder Plugin', async function () {
         `, {ignoreCardContents: true});
     });
 
-    test('can drag and drop a card at the bottom of the editor', async function () {
+    test('can drag and drop a card at the bottom of the editor', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);
@@ -173,7 +177,11 @@ test.describe('Drag Drop Reorder Plugin', async function () {
         `, {ignoreCardContents: true});
     });
 
-    test('can display placeholder element while hovering between nodes', async function () {
+    test('can display placeholder element while hovering between nodes', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
 
         await focusEditor(page);

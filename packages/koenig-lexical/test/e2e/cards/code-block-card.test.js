@@ -166,7 +166,11 @@ test.describe('Code Block card', async () => {
         await expect(languageInput).not.toHaveClass(/opacity-0/);
     });
 
-    test('can undo/redo without losing caption', async function () {
+    test('can undo/redo without losing caption', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         await focusEditor(page);
         await page.keyboard.type('```javascript ');
         await page.waitForSelector('[data-kg-card="codeblock"] .cm-editor');

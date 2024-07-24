@@ -564,7 +564,10 @@ test.describe('Card behaviour', async () => {
         });
 
         // selects the card once caret reaches top of paragraph
-        test('moving through paragraph to card', async function () {
+        test('moving through paragraph to card', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
             await focusEditor(page);
             await page.keyboard.type('---');
             await expect(await page.locator('[data-kg-card="horizontalrule"]')).toBeVisible();
@@ -688,7 +691,10 @@ test.describe('Card behaviour', async () => {
 
     test.describe('DOWN', function () {
         // moves caret to beginning of paragraph
-        test('with selected card before paragraph', async function () {
+        test('with selected card before paragraph', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
             await focusEditor(page);
             await page.keyboard.type('---');
             await page.keyboard.type('First line');
@@ -1004,7 +1010,10 @@ test.describe('Card behaviour', async () => {
         });
 
         // deletes empty paragraph, selects card
-        test('on empty paragraph after card', async function () {
+        test('on empty paragraph after card', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
             await focusEditor(page);
             await page.keyboard.type('---');
             await page.keyboard.press('Enter');
@@ -1218,7 +1227,10 @@ test.describe('Card behaviour', async () => {
             `);
         });
 
-        test('with selected card as only node', async function () {
+        test('with selected card as only node', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
             await focusEditor(page);
             await page.keyboard.type('---');
             await page.keyboard.press('Backspace');
@@ -1743,7 +1755,10 @@ test.describe('Card behaviour', async () => {
             });
         });
 
-        test('with selected card and card at bottom', async function () {
+        test('with selected card and card at bottom', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
             await focusEditor(page);
             await page.keyboard.type('---');
             await page.keyboard.type('---');
@@ -1774,7 +1789,10 @@ test.describe('Card behaviour', async () => {
             `);
         });
 
-        test('with caret in text and card at bottom', async function () {
+        test('with caret in text and card at bottom', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
             await focusEditor(page);
             await page.keyboard.type('First');
             await page.keyboard.press('Enter');

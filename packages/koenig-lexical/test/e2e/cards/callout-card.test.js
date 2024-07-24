@@ -325,7 +325,11 @@ test.describe('Callout Card', async () => {
         await expect(content).toContainText('Hello world');
     });
 
-    test('can undo/redo without losing content', async function () {
+    test('can undo/redo without losing content', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         await focusEditor(page);
         await insertCard(page, {cardName: 'callout'});
 

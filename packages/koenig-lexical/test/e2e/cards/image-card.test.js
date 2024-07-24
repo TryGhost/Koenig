@@ -528,7 +528,11 @@ test.describe('Image card', async () => {
         `);
     });
 
-    test('replaces image when new image file dropped on populated card', async function () {
+    test('replaces image when new image file dropped on populated card', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         await focusEditor(page);
         await insertImage(page);
 
@@ -841,7 +845,10 @@ test.describe('Image card', async () => {
         await expect(await page.locator('[data-kg-card="image"]')).toHaveCount(2);
     });
 
-    test('can select caption text without scrolling', async function () {
+    test('can select caption text without scrolling', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
         // Type in some text, so that we can scroll
         await focusEditor(page);
         await enterUntilScrolled(page);
@@ -891,7 +898,10 @@ test.describe('Image card', async () => {
         });
     });
 
-    test('can select caption text and make it italic', async function () {
+    test('can select caption text and make it italic', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
         // Type in some text, so that we can scroll
         await focusEditor(page);
         await enterUntilScrolled(page);

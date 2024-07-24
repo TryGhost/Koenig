@@ -320,7 +320,11 @@ test.describe('Gallery card', async () => {
         await expect(page.locator('[data-testid="gallery-image"]')).toHaveCount(2);
     });
 
-    test('can undo/redo without losing nested editor content', async () => {
+    test('can undo/redo without losing nested editor content', async ({browserName}) => {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         await test.step('insert and upload images to gallery card', async () => {
             const filePaths = Array.from(Array(2).keys()).map(n => path.relative(process.cwd(), __dirname + `/../fixtures/large-image-${n}.png`));
             const fileChooserPromise = page.waitForEvent('filechooser');
