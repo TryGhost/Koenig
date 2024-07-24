@@ -30,10 +30,6 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: yarn
 
-      - name: Install required fonts for consistent tests
-        run: |
-          brew install --cask font-microsoft-office
-
       - run: yarn
 
       - name: Get installed Playwright version
