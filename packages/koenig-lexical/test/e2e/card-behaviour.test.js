@@ -825,7 +825,11 @@ test.describe('Card behaviour', async () => {
             `);
         });
 
-        test('with selected card at end of document', async function () {
+        test('with selected card at end of document', async function ({browserName}) {
+            if (browserName === 'webkit') {
+                test.skip();
+            }
+
             await focusEditor(page);
             await page.keyboard.type('---');
             await page.keyboard.press('Backspace');

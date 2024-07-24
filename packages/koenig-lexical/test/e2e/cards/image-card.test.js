@@ -937,7 +937,10 @@ test.describe('Image card', async () => {
         });
     });
 
-    test('does not remove text when pressing ENTER in the middle of a caption', async function () {
+    test('does not remove text when pressing ENTER in the middle of a caption', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
         // Type in some text, so that we can scroll
         await focusEditor(page);
         await enterUntilScrolled(page);

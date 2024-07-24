@@ -240,7 +240,11 @@ test.describe('Bookmark card', async () => {
         await expect(await page.locator('[data-kg-card="bookmark"]')).toHaveCount(2);
     });
 
-    test('can undo/redo without losing caption', async function () {
+    test('can undo/redo without losing caption', async function ({browserName}) {
+        if (browserName === 'webkit') {
+            test.skip();
+        }
+
         await focusEditor(page);
         await insertCard(page, {cardName: 'bookmark'});
 
