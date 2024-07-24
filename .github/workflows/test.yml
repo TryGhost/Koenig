@@ -31,13 +31,8 @@ jobs:
           cache: yarn
 
       - name: Install required fonts for consistent tests
-        env:
-          DEBIAN_FRONTEND: noninteractive
-          DEBCONF_NONINTERACTIVE_SEEN: "true"
         run: |
-          sudo apt-get update -yq
-          sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
-          sudo apt-get install msttcorefonts -qq
+          brew install --cask font-microsoft-office
 
       - run: yarn
 
