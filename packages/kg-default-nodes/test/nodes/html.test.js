@@ -171,7 +171,7 @@ describe('HtmlNode', function () {
         }));
 
         it('renders data-gh-segment attribute paid-members-only', editorTest(function () {
-            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {emailOnly: true, segment: 'status:paid'}});
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {emailOnly: true, segment: 'status:-free'}});
             const options = {
                 target: 'email'
             };
