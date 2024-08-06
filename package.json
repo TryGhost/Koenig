@@ -32,6 +32,9 @@
     "extends": [
       "github>tryghost/renovate-config:quiet"
     ],
+    "ignoreDeps": [
+      "codecov/codecov-action"
+    ],
     "packageRules": [
       {
         "depTypeList": [
