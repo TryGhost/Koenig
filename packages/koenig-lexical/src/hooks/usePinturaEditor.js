@@ -139,6 +139,7 @@ export default function usePinturaEditor({
 
             editor.on('process', (result) => {
                 // save edited image
+                result.dest.edited = true;
                 handleSave(result.dest);
                 trackEvent('Image Edit Saved', {location: 'editor'});
             });
