@@ -41,6 +41,7 @@ export function Dropdown({value, menu, onChange, dataTestId}) {
         // Prevent losing focus when clicking the dropdown
         // needed on Safari
         event.preventDefault();
+        event.stopPropagation();
     };
 
     const handleBlur = () => {
