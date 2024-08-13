@@ -103,7 +103,8 @@ describe('HtmlNode', function () {
             defaults.should.deepEqual({
                 html: '',
                 visibility: {
-                    emailOnly: false,
+                    showOnEmail: true,
+                    showOnWeb: true,
                     segment: ''
                 }
             });
