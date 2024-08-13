@@ -240,6 +240,30 @@ describe('HtmlNode', function () {
 
             emailElement.innerHTML.should.equal('\n<!--kg-card-begin: html-->\n<div>Test</div>\n<!--kg-card-end: html-->\n');
         }));
+
+        it('does not render on web if showOnWeb is false', editorTest(function () {
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {showOnEmail: false, showOnWeb: false, segment: ''}});
+            const {element, type} = htmlNode.exportDOM(exportOptions);
+
+            type.should.equal('inner');
+
+            element.outerHTML.should.equal('<span></span>');
+        }));
+
+        it('does not render on email if showOnEmail is false', editorTest(function () {
+            const htmlNode = $createHtmlNode({html: '<div>Test</div>', visibility: {showOnEmail: false, showOnWeb: false, segment: ''}});
+            const options = {
+                target: 'email'
+            };
+
+            const mergedOptions = {...exportOptions, ...options};
+
+            const {element, type} = htmlNode.exportDOM(mergedOptions);
+
+            type.should.equal('inner');
+
+            element.outerHTML.should.equal('<span></span>');
+        }));
     });
 
     describe('importDOM', function () {

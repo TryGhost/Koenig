@@ -11,7 +11,6 @@ export function renderHtmlNode(node, options = {}) {
 
     const showOnEmail = node.visibility.showOnEmail;
     const showOnWeb = node.visibility.showOnWeb;
-    const showOnWebAndEmail = showOnEmail && showOnWeb;
 
     if (!html) {
         return renderEmptyContainer(document);
@@ -26,9 +25,19 @@ export function renderHtmlNode(node, options = {}) {
 
     const isEmailOnly = !showOnWeb && showOnEmail;
     const isWebOnly = showOnWeb && !showOnEmail;
+    const showOnWebAndEmail = showOnEmail && showOnWeb;
+    const showNowhere = !showOnEmail && !showOnWeb;
 
-    if (isWebOnly) {
+    if (showNowhere) {
+        return renderEmptyContainer(document);
+    }
+
+    if (isWebOnly && options.target !== 'email') {
         return {element: textarea, type: 'value'};
+    }
+
+    if (isWebOnly && options.target === 'email') {
+        return renderEmptyContainer(document);
     }
 
     if (isEmailOnly && options.target !== 'email') {
