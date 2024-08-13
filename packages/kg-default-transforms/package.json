@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/kg-default-transforms",
-  "version": "1.1.10",
+  "version": "1.1.12",
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-default-transforms",
   "author": "Ghost Foundation",
   "license": "MIT",
@@ -28,16 +28,16 @@
     "@lexical/headless": "0.13.1",
     "@lexical/link": "0.13.1",
     "c8": "9.1.0",
-    "mocha": "10.4.0",
+    "mocha": "10.7.3",
     "sinon": "17.0.1",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.5.4"
   },
   "dependencies": {
     "@lexical/list": "0.13.1",
     "@lexical/rich-text": "0.13.1",
     "@lexical/utils": "0.13.1",
-    "@tryghost/kg-default-nodes": "1.1.9",
+    "@tryghost/kg-default-nodes": "1.1.11",
     "lexical": "0.13.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tryghost/kg-utils",
-  "version": "1.0.26",
+  "version": "1.0.28",
   "repository": "https://github.com/TryGhost/Koenig/tree/main/packages/kg-utils",
   "author": "Ghost Foundation",
   "license": "MIT",
@@ -20,11 +20,11 @@
   },
   "devDependencies": {
     "c8": "9.1.0",
-    "mocha": "10.4.0",
+    "mocha": "10.7.3",
     "should": "13.2.3",
     "sinon": "17.0.1"
   },
   "dependencies": {
-    "semver": "^7.3.5"
+    "semver": "^7.6.2"
   }
 }
