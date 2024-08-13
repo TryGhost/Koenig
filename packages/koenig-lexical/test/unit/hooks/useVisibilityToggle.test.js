@@ -96,7 +96,7 @@ describe('useVisibilityToggle', () => {
         expect(result.current[7]).toBe('Shown on web and in email to free subscribers'); // message
     });
 
-    it.only('should update the message correctly when both toggles are off', () => {
+    it('should update the message correctly when both toggles are off', () => {
         const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', initialVisibility));
 
         act(() => {
