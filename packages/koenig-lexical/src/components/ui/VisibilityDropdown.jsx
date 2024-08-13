@@ -30,6 +30,7 @@ export function VisibilityDropdown({editor, nodeKey, visibility, isActive, visib
                     emailVisibility && (
                         <>
                             <Dropdown
+                                dataTestId={'visibility-dropdown-segment'}
                                 menu={dropdownOptions}
                                 value={segment}
                                 onChange={toggleSegment}
