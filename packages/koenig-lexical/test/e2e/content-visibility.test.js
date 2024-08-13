@@ -78,5 +78,22 @@ test.describe('Content Visibility', async () => {
             // button is highlighted
             await expect(card.locator('[aria-label="Visibility"]')).toHaveAttribute('data-kg-active', 'true');
         });
+
+        test('can toggle visibility settings - show on web', async function () {
+            await focusEditor(page);
+            await insertCard(page, {cardName: 'html'});
+            await expect(await page.locator('.cm-content[contenteditable="true"]')).toBeVisible();
+            await page.keyboard.type('Testing');
+            await page.keyboard.press('Meta+Enter');
+
+            const card = page.locator('[data-kg-card="html"]');
+
+            await card.locator('[aria-label="Visibility"]').click();
+
+            await card.locator('[data-testid="visibility-toggle-web-only"]').click();
+            await page.pause();
+            // it should now be unchecked
+            await expect(card.locator('[data-testid="visibility-toggle-web-only"]')).toHaveAttribute('data-kg-checked', 'false');
+        });
     });
 });
