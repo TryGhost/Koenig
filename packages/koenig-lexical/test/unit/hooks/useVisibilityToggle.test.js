@@ -1,5 +1,5 @@
 import {$getNodeByKey} from 'lexical';
-import {act, renderHook} from '@testing-library/react-hooks';
+import {act, renderHook} from '@testing-library/react';
 import {expect, vi} from 'vitest';
 import {useVisibilityToggle} from '../../../src/hooks/useVisibilityToggle';
 
