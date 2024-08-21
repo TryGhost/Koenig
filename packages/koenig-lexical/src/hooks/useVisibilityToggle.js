@@ -48,7 +48,7 @@ export const useVisibilityToggle = (editor, nodeKey, cardConfig) => {
         } else if (showOnWeb && !showOnEmail) {
             message = 'Only shown on web';
         } else if (showOnWeb && showOnEmail && segmentLabel) {
-            message = `Shown on web, and to ${segmentLabel} in email`;
+            message = `Shown on web, and to ${segmentLabel} only in email`;
         } else if (!showOnWeb && showOnEmail && !segmentLabel) {
             message = 'Only shown in email';
         } else if (!showOnWeb && showOnEmail && segmentLabel) {
