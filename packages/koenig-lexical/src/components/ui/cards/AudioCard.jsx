@@ -131,7 +131,7 @@ function AudioThumbnail({
         return (
             <div className="group flex aspect-square h-20 items-center justify-center rounded-md bg-purple">
                 <button
-                    className="flex size-20 items-center justify-center"
+                    className="flex size-20 cursor-pointer items-center justify-center"
                     data-testid="upload-thumbnail"
                     type="button"
                     onClick={() => openFileSelection({fileInputRef: fileInputRef})}

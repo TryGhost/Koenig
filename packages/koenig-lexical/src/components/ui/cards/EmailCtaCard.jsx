@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
 import {Button} from '../Button';
-import {ButtonGroupSetting, DropdownSetting, InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, DropdownSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 
 export function EmailCtaCard({
@@ -99,7 +99,6 @@ export function EmailCtaCard({
                         value={segment}
                         onChange={handleSegmentChange}
                     />
-                    <SettingsDivider />
 
                     {/* Alignment settings */}
                     <ButtonGroupSetting
@@ -116,7 +115,6 @@ export function EmailCtaCard({
                         label='Separators'
                         onChange={toggleDividers}
                     />
-                    <SettingsDivider />
 
                     {/* Button settings */}
                     <ToggleSetting
