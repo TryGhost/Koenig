@@ -7,12 +7,16 @@ export default {
 
             // Remove empty paragraphs when copy/pasting from Google docs:
             // - Between two paragraphs (P and P)
+            // - Between multiple linebreaks (BR and BR)
             // - Between a list and a paragraph (UL/OL/DL and P), and vice versa
             // - Between a heading and a paragraph (H1-H6 and P), and vice versa
             if (isGoogleDocs) {
                 if ((
                     node.previousElementSibling?.nodeName === 'P' &&
                     node.nextElementSibling?.nodeName === 'P'
+                ) || (
+                    node.previousElementSibling?.nodeName === 'BR' ||
+                    node.nextElementSibling?.nodeName === 'BR'
                 ) || (
                     [...headings, ...lists].includes(node.previousElementSibling?.nodeName) &&
                     node.nextElementSibling?.nodeName === 'P'
