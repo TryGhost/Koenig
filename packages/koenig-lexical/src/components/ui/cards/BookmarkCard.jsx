@@ -26,7 +26,6 @@ export function BookmarkCard({
     urlError,
     searchLinks
 }) {
-
     // State to manage thumbnail visibility
     const [thumbnailVisible, setThumbnailVisible] = React.useState(true);
 

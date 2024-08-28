@@ -169,7 +169,7 @@ function frontendTemplate(node, document) {
         const thumbnail = document.createElement('img');
         thumbnail.src = metadata.thumbnail;
         thumbnail.alt = '';
-        thumbnail.setAttribute('onerror',"this.style.display = 'none'"); // Hide thumbnail div if image fails to load
+        thumbnail.setAttribute('onerror',`this.style.display = 'none'`); // Hide thumbnail div if image fails to load
         thumbnailDiv.appendChild(thumbnail);
     }
 
