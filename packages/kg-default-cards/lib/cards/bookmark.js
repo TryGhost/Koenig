@@ -144,7 +144,7 @@ module.exports = {
                         </div>
                         {{#if metadata.thumbnail}}
                             <div class="kg-bookmark-thumbnail"{{#if isEmail}} style="background-image: url('{{metadata.thumbnail}}')"{{/if}}>
-                                <img src="{{metadata.thumbnail}}" alt="" onerror="this.style.display = 'none'">
+                                <img src="{{metadata.thumbnail}}" alt="">
                             </div>
                         {{/if}}
                     </a>
