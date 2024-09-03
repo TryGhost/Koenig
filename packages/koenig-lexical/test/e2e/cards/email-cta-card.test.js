@@ -324,7 +324,6 @@ test.describe('Email card', async () => {
                             </div>
                             <p>Visible for this audience when delivered by email. This card is not published on your site.</p>
                         </div>
-                        <hr>
                         <div>
                             <div>Content alignment</div>
                             <div>
@@ -357,7 +356,6 @@ test.describe('Email card', async () => {
                                 </label>
                             </div>
                         </label>
-                        <hr>
                         <label>
                             <div>
                                 <div>Button</div>
