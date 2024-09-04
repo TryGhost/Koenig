@@ -8,7 +8,7 @@ function Item({item, selected, onChange}) {
     let selectionClass = '';
 
     if (selected) {
-        selectionClass = 'bg-grey-100 dark:bg-grey-950';
+        selectionClass = 'bg-grey-100 dark:bg-grey-900';
     }
 
     // We use the capture phase of the mouse down event, otherwise the list option will be removed when blurring the input
@@ -20,7 +20,7 @@ function Item({item, selected, onChange}) {
     };
 
     return (
-        <li key={item.name} className={`${selectionClass} m-0 hover:bg-grey-100 dark:hover:bg-grey-950`} >
+        <li key={item.name} className={`${selectionClass} m-0 hover:bg-grey-100 dark:hover:bg-grey-900`} >
             <button
                 className="size-full cursor-pointer px-3 py-[7px] text-left dark:text-white"
                 data-testid="multiselect-dropdown-item"
@@ -108,7 +108,7 @@ export function MultiSelectDropdown({placeholder = '', items = [], availableItem
     return (
         <div className="relative z-0 font-sans text-sm font-normal" data-testid={dataTestId}>
             <div
-                className={`relative flex w-full cursor-text flex-wrap gap-1 rounded-lg border ${isFocused ? 'border-green bg-white shadow-[0_0_0_2px_rgba(48,207,67,.25)]' : 'border-grey-100 bg-grey-100'} px-[10px] py-2 pr-5 font-sans text-sm font-normal leading-[1.5] text-grey-900 placeholder:text-grey-500 focus-visible:outline-none dark:text-white dark:selection:bg-grey-800 dark:placeholder:text-grey-700`}
+                className={`relative flex w-full cursor-text flex-wrap gap-1 rounded-lg border ${isFocused ? 'border-green bg-white shadow-[0_0_0_2px_rgba(48,207,67,.25)] dark:bg-grey-925' : 'border-grey-100 bg-grey-100 dark:border-transparent dark:bg-grey-900 dark:hover:bg-grey-925'} px-[10px] py-2 pr-5 font-sans text-sm font-normal leading-[1.5] text-grey-900 placeholder:text-grey-500 focus-visible:outline-none dark:text-white dark:selection:bg-grey-800 dark:placeholder:text-grey-700`}
                 type="button"
                 onClick={() => inputRef.current.focus()}
             >
