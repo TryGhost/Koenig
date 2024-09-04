@@ -123,8 +123,8 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
             <InputListItem
                 key={item.value}
                 className={clsx(
-                    selected && 'bg-grey-100',
-                    'm-0 cursor-pointer px-3 py-[7px] text-left hover:bg-grey-100 dark:hover:bg-black'
+                    selected && 'bg-grey-100 dark:bg-grey-925',
+                    'm-0 cursor-pointer px-3 py-[7px] text-left hover:bg-grey-100 dark:hover:bg-grey-925'
                 )}
                 dataTestId={dataTestId}
                 item={item}
