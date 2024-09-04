@@ -106,7 +106,7 @@ function AudioThumbnail({
         );
     } else if (errors && errors.length > 0) {
         return (
-            <span className="group relative flex aspect-square h-20 items-center justify-center rounded-md bg-grey-200 px-1 text-center font-sans text-xs font-semibold leading-snug text-red" data-testid="thumbnail-errors">
+            <span className="group relative flex aspect-square h-20 items-center justify-center rounded-md bg-grey-200 px-1 text-center font-sans text-2xs font-semibold leading-snug text-red" data-testid="thumbnail-errors">
                 {errors[0].message}
             </span>
         );

@@ -170,7 +170,8 @@ module.exports = {
                 full: '9999px'
             },
             fontSize: {
-                xs: '1.2rem',
+                '2xs': '1.2rem',
+                xs: '1.25rem',
                 sm: '1.4rem',
                 md: '1.5rem',
                 lg: '1.8rem',
