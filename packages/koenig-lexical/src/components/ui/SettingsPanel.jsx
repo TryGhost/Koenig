@@ -21,7 +21,7 @@ export function SettingsPanel({children, darkMode, cardWidth}) {
         // However, Portal causes problems with drag/drop, focus, etc
         <div className={`!mt-0 touch-none ${darkMode ? 'dark' : ''}`}>
             <div ref={ref}
-                className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-4 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
+                className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-3 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
                 data-testid="settings-panel"
             >
                 {children}
@@ -34,7 +34,7 @@ export function ToggleSetting({label, description, isChecked, onChange, dataTest
     return (
         <label className="flex w-full cursor-pointer items-start justify-between">
             <div>
-                <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+                <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
                 {description &&
                     <p className="mt-1 w-11/12 text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
                 }
@@ -50,7 +50,7 @@ export function SliderSetting({label, onChange, max, min, value, defaultValue, d
     return (
         <div className="my-2 flex w-full flex-col gap-1">
             <div className="flex items-center justify-between font-sans text-[1.3rem] font-normal">
-                <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+                <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
                 <div className="text-grey-900 dark:text-grey-100" data-testid={`${dataTestId}-value`}>{value}</div>
             </div>
             <Slider dataTestId={dataTestId} defaultValue={defaultValue} max={max} min={min} value={value} onChange={onChange} />
@@ -64,7 +64,7 @@ export function SliderSetting({label, onChange, max, min, value, defaultValue, d
 export function InputSetting({label, hideLabel, description, onChange, value, placeholder, dataTestId, onBlur}) {
     return (
         <div className="flex w-full flex-col justify-between">
-            <div className={hideLabel ? 'sr-only' : 'mb-1.5 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300'}>{label}</div>
+            <div className={hideLabel ? 'sr-only' : 'mb-1.5 text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300'}>{label}</div>
             <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onBlur={onBlur} onChange={onChange} />
             {description &&
                 <p className="text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
@@ -143,7 +143,7 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
 
     return (
         <div className="flex w-full flex-col justify-between">
-            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+            <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
             <InputList
                 dataTestId={dataTestId}
                 getItem={getItem}
@@ -161,8 +161,8 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
 
 export function DropdownSetting({label, description, value, menu, onChange, dataTestId}) {
     return (
-        <div className="flex w-full flex-col justify-between gap-1.5">
-            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300" data-testid={`${dataTestId}-label`}>{label}</div>
+        <div className="flex w-full flex-col justify-between gap-1">
+            <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300" data-testid={`${dataTestId}-label`}>{label}</div>
             <Dropdown
                 dataTestId={dataTestId}
                 menu={menu}
@@ -186,8 +186,8 @@ export function DropdownSetting({label, description, value, menu, onChange, data
  */
 export function MultiSelectDropdownSetting({label, description, placeholder = '', items, availableItems, onChange, dataTestId, allowAdd = true}) {
     return (
-        <div className="flex w-full flex-col justify-between gap-1.5">
-            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+        <div className="flex w-full flex-col justify-between gap-1">
+            <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
             <MultiSelectDropdown
                 allowAdd={allowAdd}
                 availableItems={availableItems}
@@ -206,7 +206,7 @@ export function MultiSelectDropdownSetting({label, description, placeholder = ''
 export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
     return (
         <div className="flex w-full items-center justify-between text-[1.3rem]">
-            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+            <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
 
             <div className="shrink-0 pl-2">
                 <ButtonGroup buttons={buttons} selectedName={selectedName} onClick={onClick} />
@@ -218,7 +218,7 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
 export function ColorOptionSetting({label, onClick, selectedName, buttons, layout, dataTestId}) {
     return (
         <div className={`flex w-full text-[1.3rem] ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestId}>
-            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+            <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
 
             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
                 <ColorOptionButtons buttons={buttons} selectedName={selectedName} onClick={onClick} />
@@ -253,7 +253,7 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
     return (
         <div className="flex-col" data-testid={dataTestId} onClick={markClickedInside}>
             <div className="flex w-full items-center justify-between text-[1.3rem]">
-                <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+                <div className="text-sm font-normal tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
 
                 <div className="shrink-0 pl-2">
                     <ColorIndicator
@@ -273,7 +273,7 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
 export function MediaUploadSetting({className, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc = '', size, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {
     return (
         <div className={clsx(className)} data-testid="media-upload-setting">
-            <div className={hideLabel ? 'sr-only' : 'mb-2 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
+            <div className={hideLabel ? 'sr-only' : 'mb-2 text-sm font-normal tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
 
             <MediaUploader
                 alt={alt}
