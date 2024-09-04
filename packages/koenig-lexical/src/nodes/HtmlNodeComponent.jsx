@@ -1,13 +1,14 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
+import {DropdownSetting, SettingsPanel, ToggleSetting} from '../components/ui/SettingsPanel.jsx';
 import {HtmlCard} from '../components/ui/cards/HtmlCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
+import {TabView} from '../components/ui/TabView.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
-import {VisibilityDropdown} from '../components/ui/VisibilityDropdown.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
 
@@ -16,24 +17,61 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     const cardContext = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
-    const [showVisibilityDropdown, setShowVisibilityDropdown] = React.useState(false);
 
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
-    const isContentVisibilityActive = editor.getEditorState().read(() => {
-        return $getNodeByKey(nodeKey).getIsVisibilityActive();
-    });
-
     const [toggleEmail, toggleSegment, toggleWeb, segment, emailVisibility, webVisibility, dropdownOptions, visibilityMessage] = useVisibilityToggle(editor, nodeKey, cardConfig);
-
-    const visibilityProps = {
-        toggleEmail,
-        toggleSegment,
-        toggleWeb,
-        segment,
-        emailVisibility,
-        webVisibility,
-        dropdownOptions
+    const handleSettingChange = settingFunction => (value) => {
+        if (typeof value === 'string') {
+            // This is for the dropdown
+            settingFunction(value);
+        } else {
+            // This is for the toggles
+            settingFunction();
+        }
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            if (node.select) {
+                node.select();
+            }
+        });
     };
+
+    const tabs = [
+        {id: 'design', label: 'Design'},
+        {id: 'visibility', label: 'Visibility'}
+    ];
+
+    const visibilitySettings = (
+        <>
+            <ToggleSetting
+                dataTestId="visibility-show-on-web"
+                isChecked={webVisibility}
+                label="Show on web"
+                onChange={handleSettingChange(toggleWeb)}
+            />
+            <ToggleSetting
+                dataTestId="visibility-show-on-email"
+                isChecked={emailVisibility}
+                label="Show in email"
+                onChange={handleSettingChange(toggleEmail)}
+            />
+            {emailVisibility && dropdownOptions && (
+                <DropdownSetting
+                    dataTestId="visibility-dropdown-segment"
+                    label="Email audience"
+                    menu={dropdownOptions}
+                    value={segment}
+                    onChange={value => handleSettingChange(toggleSegment)(value)}
+                />
+            )}
+        </>
+    );
+
+    const designSettings = (
+        <div className="text-xs font-semibold tracking-normal text-grey-900 dark:text-grey-300">
+            Some design settings
+        </div>
+    );
 
     const updateHtml = (value) => {
         editor.update(() => {
@@ -54,18 +92,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
         }
     };
 
-    const handleVisibilityToggle = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setShowVisibilityDropdown(!showVisibilityDropdown);
-    };
-
-    useEffect(() => {
-        if (!cardContext.isSelected || !cardContext.isEditing) {
-            setShowVisibilityDropdown(false);
-        }
-    }, [cardContext.isSelected, cardContext.isEditing]);
-
     return (
         <>
             <HtmlCard
@@ -79,19 +105,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
                 onBlur={onBlur}
             />
 
-            {
-                isContentVisibilityEnabled &&
-                (
-                    <VisibilityDropdown
-                        editor={editor}
-                        isActive={showVisibilityDropdown}
-                        nodeKey={nodeKey}
-                        visibility={visibility}
-                        visibilityProps={visibilityProps}
-                    />
-                )
-            }
-
             <ActionToolbar
                 data-kg-card-toolbar="html"
                 isVisible={showSnippetToolbar}
@@ -101,23 +114,11 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
 
             <ActionToolbar
                 data-kg-card-toolbar="html"
-                isVisible={(cardContext.isSelected && !showSnippetToolbar && !cardContext.isEditing) || showVisibilityDropdown}
+                isVisible={(cardContext.isSelected && !showSnippetToolbar && !cardContext.isEditing)}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
-                    {
-                        isContentVisibilityEnabled &&
-                        <>
-                            <ToolbarMenuItem
-                                icon="visibility"
-                                isActive={isContentVisibilityActive}
-                                label="Visibility"
-                                onClick={handleVisibilityToggle}
-                            />
-                            <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
-                        </>
-                    }
                     <ToolbarMenuItem
                         dataTestId="create-snippet"
                         hide={!cardConfig.createSnippet}
@@ -128,6 +129,19 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
                     />
                 </ToolbarMenu>
             </ActionToolbar>
+
+            {cardContext.isEditing && isContentVisibilityEnabled && (
+                <SettingsPanel darkMode={darkMode} onMouseDown={e => e.preventDefault()}>
+                    <TabView 
+                        defaultTab="visibility" 
+                        tabContent={{
+                            design: designSettings,
+                            visibility: visibilitySettings
+                        }}
+                        tabs={tabs}
+                    />
+                </SettingsPanel>
+            )}
         </>
     );
 }
