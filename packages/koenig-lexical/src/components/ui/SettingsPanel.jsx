@@ -11,10 +11,18 @@ import {InputList, InputListItem} from './InputList.jsx';
 import {MediaUploader} from './MediaUploader';
 import {MultiSelectDropdown} from './MultiSelectDropdown';
 import {Slider} from './Slider.jsx';
+import {TabView} from './TabView';
 import {Toggle} from './Toggle';
 
-export function SettingsPanel({children, darkMode, cardWidth}) {
+export function SettingsPanel({children, darkMode, cardWidth, tabs, defaultTab}) {
     const {ref} = useSettingsPanelReposition({}, cardWidth);
+
+    const tabContent = React.useMemo(() => {
+        if (!tabs) {
+            return {default: children};
+        }
+        return typeof children === 'object' && children !== null ? children : {default: children};
+    }, [tabs, children]);
 
     return (
         // Ideally we would use Portal to avoid issues with transformed ancestors (https://bugs.chromium.org/p/chromium/issues/detail?id=20574)
@@ -24,7 +32,11 @@ export function SettingsPanel({children, darkMode, cardWidth}) {
                 className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-3 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
                 data-testid="settings-panel"
             >
-                {children}
+                {tabs ? (
+                    <TabView defaultTab={defaultTab} tabContent={tabContent} tabs={tabs} />
+                ) : (
+                    children
+                )}
             </div>
         </div>
     );

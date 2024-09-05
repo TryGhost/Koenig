@@ -7,7 +7,6 @@ import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehavio
 import {DropdownSetting, SettingsPanel, ToggleSetting} from '../components/ui/SettingsPanel.jsx';
 import {HtmlCard} from '../components/ui/cards/HtmlCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
-import {TabView} from '../components/ui/TabView.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
@@ -131,15 +130,16 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
             </ActionToolbar>
 
             {cardContext.isEditing && isContentVisibilityEnabled && (
-                <SettingsPanel darkMode={darkMode} onMouseDown={e => e.preventDefault()}>
-                    <TabView 
-                        defaultTab="visibility" 
-                        tabContent={{
-                            design: designSettings,
-                            visibility: visibilitySettings
-                        }}
-                        tabs={tabs}
-                    />
+                <SettingsPanel 
+                    darkMode={darkMode} 
+                    defaultTab="visibility"
+                    tabs={tabs}
+                    onMouseDown={e => e.preventDefault()}
+                >
+                    {{
+                        design: designSettings,
+                        visibility: visibilitySettings
+                    }}
                 </SettingsPanel>
             )}
         </>
