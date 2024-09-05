@@ -14,10 +14,10 @@ const TabView = ({tabs, defaultTab, tabContent}) => {
                 {tabs.map(tab => (
                     <button
                         key={tab.id}
-                        className={`-m-b-px cursor-pointer appearance-none whitespace-nowrap border-b-2 pb-1 text-sm transition-all ${
+                        className={`-m-b-px cursor-pointer appearance-none whitespace-nowrap border-b-2 pb-1 text-sm font-semibold transition-all ${
                             activeTab === tab.id
-                                ? 'border-black font-bold text-black dark:border-white dark:text-white'
-                                : 'border-transparent font-medium tracking-[.022em] text-grey-600 hover:border-grey-500 dark:text-white'
+                                ? 'border-black text-black dark:border-white dark:text-white'
+                                : 'border-transparent text-grey-600 hover:border-grey-500 dark:text-white'
                         }`}
                         type="button"
                         onClick={() => handleTabChange(tab.id)}

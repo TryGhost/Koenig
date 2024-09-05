@@ -68,7 +68,7 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
     );
 
     const designSettings = (
-        <div className="text-2xs font-semibold tracking-normal text-grey-900 dark:text-grey-300">
+        <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">
             Some design settings
         </div>
     );
