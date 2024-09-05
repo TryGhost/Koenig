@@ -32,7 +32,7 @@ export function SettingsPanel({children, darkMode, cardWidth}) {
 
 export function ToggleSetting({label, description, isChecked, onChange, dataTestId}) {
     return (
-        <label className="flex w-full cursor-pointer items-start justify-between">
+        <label className="flex w-full cursor-pointer items-center justify-between">
             <div>
                 <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
                 {description &&
