@@ -12,7 +12,6 @@ import {isInternalUrl} from '../utils/isInternalUrl.js';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 export function BookmarkNodeComponent({author, nodeKey, url, icon, title, description, publisher, thumbnail, captionEditor, captionEditorInitialState, createdWithUrl}) {
-    console.log('BookmarkNodeComponent: Author: ' + author + ', nodeKey: ' + nodeKey + ', url: ' + url + ', icon: ' + icon + ', title: ' + title + ', description: ' + description + ', publisher: ' + publisher + ', thumbnail: ' + thumbnail + ', captionEditor: ' + captionEditor + ', captionEditorInitialState: ' + captionEditorInitialState + ', createdWithUrl: ' + createdWithUrl);
     const [editor] = useLexicalComposerContext();
 
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -148,7 +147,7 @@ export function BookmarkNodeComponent({author, nodeKey, url, icon, title, descri
         if (createdWithUrl) {
             setUrlInputValue(url);
             try {
-                fetchMetadataEffect(url); //createdWithUrl false when meat dat ais passed so no fetching ombed
+                fetchMetadataEffect(url);
             } catch {
                 handlePasteAsLink(url);
             }
