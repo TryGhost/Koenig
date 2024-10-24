@@ -28,16 +28,20 @@ export function SettingsPanel({children, darkMode, cardWidth, tabs, defaultTab})
         // Ideally we would use Portal to avoid issues with transformed ancestors (https://bugs.chromium.org/p/chromium/issues/detail?id=20574)
         // However, Portal causes problems with drag/drop, focus, etc
         <div className={`!mt-0 touch-none ${darkMode ? 'dark' : ''}`}>
-            <div ref={ref}
-                className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-3 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
-                data-testid="settings-panel"
-            >
-                {tabs ? (
+
+            {tabs ? (
+                <div ref={ref}
+                    className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col rounded-lg bg-white bg-clip-padding font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
+                    data-testid="settings-panel"
+                >
                     <TabView defaultTab={defaultTab} tabContent={tabContent} tabs={tabs} />
-                ) : (
-                    children
-                )}
-            </div>
+                </div>
+            ) : (
+                <div ref={ref}
+                    className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-3 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
+                    data-testid="settings-panel"
+                >{children}</div>
+            )}
         </div>
     );
 }
