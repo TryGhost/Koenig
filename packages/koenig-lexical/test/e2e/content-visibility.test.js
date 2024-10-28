@@ -67,7 +67,7 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('edit-html').click();
             await card.getByTestId('tab-visibility').click();
-            await card.getByTestId('visibility-show-on-web-Toggle').click();
+            await card.getByTestId('visibility-show-on-web').click();
 
             await expect(card.getByTestId('visibility-message')).toContainText('Only shown in email');
         });
@@ -77,7 +77,7 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('edit-html').click();
             await card.getByTestId('tab-visibility').click();
-            await card.getByTestId('visibility-show-on-email-Toggle').click();
+            await card.getByTestId('visibility-show-on-email').click();
 
             await expect(card.getByTestId('visibility-message')).toContainText('Only shown on web');
         });
@@ -120,8 +120,8 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('edit-html').click();
             await card.getByTestId('tab-visibility').click();
-            await card.getByTestId('visibility-show-on-web-Toggle').click();
-            await card.getByTestId('visibility-show-on-email-Toggle').click();
+            await card.getByTestId('visibility-show-on-web').click();
+            await card.getByTestId('visibility-show-on-email').click();
 
             await expect(card.getByTestId('visibility-message')).toContainText('Hidden from both web and email');
         });
@@ -141,11 +141,11 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('edit-html').click();
             await card.getByTestId('tab-visibility').click();
-            
-            await expect(page.getByTestId('visibility-show-on-web-Toggle').locator('input')).toBeChecked();
+
+            await expect(page.getByTestId('visibility-show-on-web').locator('input')).toBeChecked();
             // click on the surrounding label rather than the inner label/input
             await page.getByTestId('visibility-show-on-web').click();
-            await expect(page.getByTestId('visibility-show-on-web-Toggle').locator('input')).not.toBeChecked();
+            await expect(page.getByTestId('visibility-show-on-web').locator('input')).not.toBeChecked();
         });
     });
 });
