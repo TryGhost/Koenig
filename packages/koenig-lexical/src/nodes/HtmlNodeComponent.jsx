@@ -11,7 +11,7 @@ import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
 
-export function HtmlNodeComponent({nodeKey, html, visibility}) {
+export function HtmlNodeComponent({nodeKey, html}) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
@@ -116,7 +116,13 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
                 isVisible={(cardContext.isSelected && !showSnippetToolbar && !cardContext.isEditing)}
             >
                 <ToolbarMenu>
-                    <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
+                    <ToolbarMenuItem
+                        dataTestId="edit-html"
+                        icon="edit"
+                        isActive={false}
+                        label="Edit"
+                        onClick={handleToolbarEdit}
+                    />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
                     <ToolbarMenuItem
                         dataTestId="create-snippet"
