@@ -19,6 +19,7 @@ const TabView = ({tabs, defaultTab, tabContent}) => {
                                 ? 'border-black text-black dark:border-white dark:text-white'
                                 : 'border-transparent text-grey-600 hover:border-grey-500 dark:text-white'
                         }`}
+                        data-testid={`tab-${tab.id}`}
                         type="button"
                         onClick={() => handleTabChange(tab.id)}
                     >
