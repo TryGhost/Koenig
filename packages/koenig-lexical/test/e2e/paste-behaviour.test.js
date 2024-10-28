@@ -524,7 +524,6 @@ test.describe('Paste behaviour', async () => {
                         data-kg-card-selected="true"
                         data-kg-card="html">
                         <div>
-                            <div>
                           <div aria-live="polite"></div>
                           <div tabindex="-1">
                             <div aria-hidden="true">
@@ -587,7 +586,6 @@ test.describe('Paste behaviour', async () => {
                             </div>
                         </div>
                     </div>
-                </div>
                 <p><br /></p>
             `, {ignoreCardContents: false});
         });
