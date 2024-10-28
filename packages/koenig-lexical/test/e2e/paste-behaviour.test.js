@@ -588,7 +588,6 @@ test.describe('Paste behaviour', async () => {
                         </div>
                     </div>
                 </div>
-                </div>
                 <p><br /></p>
             `, {ignoreCardContents: false});
         });
