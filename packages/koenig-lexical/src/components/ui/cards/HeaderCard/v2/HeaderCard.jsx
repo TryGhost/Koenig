@@ -317,6 +317,7 @@ export function HeaderCard({alignment,
                             hasSettingsPanel={true}
                             initialEditor={subheaderTextEditor}
                             initialEditorState={subheaderTextEditorInitialState}
+                            defaultKoenigEnterBehaviour={true}
                             nodes="minimal"
                             placeholderClassName={clsx(
                                 '!font-medium !leading-snug !tracking-tight opacity-60',
