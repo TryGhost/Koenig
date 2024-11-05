@@ -336,10 +336,10 @@ export function SignupCard({alignment,
                         {/* Disclaimer */}
                         <KoenigNestedEditor
                             dataTestId="signup-disclaimer-editor"
+                            defaultKoenigEnterBehaviour={true}
                             hasSettingsPanel={true}
                             initialEditor={disclaimerTextEditor}
                             initialEditorState={disclaimerTextEditorInitialState}
-                            defaultKoenigEnterBehaviour={true}
                             nodes="minimal"
                             placeholderClassName={`opacity-60 !leading-snug !font-normal !text-[1.6rem] !tracking-tight`}
                             placeholderText={disclaimerPlaceholder}

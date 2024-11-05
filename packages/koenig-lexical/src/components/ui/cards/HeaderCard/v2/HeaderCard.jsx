@@ -314,10 +314,10 @@ export function HeaderCard({alignment,
                         {/* Subheading */}
                         {<KoenigNestedEditor
                             dataTestId="header-subheader-editor"
+                            defaultKoenigEnterBehaviour={true}
                             hasSettingsPanel={true}
                             initialEditor={subheaderTextEditor}
                             initialEditorState={subheaderTextEditorInitialState}
-                            defaultKoenigEnterBehaviour={true}
                             nodes="minimal"
                             placeholderClassName={clsx(
                                 '!font-medium !leading-snug !tracking-tight opacity-60',
