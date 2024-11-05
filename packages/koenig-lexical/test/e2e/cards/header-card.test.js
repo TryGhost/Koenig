@@ -186,8 +186,8 @@ test.describe('Header card V1', async () => {
         await createHeaderCard({page});
 
         // Check that the default size is small
-        await expect(page.getByLabel('S')).toHaveClass(/ bg-white /);
-        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-white /);
+        await expect(page.getByLabel('S')).toHaveClass(/ bg-grey-150 /);
+        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-grey-150 /);
 
         // Get height of the card
         const box = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -195,7 +195,7 @@ test.describe('Header card V1', async () => {
 
         // Click on the medium button
         await page.getByLabel('M').click();
-        await expect(page.getByLabel('M')).toHaveClass(/ bg-white /);
+        await expect(page.getByLabel('M')).toHaveClass(/ bg-grey-150 /);
 
         // Check that the height has changed
         const box2 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -206,7 +206,7 @@ test.describe('Header card V1', async () => {
         // Switch to large
         const largeButton = page.locator('[aria-label="L"]');
         await largeButton.click();
-        await expect(largeButton).toHaveClass(/ bg-white /);
+        await expect(largeButton).toHaveClass(/ bg-grey-150 /);
 
         // Check that the height has changed
         const box3 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -679,12 +679,14 @@ test.describe('Header card V2', () => {
 
     test('can swap split layout sides on image', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
-        const fileChooserPromise = page.waitForEvent('filechooser');
         await createHeaderCard({page, version: 2});
+        // Mouse position from earlier test can mean a tooltip is covering the split layout button
+        await page.mouse.move(0, 0);
         await page.locator('[data-testid="header-layout-split"]').click();
         await expect(page.locator('[data-testid="header-background-image-toggle"]')).toHaveCount(0);
-        await page.click('[data-testid="media-upload-placeholder"]');
         // Set files
+        const fileChooserPromise = page.waitForEvent('filechooser');
+        await page.click('[data-testid="media-upload-placeholder"]');
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
         await expect(page.locator('[data-testid="header-card-container"] [data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
