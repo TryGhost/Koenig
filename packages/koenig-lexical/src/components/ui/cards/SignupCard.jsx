@@ -339,6 +339,7 @@ export function SignupCard({alignment,
                             hasSettingsPanel={true}
                             initialEditor={disclaimerTextEditor}
                             initialEditorState={disclaimerTextEditorInitialState}
+                            defaultKoenigEnterBehaviour={true}
                             nodes="minimal"
                             placeholderClassName={`opacity-60 !leading-snug !font-normal !text-[1.6rem] !tracking-tight`}
                             placeholderText={disclaimerPlaceholder}
