@@ -3,7 +3,6 @@ import React from 'react';
 import {CardCaptionEditor} from '../CardCaptionEditor';
 import {UrlInput} from '../UrlInput';
 import {UrlSearchInput} from '../UrlSearchInput';
-import {truncateHTML} from '../../../utils/truncateHTML';
 
 export function BookmarkCard({
     author,
@@ -40,9 +39,7 @@ export function BookmarkCard({
                 <div className="not-kg-prose relative flex min-h-[120px] w-full rounded-md border border-grey/40 bg-transparent font-sans dark:border-grey/20" data-testid="bookmark-container">
                     <div className="flex grow basis-full flex-col items-start justify-start p-5" data-testid="bookmark-text-container">
                         <div className="text-[1.5rem] font-semibold leading-normal tracking-normal text-grey-900 dark:text-grey-100" data-testid="bookmark-title">{title}</div>
-                        <div className="mt-1 line-clamp-2 max-h-[44px] overflow-y-hidden text-sm font-normal leading-normal text-grey-800 dark:text-grey-600" data-testid="bookmark-description">
-                            {description && truncateHTML(description,120)}
-                        </div>
+                        <div className="mt-1 line-clamp-2 max-h-[44px] overflow-y-hidden text-sm font-normal leading-normal text-grey-800 dark:text-grey-600" data-testid="bookmark-description">{description}</div>
                         <div className="mt-[20px] flex items-center text-sm font-medium leading-9 text-grey-900">
                             {icon && <BookmarkIcon src={icon} />}
                             <span className=" db max-w-[240px] truncate leading-6 text-grey-900 dark:text-grey-100" data-testid="bookmark-publisher">{publisher}</span>
