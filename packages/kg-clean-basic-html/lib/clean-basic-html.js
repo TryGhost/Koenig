@@ -51,9 +51,7 @@ export default function cleanBasicHtml(html = '', _options = {}) {
         .replace(/(\s|&nbsp;){2,}/g, ' ')
         .trim()
         .replace(/^&nbsp;|&nbsp$/g, '')
-        .trim()
-        // replace outer wrapping p if present
-        .replace(/^<p>/, '').replace(/<\/p>$/, '');
+        .trim();
 
     // remove any elements that have a blank textContent
     if (cleanHtml) {
