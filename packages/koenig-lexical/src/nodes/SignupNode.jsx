@@ -87,7 +87,7 @@ export class SignupNode extends BaseSignupNode {
         if (this.__subheaderTextEditor) {
             this.__subheaderTextEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__subheaderTextEditor, null);
-                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: tfalse, allowBr: true});
+                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: false, allowBr: true});
                 json.subheader = cleanedHtml;
             });
         }
