@@ -454,6 +454,107 @@ test.describe('Product card', async () => {
             <p><br /></p>
         `, {ignoreCardToolbarContents: true, ignoreInnerSVG: true});
     });
+    test('can handle new shift-enter in title and description', async () => {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'product'});
+
+        await page.keyboard.type('Test title');
+        await page.keyboard.press('Shift+Enter');
+        await page.keyboard.type('Second line of title');
+
+        await page.keyboard.press('Enter');
+        await page.keyboard.type('Test description');
+        await page.keyboard.press('Shift+Enter');
+        await page.keyboard.type('Second line of description');
+        await assertHTML(page, html`
+            <div data-lexical-decorator="true" contenteditable="false">
+                <div
+                    data-kg-card-editing="true"
+                    data-kg-card-selected="true"
+                    data-kg-card="product">
+                    <div>
+                        <div>
+                            <div>
+                                <div>
+                                    <button name="placeholder-button" type="button">
+                                        <svg></svg>
+                                        <p>Click to select a product image</p>
+                                    </button>
+                                </div>
+                            </div>
+                            <form>
+                                <input
+                                    accept="image/gif,image/jpg,image/jpeg,image/png,image/svg+xml,image/webp"
+                                    hidden=""
+                                    name="image-input"
+                                    type="file" />
+                            </form>
+                        </div>
+                        <div>
+                            <div>
+                                <div>
+                                    <div data-kg="editor">
+                                        <div
+                                            contenteditable="true"
+                                            role="textbox"
+                                            spellcheck="true"
+                                            data-lexical-editor="true"
+                                        >
+                                            <p dir="ltr">
+                                                <span data-lexical-text="true">Test title</span>
+                                                <br />
+                                                <span data-lexical-text="true">Second line of title</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <div data-kg="editor">
+                                    <div
+                                        contenteditable="true"
+                                        role="textbox"
+                                        spellcheck="true"
+                                        data-lexical-editor="true"
+                                    >
+                                        <p dir="ltr"><span data-lexical-text="true">Test description</span>
+                                            <br />
+                                            <span data-lexical-text="true">Second line of description</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div draggable="true">
+                            <label>
+                                <div><div>Rating</div></div>
+                                <div>
+                                    <label id="product-rating-toggle">
+                                        <input type="checkbox" />
+                                        <div></div>
+                                    </label>
+                                </div>
+                            </label>
+                            <label>
+                                <div><div>Button</div></div>
+                                <div>
+                                    <label id="product-button-toggle">
+                                        <input type="checkbox" />
+                                        <div></div>
+                                    </label>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p><br /></p>
+            `, {ignoreCardToolbarContents: true, ignoreInnerSVG: true});
+    });
 });
 
 async function uploadImg(page, src = 'large-image.png') {
