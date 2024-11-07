@@ -499,7 +499,7 @@ test.describe('Header card V2', () => {
         const firstEditor = page.locator('[data-kg-card="header"] [data-kg="editor"]').nth(0);
         await expect(firstEditor).toHaveText('Hello world');
     });
-    test('can add a shift-enter to header', async function () {
+    test('can add a shift-enter to header and subheader', async function () {
         await createHeaderCard({page, version: 2});
 
         await page.keyboard.type('Hello world');
