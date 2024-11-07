@@ -202,7 +202,6 @@ test.describe('Signup card', async () => {
         `);
     });
 
-
     test('renders signup card node', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'signup'});

@@ -524,7 +524,7 @@ test.describe('Header card V2', () => {
                             <span data-lexical-text="true">This is second line</span>
                             </p>
                         </div>`, 
-                        {selector: '[data-kg-card="header"] [data-kg="editor"]'});
+        {selector: '[data-kg-card="header"] [data-kg="editor"]'});
         await assertHTML(page, html`
                         <div
                             contenteditable="false"
@@ -538,7 +538,7 @@ test.describe('Header card V2', () => {
                             <span data-lexical-text="true">This is second subheader</span>
                             </p>
                         </div>`,
-                        {selector: '[data-kg-card="header"] [data-testid="header-subheader-editor"] [data-kg="editor"]'});    
+        {selector: '[data-kg-card="header"] [data-testid="header-subheader-editor"] [data-kg="editor"]'});    
     });
 
     test('can edit sub header', async function () {
