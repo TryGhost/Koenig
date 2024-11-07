@@ -35,9 +35,17 @@ function truncateText(text, maxLength) {
 }
 
 function truncateHtml(text, maxLength, maxLengthMobile) {
+    // If no mobile length specified or mobile length is larger than desktop,
+    // just do a simple truncate
     if (!maxLengthMobile || maxLength <= maxLengthMobile) {
         return escapeHtml(truncateText(text, maxLength));
     }
+
+    // Handle text shorter than mobile length
+    if (text.length <= maxLengthMobile) {
+        return escapeHtml(text);
+    }
+    
     if (text && text.length > maxLengthMobile) {
         let ellipsis = '';
 
@@ -101,7 +109,7 @@ function emailTemplate(node, document) {
                                 <td>
                                     <div class="kg-bookmark-description--outlook">
                                         <a href="${url}" style="text-decoration: none; margin-top: 12px; color: #738a94; font-size: 13px; line-height: 1.5em; font-weight: 400;">
-                                            ${description}
+                                            ${truncateHtml(description, 120, 30)}
                                         </a>
                                     </div>
                                 </td>
