@@ -80,7 +80,7 @@ function emailTemplate(node, document) {
                 <a class="kg-bookmark-container" href="${url}">
                     <div class="kg-bookmark-content">
                         <div class="kg-bookmark-title">${title}</div>
-                        <div class="kg-bookmark-description">${truncateHtml(description, 120, 30)}</div>
+                        <div class="kg-bookmark-description">${truncateHtml(description, 120, 90)}</div>
                         <div class="kg-bookmark-metadata">
                             ${icon ? `<img class="kg-bookmark-icon" src="${icon}" alt="">` : ''}
                             ${publisher ? `<span class="kg-bookmark-author" src="${publisher}">${publisher}</span>` : ''}
@@ -109,7 +109,7 @@ function emailTemplate(node, document) {
                                 <td>
                                     <div class="kg-bookmark-description--outlook">
                                         <a href="${url}" style="text-decoration: none; margin-top: 12px; color: #738a94; font-size: 13px; line-height: 1.5em; font-weight: 400;">
-                                            ${truncateHtml(description, 120, 30)}
+                                            ${truncateHtml(description, 120, 90)}
                                         </a>
                                     </div>
                                 </td>
