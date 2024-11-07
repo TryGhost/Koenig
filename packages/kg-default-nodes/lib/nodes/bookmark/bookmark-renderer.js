@@ -17,6 +17,42 @@ export function renderBookmarkNode(node, options = {}) {
     }
 }
 
+function escapeHtml(unsafe) {
+    return unsafe
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function truncateText(text, maxLength) {
+    if (text && text.length > maxLength) {
+        return text.substring(0, maxLength - 1).trim() + '…';
+    } else {
+        return text ?? '';
+    }
+}
+
+function truncateHtml(text, maxLength, maxLengthMobile) {
+    if (!maxLengthMobile || maxLength <= maxLengthMobile) {
+        return escapeHtml(truncateText(text, maxLength));
+    }
+    if (text && text.length > maxLengthMobile) {
+        let ellipsis = '';
+
+        if (text.length > maxLengthMobile && text.length <= maxLength) {
+            ellipsis = '<span class="hide-desktop">…</span>';
+        } else if (text.length > maxLength) {
+            ellipsis = '…';
+        }
+
+        return escapeHtml(text.substring(0, maxLengthMobile - 1)) + '<span class="desktop-only">' + escapeHtml(text.substring(maxLengthMobile - 1, maxLength - 1)) + '</span>' + ellipsis;
+    } else {
+        return escapeHtml(text ?? '');
+    }
+}
+
 function emailTemplate(node, document) {
     const title = node.title;
     const publisher = node.publisher;
@@ -36,7 +72,7 @@ function emailTemplate(node, document) {
                 <a class="kg-bookmark-container" href="${url}">
                     <div class="kg-bookmark-content">
                         <div class="kg-bookmark-title">${title}</div>
-                        <div class="kg-bookmark-description">${description}</div>
+                        <div class="kg-bookmark-description">${truncateHtml(description, 120, 30)}</div>
                         <div class="kg-bookmark-metadata">
                             ${icon ? `<img class="kg-bookmark-icon" src="${icon}" alt="">` : ''}
                             ${publisher ? `<span class="kg-bookmark-author" src="${publisher}">${publisher}</span>` : ''}
