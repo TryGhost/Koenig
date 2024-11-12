@@ -34,12 +34,12 @@
     "@babel/preset-env": "7.25.3",
     "@rollup/plugin-babel": "6.0.4",
     "@tryghost/mobiledoc-kit": "0.11.2-ghost.4",
-    "c8": "9.1.0",
+    "c8": "10.1.2",
     "jsdom": "24.1.1",
     "mocha": "10.7.3",
     "rollup": "4.21.0",
     "should": "13.2.3",
-    "sinon": "17.0.1"
+    "sinon": "19.0.2"
   },
   "dependencies": {
     "@tryghost/kg-clean-basic-html": "4.1.4"
