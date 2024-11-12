@@ -251,7 +251,7 @@ describe('BookmarkNode', function () {
 
             element.innerHTML.should.containEql('<!--[if !mso !vml]-->'); // Check that email template is used
             element.innerHTML.should.containEql('Ghost: Independent technology &lt;script&gt;alert("XSS")&lt;/script&gt; for modern publishing.');
-            element.innerHTML.should.containEql('doing "kewl" stuff');
+            element.innerHTML.should.containEql('doing &amp;quot;kewl&amp;quot; stuff');
             element.innerHTML.should.containEql('fa\'ker');
             element.innerHTML.should.containEql('Fake &lt;script&gt;alert("XSS")&lt;/script&gt;');
             element.innerHTML.should.containEql('https://fake.org/image.png');

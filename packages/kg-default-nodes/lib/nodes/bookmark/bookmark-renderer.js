@@ -18,15 +18,6 @@ export function renderBookmarkNode(node, options = {}) {
     }
 }
 
-function escapeHtml(unsafe) {
-    return unsafe
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
-
 function truncateText(text, maxLength) {
     if (text && text.length > maxLength) {
         return text.substring(0, maxLength - 1).trim() + '…';
@@ -46,7 +37,7 @@ function truncateHtml(text, maxLength, maxLengthMobile) {
     if (text.length <= maxLengthMobile) {
         return escapeHtml(text);
     }
-    
+
     if (text && text.length > maxLengthMobile) {
         let ellipsis = '';
 
