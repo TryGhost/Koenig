@@ -109,7 +109,7 @@
     "lexical": "0.13.1",
     "luxon": "^3.5.0",
     "pluralize": "^8.0.0",
-    "postcss": "8.4.41",
+    "postcss": "8.4.49",
     "postcss-import": "16.1.0",
     "prettier": "3.3.3",
     "react": "^18.2.0",
