@@ -20439,10 +20439,10 @@ y-protocols@^1.0.5:
   dependencies:
     lib0 "^0.2.85"
 
-y-websocket@^1.5.0:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/y-websocket/-/y-websocket-1.5.4.tgz#d14d4033e102a5191c7e78ddcd5da005ef818336"
-  integrity sha512-Y3021uy0anOIHqAPyAZbNDoR05JuMEGjRNI8c+K9MHzVS8dWoImdJUjccljAznc8H2L7WkIXhRHZ1igWNRSgPw==
+y-websocket@^2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/y-websocket/-/y-websocket-2.0.4.tgz#7f4072f06229629ed625d1eb4c7cad3a559f0db4"
+  integrity sha512-UbrkOU4GPNFFTDlJYAxAmzZhia8EPxHkngZ6qjrxgIYCN3gI2l+zzLzA9p4LQJ0IswzpioeIgmzekWe7HoBBjg==
   dependencies:
     lib0 "^0.2.52"
     lodash.debounce "^4.0.8"
