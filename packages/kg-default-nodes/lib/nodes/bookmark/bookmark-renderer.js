@@ -20,18 +20,19 @@ export function renderBookmarkNode(node, options = {}) {
 }
 
 function emailTemplate(node, document) {
-    const title = node.title;
-    const publisher = node.publisher;
-    const author = node.author;
+    const title = escapeHtml(node.title);
+    const publisher = escapeHtml(node.publisher);
+    const author = escapeHtml(node.author);
+    const description = escapeHtml(node.description);
+
     const icon = node.icon;
-    const description = node.description;
     const url = node.url;
     const thumbnail = node.thumbnail;
     const caption = node.caption;
 
     const element = document.createElement('div');
 
-    const html = 
+    const html =
         `
         <!--[if !mso !vml]-->
             <figure class="kg-card kg-bookmark-card ${caption ? `kg-card-hascaption` : ''}">
