@@ -14,7 +14,7 @@ Run `yarn dev` to start the editor in standalone mode for development on http://
 
 ### Integrated mode
 
-In order to test the editor inside Ghost Admin, follow the 3 steps below:
+In order to run the editor inside Ghost Admin, follow the 3 steps below:
 
 1. Link Koenig server-side dependencies inside Ghost
    - Run `yarn link` inside `Koenig/packages/kg-default-nodes` and `Koenig/packages/kg-lexical-html-renderer`
@@ -22,9 +22,9 @@ In order to test the editor inside Ghost Admin, follow the 3 steps below:
      - `yarn link @tryghost/kg-default-nodes`
      - `yarn link @tryghost/kg-lexical-html-renderer`
 
-2. Start Ghost in dev mode. Inside the Ghost monorepo, run `yarn dev --lexical`.
+2. Start Ghost in dev mode: inside the Ghost monorepo, run `yarn dev --lexical`.
 
-3. Start the editor in dev mode. Inside the Koenig monorepo, run `yarn dev`.
+3. Start the editor in dev mode: inside the Koenig monorepo, run `yarn dev`.
 
 Now, if you navigate to Ghost Admin at http://localhost:2368/ghost and open a post, it will use your local version of the editor. Changes to the editor will be reflected inside Ghost Admin after a few seconds - the time for the editor to get rebuilt.
 
@@ -127,4 +127,4 @@ lets you run and debug individual unit tests/groups directly inside vscode.
 
 ## Deployment
 
-Koenig packages are shipped at the monorepo level, please refer to the monorepo [README](../../README.md) for deployment instructions.
+Koenig packages are shipped via Lerna at the monorepo level. Please refer to the monorepo's [README](../../README.md) for deployment instructions.
