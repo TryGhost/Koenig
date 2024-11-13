@@ -5,18 +5,18 @@ Ghost editor, based on the Lexical framework.
 ## Development
 
 The editor can be run in two modes:
-- standalone mode: standalone version that runs on http://localhost:5173
-- integrated mode: integrated into Ghost Admin, using the `yarn dev --lexical` command
+- standalone mode: demo version that runs without a dependency on Ghost
+- integrated mode: integrated into Ghost Admin
 
 ### Standalone mode
 
-Run `yarn dev` to start the development server to test/develop the editor standalone. This will generate a demo site from the `index.html` file which renders the demo app in `demo/demo.jsx` and makes it available on http://localhost:5173
+Run `yarn dev` to start the editor in standalone mode for development on http://localhost:5173. This command generates a demo site from the `index.html` file, which renders the demo app in `demo/demo.jsx`.
 
 ### Integrated mode
 
 In order to test the editor inside Ghost Admin, follow the 3 steps below:
 
-1. Link server-side dependencies
+1. Link Koenig server-side dependencies inside Ghost
 
 - Run `yarn link` inside `Koenig/packages/kg-default-nodes` and `Koenig/packages/kg-lexical-html-renderer`
 - Paste the output at the root of the Ghost monorepo:
@@ -25,19 +25,11 @@ In order to test the editor inside Ghost Admin, follow the 3 steps below:
 
 2. Start Ghost in dev mode, with the `--lexical` flag
 
-Inside the Ghost monorepo, run:
-
-```bash
-yarn dev --lexical
-```
+Inside the Ghost monorepo, run `yarn dev --lexical`.
 
 3. Start the editor in dev mode
 
-Inside the Koenig monorepo, run:
-
-```bash
-yarn dev
-```
+Inside the Koenig monorepo, run `yarn dev`.
 
 Now, if you navigate to Ghost Admin at http://localhost:2368/ghost and open a post, it will use your local version of the editor. Changes to the editor will be reflected inside Ghost Admin after a few seconds - the time for the editor to get rebuilt.
 
@@ -56,7 +48,9 @@ How to get the tenor key is described here https://ghost.org/docs/config/#tenor
 
 These cards make external web requests. Since the demo doesn't have a server to process these requests, we must fetch these resources on the front end. To do this we need to enable CORS, which is most easily done with a browser extension like 'Test CORS' for Chrome. Otherwise you will see blocked requests logging errors in the console. This can also be avoided by using test data directly without fetching via `fetchEmbed.js`.
 
-## Project structure
+## Additional notes
+
+### Project structure
 
 **`/src`**
 
@@ -65,6 +59,8 @@ The main module source. `/src/index.js` is the entry point for the exposed modul
 **`/demo`**
 
 Used for developing/demoing the editor. Renders a blank editor with all features enabled.
+
+### Styling
 
 **CSS**
 
@@ -136,4 +132,4 @@ lets you run and debug individual unit tests/groups directly inside vscode.
 
 ## Deployment
 
-As packages are shipped at the monorepo level, please refer to the monorepo [README](../../README.md) for deployment instructions.
+Koenig packages are shipped at the monorepo level, please refer to the monorepo [README](../../README.md) for deployment instructions.

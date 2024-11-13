@@ -21,7 +21,7 @@ To add a new package to the repo:
 
 ## Development
 
-`yarn dev` runs the `koenig-lexical` package in development mode, and builds its dependencies (`koenig-lexical-html-renderer` and `kg-default-nodes`). Please refer to the [README](packages/koenig-lexical/README.md) for more information.
+`yarn dev` runs the `koenig-lexical` package in development mode. Please refer to its [README](packages/koenig-lexical/README.md) for more information.
 
 ## Test
 
