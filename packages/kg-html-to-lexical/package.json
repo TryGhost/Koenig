@@ -29,9 +29,9 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.2",
     "@types/mocha": "10.0.7",
-    "c8": "9.1.0",
+    "c8": "10.1.2",
     "mocha": "10.7.3",
-    "sinon": "17.0.1",
+    "sinon": "19.0.2",
     "ts-node": "10.9.2",
     "typescript": "5.5.4"
   },
