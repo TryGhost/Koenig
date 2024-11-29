@@ -76,7 +76,6 @@ export class ProductNode extends BaseProductNode {
                 const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true, allowBr: true});
                 json.productTitle = cleanedHtml;
             }); 
-
         } 
         if (this.__productDescriptionEditor) {
             this.__productDescriptionEditor.getEditorState().read(() => {
@@ -85,7 +84,6 @@ export class ProductNode extends BaseProductNode {
                 json.productDescription = cleanedHtml;
             });
         }
-
         return json;
     }
 
