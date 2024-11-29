@@ -1,6 +1,7 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
 import {resizeImage} from '../../utils/resize-image';
+import {unwrapHtml} from '../../utils/unwrap-html';
 
 export function renderProductNode(node, options = {}) {
     addCreateDocumentOption(options);
@@ -22,6 +23,8 @@ export function renderProductNode(node, options = {}) {
             templateData['star' + i] = starActiveClasses;
         }
     }
+    // make sure that there's not a p element wrapping the product title. (Should not happen.)
+    templateData.productTitle = unwrapHtml(templateData.productTitle);
 
     const htmlString = options.target === 'email'
         ? emailCardTemplate({data: templateData})

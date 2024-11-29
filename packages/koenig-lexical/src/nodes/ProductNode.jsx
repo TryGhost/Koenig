@@ -8,6 +8,7 @@ import {ProductNodeComponent} from './ProductNodeComponent';
 import {createCommand} from 'lexical';
 import {isEditorEmpty} from '../utils/isEditorEmpty';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors.js';
+import {wrapHtml} from '../utils/wrapHtml.js';
 
 // re-export here, so we don't need to import from multiple places throughout the app
 export const INSERT_PRODUCT_COMMAND = createCommand();
@@ -33,6 +34,10 @@ export class ProductNode extends BaseProductNode {
 
     constructor(dataset = {}, key) {
         super(dataset, key);
+
+        if (dataset.productTitle) {
+            dataset.productTitle = wrapHtml(dataset.productTitle);
+        }
 
         // set up nested editor instances
         setupNestedEditor(this, '__productTitleEditor', {editor: dataset.productTitleEditor, nodes: MINIMAL_NODES});
@@ -68,10 +73,11 @@ export class ProductNode extends BaseProductNode {
         if (this.__productTitleEditor) {
             this.__productTitleEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__productTitleEditor, null);
-                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true});
+                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true, allowBr: true});
                 json.productTitle = cleanedHtml;
-            });
-        }
+            }); 
+
+        } 
         if (this.__productDescriptionEditor) {
             this.__productDescriptionEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__productDescriptionEditor, null);
