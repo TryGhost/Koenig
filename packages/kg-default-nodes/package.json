@@ -51,6 +51,7 @@
     "@lexical/utils": "0.13.1",
     "@tryghost/kg-clean-basic-html": "4.1.4",
     "@tryghost/kg-markdown-html-renderer": "7.0.7",
+    "cheerio": "^1.0.0",
     "html-minifier": "^4.0.0",
     "jsdom": "^24.1.0",
     "lexical": "0.13.1",
