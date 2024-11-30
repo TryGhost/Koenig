@@ -54,7 +54,7 @@ describe('HeaderNode v2', function () {
         };
     });
 
-    describe('load and export testing', function () {     
+    describe('Content load and export testing', function () {     
         it('handles titles with extra br', editorTest(function () {
             dataset.header = '<span>Product title!</span> <br><span>Hello part 2</span>';
             const headerNode = $createHeaderNode(dataset);
@@ -62,7 +62,7 @@ describe('HeaderNode v2', function () {
             const heading = json.header;
             expect(heading).toEqual('<span style="white-space: pre-wrap;">Product title!</span><br><span style="white-space: pre-wrap;">Hello part 2</span>');
         }));
-        it('loads and unwraps titles when wrapped with p', editorTest(function () {
+        it('loads and unwraps headers when wrapped with p', editorTest(function () {
             dataset.header = '<p><span>Product title!</span> <br><span>Hello part 2</span></p>';
             const headerNode = $createHeaderNode(dataset);
             const json = headerNode.exportJSON();

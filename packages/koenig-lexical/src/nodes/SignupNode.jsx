@@ -9,6 +9,7 @@ import {$generateHtmlFromNodes} from '@lexical/html';
 import {SignupNode as BaseSignupNode} from '@tryghost/kg-default-nodes';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+import { wrapHtml } from '../utils/wrapHtml';
 
 export const {INSERT_SIGNUP_COMMAND} = createCommand();
 
@@ -51,16 +52,19 @@ export class SignupNode extends BaseSignupNode {
 
         // populate nested editors on initial construction
         if (!dataset.headerTextEditor && dataset.header) {
+            dataset.header = wrapHtml(dataset.header); 
             populateNestedEditor(this, '__headerTextEditor', `${dataset.header}`);
         }
 
         // populate nested editors on initial construction
         if (!dataset.subheaderTextEditor && dataset.subheader) {
+            dataset.subheader = wrapHtml(dataset.subheader);
             populateNestedEditor(this, '__subheaderTextEditor', `${dataset.subheader}`);
         }
 
         // populate nested editors on initial construction
         if (!dataset.disclaimerTextEditor && dataset.disclaimer) {
+            dataset.disclaimer = wrapHtml(dataset.disclaimer);
             populateNestedEditor(this, '__disclaimerTextEditor', `${dataset.disclaimer}`);
         }
     }
