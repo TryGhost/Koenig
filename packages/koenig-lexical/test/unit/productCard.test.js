@@ -1,6 +1,5 @@
-const {dom} = require('@tryghost/kg-default-nodes');
+import {$createProductNode, ProductNode} from '../../src/nodes/ProductNode';
 const {createHeadlessEditor} = require('@lexical/headless');
-import {ProductNode, $createProductNode} from '../../src/nodes/ProductNode';
 
 const editorNodes = [ProductNode];
 
@@ -17,10 +16,10 @@ describe('ProductNode', function () {
 
         editor.update(() => {
             try {
-                    testFn();
-                    resolve();
+                testFn();
+                resolve();
             } catch (error) {
-                    reject(error);
+                reject(error);
             }
         });
 
@@ -43,8 +42,7 @@ describe('ProductNode', function () {
         };
     });
 
-    describe('load and export testing', function () {
-        
+    describe('load and export testing', function () {     
         it('handles titles with extra br', editorTest(function () {
             dataset.productTitle = '<span>Product title!</span> <br><span>Hello part 2</span>';
             const productNode = $createProductNode(dataset);
@@ -52,21 +50,21 @@ describe('ProductNode', function () {
             const title = json.productTitle;
             expect(title).toEqual('<span style="white-space: pre-wrap;">Product title!</span><br><span style="white-space: pre-wrap;">Hello part 2</span>');
         }));
-        it('loads and unwraps titles when wrapped with p', editorTest(function() {
+        it('loads and unwraps titles when wrapped with p', editorTest(function () {
             dataset.productTitle = '<p><span>Product title!</span> <br><span>Hello part 2</span></p>';
             const productNode = $createProductNode(dataset);
             const json = productNode.exportJSON();
             const title = json.productTitle;
             expect(title).toEqual('<span style="white-space: pre-wrap;">Product title!</span><br><span style="white-space: pre-wrap;">Hello part 2</span>');
         }));
-        it('combines adjacent spans', editorTest(function() {
+        it('combines adjacent spans', editorTest(function () {
             dataset.productTitle = '<span>Product title!</span> <span>Hello part 2</span>';
             const productNode = $createProductNode(dataset);
             const json = productNode.exportJSON();
             const title = json.productTitle;
             expect(title).toEqual('<span style="white-space: pre-wrap;">Product title! Hello part 2</span>');
         }));
-        it('handles italics correctly', editorTest(function() {
+        it('handles italics correctly', editorTest(function () {
             dataset.productTitle = `<span style="white-space: pre-wrap;">Hello title</span><i><em class="italic" style="white-space: pre-wrap;"> land </em></i><span style="white-space: pre-wrap;">baaaabeee.</span>`;
             const productNode = $createProductNode(dataset);
             const json = productNode.exportJSON();
