@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const unwrapHtml = require("../lib/utils/unwrap-html");
+import unwrapHtml from '../lib/utils/unwrap-html.mjs';
 require('./utils');
 
 const {JSDOM} = require('jsdom');

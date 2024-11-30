@@ -1,4 +1,4 @@
-function unwrapHtml(html) {
+export default function unwrapHtml(html) {
     /* Faster but confused by two adjacent p tags.
     if (/^<p(\s+[^>]*)?>([\s\S]*)<\/p>$/i.test(html.trim())) {
         console.log('INFO: strip extra paragraph tag from product title');
@@ -14,5 +14,8 @@ function unwrapHtml(html) {
     }
     return html;
 }
-
+/*
 module.exports = unwrapHtml;
+module.exports.default = unwrapHtml; // ES6 default export compatibility
+module.exports.unwrapHtml = unwrapHtml; // Named export for CommonJS
+*/

@@ -1,7 +1,7 @@
 import {addCreateDocumentOption} from '../../../../utils/add-create-document-option';
 import {slugify} from '../../../../utils/slugify';
 import {getSrcsetAttribute} from '../../../../utils/srcset-attribute';
-import {unwrapHtml} from '../../../../utils/unwrap-html';
+import unwrapHtml from '../../../../utils/unwrap-html.mjs' ;
 
 function cardTemplate(nodeData, options = {}) {
     const cardClasses = getCardClasses(nodeData).join(' ');

@@ -1,7 +1,7 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
 import {resizeImage} from '../../utils/resize-image';
-import {unwrapHtml} from '../../utils/unwrap-html';
+import unwrapHtml from '../../utils/unwrap-html.mjs';
 
 export function renderProductNode(node, options = {}) {
     addCreateDocumentOption(options);

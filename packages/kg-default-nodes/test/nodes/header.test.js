@@ -4,6 +4,12 @@ const {$generateNodesFromDOM} = require('@lexical/html');
 const {HeaderNode, $createHeaderNode, $isHeaderNode} = require('../../');
 const {_} = require('lodash');
 
+const {JSDOM} = require('jsdom');
+
+const buildDOM = function () {
+    return (new JSDOM(`<!DOCTYPE html><html><body></body></html>`)).window.document;
+};
+
 const editorNodes = [HeaderNode];
 
 describe('HeaderNode', function () {
@@ -262,6 +268,7 @@ describe('HeaderNode', function () {
         };
 
         beforeEach(function () {
+            document = buildDOM();
             editor = createHeadlessEditor({nodes: editorNodes});
 
             dataset = {

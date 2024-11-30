@@ -75,8 +75,8 @@ export class ProductNode extends BaseProductNode {
                 const html = $generateHtmlFromNodes(this.__productTitleEditor, null);
                 const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true, allowBr: true});
                 json.productTitle = cleanedHtml;
-            }); 
-        } 
+            });
+        }
         if (this.__productDescriptionEditor) {
             this.__productDescriptionEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__productDescriptionEditor, null);
