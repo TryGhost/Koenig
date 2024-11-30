@@ -70,7 +70,7 @@ describe('SignupNode', function () {
             const json = signupNode.exportJSON();
             const header = json.header;
             expect(header).toEqual('<span style="white-space: pre-wrap;">Sign up for </span><br><span style="white-space: pre-wrap;">Koenig Lexical</span>');
-         }));
+        }));
         it('allows br tags in subheaders', editorTest(function () {
             dataset.subheader = '<span>Product title!</span> <br><span>Hello part 2</span>';
             const signupNode = $createSignupNode(dataset);

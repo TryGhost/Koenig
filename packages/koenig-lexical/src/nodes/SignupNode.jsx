@@ -9,7 +9,7 @@ import {$generateHtmlFromNodes} from '@lexical/html';
 import {SignupNode as BaseSignupNode} from '@tryghost/kg-default-nodes';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
-import { wrapHtml } from '../utils/wrapHtml';
+import {wrapHtml} from '../utils/wrapHtml';
 
 export const {INSERT_SIGNUP_COMMAND} = createCommand();
 
