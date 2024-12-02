@@ -24,7 +24,7 @@ export function renderProductNode(node, options = {}) {
         }
     }
     // make sure that there's not a p element wrapping the product title. (Should not happen.)
-    templateData.productTitle = unwrapHtml(templateData.productTitle);
+    templateData.productTitle = unwrapHtml(templateData.productTitle, document);
 
     const htmlString = options.target === 'email'
         ? emailCardTemplate({data: templateData})

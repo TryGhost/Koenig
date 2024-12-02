@@ -1,21 +1,11 @@
-export default function unwrapHtml(html) {
-    /* Faster but confused by two adjacent p tags.
-    if (/^<p(\s+[^>]*)?>([\s\S]*)<\/p>$/i.test(html.trim())) {
-        console.log('INFO: strip extra paragraph tag from product title');
-        return html.replace(/^<p(\s+[^>]*)?>([\s\S]*)<\/p>$/i, '$2');
-    }
-    return html;
-    */
-    const div = document.createElement('div');
+// Utility function to remove a wrapping p tag (if present) from content.
+// Used to protect header elements from accidentally rendering inside a p tag (invalid).
+
+export default function unwrapHtml(html, dom) {
+    const div = dom.createElement('div');
     div.innerHTML = html;
-    // if the div has a single child, and that child is a paragraph, we can safely remove the paragraph.
     if (div.childNodes.length === 1 && div.childNodes[0].nodeName === 'P') {
         return div.childNodes[0].innerHTML;
     }
     return html;
 }
-/*
-module.exports = unwrapHtml;
-module.exports.default = unwrapHtml; // ES6 default export compatibility
-module.exports.unwrapHtml = unwrapHtml; // Named export for CommonJS
-*/

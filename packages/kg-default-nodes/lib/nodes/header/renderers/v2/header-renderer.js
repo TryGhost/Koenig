@@ -28,9 +28,11 @@ function cardTemplate(nodeData, options = {}) {
         `;
     }
 
+    const document = options.createDocument();
+
     const header = () => {
         if (nodeData.header) {
-            nodeData.header = unwrapHtml(nodeData.header);
+            nodeData.header = unwrapHtml(nodeData.header, document);
             return `<h2 id="${slugify(nodeData.header)}" class="kg-header-card-heading" style="color: ${nodeData.textColor};" data-text-color="${nodeData.textColor}">${nodeData.header}</h2>`;
         }
         return '';
@@ -38,7 +40,7 @@ function cardTemplate(nodeData, options = {}) {
 
     const subheader = () => {
         if (nodeData.subheader) {
-            nodeData.subheader = unwrapHtml(nodeData.subheader);
+            nodeData.subheader = unwrapHtml(nodeData.subheader, document);
             return `<p id="${slugify(nodeData.subheader)}" class="kg-header-card-subheading" style="color: ${nodeData.textColor};" data-text-color="${nodeData.textColor}">${nodeData.subheader}</p>`;
         }
         return '';
