@@ -8,6 +8,7 @@ import {ToggleNode as BaseToggleNode} from '@tryghost/kg-default-nodes';
 import {ToggleNodeComponent} from './ToggleNodeComponent';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+import {wrapHtml} from '../utils/wrapHtml';
 
 export const INSERT_TOGGLE_COMMAND = createCommand();
 
@@ -39,6 +40,7 @@ export class ToggleNode extends BaseToggleNode {
 
         // populate nested editors on initial construction
         if (!dataset.headingEditor && dataset.heading) {
+            dataset.heading = wrapHtml(dataset.heading);
             populateNestedEditor(this, '__headingEditor', `${dataset.heading}`);
         }
         if (!dataset.contentEditor && dataset.content) {
@@ -67,7 +69,7 @@ export class ToggleNode extends BaseToggleNode {
         if (this.__headingEditor) {
             this.__headingEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__headingEditor, null);
-                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true});
+                const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true, allowBr: true});
                 json.heading = cleanedHtml;
             });
         }
