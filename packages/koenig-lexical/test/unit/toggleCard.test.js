@@ -56,7 +56,7 @@ describe('ToggleNode', function () {
             const toggleNode = $createToggleNode(dataset);
             const json = toggleNode.exportJSON();
             expect(json.heading).toEqual('<span style="white-space: pre-wrap;">Toggle for </span><br><span style="white-space: pre-wrap;">Koenig Lexical</span>');
-         }));
+        }));
         it('loads and unwraps headers when wrapped with p', editorTest(function () {
             dataset.heading = '<p><span style="white-space: pre-wrap;">Toggle for </span><br><span style="white-space: pre-wrap;">Koenig Lexical</span></p>';
             const toggleNode = $createToggleNode(dataset);
