@@ -1,4 +1,5 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+import unwrapHtml from '../../utils/unwrap-html.mjs';
 
 function cardTemplate({node}) {
     return (
@@ -34,6 +35,10 @@ export function renderToggleNode(node, options = {}) {
     addCreateDocumentOption(options);
 
     const document = options.createDocument();
+
+    if (node.heading) {
+        node.heading = unwrapHtml(node.heading, document);
+    }
 
     const htmlString = options.target === 'email'
         ? emailCardTemplate({node})
