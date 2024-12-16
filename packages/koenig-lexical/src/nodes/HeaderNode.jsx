@@ -10,6 +10,7 @@ import {$generateHtmlFromNodes} from '@lexical/html';
 import {HeaderNode as BaseHeaderNode} from '@tryghost/kg-default-nodes';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+import {wrapHtml} from '../utils/wrapHtml';
 
 export const INSERT_HEADER_COMMAND = createCommand();
 
@@ -58,6 +59,12 @@ export class HeaderNode extends BaseHeaderNode {
     constructor(dataset = {}, key) {
         super(dataset, key);
 
+        if (dataset.header) {
+            dataset.header = wrapHtml(dataset.header);
+        }
+        if (dataset.subheader) {
+            dataset.subheader = wrapHtml(dataset.subheader);
+        }
         setupNestedEditor(this, '__headerTextEditor', {editor: dataset.headerTextEditor, nodes: MINIMAL_NODES});
         setupNestedEditor(this, '__subheaderTextEditor', {editor: dataset.subheaderTextEditor, nodes: MINIMAL_NODES});
 
