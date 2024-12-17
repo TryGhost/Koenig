@@ -14,7 +14,7 @@ export default function generateEditorState({editor, initialHtml}) {
             // https://github.com/facebook/lexical/issues/2807
             // https://github.com/facebook/lexical/issues/3677
             // As a temporary fix, checking node content to remove additional spaces and br
-            const filteredNodes = nodes.filter(n => n.getTextContent().trim());
+            const filteredNodes = nodes.filter(n => n.getType() === 'linebreak' || n.getTextContent().trim());
 
             // Select the root
             $getRoot().select();
