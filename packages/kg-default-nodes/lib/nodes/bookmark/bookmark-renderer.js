@@ -1,5 +1,7 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {escapeHtml} from '../../utils/escape-html';
+import {truncateHtml} from '../../utils/truncate';
 
 export function renderBookmarkNode(node, options = {}) {
     addCreateDocumentOption(options);
@@ -18,25 +20,26 @@ export function renderBookmarkNode(node, options = {}) {
 }
 
 function emailTemplate(node, document) {
-    const title = node.title;
-    const publisher = node.publisher;
-    const author = node.author;
+    const title = escapeHtml(node.title);
+    const publisher = escapeHtml(node.publisher);
+    const author = escapeHtml(node.author);
+    const description = escapeHtml(node.description);
+
     const icon = node.icon;
-    const description = node.description;
     const url = node.url;
     const thumbnail = node.thumbnail;
     const caption = node.caption;
 
     const element = document.createElement('div');
 
-    const html = 
+    const html =
         `
         <!--[if !mso !vml]-->
             <figure class="kg-card kg-bookmark-card ${caption ? `kg-card-hascaption` : ''}">
                 <a class="kg-bookmark-container" href="${url}">
                     <div class="kg-bookmark-content">
                         <div class="kg-bookmark-title">${title}</div>
-                        <div class="kg-bookmark-description">${description}</div>
+                        <div class="kg-bookmark-description">${truncateHtml(description, 120, 90)}</div>
                         <div class="kg-bookmark-metadata">
                             ${icon ? `<img class="kg-bookmark-icon" src="${icon}" alt="">` : ''}
                             ${publisher ? `<span class="kg-bookmark-author" src="${publisher}">${publisher}</span>` : ''}
@@ -65,7 +68,7 @@ function emailTemplate(node, document) {
                                 <td>
                                     <div class="kg-bookmark-description--outlook">
                                         <a href="${url}" style="text-decoration: none; margin-top: 12px; color: #738a94; font-size: 13px; line-height: 1.5em; font-weight: 400;">
-                                            ${description}
+                                            ${truncateHtml(description, 120, 90)}
                                         </a>
                                     </div>
                                 </td>
