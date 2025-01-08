@@ -16,7 +16,6 @@ export default function generateEditorState({editor, initialHtml}) {
         editor.update(() => {
             const nodes = _$generateNodesFromHTML(editor, initialHtml);
 
-
             // Select the root
             $getRoot().select();
             // Clear existing content (we initialize an editor with an empty p node so it is focusable if there's no content)
