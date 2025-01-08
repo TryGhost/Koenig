@@ -28,12 +28,12 @@
     "access": "public"
   },
   "devDependencies": {
-    "c8": "9.1.0",
+    "c8": "10.1.2",
     "jsdom": "^24.1.0",
     "mocha": "10.7.3",
     "prettier": "3.3.3",
     "should": "13.2.3",
-    "sinon": "17.0.1"
+    "sinon": "19.0.2"
   },
   "dependencies": {
     "@lexical/clipboard": "0.13.1",
