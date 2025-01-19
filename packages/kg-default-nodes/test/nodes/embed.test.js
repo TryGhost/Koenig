@@ -328,6 +328,56 @@ describe('EmbedNode', function () {
             element.outerHTML.should.containEql(`<a href="https://twitter.com/twitter/status/${tweetData.id}"`);
         }));
 
+        it('renders twitter email embed with source as rettiwt', editorTest(function () {
+            const options = {
+                target: 'email'
+            };
+            const tweetData = {
+                id: '1630581157568839683',
+                created_at: '2023-02-28T14:50:17.000Z',
+                author_id: '767545134',
+                edit_history_tweet_ids: ['1630581157568839683'],
+                public_metrics: {
+                    retweet_count: 10,
+                    reply_count: 2,
+                    like_count: 38,
+                    quote_count: 6,
+                    impression_count: 10770
+                },
+                text: 'With the decline of traditional local news outlets, publishers like @MadisonMinutes, @RANGEMedia4all, and @sfsimplified are leading the charge in creating sustainable, community-driven journalism through websites and newsletters.\n' +
+                    '\n' +
+                    'Check out their impact 👇\n' +
+                    'https://t.co/RdNNyY18Iv',
+
+                source: 'rettiwt'
+            };
+
+            const embedNode = $createEmbedNode({
+                url: 'https://twitter.com/ghost/status/1395670367216619520',
+                embedType: 'twitter',
+                html: '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Ghost 4.0 is out now! 🎉</p>&mdash; Ghost (@ghost) <a href="https://twitter.com/ghost/status/1395670367216619520?ref_src=twsrc%5Etfw">May 21, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>',
+                metadata: {
+                    tweet_data: tweetData,
+                    height: 500,
+                    provider_name: 'Twitter',
+                    provider_url: 'https://twitter.com',
+                    thumbnail_height: 150,
+                    thumbnail_url: 'https://pbs.twimg.com/media/E1Y1q3bXMAU7m4n?format=jpg&name=small',
+                    thumbnail_width: 150,
+                    title: 'Ghost on Twitter: "Ghost 4.0 is out now! 🎉"',
+                    type: 'rich',
+                    version: '1.0',
+                    width: 550
+                },
+                caption: 'caption text'
+            });
+
+            const {element} = embedNode.exportDOM({...exportOptions, ...options});
+
+            element.outerHTML.should.containEql('<table cellspacing="0" cellpadding="0" border="0" class="kg-twitter-card">');
+            element.outerHTML.should.containEql(`<a href="https://twitter.com/twitter/status/${tweetData.id}"`);
+        }));
+
         it('renders video in email', editorTest(function () {
             const options = {
                 target: 'email'

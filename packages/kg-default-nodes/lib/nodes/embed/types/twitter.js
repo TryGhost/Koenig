@@ -11,6 +11,7 @@ export default function render(node, document, options) {
 
     const tweetData = metadata && metadata.tweet_data;
     const isEmail = options.target === 'email';
+    const source = tweetData && tweetData.source;
 
     if (tweetData && isEmail) {
         const tweetId = tweetData.id;
@@ -39,7 +40,7 @@ export default function render(node, document, options) {
         }
         const hasPoll = tweetData.attachments && tweetData.attachments && tweetData.attachments.poll_ids;
 
-        if (mentions) {
+        if (mentions && source !== 'rettiwt') {
             let last = 0;
             let parts = [];
             let content = toArray(tweetContent);
@@ -90,6 +91,10 @@ export default function render(node, document, options) {
                 }
                 return partContent;
             }, '');
+        }
+        if (tweetData && source === 'rettiwt') {
+            // Rettiwt doesn't have entity start/end data, so we have to parse it directly
+            tweetContent = tweetContent.replace(/\n/g, '<br>');
         }
 
         html = `
