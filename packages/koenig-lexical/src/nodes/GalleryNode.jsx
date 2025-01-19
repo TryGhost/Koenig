@@ -10,7 +10,7 @@ import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_GALLERY_COMMAND = createCommand();
 
-export const MAX_IMAGES = 9;
+export const MAX_IMAGES = 30;
 export const MAX_PER_ROW = 3;
 
 // ensure we don't save client-side only properties such as preview blob urls to the server
