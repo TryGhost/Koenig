@@ -68,7 +68,7 @@ export function CtaCard({
                             nodes='basic'
                             placeholderClassName={`bg-transparent whitespace-normal font-serif text-xl !text-grey-500 !dark:text-grey-800 ` }
                             placeholderText="Write something worth clicking..."
-                            textClassName="w-full bg-transparent whitespace-normal font-serif text-xl text-grey-900 dark:text-grey-200"
+                            textClassName={`w-full bg-transparent whitespace-normal font-serif text-xl text-grey-900 dark:text-grey-200 ${layout === 'immersive' ? 'text-center' : 'text-left'}`}
                         >
                             <ReplacementStringsPlugin />
                         </KoenigNestedEditor>
