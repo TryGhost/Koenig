@@ -67,6 +67,7 @@ Empty.args = {
     display: 'Editing',
     value: '',
     showButton: false,
+    hasBackground: false,
     buttonText: '',
     buttonUrl: '',
     suggestedUrls: []
@@ -77,6 +78,7 @@ Populated.args = {
     display: 'Editing',
     value: 'Want to get access to premium content?',
     showButton: true,
+    hasBackground: false,
     buttonText: 'Upgrade',
     buttonUrl: 'https://ghost.org/',
     suggestedUrls: [{label: 'Homepage', value: 'https://localhost.org/'}]
