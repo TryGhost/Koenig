@@ -10,25 +10,28 @@ export function CtaCard({
     buttonText,
     buttonUrl,
     hasBackground,
+    hasSponsorLabel,
     htmlEditor,
     htmlEditorInitialState,
     isEditing,
-    isSelected,
     showButton,
     updateButtonText,
     updateButtonUrl,
     updateShowButton,
-    updateHasBackground
+    updateHasBackground,
+    updateHasSponsorLabel
 }) {
     return (
         <>
             <div className={`w-full ${hasBackground ? 'rounded-lg bg-grey-100 dark:bg-grey-900' : ''}`}>
                 {/* Sponsor label */}
-                <div className={`not-kg-prose border-b border-grey-300 py-3 dark:border-grey-900 ${hasBackground ? 'mx-5' : ''}`}>
-                    <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Sponsored</p>
-                </div>
+                {hasSponsorLabel && (
+                    <div className={`not-kg-prose py-3 ${hasBackground ? 'mx-5' : ''}`}>
+                        <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Sponsored</p>
+                    </div>
+                )}
 
-                <div className={`flex flex-col gap-5 py-5 ${hasBackground ? 'mx-5' : 'border-b border-grey-300 dark:border-grey-900'}`}>
+                <div className={`flex flex-col gap-5 py-5 ${hasSponsorLabel || !hasBackground ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${hasBackground ? 'mx-5' : 'border-b border-grey-300 dark:border-grey-800'}`}>
                     {/* HTML content */}
                     <KoenigNestedEditor
                         autoFocus={true}
@@ -57,12 +60,19 @@ export function CtaCard({
 
             {isEditing && (
                 <SettingsPanel>
-                    {/* Button settings */}
+                    {/* Sponsor label setting */}
+                    <ToggleSetting
+                        isChecked={hasSponsorLabel}
+                        label='Sponsor label'
+                        onChange={updateHasSponsorLabel}
+                    />
+                    {/* Background setting */}
                     <ToggleSetting
                         isChecked={hasBackground}
                         label='Background'
                         onChange={updateHasBackground}
                     />
+                    {/* Button settings */}
                     <ToggleSetting
                         dataTestId="button-settings"
                         isChecked={showButton}
@@ -96,14 +106,15 @@ CtaCard.propTypes = {
     buttonText: PropTypes.string,
     buttonUrl: PropTypes.string,
     hasBackground: PropTypes.bool,
+    hasSponsorLabel: PropTypes.bool,
     isEditing: PropTypes.bool,
-    isSelected: PropTypes.bool,
     showButton: PropTypes.bool,
     htmlEditor: PropTypes.object,
     htmlEditorInitialState: PropTypes.object,
     updateButtonText: PropTypes.func,
     updateButtonUrl: PropTypes.func,
     updateHasBackground: PropTypes.func,
+    updateHasSponsorLabel: PropTypes.func,
     updateShowButton: PropTypes.func
 };
 
@@ -111,8 +122,10 @@ CtaCard.defaultProps = {
     buttonText: '',
     buttonUrl: '',
     hasBackground: false,
+    hasSponsorLabel: false,
     isEditing: false,
-    isSelected: false,
     showButton: false,
-    updateHasBackground: () => {}
+    updateHasBackground: () => {},
+    updateHasSponsorLabel: () => {},
+    updateShowButton: () => {}
 };

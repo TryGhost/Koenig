@@ -78,6 +78,7 @@ Populated.args = {
     display: 'Editing',
     value: 'Want to get access to premium content?',
     showButton: true,
+    hasSponsorLabel: true,
     hasBackground: false,
     buttonText: 'Upgrade',
     buttonUrl: 'https://ghost.org/',
