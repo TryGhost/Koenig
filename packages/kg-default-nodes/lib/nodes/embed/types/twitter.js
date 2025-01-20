@@ -40,6 +40,7 @@ export default function render(node, document, options) {
         }
         const hasPoll = tweetData.attachments && tweetData.attachments && tweetData.attachments.poll_ids;
 
+        // for compatibility with previous api provider
         if (mentions && source !== 'rettiwt') {
             let last = 0;
             let parts = [];
@@ -93,25 +94,38 @@ export default function render(node, document, options) {
             }, '');
         }
 
+        // for compatibility with new api provider
         if (tweetData && source === 'rettiwt') {
-            tweetContent = tweetContent.replace(/\n/g, '<br>');
-            const tcoLinks = tweetContent.match(/https:\/\/t\.co\/[a-zA-Z0-9]+/g) || [];
+            const wrapWithStyle = (text, style) => `<span style="${style}">${text}</span>`;
+        
+            let formattedContent = tweetContent.replace(/\n/g, '<br>');
+        
+            const tcoLinks = formattedContent.match(/https:\/\/t\.co\/[a-zA-Z0-9]+/g) || [];
             const displayUrls = urls.map(urlObj => urlObj.display_url);
             tcoLinks.forEach((tcoLink, index) => {
                 if (index < displayUrls.length) {
-                    tweetContent = tweetContent.replace(tcoLink, `<span style="color: #1DA1F2; word-break: break-all;">${displayUrls[index]}</span>`);
+                    formattedContent = formattedContent.replace(
+                        tcoLink,
+                        wrapWithStyle(displayUrls[index], 'color: #1DA1F2; word-break: break-all;')
+                    );
                 }
             });
 
-            // Replace mentions
-            mentions.forEach((mention) => {
-                tweetContent = tweetContent.replace(`@${mention.username}`, `<span style="color: #1DA1F2;">@${mention.username}</span>`);
+            mentions.forEach(({username}) => {
+                formattedContent = formattedContent.replace(
+                    `@${username}`,
+                    wrapWithStyle(`@${username}`, 'color: #1DA1F2;')
+                );
             });
 
-            // Replace hashtags
-            hashtags.forEach((hashtag) => {
-                tweetContent = tweetContent.replace(`#${hashtag.tag}`, `<span style="color: #1DA1F2;">#${hashtag.tag}</span>`);
+            hashtags.forEach(({tag}) => {
+                formattedContent = formattedContent.replace(
+                    `#${tag}`,
+                    wrapWithStyle(`#${tag}`, 'color: #1DA1F2;')
+                );
             });
+
+            tweetContent = formattedContent;
         }
 
         html = `
