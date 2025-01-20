@@ -68,6 +68,8 @@ Empty.args = {
     value: '',
     showButton: false,
     hasBackground: false,
+    hasImage: false,
+    hasSponsorLabel: false,
     buttonText: '',
     buttonUrl: '',
     suggestedUrls: []
@@ -78,6 +80,7 @@ Populated.args = {
     display: 'Editing',
     value: 'Want to get access to premium content?',
     showButton: true,
+    hasImage: true,
     hasSponsorLabel: true,
     hasBackground: false,
     buttonText: 'Upgrade',
