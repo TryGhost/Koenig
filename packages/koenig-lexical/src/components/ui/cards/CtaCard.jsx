@@ -1,9 +1,11 @@
+import CenterAlignIcon from '../../../assets/icons/kg-align-center.svg?react';
 import KoenigNestedEditor from '../../KoenigNestedEditor';
+import LeftAlignIcon from '../../../assets/icons/kg-align-left.svg?react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
 import {Button} from '../Button';
-import {InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 
 export function CtaCard({
@@ -15,14 +17,31 @@ export function CtaCard({
     htmlEditor,
     htmlEditorInitialState,
     isEditing,
+    layout,
     showButton,
     updateButtonText,
     updateButtonUrl,
     updateShowButton,
     updateHasBackground,
     updateHasSponsorLabel,
-    updateHasImage
+    updateHasImage,
+    updateLayout
 }) {
+    const layoutOptions = [
+        {
+            label: 'Minimal',
+            name: 'minimal',
+            Icon: LeftAlignIcon,
+            dataTestId: 'left-align'
+        },
+        {
+            label: 'Immersive',
+            name: 'immersive',
+            Icon: CenterAlignIcon,
+            dataTestId: 'immersive'
+        }
+    ];
+
     return (
         <>
             <div className={`w-full ${hasBackground ? 'rounded-lg bg-grey-100 dark:bg-grey-900' : ''}`}>
@@ -33,10 +52,10 @@ export function CtaCard({
                     </div>
                 )}
 
-                <div className={`flex flex-col gap-5 py-5 ${hasSponsorLabel || !hasBackground ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${hasBackground ? 'mx-5' : 'border-b border-grey-300 dark:border-grey-800'}`}>
+                <div className={`flex ${layout === 'immersive' ? 'flex-col' : 'flex-row'} gap-5 py-5 ${hasSponsorLabel || !hasBackground ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${hasBackground ? 'mx-5' : 'border-b border-grey-300 dark:border-grey-800'}`}>
                     {hasImage && (
-                        <div className="flex">
-                            <img alt="Placeholder" className="h-auto w-full rounded-md" src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=3888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+                        <div className={`block ${layout === 'immersive' ? 'w-full' : 'w-16 shrink-0'}`}>
+                            <img alt="Placeholder" className={`${layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover'} rounded-md`} src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=4431&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
                         </div>
                     )}
                     <div className="flex flex-col gap-5">
@@ -57,7 +76,14 @@ export function CtaCard({
                         {/* Button */}
                         { (showButton && (isEditing || (buttonText && buttonUrl))) &&
                             <div>
-                                <Button color={'accent'} dataTestId="cta-button" placeholder="Add button text" value={buttonText}/>
+                                <Button 
+                                    color={'accent'} 
+                                    dataTestId="cta-button" 
+                                    placeholder="Add button text" 
+                                    size={layout === 'immersive' ? 'medium' : 'small'}
+                                    value={buttonText}
+                                    width={layout === 'immersive' ? 'full' : 'regular'}
+                                />
                             </div>
                         }
                     </div>
@@ -69,6 +95,13 @@ export function CtaCard({
 
             {isEditing && (
                 <SettingsPanel>
+                    {/* Layout settings */}
+                    <ButtonGroupSetting
+                        buttons={layoutOptions}
+                        label='Layout'
+                        selectedName={layout}
+                        onClick={updateLayout}
+                    />
                     {/* Background setting */}
                     <ToggleSetting
                         isChecked={hasBackground}
@@ -124,6 +157,7 @@ CtaCard.propTypes = {
     hasImage: PropTypes.bool,
     hasSponsorLabel: PropTypes.bool,
     isEditing: PropTypes.bool,
+    layout: PropTypes.oneOf(['minimal', 'immersive']),
     showButton: PropTypes.bool,
     htmlEditor: PropTypes.object,
     htmlEditorInitialState: PropTypes.object,
@@ -132,7 +166,8 @@ CtaCard.propTypes = {
     updateHasBackground: PropTypes.func,
     updateHasSponsorLabel: PropTypes.func,
     updateHasImage: PropTypes.func,
-    updateShowButton: PropTypes.func
+    updateShowButton: PropTypes.func,
+    updateLayout: PropTypes.func
 };
 
 CtaCard.defaultProps = {
@@ -142,9 +177,11 @@ CtaCard.defaultProps = {
     hasImage: false,
     hasSponsorLabel: false,
     isEditing: false,
+    layout: 'immersive',
     showButton: false,
     updateHasBackground: () => {},
     updateHasSponsorLabel: () => {},
     updateHasImage: () => {},
-    updateShowButton: () => {}
+    updateShowButton: () => {},
+    updateLayout: () => {}
 };

@@ -12,6 +12,11 @@ const displayOptions = {
     Editing: {isSelected: true, isEditing: true}
 };
 
+const layoutOptions = {
+    Minimal: 'minimal',
+    Immersive: 'immersive'
+};
+
 const story = {
     title: 'Primary cards/CTA card',
     component: CtaCard,
@@ -28,6 +33,17 @@ const story = {
                     Editing: 'Editing'
                 },
                 defaultValue: displayOptions.Default
+            },
+            layout: {
+                options: Object.keys(layoutOptions),
+                mapping: layoutOptions,
+                control: {
+                    type: 'radio',
+                    labels: {
+                        Minimal: 'Minimal',
+                        Immersive: 'Immersive'
+                    }
+                }
             }
         }
     },
@@ -70,6 +86,7 @@ Empty.args = {
     hasBackground: false,
     hasImage: false,
     hasSponsorLabel: false,
+    layout: 'immersive',
     buttonText: '',
     buttonUrl: '',
     suggestedUrls: []
@@ -83,6 +100,7 @@ Populated.args = {
     hasImage: true,
     hasSponsorLabel: true,
     hasBackground: false,
+    layout: 'immersive',
     buttonText: 'Upgrade',
     buttonUrl: 'https://ghost.org/',
     suggestedUrls: [{label: 'Homepage', value: 'https://localhost.org/'}]
