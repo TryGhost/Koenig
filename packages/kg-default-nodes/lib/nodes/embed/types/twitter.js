@@ -92,9 +92,26 @@ export default function render(node, document, options) {
                 return partContent;
             }, '');
         }
+
         if (tweetData && source === 'rettiwt') {
-            // Rettiwt doesn't have entity start/end data, so we have to parse it directly
             tweetContent = tweetContent.replace(/\n/g, '<br>');
+            const tcoLinks = tweetContent.match(/https:\/\/t\.co\/[a-zA-Z0-9]+/g) || [];
+            const displayUrls = urls.map(urlObj => urlObj.display_url);
+            tcoLinks.forEach((tcoLink, index) => {
+                if (index < displayUrls.length) {
+                    tweetContent = tweetContent.replace(tcoLink, `<span style="color: #1DA1F2; word-break: break-all;">${displayUrls[index]}</span>`);
+                }
+            });
+
+            // Replace mentions
+            mentions.forEach((mention) => {
+                tweetContent = tweetContent.replace(`@${mention.username}`, `<span style="color: #1DA1F2;">@${mention.username}</span>`);
+            });
+
+            // Replace hashtags
+            hashtags.forEach((hashtag) => {
+                tweetContent = tweetContent.replace(`#${hashtag.tag}`, `<span style="color: #1DA1F2;">#${hashtag.tag}</span>`);
+            });
         }
 
         html = `
