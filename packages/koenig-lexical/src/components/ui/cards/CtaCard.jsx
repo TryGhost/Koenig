@@ -1,6 +1,6 @@
-import CenterAlignIcon from '../../../assets/icons/kg-align-center.svg?react';
+import ImmersiveLayoutIcon from '../../../assets/icons/kg-layout-immersive.svg?react';
 import KoenigNestedEditor from '../../KoenigNestedEditor';
-import LeftAlignIcon from '../../../assets/icons/kg-align-left.svg?react';
+import MinimalLayoutIcon from '../../../assets/icons/kg-layout-minimal.svg?react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
@@ -9,7 +9,7 @@ import {Button} from '../Button';
 import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 
-export const CALLOUT_COLORS = {
+export const CTA_COLORS = {
     none: 'bg-transparent border-transparent',
     white: 'bg-transparent border-grey-900/15 dark:border-grey-100/20',
     grey: 'bg-grey/10 border-transparent',
@@ -21,7 +21,7 @@ export const CALLOUT_COLORS = {
     purple: 'bg-purple/10 border-transparent'
 };
 
-export const calloutColorPicker = [
+export const ctaColorPicker = [
     {
         label: 'None',
         name: 'none',
@@ -87,14 +87,14 @@ export function CtaCard({
         {
             label: 'Minimal',
             name: 'minimal',
-            Icon: LeftAlignIcon,
-            dataTestId: 'left-align'
+            Icon: MinimalLayoutIcon,
+            dataTestId: 'minimal-layout'
         },
         {
             label: 'Immersive',
             name: 'immersive',
-            Icon: CenterAlignIcon,
-            dataTestId: 'immersive'
+            Icon: ImmersiveLayoutIcon,
+            dataTestId: 'immersive-layout'
         }
     ];
 
@@ -102,8 +102,7 @@ export function CtaCard({
         <>
             {/* Color picker */}
             <ColorOptionSetting
-                buttons={calloutColorPicker}
-                dataTestId='callout-color-picker'
+                buttons={ctaColorPicker}
                 label='Background'
                 selectedName={color}
                 onClick={handleColorChange}
@@ -185,7 +184,7 @@ export function CtaCard({
         <>
             <div className={clsx(
                 'w-full rounded-lg border',
-                CALLOUT_COLORS[color],
+                CTA_COLORS[color],
                 {
                     'py-3': (isEditing || isSelected) && color === 'none' && !hasSponsorLabel,
                     'pb-3': color === 'none' && !((isEditing || isSelected) && !hasSponsorLabel)
