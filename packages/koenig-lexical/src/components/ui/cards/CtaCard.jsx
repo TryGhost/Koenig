@@ -11,8 +11,8 @@ import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 
 export const CALLOUT_COLORS = {
     none: 'bg-transparent border-transparent',
+    white: 'bg-transparent border-grey-900/15 dark:border-grey-100/20',
     grey: 'bg-grey/10 border-transparent',
-    white: 'bg-transparent border-grey-300 dark:border-grey-800',
     blue: 'bg-blue/10 border-transparent',
     green: 'bg-green/10 border-transparent',
     yellow: 'bg-yellow/10 border-transparent',
@@ -197,15 +197,15 @@ export function CtaCard({
                         'not-kg-prose py-3',
                         {'mx-5': color !== 'none'}
                     )}>
-                        <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Sponsored</p>
+                        <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey-900/40 dark:text-grey-100/40">Sponsored</p>
                     </div>
                 )}
 
                 <div className={clsx(
                     'flex gap-5 py-5',
                     layout === 'immersive' ? 'flex-col' : 'flex-row',
-                    color === 'none' || hasSponsorLabel ? 'border-t border-grey-300 dark:border-grey-800' : '',
-                    color === 'none' ? 'border-b border-grey-300 dark:border-grey-800' : 'mx-5'
+                    color === 'none' || hasSponsorLabel ? 'border-t border-grey-900/15 dark:border-grey-100/20' : '',
+                    color === 'none' ? 'border-b border-grey-900/15 dark:border-grey-100/20' : 'mx-5'
                 )}>
                     {imageSrc && (
                         <div className={clsx(
