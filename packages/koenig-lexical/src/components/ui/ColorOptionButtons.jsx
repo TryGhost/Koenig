@@ -38,14 +38,14 @@ export function ColorButton({onClick, label, name, color, selectedName}) {
         <li>
             <button
                 aria-label={label}
-                className={`group relative flex size-[2.6rem] cursor-pointer items-center justify-center rounded-full border-2 ${isActive ? 'border-green' : 'border-transparent'}`}
+                className={`group relative flex size-6 cursor-pointer items-center justify-center rounded-full border-2 ${isActive ? 'border-green' : 'border-transparent'}`}
                 data-test-id={`color-picker-${name}`}
                 type="button"
                 onClick={handleClick}
                 onMouseDown={handleMousedown}
             >
                 <span
-                    className={`${color} size-5 rounded-full border`}
+                    className={`${color} size-[1.8rem] rounded-full border`}
                 ></span>
                 <Tooltip label={label} />
             </button>

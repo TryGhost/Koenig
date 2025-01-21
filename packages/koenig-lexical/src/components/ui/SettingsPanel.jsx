@@ -236,7 +236,7 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
         <div className={`flex w-full text-[1.3rem] ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestId}>
             <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
 
-            <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
+            <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-[.6rem]' : 'pl-2'}`}>
                 <ColorOptionButtons buttons={buttons} selectedName={selectedName} onClick={onClick} />
             </div>
         </div>
