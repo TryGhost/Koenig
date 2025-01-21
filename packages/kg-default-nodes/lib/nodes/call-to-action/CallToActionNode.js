@@ -24,6 +24,7 @@ export class CallToActionNode extends generateDecoratorNode({nodeType: 'call-to-
         buttonUrl,
         hasSponsorLabel,
         hasBackground,
+        backgroundColor,
         hasImage,
         imageUrl
     } = {}, key) {
@@ -35,6 +36,7 @@ export class CallToActionNode extends generateDecoratorNode({nodeType: 'call-to-
         this.__buttonUrl = buttonUrl || '';
         this.__hasSponsorLabel = hasSponsorLabel || false;
         this.__hasBackground = hasBackground || false;
+        this.__backgroundColor = backgroundColor || '#123456';
         this.__hasImage = hasImage || false;
         this.__imageUrl = imageUrl || '';
     }
