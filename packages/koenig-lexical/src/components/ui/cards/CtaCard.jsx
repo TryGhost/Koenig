@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
 import {Button} from '../Button';
-import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 
 export const CALLOUT_COLORS = {
@@ -62,10 +62,10 @@ export function CtaCard({
     buttonText,
     buttonUrl,
     color,
-    hasImage,
     hasSponsorLabel,
     htmlEditor,
     htmlEditorInitialState,
+    imageSrc,
     isEditing,
     isSelected,
     layout,
@@ -74,7 +74,6 @@ export function CtaCard({
     updateButtonUrl,
     updateShowButton,
     updateHasSponsorLabel,
-    updateHasImage,
     updateLayout,
     handleColorChange
 }) {
@@ -100,13 +99,6 @@ export function CtaCard({
 
     const designSettings = (
         <>
-            {/* Layout settings */}
-            <ButtonGroupSetting
-                buttons={layoutOptions}
-                label='Layout'
-                selectedName={layout}
-                onClick={updateLayout}
-            />
             {/* Color picker */}
             <ColorOptionSetting
                 buttons={calloutColorPicker}
@@ -115,6 +107,13 @@ export function CtaCard({
                 selectedName={color}
                 onClick={handleColorChange}
             />
+            {/* Layout settings */}
+            <ButtonGroupSetting
+                buttons={layoutOptions}
+                label='Layout'
+                selectedName={layout}
+                onClick={updateLayout}
+            />
             {/* Sponsor label setting */}
             <ToggleSetting
                 isChecked={hasSponsorLabel}
@@ -122,10 +121,14 @@ export function CtaCard({
                 onChange={updateHasSponsorLabel}
             />
             {/* Image setting */}
-            <ToggleSetting
-                isChecked={hasImage}
+            <MediaUploadSetting
+                alt='Image'
+                borderStyle={'rounded'}
+                icon='file'
                 label='Image'
-                onChange={updateHasImage}
+                mimeTypes={['image/*']}
+                size='xsmall'
+                src={imageSrc}
             />
             {/* Button settings */}
             <ToggleSetting
@@ -188,9 +191,9 @@ export function CtaCard({
                 )}
 
                 <div className={`flex ${layout === 'immersive' ? 'flex-col' : 'flex-row'} gap-5 py-5 ${color === 'none' || hasSponsorLabel ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${color === 'none' ? 'border-b border-grey-300 dark:border-grey-800' : 'mx-5'}`}>
-                    {hasImage && (
+                    {imageSrc && (
                         <div className={`block ${layout === 'immersive' ? 'w-full' : 'w-16 shrink-0'}`}>
-                            <img alt="Placeholder" className={`${layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover'} rounded-md`} src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=4431&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+                            <img alt="Placeholder" className={`${layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover'} rounded-md`} src={imageSrc} />
                         </div>
                     )}
                     <div className="flex flex-col gap-5">
@@ -248,8 +251,8 @@ CtaCard.propTypes = {
     buttonText: PropTypes.string,
     buttonUrl: PropTypes.string,
     color: PropTypes.oneOf(['none', 'grey', 'white', 'blue', 'green', 'yellow', 'red']),
-    hasImage: PropTypes.bool,
-    hasSponsorLabel: PropTypes.bool,
+    hasSponsorLabel: PropTypes.bool,    
+    imageSrc: PropTypes.string,
     isEditing: PropTypes.bool,
     isSelected: PropTypes.bool,
     layout: PropTypes.oneOf(['minimal', 'immersive']),
@@ -259,7 +262,6 @@ CtaCard.propTypes = {
     updateButtonText: PropTypes.func,
     updateButtonUrl: PropTypes.func,
     updateHasSponsorLabel: PropTypes.func,
-    updateHasImage: PropTypes.func,
     updateShowButton: PropTypes.func,
     updateLayout: PropTypes.func,
     handleColorChange: PropTypes.func
@@ -269,14 +271,13 @@ CtaCard.defaultProps = {
     buttonText: '',
     buttonUrl: '',
     color: 'none',
-    hasImage: false,
     hasSponsorLabel: false,
+    imageSrc: '',
     isEditing: false,
     isSelected: false,
     layout: 'immersive',
     showButton: false,
     updateHasSponsorLabel: () => {},
-    updateHasImage: () => {},
     updateShowButton: () => {},
     updateLayout: () => {},
     handleColorChange: () => {}

@@ -468,6 +468,7 @@ export function SignupCard({alignment,
                         setFileInputRef={setFileInputRef}
                         size='xsmall'
                         src={backgroundImageSrc}
+                        stacked={true}
                         onFileChange={onFileChange}
                         onRemoveMedia={() => {
                             handleClearBackgroundImage();
