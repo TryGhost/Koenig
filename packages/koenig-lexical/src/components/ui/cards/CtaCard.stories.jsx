@@ -105,13 +105,13 @@ Empty.args = {
 export const Populated = Template.bind({});
 Populated.args = {
     display: 'Editing',
-    value: 'Want to get access to premium content?',
+    value: 'Introducing the Air Stride 90X – where bold design meets unmatched performance. Engineered for ultimate support and breathability, it’s the perfect companion for your active lifestyle. Step up your game, in style.',
     showButton: true,
     hasImage: true,
     hasSponsorLabel: true,
     color: 'green',
     layout: 'immersive',
-    buttonText: 'Upgrade',
+    buttonText: 'Grab 20% discount',
     buttonUrl: 'https://ghost.org/',
     suggestedUrls: [{label: 'Homepage', value: 'https://localhost.org/'}]
 };

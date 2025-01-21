@@ -78,6 +78,11 @@ export function CtaCard({
     updateLayout,
     handleColorChange
 }) {
+    const tabs = [
+        {id: 'design', label: 'Design'},
+        {id: 'visibility', label: 'Visibility'}
+    ];
+
     const layoutOptions = [
         {
             label: 'Minimal',
@@ -93,9 +98,88 @@ export function CtaCard({
         }
     ];
 
+    const designSettings = (
+        <>
+            {/* Layout settings */}
+            <ButtonGroupSetting
+                buttons={layoutOptions}
+                label='Layout'
+                selectedName={layout}
+                onClick={updateLayout}
+            />
+            {/* Color picker */}
+            <ColorOptionSetting
+                buttons={calloutColorPicker}
+                dataTestId='callout-color-picker'
+                label='Background'
+                selectedName={color}
+                onClick={handleColorChange}
+            />
+            {/* Sponsor label setting */}
+            <ToggleSetting
+                isChecked={hasSponsorLabel}
+                label='Sponsor label'
+                onChange={updateHasSponsorLabel}
+            />
+            {/* Image setting */}
+            <ToggleSetting
+                isChecked={hasImage}
+                label='Image'
+                onChange={updateHasImage}
+            />
+            {/* Button settings */}
+            <ToggleSetting
+                dataTestId="button-settings"
+                isChecked={showButton}
+                label='Button'
+                onChange={updateShowButton}
+            />
+            {showButton && (
+                <>
+                    <InputSetting
+                        dataTestId="button-text"
+                        label='Button text'
+                        placeholder='Add button text'
+                        value={buttonText}
+                        onChange={updateButtonText}
+                    />
+                    <InputUrlSetting
+                        dataTestId="button-url"
+                        label='Button URL'
+                        value={buttonUrl}
+                        onChange={updateButtonUrl}
+                    />
+                </>
+            )}
+        </>
+    );
+
+    const visibilitySettings = (
+        <>
+            <p className="text-sm font-bold tracking-normal text-grey-900 dark:text-grey-300">Web</p>
+            <ToggleSetting
+                label="Anonymous visitors"
+            />
+            <ToggleSetting
+                label="Free members"
+            />
+            <ToggleSetting
+                label="Paid members"
+            />
+            <hr className="not-kg-prose my-2 block border-t-grey-300 dark:border-t-grey-900" />
+            <p className="text-sm font-bold tracking-normal text-grey-900 dark:text-grey-300">Email</p>
+            <ToggleSetting
+                label="Free members"
+            />
+            <ToggleSetting
+                label="Paid members"
+            />
+        </>
+    );
+
     return (
         <>
-            <div className={`w-full rounded-lg border ${CALLOUT_COLORS[color]} ${(isEditing || isSelected) && color === 'none' ? 'pb-3' : ''}`}>
+            <div className={`w-full rounded-lg border ${CALLOUT_COLORS[color]} ${(isEditing || isSelected) && (color === 'none' && !hasSponsorLabel) ? 'py-3' : color === 'none' ? 'pb-3' : ''}`}>
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
                     <div className={`not-kg-prose py-3 ${color === 'none' ? '' : 'mx-5'}`}>
@@ -145,58 +229,15 @@ export function CtaCard({
             </div>
 
             {isEditing && (
-                <SettingsPanel>
-                    {/* Layout settings */}
-                    <ButtonGroupSetting
-                        buttons={layoutOptions}
-                        label='Layout'
-                        selectedName={layout}
-                        onClick={updateLayout}
-                    />
-                    {/* Color picker */}
-                    <ColorOptionSetting
-                        buttons={calloutColorPicker}
-                        dataTestId='callout-color-picker'
-                        label='Background'
-                        selectedName={color}
-                        onClick={handleColorChange}
-                    />
-                    {/* Sponsor label setting */}
-                    <ToggleSetting
-                        isChecked={hasSponsorLabel}
-                        label='Sponsor label'
-                        onChange={updateHasSponsorLabel}
-                    />
-                    {/* Image setting */}
-                    <ToggleSetting
-                        isChecked={hasImage}
-                        label='Image'
-                        onChange={updateHasImage}
-                    />
-                    {/* Button settings */}
-                    <ToggleSetting
-                        dataTestId="button-settings"
-                        isChecked={showButton}
-                        label='Button'
-                        onChange={updateShowButton}
-                    />
-                    {showButton && (
-                        <>
-                            <InputSetting
-                                dataTestId="button-text"
-                                label='Button text'
-                                placeholder='Add button text'
-                                value={buttonText}
-                                onChange={updateButtonText}
-                            />
-                            <InputUrlSetting
-                                dataTestId="button-url"
-                                label='Button URL'
-                                value={buttonUrl}
-                                onChange={updateButtonUrl}
-                            />
-                        </>
-                    )}
+                <SettingsPanel
+                    defaultTab="design"
+                    tabs={tabs}
+                    onMouseDown={e => e.preventDefault()}
+                >
+                    {{
+                        design: designSettings,
+                        visibility: visibilitySettings
+                    }}
                 </SettingsPanel>
             )}
         </>
