@@ -1,5 +1,5 @@
-import EmailIndicatorIcon from '../../../assets/icons/kg-indicator-email.svg?react';
 import React from 'react';
+import VisibilityIndicatorIcon from '../../../assets/icons/kg-indicator-visibility.svg?react';
 import populateEditor from '../../../utils/storybook/populate-storybook-editor.js';
 import {BASIC_NODES} from '../../../index.js';
 import {CardWrapper} from './../CardWrapper';
@@ -63,7 +63,10 @@ const Template = ({display, value, ...args}) => {
             <div className="kg-prose">
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
                     <CardWrapper 
-                        IndicatorIcon={EmailIndicatorIcon} 
+                        IndicatorIcon={VisibilityIndicatorIcon}
+                        indicatorPosition={{
+                            top: '1.2rem'
+                        }}
                         {...(args.color === 'none' && {wrapperStyle: 'wide'})} 
                         {...display} 
                         {...args}
@@ -75,7 +78,7 @@ const Template = ({display, value, ...args}) => {
             {/* <div className="kg-prose dark bg-black px-4 py-8">
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
                     <CardWrapper 
-                        IndicatorIcon={EmailIndicatorIcon} 
+                        IndicatorIcon={VisibilityIndicatorIcon} 
                         {...(args.color === 'none' && {wrapperStyle: 'wide'})} 
                         {...display} 
                         {...args}

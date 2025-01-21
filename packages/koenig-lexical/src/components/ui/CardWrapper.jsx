@@ -14,6 +14,7 @@ export const CardWrapper = React.forwardRef(({
     cardType,
     cardWidth,
     IndicatorIcon,
+    indicatorPosition,
     isDragging,
     isEditing,
     isSelected,
@@ -43,11 +44,28 @@ export const CardWrapper = React.forwardRef(({
         wrapperClass()
     ].join(' ');
 
+    // Default positioning values
+    const defaultPosition = {
+        top: '.6rem'
+    };
+
+    // Merge provided position with defaults
+    const position = {
+        ...defaultPosition,
+        ...(indicatorPosition || {})
+    };
+
     return (
         <>
             {IndicatorIcon &&
                 <div className="sticky top-0 lg:top-8">
-                    <IndicatorIcon className="absolute left-[-6rem] top-[.6rem] size-5 text-grey" />
+                    <IndicatorIcon 
+                        className="absolute left-[-6rem] size-5 text-grey" 
+                        style={{
+                            left: position.left,
+                            top: position.top
+                        }}
+                    />
                 </div>
             }
             <div
@@ -70,7 +88,11 @@ CardWrapper.propTypes = {
     isSelected: PropTypes.bool,
     isEditing: PropTypes.bool,
     cardWidth: PropTypes.oneOf(['regular', 'wide', 'full']),
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    indicatorPosition: PropTypes.shape({
+        left: PropTypes.string,
+        top: PropTypes.string
+    })
 };
 
 CardWrapper.defaultProps = {
