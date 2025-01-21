@@ -10,6 +10,10 @@ const CARD_WIDTH_CLASSES = {
     full: 'inset-x-[-1px] mx-[calc(50%-50vw)] w-[calc(100vw+2px)] lg:mx-[calc(50%-50vw+(var(--kg-breakout-adjustment-with-fallback)/2))] lg:w-[calc(100vw-var(--kg-breakout-adjustment-with-fallback)+2px)]'
 };
 
+const DEFAULT_INDICATOR_POSITION = {
+    top: '.6rem'
+};
+
 export const CardWrapper = React.forwardRef(({
     cardType,
     cardWidth,
@@ -44,14 +48,8 @@ export const CardWrapper = React.forwardRef(({
         wrapperClass()
     ].join(' ');
 
-    // Default positioning values
-    const defaultPosition = {
-        top: '.6rem'
-    };
-
-    // Merge provided position with defaults
     const position = {
-        ...defaultPosition,
+        ...DEFAULT_INDICATOR_POSITION,
         ...(indicatorPosition || {})
     };
 
@@ -60,7 +58,8 @@ export const CardWrapper = React.forwardRef(({
             {IndicatorIcon &&
                 <div className="sticky top-0 lg:top-8">
                     <IndicatorIcon 
-                        className="absolute left-[-6rem] size-5 text-grey" 
+                        aria-label={`${cardType} indicator`}
+                        className="absolute left-[-6rem] size-5 text-grey"
                         style={{
                             left: position.left,
                             top: position.top
@@ -96,5 +95,6 @@ CardWrapper.propTypes = {
 };
 
 CardWrapper.defaultProps = {
-    cardWidth: 'regular'
+    cardWidth: 'regular',
+    indicatorPosition: DEFAULT_INDICATOR_POSITION
 };
