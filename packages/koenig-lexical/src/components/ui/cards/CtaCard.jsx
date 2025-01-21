@@ -4,6 +4,7 @@ import LeftAlignIcon from '../../../assets/icons/kg-align-left.svg?react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
+import clsx from 'clsx';
 import {Button} from '../Button';
 import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
@@ -182,18 +183,43 @@ export function CtaCard({
 
     return (
         <>
-            <div className={`w-full rounded-lg border ${CALLOUT_COLORS[color]} ${(isEditing || isSelected) && (color === 'none' && !hasSponsorLabel) ? 'py-3' : color === 'none' ? 'pb-3' : ''}`}>
+            <div className={clsx(
+                'w-full rounded-lg border',
+                CALLOUT_COLORS[color],
+                {
+                    'py-3': (isEditing || isSelected) && color === 'none' && !hasSponsorLabel,
+                    'pb-3': color === 'none' && !((isEditing || isSelected) && !hasSponsorLabel)
+                }
+            )}>
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
-                    <div className={`not-kg-prose py-3 ${color === 'none' ? '' : 'mx-5'}`}>
+                    <div className={clsx(
+                        'not-kg-prose py-3',
+                        {'mx-5': color !== 'none'}
+                    )}>
                         <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Sponsored</p>
                     </div>
                 )}
 
-                <div className={`flex ${layout === 'immersive' ? 'flex-col' : 'flex-row'} gap-5 py-5 ${color === 'none' || hasSponsorLabel ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${color === 'none' ? 'border-b border-grey-300 dark:border-grey-800' : 'mx-5'}`}>
+                <div className={clsx(
+                    'flex gap-5 py-5',
+                    layout === 'immersive' ? 'flex-col' : 'flex-row',
+                    color === 'none' || hasSponsorLabel ? 'border-t border-grey-300 dark:border-grey-800' : '',
+                    color === 'none' ? 'border-b border-grey-300 dark:border-grey-800' : 'mx-5'
+                )}>
                     {imageSrc && (
-                        <div className={`block ${layout === 'immersive' ? 'w-full' : 'w-16 shrink-0'}`}>
-                            <img alt="Placeholder" className={`${layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover'} rounded-md`} src={imageSrc} />
+                        <div className={clsx(
+                            'block',
+                            layout === 'immersive' ? 'w-full' : 'w-16 shrink-0'
+                        )}>
+                            <img 
+                                alt="Placeholder" 
+                                className={clsx(
+                                    layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover',
+                                    'rounded-md'
+                                )} 
+                                src={imageSrc} 
+                            />
                         </div>
                     )}
                     <div className="flex flex-col gap-5">
@@ -206,7 +232,10 @@ export function CtaCard({
                             nodes='basic'
                             placeholderClassName={`bg-transparent whitespace-normal font-serif text-xl !text-grey-500 !dark:text-grey-800 ` }
                             placeholderText="Write something worth clicking..."
-                            textClassName={`w-full bg-transparent whitespace-normal font-serif text-xl text-grey-900 text-pretty dark:text-grey-200 ${layout === 'immersive' ? 'text-center' : 'text-left'}`}
+                            textClassName={clsx(
+                                'w-full whitespace-normal text-pretty bg-transparent font-serif text-xl text-grey-900 dark:text-grey-200',
+                                layout === 'immersive' ? 'text-center' : 'text-left'
+                            )}
                         >
                             <ReplacementStringsPlugin />
                         </KoenigNestedEditor>
