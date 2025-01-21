@@ -17,6 +17,7 @@ export function CtaCard({
     htmlEditor,
     htmlEditorInitialState,
     isEditing,
+    isSelected,
     layout,
     showButton,
     updateButtonText,
@@ -44,7 +45,7 @@ export function CtaCard({
 
     return (
         <>
-            <div className={`w-full ${hasBackground ? 'rounded-lg bg-grey-100 dark:bg-grey-900' : ''}`}>
+            <div className={`w-full ${hasBackground ? 'rounded-lg bg-grey-100 dark:bg-grey-900' : ''} ${(isEditing || isSelected) && !hasBackground ? 'pb-3' : ''}`}>
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
                     <div className={`not-kg-prose py-3 ${hasBackground ? 'mx-5' : ''}`}>
@@ -68,7 +69,7 @@ export function CtaCard({
                             nodes='basic'
                             placeholderClassName={`bg-transparent whitespace-normal font-serif text-xl !text-grey-500 !dark:text-grey-800 ` }
                             placeholderText="Write something worth clicking..."
-                            textClassName={`w-full bg-transparent whitespace-normal font-serif text-xl text-grey-900 dark:text-grey-200 ${layout === 'immersive' ? 'text-center' : 'text-left'}`}
+                            textClassName={`w-full bg-transparent whitespace-normal font-serif text-xl text-grey-900 text-pretty dark:text-grey-200 ${layout === 'immersive' ? 'text-center' : 'text-left'}`}
                         >
                             <ReplacementStringsPlugin />
                         </KoenigNestedEditor>
@@ -157,6 +158,7 @@ CtaCard.propTypes = {
     hasImage: PropTypes.bool,
     hasSponsorLabel: PropTypes.bool,
     isEditing: PropTypes.bool,
+    isSelected: PropTypes.bool,
     layout: PropTypes.oneOf(['minimal', 'immersive']),
     showButton: PropTypes.bool,
     htmlEditor: PropTypes.object,
@@ -177,6 +179,7 @@ CtaCard.defaultProps = {
     hasImage: false,
     hasSponsorLabel: false,
     isEditing: false,
+    isSelected: false,
     layout: 'immersive',
     showButton: false,
     updateHasBackground: () => {},

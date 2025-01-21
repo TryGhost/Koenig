@@ -62,14 +62,24 @@ const Template = ({display, value, ...args}) => {
         <div>
             <div className="kg-prose">
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
-                    <CardWrapper IndicatorIcon={EmailIndicatorIcon} wrapperStyle='wide' {...display} {...args}>
+                    <CardWrapper 
+                        IndicatorIcon={EmailIndicatorIcon} 
+                        {...(!args.hasBackground && {wrapperStyle: 'wide'})} 
+                        {...display} 
+                        {...args}
+                    >
                         <CtaCard {...display} {...args} htmlEditor={htmlEditor} />
                     </CardWrapper>
                 </div>
             </div>
             <div className="kg-prose dark bg-black px-4 py-8">
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
-                    <CardWrapper IndicatorIcon={EmailIndicatorIcon} wrapperStyle='wide' {...display} {...args}>
+                    <CardWrapper 
+                        IndicatorIcon={EmailIndicatorIcon} 
+                        {...(!args.hasBackground && {wrapperStyle: 'wide'})} 
+                        {...display} 
+                        {...args}
+                    >
                         <CtaCard {...display} {...args} htmlEditor={htmlEditor} />
                     </CardWrapper>
                 </div>
