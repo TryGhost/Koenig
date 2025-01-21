@@ -2,12 +2,14 @@ import ImmersiveLayoutIcon from '../../../assets/icons/kg-layout-immersive.svg?r
 import KoenigNestedEditor from '../../KoenigNestedEditor';
 import MinimalLayoutIcon from '../../../assets/icons/kg-layout-minimal.svg?react';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
 import clsx from 'clsx';
 import {Button} from '../Button';
-import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+import {getAccentColor} from '../../../utils/getAccentColor';
+import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
 export const CTA_COLORS = {
     none: 'bg-transparent border-transparent',
@@ -16,9 +18,7 @@ export const CTA_COLORS = {
     blue: 'bg-blue/10 border-transparent',
     green: 'bg-green/10 border-transparent',
     yellow: 'bg-yellow/10 border-transparent',
-    red: 'bg-red/10 border-transparent',
-    pink: 'bg-pink/10 border-transparent',
-    purple: 'bg-purple/10 border-transparent'
+    red: 'bg-red/10 border-transparent'
 };
 
 export const ctaColorPicker = [
@@ -62,6 +62,8 @@ export const ctaColorPicker = [
 export function CtaCard({
     buttonText,
     buttonUrl,
+    buttonColor,
+    buttonTextColor,
     color,
     hasSponsorLabel,
     htmlEditor,
@@ -76,8 +78,11 @@ export function CtaCard({
     updateShowButton,
     updateHasSponsorLabel,
     updateLayout,
-    handleColorChange
+    handleColorChange,
+    handleButtonColor
 }) {
+    const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);
+
     const tabs = [
         {id: 'design', label: 'Design'},
         {id: 'visibility', label: 'Visibility'}
@@ -97,6 +102,10 @@ export function CtaCard({
             dataTestId: 'immersive-layout'
         }
     ];
+
+    const matchingTextColor = (bgColor) => {
+        return bgColor === 'transparent' ? '' : textColorForBackgroundColor(bgColor === 'accent' ? getAccentColor() : bgColor).hex();
+    };
 
     const designSettings = (
         <>
@@ -139,6 +148,25 @@ export function CtaCard({
             />
             {showButton && (
                 <>
+                    <ColorPickerSetting
+                        dataTestId='cta-button-color'
+                        isExpanded={buttonColorPickerExpanded}
+                        label='Button Color'
+                        swatches={[
+                            {title: 'Black', hex: '#000000'},
+                            {title: 'Grey', hex: '#F0F0F0'},
+                            {title: 'Brand color', accent: true}
+                        ]}
+                        value={buttonColor}
+                        onPickerChange={bgColor => handleButtonColor(bgColor, matchingTextColor(bgColor))}
+                        onSwatchChange={(bgColor) => {
+                            handleButtonColor(bgColor, matchingTextColor(bgColor));
+                            setButtonColorPickerExpanded(false);
+                        }}
+                        onTogglePicker={(isExpanded) => {
+                            setButtonColorPickerExpanded(isExpanded);
+                        }}
+                    />
                     <InputSetting
                         dataTestId="button-text"
                         label='Button text'
@@ -247,6 +275,10 @@ export function CtaCard({
                                     dataTestId="cta-button" 
                                     placeholder="Add button text" 
                                     size={layout === 'immersive' ? 'medium' : 'small'}
+                                    style={buttonColor ? {
+                                        backgroundColor: buttonColor === 'accent' ? 'var(--accent-color)' : buttonColor,
+                                        color: buttonTextColor
+                                    } : undefined}
                                     value={buttonText}
                                     width={layout === 'immersive' ? 'full' : 'regular'}
                                 />
@@ -278,6 +310,8 @@ export function CtaCard({
 CtaCard.propTypes = {
     buttonText: PropTypes.string,
     buttonUrl: PropTypes.string,
+    buttonColor: PropTypes.string,
+    buttonTextColor: PropTypes.string,
     color: PropTypes.oneOf(['none', 'grey', 'white', 'blue', 'green', 'yellow', 'red']),
     hasSponsorLabel: PropTypes.bool,    
     imageSrc: PropTypes.string,
@@ -292,12 +326,15 @@ CtaCard.propTypes = {
     updateHasSponsorLabel: PropTypes.func,
     updateShowButton: PropTypes.func,
     updateLayout: PropTypes.func,
-    handleColorChange: PropTypes.func
+    handleColorChange: PropTypes.func,
+    handleButtonColor: PropTypes.func
 };
 
 CtaCard.defaultProps = {
     buttonText: '',
     buttonUrl: '',
+    buttonColor: '',
+    buttonTextColor: '',
     color: 'none',
     hasSponsorLabel: false,
     imageSrc: '',
@@ -308,5 +345,6 @@ CtaCard.defaultProps = {
     updateHasSponsorLabel: () => {},
     updateShowButton: () => {},
     updateLayout: () => {},
-    handleColorChange: () => {}
+    handleColorChange: () => {},
+    handleButtonColor: () => {}
 };
