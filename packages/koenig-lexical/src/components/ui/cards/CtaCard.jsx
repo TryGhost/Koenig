@@ -5,13 +5,63 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
 import {Button} from '../Button';
-import {ButtonGroupSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+
+export const CALLOUT_COLORS = {
+    none: 'bg-transparent border-transparent',
+    grey: 'bg-grey/10 border-transparent',
+    white: 'bg-transparent border-grey-300 dark:border-grey-800',
+    blue: 'bg-blue/10 border-transparent',
+    green: 'bg-green/10 border-transparent',
+    yellow: 'bg-yellow/10 border-transparent',
+    red: 'bg-red/10 border-transparent',
+    pink: 'bg-pink/10 border-transparent',
+    purple: 'bg-purple/10 border-transparent'
+};
+
+export const calloutColorPicker = [
+    {
+        label: 'None',
+        name: 'none',
+        color: 'bg-transparent border-black/15 relative after:absolute after:left-1/2 after:top-1/2 after:h-[1px] after:w-[18px] after:-translate-x-1/2 after:-translate-y-1/2 after:-rotate-45 after:bg-red-500'
+    },
+    {
+        label: 'White',
+        name: 'white',
+        color: 'bg-transparent border-black/15 dark:border-white/10'
+    },
+    {
+        label: 'Grey',
+        name: 'grey',
+        color: 'bg-grey/15 border-black/[.08] dark:border-white/10'
+    },
+    {
+        label: 'Blue',
+        name: 'blue',
+        color: 'bg-blue/15 border-black/[.08] dark:border-white/10'
+    },
+    {
+        label: 'Green',
+        name: 'green',
+        color: 'bg-green/15 border-black/[.08] dark:border-white/10'
+    },
+    {
+        label: 'Yellow',
+        name: 'yellow',
+        color: 'bg-yellow/15 border-black/[.08] dark:border-white/10'
+    },
+    {
+        label: 'Red',
+        name: 'red',
+        color: 'bg-red/15 border-black/[.08] dark:border-white/10'
+    }
+];
 
 export function CtaCard({
     buttonText,
     buttonUrl,
-    hasBackground,
+    color,
     hasImage,
     hasSponsorLabel,
     htmlEditor,
@@ -23,10 +73,10 @@ export function CtaCard({
     updateButtonText,
     updateButtonUrl,
     updateShowButton,
-    updateHasBackground,
     updateHasSponsorLabel,
     updateHasImage,
-    updateLayout
+    updateLayout,
+    handleColorChange
 }) {
     const layoutOptions = [
         {
@@ -45,15 +95,15 @@ export function CtaCard({
 
     return (
         <>
-            <div className={`w-full ${hasBackground ? 'rounded-lg bg-grey-100 dark:bg-grey-900' : ''} ${(isEditing || isSelected) && !hasBackground ? 'pb-3' : ''}`}>
+            <div className={`w-full rounded-lg border ${CALLOUT_COLORS[color]} ${(isEditing || isSelected) && color === 'none' ? 'pb-3' : ''}`}>
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
-                    <div className={`not-kg-prose py-3 ${hasBackground ? 'mx-5' : ''}`}>
+                    <div className={`not-kg-prose py-3 ${color === 'none' ? '' : 'mx-5'}`}>
                         <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Sponsored</p>
                     </div>
                 )}
 
-                <div className={`flex ${layout === 'immersive' ? 'flex-col' : 'flex-row'} gap-5 py-5 ${hasSponsorLabel || !hasBackground ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${hasBackground ? 'mx-5' : 'border-b border-grey-300 dark:border-grey-800'}`}>
+                <div className={`flex ${layout === 'immersive' ? 'flex-col' : 'flex-row'} gap-5 py-5 ${color === 'none' || hasSponsorLabel ? 'border-t border-grey-300 dark:border-grey-800' : ''} ${color === 'none' ? 'border-b border-grey-300 dark:border-grey-800' : 'mx-5'}`}>
                     {hasImage && (
                         <div className={`block ${layout === 'immersive' ? 'w-full' : 'w-16 shrink-0'}`}>
                             <img alt="Placeholder" className={`${layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover'} rounded-md`} src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=4431&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
@@ -103,11 +153,13 @@ export function CtaCard({
                         selectedName={layout}
                         onClick={updateLayout}
                     />
-                    {/* Background setting */}
-                    <ToggleSetting
-                        isChecked={hasBackground}
+                    {/* Color picker */}
+                    <ColorOptionSetting
+                        buttons={calloutColorPicker}
+                        dataTestId='callout-color-picker'
                         label='Background'
-                        onChange={updateHasBackground}
+                        selectedName={color}
+                        onClick={handleColorChange}
                     />
                     {/* Sponsor label setting */}
                     <ToggleSetting
@@ -154,7 +206,7 @@ export function CtaCard({
 CtaCard.propTypes = {
     buttonText: PropTypes.string,
     buttonUrl: PropTypes.string,
-    hasBackground: PropTypes.bool,
+    color: PropTypes.oneOf(['none', 'grey', 'white', 'blue', 'green', 'yellow', 'red']),
     hasImage: PropTypes.bool,
     hasSponsorLabel: PropTypes.bool,
     isEditing: PropTypes.bool,
@@ -165,26 +217,26 @@ CtaCard.propTypes = {
     htmlEditorInitialState: PropTypes.object,
     updateButtonText: PropTypes.func,
     updateButtonUrl: PropTypes.func,
-    updateHasBackground: PropTypes.func,
     updateHasSponsorLabel: PropTypes.func,
     updateHasImage: PropTypes.func,
     updateShowButton: PropTypes.func,
-    updateLayout: PropTypes.func
+    updateLayout: PropTypes.func,
+    handleColorChange: PropTypes.func
 };
 
 CtaCard.defaultProps = {
     buttonText: '',
     buttonUrl: '',
-    hasBackground: false,
+    color: 'none',
     hasImage: false,
     hasSponsorLabel: false,
     isEditing: false,
     isSelected: false,
     layout: 'immersive',
     showButton: false,
-    updateHasBackground: () => {},
     updateHasSponsorLabel: () => {},
     updateHasImage: () => {},
     updateShowButton: () => {},
-    updateLayout: () => {}
+    updateLayout: () => {},
+    handleColorChange: () => {}
 };

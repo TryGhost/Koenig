@@ -64,7 +64,7 @@ const Template = ({display, value, ...args}) => {
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
                     <CardWrapper 
                         IndicatorIcon={EmailIndicatorIcon} 
-                        {...(!args.hasBackground && {wrapperStyle: 'wide'})} 
+                        {...(args.color === 'none' && {wrapperStyle: 'wide'})} 
                         {...display} 
                         {...args}
                     >
@@ -72,18 +72,18 @@ const Template = ({display, value, ...args}) => {
                     </CardWrapper>
                 </div>
             </div>
-            <div className="kg-prose dark bg-black px-4 py-8">
+            {/* <div className="kg-prose dark bg-black px-4 py-8">
                 <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
                     <CardWrapper 
                         IndicatorIcon={EmailIndicatorIcon} 
-                        {...(!args.hasBackground && {wrapperStyle: 'wide'})} 
+                        {...(args.color === 'none' && {wrapperStyle: 'wide'})} 
                         {...display} 
                         {...args}
                     >
                         <CtaCard {...display} {...args} htmlEditor={htmlEditor} />
                     </CardWrapper>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };
@@ -93,9 +93,9 @@ Empty.args = {
     display: 'Editing',
     value: '',
     showButton: false,
-    hasBackground: false,
     hasImage: false,
     hasSponsorLabel: false,
+    color: 'green',
     layout: 'immersive',
     buttonText: '',
     buttonUrl: '',
@@ -109,7 +109,7 @@ Populated.args = {
     showButton: true,
     hasImage: true,
     hasSponsorLabel: true,
-    hasBackground: false,
+    color: 'green',
     layout: 'immersive',
     buttonText: 'Upgrade',
     buttonUrl: 'https://ghost.org/',
