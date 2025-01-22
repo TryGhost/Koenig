@@ -1,5 +1,5 @@
-import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
-import {expect, test} from '@playwright/test';
+import {assertHTML, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
+import {test} from '@playwright/test';
 
 test.describe('Call To Action Card', async () => {
     let page;
