@@ -15,7 +15,9 @@ export const CallToActionNodeComponent = ({
     imageUrl,
     layout,
     showButton,
-    textValue
+    textValue,
+    buttonColor,
+    htmlEditor
 }) => {
     // const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
@@ -24,7 +26,7 @@ export const CallToActionNodeComponent = ({
     return (
         <>
             <CtaCard
-                buttonColor={''}
+                buttonColor={buttonColor}
                 buttonText={buttonText}
                 buttonUrl={buttonUrl}
                 color={backgroundColor}
@@ -33,7 +35,7 @@ export const CallToActionNodeComponent = ({
                 hasBackground={hasBackground}
                 hasImage={hasImage}
                 hasSponsorLabel={hasSponsorLabel}
-                htmlEditor={() => {}}
+                htmlEditor={htmlEditor}
                 imageSrc={imageUrl}
                 isEditing={isEditing}
                 isSelected={isSelected}

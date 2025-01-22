@@ -1,12 +1,16 @@
 import CalloutCardIcon from '../assets/icons/kg-card-type-callout.svg?react';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
+import {BASIC_NODES} from '../index.js';
 import {CallToActionNode as BaseCallToActionNode} from '@tryghost/kg-default-nodes';
 import {CallToActionNodeComponent} from './CallToActionNodeComponent';
 import {createCommand} from 'lexical';
+import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_CTA_COMMAND = createCommand();
 
 export class CallToActionNode extends BaseCallToActionNode {
+    __htmlEditor;
+    __htmlEditorInitialState;
     // TODO: Improve the copy of the menu item
     static kgMenu = {
         label: 'Call to Action',
@@ -27,6 +31,18 @@ export class CallToActionNode extends BaseCallToActionNode {
         return CalloutCardIcon;
     }
 
+    constructor(dataset = {}, key) {
+        super(dataset, key);
+
+        // set up nested editor instances
+        setupNestedEditor(this, '__htmlEditor', {editor: dataset.htmlEditor, nodes: BASIC_NODES});
+
+        // populate nested editors on initial construction
+        if (!dataset.htmlEditor) {
+            populateNestedEditor(this, '__htmlEditor', dataset.html || '<p>Hey <code>{first_name, "there"}</code>,</p>');
+        }
+    }
+
     decorate() {
         return (
             <KoenigCardWrapper
@@ -35,11 +51,13 @@ export class CallToActionNode extends BaseCallToActionNode {
             >
                 <CallToActionNodeComponent
                     backgroundColor={this.backgroundColor}
+                    buttonColor={this.buttonColor}
                     buttonText={this.buttonText}
                     buttonUrl={this.buttonUrl}
                     hasBackground={this.hasBackground}
                     hasImage={this.hasImage}
                     hasSponsorLabel={this.hasSponsorLabel}
+                    htmlEditor={this.__htmlEditor}
                     imageUrl={this.imageUrl}
                     layout={this.layout}
                     nodeKey={this.getKey()}
