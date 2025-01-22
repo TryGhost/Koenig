@@ -19,7 +19,10 @@ export class CallToActionNode extends BaseCallToActionNode {
         insertCommand: INSERT_CTA_COMMAND,
         matches: ['cta', 'call-to-action'],
         priority: 10,
-        shortcut: '/cta'
+        shortcut: '/cta',
+        isHidden: ({config}) => {
+            return !(config?.feature?.contentVisibilityAlpha === true);
+        }
     };
 
     static getType() {
