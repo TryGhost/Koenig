@@ -17,7 +17,7 @@ export class CallToActionNode extends BaseCallToActionNode {
         desc: 'Add a call to action to your post',
         Icon: CalloutCardIcon, // TODO: Replace with correct icon
         insertCommand: INSERT_CTA_COMMAND,
-        matches: ['cta'],
+        matches: ['cta', 'call-to-action'],
         priority: 10,
         shortcut: '/cta'
     };
