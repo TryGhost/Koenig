@@ -1,16 +1,15 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {$getRoot} = require('lexical');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
+const {dom} = require('../test-utils');
 
-const {CallToActionNode, $isCallToActionNode, $createCallToActionNode} = require('../../');
+const {createHeadlessEditor} = require('@lexical/headless');
+
+const {CallToActionNode, $isCallToActionNode} = require('../../');
 
 const editorNodes = [CallToActionNode];
 
 describe('CallToActionNode', function () {
     let editor;
     let dataset;
-    let exportOptions;
+    let exportOptions; // eslint-disable-line no-unused-vars
 
     // NOTE: all tests should use this function, without it you need manual
     // try/catch and done handling to avoid assertion failures not triggering
@@ -61,6 +60,7 @@ describe('CallToActionNode', function () {
             callToActionNode.buttonUrl.should.equal(dataset.buttonUrl);
             callToActionNode.hasSponsorLabel.should.equal(dataset.hasSponsorLabel);
             callToActionNode.hasBackground.should.equal(dataset.hasBackground);
+            callToActionNode.backgroundColor.should.equal(dataset.backgroundColor);
             callToActionNode.hasImage.should.equal(dataset.hasImage);
             callToActionNode.imageUrl.should.equal(dataset.imageUrl);
         }));
@@ -93,6 +93,10 @@ describe('CallToActionNode', function () {
 
             callToActionNode.hasBackground.should.equal(false);
             callToActionNode.hasBackground = true;
+
+            callToActionNode.backgroundColor.should.equal('#123456');
+            callToActionNode.backgroundColor = '#654321';
+            callToActionNode.backgroundColor.should.equal('#654321');
 
             callToActionNode.hasImage.should.equal(false);
             callToActionNode.hasImage = true;
