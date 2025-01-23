@@ -63,4 +63,16 @@ test.describe('Call To Action Card', async () => {
         await page.fill('[data-testid="button-text"]', 'Click me');
         expect(await page.textContent('[data-testid="cta-button"]')).toBe('Click me');
     });
+
+    test('can set button url', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        await page.click('[data-testid="button-settings"]');
+        await page.fill('[data-testid="button-url"]', 'https://example.com');
+        // Check that the `data-test-cta-button-current-url` attribute is set correctly
+        const buttonContainer = await page.$('[data-test-cta-button-current-url]');
+        const currentUrl = await buttonContainer.getAttribute('data-test-cta-button-current-url');
+        // Assert the value
+        expect(currentUrl).toBe('https://example.com');
+    });
 });
