@@ -83,14 +83,11 @@ test.describe('Call To Action Card', async () => {
         const buttonTextInput = await page.getByTestId('button-url');
         await expect(buttonTextInput).toHaveValue('');
 
-        // this is dependent on the test values inserted in the node
-        await page.getByTestId('button-url').fill('Ho');
-        // // this is too fast, need to try two inputs or add a delay before checking the suggested options
-        await page.getByTestId('button-url').fill('me');
+        await page.getByTestId('button-url').fill('Home');
+        await page.waitForSelector('[data-testid="button-url-listOption"]');
+
         await expect(await page.getByTestId('button-url-listOption')).toContainText('Homepage');
-        // click on homepage
         await page.getByTestId('button-url-listOption').click();
-        // check if the url is set
         const buttonContainer = await page.$('[data-test-cta-button-current-url]');
         const currentUrl = await buttonContainer.getAttribute('data-test-cta-button-current-url');
         // current view can be any url, so check for a valid url
