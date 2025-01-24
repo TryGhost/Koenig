@@ -160,4 +160,18 @@ test.describe('Call To Action Card', async () => {
         await page.fill('input[aria-label="Color value"]', 'ff0000');
         expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(255, 0, 0);');
     });
+
+    test('button text colour changes with button colour', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        await page.click('[data-testid="button-settings"]');
+        await page.fill('[data-testid="button-text"]', 'Click me');
+        await page.click('button[aria-label="Pick color"]');
+        await page.fill('input[aria-label="Color value"]', 'FFFFFF');
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(255, 255, 255);');
+
+        // change button colour to black
+        await page.click('[data-testid="cta-button-color"] button[title="Black"]');
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(0, 0, 0);');
+    });
 });
