@@ -54,6 +54,13 @@ export const CallToActionNodeComponent = ({
         });
     };
 
+    const handleButtonColorChange = (val) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.buttonColor = val;
+        });
+    };
+
     return (
         <>
             <CtaCard
@@ -61,7 +68,7 @@ export const CallToActionNodeComponent = ({
                 buttonText={buttonText}
                 buttonUrl={buttonUrl}
                 color={backgroundColor}
-                handleButtonColor={() => {}}
+                handleButtonColor={handleButtonColorChange}
                 handleColorChange={() => {}}
                 hasBackground={hasBackground}
                 hasImage={hasImage}
