@@ -64,7 +64,7 @@ export function CtaCard({
     buttonUrl,
     buttonColor,
     buttonTextColor,
-    color, //
+    color,
     hasSponsorLabel,
     htmlEditor,
     htmlEditorInitialState,
