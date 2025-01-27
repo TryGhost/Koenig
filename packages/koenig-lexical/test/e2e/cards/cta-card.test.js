@@ -204,6 +204,5 @@ test.describe('Call To Action Card', async () => {
             await page.click(`[data-test-id="${color.testId}"]`);
             await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(color.expectedClass));
         }
-
     });
 });

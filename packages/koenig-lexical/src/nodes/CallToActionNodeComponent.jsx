@@ -67,6 +67,8 @@ export const CallToActionNodeComponent = ({
             const node = $getNodeByKey(nodeKey);
             // get the current value and toggle it
             node.hasSponsorLabel = !node.hasSponsorLabel;
+        });
+    };
     const handleBackgroundColorChange = (val) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
