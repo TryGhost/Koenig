@@ -1,5 +1,9 @@
+import path from 'path';
 import {assertHTML, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import {fileURLToPath} from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test.describe('Call To Action Card', async () => {
     let page;
@@ -204,5 +208,25 @@ test.describe('Call To Action Card', async () => {
             await page.click(`[data-test-id="${color.testId}"]`);
             await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(color.expectedClass));
         }
+    });
+
+    test('can add and remove CTA Card image', async function () {
+        const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
+
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+
+        const fileChooserPromise = page.waitForEvent('filechooser');
+
+        await page.click('[data-testid="media-upload-placeholder"]');
+
+        const fileChooser = await fileChooserPromise;
+        await fileChooser.setFiles([filePath]);
+
+        const imgLocator = page.locator('[data-kg-card="call-to-action"] img[src^="blob:"]');
+        const imgElement = await imgLocator.first();
+        await expect(imgElement).toHaveAttribute('src', /blob:/);
+        await page.click('[data-testid="media-upload-remove"]');
+        await expect(imgLocator).not.toBeVisible();
     });
 });
