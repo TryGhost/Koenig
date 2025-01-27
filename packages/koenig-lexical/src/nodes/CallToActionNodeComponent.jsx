@@ -73,6 +73,7 @@ export const CallToActionNodeComponent = ({
             node.hasSponsorLabel = !node.hasSponsorLabel;
         });
     };
+
     const handleBackgroundColorChange = (val) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -99,6 +100,11 @@ export const CallToActionNodeComponent = ({
             const node = $getNodeByKey(nodeKey);
             node.imageUrl = '';
             node.hasImage = false;
+        });
+    };
+    const handleUpdatingLayout = (val) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
         });
     };
 
@@ -128,11 +134,12 @@ export const CallToActionNodeComponent = ({
                 updateButtonText={handleButtonTextChange}
                 updateButtonUrl={handleButtonUrlChange}
                 updateHasSponsorLabel={handleHasSponsorLabelChange}
-                updateLayout={() => {}}
+                updateLayout={handleUpdatingLayout}
                 updateShowButton={toggleShowButton}
                 onFileChange={onFileChange}
                 onRemoveMedia={onRemoveMedia}
             />
+
             <ActionToolbar
                 data-kg-card-toolbar="button"
                 isVisible={showSnippetToolbar}
