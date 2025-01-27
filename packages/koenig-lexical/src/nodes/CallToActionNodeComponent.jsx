@@ -63,6 +63,14 @@ export const CallToActionNodeComponent = ({
         });
     };
 
+    const handleHasSponsorLabelChange = (val) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            // get the current value and toggle it
+            node.hasSponsorLabel = !node.hasSponsorLabel;
+        });
+    };
+
     return (
         <>
             <CtaCard
@@ -86,7 +94,7 @@ export const CallToActionNodeComponent = ({
                 text={textValue}
                 updateButtonText={handleButtonTextChange}
                 updateButtonUrl={handleButtonUrlChange}
-                updateHasSponsorLabel={() => {}}
+                updateHasSponsorLabel={handleHasSponsorLabelChange}
                 updateLayout={() => {}}
                 updateShowButton={toggleShowButton}
             />
