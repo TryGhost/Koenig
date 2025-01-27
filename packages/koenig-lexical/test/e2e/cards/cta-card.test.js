@@ -229,6 +229,7 @@ test.describe('Call To Action Card', async () => {
         await page.click('[data-testid="media-upload-remove"]');
         await expect(imgLocator).not.toBeVisible();
     });
+
     test('default layout is minimal', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
@@ -261,5 +262,23 @@ test.describe('Call To Action Card', async () => {
         // find data-cta-layout and check if it data-cta-layout="minimal"
         await expect(page.locator(firstChildSelector)).toHaveAttribute('data-cta-layout', 'minimal');
         expect(await page.getAttribute('[data-testid="cta-card-content-editor"]', 'class')).toContain('text-left');
+    });
+
+    test('has image preview', async function () {
+        const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
+
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+
+        const fileChooserPromise = page.waitForEvent('filechooser');
+
+        await page.click('[data-testid="media-upload-placeholder"]');
+
+        const fileChooser = await fileChooserPromise;
+        await fileChooser.setFiles([filePath]);
+
+        await page.waitForSelector('[data-testid="media-upload-filled"]');
+        const previewImage = await page.locator('[data-testid="media-upload-filled"] img');
+        await expect(previewImage).toBeVisible();
     });
 });

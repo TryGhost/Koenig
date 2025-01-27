@@ -105,6 +105,7 @@ export const CallToActionNodeComponent = ({
     const handleUpdatingLayout = (val) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
+            node.layout = val;
         });
     };
 
