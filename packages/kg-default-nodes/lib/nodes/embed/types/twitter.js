@@ -11,6 +11,7 @@ export default function render(node, document, options) {
 
     const tweetData = metadata && metadata.tweet_data;
     const isEmail = options.target === 'email';
+    const source = tweetData && tweetData.source;
 
     if (tweetData && isEmail) {
         const tweetId = tweetData.id;
@@ -39,7 +40,8 @@ export default function render(node, document, options) {
         }
         const hasPoll = tweetData.attachments && tweetData.attachments && tweetData.attachments.poll_ids;
 
-        if (mentions) {
+        // for compatibility with previous api provider
+        if (mentions && source !== 'rettiwt') {
             let last = 0;
             let parts = [];
             let content = toArray(tweetContent);
@@ -90,6 +92,40 @@ export default function render(node, document, options) {
                 }
                 return partContent;
             }, '');
+        }
+
+        // for compatibility with new api provider
+        if (tweetData && source === 'rettiwt') {
+            const wrapWithStyle = (text, style) => `<span style="${style}">${text}</span>`;
+        
+            let formattedContent = tweetContent.replace(/\n/g, '<br>');
+        
+            const tcoLinks = formattedContent.match(/https:\/\/t\.co\/[a-zA-Z0-9]+/g) || [];
+            const displayUrls = urls.map(urlObj => urlObj.display_url);
+            tcoLinks.forEach((tcoLink, index) => {
+                if (index < displayUrls.length) {
+                    formattedContent = formattedContent.replace(
+                        tcoLink,
+                        wrapWithStyle(displayUrls[index], 'color: #1DA1F2; word-break: break-all;')
+                    );
+                }
+            });
+
+            mentions.forEach(({username}) => {
+                formattedContent = formattedContent.replace(
+                    `@${username}`,
+                    wrapWithStyle(`@${username}`, 'color: #1DA1F2;')
+                );
+            });
+
+            hashtags.forEach(({tag}) => {
+                formattedContent = formattedContent.replace(
+                    `#${tag}`,
+                    wrapWithStyle(`#${tag}`, 'color: #1DA1F2;')
+                );
+            });
+
+            tweetContent = formattedContent;
         }
 
         html = `
