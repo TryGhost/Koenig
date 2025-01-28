@@ -98,10 +98,11 @@ describe('CallToActionNode', function () {
             callToActionNode.buttonTextColor = 'black';
             callToActionNode.buttonTextColor.should.equal('black');
 
+            callToActionNode.hasSponsorLabel.should.equal(true);
+            callToActionNode.hasSponsorLabel = false;
             callToActionNode.hasSponsorLabel.should.equal(false);
-            callToActionNode.hasSponsorLabel = true;
 
-            callToActionNode.backgroundColor.should.equal('none');
+            callToActionNode.backgroundColor.should.equal('grey');
             callToActionNode.backgroundColor = '#654321';
             callToActionNode.backgroundColor.should.equal('#654321');
 
