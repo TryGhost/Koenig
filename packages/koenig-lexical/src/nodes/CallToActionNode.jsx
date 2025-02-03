@@ -49,7 +49,6 @@ export class CallToActionNode extends BaseCallToActionNode {
 
     getDataset() {
         const dataset = super.getDataset();
-        console.log('dataset', dataset);
         // client-side only data properties such as nested editors
         const self = this.getLatest();
         dataset.ctaHtmlEditor = self.__ctaHtmlEditor;
