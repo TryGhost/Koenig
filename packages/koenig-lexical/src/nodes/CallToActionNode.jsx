@@ -52,7 +52,7 @@ export class CallToActionNode extends BaseCallToActionNode {
         // client-side only data properties such as nested editors
         const self = this.getLatest();
         dataset.ctaHtmlEditor = self.__ctaHtmlEditor;
-        dataset.ctaHtmlEditorIntitialState = self.__ctaHtmlEditorInitialState;
+        dataset.ctaHtmlEditorInitialState = self.__ctaHtmlEditorInitialState;
 
         return dataset;
     }
