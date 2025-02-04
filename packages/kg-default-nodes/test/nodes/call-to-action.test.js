@@ -289,7 +289,7 @@ describe('CallToActionNode', function () {
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                 layout: 'minimal',
                 showButton: true,
-                textValue: '<p><span style=\"white-space: pre-wrap;\">This is a new CTA Card.</span></p>',
+                textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card.</span></p>',
                 visibility: {
                     web: {
                         nonMember: true,
