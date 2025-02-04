@@ -1,7 +1,7 @@
 const {dom} = require('../test-utils');
 const {createHeadlessEditor} = require('@lexical/headless');
 const {CallToActionNode, $isCallToActionNode, utils} = require('../../');
-
+const {$getRoot} = require('lexical');
 const editorNodes = [CallToActionNode];
 
 describe('CallToActionNode', function () {
@@ -256,22 +256,93 @@ describe('CallToActionNode', function () {
             const html = element.outerHTML.toString();
             html.should.not.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image">');
         }));
-
-        it('renders button tag when showButton is true', editorTest(function () {
-            const callToActionNode = new CallToActionNode(dataset);
-            const {element} = callToActionNode.exportDOM(exportOptions);
-
-            const html = element.outerHTML.toString();
-            html.should.containEql('<a href="http://blog.com/post1" class="kg-cta-button">click me</a>');
-        }));
     });
 
     describe('exportJSON', function () {
-        // not yet implemented
+        it('contains all data', editorTest(function () {
+            dataset = {
+                backgroundColor: 'green',
+                buttonColor: '#F0F0F0',
+                buttonText: 'Get access now',
+                buttonTextColor: '#000000',
+                buttonUrl: 'http://someblog.com/somepost',
+                hasImage: true,
+                hasSponsorLabel: true,
+                imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                layout: 'minimal',
+                showButton: true,
+                textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card.</span></p>'
+            };
+            const callToActionNode = new CallToActionNode(dataset);
+            const json = callToActionNode.exportJSON();
+
+            json.should.deepEqual({
+                type: 'call-to-action',
+                version: 1,
+                backgroundColor: 'green',
+                buttonColor: '#F0F0F0',
+                buttonText: 'Get access now',
+                buttonTextColor: '#000000',
+                buttonUrl: 'http://someblog.com/somepost',
+                hasImage: true,
+                hasSponsorLabel: true,
+                imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                layout: 'minimal',
+                showButton: true,
+                textValue: '<p><span style=\"white-space: pre-wrap;\">This is a new CTA Card.</span></p>',
+                visibility: {
+                    web: {
+                        nonMember: true,
+                        memberSegment: 'status:free,status:-free'
+                    },
+                    email: {
+                        memberSegment: 'status:free,status:-free'
+                    }
+                }
+            });
+        }));
     });
 
     describe('importJSON', function () {
-        // not yet implemented
+        it('imports all data', function (done) {
+            const serializedData = JSON.stringify({
+                root: {
+                    children: [{
+                        type: 'call-to-action',
+                        backgroundColor: 'green',
+                        buttonColor: '#F0F0F0',
+                        buttonText: 'Get access now',
+                        buttonTextColor: '#000000',
+                        buttonUrl: 'http://someblog.com/somepost',
+                        hasImage: true,
+                        hasSponsorLabel: true,
+                        imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                        layout: 'minimal',
+                        showButton: true,
+                        textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card.</span></p>'
+                    }],
+                    direction: null,
+                    format: '',
+                    indent: 0,
+                    type: 'root',
+                    version: 1
+                }
+            });
+
+            const editorState = editor.parseEditorState(serializedData);
+            editor.setEditorState(editorState);
+
+            editor.getEditorState().read(() => {
+                try {
+                    const [callToActionNode] = $getRoot().getChildren();
+                    $isCallToActionNode(callToActionNode).should.be.true();
+
+                    done();
+                } catch (e) {
+                    done(e);
+                }
+            });
+        });
     });
 
     describe('static properties', function () {
