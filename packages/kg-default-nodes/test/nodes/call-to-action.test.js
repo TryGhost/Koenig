@@ -174,7 +174,7 @@ describe('CallToActionNode', function () {
         }));
     });
 
-    describe.only('exportDOM', function () {
+    describe('exportDOM', function () {
         it('has all data attributes in Web', editorTest(function () {
             dataset = {
                 backgroundColor: 'green',
@@ -230,6 +230,39 @@ describe('CallToActionNode', function () {
             html.should.containEql('http://someblog.com/somepost');
             html.should.containEql('/content/images/2022/11/koenig-lexical.jpg'); // because hasImage is true
             html.should.containEql('This is a new CTA Card via email.');
+        }));
+
+        it('parses textValue correctly', editorTest(function () {
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('This is a cool advertisement');
+        }));
+
+        it('renders img tag when hasImage is true', editorTest(function () {
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image">');
+        }));
+
+        it('does not render img tag when hasImage is false', editorTest(function () {
+            dataset.hasImage = false;
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.not.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image">');
+        }));
+
+        it('renders button tag when showButton is true', editorTest(function () {
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('<a href="http://blog.com/post1" class="kg-cta-button">click me</a>');
         }));
     });
 
