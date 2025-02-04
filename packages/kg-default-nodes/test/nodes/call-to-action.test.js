@@ -360,6 +360,9 @@ describe('CallToActionNode', function () {
     });
 
     describe('getTextContent', function () {
-        // not yet implemented
+        it('returns textValue', editorTest(function () {
+            const callToActionNode = new CallToActionNode(dataset);
+            callToActionNode.getTextContent().should.equal('This is a cool advertisement\n\n');
+        }));
     });
 });
