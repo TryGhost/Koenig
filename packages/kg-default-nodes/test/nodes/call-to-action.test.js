@@ -9,7 +9,7 @@ const editorNodes = [CallToActionNode];
 describe('CallToActionNode', function () {
     let editor;
     let dataset;
-    let exportOptions; // eslint-disable-line no-unused-vars
+    let exportOptions;
 
     // NOTE: all tests should use this function, without it you need manual
     // try/catch and done handling to avoid assertion failures not triggering
@@ -41,6 +41,7 @@ describe('CallToActionNode', function () {
             imageUrl: 'http://blog.com/image1.jpg'
         };
         exportOptions = {
+            exportFormat: 'html',
             dom
         };
     });
@@ -151,8 +152,62 @@ describe('CallToActionNode', function () {
         }));
     });
 
-    describe('exportDOM', function () {
-        // not yet implemented
+    describe.only('exportDOM', function () {
+        it('has all data attributes in Web', editorTest(function () {
+            dataset = {
+                backgroundColor: 'green',
+                buttonColor: '#F0F0F0',
+                buttonText: 'Get access now',
+                buttonTextColor: '#000000',
+                buttonUrl: 'http://someblog.com/somepost',
+                hasImage: true,
+                hasSponsorLabel: true,
+                imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                layout: 'minimal',
+                showButton: true,
+                textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card.</span></p>'
+            };
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('data-layout="minimal"');
+            html.should.containEql('background-color: green');
+            html.should.containEql('background-color: #F0F0F0');
+            html.should.containEql('Get access now');
+            html.should.containEql('http://someblog.com/somepost');
+            html.should.containEql('/content/images/2022/11/koenig-lexical.jpg');
+            html.should.containEql('This is a new CTA Card.'); // because hasImage is true
+            html.should.containEql('Sponsored'); // because hasSponsorLabel is true
+        }));
+
+        it('has all data attributes in Email', editorTest(function () {
+            exportOptions.exportFormat = 'email';
+            dataset = {
+                backgroundColor: 'green',
+                buttonColor: '#F0F0F0',
+                buttonText: 'Get access now',
+                buttonTextColor: '#000000',
+                buttonUrl: 'http://someblog.com/somepost',
+                hasImage: true,
+                hasSponsorLabel: true,
+                imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                layout: 'minimal',
+                showButton: true,
+                textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card.</span></p>'
+            };
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('style="background-color: green;');
+            html.should.containEql('style="background-color: #F0F0F0;');
+            html.should.containEql('Get access now');
+            html.should.containEql('http://someblog.com/somepost');
+            html.should.containEql('/content/images/2022/11/koenig-lexical.jpg');
+            html.should.containEql('This is a new CTA Card.');
+            html.should.containEql('Sponsored');
+        }));
     });
 
     describe('exportJSON', function () {
