@@ -20,7 +20,7 @@ function ctaCardTemplate(dataset) {
             ` : ''}
             ${dataset.hasSponsorLabel ? `
                 <div class="kg-sponsor-label">
-                    ${dataset.customSponsorLabel}
+                    ${dataset.sponsorLabel}
                 </div>
             ` : ''}
         </div>
@@ -48,7 +48,7 @@ function emailCTATemplate(dataset) {
             ` : ''}
             ${dataset.hasSponsorLabel ? `
                 <div class="sponsor-label" style="margin-top: 8px; font-size: 12px; color: #888;">
-                    ${dataset.customSponsorLabel}
+                    ${dataset.sponsorLabel}
                 </div>
             ` : ''}
         </div>
@@ -69,7 +69,7 @@ export function renderCallToActionNode(node, options = {}) {
         buttonTextColor: node.buttonTextColor,
         hasSponsorLabel: node.hasSponsorLabel,
         backgroundColor: node.backgroundColor,
-        customSponsorLabel: node.customSponsorLabel,
+        sponsorLabel: node.sponsorLabel,
         hasImage: node.hasImage,
         imageUrl: node.imageUrl,
         textColor: node.textColor

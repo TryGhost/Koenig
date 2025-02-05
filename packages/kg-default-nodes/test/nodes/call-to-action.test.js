@@ -28,7 +28,7 @@ describe('CallToActionNode', function () {
         dataset = {
             layout: 'minimal',
             textValue: 'This is a cool advertisement',
-            customSponsorLabel: '<p>Sponsored</p>',
+            sponsorLabel: '<p>Sponsored</p>',
             showButton: true,
             buttonText: 'click me',
             buttonUrl: 'http://blog.com/post1',
@@ -62,7 +62,7 @@ describe('CallToActionNode', function () {
             callToActionNode.buttonColor.should.equal(dataset.buttonColor);
             callToActionNode.buttonTextColor.should.equal(dataset.buttonTextColor);
             callToActionNode.hasSponsorLabel.should.equal(dataset.hasSponsorLabel);
-            callToActionNode.customSponsorLabel.should.equal(dataset.customSponsorLabel);
+            callToActionNode.sponsorLabel.should.equal(dataset.sponsorLabel);
             callToActionNode.backgroundColor.should.equal(dataset.backgroundColor);
             callToActionNode.hasImage.should.equal(dataset.hasImage);
             callToActionNode.imageUrl.should.equal(dataset.imageUrl);
@@ -92,9 +92,9 @@ describe('CallToActionNode', function () {
             callToActionNode.buttonUrl = 'http://blog.com/post1';
             callToActionNode.buttonUrl.should.equal('http://blog.com/post1');
 
-            callToActionNode.customSponsorLabel.should.equal('<p>Sponsored</p>');
-            callToActionNode.customSponsorLabel = 'This post is brought to you by our sponsors';
-            callToActionNode.customSponsorLabel.should.equal('This post is brought to you by our sponsors');
+            callToActionNode.sponsorLabel.should.equal('<p>Sponsored</p>');
+            callToActionNode.sponsorLabel = 'This post is brought to you by our sponsors';
+            callToActionNode.sponsorLabel.should.equal('This post is brought to you by our sponsors');
 
             callToActionNode.buttonColor.should.equal('');
             callToActionNode.buttonColor = 'red';
@@ -190,7 +190,7 @@ describe('CallToActionNode', function () {
                 buttonUrl: 'http://someblog.com/somepost',
                 hasImage: true,
                 hasSponsorLabel: true,
-                customSponsorLabel: '<p>Sponsored by</p>',
+                sponsorLabel: '<p>Sponsored by</p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                 layout: 'minimal',
                 showButton: true,
@@ -222,7 +222,7 @@ describe('CallToActionNode', function () {
                 buttonUrl: 'http://someblog.com/somepost',
                 hasImage: true,
                 hasSponsorLabel: true,
-                customSponsorLabel: '<p>Sponsored</p>',
+                sponsorLabel: '<p>Sponsored</p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                 layout: 'minimal',
                 showButton: true,
@@ -278,7 +278,7 @@ describe('CallToActionNode', function () {
                 buttonUrl: 'http://someblog.com/somepost',
                 hasImage: true,
                 hasSponsorLabel: true,
-                customSponsorLabel: '<p>This post is brought to you by our sponsors</p>',
+                sponsorLabel: '<p>This post is brought to you by our sponsors</p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                 layout: 'minimal',
                 showButton: true,
@@ -297,7 +297,7 @@ describe('CallToActionNode', function () {
                 buttonUrl: 'http://someblog.com/somepost',
                 hasImage: true,
                 hasSponsorLabel: true,
-                customSponsorLabel: '<p>This post is brought to you by our sponsors</p>',
+                sponsorLabel: '<p>This post is brought to you by our sponsors</p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                 layout: 'minimal',
                 showButton: true,
@@ -328,7 +328,7 @@ describe('CallToActionNode', function () {
                         buttonUrl: 'http://someblog.com/somepost',
                         hasImage: true,
                         hasSponsorLabel: true,
-                        customSponsorLabel: '<p>This post is brought to you by our sponsors</p>',
+                        sponsorLabel: '<p>This post is brought to you by our sponsors</p>',
                         imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                         layout: 'minimal',
                         showButton: true,
