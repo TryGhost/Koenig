@@ -14,6 +14,7 @@ export class CallToActionNode extends generateDecoratorNode({
         {name: 'buttonColor', default: ''},
         {name: 'buttonTextColor', default: ''},
         {name: 'hasSponsorLabel', default: true},
+        {name: 'customSponsorLabel', default: '<p>Sponsored</p>'},
         {name: 'backgroundColor', default: 'grey'},
         {name: 'hasImage', default: false},
         {name: 'imageUrl', default: ''}
