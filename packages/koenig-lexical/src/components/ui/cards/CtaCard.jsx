@@ -352,7 +352,9 @@ CtaCard.propTypes = {
     handleButtonColor: PropTypes.func,
     onFileChange: PropTypes.func,
     setFileInputRef: PropTypes.func,
-    onRemoveMedia: PropTypes.func
+    onRemoveMedia: PropTypes.func,
+    sponsorLabelHtmlEditor: PropTypes.object,
+    sponsorLabelHtmlEditorInitialState: PropTypes.object
 };
 
 CtaCard.defaultProps = {
