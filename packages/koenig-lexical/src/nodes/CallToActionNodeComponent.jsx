@@ -113,7 +113,7 @@ export const CallToActionNodeComponent = ({
 
     React.useEffect(() => {
         htmlEditor.setEditable(isEditing);
-    }, [isEditing, htmlEditor, sponsorLabelHtmlEditor]);
+    }, [isEditing, htmlEditor]);
 
     return (
         <>
