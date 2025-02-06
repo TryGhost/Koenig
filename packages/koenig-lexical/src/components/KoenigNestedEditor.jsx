@@ -25,6 +25,7 @@ const KoenigNestedEditor = ({
     hasSettingsPanel = false,
     defaultKoenigEnterBehaviour = false,
     hiddenFormats = [],
+    useDefaultClasses = true,
     dataTestId,
     children
 }) => {
@@ -45,6 +46,7 @@ const KoenigNestedEditor = ({
                 isDragEnabled={false}
                 markdownTransformers={markdownTransformers}
                 placeholder={<Placeholder className={placeholderClassName} text={placeholderText} />}
+                useDefaultClasses={useDefaultClasses}
             >
                 {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
 

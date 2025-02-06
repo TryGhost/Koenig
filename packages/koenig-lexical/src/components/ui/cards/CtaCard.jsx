@@ -241,8 +241,9 @@ export function CtaCard({
                             initialEditorState={sponsorLabelHtmlEditorInitialState}
                             nodes='basic'
                             textClassName={clsx(
-                                'kg-prose w-full whitespace-normal bg-transparent font-sans !text-2xs text-grey-900/40 dark:text-grey-100/40'
+                                'not-kg-prose w-full whitespace-normal bg-transparent font-sans !text-2xs text-grey-900/40 dark:text-grey-100/40'
                             )}
+                            useDefaultClasses={false}
                         >
                             <ReplacementStringsPlugin />
                         </KoenigNestedEditor>
@@ -261,13 +262,13 @@ export function CtaCard({
                             'block',
                             layout === 'immersive' ? 'w-full' : 'w-16 shrink-0'
                         )}>
-                            <img 
-                                alt="Placeholder" 
+                            <img
+                                alt="Placeholder"
                                 className={clsx(
                                     layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover',
                                     'rounded-md'
-                                )} 
-                                src={imageSrc} 
+                                )}
+                                src={imageSrc}
                             />
                         </div>
                     )}
@@ -293,10 +294,10 @@ export function CtaCard({
                         {/* Button */}
                         { (showButton && (isEditing || (buttonText && buttonUrl))) &&
                             <div data-test-cta-button-current-url={buttonUrl}>
-                                <Button 
-                                    color={'accent'} 
-                                    dataTestId="cta-button" 
-                                    placeholder="Add button text" 
+                                <Button
+                                    color={'accent'}
+                                    dataTestId="cta-button"
+                                    placeholder="Add button text"
                                     size={layout === 'immersive' ? 'medium' : 'small'}
                                     style={buttonColor ? {
                                         backgroundColor: buttonColor === 'accent' ? 'var(--accent-color)' : buttonColor,
@@ -336,7 +337,7 @@ CtaCard.propTypes = {
     buttonColor: PropTypes.string,
     buttonTextColor: PropTypes.string,
     color: PropTypes.oneOf(['none', 'grey', 'white', 'blue', 'green', 'yellow', 'red']),
-    hasSponsorLabel: PropTypes.bool,    
+    hasSponsorLabel: PropTypes.bool,
     imageSrc: PropTypes.string,
     isEditing: PropTypes.bool,
     layout: PropTypes.oneOf(['minimal', 'immersive']),
