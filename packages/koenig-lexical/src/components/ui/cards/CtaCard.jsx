@@ -9,6 +9,7 @@ import defaultTheme from '../../../themes/default';
 import {Button} from '../Button';
 import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+import {RestrictContentPlugin} from '../../../index.js';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
@@ -24,7 +25,7 @@ export const CTA_COLORS = {
 
 const sponsoredLabelTheme = {
     ...defaultTheme,
-    link: 'text-grey-900/40 dark:text-grey-100/40'
+    link: 'text-accent'
 };
 
 export const ctaColorPicker = [
@@ -237,7 +238,8 @@ export function CtaCard({
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
                     <div className={clsx(
-                        'mx-6 py-3',
+                        'py-3',
+                        {'mx-6': color !== 'none'}
                     )}>
                         <KoenigNestedEditor
                             autoFocus={true}
@@ -248,11 +250,11 @@ export function CtaCard({
                             initialTheme={sponsoredLabelTheme}
                             nodes='basic'
                             textClassName={clsx(
-                                'not-kg-prose w-full whitespace-normal bg-transparent font-sans !text-2xs text-grey-900/40 dark:text-grey-100/40'
+                                'not-kg-prose w-full whitespace-normal font-sans !text-xs font-semibold uppercase leading-8 tracking-normal text-grey-900/40 dark:text-grey-100/40'
                             )}
                             useDefaultClasses={false}
                         >
-                            <ReplacementStringsPlugin />
+                            <RestrictContentPlugin allowBr={false} paragraphs={1} />
                         </KoenigNestedEditor>
                     </div>
                 )}
