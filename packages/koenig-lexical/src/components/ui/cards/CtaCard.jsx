@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
 import clsx from 'clsx';
+import defaultTheme from '../../../themes/default';
 import {Button} from '../Button';
 import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
@@ -19,6 +20,11 @@ export const CTA_COLORS = {
     green: 'bg-green/10 border-transparent',
     yellow: 'bg-yellow/10 border-transparent',
     red: 'bg-red/10 border-transparent'
+};
+
+const sponsoredLabelTheme = {
+    ...defaultTheme,
+    link: 'text-grey-900/40 dark:text-grey-100/40'
 };
 
 export const ctaColorPicker = [
@@ -239,6 +245,7 @@ export function CtaCard({
                             hasSettingsPanel={true}
                             initialEditor={sponsorLabelHtmlEditor}
                             initialEditorState={sponsorLabelHtmlEditorInitialState}
+                            initialTheme={sponsoredLabelTheme}
                             nodes='basic'
                             textClassName={clsx(
                                 'not-kg-prose w-full whitespace-normal bg-transparent font-sans !text-2xs text-grey-900/40 dark:text-grey-100/40'
