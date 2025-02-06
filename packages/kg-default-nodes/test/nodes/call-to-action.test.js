@@ -28,7 +28,7 @@ describe('CallToActionNode', function () {
         dataset = {
             layout: 'minimal',
             textValue: 'This is a cool advertisement',
-            sponsorLabel: '<p>Sponsored</p>',
+            sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
             showButton: true,
             buttonText: 'click me',
             buttonUrl: 'http://blog.com/post1',
@@ -92,7 +92,7 @@ describe('CallToActionNode', function () {
             callToActionNode.buttonUrl = 'http://blog.com/post1';
             callToActionNode.buttonUrl.should.equal('http://blog.com/post1');
 
-            callToActionNode.sponsorLabel.should.equal('<p>Sponsored</p>');
+            callToActionNode.sponsorLabel.should.equal('<p><span style="white-space: pre-wrap;">SPONSORED</span></p>');
             callToActionNode.sponsorLabel = 'This post is brought to you by our sponsors';
             callToActionNode.sponsorLabel.should.equal('This post is brought to you by our sponsors');
 
@@ -222,7 +222,7 @@ describe('CallToActionNode', function () {
                 buttonUrl: 'http://someblog.com/somepost',
                 hasImage: true,
                 hasSponsorLabel: true,
-                sponsorLabel: '<p>Sponsored</p>',
+                sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
                 layout: 'minimal',
                 showButton: true,
@@ -237,7 +237,7 @@ describe('CallToActionNode', function () {
             html.should.containEql('background-color: #F0F0F0');
             html.should.containEql('Get access now');
             html.should.containEql('http://someblog.com/somepost');
-            html.should.containEql('Sponsored'); // because hasSponsorLabel is true
+            html.should.containEql('<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'); // because hasSponsorLabel is true
             html.should.containEql('/content/images/2022/11/koenig-lexical.jpg'); // because hasImage is true
             html.should.containEql('This is a new CTA Card via email.');
         }));

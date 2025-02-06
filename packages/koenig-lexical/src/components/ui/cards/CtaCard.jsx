@@ -68,6 +68,8 @@ export function CtaCard({
     hasSponsorLabel,
     htmlEditor,
     htmlEditorInitialState,
+    sponsorLabelHtmlEditor,
+    sponsorLabelHtmlEditorInitialState,
     imageSrc,
     isEditing,
     layout,
@@ -225,13 +227,25 @@ export function CtaCard({
                     'pb-3': color === 'none' && hasSponsorLabel
                 }
             )} data-cta-layout={layout}>
+
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
                     <div className={clsx(
-                        'not-kg-prose py-3',
-                        {'mx-6': color !== 'none'}
+                        'mx-6 py-3',
                     )}>
-                        <p className="font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey-900/40 dark:text-grey-100/40" data-testid="sponsor-label">Sponsored</p>
+                        <KoenigNestedEditor
+                            autoFocus={true}
+                            dataTestId={'sponsor-label-editor'}
+                            hasSettingsPanel={true}
+                            initialEditor={sponsorLabelHtmlEditor}
+                            initialEditorState={sponsorLabelHtmlEditorInitialState}
+                            nodes='basic'
+                            textClassName={clsx(
+                                'kg-prose w-full whitespace-normal bg-transparent font-sans !text-2xs text-grey-900/40 dark:text-grey-100/40'
+                            )}
+                        >
+                            <ReplacementStringsPlugin />
+                        </KoenigNestedEditor>
                     </div>
                 )}
 
