@@ -1,9 +1,10 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React, {useRef} from 'react';
-import {$getNodeByKey} from 'lexical';
+import {$createNodeSelection, $getNodeByKey, $setSelection} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {CtaCard} from '../components/ui/cards/CtaCard';
+import {LinkInput} from '../components/ui/LinkInput';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -23,12 +24,14 @@ export const CallToActionNodeComponent = ({
     buttonColor,
     htmlEditor,
     htmlEditorInitialState,
-    buttonTextColor
+    buttonTextColor,
+    href
 }) => {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+    const [showLink, setShowLink] = React.useState(false);
 
     const {visibilityOptions, toggleVisibility} = useVisibilityToggle(editor, nodeKey, cardConfig);
 
@@ -113,6 +116,26 @@ export const CallToActionNodeComponent = ({
         });
     };
 
+    const reselectCTACard = () => {
+        editor.update(() => {
+            const nodeSelection = $createNodeSelection();
+            nodeSelection.add(nodeKey);
+            $setSelection(nodeSelection);
+        });
+    };
+
+    const cancelLinkAndReselect = () => {
+        setShowLink(false);
+        reselectCTACard();
+    };
+
+    const setHref = (newHref) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.href = newHref;
+        });
+    };
+
     React.useEffect(() => {
         htmlEditor.setEditable(isEditing);
     }, [isEditing, htmlEditor]);
@@ -159,11 +182,29 @@ export const CallToActionNodeComponent = ({
             </ActionToolbar>
 
             <ActionToolbar
+                data-kg-card-toolbar="image"
+                isVisible={showLink}
+            >
+                <LinkInput
+                    cancel={cancelLinkAndReselect}
+                    href={href}
+                    update={(_href) => {
+                        setHref(_href);
+                        cancelLinkAndReselect();
+                    }}
+                />
+            </ActionToolbar>
+
+            <ActionToolbar
                 data-kg-card-toolbar="button"
                 isVisible={isSelected && !isEditing}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-button-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
+                    <ToolbarMenuSeparator />
+                    <ToolbarMenuItem icon="link" isActive={href || false} label="Link" onClick = {() => {
+                        setShowLink(true);
+                    }} />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
                     <ToolbarMenuItem
                         dataTestId="create-snippet"
