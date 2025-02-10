@@ -16,7 +16,8 @@ export class CallToActionNode extends generateDecoratorNode({
         {name: 'hasSponsorLabel', default: true},
         {name: 'backgroundColor', default: 'grey'},
         {name: 'hasImage', default: false},
-        {name: 'imageUrl', default: ''}
+        {name: 'imageUrl', default: ''},
+        {name: 'href', default: '', urlType: 'url'}
     ]
 }) {
     /* overrides */
