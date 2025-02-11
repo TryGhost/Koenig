@@ -157,7 +157,6 @@ export const CallToActionNodeComponent = ({
                 imageSrc={imageUrl}
                 imageUploader={imageUploader}
                 isEditing={isEditing}
-                isSelected={isSelected}
                 layout={layout}
                 setEditing={setEditing}
                 setFileInputRef={ref => fileInputRef.current = ref}
@@ -182,7 +181,7 @@ export const CallToActionNodeComponent = ({
             </ActionToolbar>
 
             <ActionToolbar
-                data-kg-card-toolbar="image"
+                data-kg-card-toolbar="link"
                 isVisible={showLink}
             >
                 <LinkInput
@@ -197,7 +196,7 @@ export const CallToActionNodeComponent = ({
 
             <ActionToolbar
                 data-kg-card-toolbar="button"
-                isVisible={isSelected && !isEditing}
+                isVisible={isSelected && !isEditing && !showSnippetToolbar && !showLink}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-button-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
