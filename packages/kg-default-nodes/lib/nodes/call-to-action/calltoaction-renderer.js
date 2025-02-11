@@ -44,29 +44,98 @@ function ctaCardTemplate(dataset) {
 
 // TODO - this is a placeholder for the email template
 function emailCTATemplate(dataset) {
-    const buttonStyle = dataset.buttonColor !== 'accent' ? `background-color: ${dataset.buttonColor};` : '';
+    const buttonStyle = dataset.buttonColor === 'accent' 
+        ? `color: ${dataset.buttonTextColor};` 
+        : `background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};`;
     const backgroundStyle = `background-color: ${dataset.backgroundColor};`;
 
+    const renderContent = () => {
+        if (dataset.layout === 'minimal') {
+            return `
+                <tr>
+                    <td class="kg-cta-content">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="kg-cta-content-wrapper">
+                            <tr>
+                                ${dataset.hasImage ? `
+                                    <td class="kg-cta-image-container" width="64">
+                                        <img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="64">
+                                    </td>
+                                ` : ''}
+                                <td class="kg-cta-content-inner">
+                                    <div class="kg-cta-text">
+                                        ${dataset.textValue}
+                                    </div>
+                                    ${dataset.showButton ? `
+                                        <a href="${dataset.buttonUrl}" 
+                                           class="kg-cta-button ${dataset.buttonColor === 'accent' ? 'kg-style-accent' : ''}"
+                                           style="${buttonStyle}">
+                                            ${dataset.buttonText}
+                                        </a>
+                                    ` : ''}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            `;
+        }
+
+        return `
+            <tr>
+                <td class="kg-cta-content">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="kg-cta-content-wrapper">
+                        ${dataset.hasImage ? `
+                            <tr>
+                                <td class="kg-cta-image-container">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td>
+                                                <img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        ` : ''}
+                        <tr>
+                            <td class="kg-cta-text">
+                                ${dataset.textValue}
+                            </td>
+                        </tr>
+                        ${dataset.showButton ? `
+                            <tr>
+                                <td>
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tr>
+                                            <td>
+                                                <a href="${dataset.buttonUrl}" 
+                                                   class="kg-cta-button ${dataset.buttonColor === 'accent' ? 'kg-style-accent' : ''}"
+                                                   style="${buttonStyle}">
+                                                    ${dataset.buttonText}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        ` : ''}
+                    </table>
+                </td>
+            </tr>
+        `;
+    };
+
     return `
-        <div class="cta-card-email" style="${backgroundStyle} padding: 16px; text-align: center; border-radius: 8px;">
-            ${dataset.hasImage ? `<img src="${dataset.imageUrl}" alt="CTA Image" style="max-width: 100%; border-radius: 4px;">` : ''}
-            <div class="cta-text" style="margin-top: 12px; color: ${dataset.textColor};">
-                ${dataset.textValue}
-            </div>
-            ${dataset.showButton ? `
-                <a href="${dataset.buttonUrl}" class="cta-button"
-                   style="display: inline-block; margin-top: 12px; padding: 10px 16px;
-                          ${buttonStyle} color: ${dataset.buttonTextColor}; text-decoration: none;
-                          border-radius: 4px;">
-                    ${dataset.buttonText}
-                </a>
-            ` : ''}
+        <table class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout}" border="0" cellpadding="0" cellspacing="0" width="100%" style="${backgroundStyle}">
             ${dataset.hasSponsorLabel ? `
-                <div class="sponsor-label" style="margin-top: 8px; font-size: 12px; color: #888;">
-                    Sponsored
-                </div>
+                <tr>
+                    <td class="kg-cta-sponsor-label">
+                        <p>Sponsored</p>
+                    </td>
+                </tr>
             ` : ''}
-        </div>
+            ${renderContent()}
+        </table>
     `;
 }
 
