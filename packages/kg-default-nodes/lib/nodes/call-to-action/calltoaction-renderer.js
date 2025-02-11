@@ -3,27 +3,41 @@ import {renderWithVisibility} from '../../utils/visibility';
 
 // TODO - this is a placeholder for the cta card web template
 function ctaCardTemplate(dataset) {
-    const backgroundAccent = dataset.backgroundColor === 'accent' ? 'kg-style-accent' : '';
+    // Add validation for buttonColor
+    if (!dataset.buttonColor || !dataset.buttonColor.match(/^[a-zA-Z\d-]+$/)) {
+        dataset.buttonColor = 'accent';
+    }
+
     const buttonAccent = dataset.buttonColor === 'accent' ? 'kg-style-accent' : '';
-    const buttonStyle = dataset.buttonColor !== 'accent' ? `background-color: ${dataset.buttonColor};` : '';
+    const buttonStyle = dataset.buttonColor === 'accent' 
+        ? `style="color: ${dataset.buttonTextColor};"` 
+        : `style="background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};"`;
 
     return `
-        <div class="cta-card ${backgroundAccent}" data-layout="${dataset.layout}" style="background-color: ${dataset.backgroundColor};">
-            ${dataset.hasImage ? `<img src="${dataset.imageUrl}" alt="CTA Image">` : ''}
-            <div>
-                ${dataset.textValue}
-            </div>
-            ${dataset.showButton ? `
-                <a href="${dataset.buttonUrl}" class="kg-cta-button ${buttonAccent}"
-                   style="${buttonStyle} color: ${dataset.buttonTextColor};">
-                    ${dataset.buttonText}
-                </a>
-            ` : ''}
+        <div class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout}" data-layout="${dataset.layout}">
             ${dataset.hasSponsorLabel ? `
-                <div class="kg-sponsor-label">
+                <div class="kg-cta-sponsor-label">
                     Sponsored
                 </div>
             ` : ''}
+            <div class="kg-cta-content">
+                ${dataset.hasImage ? `
+                    <div class="kg-cta-image-container">
+                        <img src="${dataset.imageUrl}" alt="CTA Image">
+                    </div>
+                ` : ''}
+                <div class="kg-cta-content-inner">
+                    <div class="kg-cta-text">
+                        ${dataset.textValue}
+                    </div>
+                    ${dataset.showButton ? `
+                        <a href="${dataset.buttonUrl}" class="kg-cta-button ${buttonAccent}"
+                        ${buttonStyle}>
+                            ${dataset.buttonText}
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
         </div>
     `;
 }
@@ -74,6 +88,11 @@ export function renderCallToActionNode(node, options = {}) {
         imageUrl: node.imageUrl,
         textColor: node.textColor
     };
+
+    // Add validation for backgroundColor
+    if (!dataset.backgroundColor || !dataset.backgroundColor.match(/^[a-zA-Z\d-]+$/)) {
+        dataset.backgroundColor = 'white';
+    }
 
     if (options.target === 'email') {
         const emailDoc = options.createDocument();
