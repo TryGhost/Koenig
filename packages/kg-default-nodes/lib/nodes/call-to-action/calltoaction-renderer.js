@@ -4,20 +4,19 @@ import {renderWithVisibility} from '../../utils/visibility';
 // TODO - this is a placeholder for the cta card web template
 function ctaCardTemplate(dataset) {
     // Add validation for buttonColor
-    if (!dataset.buttonColor || !dataset.buttonColor.match(/^[a-zA-Z\d-]+$/)) {
+    if (!dataset.buttonColor || !dataset.buttonColor.match(/^[a-zA-Z\d-]+|#([a-fA-F\d]{3}|[a-fA-F\d]{6})$/)) {
         dataset.buttonColor = 'accent';
     }
-
+    console.log(dataset);
     const buttonAccent = dataset.buttonColor === 'accent' ? 'kg-style-accent' : '';
-    const buttonStyle = dataset.buttonColor === 'accent' 
-        ? `style="color: ${dataset.buttonTextColor};"` 
+    const buttonStyle = dataset.buttonColor === 'accent'
+        ? `style="color: ${dataset.buttonTextColor};"`
         : `style="background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};"`;
-
     return `
         <div class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout}" data-layout="${dataset.layout}">
             ${dataset.hasSponsorLabel ? `
                 <div class="kg-cta-sponsor-label">
-                    Sponsored
+                    ${dataset.sponsorLabel}
                 </div>
             ` : ''}
             <div class="kg-cta-content">
@@ -155,8 +154,7 @@ export function renderCallToActionNode(node, options = {}) {
         backgroundColor: node.backgroundColor,
         sponsorLabel: node.sponsorLabel,
         hasImage: node.hasImage,
-        imageUrl: node.imageUrl,
-        textColor: node.textColor
+        imageUrl: node.imageUrl
     };
 
     // Add validation for backgroundColor

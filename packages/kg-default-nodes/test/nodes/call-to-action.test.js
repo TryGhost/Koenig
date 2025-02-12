@@ -202,7 +202,7 @@ describe('CallToActionNode', function () {
 
             const html = element.outerHTML.toString();
             html.should.containEql('data-layout="minimal"');
-            html.should.containEql('background-color: green');
+            html.should.containEql('kg-cta-bg-green');
             html.should.containEql('background-color: #F0F0F0');
             html.should.containEql('Get access now');
             html.should.containEql('http://someblog.com/somepost');
