@@ -140,7 +140,6 @@ function emailCTATemplate(dataset) {
 export function renderCallToActionNode(node, options = {}) {
     addCreateDocumentOption(options);
     const document = options.createDocument();
-
     const dataset = {
         layout: node.layout,
         textValue: node.textValue,
