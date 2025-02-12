@@ -153,6 +153,7 @@ export function renderCallToActionNode(node, options = {}) {
         buttonTextColor: node.buttonTextColor,
         hasSponsorLabel: node.hasSponsorLabel,
         backgroundColor: node.backgroundColor,
+        sponsorLabel: node.sponsorLabel,
         hasImage: node.hasImage,
         imageUrl: node.imageUrl,
         textColor: node.textColor
