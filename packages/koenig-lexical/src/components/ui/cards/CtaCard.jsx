@@ -10,6 +10,7 @@ import {Button} from '../Button';
 import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {RestrictContentPlugin} from '../../../index.js';
+import {VisibilitySettings} from '../VisibilitySettings';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {textColorForBackgroundColor} from '@tryghost/color-utils';
 
@@ -67,12 +68,12 @@ export const ctaColorPicker = [
 ];
 
 export function CtaCard({
-    buttonText,
-    buttonUrl,
-    buttonColor,
-    buttonTextColor,
-    color,
-    hasSponsorLabel,
+    buttonColor = '',
+    buttonText = '',
+    buttonTextColor = '',
+    buttonUrl = '',
+    color = 'none',
+    hasSponsorLabel = false,
     htmlEditor,
     htmlEditorInitialState,
     sponsorLabelHtmlEditor,
@@ -91,6 +92,22 @@ export function CtaCard({
     onFileChange,
     setFileInputRef,
     onRemoveMedia
+    imageSrc = '',
+    isEditing = false,
+    layout = 'immersive',
+    showButton = false,
+    visibilityOptions = {},
+    handleButtonColor = () => {},
+    handleColorChange = () => {},
+    onFileChange = () => {},
+    onRemoveMedia = () => {},
+    setFileInputRef = () => {},
+    updateButtonText = () => {},
+    updateButtonUrl = () => {},
+    updateHasSponsorLabel = () => {},
+    updateLayout = () => {},
+    updateShowButton = () => {},
+    toggleVisibility = () => {}
 }) {
     const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);
 
@@ -202,26 +219,10 @@ export function CtaCard({
     );
 
     const visibilitySettings = (
-        <>
-            <p className="text-sm font-bold tracking-normal text-grey-900 dark:text-grey-300">Web</p>
-            <ToggleSetting
-                label="Anonymous visitors"
-            />
-            <ToggleSetting
-                label="Free members"
-            />
-            <ToggleSetting
-                label="Paid members"
-            />
-            <hr className="not-kg-prose my-2 block border-t-grey-300 dark:border-t-grey-900" />
-            <p className="text-sm font-bold tracking-normal text-grey-900 dark:text-grey-300">Email</p>
-            <ToggleSetting
-                label="Free members"
-            />
-            <ToggleSetting
-                label="Paid members"
-            />
-        </>
+        <VisibilitySettings
+            toggleVisibility={toggleVisibility}
+            visibilityOptions={visibilityOptions}
+        />
     );
 
     return (
@@ -385,5 +386,7 @@ CtaCard.defaultProps = {
     handleButtonColor: () => {},
     onFileChange: () => {},
     setFileInputRef: () => {},
-    onRemoveMedia: () => {}
+    onRemoveMedia: () => {},
+    visibilityOptions: PropTypes.object,
+    toggleVisibility: PropTypes.func
 };
