@@ -7,7 +7,6 @@ import {CtaCard} from '../components/ui/cards/CtaCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
 
 export const CallToActionNodeComponent = ({
     nodeKey,
@@ -31,9 +30,6 @@ export const CallToActionNodeComponent = ({
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
-
-    const {visibilityOptions, toggleVisibility} = useVisibilityToggle(editor, nodeKey, cardConfig);
-
     const handleToolbarEdit = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -144,13 +140,11 @@ export const CallToActionNodeComponent = ({
                 sponsorLabelHtmlEditor={sponsorLabelHtmlEditor}
                 sponsorLabelHtmlEditorInitialState={sponsorLabelHtmlEditorInitialState}
                 text={textValue}
-                toggleVisibility={toggleVisibility}
                 updateButtonText={handleButtonTextChange}
                 updateButtonUrl={handleButtonUrlChange}
                 updateHasSponsorLabel={handleHasSponsorLabelChange}
                 updateLayout={handleUpdatingLayout}
                 updateShowButton={toggleShowButton}
-                visibilityOptions={visibilityOptions}
                 onFileChange={onFileChange}
                 onRemoveMedia={onRemoveMedia}
             />

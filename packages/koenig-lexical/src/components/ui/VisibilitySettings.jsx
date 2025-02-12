@@ -15,7 +15,7 @@ export function VisibilitySettings({visibilityOptions, toggleVisibility}) {
         });
 
         return (
-            <div key={group.key} className="flex flex-col gap-3" data-testid="visibility-settings">
+            <div key={group.key} className="flex flex-col gap-3">
                 <p className="text-sm font-bold tracking-normal text-grey-900 dark:text-grey-300">{group.label}</p>
                 {toggles}
                 {index < visibilityOptions.length - 1 && (

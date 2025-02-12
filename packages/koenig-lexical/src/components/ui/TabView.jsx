@@ -29,7 +29,7 @@ const TabView = ({tabs, defaultTab, tabContent}) => {
                     </button>
                 ))}
             </div>
-            <div className="flex flex-col gap-3 p-6 pt-4" data-testid={`tab-contents-${activeTab}`}>
+            <div className="flex flex-col gap-3 p-6 pt-4">
                 {tabContent[activeTab]}
             </div>
         </>

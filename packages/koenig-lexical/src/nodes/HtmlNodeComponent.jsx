@@ -26,6 +26,12 @@ export function HtmlNodeComponent({nodeKey, html}) {
         {id: 'visibility', label: 'Visibility'}
     ];
 
+    const visibilitySettings = <VisibilitySettings toggleVisibility={toggleVisibility} visibilityOptions={visibilityOptions} />;
+
+    const settingsTabContents = {
+        visibility: visibilitySettings
+    };
+
     const updateHtml = (value) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
@@ -45,13 +51,6 @@ export function HtmlNodeComponent({nodeKey, html}) {
             editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey});
         }
     };
-
-    const visibilitySettings = (
-        <VisibilitySettings
-            toggleVisibility={toggleVisibility}
-            visibilityOptions={visibilityOptions}
-        />
-    );
 
     return (
         <>
@@ -101,9 +100,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
                     tabs={settingsTabs}
                     onMouseDown={e => e.preventDefault()}
                 >
-                    {{
-                        visibility: visibilitySettings
-                    }}
+                    {settingsTabContents}
                 </SettingsPanel>
             )}
         </>
