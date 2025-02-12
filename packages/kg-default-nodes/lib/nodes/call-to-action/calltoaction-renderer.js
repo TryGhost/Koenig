@@ -7,7 +7,6 @@ function ctaCardTemplate(dataset) {
     if (!dataset.buttonColor || !dataset.buttonColor.match(/^[a-zA-Z\d-]+|#([a-fA-F\d]{3}|[a-fA-F\d]{6})$/)) {
         dataset.buttonColor = 'accent';
     }
-    console.log(dataset);
     const buttonAccent = dataset.buttonColor === 'accent' ? 'kg-style-accent' : '';
     const buttonStyle = dataset.buttonColor === 'accent'
         ? `style="color: ${dataset.buttonTextColor};"`
@@ -129,7 +128,7 @@ function emailCTATemplate(dataset) {
             ${dataset.hasSponsorLabel ? `
                 <tr>
                     <td class="kg-cta-sponsor-label">
-                        <p>Sponsored</p>
+                        ${dataset.sponsorLabel}
                     </td>
                 </tr>
             ` : ''}
