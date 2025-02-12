@@ -2,9 +2,9 @@ import {assertHTML, createSnippet, focusEditor, html, initialize, isMac} from '.
 import {expect, test} from '@playwright/test';
 
 async function insertEmailCard(page) {
-    await page.keyboard.type('/email content');
-    await page.waitForSelector('[data-kg-card-menu-item="Email content"][data-kg-cardmenu-selected="true"]');
-    await page.keyboard.press('Enter');
+    await page.keyboard.type('/email');
+    await page.waitForSelector('[data-kg-cardmenu]');
+    await page.locator('[data-kg-card-menu-item="Email content"]').click();
     await page.waitForSelector('[data-kg-card="email"]');
 }
 
