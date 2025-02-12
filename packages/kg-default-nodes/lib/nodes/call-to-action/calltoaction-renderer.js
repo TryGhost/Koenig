@@ -45,7 +45,6 @@ function emailCTATemplate(dataset) {
     const buttonStyle = dataset.buttonColor === 'accent' 
         ? `color: ${dataset.buttonTextColor};` 
         : `background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};`;
-    const backgroundStyle = `background-color: ${dataset.backgroundColor};`;
 
     const renderContent = () => {
         if (dataset.layout === 'minimal') {
@@ -56,7 +55,7 @@ function emailCTATemplate(dataset) {
                             <tr>
                                 ${dataset.hasImage ? `
                                     <td class="kg-cta-image-container" width="64">
-                                        <img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="64">
+                                        <img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="64" height="64">
                                     </td>
                                 ` : ''}
                                 <td class="kg-cta-content-inner">
@@ -105,9 +104,9 @@ function emailCTATemplate(dataset) {
                                 <td>
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tr>
-                                            <td>
+                                            <td class="kg-cta-button-container" style="${buttonStyle}">
                                                 <a href="${dataset.buttonUrl}" 
-                                                   class="kg-cta-button ${dataset.buttonColor === 'accent' ? 'kg-style-accent' : ''}"
+                                                   class="kg-cta-button ${dataset.buttonColor === 'accent' ? 'kg-style-accent' : ''}"  
                                                    style="${buttonStyle}">
                                                     ${dataset.buttonText}
                                                 </a>
@@ -124,7 +123,7 @@ function emailCTATemplate(dataset) {
     };
 
     return `
-        <table class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout}" border="0" cellpadding="0" cellspacing="0" width="100%" style="${backgroundStyle}">
+        <table class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout}" border="0" cellpadding="0" cellspacing="0" width="100%">
             ${dataset.hasSponsorLabel ? `
                 <tr>
                     <td class="kg-cta-sponsor-label">
