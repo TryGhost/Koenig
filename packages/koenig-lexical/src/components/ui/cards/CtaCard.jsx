@@ -351,7 +351,9 @@ CtaCard.propTypes = {
     setFileInputRef: PropTypes.func,
     onRemoveMedia: PropTypes.func,
     sponsorLabelHtmlEditor: PropTypes.object,
-    sponsorLabelHtmlEditorInitialState: PropTypes.object
+    sponsorLabelHtmlEditorInitialState: PropTypes.object,
+    visibilityOptions: PropTypes.object,
+    toggleVisibility: PropTypes.func
 };
 
 CtaCard.defaultProps = {
