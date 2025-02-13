@@ -249,7 +249,7 @@ describe('CallToActionNode', function () {
             const {element} = callToActionNode.exportDOM(exportOptions);
 
             const html = element.outerHTML.toString();
-            html.should.containEql('kg-cta-bg-green');
+            html.should.containEql('cta-card-email');
             html.should.containEql('background-color: #F0F0F0');
             html.should.containEql('Get access now');
             html.should.containEql('http://someblog.com/somepost');
