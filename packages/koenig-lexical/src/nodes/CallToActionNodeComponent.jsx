@@ -118,6 +118,8 @@ export const CallToActionNodeComponent = ({
             const node = $getNodeByKey(nodeKey);
             node.imageUrl = '';
             node.hasImage = false;
+            node.imageWidth = null;
+            node.imageHeight = null;
         });
     };
     const handleUpdatingLayout = (val) => {
