@@ -2,7 +2,6 @@ import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderWithVisibility} from '../../utils/visibility';
 import {resizeImage} from '../../utils/resize-image';
 
-// TODO - this is a placeholder for the cta card web template
 function ctaCardTemplate(dataset) {
     // Add validation for buttonColor
     if (!dataset.buttonColor || !dataset.buttonColor.match(/^[a-zA-Z\d-]+|#([a-fA-F\d]{3}|[a-fA-F\d]{6})$/)) {
@@ -41,7 +40,6 @@ function ctaCardTemplate(dataset) {
     `;
 }
 
-// TODO - this is a placeholder for the email template
 function emailCTATemplate(dataset) {
     const buttonStyle = dataset.buttonColor === 'accent' 
         ? `color: ${dataset.buttonTextColor};` 
@@ -171,7 +169,8 @@ export function renderCallToActionNode(node, options = {}) {
     };
 
     // Add validation for backgroundColor
-    if (!dataset.backgroundColor || !dataset.backgroundColor.match(/^[a-zA-Z\d-]+$/)) {
+
+    if (!dataset.backgroundColor || !dataset.backgroundColor.match(/^[a-zA-Z\d-]+|#([a-fA-F\d]{3}|[a-fA-F\d]{6})$/)) {
         dataset.backgroundColor = 'white';
     }
 
