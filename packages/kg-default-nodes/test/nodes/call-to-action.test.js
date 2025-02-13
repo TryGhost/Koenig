@@ -258,6 +258,31 @@ describe('CallToActionNode', function () {
             html.should.containEql('This is a new CTA Card via email.');
         }));
 
+        it('renders email with img width and height when immersive', editorTest(function () {
+            exportOptions.target = 'email';
+            dataset = {
+                backgroundColor: 'green',
+                buttonColor: '#F0F0F0',
+                buttonText: 'Get access now',
+                buttonTextColor: '#000000',
+                buttonUrl: 'http://someblog.com/somepost',
+                hasImage: true,
+                hasSponsorLabel: true,
+                sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
+                imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                layout: 'immersive',
+                showButton: true,
+                textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card via email.</span></p>',
+                imageWidth: 200,
+                imageHeight: 100
+            };
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('<img src="/content/images/2022/11/koenig-lexical.jpg" alt="CTA Image" class="kg-cta-image" width="200" height="100">');
+        }));
+
         it('parses textValue correctly', editorTest(function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);

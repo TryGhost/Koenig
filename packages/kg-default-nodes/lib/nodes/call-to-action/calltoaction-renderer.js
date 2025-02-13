@@ -1,5 +1,6 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderWithVisibility} from '../../utils/visibility';
+import {resizeImage} from '../../utils/resize-image';
 
 // TODO - this is a placeholder for the cta card web template
 function ctaCardTemplate(dataset) {
@@ -46,6 +47,19 @@ function emailCTATemplate(dataset) {
         ? `color: ${dataset.buttonTextColor};` 
         : `background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};`;
 
+    let imageDimensions;
+    
+    if (dataset.imageWidth && dataset.imageHeight) {
+        imageDimensions = {
+            width: dataset.imageWidth,
+            height: dataset.imageHeight
+        };
+
+        if (dataset.imageWidth >= 560) {
+            imageDimensions = resizeImage(imageDimensions, {width: 560});
+        }
+    }
+
     const renderContent = () => {
         if (dataset.layout === 'minimal') {
             return `
@@ -87,7 +101,7 @@ function emailCTATemplate(dataset) {
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tr>
                                             <td>
-                                                <img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image">
+                                                <img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" ${imageDimensions ? `width="${imageDimensions.width}"` : ''} ${imageDimensions ? `height="${imageDimensions.height}"` : ''}>
                                             </td>
                                         </tr>
                                     </table>
@@ -151,7 +165,9 @@ export function renderCallToActionNode(node, options = {}) {
         backgroundColor: node.backgroundColor,
         sponsorLabel: node.sponsorLabel,
         hasImage: node.hasImage,
-        imageUrl: node.imageUrl
+        imageUrl: node.imageUrl,
+        imageWidth: node.imageWidth,
+        imageHeight: node.imageHeight
     };
 
     // Add validation for backgroundColor
