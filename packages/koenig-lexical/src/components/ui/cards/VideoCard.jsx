@@ -99,6 +99,7 @@ function PopulatedVideoCard({
                                 alt='Custom thumbnail'
                                 borderStyle={'rounded'}
                                 dataTestId="custom-thumbnail-replace"
+                                desc='Upload'
                                 errors={customThumbnailUploader.errors}
                                 icon='file'
                                 isDraggedOver={thumbnailDragHandler.isDraggedOver}
@@ -107,8 +108,8 @@ function PopulatedVideoCard({
                                 mimeTypes={thumbnailMimeTypes}
                                 placeholderRef={thumbnailDragHandler.setRef}
                                 progress={customThumbnailUploader.progress}
-                                size='xsmall'
                                 src={customThumbnail}
+                                type='button'
                                 onFileChange={onCustomThumbnailChange}
                                 onRemoveMedia={onRemoveCustomThumbnail}
                             />
