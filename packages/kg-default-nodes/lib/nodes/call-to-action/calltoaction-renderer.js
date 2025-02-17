@@ -11,7 +11,11 @@ function ctaCardTemplate(dataset) {
     const buttonStyle = dataset.buttonColor === 'accent'
         ? `style="color: ${dataset.buttonTextColor};"`
         : `style="background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};"`;
+
+    const hasHrefLink = dataset.href && dataset.href.trim() !== '';
+
     return `
+        ${hasHrefLink ? `<a data-cta-link href="${dataset.href}">` : ''}
         <div class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout}" data-layout="${dataset.layout}">
             ${dataset.hasSponsorLabel ? `
                 <div class="kg-cta-sponsor-label">
@@ -21,7 +25,7 @@ function ctaCardTemplate(dataset) {
             <div class="kg-cta-content">
                 ${dataset.hasImage ? `
                     <div class="kg-cta-image-container">
-                        <img src="${dataset.imageUrl}" alt="CTA Image">
+                        <img data-image-width="${dataset.imageWidth}" data-image-height="${dataset.imageHeight}" class="kg-cta-image" src="${dataset.imageUrl}" alt="CTA Image">
                     </div>
                 ` : ''}
                 <div class="kg-cta-content-inner">
@@ -37,6 +41,7 @@ function ctaCardTemplate(dataset) {
                 </div>
             </div>
         </div>
+        ${hasHrefLink ? `</a>` : ''}
     `;
 }
 
@@ -46,7 +51,7 @@ function emailCTATemplate(dataset) {
         : `background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};`;
 
     let imageDimensions;
-    
+
     if (dataset.imageWidth && dataset.imageHeight) {
         imageDimensions = {
             width: dataset.imageWidth,

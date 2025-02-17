@@ -1,6 +1,7 @@
 // eslint-disable-next-line ghost/filenames/match-exported-class
 import {generateDecoratorNode} from '../../generate-decorator-node';
 import {renderCallToActionNode} from './calltoaction-renderer';
+import {parseCallToActionNode} from './calltoaction-parser';
 
 export class CallToActionNode extends generateDecoratorNode({
     nodeType: 'call-to-action',
@@ -23,6 +24,9 @@ export class CallToActionNode extends generateDecoratorNode({
         {name: 'href', default: '', urlType: 'url'}
     ]
 }) {
+    static importDOM() {
+        return parseCallToActionNode(this);
+    }
     /* overrides */
     exportDOM(options = {}) {
         return renderCallToActionNode(this, options);

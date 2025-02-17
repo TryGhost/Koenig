@@ -1,7 +1,8 @@
 const {createHeadlessEditor} = require('@lexical/headless');
 const {$getRoot} = require('lexical');
-const {dom} = require('../test-utils');
-const {CallToActionNode, $isCallToActionNode, utils} = require('../../');
+const {dom, createDocument} = require('../test-utils');
+const {CallToActionNode, $isCallToActionNode, utils, $createCallToActionNode} = require('../../');
+const {$generateNodesFromDOM} = require('@lexical/html');
 const editorNodes = [CallToActionNode];
 
 describe('CallToActionNode', function () {
@@ -51,6 +52,11 @@ describe('CallToActionNode', function () {
     it('matches node with $isCallToActionNode', editorTest(function () {
         const callToActionNode = new CallToActionNode(dataset);
         $isCallToActionNode(callToActionNode).should.be.true();
+    }));
+
+    it('can match node with CallToActionNode', editorTest(function () {
+        const node = $createCallToActionNode(dataset);
+        $isCallToActionNode(node).should.be.true();
     }));
 
     describe('data access', function () {
@@ -217,16 +223,16 @@ describe('CallToActionNode', function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
 
-            const html = element.outerHTML.toString();
-            html.should.containEql('data-layout="minimal"');
-            html.should.containEql('kg-cta-bg-green');
-            html.should.containEql('background-color: #F0F0F0');
-            html.should.containEql('Get access now');
-            html.should.containEql('http://someblog.com/somepost');
-            html.should.containEql('/content/images/2022/11/koenig-lexical.jpg');// because hasImage is true
-            html.should.containEql('This is a new CTA Card.');
-            html.should.containEql('Sponsored by'); // because hasSponsorLabel is true
-            html.should.containEql('cta-card');
+            const htmlElement = element.outerHTML.toString();
+            htmlElement.should.containEql('data-layout="minimal"');
+            htmlElement.should.containEql('kg-cta-bg-green');
+            htmlElement.should.containEql('background-color: #F0F0F0');
+            htmlElement.should.containEql('Get access now');
+            htmlElement.should.containEql('http://someblog.com/somepost');
+            htmlElement.should.containEql('/content/images/2022/11/koenig-lexical.jpg');// because hasImage is true
+            htmlElement.should.containEql('This is a new CTA Card.');
+            htmlElement.should.containEql('Sponsored by'); // because hasSponsorLabel is true
+            htmlElement.should.containEql('cta-card');
         }));
 
         it('has all data attributes in Email', editorTest(function () {
@@ -248,14 +254,14 @@ describe('CallToActionNode', function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
 
-            const html = element.outerHTML.toString();
-            html.should.containEql('kg-cta-bg-green');
-            html.should.containEql('background-color: #F0F0F0');
-            html.should.containEql('Get access now');
-            html.should.containEql('http://someblog.com/somepost');
-            html.should.containEql('<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'); // because hasSponsorLabel is true
-            html.should.containEql('/content/images/2022/11/koenig-lexical.jpg'); // because hasImage is true
-            html.should.containEql('This is a new CTA Card via email.');
+            const htmlElement = element.outerHTML.toString();
+            htmlElement.should.containEql('kg-cta-bg-green');
+            htmlElement.should.containEql('background-color: #F0F0F0');
+            htmlElement.should.containEql('Get access now');
+            htmlElement.should.containEql('http://someblog.com/somepost');
+            htmlElement.should.containEql('<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'); // because hasSponsorLabel is true
+            htmlElement.should.containEql('/content/images/2022/11/koenig-lexical.jpg'); // because hasImage is true
+            htmlElement.should.containEql('This is a new CTA Card via email.');
         }));
 
         it('renders email with img width and height when immersive', editorTest(function () {
@@ -279,24 +285,24 @@ describe('CallToActionNode', function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
 
-            const html = element.outerHTML.toString();
-            html.should.containEql('<img src="/content/images/2022/11/koenig-lexical.jpg" alt="CTA Image" class="kg-cta-image" width="200" height="100">');
+            const htmlElement = element.outerHTML.toString();
+            htmlElement.should.containEql('<img src="/content/images/2022/11/koenig-lexical.jpg" alt="CTA Image" class="kg-cta-image" width="200" height="100">');
         }));
 
         it('parses textValue correctly', editorTest(function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
 
-            const html = element.outerHTML.toString();
-            html.should.containEql('This is a cool advertisement');
+            const htmlElement = element.outerHTML.toString();
+            htmlElement.should.containEql('This is a cool advertisement');
         }));
 
         it('renders img tag when hasImage is true', editorTest(function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
 
-            const html = element.outerHTML.toString();
-            html.should.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image">');
+            const htmlElement = element.outerHTML.toString();
+            htmlElement.should.containEql('<img data-image-width="200" data-image-height="100" class="kg-cta-image" src="http://blog.com/image1.jpg" alt="CTA Image">');
         }));
 
         it('does not render img tag when hasImage is false', editorTest(function () {
@@ -304,8 +310,8 @@ describe('CallToActionNode', function () {
             const callToActionNode = new CallToActionNode(dataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
 
-            const html = element.outerHTML.toString();
-            html.should.not.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image">');
+            const htmlElement = element.outerHTML.toString();
+            htmlElement.should.not.containEql('<img <img data-image-width="200" data-image-height="100" src="http://blog.com/image1.jpg" alt="CTA Image">');
         }));
 
         // NOTE: Due to the way the package gets built sinon is unable to redefine
@@ -441,7 +447,48 @@ describe('CallToActionNode', function () {
     });
 
     describe('importDom', function () {
-        // not yet implemented
+        it('parses call to action card', editorTest(function () {
+            const htmlString = `
+                <a data-cta-link href="http://newblog.com/newpost">
+                <div class="kg-card kg-cta-card kg-cta-bg-green kg-cta-minimal" data-layout="minimal">
+                    <div class="kg-cta-content">
+                        <div class="kg-cta-sponsor-label">
+                            Sponsored
+                        </div>
+                        <div class="kg-cta-image-container">
+                            <img data-image-width="1920" data-image-height="1080" class="kg-cta-image" src="/content/images/2022/11/koenig-lexical.jpg" alt="CTA Image">
+                        </div>
+                        <div class="kg-cta-content-inner">
+                            <div class="kg-cta-text">
+                                This is a new CTA Card.
+                            </div>
+                            <a href="http://someblog.com/somepost" class="kg-cta-button" style="background-color: #F0F0F0; color: #000000;">
+                                Get access now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            `;
+            const document = createDocument(htmlString);
+            const nodes = $generateNodesFromDOM(editor, document);
+            nodes.length.should.equal(1);
+            const node = nodes[0];
+            node.layout.should.equal('minimal');
+            node.textValue.should.equal('This is a new CTA Card.');
+            node.showButton.should.equal(true);
+            node.buttonText.should.equal('Get access now');
+            node.buttonUrl.should.equal('http://someblog.com/somepost');
+            node.buttonColor.should.equal('#f0f0f0');
+            node.buttonTextColor.should.equal('#000000');
+            node.hasSponsorLabel.should.equal(true);
+            node.backgroundColor.should.equal('green');
+            node.hasImage.should.equal(true);
+            node.imageUrl.should.equal('/content/images/2022/11/koenig-lexical.jpg');
+            node.imageHeight.should.equal('1080');
+            node.imageWidth.should.equal('1920');
+            node.href.should.equal('http://newblog.com/newpost');
+        }));
     });
 
     describe('getTextContent', function () {
