@@ -1,7 +1,7 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React, {useRef} from 'react';
-import {$createNodeSelection, $getNodeByKey, $setSelection} from 'lexical';
+import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {CallToActionCard} from '../components/ui/cards/CallToActionCard.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
