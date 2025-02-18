@@ -12,13 +12,14 @@ import React, {useEffect, useState} from 'react';
 import ShrinkIcon from '../../../assets/icons/kg-shrink.svg?react';
 import clsx from 'clsx';
 import trackEvent from '../../../utils/analytics';
-import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../IconButton';
 import {MediaUploader} from '../MediaUploader';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {SubscribeForm} from '../SubscribeForm';
+import {Tooltip} from '../Tooltip';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 
@@ -336,6 +337,7 @@ export function SignupCard({alignment,
                         {/* Disclaimer */}
                         <KoenigNestedEditor
                             dataTestId="signup-disclaimer-editor"
+                            defaultKoenigEnterBehaviour={true}
                             hasSettingsPanel={true}
                             initialEditor={disclaimerTextEditor}
                             initialEditorState={disclaimerTextEditorInitialState}
@@ -371,12 +373,6 @@ export function SignupCard({alignment,
                         selectedName={layout}
                         onClick={handleLayout}
                     />
-                    <ButtonGroupSetting
-                        buttons={alignmentChildren}
-                        label='Alignment'
-                        selectedName={alignment}
-                        onClick={handleAlignment}
-                    />
 
                     {
                         layout === 'split' && (
@@ -390,6 +386,13 @@ export function SignupCard({alignment,
                         )
                     }
 
+                    <ButtonGroupSetting
+                        buttons={alignmentChildren}
+                        label='Alignment'
+                        selectedName={alignment}
+                        onClick={handleAlignment}
+                    />
+
                     <ColorPickerSetting
                         dataTestId='signup-background-color'
                         eyedropper={layout === 'split'}
@@ -402,7 +405,7 @@ export function SignupCard({alignment,
                                 customContent: (
                                     <button
                                         className={clsx(
-                                            `relative flex size-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
+                                            `group relative flex size-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
                                             showBackgroundImage && 'outline outline-2 outline-green'
                                         )}
                                         data-testid="signup-background-image-toggle"
@@ -415,6 +418,7 @@ export function SignupCard({alignment,
                                         }}
                                     >
                                         <ImgBgIcon className="size-[1.4rem]" />
+                                        <Tooltip label='Image' />
                                     </button>
                                 )
                             }),
@@ -445,11 +449,11 @@ export function SignupCard({alignment,
                             }
                         }}
                     />
+
                     <MediaUploadSetting
                         alt='Background image'
-                        borderStyle={'dashed'}
+                        borderStyle={'rounded'}
                         className={(!showBackgroundImage || layout === 'split') && 'hidden'}
-                        desc='Click to upload'
                         errors={fileUploader?.errors}
                         hideLabel={layout !== 'split'}
                         icon='file'
@@ -464,19 +468,19 @@ export function SignupCard({alignment,
                         setFileInputRef={setFileInputRef}
                         size='xsmall'
                         src={backgroundImageSrc}
+                        stacked={true}
                         onFileChange={onFileChange}
                         onRemoveMedia={() => {
                             handleClearBackgroundImage();
                             handleTextColor(matchingTextColor(backgroundColor));
                         }}
                     />
-                    <SettingsDivider />
 
                     <ColorPickerSetting
                         dataTestId='signup-button-color'
                         eyedropper={layout === 'split'}
                         isExpanded={buttonColorPickerExpanded}
-                        label='Button'
+                        label='Button color'
                         swatches={[
                             {title: 'White', hex: '#ffffff'},
                             {title: 'Black', hex: '#000000'},
@@ -500,7 +504,6 @@ export function SignupCard({alignment,
                         label='Button text'
                         placeholder='Add button text'
                         value={buttonText}
-                        hideLabel
                         onBlur={handleButtonTextBlur}
                         onChange={handleButtonText}
                     />
@@ -511,7 +514,7 @@ export function SignupCard({alignment,
                             description='Added to members created using this form'
                             items={labels}
                             label='Labels'
-                            placeholder='Select'
+                            placeholder='Type to search'
                             onChange={handleLabels}
                         />
                     )}

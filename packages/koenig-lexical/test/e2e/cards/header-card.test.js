@@ -186,8 +186,8 @@ test.describe('Header card V1', async () => {
         await createHeaderCard({page});
 
         // Check that the default size is small
-        await expect(page.getByLabel('S')).toHaveClass(/ bg-white /);
-        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-white /);
+        await expect(page.getByLabel('S')).toHaveClass(/ bg-grey-150 /);
+        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-grey-150 /);
 
         // Get height of the card
         const box = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -195,7 +195,7 @@ test.describe('Header card V1', async () => {
 
         // Click on the medium button
         await page.getByLabel('M').click();
-        await expect(page.getByLabel('M')).toHaveClass(/ bg-white /);
+        await expect(page.getByLabel('M')).toHaveClass(/ bg-grey-150 /);
 
         // Check that the height has changed
         const box2 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -206,7 +206,7 @@ test.describe('Header card V1', async () => {
         // Switch to large
         const largeButton = page.locator('[aria-label="L"]');
         await largeButton.click();
-        await expect(largeButton).toHaveClass(/ bg-white /);
+        await expect(largeButton).toHaveClass(/ bg-grey-150 /);
 
         // Check that the height has changed
         const box3 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -679,12 +679,14 @@ test.describe('Header card V2', () => {
 
     test('can swap split layout sides on image', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
-        const fileChooserPromise = page.waitForEvent('filechooser');
         await createHeaderCard({page, version: 2});
+        // Mouse position from earlier test can mean a tooltip is covering the split layout button
+        await page.mouse.move(0, 0);
         await page.locator('[data-testid="header-layout-split"]').click();
         await expect(page.locator('[data-testid="header-background-image-toggle"]')).toHaveCount(0);
-        await page.click('[data-testid="media-upload-placeholder"]');
         // Set files
+        const fileChooserPromise = page.waitForEvent('filechooser');
+        await page.click('[data-testid="media-upload-placeholder"]');
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
         await expect(page.locator('[data-testid="header-card-container"] [data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
@@ -693,5 +695,85 @@ test.describe('Header card V2', () => {
         // Check the parent class name was updated
         const swappedContainer = await page.locator('[data-testid="header-card-content"]');
         await expect(swappedContainer).toHaveClass(/sm:flex-row-reverse/);
+    });
+    test('can import serialized header card nodes with br', async function () {
+        const contentParam = encodeURIComponent(JSON.stringify({
+            root: {
+                children: [{
+                    version: 2,
+                    type: 'header',
+                    size: 'small',
+                    style: 'image',
+                    buttonEnabled: false,
+                    buttonUrl: '',
+                    buttonText: '',
+                    header: '<span>hello world</span><br /><span>byebye world</span>',
+                    subheader: '<span>hello sub</span><br /><span>byebye sub</span>',
+                    backgroundImageSrc: 'blob:http://localhost:5173/fa0956a8-5fb4-4732-9368-18f9d6d8d25a',
+                    alignment: 'left',
+                    buttonColor: '#ffffff',
+                    buttonTextColor: '#000000',
+                    backgroundColor: 'accent',
+                    textColor: '#ffffff',
+                    swapped: false
+                }],
+                direction: null,
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1
+            }
+        }));
+
+        await initialize({page, uri: `/#/?content=${contentParam}`});
+        await page.waitForSelector('[data-kg-card="header"]');
+        await page.waitForSelector('[data-kg-card="header"] [data-kg="editor"]');
+        await expect(page.locator('[data-kg-card="header"] [data-kg="editor"] p span').nth(0)).toHaveText('hello world');
+        await expect(page.locator('[data-kg-card="header"] [data-kg="editor"] p br').nth(0)).toBeAttached();
+        await expect(page.locator('[data-kg-card="header"] [data-kg="editor"] p span').nth(1)).toHaveText('byebye world');
+        await expect(page.getByTestId('header-subheader-editor').locator('p span').nth(0)).toHaveText('hello sub');
+        await expect(page.getByTestId('header-subheader-editor').locator('p br').nth(0)).toBeAttached();
+        await expect(page.getByTestId('header-subheader-editor').locator('p span').nth(1)).toHaveText('byebye sub');
+    });
+    test('can add a shift-enter to header and subheader', async function () {
+        await createHeaderCard({page, version: 2});
+
+        await page.keyboard.type('Hello world');
+        await page.keyboard.press('Shift+Enter');
+        await page.keyboard.type('This is second line');
+        await page.keyboard.press('Enter');
+        await page.keyboard.type('Hello subheader');
+        await page.keyboard.press('Shift+Enter');
+        await page.keyboard.type('This is second subheader');
+        await page.keyboard.press('Escape');
+        await page.waitForSelector('[data-kg-card-editing="false"]');
+        await assertHTML(page, html`
+                        <div
+                            contenteditable="false"
+                            role="textbox"
+                            spellcheck="true"
+                            data-lexical-editor="true"
+                            aria-autocomplete="none"
+                            aria-readonly="true">
+                            <p dir="ltr"><span data-lexical-text="true">Hello world</span>
+                            <br /> 
+                            <span data-lexical-text="true">This is second line</span>
+                            </p>
+                        </div>`, 
+        {selector: '[data-kg-card="header"] [data-kg="editor"]'});
+        await assertHTML(page, html`
+                        <div
+                            contenteditable="false"
+                            role="textbox"
+                            spellcheck="true"
+                            data-lexical-editor="true"
+                            aria-autocomplete="none"
+                            aria-readonly="true">
+                            <p dir="ltr"><span data-lexical-text="true">Hello subheader</span>
+                            <br /> 
+                            <span data-lexical-text="true">This is second subheader</span>
+                            </p>
+                        </div>`,
+        {selector: '[data-kg-card="header"] [data-testid="header-subheader-editor"] [data-kg="editor"]'});    
     });
 });

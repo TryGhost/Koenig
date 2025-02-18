@@ -4,6 +4,7 @@ import * as markdown from './nodes/markdown/MarkdownNode';
 import * as video from './nodes/video/VideoNode';
 import * as audio from './nodes/audio/AudioNode';
 import * as callout from './nodes/callout/CalloutNode';
+import * as callToAction from './nodes/call-to-action/CallToActionNode';
 import * as aside from './nodes/aside/AsideNode';
 import * as horizontalrule from './nodes/horizontalrule/HorizontalRuleNode';
 import * as html from './nodes/html/HtmlNode';
@@ -54,12 +55,21 @@ export * from './nodes/gallery/GalleryNode';
 export * from './nodes/email-cta/EmailCtaNode';
 export * from './nodes/signup/SignupNode';
 export * from './nodes/collection/CollectionNode';
+export * from './nodes/call-to-action/CallToActionNode';
 export * from './nodes/ExtendedTextNode';
 export * from './nodes/ExtendedHeadingNode';
 export * from './nodes/ExtendedQuoteNode';
 export * from './nodes/TKNode';
 export * from './nodes/at-link/index.js';
 export * from './nodes/zwnj/ZWNJNode';
+
+// export utility functions that are useful in other packages or tests
+import * as visibilityUtils from './utils/visibility';
+import {generateDecoratorNode} from './generate-decorator-node.js';
+export const utils = {
+    generateDecoratorNode,
+    visibility: visibilityUtils
+};
 
 export const serializers = {
     linebreak: linebreakSerializers,
@@ -89,6 +99,7 @@ export const DEFAULT_NODES = [
     video.VideoNode,
     audio.AudioNode,
     callout.CalloutNode,
+    callToAction.CallToActionNode,
     aside.AsideNode,
     horizontalrule.HorizontalRuleNode,
     html.HtmlNode,

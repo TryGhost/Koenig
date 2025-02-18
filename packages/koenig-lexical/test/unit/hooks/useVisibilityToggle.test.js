@@ -1,25 +1,32 @@
+import * as visibilityUtils from '../../../src/utils/visibility';
 import {$getNodeByKey} from 'lexical';
 import {act, renderHook} from '@testing-library/react';
 import {expect, vi} from 'vitest';
 import {useVisibilityToggle} from '../../../src/hooks/useVisibilityToggle';
-
-// Mocking $getNodeByKey function
-vi.mock('lexical', () => ({
-    $getNodeByKey: vi.fn()
-}));
 
 describe('useVisibilityToggle', () => {
     let editor;
     let node;
     let cardConfig;
 
+    const DEFAULT_VISIBILITY = {
+        web: {
+            nonMember: true,
+            memberSegment: 'status:free,status:-free'
+        },
+        email: {
+            memberSegment: 'status:free,status:-free'
+        }
+    };
+
     beforeEach(() => {
+        // Mocking $getNodeByKey function
+        vi.mock('lexical', () => ({
+            $getNodeByKey: vi.fn()
+        }));
+
         node = {
-            visibility: {
-                showOnEmail: true,
-                showOnWeb: true,
-                segment: ''
-            },
+            visibility: DEFAULT_VISIBILITY,
             getIsVisibilityActive: vi.fn(() => true)
         };
 
@@ -37,97 +44,58 @@ describe('useVisibilityToggle', () => {
         };
     });
 
-    // These are the return values of useVisibilityToggle
-    // in this specific order:
-    // the number in the comment is the index of the return value
-    // which is how we will access them in the tests
-    // 0 is toggleEmail function
-    // 1 is toggleSegment function
-    // 2 is toggleWeb function
-    // 3 is segment state
-    // 4 is emailVisibility state
-    // 5 is webVisibility state
-    // 6 is dropdownOptions state
-    // 7 is message state
-
-    it('should render with return values based on editor state', () => {
-        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
-
-        expect(result.current[3]).toBe(node.visibility.segment); // segment
-        expect(result.current[4]).toBe(node.visibility.showOnEmail); // emailVisibility
-        expect(result.current[5]).toBe(node.visibility.showOnWeb); // webVisibility
-
-        expect(result.current[6]).toEqual([
-            {label: 'All members', name: ''},
-            {label: 'Free members', name: 'status:free'},
-            {label: 'Paid members', name: 'status:-free'}
-        ]); // dropdownOptions
-
-        expect(result.current[7]).toBe(''); // message
+    afterEach(() => {
+        vi.restoreAllMocks();
     });
 
-    it('should toggleEmail and be able to update the node', () => {
-        const {result, rerender} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+    function callHook(visibility = DEFAULT_VISIBILITY, {stripeEnabled = true, feature = {contentVisibility: true}} = {}) {
+        node.visibility = visibility;
+        cardConfig.stripeEnabled = stripeEnabled;
+        cardConfig.feature = feature;
 
-        act(() => {
-            result.current[0]({target: {checked: false}}); // toggleEmail
-        });
+        return renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+    }
 
-        rerender();
-
-        expect(result.current[4]).toBe(false); // emailVisibility
-        expect(node.visibility.showOnEmail).toBe(false);
-        expect(result.current[7]).toBe('Only shown on web'); // message
+    it('calls getVisibilityOptions with correct arguments', () => {
+        vi.spyOn(visibilityUtils, 'getVisibilityOptions');
+        const visibility = {web: {nonMember: false, memberSegment: ''}, email: {memberSegment: 'status:free,status:-free'}};
+        callHook(visibility);
+        expect(visibilityUtils.getVisibilityOptions).toHaveBeenCalledWith(visibility, {isStripeEnabled: true});
     });
 
-    it('should toggleWeb and be able to update the node', () => {
-        const {result, rerender} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+    it('returns correct visibilityOptions', () => {
+        const {result} = callHook({web: {nonMember: true, memberSegment: 'status:free'}, email: {memberSegment: 'status:free'}});
+        const {visibilityOptions} = result.current;
 
-        act(() => {
-            result.current[2]({target: {checked: false}}); // toggleWeb
-        });
-
-        rerender();
-
-        expect(result.current[5]).toBe(false); // webVisibility
-        expect(node.visibility.showOnWeb).toBe(false);
-        expect(result.current[7]).toBe('Only shown in email'); // message
+        expect(visibilityOptions).toEqual([
+            {
+                label: 'Web',
+                key: 'web',
+                toggles: [
+                    {key: 'nonMembers', label: 'Anonymous visitors', checked: true},
+                    {key: 'freeMembers', label: 'Free members', checked: true},
+                    {key: 'paidMembers', label: 'Paid members', checked: false}
+                ]
+            },
+            {
+                label: 'Email',
+                key: 'email',
+                toggles: [
+                    {key: 'freeMembers', label: 'Free members', checked: true},
+                    {key: 'paidMembers', label: 'Paid members', checked: false}
+                ]
+            }
+        ]);
     });
 
-    it('should toggleSegment and be able to update the node', () => {
-        const {result, rerender} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+    it('returns working toggleVisibility function', () => {
+        const {result} = callHook();
+        const {toggleVisibility} = result.current;
 
-        act(() => {
-            result.current[1]('status:free'); // toggleSegment
-        });
+        act(() => toggleVisibility('web', 'nonMembers', false));
+        expect(node.visibility.web.nonMember).toBe(false);
 
-        rerender();
-
-        expect(result.current[3]).toBe('status:free'); // segment
-        expect(node.visibility.segment).toBe('status:free');
-        expect(result.current[7]).toBe('Shown on web, and to free members only in email'); // message
-    });
-
-    it('should update the message correctly when both toggles are off', () => {
-        const {result, rerender} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
-
-        act(() => {
-            result.current[0]({target: {checked: false}}); // toggleEmail
-            result.current[2]({target: {checked: false}}); // toggleWeb
-        });
-
-        rerender();
-
-        expect(result.current[4]).toBe(false); // emailVisibility
-        expect(result.current[5]).toBe(false); // webVisibility
-        expect(result.current[7]).toBe('Hidden from both web and email'); // message
-    });
-
-    it('does not return dropdownOptions if stripe is not enabled', () => {
-        cardConfig.stripeEnabled = false;
-
-        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
-
-        expect(result.current[6]).toBeUndefined(); // dropdownOptions
+        act(() => toggleVisibility('web', 'paidMembers', false));
+        expect(node.visibility.web.memberSegment).toBe('status:free');
     });
 });
