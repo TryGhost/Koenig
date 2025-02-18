@@ -139,8 +139,10 @@ test.describe('Callout Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'callout'});
 
-        const colorPicker = page.locator(`[data-test-id="color-picker-green"]`);
-        await colorPicker.click();
+        const colorSetting = page.locator('[data-testid="callout-color-picker"]');
+        const colorButton = colorSetting.locator('button');
+        await colorButton.click();
+        await page.locator('[data-test-id="color-picker-green"]').click();
 
         // ensure data-test-id="callout-bg-blue" is visible
         const greenCallout = page.locator('[data-testid="callout-bg-green"]');
@@ -313,6 +315,10 @@ test.describe('Callout Card', async () => {
 
         // Start editing the content
         await page.keyboard.type('Hello ');
+
+        const colorSetting = page.locator('[data-testid="callout-color-picker"]');
+        const colorButton = colorSetting.locator('button');
+        await colorButton.click();
 
         // Change color
         await page.locator(`[data-test-id="color-picker-green"]`).click();
