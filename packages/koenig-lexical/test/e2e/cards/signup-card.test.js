@@ -1,5 +1,6 @@
 import path from 'path';
 import {assertHTML, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
+import {cardBackgroundColorSettings} from '../../utils/background-color-helper';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -198,14 +199,14 @@ test.describe('Signup card', async () => {
         await expect(page.getByTestId('signup-card-button')).toHaveText('Subscribe now');
     });
 
-    test('can change the button background color and text color', async function () {
+    test('can change the button color and text color', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'signup'});
 
-        await page.click('[data-testid="signup-button-color"] [aria-label="Pick color"]');
-
-        await page.fill('[data-testid="signup-button-color"] input', '');
-        await page.keyboard.type('ff0000');
+        await cardBackgroundColorSettings(page, {
+            customColor: 'ff0000',
+            cardColorPickerTestId: 'signup-button-color'
+        });
 
         // Selected colour should be applied inline
         await expect(page.locator('[data-testid="signup-card-button"]')).toHaveCSS('background-color', 'rgb(255, 0, 0)');
@@ -223,10 +224,15 @@ test.describe('Signup card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'signup'});
 
-        await page.click('[data-testid="signup-background-color"] [aria-label="Pick color"]');
+        // await page.click('[data-testid="signup-background-color"] [aria-label="Pick color"]');
 
-        await page.fill('[data-testid="signup-background-color"] input', '');
-        await page.keyboard.type('ff0000');
+        // await page.fill('[data-testid="signup-background-color"] input', '');
+        // await page.keyboard.type('ff0000');
+
+        await cardBackgroundColorSettings(page, {
+            customColor: 'ff0000',
+            cardColorPickerTestId: 'signup-background-color'
+        });
 
         // Selected colour should be applied inline
         const container = page.getByTestId('signup-card-container');

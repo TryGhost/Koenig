@@ -1,5 +1,6 @@
 import path from 'path';
 import {assertHTML, focusEditor, html, initialize, isMac} from '../../utils/e2e';
+import {cardBackgroundColorSettings} from '../../utils/background-color-helper';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -218,27 +219,23 @@ test.describe('Header card V1', async () => {
     test('can change the background color', async function () {
         await createHeaderCard({page});
 
-        const lightButton = page.locator('[aria-label="Light"]');
-        const darkButton = page.locator('[aria-label="Dark"]');
-        const accentButton = page.locator('[aria-label="Accent"]');
-
         // Default class should be 'bg-black' on the card
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-black /);
 
         // Switch to light
-        await lightButton.click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'header-background-color', colorTestId: 'color-picker-light'});
 
         // Check that the background color has changed
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-grey-100 /);
 
         // Switch back to dark
-        await darkButton.click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'header-background-color', colorTestId: 'color-picker-dark'});
 
         // Check that the background color has changed
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-black /);
 
         // Switch to accent
-        await accentButton.click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'header-background-color', colorTestId: 'color-picker-accent'});
 
         // Check that the background color has changed
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveClass(/ bg-accent /);
@@ -528,10 +525,12 @@ test.describe('Header card V2', () => {
 
         await page.click('[data-testid="header-button-toggle"]');
 
-        await page.click('[data-testid="header-button-color"] [aria-label="Pick color"]');
+        // await page.click('[data-testid="header-button-color"] [aria-label="Pick color"]');
 
-        await page.fill('[data-testid="header-button-color"] input', '');
-        await page.keyboard.type('ff0000');
+        // await page.fill('[data-testid="header-button-color"] input', '');
+        // await page.keyboard.type('ff0000');
+
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'header-button-color', customColor: 'ff0000'});
 
         // Selected colour should be applied inline
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('background-color', 'rgb(255, 0, 0)');
@@ -548,10 +547,12 @@ test.describe('Header card V2', () => {
     test('can change the background color and text color', async function () {
         await createHeaderCard({page, version: 2});
 
-        await page.click('[data-testid="header-background-color"] [aria-label="Pick color"]');
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'header-background-color', customColor: 'ff0000'});
 
-        await page.fill('[data-testid="header-background-color"] input', '');
-        await page.keyboard.type('ff0000');
+        // await page.click('[data-testid="header-background-color"] [aria-label="Pick color"]');
+
+        // await page.fill('[data-testid="header-background-color"] input', '');
+        // await page.keyboard.type('ff0000');
 
         // Selected colour should be applied inline
         const container = page.getByTestId('header-card-container');

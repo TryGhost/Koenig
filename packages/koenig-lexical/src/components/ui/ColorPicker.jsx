@@ -239,9 +239,10 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                                     />
                             ))}
                         </div>
-                        <button 
-                            aria-label="Pick color" 
-                            className={`group relative size-6 rounded-full ${!selectedSwatch ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`}
+                        <button
+                            aria-label="Pick color"
+                            className={`group relative size-6 rounded-full ${!selectedSwatch ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`} 
+                            data-testid="color-picker-toggle"
                             type="button" 
                             onClick={() => {
                                 setShowColorPicker(!showColorPicker);
