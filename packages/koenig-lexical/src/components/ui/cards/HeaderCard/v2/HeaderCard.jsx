@@ -1,6 +1,5 @@
 import CenterAlignIcon from '../../../../../assets/icons/kg-align-center.svg?react';
 import ExpandIcon from '../../../../../assets/icons/kg-expand.svg?react';
-import ImgBgIcon from '../../../../../assets/icons/kg-img-bg.svg?react';
 import ImgFullIcon from '../../../../../assets/icons/kg-img-full.svg?react';
 import ImgRegularIcon from '../../../../../assets/icons/kg-img-regular.svg?react';
 import ImgWideIcon from '../../../../../assets/icons/kg-img-wide.svg?react';
@@ -17,9 +16,9 @@ import {ButtonGroupSetting, ColorPickerSetting, InputSetting, InputUrlSetting, M
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../../../IconButton';
+import {ImageUploadSwatch} from '../../../ImageUploadSwatch';
 import {MediaUploader} from '../../../MediaUploader';
 import {ReadOnlyOverlay} from '../../../ReadOnlyOverlay';
-import {Tooltip} from '../../../Tooltip';
 import {getAccentColor} from '../../../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../../../utils/isEditorEmpty';
 // Header Card Version 2
@@ -229,6 +228,12 @@ export function HeaderCard({alignment,
         }
     };
 
+    const onBackgroundImageClickHandler = () => {
+        handleShowBackgroundImage();
+        setBackgroundColorPickerExpanded(true);
+        setButtonColorPickerExpanded(false);
+    };
+
     return (
         <>
             <div className='flex w-full font-sans text-black transition-colors ease-in-out' data-testid={'header-card-container'} style={wrapperStyle()}>
@@ -405,23 +410,10 @@ export function HeaderCard({alignment,
                             (layout !== 'split' && {
                                 title: 'Image',
                                 customContent: (
-                                    <button
-                                        className={clsx(
-                                            `group relative flex size-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
-                                            showBackgroundImage && 'outline outline-2 outline-green'
-                                        )}
-                                        data-testid="header-background-image-toggle"
-                                        title="Image"
-                                        type="button"
-                                        onClick={() => {
-                                            handleShowBackgroundImage();
-                                            setBackgroundColorPickerExpanded(true);
-                                            setButtonColorPickerExpanded(false);
-                                        }}
-                                    >
-                                        <ImgBgIcon className="size-[1.4rem]" />
-                                        <Tooltip label='Image' />
-                                    </button>
+                                    <ImageUploadSwatch
+                                        showBackgroundImage={showBackgroundImage}
+                                        onClickHandler={onBackgroundImageClickHandler}
+                                    />
                                 )
                             }),
                             {title: 'Black', hex: '#000000'},
