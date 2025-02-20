@@ -83,11 +83,11 @@ describe('CallToActionNode', function () {
             callToActionNode.textValue = 'This is a cool advertisement';
             callToActionNode.textValue.should.equal('This is a cool advertisement');
 
-            callToActionNode.showButton.should.equal(false);
-            callToActionNode.showButton = true;
             callToActionNode.showButton.should.equal(true);
+            callToActionNode.showButton = false;
+            callToActionNode.showButton.should.equal(false);
 
-            callToActionNode.buttonText.should.equal('');
+            callToActionNode.buttonText.should.equal('Learn more');
             callToActionNode.buttonText = 'click me';
             callToActionNode.buttonText.should.equal('click me');
 
@@ -99,7 +99,7 @@ describe('CallToActionNode', function () {
             callToActionNode.sponsorLabel = 'This post is brought to you by our sponsors';
             callToActionNode.sponsorLabel.should.equal('This post is brought to you by our sponsors');
 
-            callToActionNode.buttonColor.should.equal('');
+            callToActionNode.buttonColor.should.equal('black');
             callToActionNode.buttonColor = 'red';
             callToActionNode.buttonColor.should.equal('red');
 
