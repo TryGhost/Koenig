@@ -41,8 +41,8 @@ export function ColorOptionButtons({buttons = [], selectedName, onClick}) {
                                         label={label}
                                         name={name}
                                         selectedName={selectedName}
-                                        onClick={(name) => {
-                                            onClick(name);
+                                        onClick={(title) => {
+                                            onClick(title);
                                             setIsOpen(false);
                                         }}
                                     />
