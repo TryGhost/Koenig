@@ -187,8 +187,8 @@ test.describe('Header card V1', async () => {
         await createHeaderCard({page});
 
         // Check that the default size is small
-        await expect(page.getByLabel('S')).toHaveClass(/ bg-grey-150 /);
-        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-grey-150 /);
+        await expect(page.getByLabel('S')).toHaveClass(/ shadow-xs /);
+        await expect(page.getByLabel('M')).not.toHaveClass(/ shadow-xs /);
 
         // Get height of the card
         const box = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -196,7 +196,7 @@ test.describe('Header card V1', async () => {
 
         // Click on the medium button
         await page.getByLabel('M').click();
-        await expect(page.getByLabel('M')).toHaveClass(/ bg-grey-150 /);
+        await expect(page.getByLabel('M')).toHaveClass(/ shadow-xs /);
 
         // Check that the height has changed
         const box2 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -207,7 +207,7 @@ test.describe('Header card V1', async () => {
         // Switch to large
         const largeButton = page.locator('[aria-label="L"]');
         await largeButton.click();
-        await expect(largeButton).toHaveClass(/ bg-grey-150 /);
+        await expect(largeButton).toHaveClass(/ shadow-xs /);
 
         // Check that the height has changed
         const box3 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
@@ -248,8 +248,9 @@ test.describe('Header card V1', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
-        // Click data-testid="background-image-color-button"
-        await page.click('[data-testid="background-image-color-button"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: true, cardColorPickerTestId: 'header-background-color', imageUploadId: 'background-image-color-button'});
+        // click on text saying Click to upload background image
+        await page.getByText('Click to upload background image').click();
 
         // Set files
         const fileChooser = await fileChooserPromise;
@@ -570,12 +571,12 @@ test.describe('Header card V2', () => {
     test('can switch between background image and color', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
         await createHeaderCard({page, version: 2});
-        // Choose an image
 
+        // Choose an image
         const fileChooserPromise = page.waitForEvent('filechooser');
 
-        await page.click('[data-testid="header-background-image-toggle"]');
-
+        await cardBackgroundColorSettings(page, {fireColorSetting: true, cardColorPickerTestId: 'header-background-color', imageUploadId: 'header-background-image-toggle'});
+        await page.click('[data-testid="media-upload-placeholder"]');
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
 
@@ -585,15 +586,16 @@ test.describe('Header card V2', () => {
 
         // Switch to a color swatch
 
-        await page.click('[data-testid="header-background-color"] button[title="Black"]');
+        // await page.click('[data-testid="header-background-color"] button[title="Black"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'header-background-color', findByColorTitle: 'Black'});
 
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
         await expect(page.locator('[data-testid="media-upload-setting"]')).not.toBeVisible();
 
-        // Switch back to the image
+        // // Switch back to the image
 
-        await page.click('[data-testid="header-background-image-toggle"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'header-background-color', imageUploadId: 'header-background-image-toggle'});
 
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-testid="media-upload-setting"]')).toBeVisible();
@@ -601,7 +603,7 @@ test.describe('Header card V2', () => {
 
         // Open the color picker
 
-        await page.click('[data-testid="header-background-color"] [aria-label="Pick color"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'header-background-color', customColor: '000000'});
 
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');

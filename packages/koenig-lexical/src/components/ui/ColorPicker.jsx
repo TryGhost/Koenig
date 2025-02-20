@@ -141,6 +141,27 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
     const [showChildren, setShowChildren] = useState(false);
     const popoverRef = useRef(null);
     
+    // const stopPropagation = useCallback((e) => {
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    // }, []);
+
+    const handleDocumentClick = useCallback((event) => {
+        if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    }, []);
+
+    // Add and remove document click listener based on isOpen
+    useEffect(() => {
+        if (isOpen) {
+            document.addEventListener('click', handleDocumentClick);
+            return () => {
+                document.removeEventListener('click', handleDocumentClick);
+            };
+        }
+    }, [isOpen, handleDocumentClick]);
+
     const stopPropagation = useCallback((e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -230,10 +251,10 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                                     <ColorSwatch 
                                         key={swatch.title} 
                                         isSelected={selectedSwatch === swatch.title} 
-                                        onSelect={(value) => {
-                                            onSwatchChange(value);
+                                        onSelect={(val) => {
+                                            onSwatchChange(val);
                                             setShowColorPicker(false);
-                                            setIsOpen(false);
+                                            // setIsOpen(false);
                                         }} 
                                         {...swatch} 
                                     />

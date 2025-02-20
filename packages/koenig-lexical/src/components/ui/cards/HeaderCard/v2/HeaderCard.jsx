@@ -458,7 +458,7 @@ export function HeaderCard({alignment,
                                 openImageEditor={openImageEditor}
                                 placeholderRef={imageDragHandler?.setRef}
                                 progress={progress}
-                                setFileInputRef={setFileInputRef}
+                                setFileInputRef={setFileInputRef} // Ensure ref is properly passed
                                 size='xsmall'
                                 src={backgroundImageSrc}
                                 stacked={true}

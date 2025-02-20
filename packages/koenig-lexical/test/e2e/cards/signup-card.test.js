@@ -255,7 +255,8 @@ test.describe('Signup card', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
-        await page.click('[data-testid="signup-background-image-toggle"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: true, cardColorPickerTestId: 'signup-background-color', imageUploadId: 'signup-background-image-toggle'});
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         // Set files
         const fileChooser = await fileChooserPromise;
@@ -295,7 +296,8 @@ test.describe('Signup card', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
-        await page.click('[data-testid="signup-background-image-toggle"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: true, cardColorPickerTestId: 'signup-background-color', imageUploadId: 'signup-background-image-toggle'});
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
@@ -306,23 +308,24 @@ test.describe('Signup card', async () => {
 
         // Switch to a color swatch
 
-        await page.click('[data-testid="signup-background-color"] button[title="Black"]');
+        // await page.click('[data-testid="signup-background-color"] button[title="Black"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'signup-background-color', findByColorTitle: 'Black'});
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
         await expect(page.locator('[data-testid="media-upload-setting"]')).not.toBeVisible();
 
-        // Switch back to the image
+        // // Switch back to the image
 
-        await page.click('[data-testid="signup-background-image-toggle"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'signup-background-color', imageUploadId: 'signup-background-image-toggle'});
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-testid="media-upload-setting"]')).toBeVisible();
         await expect(page.locator('[data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
 
-        // Open the color picker
+        // // Open the color picker
 
-        await page.click('[data-testid="signup-background-color"] [aria-label="Pick color"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'signup-background-color', customColor: '000000'});
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
@@ -337,7 +340,8 @@ test.describe('Signup card', async () => {
 
         // Text colour is updated based on the background colour
 
-        await page.click('[data-testid="signup-background-color"] button[title="Grey"]');
+        // await page.click('[data-testid="signup-background-color"] button[title="Grey"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: true, cardColorPickerTestId: 'signup-background-color', findByColorTitle: 'Grey'});
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-color', 'rgb(240, 240, 240)');
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -346,8 +350,9 @@ test.describe('Signup card', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
-        await page.click('[data-testid="signup-background-image-toggle"]');
-
+        // await page.click('[data-testid="signup-background-image-toggle"]');
+        await cardBackgroundColorSettings(page, {fireColorSetting: false, cardColorPickerTestId: 'signup-background-color', imageUploadId: 'signup-background-image-toggle'});
+        await page.click('[data-testid="media-upload-placeholder"]');
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
 
@@ -356,6 +361,8 @@ test.describe('Signup card', async () => {
 
         // When switching to split layout, text colour is set based on the background colour
 
+        await page.locator('[data-testid="settings-panel"]').click();
+
         await page.locator('[data-testid="signup-layout-split"]').click();
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);
@@ -363,6 +370,10 @@ test.describe('Signup card', async () => {
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('color', 'rgb(0, 0, 0)');
 
         // When switching back from split layout, text colour is set based on the background colour
+
+        // data-testid="settings-panel"
+
+        await page.locator('[data-testid="settings-panel"]').click(); // click here to close the colour swatch
 
         await page.locator('[data-testid="signup-layout-wide"]').click();
 
