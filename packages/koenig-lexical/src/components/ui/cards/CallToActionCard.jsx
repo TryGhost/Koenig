@@ -145,6 +145,7 @@ export function CallToActionCard({
             {/* Color picker */}
             <ColorOptionSetting
                 buttons={callToActionColorPicker}
+                dataTestId={'cta-background-color-picker'}
                 label='Background'
                 selectedName={color}
                 onClick={handleColorChange}
