@@ -25,7 +25,6 @@ export const CallToActionNodeComponent = ({
     htmlEditor,
     htmlEditorInitialState,
     buttonTextColor,
-    href,
     sponsorLabelHtmlEditor,
     sponsorLabelHtmlEditorInitialState
 }) => {

@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';
 import {ButtonGroup} from './ButtonGroup';
-import {ColorIndicator, ColorPicker} from './ColorPicker';
+import {ColorIndicator} from './ColorPicker';
 import {ColorOptionButtons} from './ColorOptionButtons';
 import {Dropdown} from './Dropdown';
 import {Input} from './Input';
@@ -243,28 +243,10 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
     );
 }
 
-export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId}) {
-    const mappedPicker = (event) => {
-        onTogglePicker(true);
-    };
-
+export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, customToolbarContent, children}) {
     const markClickedInside = (event) => {
         event.stopPropagation();
     };
-
-    // Close on click outside
-    React.useEffect(() => {
-        if (isExpanded) {
-            const closePicker = (event) => {
-                onTogglePicker(false);
-            };
-            document.addEventListener('click', closePicker);
-
-            return () => {
-                document.removeEventListener('click', closePicker);
-            };
-        }
-    }, [isExpanded, onTogglePicker]);
 
     return (
         <div className="flex-col" data-testid={dataTestId} onClick={markClickedInside}>
@@ -273,28 +255,36 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
 
                 <div className="shrink-0 pl-2">
                     <ColorIndicator
+                        eyedropper={eyedropper}
+                        hasTransparentOption={hasTransparentOption}
                         isExpanded={isExpanded}
                         swatches={swatches}
                         value={value}
+                        onChange={onPickerChange}
                         onSwatchChange={onSwatchChange}
-                        onTogglePicker={mappedPicker}
-                    />
+                        onTogglePicker={onTogglePicker}
+                    >
+                        {children}
+                    </ColorIndicator>
                 </div>
             </div>
-            {isExpanded && <ColorPicker eyedropper={eyedropper} hasTransparentOption={hasTransparentOption} value={value} onChange={onPickerChange} />}
         </div>
     );
 }
 
-export function MediaUploadSetting({className, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc = '', size, stacked, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {
+export function MediaUploadSetting({className, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc, size, type, stacked, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {
     return (
-        <div className={clsx(className, !stacked && 'flex justify-between')} data-testid="media-upload-setting">
-            <div className={hideLabel ? 'sr-only' : 'mb-2 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
+        <div className={clsx(className, !stacked && 'flex justify-between gap-3')} data-testid="media-upload-setting">
+            <div className={hideLabel ? 'sr-only' : 'mb-2 shrink-0 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
 
             <MediaUploader
                 alt={alt}
                 borderStyle={borderStyle}
-                className={clsx(stacked ? 'h-32' : src ? 'h-[5.2rem]' : 'h-[5.2rem] w-[7.2rem]')}
+                className={clsx(
+                    stacked && 'h-32',
+                    !stacked && src && 'h-[5.2rem]',
+                    !stacked && type !== 'button' && !src && 'h-[5.2rem] w-[7.2rem]'
+                )}
                 desc={desc}
                 dragHandler={{isDraggedOver, setRef: placeholderRef}}
                 errors={errors}
@@ -307,6 +297,7 @@ export function MediaUploadSetting({className, label, hideLabel, onFileChange, i
                 setFileInputRef={setFileInputRef}
                 size={size}
                 src={src}
+                type={type}
                 onFileChange={onFileChange}
                 onRemoveMedia={onRemoveMedia}
             />

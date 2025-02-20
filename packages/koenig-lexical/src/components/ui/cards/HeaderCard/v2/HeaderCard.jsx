@@ -415,7 +415,7 @@ export function HeaderCard({alignment,
                                         type="button"
                                         onClick={() => {
                                             handleShowBackgroundImage();
-                                            setBackgroundColorPickerExpanded(false);
+                                            setBackgroundColorPickerExpanded(true);
                                             setButtonColorPickerExpanded(false);
                                         }}
                                     >
@@ -434,7 +434,7 @@ export function HeaderCard({alignment,
                             handleBackgroundColor(color, matchingTextColor(color));
                             setBackgroundColorPickerExpanded(false);
                         }}
-                        onTogglePicker={ (isExpanded) => {
+                        onTogglePicker={(isExpanded) => {
                             if (isExpanded) {
                                 if (layout !== 'split') {
                                     handleHideBackgroundImage();
@@ -450,32 +450,34 @@ export function HeaderCard({alignment,
                                 setButtonColorPickerExpanded(!isExpanded);
                             }
                         }}
-                    />
-                    <MediaUploadSetting
-                        alt='Background image'
-                        borderStyle={'rounded'}
-                        className={(!showBackgroundImage || layout === 'split') && 'hidden'}
-                        errors={fileUploader?.errors}
-                        hideLabel={layout !== 'split'}
-                        icon='file'
-                        isDraggedOver={imageDragHandler?.isDraggedOver}
-                        isLoading={isLoading}
-                        isPinturaEnabled={isPinturaEnabled}
-                        label='Image'
-                        mimeTypes={['image/*']}
-                        openImageEditor={openImageEditor}
-                        placeholderRef={imageDragHandler?.setRef}
-                        progress={progress}
-                        setFileInputRef={setFileInputRef}
-                        size='xsmall'
-                        src={backgroundImageSrc}
-                        stacked={true}
-                        onFileChange={onFileChange}
-                        onRemoveMedia={() => {
-                            handleClearBackgroundImage();
-                            handleTextColor(matchingTextColor(backgroundColor));
-                        }}
-                    />
+                    >
+                        {layout !== 'split' && showBackgroundImage && (
+                            <MediaUploadSetting
+                                alt='Background image'
+                                borderStyle={'rounded'}
+                                desc='Click to select image'
+                                errors={fileUploader?.errors}
+                                hideLabel={true}
+                                icon='file'
+                                isDraggedOver={imageDragHandler?.isDraggedOver}
+                                isLoading={isLoading}
+                                isPinturaEnabled={isPinturaEnabled}
+                                mimeTypes={['image/*']}
+                                openImageEditor={openImageEditor}
+                                placeholderRef={imageDragHandler?.setRef}
+                                progress={progress}
+                                setFileInputRef={setFileInputRef}
+                                size='xsmall'
+                                src={backgroundImageSrc}
+                                stacked={true}
+                                onFileChange={onFileChange}
+                                onRemoveMedia={() => {
+                                    handleClearBackgroundImage();
+                                    handleTextColor(matchingTextColor(backgroundColor));
+                                }}
+                            />
+                        )}
+                    </ColorPickerSetting>
 
                     {/* Button settings */}
                     <ToggleSetting

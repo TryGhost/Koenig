@@ -8,10 +8,10 @@ export class CallToActionNode extends generateDecoratorNode({
     properties: [
         {name: 'layout', default: 'minimal'},
         {name: 'textValue', default: '', wordCount: true},
-        {name: 'showButton', default: false},
-        {name: 'buttonText', default: ''},
+        {name: 'showButton', default: true},
+        {name: 'buttonText', default: 'Learn more'},
         {name: 'buttonUrl', default: ''},
-        {name: 'buttonColor', default: ''},
+        {name: 'buttonColor', default: 'black'},
         {name: 'buttonTextColor', default: ''},
         {name: 'hasSponsorLabel', default: true},
         {name: 'sponsorLabel', default: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'},
