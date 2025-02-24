@@ -1,5 +1,5 @@
 import path from 'path';
-import {assertHTML, focusEditor, getEditorStateJSON, html, initialize, insertCard} from '../../utils/e2e';
+import {assertHTML, createDataTransfer, focusEditor, getEditorStateJSON, html, initialize, insertCard} from '../../utils/e2e';
 import {cardBackgroundColorSettings} from '../../utils/background-color-helper';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
@@ -346,6 +346,23 @@ test.describe('Call To Action Card', async () => {
         await expect(imgElement).toHaveAttribute('src', /blob:/);
         await page.click('[data-testid="media-upload-remove"]');
         await expect(imgLocator).not.toBeVisible();
+    });
+
+    test('can drag and drop image over upload button', async function () {
+        const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+
+        // Create and dispatch data transfer
+        const dataTransfer = await createDataTransfer(page, [{filePath, fileName: 'large-image.png', fileType: 'image/png'}]);
+        await page.getByTestId('media-upload-placeholder').dispatchEvent('dragover', {dataTransfer});
+        // Dragover text should be visible
+        // check that "Drop it like it's hot" is visible
+        await expect(await page.locator('[data-kg-card-drag-text="true"]')).toBeVisible();
+
+        await page.getByTestId('media-upload-placeholder').dispatchEvent('drop', {dataTransfer});
+
+        await expect (await page.getByTestId('cta-card-image')).toBeVisible();
     });
 
     test('default layout is minimal', async function () {

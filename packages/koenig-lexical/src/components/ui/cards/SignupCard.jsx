@@ -1,6 +1,5 @@
 import CenterAlignIcon from '../../../assets/icons/kg-align-center.svg?react';
 import ExpandIcon from '../../../assets/icons/kg-expand.svg?react';
-import ImgBgIcon from '../../../assets/icons/kg-img-bg.svg?react';
 import ImgFullIcon from '../../../assets/icons/kg-img-full.svg?react';
 import ImgRegularIcon from '../../../assets/icons/kg-img-regular.svg?react';
 import ImgWideIcon from '../../../assets/icons/kg-img-wide.svg?react';
@@ -16,10 +15,10 @@ import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../IconButton';
+import {ImageUploadSwatch} from '../ImageUploadSwatch';
 import {MediaUploader} from '../MediaUploader';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {SubscribeForm} from '../SubscribeForm';
-import {Tooltip} from '../Tooltip';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 
@@ -207,6 +206,12 @@ export function SignupCard({alignment,
     };
 
     const correctedBackgroundSize = backgroundSize === 'contain' && backgroundImageSrc ? 'contain' : 'cover';
+
+    const onBackgroundImageClickHandler = () => {
+        handleShowBackgroundImage();
+        setBackgroundColorPickerExpanded(true);
+        setButtonColorPickerExpanded(false);
+    };
 
     return (
         <>
@@ -403,23 +408,10 @@ export function SignupCard({alignment,
                             (layout !== 'split' && {
                                 title: 'Image',
                                 customContent: (
-                                    <button
-                                        className={clsx(
-                                            `group relative flex size-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
-                                            showBackgroundImage && 'outline outline-2 outline-green'
-                                        )}
-                                        data-testid="signup-background-image-toggle"
-                                        title="Image"
-                                        type="button"
-                                        onClick={() => {
-                                            handleShowBackgroundImage();
-                                            setBackgroundColorPickerExpanded(true);
-                                            setButtonColorPickerExpanded(false);
-                                        }}
-                                    >
-                                        <ImgBgIcon className="size-[1.4rem]" />
-                                        <Tooltip label='Image' />
-                                    </button>
+                                    <ImageUploadSwatch
+                                        showBackgroundImage={showBackgroundImage}
+                                        onClickHandler={onBackgroundImageClickHandler}
+                                    />
                                 )
                             }),
                             {title: 'Grey', hex: '#F0F0F0'},

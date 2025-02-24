@@ -105,7 +105,8 @@ export function CallToActionCard({
     updateHasSponsorLabel = () => {},
     updateLayout = () => {},
     updateShowButton = () => {},
-    toggleVisibility = () => {}
+    toggleVisibility = () => {},
+    imageDragHandler = () => {}
 }) {
     const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);
 
@@ -163,8 +164,11 @@ export function CallToActionCard({
                 borderStyle={'rounded'}
                 desc='Upload'
                 icon='file'
+                isDraggedOver={imageDragHandler.isDraggedOver}
+                isLoading={imageDragHandler.isLoading}
                 label='Image'
                 mimeTypes={['image/*']}
+                placeholderRef={imageDragHandler.setRef}
                 setFileInputRef={setFileInputRef}
                 src={imageSrc}
                 type='button'
@@ -278,6 +282,7 @@ export function CallToActionCard({
                                     layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover',
                                     'rounded-md'
                                 )}
+                                data-testId="cta-card-image"
                                 src={imageSrc}
                             />
                         </div>
@@ -367,7 +372,8 @@ CallToActionCard.propTypes = {
     sponsorLabelHtmlEditor: PropTypes.object,
     sponsorLabelHtmlEditorInitialState: PropTypes.object,
     visibilityOptions: PropTypes.object,
-    toggleVisibility: PropTypes.func
+    toggleVisibility: PropTypes.func,
+    imageUploadHandler: PropTypes.func
 };
 
 CallToActionCard.defaultProps = {
@@ -389,6 +395,7 @@ CallToActionCard.defaultProps = {
     onFileChange: () => {},
     setFileInputRef: () => {},
     onRemoveMedia: () => {},
+    imageDragHandler: () => {},
     visibilityOptions: PropTypes.object,
     toggleVisibility: PropTypes.func
 };

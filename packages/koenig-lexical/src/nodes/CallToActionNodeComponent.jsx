@@ -1,6 +1,7 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React, {useRef} from 'react';
+import useFileDragAndDrop from '../hooks/useFileDragAndDrop';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
 import {CallToActionCard} from '../components/ui/cards/CallToActionCard.jsx';
@@ -25,7 +26,6 @@ export const CallToActionNodeComponent = ({
     htmlEditor,
     htmlEditorInitialState,
     buttonTextColor,
-    href,
     sponsorLabelHtmlEditor,
     sponsorLabelHtmlEditorInitialState
 }) => {
@@ -33,6 +33,7 @@ export const CallToActionNodeComponent = ({
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+    const imageDragHandler = useFileDragAndDrop({handleDrop: handleImageDrop});
 
     const {visibilityOptions, toggleVisibility} = useVisibilityToggle(editor, nodeKey, cardConfig);
 
@@ -127,6 +128,10 @@ export const CallToActionNodeComponent = ({
         });
     };
 
+    async function handleImageDrop(files) {
+        await handleImageChange(files);
+    }
+
     React.useEffect(() => {
         htmlEditor.setEditable(isEditing);
     }, [isEditing, htmlEditor]);
@@ -145,6 +150,7 @@ export const CallToActionNodeComponent = ({
                 hasSponsorLabel={hasSponsorLabel}
                 htmlEditor={htmlEditor}
                 htmlEditorInitialState={htmlEditorInitialState}
+                imageDragHandler={imageDragHandler}
                 imageSrc={imageUrl}
                 imageUploader={imageUploader}
                 isEditing={isEditing}
