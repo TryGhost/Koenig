@@ -99,9 +99,9 @@ describe('CallToActionNode', function () {
             callToActionNode.sponsorLabel = 'This post is brought to you by our sponsors';
             callToActionNode.sponsorLabel.should.equal('This post is brought to you by our sponsors');
 
-            callToActionNode.buttonColor.should.equal('black');
-            callToActionNode.buttonColor = 'red';
-            callToActionNode.buttonColor.should.equal('red');
+            callToActionNode.buttonColor.should.equal('#000000');
+            callToActionNode.buttonColor = '#ffffff';
+            callToActionNode.buttonColor.should.equal('#ffffff');
 
             callToActionNode.buttonTextColor.should.equal('');
             callToActionNode.buttonTextColor = 'black';
@@ -112,8 +112,8 @@ describe('CallToActionNode', function () {
             callToActionNode.hasSponsorLabel.should.equal(false);
 
             callToActionNode.backgroundColor.should.equal('grey');
-            callToActionNode.backgroundColor = '#654321';
-            callToActionNode.backgroundColor.should.equal('#654321');
+            callToActionNode.backgroundColor = 'red';
+            callToActionNode.backgroundColor.should.equal('red');
 
             callToActionNode.hasImage.should.equal(false);
             callToActionNode.hasImage = true;
