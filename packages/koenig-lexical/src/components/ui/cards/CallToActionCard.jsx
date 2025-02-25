@@ -106,7 +106,7 @@ export function CallToActionCard({
     updateLayout = () => {},
     updateShowButton = () => {},
     toggleVisibility = () => {},
-    imageDragHandler = () => {}
+    imageDragHandler = {}
 }) {
     const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);
 
@@ -282,7 +282,7 @@ export function CallToActionCard({
                                     layout === 'immersive' ? 'h-auto w-full' : 'aspect-square w-16 object-cover',
                                     'rounded-md'
                                 )}
-                                data-testId="cta-card-image"
+                                data-testid="cta-card-image"
                                 src={imageSrc}
                             />
                         </div>
@@ -371,32 +371,8 @@ CallToActionCard.propTypes = {
     onRemoveMedia: PropTypes.func,
     sponsorLabelHtmlEditor: PropTypes.object,
     sponsorLabelHtmlEditorInitialState: PropTypes.object,
-    visibilityOptions: PropTypes.object,
+    visibilityOptions: PropTypes.array,
     toggleVisibility: PropTypes.func,
     imageUploadHandler: PropTypes.func,
-    imageDragHandler: PropTypes.func
-};
-
-CallToActionCard.defaultProps = {
-    buttonText: '',
-    buttonUrl: '',
-    buttonColor: '',
-    buttonTextColor: '',
-    color: 'none',
-    hasSponsorLabel: false,
-    imageSrc: '',
-    isEditing: false,
-    layout: 'immersive',
-    showButton: true,
-    updateHasSponsorLabel: () => {},
-    updateShowButton: () => {},
-    updateLayout: () => {},
-    handleColorChange: () => {},
-    handleButtonColor: () => {},
-    onFileChange: () => {},
-    setFileInputRef: () => {},
-    onRemoveMedia: () => {},
-    imageDragHandler: () => {},
-    visibilityOptions: PropTypes.object,
-    toggleVisibility: PropTypes.func
+    imageDragHandler: PropTypes.object
 };

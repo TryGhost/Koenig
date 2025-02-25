@@ -151,7 +151,3 @@ MediaPlaceholder.propTypes = {
     type: PropTypes.oneOf(['image', 'button']),
     borderStyle: PropTypes.oneOf(['squared', 'rounded'])
 };
-
-MediaPlaceholder.defaultProps = {
-    borderStyle: 'squared'
-};
