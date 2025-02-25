@@ -373,7 +373,8 @@ CallToActionCard.propTypes = {
     sponsorLabelHtmlEditorInitialState: PropTypes.object,
     visibilityOptions: PropTypes.object,
     toggleVisibility: PropTypes.func,
-    imageUploadHandler: PropTypes.func
+    imageUploadHandler: PropTypes.func,
+    imageDragHandler: PropTypes.func
 };
 
 CallToActionCard.defaultProps = {
