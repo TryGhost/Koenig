@@ -418,7 +418,7 @@ export function SignupCard({alignment,
                             {title: 'Black', hex: '#000000'},
                             {title: 'Brand color', accent: true}
                         ].filter(Boolean)}
-                        value={(showBackgroundImage && layout !== 'split') ? 'image' : backgroundColor}
+                        value={(showBackgroundImage && layout !== 'split') ? '' : backgroundColor}
                         onPickerChange={color => handleBackgroundColor(color, matchingTextColor(color))}
                         onSwatchChange={(color) => {
                             handleBackgroundColor(color, matchingTextColor(color));
