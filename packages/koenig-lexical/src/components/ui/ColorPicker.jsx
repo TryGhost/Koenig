@@ -6,6 +6,7 @@ import {Button} from './Button';
 import {HexColorInput, HexColorPicker} from 'react-colorful';
 import {Tooltip} from './Tooltip';
 import {getAccentColor} from '../../utils/getAccentColor';
+import {useClickOutside} from '../../hooks/useClickOutside';
 
 export function ColorPicker({value, eyedropper, hasTransparentOption, onChange, children}) {
     // HexColorInput doesn't support adding a ref on the input itself
@@ -141,27 +142,8 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [showChildren, setShowChildren] = useState(false);
     const popoverRef = useRef(null);
-    
-    // const stopPropagation = useCallback((e) => {
-    //     e.stopPropagation();
-    //     e.preventDefault();
-    // }, []);
 
-    const handleDocumentClick = useCallback((event) => {
-        if (popoverRef.current && !popoverRef.current.contains(event.target)) {
-            setIsOpen(false);
-        }
-    }, []);
-
-    // Add and remove document click listener based on isOpen
-    useEffect(() => {
-        if (isOpen) {
-            document.addEventListener('click', handleDocumentClick);
-            return () => {
-                document.removeEventListener('click', handleDocumentClick);
-            };
-        }
-    }, [isOpen, handleDocumentClick]);
+    useClickOutside(isOpen, popoverRef, () => setIsOpen(false));
 
     const stopPropagation = useCallback((e) => {
         e.stopPropagation();
@@ -178,7 +160,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
 
     let backgroundColor = value;
     let selectedSwatch = swatches.find(swatch => swatch.hex === value)?.title;
-    
+
     if (value === 'accent') {
         backgroundColor = getAccentColor();
         selectedSwatch = swatches.find(swatch => swatch.accent)?.title;
@@ -201,7 +183,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
 
     return (
         <div className="relative" data-testid="color-selector-button">
-            <button 
+            <button
                 className={`relative size-6 cursor-pointer rounded-full ${value ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`}
                 type="button"
                 onClick={() => {
@@ -219,7 +201,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                         maskComposite: 'exclude'
                     }} />
                 )}
-                <span 
+                <span
                     className="block size-full rounded-full border-2 border-white"
                     style={{backgroundColor}}
                 >
@@ -233,7 +215,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
             </button>
 
             {isOpen && (
-                <div 
+                <div
                     ref={popoverRef}
                     className={clsx(
                         'absolute -right-3 bottom-full z-10 mb-2 flex flex-col gap-3 rounded-lg bg-white p-3 shadow transition-[width] duration-200 ease-in-out dark:bg-grey-950',
@@ -244,7 +226,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                     onTouchStart={stopPropagation}
                 >
                     {showColorPicker && (
-                        <ColorPicker 
+                        <ColorPicker
                             eyedropper={eyedropper}
                             hasTransparentOption={hasTransparentOption}
                             value={value}
@@ -255,25 +237,24 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                     <div className="flex justify-end gap-1">
                         <div className={`flex items-center gap-1`}>
                             {swatches.map(({customContent, ...swatch}) => (
-                                customContent ? 
-                                    <Fragment key={swatch.title}>{customContent}</Fragment> : 
-                                    <ColorSwatch 
-                                        key={swatch.title} 
-                                        isSelected={selectedSwatch === swatch.title} 
+                                customContent ?
+                                    <Fragment key={swatch.title}>{customContent}</Fragment> :
+                                    <ColorSwatch
+                                        key={swatch.title}
+                                        isSelected={selectedSwatch === swatch.title}
                                         onSelect={(val) => {
                                             onSwatchChange(val);
                                             setShowColorPicker(false);
-                                            // setIsOpen(false);
-                                        }} 
-                                        {...swatch} 
+                                        }}
+                                        {...swatch}
                                     />
                             ))}
                         </div>
                         <button
                             aria-label="Pick color"
-                            className={`group relative size-6 rounded-full ${!selectedSwatch ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`} 
+                            className={`group relative size-6 rounded-full ${!selectedSwatch ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`}
                             data-testid="color-picker-toggle"
-                            type="button" 
+                            type="button"
                             onClick={() => {
                                 setShowColorPicker(!showColorPicker);
                                 setShowChildren(false);
@@ -289,7 +270,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                                         mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                                         maskComposite: 'exclude'
                                     }} />
-                                    <span 
+                                    <span
                                         className="block size-full rounded-full border-2 border-white"
                                         style={{backgroundColor: value}}
                                     >

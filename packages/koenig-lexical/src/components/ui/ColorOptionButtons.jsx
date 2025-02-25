@@ -1,6 +1,7 @@
 import PlusIcon from '../../assets/icons/plus.svg?react';
 import React, {useState} from 'react';
 import {Tooltip} from './Tooltip';
+import {useClickOutside} from '../../hooks/useClickOutside';
 import {usePreviousFocus} from '../../hooks/usePreviousFocus';
 
 export function ColorOptionButtons({buttons = [], selectedName, onClick}) {
@@ -10,20 +11,7 @@ export function ColorOptionButtons({buttons = [], selectedName, onClick}) {
     const selectedButton = buttons.find(button => button.name === selectedName);
 
     // Close the swatch popover when clicking outside of it
-    React.useEffect(() => {
-        if (!isOpen) {
-            return;
-        }
-
-        const handleClickOutside = (event) => {
-            if (componentRef.current && !componentRef.current.contains(event.target)) {
-                setIsOpen(false);
-            }
-        };
-
-        window.addEventListener('mousedown', handleClickOutside, {capture: true});
-        return () => window.removeEventListener('mousedown', handleClickOutside, {capture: true});
-    }, [isOpen, setIsOpen]);
+    useClickOutside(isOpen, componentRef, () => setIsOpen(false));
 
     return (
         <div ref={componentRef} className="relative">
