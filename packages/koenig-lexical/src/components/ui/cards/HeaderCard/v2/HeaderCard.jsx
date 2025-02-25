@@ -421,7 +421,7 @@ export function HeaderCard({alignment,
                             {title: 'Grey', hex: '#F0F0F0'},
                             {title: 'Brand color', accent: true}
                         ].filter(Boolean)}
-                        value={(showBackgroundImage && layout !== 'split') ? '' : backgroundColor}
+                        value={(showBackgroundImage && layout !== 'split') ? 'image' : backgroundColor}
                         onPickerChange={color => handleBackgroundColor(color, matchingTextColor(color))}
                         onSwatchChange={(color) => {
                             handleBackgroundColor(color, matchingTextColor(color));
