@@ -31,14 +31,14 @@ export const CardText = ({text, type}) => (
 
 const ButtonContents = ({desc, hasErrors}) => {
     if (hasErrors) {
-        return;
+        return null;
     }
     return <p className="!font-sans !text-[1.3rem] !font-medium text-grey-900">{desc}</p>;
 };
 
 const StandardContents = ({desc, hasErrors, icon, size}) => {
     if (size === 'xsmall' && hasErrors) {
-        return;
+        return null;
     }
 
     const Icon = PLACEHOLDER_ICONS[icon];
