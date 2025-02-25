@@ -1,4 +1,5 @@
 import EyedropperIcon from '../../assets/icons/kg-eyedropper.svg?react';
+import ImgBgIcon from '../../assets/icons/kg-img-bg.svg?react';
 import React, {Fragment, useCallback, useEffect, useRef, useState} from 'react';
 import clsx from 'clsx';
 import {Button} from './Button';
@@ -181,6 +182,9 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
     if (value === 'accent') {
         backgroundColor = getAccentColor();
         selectedSwatch = swatches.find(swatch => swatch.accent)?.title;
+    } else if (value === 'image') {
+        backgroundColor = 'transparent';
+        selectedSwatch = swatches.find(swatch => swatch.image)?.title;
     } else if (value === 'transparent') {
         backgroundColor = 'white';
         selectedSwatch = swatches.find(swatch => swatch.transparent)?.title;
@@ -219,6 +223,11 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                     className="block size-full rounded-full border-2 border-white"
                     style={{backgroundColor}}
                 >
+                    {
+                        value === 'image' && (
+                            <ImgBgIcon/>
+                        )
+                    }
                     {value === 'transparent' && <div className="absolute left-[3px] top-[3px] z-10 w-[136%] origin-left rotate-45 border-b border-b-red" />}
                 </span>
             </button>
