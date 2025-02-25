@@ -5,12 +5,31 @@ import {usePreviousFocus} from '../../hooks/usePreviousFocus';
 
 export function ColorOptionButtons({buttons = [], selectedName, onClick}) {
     const [isOpen, setIsOpen] = useState(false);
+    const componentRef = React.useRef(null);
+
     const selectedButton = buttons.find(button => button.name === selectedName);
 
+    // Close the swatch popover when clicking outside of it
+    React.useEffect(() => {
+        if (!isOpen) {
+            return;
+        }
+
+        const handleClickOutside = (event) => {
+            if (componentRef.current && !componentRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        window.addEventListener('mousedown', handleClickOutside, {capture: true});
+        return () => window.removeEventListener('mousedown', handleClickOutside, {capture: true});
+    }, [isOpen, setIsOpen]);
+
     return (
-        <div className="relative">
+        <div ref={componentRef} className="relative">
             <button
                 className={`relative size-6 cursor-pointer rounded-full ${selectedName ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`}
+                data-testid="color-options-button"
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
             >
@@ -30,7 +49,7 @@ export function ColorOptionButtons({buttons = [], selectedName, onClick}) {
 
             {/* Color options popover */}
             {isOpen && (
-                <div className="absolute -right-3 bottom-full z-10 mb-2 rounded-lg bg-white px-3 py-2 shadow">
+                <div className="absolute -right-3 bottom-full z-10 mb-2 rounded-lg bg-white px-3 py-2 shadow" data-testid="color-options-popover">
                     <div className="flex">
                         <ul className="flex w-full items-center justify-between rounded-md font-sans text-md font-normal text-white">
                             {buttons.map(({label, name, color}) => (
@@ -38,6 +57,7 @@ export function ColorOptionButtons({buttons = [], selectedName, onClick}) {
                                     <ColorButton
                                         key={`${name}-${label}`}
                                         color={color}
+                                        data-testid={`color-options-${name}-button`}
                                         label={label}
                                         name={name}
                                         selectedName={selectedName}

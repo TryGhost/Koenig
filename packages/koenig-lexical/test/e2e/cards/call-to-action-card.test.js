@@ -328,6 +328,22 @@ test.describe('Call To Action Card', async () => {
         }
     });
 
+    test('background color popup closes on outside click', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+
+        const colorOptions = page.getByTestId('cta-background-color-picker');
+        await colorOptions.getByTestId('color-options-button').click();
+
+        await expect(colorOptions.getByTestId('color-options-popover')).toBeVisible();
+
+        const card = page.locator('[data-kg-card="call-to-action"]');
+        const settings = card.getByTestId('settings-panel');
+        await settings.getByTestId('media-upload-setting').click();
+
+        await expect(colorOptions.getByTestId('color-options-popover')).not.toBeVisible();
+    });
+
     test('can add and remove CTA Card image', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
 
