@@ -409,6 +409,7 @@ export function SignupCard({alignment,
                                 title: 'Image',
                                 customContent: (
                                     <ImageUploadSwatch
+                                        dataTestId='signup-background-image-toggle'
                                         showBackgroundImage={showBackgroundImage}
                                         onClickHandler={onBackgroundImageClickHandler}
                                     />

@@ -4,7 +4,8 @@ import {Tooltip} from './Tooltip';
 
 export const ImageUploadSwatch = ({
     showBackgroundImage,
-    onClickHandler
+    onClickHandler,
+    dataTestId
 }) => {
     return (
         <button
@@ -12,7 +13,7 @@ export const ImageUploadSwatch = ({
                 `group relative flex size-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
                 showBackgroundImage && 'outline outline-2 outline-green'
             )}
-            data-testid="header-background-image-toggle"
+            data-testid={dataTestId}
             title="Image"
             type="button"
             onClick={onClickHandler}
