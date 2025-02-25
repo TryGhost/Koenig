@@ -627,14 +627,11 @@ test.describe('Header card V2', () => {
         // Check if it is also set as an image in the panel
         await expect(page.locator('[data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
 
-        const parentLocator = page.locator('[data-testid="header-background-color"]');
+        const parentLocator = page.locator('[data-testid="color-selector-button"]');
+        const iconHtml = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="size-[1.4rem]"><path fill="currentColor" fill-rule="evenodd" d="M22.883 19.771a.786.786 0 0 1-.668.372H1.785a.786.786 0 0 1-.666-1.202l3.93-6.286a.785.785 0 0 1 1.269-.086l3.292 3.95 6.476-8.633a.81.81 0 0 1 .7-.315.786.786 0 0 1 .628.431l5.5 11a.785.785 0 0 1-.03.769Z" clip-rule="evenodd"></path><circle cx="8" cy="6" r="3" fill="currentColor"></circle></svg>';
+        const parentHtml = await parentLocator.innerHTML();
 
-        // Check if it contains the exact <path> element
-        const hasPath = await parentLocator.evaluate((parent) => {
-            return !!parent.querySelector(`path[fill="currentColor"][fill-rule="evenodd"][clip-rule="evenodd"][d="M22.883 19.771a.786.786 0 0 1-.668.372H1.785a.786.786 0 0 1-.666-1.202l3.93-6.286a.785.785 0 0 1 1.269-.086l3.292 3.95 6.476-8.633a.81.81 0 0 1 .7-.315.786.786 0 0 1 .628.431l5.5 11a.785.785 0 0 1-.03.769Z"]`);
-        });
-
-        expect(hasPath).toBe(true);
+        await expect(parentHtml).toContain(iconHtml);
     });
     test('can add and remove background image in split layout', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);

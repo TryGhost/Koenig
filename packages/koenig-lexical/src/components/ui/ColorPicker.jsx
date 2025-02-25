@@ -200,7 +200,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
     };
 
     return (
-        <div className="relative">
+        <div className="relative" data-testid="color-selector-button">
             <button 
                 className={`relative size-6 cursor-pointer rounded-full ${value ? 'p-[2px]' : 'border border-grey-200 dark:border-grey-800'}`}
                 type="button"
