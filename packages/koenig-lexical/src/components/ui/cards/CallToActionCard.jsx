@@ -314,8 +314,8 @@ export function CallToActionCard({
                                     dataTestId="cta-button"
                                     placeholder="Add button text"
                                     size={layout === 'immersive' ? 'medium' : 'small'}
-                                    style={buttonColor ? {
-                                        backgroundColor: buttonColor === 'accent' ? 'var(--accent-color)' : buttonColor,
+                                    style={buttonColor !== 'accent' ? {
+                                        backgroundColor: buttonColor,
                                         color: buttonTextColor
                                     } : undefined}
                                     value={buttonText}
