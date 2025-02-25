@@ -411,6 +411,7 @@ export function HeaderCard({alignment,
                                 title: 'Image',
                                 customContent: (
                                     <ImageUploadSwatch
+                                        dataTestId={'header-background-image-toggle'}
                                         showBackgroundImage={showBackgroundImage}
                                         onClickHandler={onBackgroundImageClickHandler}
                                     />

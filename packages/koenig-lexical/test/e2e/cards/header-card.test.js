@@ -609,7 +609,33 @@ test.describe('Header card V2', () => {
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
         await expect(page.locator('[data-testid="media-upload-setting"]')).not.toBeVisible();
     });
+    
+    test('has image icon when background image is selected', async function (){
+        const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
+        await createHeaderCard({page, version: 2});
 
+        // Choose an image
+        const fileChooserPromise = page.waitForEvent('filechooser');
+
+        await cardBackgroundColorSettings(page, {fireColorSetting: true, cardColorPickerTestId: 'header-background-color', imageUploadId: 'header-background-image-toggle'});
+        await page.click('[data-testid="media-upload-placeholder"]');
+        const fileChooser = await fileChooserPromise;
+        await fileChooser.setFiles([filePath]);
+
+        // Check if it is set as a background image
+
+        // Check if it is also set as an image in the panel
+        await expect(page.locator('[data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
+
+        const parentLocator = page.locator('[data-testid="header-background-color"]');
+
+        // Check if it contains the exact <path> element
+        const hasPath = await parentLocator.evaluate((parent) => {
+            return !!parent.querySelector(`path[fill="currentColor"][fill-rule="evenodd"][clip-rule="evenodd"][d="M22.883 19.771a.786.786 0 0 1-.668.372H1.785a.786.786 0 0 1-.666-1.202l3.93-6.286a.785.785 0 0 1 1.269-.086l3.292 3.95 6.476-8.633a.81.81 0 0 1 .7-.315.786.786 0 0 1 .628.431l5.5 11a.785.785 0 0 1-.03.769Z"]`);
+        });
+
+        expect(hasPath).toBe(true);
+    });
     test('can add and remove background image in split layout', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
         const fileChooserPromise = page.waitForEvent('filechooser');
