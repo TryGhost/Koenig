@@ -1,7 +1,7 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderWithVisibility} from '../../utils/visibility';
 import {getImageDimensions} from '../../utils/image-dimensions';
-import {getCroppedImage} from '../../utils/crop-image-for-email';
+import {isLocalContentImage} from '../../utils/is-local-content-image';
 
 function ctaCardTemplate(dataset) {
     // Add validation for buttonColor
@@ -63,14 +63,13 @@ function emailCTATemplate(dataset, options = {}) {
         }
     }
 
-    if (dataset.layout === 'minimal') {
-        const croppedImage = getCroppedImage(dataset.imageUrl, options);
-        if (croppedImage.src) {
-            dataset.imageUrl = croppedImage.src;
+    if (dataset.layout === 'minimal' && dataset.imageUrl) {
+        if (isLocalContentImage(dataset.imageUrl, options.siteUrl) && options.canTransformImage?.(dataset.imageUrl)) {
+            const [, imagesPath, filename] = dataset.imageUrl.match(/(.*\/content\/images)\/(.*)/);
+
+            dataset.imageUrl = `${imagesPath}/size/w256h256/${filename}`;
         }
     }
-
-    console.log(dataset);
 
     const renderContent = () => {
         if (dataset.layout === 'minimal') {
