@@ -1,6 +1,7 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderWithVisibility} from '../../utils/visibility';
-import {resizeImage} from '../../utils/resize-image';
+import {getImageDimensions} from '../../utils/image-dimensions';
+import {getCroppedImage} from '../../utils/crop-image-for-email';
 
 function ctaCardTemplate(dataset) {
     // Add validation for buttonColor
@@ -44,7 +45,7 @@ function ctaCardTemplate(dataset) {
     `;
 }
 
-function emailCTATemplate(dataset) {
+function emailCTATemplate(dataset, options = {}) {
     const buttonStyle = dataset.buttonColor === 'accent' 
         ? `color: ${dataset.buttonTextColor};` 
         : `background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};`;
@@ -58,9 +59,18 @@ function emailCTATemplate(dataset) {
         };
 
         if (dataset.imageWidth >= 560) {
-            imageDimensions = resizeImage(imageDimensions, {width: 560});
+            imageDimensions = getImageDimensions(imageDimensions, {width: 560});
         }
     }
+
+    if (dataset.layout === 'minimal') {
+        const croppedImage = getCroppedImage(dataset.imageUrl, options);
+        if (croppedImage.src) {
+            dataset.imageUrl = croppedImage.src;
+        }
+    }
+
+    console.log(dataset);
 
     const renderContent = () => {
         if (dataset.layout === 'minimal') {
