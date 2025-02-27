@@ -113,7 +113,7 @@ describe('CallToActionNode', function () {
             callToActionNode.backgroundColor = '#654321';
             callToActionNode.backgroundColor.should.equal('#654321');
 
-            callToActionNode.imageUrl.should.equal('');
+            should(callToActionNode.imageUrl).be.null();
             callToActionNode.imageUrl = 'http://blog.com/image1.jpg';
             callToActionNode.imageUrl.should.equal('http://blog.com/image1.jpg');
 
