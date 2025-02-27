@@ -256,6 +256,11 @@ describe('CallToActionNode', function () {
         it('uses cropped image when layout is minimal', editorTest(function () {
             exportOptions.target = 'email';
             exportOptions.canTransformImage = () => true;
+            exportOptions.imageOptimization = {
+                emailSizes: {
+                    ctaMinimal: {width: 64, height: 64}
+                }
+            };
             dataset = {
                 backgroundColor: 'green',
                 buttonColor: '#F0F0F0',
@@ -279,8 +284,32 @@ describe('CallToActionNode', function () {
             html.should.containEql('Get access now');
             html.should.containEql('http://someblog.com/somepost');
             html.should.containEql('<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'); // because hasSponsorLabel is true
-            html.should.containEql('/content/images/size/w256h256/2022/11/koenig-lexical.jpg'); // because hasImage is true
+            html.should.containEql('/content/images/size/w64h64/2022/11/koenig-lexical.jpg'); // because hasImage is true
             html.should.containEql('This is a new CTA Card via email.');
+        }));
+
+        it('cropped image defaults to 256 if no exportOptions.imageOptimizations are provided', editorTest(function () {
+            exportOptions.target = 'email';
+            exportOptions.canTransformImage = () => true;
+            dataset = {
+                backgroundColor: 'green',
+                buttonColor: '#F0F0F0',
+                buttonText: 'Get access now',
+                buttonTextColor: '#000000',
+                buttonUrl: 'http://someblog.com/somepost',
+                hasImage: true,
+                hasSponsorLabel: true,
+                sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
+                imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
+                layout: 'minimal',
+                showButton: true,
+                textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card via email.</span></p>'
+            };
+            const callToActionNode = new CallToActionNode(dataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+
+            const html = element.outerHTML.toString();
+            html.should.containEql('/content/images/size/w256h256/2022/11/koenig-lexical.jpg'); // because hasImage is true
         }));
 
         it('renders email with img width and height when immersive', editorTest(function () {

@@ -1,7 +1,7 @@
 import {getAvailableImageWidths} from '../../utils/get-available-image-widths';
 import {isLocalContentImage} from '../../utils/is-local-content-image';
 import {setSrcsetAttribute} from '../../utils/srcset-attribute';
-import {getImageDimensions} from '../../utils/image-dimensions';
+import {getResizedImageDimensions} from '../../utils/get-resized-image-dimensions';
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
 
@@ -57,7 +57,7 @@ export function renderImageNode(node, options = {}) {
             width: node.width,
             height: node.height
         };
-        const {width, height} = getImageDimensions(imageDimensions, {width: defaultMaxWidth});
+        const {width, height} = getResizedImageDimensions(imageDimensions, {width: defaultMaxWidth});
         img.setAttribute('width', width);
         img.setAttribute('height', height);
     }
@@ -91,7 +91,7 @@ export function renderImageNode(node, options = {}) {
             height: node.height
         };
         if (node.width >= 600) {
-            imageDimensions = getImageDimensions(imageDimensions, {width: 600});
+            imageDimensions = getResizedImageDimensions(imageDimensions, {width: 600});
         }
         img.setAttribute('width', imageDimensions.width);
         img.setAttribute('height', imageDimensions.height);

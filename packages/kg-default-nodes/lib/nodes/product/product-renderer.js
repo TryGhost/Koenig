@@ -1,6 +1,6 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderEmptyContainer} from '../../utils/render-empty-container';
-import {getImageDimensions} from '../../utils/image-dimensions';
+import {getResizedImageDimensions} from '../../utils/get-resized-image-dimensions';
 
 export function renderProductNode(node, options = {}) {
     addCreateDocumentOption(options);
@@ -72,7 +72,7 @@ export function emailCardTemplate({data}) {
         };
 
         if (data.productImageWidth >= 560) {
-            imageDimensions = getImageDimensions(imageDimensions, {width: 560});
+            imageDimensions = getResizedImageDimensions(imageDimensions, {width: 560});
         }
     }
 

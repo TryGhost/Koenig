@@ -1,6 +1,6 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
 import {renderWithVisibility} from '../../utils/visibility';
-import {getImageDimensions} from '../../utils/image-dimensions';
+import {getResizedImageDimensions} from '../../utils/get-resized-image-dimensions';
 import {isLocalContentImage} from '../../utils/is-local-content-image';
 
 function ctaCardTemplate(dataset) {
@@ -59,15 +59,18 @@ function emailCTATemplate(dataset, options = {}) {
         };
 
         if (dataset.imageWidth >= 560) {
-            imageDimensions = getImageDimensions(imageDimensions, {width: 560});
+            imageDimensions = getResizedImageDimensions(imageDimensions, {width: 560});
         }
     }
 
     if (dataset.layout === 'minimal' && dataset.imageUrl) {
         if (isLocalContentImage(dataset.imageUrl, options.siteUrl) && options.canTransformImage?.(dataset.imageUrl)) {
             const [, imagesPath, filename] = dataset.imageUrl.match(/(.*\/content\/images)\/(.*)/);
-
-            dataset.imageUrl = `${imagesPath}/size/w256h256/${filename}`;
+            const iconSize = { 
+                width: options?.imageOptimization?.emailSizes?.ctaMinimal?.width ?? 256, // default to 256 since we know the image is a square
+                height: options?.imageOptimization?.emailSizes?.ctaMinimal?.height ?? 256 // default to 256 since we know the image is a square
+            };
+            dataset.imageUrl = `${imagesPath}/size/w${iconSize.width}h${iconSize.height}/${filename}`;
         }
     }
 
