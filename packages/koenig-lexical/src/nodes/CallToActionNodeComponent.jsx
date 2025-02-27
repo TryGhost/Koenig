@@ -16,7 +16,6 @@ export const CallToActionNodeComponent = ({
     backgroundColor,
     buttonText,
     buttonUrl,
-    hasImage,
     hasSponsorLabel,
     imageUrl,
     layout,
@@ -99,7 +98,6 @@ export const CallToActionNodeComponent = ({
             editor.update(() => {
                 const node = $getNodeByKey(nodeKey);
                 node.imageUrl = result?.[0].url;
-                node.hasImage = true;
                 node.imageWidth = width;
                 node.imageHeight = height;
             });
@@ -115,8 +113,7 @@ export const CallToActionNodeComponent = ({
     const onRemoveMedia = () => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.imageUrl = '';
-            node.hasImage = false;
+            node.imageUrl = null;
             node.imageWidth = null;
             node.imageHeight = null;
         });
@@ -146,7 +143,6 @@ export const CallToActionNodeComponent = ({
                 color={backgroundColor}
                 handleButtonColor={handleButtonColorChange}
                 handleColorChange={handleBackgroundColorChange}
-                hasImage={hasImage}
                 hasSponsorLabel={hasSponsorLabel}
                 htmlEditor={htmlEditor}
                 htmlEditorInitialState={htmlEditorInitialState}
