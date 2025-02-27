@@ -257,8 +257,8 @@ describe('CallToActionNode', function () {
             exportOptions.target = 'email';
             exportOptions.canTransformImage = () => true;
             exportOptions.imageOptimization = {
-                emailSizes: {
-                    ctaMinimal: {width: 64, height: 64}
+                internalImageSizes: {
+                    'email-cta-minimal-image': {width: 64, height: 64}
                 }
             };
             dataset = {
