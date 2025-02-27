@@ -17,6 +17,7 @@ export function MediaUploader({
     desc,
     icon,
     size,
+    type,
     borderStyle = 'squared',
     backgroundSize = 'cover',
     mimeTypes,
@@ -64,6 +65,7 @@ export function MediaUploader({
                     isDraggedOver={dragHandler?.isDraggedOver}
                     placeholderRef={dragHandler?.setRef}
                     size={size}
+                    type={type}
                 />
                 <ImageUploadForm
                     fileInputRef={onFileInputRef}
@@ -120,6 +122,7 @@ MediaUploader.propTypes = {
     desc: PropTypes.string,
     icon: PropTypes.string,
     size: PropTypes.string,
+    type: PropTypes.oneOf(['image', 'button']),
     borderStyle: PropTypes.string,
     mimeTypes: PropTypes.arrayOf(PropTypes.string),
     onFileChange: PropTypes.func,
