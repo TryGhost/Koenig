@@ -1,5 +1,5 @@
 import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard, isMac} from '../../utils/e2e';
-import {cardBackgroundColorSettings} from '../../utils/background-color-helper';
+// import {calloutColorPicker} from '../../../src/components/ui/cards/CalloutCardx';
 import {expect, test} from '@playwright/test';
 
 test.describe('Callout Card', async () => {
@@ -125,23 +125,26 @@ test.describe('Callout Card', async () => {
         await expect(emojiPickerContainer).toBeVisible();
     });
 
-    // test('colour picker renders all colours', async function () {
-    // await focusEditor(page);
-    // await insertCard(page, {cardName: 'callout'});
-
-    //     // await Promise.all(calloutColorPicker.map(async (color) => {
-    //     //     const colorPicker = page.locator(`[data-test-id="color-picker-${color.name}"]`);
-    //     //     await expect(colorPicker).toBeVisible();
-    //     // }));
-    // });
-
-    test('can change background color to green', async function () {
+    test('colour picker renders all colours', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'callout'});
-        await cardBackgroundColorSettings(page, {
-            cardColorPickerTestId: 'callout-color-picker',
-            colorTestId: 'color-picker-green'
-        });
+
+        // await Promise.all(calloutColorPicker.map(async (color) => {
+        //     const colorPicker = page.locator(`[data-test-id="color-picker-${color.name}"]`);
+        //     await expect(colorPicker).toBeVisible();
+        // }));
+    });
+
+    test('can change background color', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'callout'});
+
+        const colorPicker = page.locator(`[data-test-id="color-picker-green"]`);
+        await colorPicker.click();
+
+        // ensure data-test-id="callout-bg-blue" is visible
+        const greenCallout = page.locator('[data-testid="callout-bg-green"]');
+        await expect(greenCallout).toBeVisible();
     });
 
     test('can select an emoji', async function () {
@@ -312,11 +315,8 @@ test.describe('Callout Card', async () => {
         await page.keyboard.type('Hello ');
 
         // Change color
-        // await page.locator(`[data-test-id="color-picker-green"]`).click();
-        await cardBackgroundColorSettings(page, {
-            cardColorPickerTestId: 'callout-color-picker',
-            colorTestId: 'color-picker-green'
-        });
+        await page.locator(`[data-test-id="color-picker-green"]`).click();
+
         // Continue editing the content
         await page.keyboard.type('world');
 

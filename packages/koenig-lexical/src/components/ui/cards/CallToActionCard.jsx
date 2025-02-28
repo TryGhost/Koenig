@@ -7,7 +7,7 @@ import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin.
 import clsx from 'clsx';
 import defaultTheme from '../../../themes/default.js';
 import {Button} from '../Button.jsx';
-import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel.jsx';
+import {ButtonGroupSettingBeta, ColorOptionSettingBeta, ColorPickerSettingBeta, InputSetting, InputUrlSetting, MediaUploadSettingBeta, SettingsPanel, ToggleSetting} from '../SettingsPanel.jsx';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay.jsx';
 import {RestrictContentPlugin} from '../../../index.js';
 import {VisibilitySettings} from '../VisibilitySettings.jsx';
@@ -137,14 +137,14 @@ export function CallToActionCard({
     const designSettings = (
         <>
             {/* Layout settings */}
-            <ButtonGroupSetting
+            <ButtonGroupSettingBeta
                 buttons={layoutOptions}
                 label='Layout'
                 selectedName={layout}
                 onClick={updateLayout}
             />
             {/* Color picker */}
-            <ColorOptionSetting
+            <ColorOptionSettingBeta
                 buttons={callToActionColorPicker}
                 dataTestId='cta-background-color-picker'
                 label='Background'
@@ -159,7 +159,7 @@ export function CallToActionCard({
                 onChange={updateHasSponsorLabel}
             />
             {/* Image setting */}
-            <MediaUploadSetting
+            <MediaUploadSettingBeta
                 alt='Image'
                 borderStyle={'rounded'}
                 desc='Upload'
@@ -184,7 +184,7 @@ export function CallToActionCard({
             />
             {showButton && (
                 <>
-                    <ColorPickerSetting
+                    <ColorPickerSettingBeta
                         dataTestId='cta-button-color'
                         eyedropper={true}
                         isExpanded={buttonColorPickerExpanded}

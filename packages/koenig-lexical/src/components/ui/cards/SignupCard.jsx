@@ -1,5 +1,6 @@
 import CenterAlignIcon from '../../../assets/icons/kg-align-center.svg?react';
 import ExpandIcon from '../../../assets/icons/kg-expand.svg?react';
+import ImgBgIcon from '../../../assets/icons/kg-img-bg.svg?react';
 import ImgFullIcon from '../../../assets/icons/kg-img-full.svg?react';
 import ImgRegularIcon from '../../../assets/icons/kg-img-regular.svg?react';
 import ImgWideIcon from '../../../assets/icons/kg-img-wide.svg?react';
@@ -15,10 +16,10 @@ import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../IconButton';
-import {ImageUploadSwatch} from '../ImageUploadSwatch';
 import {MediaUploader} from '../MediaUploader';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {SubscribeForm} from '../SubscribeForm';
+import {Tooltip} from '../Tooltip';
 import {getAccentColor} from '../../../utils/getAccentColor';
 import {isEditorEmpty} from '../../../utils/isEditorEmpty';
 
@@ -206,12 +207,6 @@ export function SignupCard({alignment,
     };
 
     const correctedBackgroundSize = backgroundSize === 'contain' && backgroundImageSrc ? 'contain' : 'cover';
-
-    const onBackgroundImageClickHandler = () => {
-        handleShowBackgroundImage();
-        setBackgroundColorPickerExpanded(true);
-        setButtonColorPickerExpanded(false);
-    };
 
     return (
         <>
@@ -408,18 +403,30 @@ export function SignupCard({alignment,
                             (layout !== 'split' && {
                                 title: 'Image',
                                 customContent: (
-                                    <ImageUploadSwatch
-                                        dataTestId='signup-background-image-toggle'
-                                        showBackgroundImage={showBackgroundImage}
-                                        onClickHandler={onBackgroundImageClickHandler}
-                                    />
+                                    <button
+                                        className={clsx(
+                                            `group relative flex size-6 shrink-0 items-center justify-center rounded-full border border-grey-300 bg-grey-100 text-black`,
+                                            showBackgroundImage && 'outline outline-2 outline-green'
+                                        )}
+                                        data-testid="signup-background-image-toggle"
+                                        title="Image"
+                                        type="button"
+                                        onClick={() => {
+                                            handleShowBackgroundImage();
+                                            setBackgroundColorPickerExpanded(false);
+                                            setButtonColorPickerExpanded(false);
+                                        }}
+                                    >
+                                        <ImgBgIcon className="size-[1.4rem]" />
+                                        <Tooltip label='Image' />
+                                    </button>
                                 )
                             }),
                             {title: 'Grey', hex: '#F0F0F0'},
                             {title: 'Black', hex: '#000000'},
                             {title: 'Brand color', accent: true}
                         ].filter(Boolean)}
-                        value={(showBackgroundImage && layout !== 'split') ? 'image' : backgroundColor}
+                        value={(showBackgroundImage && layout !== 'split') ? '' : backgroundColor}
                         onPickerChange={color => handleBackgroundColor(color, matchingTextColor(color))}
                         onSwatchChange={(color) => {
                             handleBackgroundColor(color, matchingTextColor(color));
@@ -441,34 +448,33 @@ export function SignupCard({alignment,
                                 setButtonColorPickerExpanded(!isExpanded);
                             }
                         }}
-                    >
-                        {layout !== 'split' && showBackgroundImage && (
-                            <MediaUploadSetting
-                                alt='Background image'
-                                borderStyle={'rounded'}
-                                desc='Click to select image'
-                                errors={fileUploader?.errors}
-                                hideLabel={true}
-                                icon='file'
-                                isDraggedOver={imageDragHandler?.isDraggedOver}
-                                isLoading={isLoading}
-                                isPinturaEnabled={isPinturaEnabled}
-                                mimeTypes={['image/*']}
-                                openImageEditor={openImageEditor}
-                                placeholderRef={imageDragHandler?.setRef}
-                                progress={progress}
-                                setFileInputRef={setFileInputRef}
-                                size='xsmall'
-                                src={backgroundImageSrc}
-                                stacked={true}
-                                onFileChange={onFileChange}
-                                onRemoveMedia={() => {
-                                    handleClearBackgroundImage();
-                                    handleTextColor(matchingTextColor(backgroundColor));
-                                }}
-                            />
-                        )}
-                    </ColorPickerSetting>
+                    />
+
+                    <MediaUploadSetting
+                        alt='Background image'
+                        borderStyle={'rounded'}
+                        className={(!showBackgroundImage || layout === 'split') && 'hidden'}
+                        errors={fileUploader?.errors}
+                        hideLabel={layout !== 'split'}
+                        icon='file'
+                        isDraggedOver={imageDragHandler?.isDraggedOver}
+                        isLoading={isLoading}
+                        isPinturaEnabled={isPinturaEnabled}
+                        label='Image'
+                        mimeTypes={['image/*']}
+                        openImageEditor={openImageEditor}
+                        placeholderRef={imageDragHandler?.setRef}
+                        progress={progress}
+                        setFileInputRef={setFileInputRef}
+                        size='xsmall'
+                        src={backgroundImageSrc}
+                        stacked={true}
+                        onFileChange={onFileChange}
+                        onRemoveMedia={() => {
+                            handleClearBackgroundImage();
+                            handleTextColor(matchingTextColor(backgroundColor));
+                        }}
+                    />
 
                     <ColorPickerSetting
                         dataTestId='signup-button-color'

@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import WandIcon from '../../assets/icons/kg-wand.svg?react';
 import clsx from 'clsx';
 import {IconButton} from './IconButton';
-import {MediaPlaceholder} from './MediaPlaceholder';
+import {MediaPlaceholderBeta} from './MediaPlaceholderBeta';
 import {ProgressBar} from './ProgressBar';
 import {openFileSelection} from '../../utils/openFileSelection';
 import {useRef} from 'react';
 
-export function MediaUploader({
+export function MediaUploaderBeta({
     className,
     imgClassName,
     src,
@@ -17,6 +17,7 @@ export function MediaUploader({
     desc,
     icon,
     size,
+    type,
     borderStyle = 'squared',
     backgroundSize = 'cover',
     mimeTypes,
@@ -53,7 +54,7 @@ export function MediaUploader({
     if (isEmpty) {
         return (
             <div className={className}>
-                <MediaPlaceholder
+                <MediaPlaceholderBeta
                     borderStyle={borderStyle}
                     dataTestId="media-upload-placeholder"
                     desc={isEditing ? desc : ''}
@@ -64,6 +65,7 @@ export function MediaUploader({
                     isDraggedOver={dragHandler?.isDraggedOver}
                     placeholderRef={dragHandler?.setRef}
                     size={size}
+                    type={type}
                 />
                 <ImageUploadForm
                     fileInputRef={onFileInputRef}
@@ -113,13 +115,14 @@ export function MediaUploader({
     );
 }
 
-MediaUploader.propTypes = {
+MediaUploaderBeta.propTypes = {
     className: PropTypes.string,
     src: PropTypes.string,
     alt: PropTypes.string,
     desc: PropTypes.string,
     icon: PropTypes.string,
     size: PropTypes.string,
+    type: PropTypes.oneOf(['image', 'button']),
     borderStyle: PropTypes.string,
     mimeTypes: PropTypes.arrayOf(PropTypes.string),
     onFileChange: PropTypes.func,
