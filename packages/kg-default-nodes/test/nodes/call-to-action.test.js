@@ -101,7 +101,7 @@ describe('CallToActionNode', function () {
             callToActionNode.buttonColor = '#ffffff';
             callToActionNode.buttonColor.should.equal('#ffffff');
 
-            callToActionNode.buttonTextColor.should.equal('');
+            callToActionNode.buttonTextColor.should.equal('#ffffff');
             callToActionNode.buttonTextColor = 'black';
             callToActionNode.buttonTextColor.should.equal('black');
 
@@ -113,7 +113,7 @@ describe('CallToActionNode', function () {
             callToActionNode.backgroundColor = 'red';
             callToActionNode.backgroundColor.should.equal('red');
 
-            should(callToActionNode.imageUrl).be.null();
+            callToActionNode.imageUrl.should.equal('');
             callToActionNode.imageUrl = 'http://blog.com/image1.jpg';
             callToActionNode.imageUrl.should.equal('http://blog.com/image1.jpg');
 
@@ -259,7 +259,6 @@ describe('CallToActionNode', function () {
                 buttonText: 'Get access now',
                 buttonTextColor: '#000000',
                 buttonUrl: 'http://someblog.com/somepost',
-                hasImage: true,
                 hasSponsorLabel: true,
                 sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
@@ -276,7 +275,7 @@ describe('CallToActionNode', function () {
             html.should.containEql('Get access now');
             html.should.containEql('http://someblog.com/somepost');
             html.should.containEql('<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'); // because hasSponsorLabel is true
-            html.should.containEql('/content/images/size/w64h64/2022/11/koenig-lexical.jpg'); // because hasImage is true
+            html.should.containEql('/content/images/size/w64h64/2022/11/koenig-lexical.jpg');
             html.should.containEql('This is a new CTA Card via email.');
         }));
 
@@ -289,7 +288,6 @@ describe('CallToActionNode', function () {
                 buttonText: 'Get access now',
                 buttonTextColor: '#000000',
                 buttonUrl: 'http://someblog.com/somepost',
-                hasImage: true,
                 hasSponsorLabel: true,
                 sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
                 imageUrl: '/content/images/2022/11/koenig-lexical.jpg',
@@ -301,7 +299,7 @@ describe('CallToActionNode', function () {
             const {element} = callToActionNode.exportDOM(exportOptions);
 
             const html = element.outerHTML.toString();
-            html.should.containEql('/content/images/size/w256h256/2022/11/koenig-lexical.jpg'); // because hasImage is true
+            html.should.containEql('/content/images/size/w256h256/2022/11/koenig-lexical.jpg');
         }));
 
         it('renders email with img width and height when immersive', editorTest(function () {
