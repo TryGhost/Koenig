@@ -49,9 +49,9 @@ export function ButtonGroupIconButton({dataTestId, onClick, label, ariaLabel, na
 }
 
 ButtonGroupBeta.propTypes = {
-    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large', 'grid', 'list', 'minimal', 'immersive']),
+    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large', 'grid', 'list', 'minimal', 'immersive']).isRequired,
     hasTooltip: PropTypes.bool,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func.isRequired,
     buttons: PropTypes.arrayOf(PropTypes.shape({
         label: PropTypes.string,
         name: PropTypes.string,
