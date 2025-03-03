@@ -78,11 +78,11 @@ export function MediaUploaderBeta({
     }
 
     return (
-        <div className={clsx('group/image relative flex items-center justify-center', borderStyle === 'dashed' && 'rounded', className)} data-testid="media-upload-filled">
+        <div className={clsx('group/image relative flex items-center justify-center', borderStyle === 'rounded' && 'rounded', className)} data-testid="media-upload-filled">
             {src && (
                 <>
                     <img alt={alt} className={clsx('mx-auto size-full rounded-lg', backgroundSize === 'cover' ? 'object-cover' : 'object-contain', imgClassName)} src={src} />
-                    <div className={clsx('absolute inset-0 rounded-lg bg-gradient-to-t from-black/0 via-black/5 to-black/30 opacity-0 transition-all group-hover/image:opacity-100', borderStyle === 'dashed' && 'rounded-lg')}></div>
+                    <div className={clsx('absolute inset-0 rounded-lg bg-gradient-to-t from-black/0 via-black/5 to-black/30 opacity-0 transition-all group-hover/image:opacity-100', borderStyle === 'rounded' && 'rounded-lg')}></div>
                 </>
             )}
 
@@ -119,7 +119,7 @@ MediaUploaderBeta.propTypes = {
     additionalActions: PropTypes.node,
     alt: PropTypes.string,
     backgroundSize: PropTypes.oneOf(['cover', 'contain']),
-    borderStyle: PropTypes.string,
+    borderStyle: PropTypes.oneOf(['squared', 'rounded']),
     className: PropTypes.string,
     desc: PropTypes.string,
     dragHandler: PropTypes.shape({isDraggedOver: PropTypes.bool, setRef: PropTypes.func}),
