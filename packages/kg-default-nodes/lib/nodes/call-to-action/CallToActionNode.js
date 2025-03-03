@@ -12,7 +12,7 @@ export class CallToActionNode extends generateDecoratorNode({
         {name: 'buttonText', default: 'Learn more'},
         {name: 'buttonUrl', default: ''},
         {name: 'buttonColor', default: '#000000'}, // Where colour is customisable, we should use hex values
-        {name: 'buttonTextColor', default: ''},
+        {name: 'buttonTextColor', default: '#ffffff'},
         {name: 'hasSponsorLabel', default: true},
         {name: 'sponsorLabel', default: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'},
         {name: 'backgroundColor', default: 'grey'}, // Since this is one of a few fixed options, we stick to colour names.
