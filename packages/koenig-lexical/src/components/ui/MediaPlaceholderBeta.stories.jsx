@@ -81,8 +81,8 @@ Product.args = {
     borderStyle: 'squared'
 };
 
-export const Error = Template.bind({});
-Error.args = {
+export const ErrorState = Template.bind({});
+ErrorState.args = {
     icon: 'video',
     desc: 'Click to select a video',
     size: 'medium',
