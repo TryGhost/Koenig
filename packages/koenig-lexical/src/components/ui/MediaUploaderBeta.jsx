@@ -116,24 +116,25 @@ export function MediaUploaderBeta({
 }
 
 MediaUploaderBeta.propTypes = {
-    className: PropTypes.string,
-    src: PropTypes.string,
+    additionalActions: PropTypes.node,
     alt: PropTypes.string,
-    desc: PropTypes.string,
-    icon: PropTypes.string,
-    size: PropTypes.string,
-    type: PropTypes.oneOf(['image', 'button']),
+    backgroundSize: PropTypes.oneOf(['cover', 'contain']),
     borderStyle: PropTypes.string,
+    className: PropTypes.string,
+    desc: PropTypes.string,
+    dragHandler: PropTypes.shape({isDraggedOver: PropTypes.bool, setRef: PropTypes.func}),
+    errors: PropTypes.arrayOf(PropTypes.shape({message: PropTypes.string})),
+    icon: PropTypes.string,
+    imgClassName: PropTypes.string,
+    isEditing: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    isPinturaEnabled: PropTypes.bool,
     mimeTypes: PropTypes.arrayOf(PropTypes.string),
     onFileChange: PropTypes.func,
-    dragHandler: PropTypes.shape({
-        isDraggedOver: PropTypes.bool,
-        setRef: PropTypes.func
-    }),
-    isLoading: PropTypes.bool,
+    onRemoveMedia: PropTypes.func,
     progress: PropTypes.number,
-    errors: PropTypes.arrayOf(PropTypes.shape({
-        message: PropTypes.string
-    })),
-    onRemoveMedia: PropTypes.func
+    setFileInputRef: PropTypes.func,
+    size: PropTypes.string,
+    src: PropTypes.string,
+    type: PropTypes.oneOf(['image', 'button'])
 };
