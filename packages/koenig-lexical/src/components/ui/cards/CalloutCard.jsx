@@ -158,6 +158,7 @@ export function CalloutCard({
                             buttons={calloutColorPicker}
                             dataTestId='callout-color-picker'
                             label='Background'
+                            layout='stacked'
                             selectedName={color}
                             onClick={handleColorChange}
                         />
