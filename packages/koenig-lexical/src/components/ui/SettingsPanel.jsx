@@ -235,13 +235,13 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
     );
 }
 
-export function ButtonGroupSettingBeta({label, onClick, selectedName, buttons}) {
+export function ButtonGroupSettingBeta({label, onClick, selectedName, buttons, hasTooltip}) {
     return (
         <div className="flex w-full items-center justify-between text-[1.3rem]">
             <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
 
             <div className="shrink-0 pl-2">
-                <ButtonGroupBeta buttons={buttons} selectedName={selectedName} onClick={onClick} />
+                <ButtonGroupBeta buttons={buttons} hasTooltip={hasTooltip} selectedName={selectedName} onClick={onClick} />
             </div>
         </div>
     );

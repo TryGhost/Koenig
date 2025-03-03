@@ -120,13 +120,15 @@ export function CallToActionCard({
             label: 'Minimal',
             name: 'minimal',
             Icon: MinimalLayoutIcon,
-            dataTestId: 'minimal-layout'
+            dataTestId: 'minimal-layout',
+            ariaLabel: 'Left-aligned layout with small, square image'
         },
         {
             label: 'Immersive',
             name: 'immersive',
             Icon: ImmersiveLayoutIcon,
-            dataTestId: 'immersive-layout'
+            dataTestId: 'immersive-layout',
+            ariaLabel: 'Center-aligned layout with full-width image and button'
         }
     ];
 
@@ -139,6 +141,7 @@ export function CallToActionCard({
             {/* Layout settings */}
             <ButtonGroupSettingBeta
                 buttons={layoutOptions}
+                hasTooltip={false}
                 label='Layout'
                 selectedName={layout}
                 onClick={updateLayout}
@@ -255,7 +258,7 @@ export function CallToActionCard({
                             initialTheme={sponsoredLabelTheme}
                             nodes='basic'
                             textClassName={clsx(
-                                'koenig-lexical-cta-label not-kg-prose w-full whitespace-normal font-sans !text-xs font-semibold uppercase leading-8 tracking-normal text-grey-900/40 dark:text-grey-200/40'
+                                'koenig-lexical-cta-label not-kg-prose w-full whitespace-normal font-sans !text-xs font-semibold uppercase leading-8 tracking-normal text-grey-900/50 dark:text-grey-200/40'
                             )}
                             useDefaultClasses={false}
                         >

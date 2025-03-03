@@ -4,14 +4,16 @@ import React from 'react';
 import {Tooltip} from './Tooltip';
 import {usePreviousFocus} from '../../hooks/usePreviousFocus';
 
-export function ButtonGroupBeta({buttons = [], selectedName, onClick}) {
+export function ButtonGroupBeta({buttons = [], selectedName, onClick, hasTooltip = true}) {
     return (
         <div className="flex">
             <ul className="flex items-center justify-evenly rounded-lg bg-grey-100 font-sans text-md font-normal text-white">
-                {buttons.map(({label, name, Icon, dataTestId}) => (
+                {buttons.map(({label, name, Icon, dataTestId, ariaLabel}) => (
                     <IconButton
                         key={`${name}-${label}`}
+                        ariaLabel={ariaLabel}
                         dataTestId={dataTestId}
+                        hasTooltip={hasTooltip}
                         Icon={Icon}
                         label={label}
                         name={name}
@@ -24,7 +26,7 @@ export function ButtonGroupBeta({buttons = [], selectedName, onClick}) {
     );
 }
 
-export function IconButton({dataTestId, onClick, label, name, selectedName, Icon}) {
+export function IconButton({dataTestId, onClick, label, ariaLabel, name, selectedName, Icon, hasTooltip}) {
     const isActive = name === selectedName;
 
     const {handleMousedown, handleClick} = usePreviousFocus(onClick, name);
@@ -32,7 +34,7 @@ export function IconButton({dataTestId, onClick, label, name, selectedName, Icon
     return (
         <li className="mb-0">
             <button
-                aria-label={label}
+                aria-label={ariaLabel || label}
                 className={`group relative flex h-7 w-8 cursor-pointer items-center justify-center rounded-lg text-black dark:text-white dark:hover:bg-grey-900 ${isActive ? 'border border-grey-300 bg-white shadow-xs dark:bg-grey-900' : '' } ${Icon ? '' : 'text-[1.3rem] font-bold'}`}
                 data-testid={dataTestId}
                 type="button"
@@ -40,12 +42,13 @@ export function IconButton({dataTestId, onClick, label, name, selectedName, Icon
                 onMouseDown={handleMousedown}
             >
                 {Icon ? <Icon className="size-4 stroke-2" /> : label}
-                {(Icon && label) && <Tooltip label={label} />}
+                {(Icon && label && hasTooltip) && <Tooltip label={label} />}
             </button>
         </li>
     );
 }
 
 ButtonGroupBeta.propTypes = {
-    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large', 'grid', 'list', 'minimal', 'immersive'])
+    selectedName: PropTypes.oneOf(['regular', 'wide', 'full', 'split', 'center', 'left', 'small', 'medium', 'large', 'grid', 'list', 'minimal', 'immersive']),
+    hasTooltip: PropTypes.bool
 };
