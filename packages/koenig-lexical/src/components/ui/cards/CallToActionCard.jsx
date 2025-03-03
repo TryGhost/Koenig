@@ -178,6 +178,7 @@ export function CallToActionCard({
                 onFileChange={onFileChange}
                 onRemoveMedia={onRemoveMedia}
             />
+            <hr className="not-kg-prose my-2 block border-t-grey-300 dark:border-t-grey-900" />
             {/* Button settings */}
             <ToggleSetting
                 dataTestId="button-settings"
