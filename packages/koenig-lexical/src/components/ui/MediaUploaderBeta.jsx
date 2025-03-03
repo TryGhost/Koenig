@@ -132,6 +132,7 @@ MediaUploaderBeta.propTypes = {
     mimeTypes: PropTypes.arrayOf(PropTypes.string),
     onFileChange: PropTypes.func,
     onRemoveMedia: PropTypes.func,
+    openImageEditor: PropTypes.func,
     progress: PropTypes.number,
     setFileInputRef: PropTypes.func,
     size: PropTypes.string,
