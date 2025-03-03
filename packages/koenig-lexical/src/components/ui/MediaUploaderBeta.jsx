@@ -29,7 +29,7 @@ export function MediaUploaderBeta({
     openImageEditor,
     progress,
     errors,
-    onRemoveMedia,
+    onRemoveMedia = () => {},
     additionalActions,
     setFileInputRef
 }) {
