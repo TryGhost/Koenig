@@ -9,7 +9,7 @@ export function ButtonGroupBeta({buttons = [], selectedName, onClick, hasTooltip
         <div className="flex">
             <ul className="flex items-center justify-evenly rounded-lg bg-grey-100 font-sans text-md font-normal text-white">
                 {buttons.map(({label, name, Icon, dataTestId, ariaLabel}) => (
-                    <IconButton
+                    <ButtonGroupIconButton
                         key={`${name}-${label}`}
                         ariaLabel={ariaLabel}
                         dataTestId={dataTestId}
@@ -26,7 +26,7 @@ export function ButtonGroupBeta({buttons = [], selectedName, onClick, hasTooltip
     );
 }
 
-export function IconButton({dataTestId, onClick, label, ariaLabel, name, selectedName, Icon, hasTooltip}) {
+export function ButtonGroupIconButton({dataTestId, onClick, label, ariaLabel, name, selectedName, Icon, hasTooltip}) {
     const isActive = name === selectedName;
 
     const {handleMousedown, handleClick} = usePreviousFocus(onClick, name);
