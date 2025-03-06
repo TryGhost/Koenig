@@ -35,6 +35,8 @@ jobs:
         run: |
           sudo apt-get update -yq
           sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
+          echo 'set man-db/auto-update false' | sudo debconf-communicate >/dev/null
+          sudo dpkg-reconfigure man-db
           sudo apt-get install msttcorefonts -qq
 
       - run: yarn --prefer-offline
