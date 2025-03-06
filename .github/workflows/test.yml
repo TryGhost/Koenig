@@ -37,7 +37,7 @@ jobs:
           sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
           sudo apt-get install msttcorefonts -qq
 
-      - run: yarn
+      - run: yarn --prefer-offline
 
       - name: Get installed Playwright version
         id: playwright-version
