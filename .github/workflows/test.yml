@@ -55,11 +55,11 @@ jobs:
 
       - name: Install Playwright
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium firefox
+        run: npx playwright install --with-deps chromium firefox ffmpeg
 
       - name: Install Playwright OS dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium firefox
+        run: npx playwright install-deps chromium firefox ffmpeg
 
       - run: yarn test
       - uses: codecov/codecov-action@v3
