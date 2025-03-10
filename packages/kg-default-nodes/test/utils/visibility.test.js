@@ -51,6 +51,20 @@ describe('Utils: visibility', function () {
             visibility.email.should.eql({memberSegment: 'status:free'});
         });
 
+        it('creates new format from {"emailOnly":false,"segment":""}', function () {
+            const visibility = {emailOnly: false, segment: ''};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: true, memberSegment: 'status:free,status:-free'});
+            visibility.email.should.eql({memberSegment: 'status:free,status:-free'});
+        });
+
+        it('creates new format from {"emailOnly":true,"segment":""}', function () {
+            const visibility = {emailOnly: false, segment: ''};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: false, memberSegment: ''});
+            visibility.email.should.eql({memberSegment: 'status:free,status:-free'});
+        });
+
         it('leaves existing properties alone', function () {
             const visibility = {showOnWeb: true, segment: 'status:free'};
             migrateOldVisibilityFormat(visibility);
