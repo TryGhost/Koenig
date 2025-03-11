@@ -58,11 +58,59 @@ describe('Utils: visibility', function () {
             visibility.email.should.eql({memberSegment: 'status:free,status:-free'});
         });
 
-        it('creates new format from {"emailOnly":true,"segment":""}', function () {
-            const visibility = {emailOnly: false, segment: ''};
+        // Segment tests
+        it('creates new email property from showOnEmail: true, segment:"status:paid"', function () {
+            const visibility = {showOnEmail: true, segment: 'status:paid'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.email.should.eql({memberSegment: 'status:paid'});
+        });
+
+        it('creates new email property from showOnEmail: true, segment:"status:-free+status:-paid"', function () {
+            const visibility = {showOnEmail: true, segment: 'status:-free+status:-paid'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.email.should.eql({memberSegment: 'status:-free,status:-paid'});
+        });
+
+        it('creates new format from {"emailOnly":true,"segment":"status:free"}', function () {
+            const visibility = {emailOnly: true, segment: 'status:free'};
             migrateOldVisibilityFormat(visibility);
             visibility.web.should.eql({nonMember: false, memberSegment: ''});
-            visibility.email.should.eql({memberSegment: 'status:free,status:-free'});
+            visibility.email.should.eql({memberSegment: 'status:free'});
+        });
+
+        it('creates new format from {"emailOnly":true,"segment":"status:paid"}', function () {
+            const visibility = {emailOnly: true, segment: 'status:paid'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: false, memberSegment: ''});
+            visibility.email.should.eql({memberSegment: 'status:paid'});
+        });
+
+        it('creates new format from {"emailOnly":true,"segment":"status:-free+status:-paid"}', function () {
+            const visibility = {emailOnly: true, segment: 'status:-free+status:-paid'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: false, memberSegment: ''});
+            visibility.email.should.eql({memberSegment: 'status:-free,status:-paid'});
+        });
+
+        it('creates new format from {"emailOnly":false,"segment":"status:free"}', function () {
+            const visibility = {emailOnly: false, segment: 'status:free'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: true, memberSegment: 'status:free'});
+            visibility.email.should.eql({memberSegment: 'status:free'});
+        });
+
+        it('creates new format from {"emailOnly":false,"segment":"status:paid"}', function () {
+            const visibility = {emailOnly: false, segment: 'status:paid'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: true, memberSegment: 'status:paid'});
+            visibility.email.should.eql({memberSegment: 'status:paid'});
+        });
+
+        it('creates new format from {"emailOnly":false,"segment":"status:-free+status:-paid"}', function () {
+            const visibility = {emailOnly: false, segment: 'status:-free+status:-paid'};
+            migrateOldVisibilityFormat(visibility);
+            visibility.web.should.eql({nonMember: true, memberSegment: 'status:-free,status:-paid'});
+            visibility.email.should.eql({memberSegment: 'status:-free,status:-paid'});
         });
 
         it('leaves existing properties alone', function () {
