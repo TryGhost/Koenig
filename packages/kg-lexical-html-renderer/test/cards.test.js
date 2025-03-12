@@ -139,6 +139,10 @@ describe('Cards', function () {
         renderedInput.should.equal(expected);
     });
 
+    // https://linear.app/ghost/issue/ONC-801/
+    // we had an issue with HTML cards in content created during early alpha period
+    // where they would not be rendered in email due to incorrect migration of old
+    // visibility format
     it('renders HTML card in email with old visibility format', async function () {
         const htmlCard = {
             type: 'html',
