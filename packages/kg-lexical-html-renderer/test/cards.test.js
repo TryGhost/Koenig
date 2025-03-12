@@ -138,4 +138,25 @@ describe('Cards', function () {
 `;
         renderedInput.should.equal(expected);
     });
+
+    it('renders HTML card in email with old visibility format', async function () {
+        const htmlCard = {
+            type: 'html',
+            html: '<p>Should be visible in email</p>',
+            visibility: {emailOnly: false, segment: ''}
+        };
+        lexicalState.root.children.push(htmlCard);
+
+        options.target = 'email';
+        const renderer = new Renderer({nodes});
+        const renderedInput = await renderer.render(JSON.stringify(lexicalState), options);
+
+        const expected = `
+<!--kg-card-begin: html-->
+<p>Should be visible in email</p>
+<!--kg-card-end: html-->
+`;
+
+        renderedInput.should.equal(expected);
+    });
 });
