@@ -372,6 +372,14 @@ test.describe('Call To Action Card', async () => {
         await fileChooser.setFiles([filePath]);
         const progressBar = page.locator('[data-testid="progress-bar"]');
         await expect(progressBar).toBeVisible();
+
+        const imgLocator = page.locator('[data-kg-card="call-to-action"] img[src^="blob:"]');
+        const imgElement = await imgLocator.first();
+        await expect(imgElement).toHaveAttribute('src', /blob:/);
+
+        // check for progress bar to disappear
+
+        await expect(progressBar).not.toBeVisible();
     });
 
     test('can drag and drop image over upload button', async function () {
