@@ -26,10 +26,10 @@ export const CALLTOACTION_COLORS = {
     purple: 'bg-purple/10 border-transparent'
 };
 
-const sponsoredLabelTheme = {
+const getTheme = linkColor => ({
     ...defaultTheme,
-    link: 'text-accent'
-};
+    link: linkColor === 'accent' ? 'text-accent' : 'text-black dark:text-white'
+});
 
 export const callToActionColorPicker = [
     {
@@ -79,6 +79,19 @@ export const callToActionColorPicker = [
     }
 ];
 
+export const callToActionLinkColorPicker = [
+    {
+        label: 'Text',
+        name: 'text',
+        color: 'bg-black border-black'
+    },
+    {
+        label: 'Accent',
+        name: 'accent',
+        color: 'bg-accent border-accent'
+    }
+];
+
 export function CallToActionCard({
     buttonColor = '',
     buttonText = '',
@@ -97,6 +110,7 @@ export function CallToActionCard({
     visibilityOptions = {},
     handleButtonColor = () => {},
     handleColorChange = () => {},
+    handleLinkColorChange = () => {},
     onFileChange = () => {},
     onRemoveMedia = () => {},
     setFileInputRef = () => {},
@@ -106,11 +120,13 @@ export function CallToActionCard({
     updateLayout = () => {},
     updateShowButton = () => {},
     toggleVisibility = () => {},
-    imageDragHandler = {}
+    imageDragHandler = {},
+    linkColor = 'text'
 }) {
     const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);
 
     const tabs = [
+        {id: 'content', label: 'Content'},
         {id: 'design', label: 'Design'},
         {id: 'visibility', label: 'Visibility'}
     ];
@@ -136,24 +152,10 @@ export function CallToActionCard({
         return bgColor === 'transparent' ? '' : textColorForBackgroundColor(bgColor === 'accent' ? getAccentColor() : bgColor).hex();
     };
 
-    const designSettings = (
+    const theme = getTheme(linkColor);
+
+    const contentSettings = (
         <>
-            {/* Layout settings */}
-            <ButtonGroupSettingBeta
-                buttons={layoutOptions}
-                hasTooltip={false}
-                label='Layout'
-                selectedName={layout}
-                onClick={updateLayout}
-            />
-            {/* Color picker */}
-            <ColorOptionSettingBeta
-                buttons={callToActionColorPicker}
-                dataTestId='cta-background-color-picker'
-                label='Background'
-                selectedName={color}
-                onClick={handleColorChange}
-            />
             {/* Sponsor label setting */}
             <ToggleSetting
                 dataTestId="sponsor-label-toggle"
@@ -188,26 +190,6 @@ export function CallToActionCard({
             />
             {showButton && (
                 <>
-                    <ColorPickerSettingBeta
-                        dataTestId='cta-button-color'
-                        eyedropper={true}
-                        isExpanded={buttonColorPickerExpanded}
-                        label='Button Color'
-                        swatches={[
-                            {title: 'Black', hex: '#000000'},
-                            {title: 'Grey', hex: '#F0F0F0'},
-                            {title: 'Brand color', accent: true}
-                        ]}
-                        value={buttonColor}
-                        onPickerChange={bgColor => handleButtonColor(bgColor, matchingTextColor(bgColor))}
-                        onSwatchChange={(bgColor) => {
-                            handleButtonColor(bgColor, matchingTextColor(bgColor));
-                            setButtonColorPickerExpanded(false);
-                        }}
-                        onTogglePicker={(isExpanded) => {
-                            setButtonColorPickerExpanded(isExpanded);
-                        }}
-                    />
                     <InputSetting
                         dataTestId="button-text"
                         label='Button text'
@@ -222,6 +204,57 @@ export function CallToActionCard({
                         onChange={updateButtonUrl}
                     />
                 </>
+            )}
+        </>
+    );
+
+    const designSettings = (
+        <>
+            {/* Layout settings */}
+            <ButtonGroupSettingBeta
+                buttons={layoutOptions}
+                hasTooltip={false}
+                label='Layout'
+                selectedName={layout}
+                onClick={updateLayout}
+            />
+            {/* Color picker */}
+            <ColorOptionSettingBeta
+                buttons={callToActionColorPicker}
+                dataTestId='cta-background-color-picker'
+                label='Background'
+                selectedName={color}
+                onClick={handleColorChange}
+            />
+            {/* Link color setting */}
+            <ColorOptionSettingBeta
+                buttons={callToActionLinkColorPicker}
+                dataTestId='cta-link-color-picker'
+                label='Link color'
+                selectedName={linkColor}
+                onClick={handleLinkColorChange}
+            />
+            {showButton && (
+                <ColorPickerSettingBeta
+                    dataTestId='cta-button-color'
+                    eyedropper={true}
+                    isExpanded={buttonColorPickerExpanded}
+                    label='Button Color'
+                    swatches={[
+                        {title: 'Black', hex: '#000000'},
+                        {title: 'Grey', hex: '#F0F0F0'},
+                        {title: 'Brand color', accent: true}
+                    ]}
+                    value={buttonColor}
+                    onPickerChange={bgColor => handleButtonColor(bgColor, matchingTextColor(bgColor))}
+                    onSwatchChange={(bgColor) => {
+                        handleButtonColor(bgColor, matchingTextColor(bgColor));
+                        setButtonColorPickerExpanded(false);
+                    }}
+                    onTogglePicker={(isExpanded) => {
+                        setButtonColorPickerExpanded(isExpanded);
+                    }}
+                />
             )}
         </>
     );
@@ -256,7 +289,7 @@ export function CallToActionCard({
                             hasSettingsPanel={true}
                             initialEditor={sponsorLabelHtmlEditor}
                             initialEditorState={sponsorLabelHtmlEditorInitialState}
-                            initialTheme={sponsoredLabelTheme}
+                            initialTheme={theme}
                             nodes='basic'
                             textClassName={clsx(
                                 'koenig-lexical-cta-label not-kg-prose w-full whitespace-normal font-sans !text-xs font-semibold uppercase leading-8 tracking-normal text-grey-900/50 dark:text-grey-200/40'
@@ -300,8 +333,9 @@ export function CallToActionCard({
                             hasSettingsPanel={true}
                             initialEditor={htmlEditor}
                             initialEditorState={htmlEditorInitialState}
+                            initialTheme={theme}
                             nodes='basic'
-                            placeholderClassName={`bg-transparent whitespace-normal font-serif text-xl !text-grey-500 !dark:text-grey-800 ` }
+                            placeholderClassName={`bg-transparent whitespace-normal font-serif text-xl !text-grey-500 !dark:text-grey-800 `}
                             placeholderText="Write something worth clicking..."
                             textClassName="koenig-lexical-cta-text w-full whitespace-normal text-pretty bg-transparent font-serif text-xl text-grey-900 dark:text-grey-200"
                         >
@@ -334,11 +368,12 @@ export function CallToActionCard({
 
             {isEditing && (
                 <SettingsPanel
-                    defaultTab="design"
+                    defaultTab="content"
                     tabs={tabs}
                     onMouseDown={e => e.preventDefault()}
                 >
                     {{
+                        content: contentSettings,
                         design: designSettings,
                         visibility: visibilitySettings
                     }}
@@ -376,5 +411,7 @@ CallToActionCard.propTypes = {
     visibilityOptions: PropTypes.array,
     toggleVisibility: PropTypes.func,
     imageUploadHandler: PropTypes.func,
-    imageDragHandler: PropTypes.object
+    imageDragHandler: PropTypes.object,
+    linkColor: PropTypes.oneOf(['text', 'accent']),
+    handleLinkColorChange: PropTypes.func
 };
