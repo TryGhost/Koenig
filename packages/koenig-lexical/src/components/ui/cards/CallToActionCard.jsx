@@ -383,5 +383,5 @@ CallToActionCard.propTypes = {
     toggleVisibility: PropTypes.func,
     imageUploadHandler: PropTypes.func,
     imageDragHandler: PropTypes.object,
-    imageUploader: PropTypes.func
+    imageUploader: PropTypes.object
 };
