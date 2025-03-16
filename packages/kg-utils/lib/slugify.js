@@ -25,7 +25,7 @@ module.exports = function (inputString = '', {ghostVersion = '4.0', type = 'mobi
         // produces %-encoded chars in src but browsers show real chars in status bar and url bar
         return encodeURIComponent(inputString.trim()
             .toLowerCase()
-            .replace(/[\][!"#$%&'()*+,./:;<=>?@\\^_{|}~]/g, '')
+            .replace(/[\][!"#$%&'()*+,./:;<=>?@\\^_{|}~‘’“”`¡¿–—•]/g, '')
             .replace(/\s+/g, '-')
             .replace(/^-|-{2,}|-$/g, '')
         );
