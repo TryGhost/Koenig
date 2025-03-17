@@ -489,6 +489,7 @@ describe('CallToActionNode', function () {
                 layout: 'minimal',
                 showButton: true,
                 textValue: '<p><span style="white-space: pre-wrap;">This is a new CTA Card.</span></p>',
+                linkColor: 'text',
                 visibility: {
                     web: {
                         nonMember: true,

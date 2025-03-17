@@ -119,11 +119,10 @@ test.describe('Call To Action Card', async () => {
         `, {ignoreCardContents: true});
     });
 
-    test('button and button settings is visible by default', async function () {
+    test('button and button settings are visible by default', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
         expect(await page.isVisible('[data-testid="cta-button"]')).toBe(true);
-        expect(await page.isVisible('[data-testid="cta-button-color"]')).toBe(true);
         expect(await page.isVisible('[data-testid="button-text"]')).toBe(true);
         expect(await page.isVisible('[data-testid="button-url"]')).toBe(true);
     });
@@ -205,47 +204,49 @@ test.describe('Call To Action Card', async () => {
         expect(await page.isVisible('[data-testid="cta-button"]')).toBe(true);
     });
 
-    test('default button colour is accent', async function () {
+    test('default button color is accent', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
         expect(await page.getAttribute('[data-testid="cta-button"]', 'class')).toContain('bg-accent');
     });
 
-    test('can change button colour to black', async function () {
+    test('can change button color to black', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
-        // find the parent element cta-button-color and select child button with title=black
-        // await page.click('[data-testid="cta-button-color"] button[title="Black"]');
+        // Switch to Design tab for button color settings
+        await page.getByTestId('tab-design').click();
         await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', findByColorTitle: 'Black'});
-        // check if the button has style="background-color: rgb(0, 0, 0);"
         expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(0, 0, 0);');
     });
 
-    test('can change button colour to grey', async function () {
+    test('can change button color to grey', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
-        // find the parent element cta-button-color and select child button with title=white
+        // Switch to Design tab for button color settings
+        await page.getByTestId('tab-design').click();
         await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', findByColorTitle: 'Grey'});
-        // check if the button has style="background-color: rgb(255, 255, 255);"
         expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(240, 240, 240);');
     });
 
-    test('can use colour picker to change button colour', async function () {
+    test('can use color picker to change button color', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-design').click();
         await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', customColor: 'ff0000'});
         expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(255, 0, 0);');
     });
 
-    test('button text colour changes with button colour', async function () {
+    test('button text color changes with button color', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-content').click();
         await page.fill('[data-testid="button-text"]', 'Click me');
 
+        await page.getByTestId('tab-design').click();
         await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', customColor: 'FFFFFF'});
         expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(255, 255, 255);');
 
-        // change button colour to black
+        // change button color to black
         await page.click('[data-testid="cta-button-color"] button[title="Black"]');
         expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(0, 0, 0);');
     });
@@ -304,7 +305,7 @@ test.describe('Call To Action Card', async () => {
         await expect(content).toContainText('This is a new CTA Card.');
     });
 
-    test('can change background colours', async function () {
+    test('can change background colors', async function () {
         const colors = [
             {testId: 'color-picker-none', expectedClass: 'bg-transparent border-transparent'},
             {testId: 'color-picker-white', expectedClass: 'bg-transparent border-grey'},
@@ -319,6 +320,8 @@ test.describe('Call To Action Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
 
+        await page.getByTestId('tab-design').click();
+
         const firstChildSelector = '[data-kg-card="call-to-action"] > :first-child';
         await expect(page.locator(firstChildSelector)).not.toHaveClass(/bg-(green|blue|yellow|red|pink|purple)/); // shouldn't have any of the classes yet
         for (const color of colors) {
@@ -332,14 +335,14 @@ test.describe('Call To Action Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
 
+        await page.getByTestId('tab-design').click();
+
         const colorOptions = page.getByTestId('cta-background-color-picker');
         await colorOptions.getByTestId('color-options-button').click();
 
         await expect(colorOptions.getByTestId('color-options-popover')).toBeVisible();
 
-        const card = page.locator('[data-kg-card="call-to-action"]');
-        const settings = card.getByTestId('settings-panel');
-        await settings.getByTestId('media-upload-setting').click();
+        await page.click('[data-testid="cta-link-color-picker"]');
 
         await expect(colorOptions.getByTestId('color-options-popover')).not.toBeVisible();
     });
@@ -413,8 +416,8 @@ test.describe('Call To Action Card', async () => {
     test('can toggle layout to immersive', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-design').click();
         await page.click('[data-testid="immersive-layout"]');
-        // find data-cta-layout and check if it data-cta-layout="immersive"
         const firstChildSelector = '[data-kg-card="call-to-action"] > :first-child';
         await expect(page.locator(firstChildSelector)).toHaveAttribute('data-cta-layout', 'immersive');
     });
@@ -422,13 +425,12 @@ test.describe('Call To Action Card', async () => {
     test('can toggle layout to immersive and then back to minimal', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-design').click();
         await page.click('[data-testid="immersive-layout"]');
-        // find data-cta-layout and check if it data-cta-layout="immersive"
         const firstChildSelector = '[data-kg-card="call-to-action"] > :first-child';
         await expect(page.locator(firstChildSelector)).toHaveAttribute('data-cta-layout', 'immersive');
 
         await page.click('[data-testid="minimal-layout"]');
-        // find data-cta-layout and check if it data-cta-layout="minimal"
         await expect(page.locator(firstChildSelector)).toHaveAttribute('data-cta-layout', 'minimal');
     });
 
