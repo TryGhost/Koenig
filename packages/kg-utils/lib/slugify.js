@@ -1,6 +1,22 @@
 const semver = require('semver');
 
-module.exports = function (inputString = '', {ghostVersion = '4.0', type = 'mobiledoc'} = {}) {
+/**
+ * Helper function to create a slug from a string
+ * @param {string} inputString - The string to slugify
+ * @param {RegExp} symbolRegex - Regex for symbols to remove
+ * @returns {string}
+ */
+function createSlug(inputString, symbolRegex) {
+    return encodeURIComponent(
+        inputString.trim()
+            .toLowerCase()
+            .replace(symbolRegex, '')
+            .replace(/\s+/g, '-')
+            .replace(/^-|-{2,}|-$/g, '')
+    );
+}
+
+module.exports = function (inputString = '', {ghostVersion = '6.0', type = 'mobiledoc'} = {}) {
     const version = semver.coerce(ghostVersion);
 
     if (typeof inputString !== 'string' || (inputString || '').trim() === '') {
@@ -19,15 +35,15 @@ module.exports = function (inputString = '', {ghostVersion = '4.0', type = 'mobi
                 .replace(/-{2,}/g, '-')
                 .toLowerCase();
         }
+    }
+
+    // new slugs introduced in 4.0
+    // allows all chars except symbols but will urlEncode everything
+    // produces %-encoded chars in src but browsers show real chars in status bar and url bar
+    if (semver.satisfies(version, '<6.x')) {
+        return createSlug(inputString, /[\][!"#$%&'()*+,./:;<=>?@\\^_{|}~]/g);
     } else {
-        // new slugs introduced in 4.0
-        // allows all chars except symbols but will urlEncode everything
-        // produces %-encoded chars in src but browsers show real chars in status bar and url bar
-        return encodeURIComponent(inputString.trim()
-            .toLowerCase()
-            .replace(/[\][!"#$%&'()*+,./:;<=>?@\\^_{|}~‘’“”`¡¿–—•]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/^-|-{2,}|-$/g, '')
-        );
+        // For ghost versions 6.x and above, remove additional symbols
+        return createSlug(inputString, /[\][!"#$%&'()*+,./:;<=>?@\\^_{|}~‘’“”`¡¿–—•]/g);
     }
 };

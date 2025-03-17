@@ -50,27 +50,34 @@ describe('slugify()', function () {
         });
     });
 
-    describe('4.x', function () {
+    describe('>=4.x <6.x', function () {
         it('replaces all white space with "-"', function () {
-            slugify('test one\t two')
+            slugify('test one\t two', {ghostVersion: '4.0'})
                 .should.equal('test-one-two');
         });
 
         it('strips symbols', function () {
-            slugify('test! one? {two}')
+            slugify('test! one? {two}', {ghostVersion: '4.0'})
                 .should.equal('test-one-two');
         });
 
         it('%-encodes chars', function () {
-            const slug = slugify('ñéïñ');
+            const slug = slugify('ñéïñ', {ghostVersion: '4.0'});
 
             slug.should.equal('%C3%B1%C3%A9%C3%AF%C3%B1');
             decodeURIComponent(slug).should.equal('ñéïñ');
         });
 
         it('removes leading/trailing "-" and collapses "-" groups', function () {
-            slugify(' \ttest    one  two! \t')
+            slugify(' \ttest    one  two! \t', {ghostVersion: '4.0'})
                 .should.equal('test-one-two');
+        });
+    });
+
+    describe('>=6.x', function () {
+        it('removes additional symbols', function () {
+            slugify('test “fancy” ‘quotes’ – — dashes ¡and! other¿ • stuff`')
+                .should.equal('test-fancy-quotes-dashes-and-other-stuff');
         });
     });
 });
