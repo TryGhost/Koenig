@@ -19,7 +19,7 @@ const TabView = ({tabs, defaultTab, tabContent}) => {
                         } ${
                             activeTab === tab.id
                                 ? 'border-black text-black dark:border-white dark:text-white'
-                                : 'border-transparent text-grey-600 hover:border-grey-500 dark:text-white'
+                                : 'border-transparent text-grey-600 hover:border-grey-500 dark:text-grey-500 dark:hover:border-grey-500'
                         }`}
                         data-testid={`tab-${tab.id}`}
                         type="button"

@@ -26,67 +26,67 @@ export const CALLTOACTION_COLORS = {
     purple: 'bg-purple/10 border-transparent'
 };
 
-const getTheme = linkColor => ({
+const getTheme = () => ({
     ...defaultTheme,
-    link: linkColor === 'accent' ? 'text-accent' : 'text-black dark:text-white'
+    link: 'cta-link-color'
 });
 
 export const callToActionColorPicker = [
     {
         label: 'None',
         name: 'none',
-        color: 'bg-transparent border-black/15 relative after:absolute after:left-1/2 after:top-1/2 after:h-[1px] after:w-[18px] after:-translate-x-1/2 after:-translate-y-1/2 after:-rotate-45 after:bg-red-500'
+        color: 'bg-transparent border-black/15 dark:border-white/15 relative after:absolute after:left-1/2 after:top-1/2 after:h-[1px] after:w-[18px] after:-translate-x-1/2 after:-translate-y-1/2 after:-rotate-45 after:bg-red-500'
     },
     {
         label: 'White',
         name: 'white',
-        color: 'bg-transparent border-black/15 dark:border-white/10'
+        color: 'bg-transparent border-black/15 dark:border-white/15'
     },
     {
         label: 'Grey',
         name: 'grey',
-        color: 'bg-grey/20 border-black/[.08] dark:border-white/10'
+        color: 'bg-grey/20 border-black/[.08] dark:border-white/15'
     },
     {
         label: 'Blue',
         name: 'blue',
-        color: 'bg-blue/20 border-black/[.08] dark:border-white/10'
+        color: 'bg-blue/20 border-black/[.08] dark:border-white/15'
     },
     {
         label: 'Green',
         name: 'green',
-        color: 'bg-green/20 border-black/[.08] dark:border-white/10'
+        color: 'bg-green/20 border-black/[.08] dark:border-white/15'
     },
     {
         label: 'Yellow',
         name: 'yellow',
-        color: 'bg-yellow/20 border-black/[.08] dark:border-white/10'
+        color: 'bg-yellow/20 border-black/[.08] dark:border-white/15'
     },
     {
         label: 'Red',
         name: 'red',
-        color: 'bg-red/20 border-black/[.08] dark:border-white/10'
+        color: 'bg-red/20 border-black/[.08] dark:border-white/15'
     },
     {
         label: 'Pink',
         name: 'pink',
-        color: 'bg-pink/20 border-black/[0.08] dark:border-white/10'
+        color: 'bg-pink/20 border-black/[0.08] dark:border-white/15'
     },
     {
         label: 'Purple',
         name: 'purple',
-        color: 'bg-purple/20 border-black/[0.08] dark:border-white/10'
+        color: 'bg-purple/20 border-black/[0.08] dark:border-white/15'
     }
 ];
 
 export const callToActionLinkColorPicker = [
     {
-        label: 'Text',
+        label: 'Text color',
         name: 'text',
-        color: 'bg-black border-black'
+        color: 'bg-black border-black dark:bg-white dark:border-white'
     },
     {
-        label: 'Accent',
+        label: 'Brand color',
         name: 'accent',
         color: 'bg-accent border-accent'
     }
@@ -152,7 +152,7 @@ export function CallToActionCard({
         return bgColor === 'transparent' ? '' : textColorForBackgroundColor(bgColor === 'accent' ? getAccentColor() : bgColor).hex();
     };
 
-    const theme = getTheme(linkColor);
+    const theme = getTheme();
 
     const contentSettings = (
         <>
@@ -268,14 +268,22 @@ export function CallToActionCard({
 
     return (
         <>
-            <div className={clsx(
-                'w-full rounded-lg border',
-                CALLTOACTION_COLORS[color],
-                {
-                    'py-3': color === 'none' && !hasSponsorLabel,
-                    'pb-3': color === 'none' && hasSponsorLabel
-                }
-            )} data-cta-layout={layout}>
+            <div 
+                className={clsx(
+                    'w-full rounded-lg border',
+                    CALLTOACTION_COLORS[color],
+                    {
+                        'py-3': color === 'none' && !hasSponsorLabel,
+                        'pb-3': color === 'none' && hasSponsorLabel
+                    }
+                )} 
+                data-cta-layout={layout}
+                style={{
+                    '--cta-link-color': linkColor === 'accent' 
+                        ? getAccentColor() 
+                        : 'var(--cta-link-color-text)'
+                }}
+            >
 
                 {/* Sponsor label */}
                 {hasSponsorLabel && (
