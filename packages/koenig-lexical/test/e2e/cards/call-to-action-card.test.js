@@ -204,53 +204,6 @@ test.describe('Call To Action Card', async () => {
         expect(await page.isVisible('[data-testid="cta-button"]')).toBe(true);
     });
 
-    test('default button color is accent', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-        expect(await page.getAttribute('[data-testid="cta-button"]', 'class')).toContain('bg-accent');
-    });
-
-    test('can change button color to black', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-        // Switch to Design tab for button color settings
-        await page.getByTestId('tab-design').click();
-        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', findByColorTitle: 'Black'});
-        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(0, 0, 0);');
-    });
-
-    test('can change button color to grey', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-        // Switch to Design tab for button color settings
-        await page.getByTestId('tab-design').click();
-        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', findByColorTitle: 'Grey'});
-        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(240, 240, 240);');
-    });
-
-    test('can use color picker to change button color', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-        await page.getByTestId('tab-design').click();
-        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', customColor: 'ff0000'});
-        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(255, 0, 0);');
-    });
-
-    test('button text color changes with button color', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-        await page.getByTestId('tab-content').click();
-        await page.fill('[data-testid="button-text"]', 'Click me');
-
-        await page.getByTestId('tab-design').click();
-        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', customColor: 'FFFFFF'});
-        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(255, 255, 255);');
-
-        // change button color to black
-        await page.click('[data-testid="cta-button-color"] button[title="Black"]');
-        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(0, 0, 0);');
-    });
-
     test('can toggle sponsor label', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
@@ -303,48 +256,6 @@ test.describe('Call To Action Card', async () => {
         await page.keyboard.type('This is a new CTA Card.');
         const content = page.locator('[data-testid="cta-card-content-editor"]');
         await expect(content).toContainText('This is a new CTA Card.');
-    });
-
-    test('can change background colors', async function () {
-        const colors = [
-            {testId: 'color-picker-none', expectedClass: 'bg-transparent border-transparent'},
-            {testId: 'color-picker-white', expectedClass: 'bg-transparent border-grey'},
-            {testId: 'color-picker-grey', expectedClass: 'bg-grey'},
-            {testId: 'color-picker-green', expectedClass: 'bg-green'},
-            {testId: 'color-picker-blue', expectedClass: 'bg-blue'},
-            {testId: 'color-picker-yellow', expectedClass: 'bg-yellow'},
-            {testId: 'color-picker-red', expectedClass: 'bg-red'},
-            {testId: 'color-picker-pink', expectedClass: 'bg-pink'},
-            {testId: 'color-picker-purple', expectedClass: 'bg-purple'}
-        ];
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-
-        await page.getByTestId('tab-design').click();
-
-        const firstChildSelector = '[data-kg-card="call-to-action"] > :first-child';
-        await expect(page.locator(firstChildSelector)).not.toHaveClass(/bg-(green|blue|yellow|red|pink|purple)/); // shouldn't have any of the classes yet
-        for (const color of colors) {
-            await page.locator('[data-testid="cta-background-color-picker"] button').click();
-            await page.locator(`[data-test-id="${color.testId}"]`).click();
-            await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(color.expectedClass));
-        }
-    });
-
-    test('background color popup closes on outside click', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'call-to-action'});
-
-        await page.getByTestId('tab-design').click();
-
-        const colorOptions = page.getByTestId('cta-background-color-picker');
-        await colorOptions.getByTestId('color-options-button').click();
-
-        await expect(colorOptions.getByTestId('color-options-popover')).toBeVisible();
-
-        await page.click('[data-testid="cta-link-color-picker"]');
-
-        await expect(colorOptions.getByTestId('color-options-popover')).not.toBeVisible();
     });
 
     test('can add and remove CTA Card image', async function () {
@@ -405,6 +316,24 @@ test.describe('Call To Action Card', async () => {
         await expect (await page.getByTestId('cta-card-image')).toBeVisible();
     });
 
+    test('has image preview', async function () {
+        const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
+
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+
+        const fileChooserPromise = page.waitForEvent('filechooser');
+
+        await page.click('[data-testid="media-upload-placeholder"]');
+
+        const fileChooser = await fileChooserPromise;
+        await fileChooser.setFiles([filePath]);
+
+        await page.waitForSelector('[data-testid="media-upload-filled"]');
+        const previewImage = await page.locator('[data-testid="media-upload-filled"] img');
+        await expect(previewImage).toBeVisible();
+    });
+
     test('default layout is minimal', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
@@ -434,22 +363,116 @@ test.describe('Call To Action Card', async () => {
         await expect(page.locator(firstChildSelector)).toHaveAttribute('data-cta-layout', 'minimal');
     });
 
-    test('has image preview', async function () {
-        const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
-
+    test('can change background colors', async function () {
+        const colors = [
+            {testId: 'color-picker-none', expectedClass: 'bg-transparent border-transparent'},
+            {testId: 'color-picker-white', expectedClass: 'bg-transparent border-grey'},
+            {testId: 'color-picker-grey', expectedClass: 'bg-grey'},
+            {testId: 'color-picker-green', expectedClass: 'bg-green'},
+            {testId: 'color-picker-blue', expectedClass: 'bg-blue'},
+            {testId: 'color-picker-yellow', expectedClass: 'bg-yellow'},
+            {testId: 'color-picker-red', expectedClass: 'bg-red'},
+            {testId: 'color-picker-pink', expectedClass: 'bg-pink'},
+            {testId: 'color-picker-purple', expectedClass: 'bg-purple'}
+        ];
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});
 
-        const fileChooserPromise = page.waitForEvent('filechooser');
+        await page.getByTestId('tab-design').click();
 
-        await page.click('[data-testid="media-upload-placeholder"]');
+        const firstChildSelector = '[data-kg-card="call-to-action"] > :first-child';
+        await expect(page.locator(firstChildSelector)).not.toHaveClass(/bg-(green|blue|yellow|red|pink|purple)/); // shouldn't have any of the classes yet
+        for (const color of colors) {
+            await page.locator('[data-testid="cta-background-color-picker"] button').click();
+            await page.locator(`[data-test-id="${color.testId}"]`).click();
+            await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(color.expectedClass));
+        }
+    });
 
-        const fileChooser = await fileChooserPromise;
-        await fileChooser.setFiles([filePath]);
+    test('background color popup closes on outside click', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
 
-        await page.waitForSelector('[data-testid="media-upload-filled"]');
-        const previewImage = await page.locator('[data-testid="media-upload-filled"] img');
-        await expect(previewImage).toBeVisible();
+        await page.getByTestId('tab-design').click();
+
+        const colorOptions = page.getByTestId('cta-background-color-picker');
+        await colorOptions.getByTestId('color-options-button').click();
+
+        await expect(colorOptions.getByTestId('color-options-popover')).toBeVisible();
+
+        await page.click('[data-testid="cta-link-color-picker"]');
+
+        await expect(colorOptions.getByTestId('color-options-popover')).not.toBeVisible();
+    });
+
+    test('can change link color', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-design').click();
+        
+        // Get the initial link color (should be text color by default)
+        const ctaCard = await page.locator('[data-kg-card="call-to-action"] > :first-child');
+        const initialColor = await ctaCard.evaluate(el => getComputedStyle(el).getPropertyValue('--cta-link-color'));
+        expect(initialColor.trim()).toBe('#394047'); // Default text color
+        
+        // Change to accent color
+        await page.locator('[data-testid="cta-link-color-picker"] button').click();
+        await page.locator('[data-test-id="color-picker-accent"]').click();
+        const accentColor = await ctaCard.evaluate(el => getComputedStyle(el).getPropertyValue('--cta-link-color'));
+        expect(accentColor.trim()).toBe('#ff0095'); // Default accent color
+        
+        // Change back to text color
+        await page.locator('[data-testid="cta-link-color-picker"] button').click();
+        await page.locator('[data-test-id="color-picker-text"]').click();
+        const finalColor = await ctaCard.evaluate(el => getComputedStyle(el).getPropertyValue('--cta-link-color'));
+        expect(finalColor.trim()).toBe('#394047'); // Back to default text color
+    });
+
+    test('default button color is accent', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'class')).toContain('bg-accent');
+    });
+
+    test('can change button color to black', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        // Switch to Design tab for button color settings
+        await page.getByTestId('tab-design').click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', findByColorTitle: 'Black'});
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(0, 0, 0);');
+    });
+
+    test('can change button color to grey', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        // Switch to Design tab for button color settings
+        await page.getByTestId('tab-design').click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', findByColorTitle: 'Grey'});
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(240, 240, 240);');
+    });
+
+    test('can use color picker to change button color', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-design').click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', customColor: 'ff0000'});
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('background-color: rgb(255, 0, 0);');
+    });
+
+    test('button text color changes with button color', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'call-to-action'});
+        await page.getByTestId('tab-content').click();
+        await page.fill('[data-testid="button-text"]', 'Click me');
+
+        await page.getByTestId('tab-design').click();
+        await cardBackgroundColorSettings(page, {cardColorPickerTestId: 'cta-button-color', customColor: 'FFFFFF'});
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(255, 255, 255);');
+
+        // change button color to black
+        await page.click('[data-testid="cta-button-color"] button[title="Black"]');
+        expect(await page.getAttribute('[data-testid="cta-button"]', 'style')).toContain('color: rgb(0, 0, 0);');
     });
 
     test('can change visibility settings', async function () {
