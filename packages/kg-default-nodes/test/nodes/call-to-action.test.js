@@ -638,7 +638,7 @@ describe('CallToActionNode', function () {
             dataset.sponsorLabel = '<p><span style="white-space: pre-wrap">SPONSORED BY GHOST</span></p>';
             const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
-            nodes[0].sponsorLabel.should.equal('<p><span style="white-space: pre-wrap">SPONSORED BY GHOST</span></p>');
+            nodes[0].sponsorLabel.should.equal('<span style="white-space: pre-wrap">SPONSORED BY GHOST</span>');
         }));
 
         it('can get background color', editorTest(function () {
