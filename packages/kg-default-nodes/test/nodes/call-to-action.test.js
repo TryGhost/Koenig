@@ -652,7 +652,6 @@ describe('CallToActionNode', function () {
             dataset.imageHeight = null;
             const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
-            // console.log(nodes[0]);
             should(nodes[0].imageWidth).be.null();
             should(nodes[0].imageHeight).be.null();
         }));
