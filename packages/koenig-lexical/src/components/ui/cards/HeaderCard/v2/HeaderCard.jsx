@@ -17,7 +17,7 @@ import {ButtonGroupSetting, ColorPickerSetting, InputSetting, InputUrlSetting, M
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../../../IconButton';
-import {MediaUploader} from '../../../MediaUploader';
+import {MediaUploader} from '../../../MediaUploader_old';
 import {ReadOnlyOverlay} from '../../../ReadOnlyOverlay';
 import {Tooltip} from '../../../Tooltip';
 import {getAccentColor} from '../../../../../utils/getAccentColor';

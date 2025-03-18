@@ -1,9 +1,9 @@
 import React from 'react';
-import {ColorPickerBeta} from './ColorPickerBeta';
+import {ColorPicker} from './ColorPicker';
 
 const story = {
-    title: 'Generic/Color picker (beta)',
-    component: ColorPickerBeta,
+    title: 'Generic/Color picker',
+    component: ColorPicker,
     parameters: {
         status: {
             type: 'uiReady'
@@ -18,7 +18,7 @@ export default story;
 const Template = (args) => {
     return (
         <div className="w-[240px]">
-            <ColorPickerBeta {...args} />
+            <ColorPicker {...args} />
         </div>
     );
 };
