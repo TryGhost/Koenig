@@ -1,6 +1,7 @@
 const {createHeadlessEditor} = require('@lexical/headless');
+const {$generateNodesFromDOM} = require('@lexical/html');
 const {$getRoot} = require('lexical');
-const {dom} = require('../test-utils');
+const {dom, createDocument, html: htmlTemplate} = require('../test-utils');
 const {CallToActionNode, $isCallToActionNode, utils} = require('../../');
 const editorNodes = [CallToActionNode];
 
@@ -336,7 +337,7 @@ describe('CallToActionNode', function () {
 
         it('renders img tag when imageUrl is not null', editorTest(function () {
             testRender(({html}) => {
-                html.should.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image">');
+                html.should.containEql('<img src="http://blog.com/image1.jpg" alt="CTA Image" data-image-dimensions="200x100">');
             });
         }));
 
@@ -549,7 +550,110 @@ describe('CallToActionNode', function () {
     });
 
     describe('importDom', function () {
-        // not yet implemented
+        // dataset = {
+        //     layout: 'minimal',
+        //     textValue: 'This is a cool advertisement',
+        //     sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
+        //     showButton: true,
+        //     buttonText: 'click me',
+        //     buttonUrl: 'http://blog.com/post1',
+        //     buttonColor: 'none',
+        //     buttonTextColor: 'none',
+        //     hasSponsorLabel: true,
+        //     backgroundColor: 'none',
+        //     imageUrl: 'http://blog.com/image1.jpg',
+        //     imageWidth: 200,
+        //     imageHeight: 100
+        // };
+        const generatCallToActionNodes = (nodeDataset) => {
+            const callToActionNode = new CallToActionNode(nodeDataset);
+            const {element} = callToActionNode.exportDOM(exportOptions);
+            const docuement = createDocument(htmlTemplate`${element.outerHTML.toString()}`);
+            const nodes = $generateNodesFromDOM(editor, docuement);
+
+            return nodes;
+        };
+        it('parses the cta card layout', editorTest(function () {
+            dataset.layout = 'immersive';
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].layout.should.equal('immersive');
+        }));
+
+        it('parses text value', editorTest(function () {
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].textValue.should.equal('This is a cool advertisement');
+        }));
+
+        it('checks if button is visible', editorTest(function (){
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].showButton.should.equal(true);
+        }));
+
+        it('checks if button is not visible', editorTest(function (){
+            dataset.showButton = false;
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].showButton.should.equal(false);
+        }));
+
+        it('can get button text', editorTest(function () {
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].buttonText.should.equal('click me');
+        }));
+
+        it('can get button URL', editorTest(function (){
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].buttonUrl.should.equal('http://blog.com/post1');
+        }));
+
+        it('can get button colours', editorTest(function () {
+            dataset.buttonColor = '#123456';
+            dataset.buttonTextColor = '#654321';
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].buttonColor.should.equal('#123456');
+            nodes[0].buttonTextColor.should.equal('#654321');
+        }));
+
+        it('can check if it has a sponsorLabel', editorTest(function () {
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].hasSponsorLabel.should.equal(true);
+        }));
+
+        it('returns false if it does not have a sponsorLabel', editorTest(function () {
+            dataset.hasSponsorLabel = false;
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].hasSponsorLabel.should.equal(false);
+        }));
+
+        it('can get sponsorLabel', editorTest(function () {
+            dataset.sponsorLabel = '<p><span style="white-space: pre-wrap">SPONSORED BY GHOST</span></p>';
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].sponsorLabel.should.equal('<p><span style="white-space: pre-wrap">SPONSORED BY GHOST</span></p>');
+        }));
+
+        it('can get background color', editorTest(function () {
+            dataset.backgroundColor = 'red';
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].backgroundColor.should.equal('red');
+        }));
+
+        it('can get image data', editorTest(function () {
+            const nodes = generatCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            nodes[0].imageUrl.should.equal('http://blog.com/image1.jpg');
+            nodes[0].imageWidth.should.equal(200);
+            nodes[0].imageHeight.should.equal(100);
+        }));
     });
 
     describe('getTextContent', function () {
