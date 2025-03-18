@@ -30,8 +30,8 @@ export function parseCallToActionNode(CallToActionNode) {
                         if (imageElement) {
                             const {src, width, height} = readImageAttributesFromElement(imageElement);
                             imageData.imageUrl = src;
-                            imageData.imageWidth = width;
-                            imageData.imageHeight = height;
+                            imageData.imageWidth = width || null;
+                            imageData.imageHeight = height || null;
                         }
                         const payload = {
                             layout: layout,

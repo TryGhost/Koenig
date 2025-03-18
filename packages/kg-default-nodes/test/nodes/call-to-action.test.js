@@ -550,22 +550,7 @@ describe('CallToActionNode', function () {
     });
 
     describe('importDom', function () {
-        // dataset = {
-        //     layout: 'minimal',
-        //     textValue: 'This is a cool advertisement',
-        //     sponsorLabel: '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>',
-        //     showButton: true,
-        //     buttonText: 'click me',
-        //     buttonUrl: 'http://blog.com/post1',
-        //     buttonColor: 'none',
-        //     buttonTextColor: 'none',
-        //     hasSponsorLabel: true,
-        //     backgroundColor: 'none',
-        //     imageUrl: 'http://blog.com/image1.jpg',
-        //     imageWidth: 200,
-        //     imageHeight: 100
-        // };
-        const generatCallToActionNodes = (nodeDataset) => {
+        const generateCallToActionNodes = (nodeDataset) => {
             const callToActionNode = new CallToActionNode(nodeDataset);
             const {element} = callToActionNode.exportDOM(exportOptions);
             const docuement = createDocument(htmlTemplate`${element.outerHTML.toString()}`);
@@ -575,38 +560,38 @@ describe('CallToActionNode', function () {
         };
         it('parses the cta card layout', editorTest(function () {
             dataset.layout = 'immersive';
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].layout.should.equal('immersive');
         }));
 
         it('parses text value', editorTest(function () {
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].textValue.should.equal('This is a cool advertisement');
         }));
 
         it('checks if button is visible', editorTest(function (){
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].showButton.should.equal(true);
         }));
 
         it('checks if button is not visible', editorTest(function (){
             dataset.showButton = false;
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].showButton.should.equal(false);
         }));
 
         it('can get button text', editorTest(function () {
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].buttonText.should.equal('click me');
         }));
 
         it('can get button URL', editorTest(function (){
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].buttonUrl.should.equal('http://blog.com/post1');
         }));
@@ -614,45 +599,55 @@ describe('CallToActionNode', function () {
         it('can get button colours', editorTest(function () {
             dataset.buttonColor = '#123456';
             dataset.buttonTextColor = '#654321';
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].buttonColor.should.equal('#123456');
             nodes[0].buttonTextColor.should.equal('#654321');
         }));
 
         it('can check if it has a sponsorLabel', editorTest(function () {
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].hasSponsorLabel.should.equal(true);
         }));
 
         it('returns false if it does not have a sponsorLabel', editorTest(function () {
             dataset.hasSponsorLabel = false;
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].hasSponsorLabel.should.equal(false);
         }));
 
         it('can get sponsorLabel', editorTest(function () {
             dataset.sponsorLabel = '<p><span style="white-space: pre-wrap">SPONSORED BY GHOST</span></p>';
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].sponsorLabel.should.equal('<p><span style="white-space: pre-wrap">SPONSORED BY GHOST</span></p>');
         }));
 
         it('can get background color', editorTest(function () {
             dataset.backgroundColor = 'red';
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].backgroundColor.should.equal('red');
         }));
 
         it('can get image data', editorTest(function () {
-            const nodes = generatCallToActionNodes(dataset);
+            const nodes = generateCallToActionNodes(dataset);
             nodes.length.should.equal(1);
             nodes[0].imageUrl.should.equal('http://blog.com/image1.jpg');
             nodes[0].imageWidth.should.equal(200);
             nodes[0].imageHeight.should.equal(100);
+        }));
+
+        it('image width and height falls back to nulll if not provided', editorTest(function () {
+            dataset.imageWidth = null;
+            dataset.imageHeight = null;
+            const nodes = generateCallToActionNodes(dataset);
+            nodes.length.should.equal(1);
+            // console.log(nodes[0]);
+            should(nodes[0].imageWidth).be.null();
+            should(nodes[0].imageHeight).be.null();
         }));
     });
 
