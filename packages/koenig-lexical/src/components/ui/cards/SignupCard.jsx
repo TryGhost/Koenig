@@ -16,7 +16,7 @@ import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting
 import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
 import {FastAverageColor} from 'fast-average-color';
 import {IconButton} from '../IconButton';
-import {MediaUploader} from '../MediaUploader_old';
+import {MediaUploader} from '../MediaUploader';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
 import {SubscribeForm} from '../SubscribeForm';
 import {Tooltip} from '../Tooltip';
