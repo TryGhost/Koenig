@@ -2,7 +2,7 @@ import path from 'path';
 import {assertHTML, focusEditor, html, initialize, isMac} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
-import {selectNamedColor} from '../../utils/color-select-helper';
+import {selectCustomColor, selectNamedColor} from '../../utils/color-select-helper';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -517,18 +517,19 @@ test.describe('Header card V2', () => {
 
         await page.click('[data-testid="header-button-toggle"]');
 
-        await page.click('[data-testid="header-button-color"] [aria-label="Pick color"]');
+        await page.click('[data-testid="header-button-color"] [data-testid="color-selector-button"]');
 
-        await page.fill('[data-testid="header-button-color"] input', '');
-        await page.keyboard.type('ff0000');
+        await selectCustomColor(page, '#ff0000', 'color-picker-toggle');
 
-        // Selected colour should be applied inline
+        await page.click('[data-testid="settings-panel"]');
+
+        // // Selected colour should be applied inline
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('background-color', 'rgb(255, 0, 0)');
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('color', 'rgb(255, 255, 255)');
 
-        // Check that the text colour updates to contrast with the background
-        await page.fill('[data-testid="header-button-color"] input', '');
-        await page.keyboard.type('f7f7f7');
+        await page.click('[data-testid="header-button-color"] [data-testid="color-selector-button"]');
+
+        await selectCustomColor(page, '#f7f7f7', 'color-picker-toggle');
 
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('background-color', 'rgb(247, 247, 247)');
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -537,19 +538,21 @@ test.describe('Header card V2', () => {
     test('can change the background color and text color', async function () {
         await createHeaderCard({page, version: 2});
 
-        await page.click('[data-testid="header-background-color"] [aria-label="Pick color"]');
+        await page.click('[data-testid="header-background-color"] [data-testid="color-selector-button"]');
 
-        await page.fill('[data-testid="header-background-color"] input', '');
-        await page.keyboard.type('ff0000');
+        await selectCustomColor(page, '#ff0000', 'color-picker-toggle');
+
+        await page.click('[data-testid="settings-panel"]');
+
+        await page.click('[data-testid="settings-panel"]');
 
         // Selected colour should be applied inline
         const container = page.getByTestId('header-card-container');
         await expect(container).toHaveCSS('background-color', 'rgb(255, 0, 0)');
         await expect(container).toHaveCSS('color', 'rgb(255, 255, 255)');
 
-        // Check that the text colour updates to contrast with the background
-        await page.fill('[data-testid="header-background-color"] input', '');
-        await page.keyboard.type('f7f7f7');
+        await page.click('[data-testid="header-background-color"] [data-testid="color-selector-button"]');
+        await selectCustomColor(page, '#f7f7f7', 'color-picker-toggle');
 
         await expect(container).toHaveCSS('background-color', 'rgb(247, 247, 247)');
         await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
