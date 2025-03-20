@@ -1,10 +1,10 @@
 import React from 'react';
 
-import {MediaPlaceholderBeta} from './MediaPlaceholderBeta';
+import {MediaPlaceholder} from './MediaPlaceholder';
 
 const story = {
-    title: 'Generic/Media placeholder (beta)',
-    component: MediaPlaceholderBeta,
+    title: 'Generic/Media placeholder',
+    component: MediaPlaceholder,
     argTypes: {
         icon: {
             options: ['image', 'gallery', 'video', 'audio', 'file', 'product'],
@@ -29,7 +29,7 @@ export default story;
 
 const Template = args => (
     <div className="flex">
-        <MediaPlaceholderBeta {...args} />
+        <MediaPlaceholder {...args} />
     </div>
 );
 
@@ -81,8 +81,8 @@ Product.args = {
     borderStyle: 'squared'
 };
 
-export const ErrorState = Template.bind({});
-ErrorState.args = {
+export const Error = Template.bind({});
+Error.args = {
     icon: 'video',
     desc: 'Click to select a video',
     size: 'medium',

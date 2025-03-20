@@ -9,7 +9,7 @@ import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin.
 import clsx from 'clsx';
 import defaultTheme from '../../../themes/default.js';
 import {Button} from '../Button.jsx';
-import {ButtonGroupSettingBeta, ColorOptionSettingBeta, ColorPickerSettingBeta, InputSetting, InputUrlSetting, MediaUploadSettingBeta, SettingsPanel, ToggleSetting} from '../SettingsPanel.jsx';
+import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel.jsx';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay.jsx';
 import {RestrictContentPlugin} from '../../../index.js';
 import {VisibilitySettings} from '../VisibilitySettings.jsx';
@@ -186,7 +186,7 @@ export function CallToActionCard({
                 onChange={updateHasSponsorLabel}
             />
             {/* Image setting */}
-            <MediaUploadSettingBeta
+            <MediaUploadSetting
                 alt='Image'
                 borderStyle={'rounded'}
                 desc='Upload'
@@ -234,7 +234,7 @@ export function CallToActionCard({
     const designSettings = (
         <>
             {/* Layout settings */}
-            <ButtonGroupSettingBeta
+            <ButtonGroupSetting
                 buttons={layoutOptions}
                 label='Layout'
                 selectedName={layout}
@@ -251,7 +251,7 @@ export function CallToActionCard({
                 </>
             }
             {/* Color picker */}
-            <ColorOptionSettingBeta
+            <ColorOptionSetting
                 buttons={callToActionColorPicker}
                 dataTestId='cta-background-color-picker'
                 label='Background'
@@ -259,7 +259,7 @@ export function CallToActionCard({
                 onClick={handleColorChange}
             />
             {/* Link color setting */}
-            <ColorOptionSettingBeta
+            <ColorOptionSetting
                 buttons={callToActionLinkColorPicker}
                 dataTestId='cta-link-color-picker'
                 label='Link color'
@@ -267,7 +267,7 @@ export function CallToActionCard({
                 onClick={handleLinkColorChange}
             />
             {showButton && (
-                <ColorPickerSettingBeta
+                <ColorPickerSetting
                     dataTestId='cta-button-color'
                     eyedropper={true}
                     isExpanded={buttonColorPickerExpanded}
