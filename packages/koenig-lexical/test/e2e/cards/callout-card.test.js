@@ -1,6 +1,7 @@
 import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard, isMac} from '../../utils/e2e';
 // import {calloutColorPicker} from '../../../src/components/ui/cards/CalloutCardx';
 import {expect, test} from '@playwright/test';
+// import {selectNamedColor} from '../../utils/color-select-helper';
 import {selectNamedColor} from '../../utils/color-select-helper';
 
 test.describe('Callout Card', async () => {
@@ -131,7 +132,7 @@ test.describe('Callout Card', async () => {
         await insertCard(page, {cardName: 'callout'});
 
         // await Promise.all(calloutColorPicker.map(async (color) => {
-        //     const colorPicker = page.locator(`[data-test-id="color-picker-${color.name}"]`);
+        //     const colorPicker = page.locator(`[data-testid="color-picker-${color.name}"]`);
         //     await expect(colorPicker).toBeVisible();
         // }));
     });
@@ -148,10 +149,10 @@ test.describe('Callout Card', async () => {
 
         // await colorOptionsButton.click();
 
-        // const colorPicker = page.locator(`[data-test-id="color-picker-green"]`);
+        // const colorPicker = page.locator(`[data-testid="color-picker-green"]`);
         // await colorPicker.click();
 
-        // // ensure data-test-id="callout-bg-blue" is visible
+        // // ensure data-testid="callout-bg-blue" is visible
         const greenCallout = page.locator('[data-testid="callout-bg-green"]');
         await expect(greenCallout).toBeVisible();
     });
@@ -324,7 +325,7 @@ test.describe('Callout Card', async () => {
         await page.keyboard.type('Hello ');
 
         // Change color
-        // await page.locator(`[data-test-id="color-picker-green"]`).click();
+        // await page.locator(`[data-testid="color-picker-green"]`).click();
         await selectNamedColor(page, 'green', 'color-options-button');
 
         // Continue editing the content

@@ -1,7 +1,7 @@
 export async function selectNamedColor(page, colorName, testId) {
     const color = page.locator(`[data-testid="${testId}"]`);
     await color.click();
-    const colorPicker = page.locator(`[data-test-id="color-picker-${colorName}"]`);
+    const colorPicker = page.locator(`[data-testid="color-picker-${colorName}"]`);
     await colorPicker.click();
 }
 

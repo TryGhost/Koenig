@@ -384,7 +384,7 @@ test.describe('Call To Action Card', async () => {
         await expect(page.locator(firstChildSelector)).not.toHaveClass(/bg-(green|blue|yellow|red|pink|purple)/); // shouldn't have any of the classes yet
         for (const color of colors) {
             await page.locator('[data-testid="cta-background-color-picker"] button').click();
-            await page.locator(`[data-test-id="${color.testId}"]`).click();
+            await page.locator(`[data-testid="${color.testId}"]`).click();
             await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(color.expectedClass));
         }
     });
@@ -417,13 +417,13 @@ test.describe('Call To Action Card', async () => {
         
         // Change to accent color
         await page.locator('[data-testid="cta-link-color-picker"] button').click();
-        await page.locator('[data-test-id="color-picker-accent"]').click();
+        await page.locator('[data-testid="color-picker-accent"]').click();
         const accentColor = await ctaCard.evaluate(el => getComputedStyle(el).getPropertyValue('--cta-link-color'));
         expect(accentColor.trim()).toBe('#ff0095'); // Default accent color
         
         // Change back to text color
         await page.locator('[data-testid="cta-link-color-picker"] button').click();
-        await page.locator('[data-test-id="color-picker-text"]').click();
+        await page.locator('[data-testid="color-picker-text"]').click();
         const finalColor = await ctaCard.evaluate(el => getComputedStyle(el).getPropertyValue('--cta-link-color'));
         expect(finalColor.trim()).toBe('#394047'); // Back to default text color
     });

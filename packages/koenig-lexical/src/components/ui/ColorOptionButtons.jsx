@@ -78,7 +78,7 @@ export function ColorButton({onClick, label, name, color, selectedName}) {
             <button
                 aria-label={label}
                 className={`group relative flex size-6 cursor-pointer items-center justify-center rounded-full border-2 ${isActive ? 'border-green' : 'border-transparent'}`}
-                data-test-id={`color-picker-${name}`}
+                data-testid={`color-picker-${name}`}
                 type="button"
                 onClick={handleClick}
                 onMouseDown={handleMousedown}
