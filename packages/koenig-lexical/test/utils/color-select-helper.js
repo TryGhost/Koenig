@@ -11,3 +11,10 @@ export async function selectCustomColor(page, color, pickerTestId) {
     const customColorInput = page.locator(`[aria-label="Color value"]`);
     await customColorInput.fill(color);
 }
+
+export async function selectTitledColor(page, colorName, testId) {
+    const color = page.locator(`[data-testid="${testId}"]`);
+    await color.click();
+    const colorPicker = page.locator(`[title="${colorName}"]`);
+    await colorPicker.click();
+}

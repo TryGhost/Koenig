@@ -2,7 +2,7 @@ import path from 'path';
 import {assertHTML, focusEditor, html, initialize, isMac} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
-import {selectCustomColor, selectNamedColor} from '../../utils/color-select-helper';
+import {selectCustomColor, selectNamedColor, selectTitledColor} from '../../utils/color-select-helper';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -556,6 +556,28 @@ test.describe('Header card V2', () => {
 
         await expect(container).toHaveCSS('background-color', 'rgb(247, 247, 247)');
         await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
+    });
+
+    test('can change to grey, black, brand background color', async function () {
+        await createHeaderCard({page, version: 2});
+
+        await page.click('[data-testid="header-background-color"] [data-testid="color-selector-button"]');
+
+        await selectTitledColor(page, 'Grey', 'color-picker-toggle');
+
+        const container = page.getByTestId('header-card-container');
+        await expect(container).toHaveCSS('background-color', 'rgb(240, 240, 240)');
+        await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
+
+        await selectTitledColor(page, 'Black', 'color-picker-toggle');
+
+        await expect(container).toHaveCSS('background-color', 'rgb(0, 0, 0)');
+        await expect(container).toHaveCSS('color', 'rgb(255, 255, 255)');
+
+        await selectTitledColor(page, 'Brand color', 'color-picker-toggle');
+
+        await expect(container).toHaveCSS('background-color', 'rgb(255, 0, 149)');
+        await expect(container).toHaveCSS('color', 'rgb(255, 255, 255)');
     });
 
     test('can switch between background image and color', async function () {
