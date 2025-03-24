@@ -214,7 +214,7 @@ test.describe('Signup card', async () => {
 
         await page.click('[data-testid="signup-button-color"] [data-testid="color-selector-button"]');
 
-        await selectCustomColor(page, '#f7f7f7', 'color-picker-toggle');
+        await selectCustomColor(page, '#f7f7f7', null);
         await page.click('[data-testid="settings-panel"]');
 
         await expect(page.locator('[data-testid="signup-card-button"]')).toHaveCSS('background-color', 'rgb(247, 247, 247)');
@@ -236,7 +236,7 @@ test.describe('Signup card', async () => {
         await expect(container).toHaveCSS('color', 'rgb(255, 255, 255)');
 
         await page.click('[data-testid="signup-background-color"] [data-testid="color-selector-button"]');
-        await selectCustomColor(page, '#f7f7f7', 'color-picker-toggle');
+        await selectCustomColor(page, '#f7f7f7', null);
         await page.click('[data-testid="settings-panel"]');
         await expect(container).toHaveCSS('background-color', 'rgb(247, 247, 247)');
         await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -272,7 +272,10 @@ test.describe('Signup card', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
+        // await page.click('[data-testid="signup-background-image-toggle"]');
+        await page.click('[data-testid="color-selector-button"]');
         await page.click('[data-testid="signup-background-image-toggle"]');
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         // Set files
         const fileChooser = await fileChooserPromise;
@@ -312,7 +315,9 @@ test.describe('Signup card', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
+        await page.click('[data-testid="color-selector-button"]');
         await page.click('[data-testid="signup-background-image-toggle"]');
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
@@ -357,10 +362,10 @@ test.describe('Signup card', async () => {
         // await page.click('[data-testid="signup-background-color"] button[title="Grey"]');
         await page.click('[data-testid="signup-background-color"] [data-testid="color-selector-button"]');
 
-        // const container = page.getByTestId('signup-card-container');
+        const container = page.getByTestId('signup-card-container');
         await selectTitledColor(page, 'Grey', 'color-picker-toggle');
-        // await expect(container).toHaveCSS('background-color', 'rgb(240, 240, 240)');
-        // await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
+        await expect(container).toHaveCSS('background-color', 'rgb(240, 240, 240)');
+        await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-color', 'rgb(240, 240, 240)');
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -369,7 +374,10 @@ test.describe('Signup card', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
+        // await page.click('[data-testid="signup-background-image-toggle"]');
+        await page.click('[data-testid="color-selector-button"]');
         await page.click('[data-testid="signup-background-image-toggle"]');
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
@@ -377,8 +385,9 @@ test.describe('Signup card', async () => {
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).toHaveCSS('color', 'rgb(255, 255, 255)');
 
-        // When switching to split layout, text colour is set based on the background colour
+        // // When switching to split layout, text colour is set based on the background colour
 
+        await page.click('[data-testid="settings-panel"]');
         await page.locator('[data-testid="signup-layout-split"]').click();
 
         await expect(page.locator('[data-kg-card="signup"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);

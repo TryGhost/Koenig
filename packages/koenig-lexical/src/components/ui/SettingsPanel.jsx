@@ -243,7 +243,7 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
     );
 }
 
-export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, children, showBackgroundImage, backgroundColor}) {
+export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, children}) {
     const markClickedInside = (event) => {
         event.stopPropagation();
     };
@@ -255,7 +255,6 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
 
                 <div className="shrink-0 pl-2">
                     <ColorIndicator
-                        backgroundColor={backgroundColor}
                         eyedropper={eyedropper}
                         hasTransparentOption={hasTransparentOption}
                         isExpanded={isExpanded}
