@@ -624,6 +624,8 @@ test.describe('Header card V2', () => {
         const fileChooserPromise = page.waitForEvent('filechooser');
         await createHeaderCard({page, version: 2});
 
+        await page.click('[data-testid="settings-panel"]');
+        await page.waitForSelector('[data-testid="header-layout-split"]');
         await page.locator('[data-testid="header-layout-split"]').click();
 
         await expect(page.locator('[data-testid="header-background-image-toggle"]')).toHaveCount(0);
