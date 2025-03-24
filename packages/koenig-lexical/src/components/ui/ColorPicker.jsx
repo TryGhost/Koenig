@@ -139,7 +139,6 @@ function ColorSwatch({hex, accent, transparent, title, isSelected, onSelect}) {
 
 export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker, onChange, isExpanded, eyedropper, hasTransparentOption, children}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [showColorPicker, setShowColorPicker] = useState(false);
     const [showChildren, setShowChildren] = useState(false);
     const popoverRef = useRef(null);
 
@@ -149,14 +148,6 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
         e.stopPropagation();
         e.preventDefault();
     }, []);
-
-    useEffect(() => {
-        if (isExpanded) {
-            setIsOpen(true);
-            setShowChildren(true);
-            setShowColorPicker(false);
-        }
-    }, [isExpanded]);
 
     let backgroundColor = value;
     let selectedSwatch = swatches.find(swatch => swatch.hex === value)?.title;
@@ -188,7 +179,6 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                 type="button"
                 onClick={() => {
                     setIsOpen(!isOpen);
-                    setShowColorPicker(false);
                     setShowChildren(false);
                 }}
             >
@@ -219,13 +209,14 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                     ref={popoverRef}
                     className={clsx(
                         'absolute -right-3 bottom-full z-10 mb-2 flex flex-col gap-3 rounded-lg bg-white p-3 shadow transition-[width] duration-200 ease-in-out dark:bg-grey-900',
-                        (showColorPicker || showChildren) && 'min-w-[296px]'
+                        (isExpanded || showChildren) && 'min-w-[296px]'
                     )}
                     onClick={stopPropagation}
                     onMouseDown={stopPropagation}
                     onTouchStart={stopPropagation}
                 >
-                    {showColorPicker && (
+                    {!isExpanded && (children)}
+                    {isExpanded && (
                         <ColorPicker
                             eyedropper={eyedropper}
                             hasTransparentOption={hasTransparentOption}
@@ -244,7 +235,7 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                                         isSelected={selectedSwatch === swatch.title}
                                         onSelect={(val) => {
                                             onSwatchChange(val);
-                                            setShowColorPicker(false);
+                                            // setShowColorPicker(false);
                                         }}
                                         {...swatch}
                                     />
@@ -256,9 +247,8 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                             data-testid="color-picker-toggle"
                             type="button"
                             onClick={() => {
-                                setShowColorPicker(!showColorPicker);
                                 setShowChildren(false);
-                                onTogglePicker();
+                                onTogglePicker(!isExpanded);
                             }}
                         >
                             {!selectedSwatch ? (

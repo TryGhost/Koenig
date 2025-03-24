@@ -240,8 +240,9 @@ test.describe('Header card V1', async () => {
 
         const fileChooserPromise = page.waitForEvent('filechooser');
 
-        // Click data-testid="background-image-color-button"
+        await page.click('[data-testid="color-options-button"]');
         await page.click('[data-testid="background-image-color-button"]');
+        // await page.click('[data-testid="background-image-color-button"]');
 
         // Set files
         const fileChooser = await fileChooserPromise;
@@ -523,13 +524,12 @@ test.describe('Header card V2', () => {
 
         await page.click('[data-testid="settings-panel"]');
 
-        // // Selected colour should be applied inline
+        // // // Selected colour should be applied inline
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('background-color', 'rgb(255, 0, 0)');
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('color', 'rgb(255, 255, 255)');
 
         await page.click('[data-testid="header-button-color"] [data-testid="color-selector-button"]');
-
-        await selectCustomColor(page, '#f7f7f7', 'color-picker-toggle');
+        await selectCustomColor(page, '#f7f7f7', null);
 
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('background-color', 'rgb(247, 247, 247)');
         await expect(page.locator('[data-testid="header-card-button"]')).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -552,7 +552,7 @@ test.describe('Header card V2', () => {
         await expect(container).toHaveCSS('color', 'rgb(255, 255, 255)');
 
         await page.click('[data-testid="header-background-color"] [data-testid="color-selector-button"]');
-        await selectCustomColor(page, '#f7f7f7', 'color-picker-toggle');
+        await selectCustomColor(page, '#f7f7f7', null);
 
         await expect(container).toHaveCSS('background-color', 'rgb(247, 247, 247)');
         await expect(container).toHaveCSS('color', 'rgb(0, 0, 0)');
@@ -584,10 +584,11 @@ test.describe('Header card V2', () => {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
         await createHeaderCard({page, version: 2});
         // Choose an image
-
         const fileChooserPromise = page.waitForEvent('filechooser');
 
+        await page.click('[data-testid="color-selector-button"]');
         await page.click('[data-testid="header-background-image-toggle"]');
+        await page.click('[data-testid="media-upload-placeholder"]');
 
         const fileChooser = await fileChooserPromise;
         await fileChooser.setFiles([filePath]);
@@ -604,17 +605,16 @@ test.describe('Header card V2', () => {
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');
         await expect(page.locator('[data-testid="media-upload-setting"]')).not.toBeVisible();
 
-        // Switch back to the image
-
+        await page.click('[data-testid="color-selector-button"]');
         await page.click('[data-testid="header-background-image-toggle"]');
 
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-testid="media-upload-setting"]')).toBeVisible();
         await expect(page.locator('[data-testid="media-upload-filled"] img')).toHaveAttribute('src', /blob:/);
 
-        // Open the color picker
+        await page.click('[data-testid="color-selector-button"]');
 
-        await page.click('[data-testid="header-background-color"] [aria-label="Pick color"]');
+        await page.click('[data-testid="color-picker-toggle"]');
 
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);
         await expect(page.locator('[data-kg-card="header"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');

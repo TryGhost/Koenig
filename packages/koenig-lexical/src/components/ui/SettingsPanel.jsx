@@ -2,16 +2,12 @@ import KoenigComposerContext from '../../context/KoenigComposerContext.jsx';
 import React from 'react';
 import clsx from 'clsx';
 import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';
-// import {ButtonGroup} from './ButtonGroup';
 import {ButtonGroup} from './ButtonGroup.jsx';
-// import {ColorIndicator, ColorPicker} from './ColorPicker';
 import {ColorIndicator} from './ColorPicker.jsx';
-// import {ColorOptionButtons} from './ColorOptionButtons';
 import {ColorOptionButtons} from './ColorOptionButtons.jsx';
 import {Dropdown} from './Dropdown';
 import {Input} from './Input';
 import {InputList, InputListItem} from './InputList.jsx';
-// import {MediaUploader} from './MediaUploader';
 import {MediaUploader} from './MediaUploader.jsx';
 import {MultiSelectDropdown} from './MultiSelectDropdown';
 import {Slider} from './Slider.jsx';
@@ -223,18 +219,6 @@ export function MultiSelectDropdownSetting({label, description, placeholder = ''
     );
 }
 
-// export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
-//     return (
-//         <div className="flex w-full items-center justify-between text-[1.3rem]">
-//             <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
-
-//             <div className="shrink-0 pl-2">
-//                 <ButtonGroup buttons={buttons} selectedName={selectedName} onClick={onClick} />
-//             </div>
-//         </div>
-//     );
-// }
-
 export function ButtonGroupSetting({label, onClick, selectedName, buttons, hasTooltip}) {
     return (
         <div className="flex w-full items-center justify-between text-[1.3rem]">
@@ -259,7 +243,7 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
     );
 }
 
-export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, customToolbarContent, children}) {
+export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, children, showBackgroundImage, backgroundColor}) {
     const markClickedInside = (event) => {
         event.stopPropagation();
     };
@@ -271,6 +255,7 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
 
                 <div className="shrink-0 pl-2">
                     <ColorIndicator
+                        backgroundColor={backgroundColor}
                         eyedropper={eyedropper}
                         hasTransparentOption={hasTransparentOption}
                         isExpanded={isExpanded}
@@ -292,7 +277,6 @@ export function MediaUploadSetting({className, label, hideLabel, onFileChange, i
     return (
         <div className={clsx(className, !stacked && 'flex justify-between gap-3')} data-testid="media-upload-setting">
             <div className={hideLabel ? 'sr-only' : 'mb-2 shrink-0 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
-
             <MediaUploader
                 alt={alt}
                 borderStyle={borderStyle}
