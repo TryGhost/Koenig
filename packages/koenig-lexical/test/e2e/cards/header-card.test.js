@@ -544,8 +544,6 @@ test.describe('Header card V2', () => {
 
         await page.click('[data-testid="settings-panel"]');
 
-        await page.click('[data-testid="settings-panel"]');
-
         // Selected colour should be applied inline
         const container = page.getByTestId('header-card-container');
         await expect(container).toHaveCSS('background-color', 'rgb(255, 0, 0)');
@@ -623,9 +621,10 @@ test.describe('Header card V2', () => {
 
     test('can add and remove background image in split layout', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
-        const fileChooserPromise = page.waitForEvent('filechooser');
 
         await createHeaderCard({page, version: 2});
+
+        const fileChooserPromise = page.waitForEvent('filechooser');
 
         await page.locator('[data-testid="header-layout-split"]').click();
 
