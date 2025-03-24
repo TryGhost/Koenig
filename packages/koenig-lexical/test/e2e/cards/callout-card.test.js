@@ -1,7 +1,5 @@
 import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard, isMac} from '../../utils/e2e';
-// import {calloutColorPicker} from '../../../src/components/ui/cards/CalloutCardx';
 import {expect, test} from '@playwright/test';
-// import {selectNamedColor} from '../../utils/color-select-helper';
 import {selectNamedColor} from '../../utils/color-select-helper';
 
 test.describe('Callout Card', async () => {

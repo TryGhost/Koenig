@@ -621,10 +621,8 @@ test.describe('Header card V2', () => {
 
     test('can add and remove background image in split layout', async function () {
         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);
-
-        await createHeaderCard({page, version: 2});
-
         const fileChooserPromise = page.waitForEvent('filechooser');
+        await createHeaderCard({page, version: 2});
 
         await page.locator('[data-testid="header-layout-split"]').click();
 

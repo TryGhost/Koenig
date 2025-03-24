@@ -1,6 +1,5 @@
 import path from 'path';
 import {assertHTML, createDataTransfer, focusEditor, getEditorStateJSON, html, initialize, insertCard} from '../../utils/e2e';
-// import {cardBackgroundColorSettings} from '../../utils/background-color-helper';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
 import {selectCustomColor, selectNamedColor, selectTitledColor} from '../../utils/color-select-helper';
