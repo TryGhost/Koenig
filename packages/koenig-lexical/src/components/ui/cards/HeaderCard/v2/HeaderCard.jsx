@@ -458,6 +458,7 @@ export function HeaderCard({alignment,
                             errors={fileUploader?.errors}
                             hideLabel={layout !== 'split'}
                             icon='file'
+                            imgClassName='w-full'
                             isDraggedOver={imageDragHandler?.isDraggedOver}
                             isLoading={isLoading}
                             isPinturaEnabled={isPinturaEnabled}

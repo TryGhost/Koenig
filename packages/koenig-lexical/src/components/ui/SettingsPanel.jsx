@@ -243,7 +243,7 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou
     );
 }
 
-export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, children}) {
+export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId, children, showChildren}) {
     const markClickedInside = (event) => {
         event.stopPropagation();
     };
@@ -258,6 +258,7 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
                         eyedropper={eyedropper}
                         hasTransparentOption={hasTransparentOption}
                         isExpanded={isExpanded}
+                        showChildren={showChildren}
                         swatches={swatches}
                         value={value}
                         onChange={onPickerChange}
@@ -272,7 +273,7 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
     );
 }
 
-export function MediaUploadSetting({className, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc, size, type, stacked, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {
+export function MediaUploadSetting({className, imgClassName, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc, size, type, stacked, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {
     return (
         <div className={clsx(className, !stacked && 'flex justify-between gap-3')} data-testid="media-upload-setting">
             <div className={hideLabel ? 'sr-only' : 'mb-2 shrink-0 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
@@ -288,6 +289,7 @@ export function MediaUploadSetting({className, label, hideLabel, onFileChange, i
                 dragHandler={{isDraggedOver, setRef: placeholderRef}}
                 errors={errors}
                 icon={icon}
+                imgClassName={imgClassName}
                 isLoading={isLoading}
                 isPinturaEnabled={isPinturaEnabled}
                 mimeTypes={mimeTypes}

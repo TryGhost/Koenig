@@ -192,12 +192,15 @@ export function ColorIndicator({value, swatches, onSwatchChange, onTogglePicker,
                     }} />
                 )}
                 <span
-                    className="block size-full rounded-full border-2 border-white dark:border-grey-950"
+                    className={clsx(
+                        'block size-full rounded-full border-2 border-white dark:border-grey-950',
+                        value === 'image' && 'flex items-center justify-center'
+                    )}
                     style={{backgroundColor}}
                 >
                     {
                         value === 'image' && (
-                            <ImgBgIcon/>
+                            <ImgBgIcon className='size-[1.4rem]' />
                         )
                     }
                     {value === 'transparent' && <div className="absolute left-[3px] top-[3px] z-10 w-[136%] origin-left rotate-45 border-b border-b-red" />}
