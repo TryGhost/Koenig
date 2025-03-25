@@ -242,7 +242,7 @@ export function CallToActionCard({
             />
             {layout === 'immersive' &&
                 <>
-                    <ButtonGroupSettingBeta
+                    <ButtonGroupSetting
                         buttons={alignmentOptions}
                         label='Alignment'
                         selectedName={alignment}
