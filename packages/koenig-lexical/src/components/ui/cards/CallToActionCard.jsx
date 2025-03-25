@@ -10,23 +10,12 @@ import clsx from 'clsx';
 import defaultTheme from '../../../themes/default.js';
 import {Button} from '../Button.jsx';
 import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel.jsx';
+import {CALLTOACTION_COLORS} from '../../../utils/callToActionColors.js';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay.jsx';
 import {RestrictContentPlugin} from '../../../index.js';
 import {VisibilitySettings} from '../VisibilitySettings.jsx';
 import {getAccentColor} from '../../../utils/getAccentColor.js';
 import {textColorForBackgroundColor} from '@tryghost/color-utils';
-
-export const CALLTOACTION_COLORS = {
-    none: 'bg-transparent border-transparent',
-    white: 'bg-transparent border-grey-900/15 dark:border-grey-100/20',
-    grey: 'bg-grey/10 border-transparent',
-    blue: 'bg-blue/10 border-transparent',
-    green: 'bg-green/10 border-transparent',
-    yellow: 'bg-yellow/10 border-transparent',
-    red: 'bg-red/10 border-transparent',
-    pink: 'bg-pink/10 border-transparent',
-    purple: 'bg-purple/10 border-transparent'
-};
 
 const getTheme = () => ({
     ...defaultTheme,

@@ -1,4 +1,5 @@
 import path from 'path';
+import {CALLTOACTION_COLORS} from '../../../src/utils/callToActionColors.js';
 import {assertHTML, createDataTransfer, focusEditor, getEditorStateJSON, html, initialize, insertCard} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
@@ -423,7 +424,8 @@ test.describe('Call To Action Card', async () => {
             const colorOptionsButton = page.locator('[data-testid="cta-background-color-picker"] [data-testid="color-options-button"]');
             await colorOptionsButton.click();
             await selectNamedColor(page, color, null);
-            await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(color.expectedClass));
+            const className = CALLTOACTION_COLORS[color];
+            await expect(page.locator(firstChildSelector)).toHaveClass(new RegExp(className));
         }
     });
 
