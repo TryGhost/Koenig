@@ -454,7 +454,10 @@ export function HeaderCard({alignment,
                         <MediaUploadSetting
                             alt='Background image'
                             borderStyle={'rounded'}
-                            className={(!showBackgroundImage || layout === 'split') && 'hidden'}
+                            className={clsx(
+                                'min-w-[296px]',
+                                (!showBackgroundImage || layout === 'split') && 'hidden'
+                            )}
                             errors={fileUploader?.errors}
                             hideLabel={layout !== 'split'}
                             icon='file'
