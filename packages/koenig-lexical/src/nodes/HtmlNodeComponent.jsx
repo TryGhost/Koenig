@@ -82,6 +82,13 @@ export function HtmlNodeComponent({nodeKey, html}) {
                         label="Edit"
                         onClick={handleToolbarEdit}
                     />
+                    <ToolbarMenuSeparator />
+                    <ToolbarMenuItem
+                        dataTestId="show-visibility"
+                        icon="visibility"
+                        isActive={false}
+                        label="Visibility"
+                    />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
                     <ToolbarMenuItem
                         dataTestId="create-snippet"
