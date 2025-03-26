@@ -17,6 +17,14 @@ export function HtmlNodeComponent({nodeKey, html}) {
     const cardContext = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+    const [showSettingsPanel, setShowSettingsPanel] = React.useState(false);
+
+    // Reset settings panel when editing is turned off
+    React.useEffect(() => {
+        if (!cardContext.isEditing) {
+            setShowSettingsPanel(false);
+        }
+    }, [cardContext.isEditing]);
 
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
 
@@ -88,6 +96,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
                         icon="visibility"
                         isActive={false}
                         label="Visibility"
+                        onClick={() => setShowSettingsPanel(!showSettingsPanel)}
                     />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
                     <ToolbarMenuItem
@@ -101,7 +110,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
                 </ToolbarMenu>
             </ActionToolbar>
 
-            {cardContext.isEditing && isContentVisibilityEnabled && (
+            {cardContext.isEditing && isContentVisibilityEnabled && showSettingsPanel && (
                 <SettingsPanel
                     darkMode={darkMode}
                     defaultTab="visibility"

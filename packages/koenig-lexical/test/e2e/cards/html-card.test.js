@@ -174,4 +174,42 @@ test.describe('Html card', async () => {
             <p><br /></p>
         `);
     });
+
+    test('does not show visibility panel by default in edit mode', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/html');
+        await page.waitForSelector('[data-kg-card-menu-item="HTML"][data-kg-cardmenu-selected="true"]');
+        await page.keyboard.press('Enter');
+
+        // data-testid="tab-contents-visibility" should not be visible
+        await expect(page.locator('[data-testid="tab-contents-visibility"]')).not.toBeVisible();
+    });
+
+    test('behaviour - resets visibility panel when editing is turned off', async function () {
+        // this is a behaviour test that ensures the visibility panel is reset reliably when editing is turned off
+        await focusEditor(page);
+        await page.keyboard.type('/html');
+        await page.keyboard.press('Enter');
+        // add some test content
+        await page.keyboard.type('<h1>test content</h1>');
+        await page.getByTestId('post-title').click();
+
+        // click on the html card
+        await page.locator('[data-kg-card="html"]').click();
+
+        await expect(page.locator('[data-testid="tab-contents-visibility"]')).not.toBeVisible();
+        // // Click the visibility button to show the panel
+        await page.getByTestId('show-visibility').click();
+        await expect(page.locator('[data-testid="tab-contents-visibility"]')).toBeVisible();
+
+        // turn off editing mode by clicking outside
+        await page.getByTestId('post-title').click();
+        // wait for the visibility panel to be hidden
+        await expect(page.locator('[data-testid="tab-contents-visibility"]')).not.toBeVisible();
+
+        await page.locator('[data-kg-card="html"]').click();
+        await expect(page.locator('[data-testid="tab-contents-visibility"]')).toBeVisible();
+    });
+
+    // we need t
 });
