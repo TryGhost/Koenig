@@ -3,10 +3,11 @@ import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import {$getNodeByKey, CLICK_COMMAND, COMMAND_PRIORITY_LOW} from 'lexical';
 import {CardWrapper} from './ui/CardWrapper';
-import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND, SELECT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
+import {EDIT_CARD_COMMAND, SELECT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
 import {mergeRegister} from '@lexical/utils';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import {useVisibilitySettingsToggle} from '../hooks/useVisibilitySettingsToggle';
 
 const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, children}) => {
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -17,27 +18,18 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
     const containerRef = React.useRef(null);
     const skipClick = React.useRef(false);
 
-    const {selectedCardKey, isEditingCard, isDragging, setShowVisibilitySettings} = useKoenigSelectedCardContext();
+    const {selectedCardKey, isEditingCard, isDragging, showVisibilitySettings, setShowVisibilitySettings} = useKoenigSelectedCardContext();
 
     const isSelected = selectedCardKey === nodeKey;
     const isEditing = isSelected && isEditingCard;
 
-    const toggleVisibilitySettings = React.useCallback((event) => {
-        event.preventDefault();
-        event.stopPropagation();
-
-        editor.update(() => {
-            const cardNode = $getNodeByKey(nodeKey);
-
-            if (cardNode?.hasEditMode?.() && !isEditing) {
-                setShowVisibilitySettings(true);
-                editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: true});
-            } else if (isEditing) {
-                setShowVisibilitySettings(false);
-                editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: true});
-            }
-        });
-    }, [editor, isEditing, nodeKey, setShowVisibilitySettings]);
+    const toggleVisibilitySettings = useVisibilitySettingsToggle(
+        editor,
+        nodeKey,
+        isSelected,
+        showVisibilitySettings,
+        setShowVisibilitySettings
+    );
 
     React.useLayoutEffect(() => {
         editor.getEditorState().read(() => {

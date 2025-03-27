@@ -96,12 +96,6 @@ test.describe('Content Visibility', async () => {
             await card.getByTestId('visibility-toggle-web-nonMembers').click();
 
             await expect(page.getByTestId('visibility-indicator')).toBeVisible();
-
-            // clicking visibility indicator toggles edit mode
-            await page.getByTestId('visibility-indicator').click();
-            await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
-            await page.getByTestId('visibility-indicator').click();
-            await expect(card).toHaveAttribute('data-kg-card-editing', 'true');
         });
 
         test('paid member visibility settings hidden when stripe is not enabled', async function () {
@@ -123,11 +117,31 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('visibility-toggle-web-nonMembers').click();
 
-            await page.keyboard.press('Meta+Enter');
-
+            await page.getByTestId('post-title').click();
             await page.getByTestId('visibility-indicator').click();
 
             await expect(card.getByTestId('settings-panel')).toBeVisible();
+        });
+
+        test('clicking show visibility in toolbar does not trigger edit mode', async function () {
+            const card = await insertHtmlCard();
+
+            await page.getByTestId('show-visibility').click();
+            await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
+        });
+
+        test('clicking visibility indicator does not trigger edit mode', async function () {
+            const card = await insertHtmlCard();
+
+            await card.getByTestId('show-visibility').click();
+            await card.getByTestId('tab-visibility').click();
+
+            await card.getByTestId('visibility-toggle-web-nonMembers').click();
+
+            await page.getByTestId('post-title').click();
+
+            await page.getByTestId('visibility-indicator').click();
+            await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
         });
     });
 });
