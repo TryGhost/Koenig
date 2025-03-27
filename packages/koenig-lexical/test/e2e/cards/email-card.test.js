@@ -2,8 +2,22 @@ import {assertHTML, createSnippet, focusEditor, html, initialize, isMac} from '.
 import {expect, test} from '@playwright/test';
 
 async function insertEmailCard(page) {
+    await focusEditor(page);
+    
     await page.keyboard.type('/email');
-    await page.waitForSelector('[data-kg-cardmenu]');
+    
+    try {
+        await Promise.race([
+            page.waitForSelector('[data-kg-cardmenu]', {timeout: 5000}),
+            page.waitForSelector('[data-kg-card-menu-item="Email content"]', {timeout: 5000})
+        ]);
+    } catch (e) {
+        await page.keyboard.press('Escape');
+        await page.keyboard.type('/email');
+        await page.waitForSelector('[data-kg-cardmenu]', {timeout: 5000});
+    }
+
+    await page.waitForSelector('[data-kg-card-menu-item="Email content"]', {state: 'visible'});
     await page.locator('[data-kg-card-menu-item="Email content"]').click();
     await page.waitForSelector('[data-kg-card="email"]');
 }
