@@ -174,4 +174,12 @@ test.describe('Html card', async () => {
             <p><br /></p>
         `);
     });
+
+    test('does not show visibility settings panel by default in edit mode', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('/html');
+        await page.waitForSelector('[data-kg-card-menu-item="HTML"][data-kg-cardmenu-selected="true"]');
+        await page.keyboard.press('Enter');
+        await expect(page.locator('[data-testid="tab-contents-visibility"]')).not.toBeVisible();
+    });
 });
