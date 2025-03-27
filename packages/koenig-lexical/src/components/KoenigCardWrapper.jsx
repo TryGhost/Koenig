@@ -17,12 +17,12 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
     const containerRef = React.useRef(null);
     const skipClick = React.useRef(false);
 
-    const {selectedCardKey, isEditingCard, isDragging} = useKoenigSelectedCardContext();
+    const {selectedCardKey, isEditingCard, isDragging, setShowVisibilitySettings} = useKoenigSelectedCardContext();
 
     const isSelected = selectedCardKey === nodeKey;
     const isEditing = isSelected && isEditingCard;
 
-    const toggleEditMode = React.useCallback((event) => {
+    const toggleVisibilitySettings = React.useCallback((event) => {
         event.preventDefault();
         event.stopPropagation();
 
@@ -30,12 +30,14 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
             const cardNode = $getNodeByKey(nodeKey);
 
             if (cardNode?.hasEditMode?.() && !isEditing) {
+                setShowVisibilitySettings(true);
                 editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: true});
             } else if (isEditing) {
+                setShowVisibilitySettings(false);
                 editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: true});
             }
         });
-    }, [editor, isEditing, nodeKey]);
+    }, [editor, isEditing, nodeKey, setShowVisibilitySettings]);
 
     React.useLayoutEffect(() => {
         editor.getEditorState().read(() => {
@@ -83,7 +85,7 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
                     return false;
                 },
                 COMMAND_PRIORITY_LOW
-            )
+            ),
         );
     });
 
@@ -175,7 +177,7 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
                 isSelected={isSelected}
                 isVisibilityActive={isVisibilityActive}
                 wrapperStyle={wrapperStyle}
-                onIndicatorClick={toggleEditMode}
+                onIndicatorClick={toggleVisibilitySettings}
             >
                 {children}
             </CardWrapper>

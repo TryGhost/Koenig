@@ -9,6 +9,7 @@ import {SettingsPanel} from '../components/ui/SettingsPanel.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {VisibilitySettings} from '../components/ui/VisibilitySettings.jsx';
+import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
 
@@ -17,14 +18,15 @@ export function HtmlNodeComponent({nodeKey, html}) {
     const cardContext = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
-    const [showSettingsPanel, setShowSettingsPanel] = React.useState(false);
 
-    // Reset settings panel when editing is turned off
+    const {showVisibilitySettings, setShowVisibilitySettings} = useKoenigSelectedCardContext();
+
+    // Reset settings panel when editing is turned off to prevent it from being in an open state when the card is deselected
     React.useEffect(() => {
         if (!cardContext.isEditing) {
-            setShowSettingsPanel(false);
+            setShowVisibilitySettings(false);
         }
-    }, [cardContext.isEditing]);
+    }, [cardContext.isEditing, setShowVisibilitySettings]);
 
     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
 
@@ -61,6 +63,10 @@ export function HtmlNodeComponent({nodeKey, html}) {
         />
     );
 
+    const toggleVisibilitySettings = () => {
+        setShowVisibilitySettings(!showVisibilitySettings);
+    };
+
     return (
         <>
             <HtmlCard
@@ -96,7 +102,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
                         icon="visibility"
                         isActive={false}
                         label="Visibility"
-                        onClick={() => setShowSettingsPanel(!showSettingsPanel)}
+                        onClick={toggleVisibilitySettings}
                     />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
                     <ToolbarMenuItem
@@ -110,7 +116,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
                 </ToolbarMenu>
             </ActionToolbar>
 
-            {cardContext.isEditing && isContentVisibilityEnabled && showSettingsPanel && (
+            {isContentVisibilityEnabled && showVisibilitySettings && (
                 <SettingsPanel
                     darkMode={darkMode}
                     defaultTab="visibility"
