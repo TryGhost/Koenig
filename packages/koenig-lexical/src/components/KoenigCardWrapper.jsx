@@ -28,7 +28,8 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
         nodeKey,
         isSelected,
         showVisibilitySettings,
-        setShowVisibilitySettings
+        setShowVisibilitySettings,
+        isEditing
     );
 
     React.useLayoutEffect(() => {

@@ -71,7 +71,8 @@ export function HtmlNodeComponent({nodeKey, html}) {
         nodeKey,
         isSelected,
         showVisibilitySettings,
-        setShowVisibilitySettings
+        setShowVisibilitySettings,
+        cardContext.isEditing
     );
 
     return (
