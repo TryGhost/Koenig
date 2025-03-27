@@ -66,7 +66,6 @@ test.describe('Content Visibility', async () => {
         test('can toggle visibility settings ', async function () {
             const card = await insertHtmlCard();
 
-            // await card.getByTestId('edit-html').click();
             await card.getByTestId('show-visibility').click();
             await card.getByTestId('tab-visibility').click();
 

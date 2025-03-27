@@ -175,13 +175,11 @@ test.describe('Html card', async () => {
         `);
     });
 
-    test('does not show visibility panel by default in edit mode', async function () {
+    test('does not show visibility settings panel by default in edit mode', async function () {
         await focusEditor(page);
         await page.keyboard.type('/html');
         await page.waitForSelector('[data-kg-card-menu-item="HTML"][data-kg-cardmenu-selected="true"]');
         await page.keyboard.press('Enter');
-
-        // data-testid="tab-contents-visibility" should not be visible
         await expect(page.locator('[data-testid="tab-contents-visibility"]')).not.toBeVisible();
     });
 });
