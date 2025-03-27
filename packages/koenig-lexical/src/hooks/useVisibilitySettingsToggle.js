@@ -1,8 +1,7 @@
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {$isHtmlNode} from '../nodes/HtmlNode';
-import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
-import {SELECT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
+import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND, SELECT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin';
 
 export function useVisibilitySettingsToggle(editor, nodeKey, isSelected, showVisibilitySettings, setShowVisibilitySettings, isEditing) {
     return React.useCallback((event) => {
