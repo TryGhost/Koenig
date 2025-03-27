@@ -1,31 +1,32 @@
 import CardContext from '../context/CardContext';
 import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React, {useRef} from 'react';
-import {$createNodeSelection, $getNodeByKey, $setSelection} from 'lexical';
+import useFileDragAndDrop from '../hooks/useFileDragAndDrop';
+import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
-import {CtaCard} from '../components/ui/cards/CtaCard';
-import {LinkInput} from '../components/ui/LinkInput';
+import {CallToActionCard} from '../components/ui/cards/CallToActionCard.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
+import {getImageDimensions} from '../utils/getImageDimensions';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
 
 export const CallToActionNodeComponent = ({
     nodeKey,
+    alignment,
     backgroundColor,
     buttonText,
     buttonUrl,
-    hasImage,
     hasSponsorLabel,
     imageUrl,
     layout,
+    linkColor,
     showButton,
     textValue,
     buttonColor,
     htmlEditor,
     htmlEditorInitialState,
     buttonTextColor,
-    href,
     sponsorLabelHtmlEditor,
     sponsorLabelHtmlEditorInitialState
 }) => {
@@ -33,7 +34,7 @@ export const CallToActionNodeComponent = ({
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
-    const [showLink, setShowLink] = React.useState(false);
+    const imageDragHandler = useFileDragAndDrop({handleDrop: handleImageDrop});
 
     const {visibilityOptions, toggleVisibility} = useVisibilityToggle(editor, nodeKey, cardConfig);
 
@@ -90,14 +91,28 @@ export const CallToActionNodeComponent = ({
         });
     };
 
-    const handleImageChange = async (files) => {
-        const result = await imageUploader.upload(files);
-        // reset original src so it can be replaced with preview and upload progress
+    const handleLinkColorChange = (val) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.imageUrl = result?.[0].url;
-            node.hasImage = true;
+            node.linkColor = val;
         });
+    };
+
+    const handleImageChange = async (files) => {
+        const imgPreviewUrl = URL.createObjectURL(files[0]);
+        try {
+            const {width, height} = await getImageDimensions(imgPreviewUrl);
+            const result = await imageUploader.upload(files);
+            // reset original src so it can be replaced with preview and upload progress
+            editor.update(() => {
+                const node = $getNodeByKey(nodeKey);
+                node.imageUrl = result?.[0].url;
+                node.imageWidth = width;
+                node.imageHeight = height;
+            });
+        } finally {
+            URL.revokeObjectURL(imgPreviewUrl);
+        }
     };
 
     const onFileChange = async (e) => {
@@ -107,8 +122,9 @@ export const CallToActionNodeComponent = ({
     const onRemoveMedia = () => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.imageUrl = '';
-            node.hasImage = false;
+            node.imageUrl = null;
+            node.imageWidth = null;
+            node.imageHeight = null;
         });
     };
     const handleUpdatingLayout = (val) => {
@@ -118,25 +134,16 @@ export const CallToActionNodeComponent = ({
         });
     };
 
-    const reselectCTACard = () => {
-        editor.update(() => {
-            const nodeSelection = $createNodeSelection();
-            nodeSelection.add(nodeKey);
-            $setSelection(nodeSelection);
-        });
-    };
-
-    const cancelLinkAndReselect = () => {
-        setShowLink(false);
-        reselectCTACard();
-    };
-
-    const setHref = (newHref) => {
+    const handleUpdatingAlignment = (val) => {
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
-            node.href = newHref;
+            node.alignment = val;
         });
     };
+
+    async function handleImageDrop(files) {
+        await handleImageChange(files);
+    }
 
     React.useEffect(() => {
         htmlEditor.setEditable(isEditing);
@@ -144,7 +151,8 @@ export const CallToActionNodeComponent = ({
 
     return (
         <>
-            <CtaCard
+            <CallToActionCard
+                alignment={alignment}
                 buttonColor={buttonColor}
                 buttonText={buttonText}
                 buttonTextColor={buttonTextColor}
@@ -152,14 +160,16 @@ export const CallToActionNodeComponent = ({
                 color={backgroundColor}
                 handleButtonColor={handleButtonColorChange}
                 handleColorChange={handleBackgroundColorChange}
-                hasImage={hasImage}
+                handleLinkColorChange={handleLinkColorChange}
                 hasSponsorLabel={hasSponsorLabel}
                 htmlEditor={htmlEditor}
                 htmlEditorInitialState={htmlEditorInitialState}
+                imageDragHandler={imageDragHandler}
                 imageSrc={imageUrl}
                 imageUploader={imageUploader}
                 isEditing={isEditing}
                 layout={layout}
+                linkColor={linkColor}
                 setEditing={setEditing}
                 setFileInputRef={ref => fileInputRef.current = ref}
                 showButton={showButton}
@@ -167,6 +177,7 @@ export const CallToActionNodeComponent = ({
                 sponsorLabelHtmlEditorInitialState={sponsorLabelHtmlEditorInitialState}
                 text={textValue}
                 toggleVisibility={toggleVisibility}
+                updateAlignment={handleUpdatingAlignment}
                 updateButtonText={handleButtonTextChange}
                 updateButtonUrl={handleButtonUrlChange}
                 updateHasSponsorLabel={handleHasSponsorLabelChange}
@@ -185,29 +196,11 @@ export const CallToActionNodeComponent = ({
             </ActionToolbar>
 
             <ActionToolbar
-                data-kg-card-toolbar="link"
-                isVisible={showLink}
-            >
-                <LinkInput
-                    cancel={cancelLinkAndReselect}
-                    href={href}
-                    update={(_href) => {
-                        setHref(_href);
-                        cancelLinkAndReselect();
-                    }}
-                />
-            </ActionToolbar>
-
-            <ActionToolbar
                 data-kg-card-toolbar="button"
-                isVisible={isSelected && !isEditing && !showSnippetToolbar && !showLink}
+                isVisible={isSelected && !isEditing && !showSnippetToolbar}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem dataTestId="edit-button-card" icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
-                    <ToolbarMenuSeparator />
-                    <ToolbarMenuItem icon="link" isActive={href || false} label="Link" onClick = {() => {
-                        setShowLink(true);
-                    }} />
                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
                     <ToolbarMenuItem
                         dataTestId="create-snippet"

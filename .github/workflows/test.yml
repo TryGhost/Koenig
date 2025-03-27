@@ -11,7 +11,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     strategy:
       matrix:
-        node: ['20.11.1']
+        node: ['20.11.1', '22.13.1']
     env:
       FORCE_COLOR: 1
       # https://github.com/vitejs/vite/issues/2433
@@ -20,8 +20,6 @@ jobs:
     name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         env:
@@ -37,9 +35,11 @@ jobs:
         run: |
           sudo apt-get update -yq
           sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
+          echo 'set man-db/auto-update false' | sudo debconf-communicate >/dev/null
+          sudo dpkg-reconfigure man-db
           sudo apt-get install msttcorefonts -qq
 
-      - run: yarn
+      - run: yarn --prefer-offline
 
       - name: Get installed Playwright version
         id: playwright-version
@@ -68,7 +68,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.node }}
           path: playwright-report
           retention-days: 30
 

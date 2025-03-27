@@ -17,10 +17,10 @@ const DEFAULT_INDICATOR_POSITION = {
 
 export const CardWrapper = React.forwardRef(({
     cardType,
-    cardWidth,
+    cardWidth = 'regular',
     feature,
     IndicatorIcon,
-    indicatorPosition,
+    indicatorPosition = DEFAULT_INDICATOR_POSITION,
     isDragging,
     isEditing,
     isSelected,
@@ -53,7 +53,8 @@ export const CardWrapper = React.forwardRef(({
 
     const position = {
         ...DEFAULT_INDICATOR_POSITION,
-        ...(indicatorPosition || {})
+        ...(indicatorPosition || {}),
+        ...(cardType === 'call-to-action' && {top: '1.4rem'})
     };
 
     let indicatorIcon;
@@ -115,9 +116,4 @@ CardWrapper.propTypes = {
         left: PropTypes.string,
         top: PropTypes.string
     })
-};
-
-CardWrapper.defaultProps = {
-    cardWidth: 'regular',
-    indicatorPosition: DEFAULT_INDICATOR_POSITION
 };

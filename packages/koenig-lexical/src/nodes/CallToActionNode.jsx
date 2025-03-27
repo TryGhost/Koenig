@@ -8,11 +8,11 @@ import {CallToActionNodeComponent} from './CallToActionNodeComponent';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
-export const INSERT_CTA_COMMAND = createCommand();
+export const INSERT_CALL_TO_ACTION_COMMAND = createCommand();
 
 export class CallToActionNode extends BaseCallToActionNode {
-    __ctaHtmlEditor;
-    __ctaHtmlEditorInitialState;
+    __callToActionHtmlEditor;
+    __callToActionHtmlEditorInitialState;
     __sponsorLabelHtmlEditor;
     __sponsorLabelHtmlEditorInitialState;
 
@@ -20,12 +20,12 @@ export class CallToActionNode extends BaseCallToActionNode {
         label: 'Call to Action',
         desc: 'Add a call to action to your post',
         Icon: EmailCtaCardIcon,
-        insertCommand: INSERT_CTA_COMMAND,
+        insertCommand: INSERT_CALL_TO_ACTION_COMMAND,
         matches: ['cta', 'call-to-action', 'email-cta', 'ad', 'sponsored', 'hidden'],
         priority: 7,
         shortcut: '/cta',
         isHidden: ({config}) => {
-            return !(config?.feature?.contentVisibilityAlpha === true);
+            return !(config?.feature?.contentVisibility === true);
         }
     };
 
@@ -41,12 +41,12 @@ export class CallToActionNode extends BaseCallToActionNode {
         super(dataset, key);
 
         // set up nested editor instances
-        setupNestedEditor(this, '__ctaHtmlEditor', {editor: dataset.ctaHtmlEditor, nodes: BASIC_NODES});
+        setupNestedEditor(this, '__callToActionHtmlEditor', {editor: dataset.callToActionHtmlEditor, nodes: BASIC_NODES});
         setupNestedEditor(this, '__sponsorLabelHtmlEditor', {editor: dataset.sponsorLabelHtmlEditor, nodes: BASIC_NODES});
 
         // populate nested editors on initial construction
-        if (!dataset.ctaHtmlEditor && dataset.textValue) {
-            populateNestedEditor(this, '__ctaHtmlEditor', `${dataset.textValue}`); // we serialize with no wrapper
+        if (!dataset.callToActionHtmlEditor && dataset.textValue) {
+            populateNestedEditor(this, '__callToActionHtmlEditor', `${dataset.textValue}`); // we serialize with no wrapper
         }
         if (!dataset.sponsorLabelHtmlEditor) {
             populateNestedEditor(this, '__sponsorLabelHtmlEditor', `${dataset.sponsorLabel || '<p><span style="white-space: pre-wrap;">SPONSORED</span></p>'}`);
@@ -57,8 +57,8 @@ export class CallToActionNode extends BaseCallToActionNode {
         const dataset = super.getDataset();
         // client-side only data properties such as nested editors
         const self = this.getLatest();
-        dataset.ctaHtmlEditor = self.__ctaHtmlEditor;
-        dataset.ctaHtmlEditorInitialState = self.__ctaHtmlEditorInitialState;
+        dataset.callToActionHtmlEditor = self.__callToActionHtmlEditor;
+        dataset.callToActionHtmlEditorInitialState = self.__callToActionHtmlEditorInitialState;
         dataset.sponsorLabelHtmlEditor = self.__sponsorLabelHtmlEditor;
         dataset.sponsorLabelHtmlEditorInitialState = self.__sponsorLabelHtmlEditorInitialState;
 
@@ -70,9 +70,9 @@ export class CallToActionNode extends BaseCallToActionNode {
 
         // convert nested editor instance back into HTML because `text` may not
         // be automatically updated when the nested editor changes
-        if (this.__ctaHtmlEditor) {
-            this.__ctaHtmlEditor.getEditorState().read(() => {
-                const html = $generateHtmlFromNodes(this.__ctaHtmlEditor, null);
+        if (this.__callToActionHtmlEditor) {
+            this.__callToActionHtmlEditor.getEditorState().read(() => {
+                const html = $generateHtmlFromNodes(this.__callToActionHtmlEditor, null);
                 const cleanedHtml = cleanBasicHtml(html, {allowBr: true});
                 json.textValue = cleanedHtml;
             });
@@ -96,18 +96,19 @@ export class CallToActionNode extends BaseCallToActionNode {
                 wrapperStyle={this.backgroundColor === 'none' ? 'wide' : 'regular'}
             >
                 <CallToActionNodeComponent
+                    alignment={this.alignment}
                     backgroundColor={this.backgroundColor}
                     buttonColor={this.buttonColor}
                     buttonText={this.buttonText}
                     buttonTextColor={this.buttonTextColor}
                     buttonUrl={this.buttonUrl}
-                    hasImage={this.hasImage}
                     hasSponsorLabel={this.hasSponsorLabel}
                     href={this.href}
-                    htmlEditor={this.__ctaHtmlEditor}
-                    htmlEditorInitialState={this.__ctaHtmlEditorInitialState}
+                    htmlEditor={this.__callToActionHtmlEditor}
+                    htmlEditorInitialState={this.__callToActionHtmlEditorInitialState}
                     imageUrl={this.imageUrl}
                     layout={this.layout}
+                    linkColor={this.linkColor}
                     nodeKey={this.getKey()}
                     showButton={this.showButton}
                     sponsorLabelHtmlEditor={this.__sponsorLabelHtmlEditor}

@@ -43,37 +43,37 @@ export const calloutColorPicker = [
     {
         label: 'Grey',
         name: 'grey',
-        color: 'bg-grey/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-grey/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Blue',
         name: 'blue',
-        color: 'bg-blue/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-blue/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Green',
         name: 'green',
-        color: 'bg-green/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-green/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Yellow',
         name: 'yellow',
-        color: 'bg-yellow/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-yellow/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Red',
         name: 'red',
-        color: 'bg-red/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-red/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Pink',
         name: 'pink',
-        color: 'bg-pink/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-pink/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Purple',
         name: 'purple',
-        color: 'bg-purple/15 border-black/[0.08] dark:border-white/10'
+        color: 'bg-purple/20 border-black/[0.08] dark:border-white/10'
     },
     {
         label: 'Accent',
@@ -83,14 +83,14 @@ export const calloutColorPicker = [
 ];
 
 export function CalloutCard({
-    color,
+    color = 'green',
     isEditing,
     setShowEmojiPicker,
     toggleEmoji,
-    hasEmoji,
+    hasEmoji = true,
     handleColorChange,
     changeEmoji,
-    calloutEmoji,
+    calloutEmoji = '💡',
     textEditor,
     textEditorInitialState,
     nodeKey,
@@ -158,7 +158,6 @@ export function CalloutCard({
                             buttons={calloutColorPicker}
                             dataTestId='callout-color-picker'
                             label='Background'
-                            layout='stacked'
                             selectedName={color}
                             onClick={handleColorChange}
                         />
@@ -188,10 +187,4 @@ CalloutCard.propTypes = {
     nodeKey: PropTypes.string,
     toggleEmojiPicker: PropTypes.func,
     showEmojiPicker: PropTypes.bool
-};
-
-CalloutCard.defaultProps = {
-    color: 'green',
-    calloutEmoji: '💡',
-    hasEmoji: true
 };

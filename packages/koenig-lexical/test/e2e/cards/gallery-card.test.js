@@ -167,6 +167,7 @@ test.describe('Gallery card', async () => {
         await fileChooser.setFiles([filePath]);
 
         await page.waitForSelector('[data-gallery="true"]');
+        await expect(page.getByTestId('progress-bar')).not.toBeVisible();
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false" data-kg-card-width="wide">
@@ -506,8 +507,12 @@ test.describe('Gallery card', async () => {
             const fileChooser = await fileChooserPromise;
             await fileChooser.setFiles(filePaths);
 
-            await expect(page.locator('[data-testid="gallery-image"]')).toHaveCount(9);
+            await expect(page.getByTestId('progress-bar')).not.toBeVisible();
+            await expect(page.getByTestId('gallery-image')).toHaveCount(9);
         });
+
+        // give the gallery card time to update the editor state
+        await page.waitForTimeout(200);
 
         const editorState = await getEditorState(page);
 
