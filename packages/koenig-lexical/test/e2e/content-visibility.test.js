@@ -85,6 +85,15 @@ test.describe('Content Visibility', async () => {
             await expect(card.getByTestId('visibility-message')).not.toBeVisible();
         });
 
+        test('toggling settings in visibility panel does not trigger edit mode', async function () {
+            const card = await insertHtmlCard();
+
+            await card.getByTestId('show-visibility').click();
+            await card.getByTestId('tab-visibility').click();
+            await card.getByTestId('visibility-toggle-web-nonMembers').click();
+            await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
+        });
+
         test('visibility icon is shown when visibility changes from shown-to-all', async function () {
             const card = await insertHtmlCard();
 
@@ -92,7 +101,7 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('show-visibility').click();
             await card.getByTestId('tab-visibility').click();
-            await expect(card).toHaveAttribute('data-kg-card-editing', 'true');
+            await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
             await card.getByTestId('visibility-toggle-web-nonMembers').click();
 
             await expect(page.getByTestId('visibility-indicator')).toBeVisible();

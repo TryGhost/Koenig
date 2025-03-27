@@ -128,7 +128,10 @@ export function HtmlNodeComponent({nodeKey, html}) {
                     darkMode={darkMode}
                     defaultTab="visibility"
                     tabs={settingsTabs}
-                    onMouseDown={e => e.preventDefault()}
+                    onMouseDown={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }}
                 >
                     {{
                         visibility: visibilitySettings
