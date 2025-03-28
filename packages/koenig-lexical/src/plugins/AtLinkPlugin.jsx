@@ -195,11 +195,19 @@ export const KoenigAtLinkPlugin = ({searchLinks, siteUrl}) => {
     // - update plugin state with search query based on at-link-search node text content
     // - remove at-link nodes when they don't have focus (i.e. using arrow keys to move out of them)
     React.useEffect(() => {
-        return editor.registerUpdateListener(() => {
+        return editor.registerUpdateListener(({prevEditorState}) => {
             // do nothing if we're in the middle of composing text
             if (editor.isComposing()) {
                 return;
             }
+
+            let prevSelectionType;
+            let prevSelectionOffset;
+            prevEditorState.read(() => {
+                const selection = $getSelection();
+                prevSelectionType = selection?.anchor?.getNode().getType();
+                prevSelectionOffset = selection?.anchor?.offset;
+            });
 
             editor.update(() => {
                 const atLinkNodes = $nodesOfType(AtLinkNode);
@@ -249,8 +257,10 @@ export const KoenigAtLinkPlugin = ({searchLinks, siteUrl}) => {
                             selectedAtLinkNode.select(1, 1);
                             const rangeSelection = $getSelection();
                             if ($isRangeSelection(rangeSelection)) {
-                                rangeSelection.anchor.set(searchNode.getKey(), 0, 'element');
-                                rangeSelection.focus.set(searchNode.getKey(), 0, 'element');
+                                if (!(prevSelectionType === 'at-link-search' && prevSelectionOffset === 0)) { // Avoid infinite loop
+                                    rangeSelection.anchor.set(searchNode.getKey(), 0);
+                                    rangeSelection.focus.set(searchNode.getKey(), 0);
+                                }
                             }
                         }
 
@@ -321,6 +331,11 @@ export const KoenigAtLinkPlugin = ({searchLinks, siteUrl}) => {
                                 $removeAtLink(anchorNode.getParent(), {focus: true});
                                 return true;
                             }
+                        }
+
+                        if ($isAtLinkNode(anchorNode) && anchorNode.getTextContent() === '') {
+                            $removeAtLink(anchorNode, {focus: true});
+                            return true;
                         }
                     }
                     return false;
