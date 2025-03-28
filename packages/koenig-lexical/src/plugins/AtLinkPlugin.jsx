@@ -414,15 +414,26 @@ export const KoenigAtLinkPlugin = ({searchLinks, siteUrl}) => {
             });
 
             // consolidate multiple search nodes from previous step into single node
-            const searchNode = atLinkNode.getChildAtIndex(1);
-            const currentText = searchNode.getTextContent();
-            let consolidatedText = currentText;
-            atLinkNode.getChildren().forEach((child, index) => {
-                if (index > 1) {
-                    consolidatedText += child.getTextContent();
-                    child.remove();
-                }
+            // NB: Leave the first non-empty search node in-tact if possible
+
+            let searchNodes = atLinkNode.getChildren().slice(1);
+            const currentText = searchNodes.map(node => node.getTextContent()).join();
+            if (currentText !== '') {
+                searchNodes.forEach((node) => {
+                    if (!node.getTextContent()) {
+                        node.remove();
+                    }
+                });
+                searchNodes = atLinkNode.getChildren().slice(1);
+            }
+
+            const [searchNode, ...restNodes] = searchNodes;
+            let consolidatedText = searchNode.getTextContent();
+            restNodes.forEach((node) => {
+                consolidatedText += node.getTextContent();
+                node.remove();
             });
+
             if (consolidatedText !== currentText) {
                 searchNode.setTextContent(consolidatedText);
             }
