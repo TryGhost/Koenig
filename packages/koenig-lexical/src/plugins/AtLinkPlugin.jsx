@@ -57,6 +57,90 @@ function noResultOptions() {
     }];
 }
 
+const handleAtDetected = (editor) => {
+    let replaceAt = false;
+
+    editor.getEditorState().read(() => {
+        // get the current selection
+        const selection = $getSelection();
+        if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
+            return;
+        }
+
+        const anchor = selection.anchor;
+        if (anchor.type !== 'text') {
+            return;
+        }
+
+        const anchorNode = anchor.getNode();
+        if (!anchorNode.isSimpleText()) {
+            return;
+        }
+
+        let anchorOffset = anchor.offset;
+        let textBeforeAnchor = anchorNode.getTextContent().slice(0, anchorOffset);
+        let textAfterAnchor = anchorNode.getTextContent().slice(anchorOffset);
+
+        // adjust before/after text if we're immediately preceded/followed by a text node
+        // because that content needs to be accounted for in our regex match
+        const prevSibling = anchorNode.getPreviousSibling();
+        const nextSibling = anchorNode.getNextSibling();
+
+        if (anchorOffset === 0 && $isTextNode(prevSibling)) {
+            textBeforeAnchor = prevSibling.getTextContent();
+        }
+
+        if (anchorOffset === anchorNode.getTextContent().length && $isTextNode(nextSibling)) {
+            textAfterAnchor = nextSibling.getTextContent();
+        }
+
+        const textBeforeRegExp = /(^|\s)@$/;
+        const textAfterRegExp = /^($|\s|\.)/;
+
+        if (
+            textBeforeRegExp.test(textBeforeAnchor)
+            && textAfterRegExp.test(textAfterAnchor)
+        ) {
+            replaceAt = true;
+        }
+    });
+
+    if (replaceAt) {
+        editor.update(() => {
+            // selection should now be where the '@' character was
+            const selection = $getSelection();
+
+            // store current node's format so it can be re-applied to the eventual link node
+            const linkFormat = selection.anchor.getNode().getFormat();
+
+            // delete the '@' character
+            selection.deleteCharacter(true);
+
+            // prep the at-link node
+            const atLinkNode = $createAtLinkNode();
+            atLinkNode.setLinkFormat(linkFormat);
+            const zwnjNode = $createZWNJNode();
+            atLinkNode.append(zwnjNode);
+            const atLinkSearchNode = $createAtLinkSearchNode('');
+            atLinkNode.append(atLinkSearchNode);
+
+            // insert it
+            selection.insertNodes([atLinkNode]);
+
+            // ensure we still have a cursor and it's inside the search node
+            atLinkNode.select(1, 1);
+
+            const searchNode = atLinkNode.getChildAtIndex(1);
+            const rangeSelection = $getSelection();
+            if ($isRangeSelection(rangeSelection)) {
+                rangeSelection.anchor.set(searchNode.getKey(), 0, 'element');
+                rangeSelection.focus.set(searchNode.getKey(), 0, 'element');
+            }
+        });
+        return true;
+    }
+};
+
 // Manages at-link search nodes and display of the search results panel when appropriate
 export const KoenigAtLinkPlugin = ({searchLinks, siteUrl}) => {
     const [editor] = useLexicalComposerContext();
@@ -80,98 +164,20 @@ export const KoenigAtLinkPlugin = ({searchLinks, siteUrl}) => {
             }
 
             if (event.inputType === 'insertText' && event.data === '@') {
-                let replaceAt = false;
-
-                editor.getEditorState().read(() => {
-                    // get the current selection
-                    const selection = $getSelection();
-                    if (!$isRangeSelection(selection) || !selection.isCollapsed()) {
-                        return;
-                    }
-
-                    const anchor = selection.anchor;
-                    if (anchor.type !== 'text') {
-                        return;
-                    }
-
-                    const anchorNode = anchor.getNode();
-                    if (!anchorNode.isSimpleText()) {
-                        return;
-                    }
-
-                    let anchorOffset = anchor.offset;
-                    let textBeforeAnchor = anchorNode.getTextContent().slice(0, anchorOffset);
-                    let textAfterAnchor = anchorNode.getTextContent().slice(anchorOffset);
-
-                    // adjust before/after text if we're immediately preceded/followed by a text node
-                    // because that content needs to be accounted for in our regex match
-                    const prevSibling = anchorNode.getPreviousSibling();
-                    const nextSibling = anchorNode.getNextSibling();
-
-                    if (anchorOffset === 0 && $isTextNode(prevSibling)) {
-                        textBeforeAnchor = prevSibling.getTextContent();
-                    }
-
-                    if (anchorOffset === anchorNode.getTextContent().length && $isTextNode(nextSibling)) {
-                        textAfterAnchor = nextSibling.getTextContent();
-                    }
-
-                    const textBeforeRegExp = /(^|\s)@$/;
-                    const textAfterRegExp = /^($|\s|\.)/;
-
-                    if (
-                        textBeforeRegExp.test(textBeforeAnchor)
-                        && textAfterRegExp.test(textAfterAnchor)
-                    ) {
-                        replaceAt = true;
-                    }
-                });
-
-                if (replaceAt) {
-                    editor.update(() => {
-                        // selection should now be where the '@' character was
-                        const selection = $getSelection();
-
-                        // store current node's format so it can be re-applied to the eventual link node
-                        const linkFormat = selection.anchor.getNode().getFormat();
-
-                        // delete the '@' character
-                        selection.deleteCharacter(true);
-
-                        // prep the at-link node
-                        const atLinkNode = $createAtLinkNode();
-                        atLinkNode.setLinkFormat(linkFormat);
-                        const zwnjNode = $createZWNJNode();
-                        atLinkNode.append(zwnjNode);
-                        const atLinkSearchNode = $createAtLinkSearchNode('');
-                        atLinkNode.append(atLinkSearchNode);
-
-                        // insert it
-                        selection.insertNodes([atLinkNode]);
-
-                        // ensure we still have a cursor and it's inside the search node
-                        atLinkNode.select(1, 1);
-
-                        const searchNode = atLinkNode.getChildAtIndex(1);
-                        const rangeSelection = $getSelection();
-                        if ($isRangeSelection(rangeSelection)) {
-                            rangeSelection.anchor.set(searchNode.getKey(), 0, 'element');
-                            rangeSelection.focus.set(searchNode.getKey(), 0, 'element');
-                        }
-                    });
-                }
+                handleAtDetected(editor);
             }
         };
 
-        // weirdly the 'input' event doesn't fire for the first character typed in a paragraph
         const handleAtBeforeInput = (event) => {
             if (event.inputType === 'insertText' && event.data === '@') {
-                editor.update(() => {
-                    const selection = $getSelection();
-                    if ($isRangeSelection(selection) && selection.isCollapsed() && !selection.anchor.getNode().getPreviousSibling()) {
-                        handleAtInsert(event);
-                    }
-                });
+                const atHandled = handleAtDetected(editor);
+
+                if (!atHandled) { // Firefox gives us the beforeinput event before the editor state is updated - catch the next update instead
+                    const deregister = editor.registerUpdateListener(() => {
+                        handleAtDetected(editor);
+                        deregister();
+                    });
+                }
             }
         };
 
