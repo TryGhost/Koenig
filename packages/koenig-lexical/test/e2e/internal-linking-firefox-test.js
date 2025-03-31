@@ -352,7 +352,11 @@ test.describe('Internal linking (Firefox)', async () => {
         test('can paste into at-link node', async function () {
             await focusEditor(page);
             await page.keyboard.type('@');
-            await pasteText(page, 'https://ghost.org');
+
+            // script based pasting doesn't work in firefox, trigger via keyboard instead
+            await page.evaluate(() => navigator.clipboard.writeText('https://ghost.org'));
+            await page.keyboard.press("ControlOrMeta+KeyV");
+
             await expect(page.getByTestId('at-link-results')).toBeVisible();
 
             await assertHTML(page, html`
