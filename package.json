@@ -27,46 +27,5 @@
     "husky": "9.1.4",
     "lerna": "8.1.8",
     "lint-staged": "15.2.9"
-  },
-  "renovate": {
-    "extends": [
-      "github>tryghost/renovate-config:quiet"
-    ],
-    "ignoreDeps": [
-      "codecov/codecov-action"
-    ],
-    "packageRules": [
-      {
-        "depTypeList": [
-          "devDependencies"
-        ],
-        "automerge": true,
-        "automergeType": "branch"
-      },
-      {
-        "groupName": "rollup + plugins",
-        "packagePatterns": [
-          "^rollup"
-        ]
-      },
-      {
-        "groupName": "lexical",
-        "packagePatterns": [
-          "^lexical",
-          "^@lexical"
-        ]
-      },
-      {
-        "groupName": "vitest",
-        "packagePatterns": [
-          "^vitest",
-          "^@vitest"
-        ]
-      },
-      {
-        "matchPackageNames": ["@tryghost/mobiledoc-kit"],
-        "enabled": false
-      }
-    ]
   }
 }
