@@ -5980,10 +5980,10 @@ browserify-zlib@~0.2.0:
   dependencies:
     pako "~1.0.5"
 
-browserify@17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/browserify/-/browserify-17.0.0.tgz#4c48fed6c02bfa2b51fd3b670fddb805723cdc22"
-  integrity sha512-SaHqzhku9v/j6XsQMRxPyBrSP3gnwmE27gLJYZgMT2GeK3J0+0toN+MnuNYDfHwVGQfLiMZ7KSNSIXHemy905w==
+browserify@17.0.1:
+  version "17.0.1"
+  resolved "https://registry.yarnpkg.com/browserify/-/browserify-17.0.1.tgz#d822fa701431ca94cb405b033bb2551951e5d97d"
+  integrity sha512-pxhT00W3ylMhCHwG5yfqtZjNnFuX5h2IJdaBfSo4ChaaBsIp9VLrEMQ1bHV+Xr1uLPXuNDDM1GlJkjli0qkRsw==
   dependencies:
     JSONStream "^1.0.3"
     assert "^1.4.0"
@@ -6002,7 +6002,7 @@ browserify@17.0.0:
     duplexer2 "~0.1.2"
     events "^3.0.0"
     glob "^7.1.0"
-    has "^1.0.0"
+    hasown "^2.0.0"
     htmlescape "^1.1.0"
     https-browserify "^1.0.0"
     inherits "~2.0.1"
@@ -10205,11 +10205,6 @@ has-values@^1.0.0:
   dependencies:
     is-number "^3.0.0"
     kind-of "^4.0.0"
-
-has@^1.0.0:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/has/-/has-1.0.4.tgz#2eb2860e000011dae4f1406a86fe80e530fb2ec6"
-  integrity sha512-qdSAmqLF6209RFj4VVItywPMbm3vWylknmB3nvNiUIs72xAimcM8nVYxYr7ncvZq5qzk9MKIZR8ijqD/1QuYjQ==
 
 hash-base@^3.0.0:
   version "3.1.0"
@@ -18817,10 +18812,10 @@ vite-plugin-svgr@4.2.0:
     "@svgr/core" "^8.1.0"
     "@svgr/plugin-jsx" "^8.1.0"
 
-vite@4.5.11:
-  version "4.5.11"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.5.11.tgz#796797f40d5bf5ce673d3773c9e0c4cbe204e85a"
-  integrity sha512-4mVdhLkZ0vpqZLGJhNm+X1n7juqXApEMGlUXcOQawA45UmpxivOYaMBkI/Js3FlBsNA8hCgEnX5X04moFitSGw==
+vite@4.5.12:
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.5.12.tgz#48f48dbcf789722765e91bc32a99cb66c628eadc"
+  integrity sha512-qrMwavANtSz91nDy3zEiUHMtL09x0mniQsSMvDkNxuCBM1W5vriJ22hEmwTth6DhLSWsZnHBT0yHFAQXt6efGA==
   dependencies:
     esbuild "^0.18.10"
     postcss "^8.4.27"
@@ -18828,10 +18823,10 @@ vite@4.5.11:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vite@5.4.16, vite@^5.0.0:
-  version "5.4.16"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.4.16.tgz#471983257a890ef33f2700cbbbc2134f2d08abf1"
-  integrity sha512-Y5gnfp4NemVfgOTDQAunSD4346fal44L9mszGGY/e+qxsRT5y1sMlS/8tiQ8AFAp+MFgYNSINdfEchJiPm41vQ==
+vite@5.4.17, vite@^5.0.0:
+  version "5.4.17"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.4.17.tgz#4bf61dd4cdbf64b0d6661f5dba76954cc81d5082"
+  integrity sha512-5+VqZryDj4wgCs55o9Lp+p8GE78TLVg0lasCH5xFZ4jacZjtqZa6JUw9/p0WeAojaOfncSM6v77InkFPGnvPvg==
   dependencies:
     esbuild "^0.21.3"
     postcss "^8.4.43"
