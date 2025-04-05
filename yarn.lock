@@ -3598,10 +3598,10 @@
     "@storybook/react-dom-shim" "8.5.0"
     "@storybook/theming" "8.5.0"
 
-"@storybook/test-runner@^0.21.0":
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/@storybook/test-runner/-/test-runner-0.21.0.tgz#31e7a6878e15a3f4d5555c57a135dd4d13fce9c4"
-  integrity sha512-aG2QvKXSIjMN1CA9PJK/esnidZWgt1gAkfo9Kqf8+NqBSsmP/2GyL5vxu1lkRFO/4qCv5JenNZ5Uj6ie4b2oag==
+"@storybook/test-runner@^0.22.0":
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/@storybook/test-runner/-/test-runner-0.22.0.tgz#0b7ca84f9140594a7f8da24fb9e839c97046b0d0"
+  integrity sha512-fKY6MTE/bcvMaulKXy+z0fPmRXJx1REkYMOMcGn8zn6uffyBigGgaVf/sZ+AZfibwvjzg/StWhJ9HvAM8pc14g==
   dependencies:
     "@babel/core" "^7.22.5"
     "@babel/generator" "^7.22.5"
@@ -8580,10 +8580,10 @@ eslint-plugin-react-hooks@4.6.2, eslint-plugin-react-hooks@^4.3.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.6.2.tgz#c829eb06c0e6f484b3fbb85a97e57784f328c596"
   integrity sha512-QzliNJq4GinDBcD8gPB5v0wh6g8q3SUi6EFF0x8N/BL9PoVs0atuGc47ozMRyOWAKdwaZ5OnbOEa3WR+dSGKuQ==
 
-eslint-plugin-react-refresh@0.4.11:
-  version "0.4.11"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-refresh/-/eslint-plugin-react-refresh-0.4.11.tgz#e450761a2bdb260aa10cfb73f846209a737827cb"
-  integrity sha512-wrAKxMbVr8qhXTtIKfXqAn5SAtRZt0aXxe5P23Fh4pUAdC6XEsybGLB8P0PI4j1yYqOgUEUlzKAGDfo7rJOjcw==
+eslint-plugin-react-refresh@0.4.19:
+  version "0.4.19"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-refresh/-/eslint-plugin-react-refresh-0.4.19.tgz#f15020c0caa58e33fc4efda27d328281ca74e53d"
+  integrity sha512-eyy8pcr/YxSYjBoqIFSrlbn9i/xvxUFa8CjzAYo9cFjgGXqq1hyjihcpZvxRLalpaWmueWR81xn7vuKmAFijDQ==
 
 eslint-plugin-react@7.35.0, eslint-plugin-react@^7.27.1:
   version "7.35.0"
