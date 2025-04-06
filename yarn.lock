@@ -4592,10 +4592,10 @@
     picocolors "^1.0.0"
     std-env "^3.3.3"
 
-"@vitest/coverage-v8@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@vitest/coverage-v8/-/coverage-v8-1.6.0.tgz#2f54ccf4c2d9f23a71294aba7f95b3d2e27d14e7"
-  integrity sha512-KvapcbMY/8GYIG0rlwwOKCVNRc0OL20rrhFkg/CHNzncV03TE2XWvO5w9uZYoxNiMEBacAJt3unSOiZ7svePew==
+"@vitest/coverage-v8@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@vitest/coverage-v8/-/coverage-v8-1.6.1.tgz#47230491ec73aa288a92e36b75c1671b3f741d4e"
+  integrity sha512-6YeRZwuO4oTGKxD3bijok756oktHSIm3eczVVzNe3scqzuhLwltIF3S9ZL/vwOVIpURmU6SnZhziXXAfw8/Qlw==
   dependencies:
     "@ampproject/remapping" "^2.2.1"
     "@bcoe/v8-coverage" "^0.2.3"
@@ -4676,28 +4676,18 @@
   dependencies:
     tinyspy "^3.0.0"
 
-"@vitest/ui@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-1.6.0.tgz#ffcc97ebcceca7fec840c29ab68632d0cd01db93"
-  integrity sha512-k3Lyo+ONLOgylctiGovRKy7V4+dIN2yxstX3eY5cWFXH6WP+ooVX79YSyi0GagdTQzLmT43BF27T0s6dOIPBXA==
+"@vitest/ui@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-1.6.1.tgz#e94c42af392ddb47531b2401d8871bc246f1947e"
+  integrity sha512-xa57bCPGuzEFqGjPs3vVLyqareG8DX0uMkr5U/v5vLv5/ZUrBrPL7gzxzTJedEyZxFMfsozwTIbbYfEQVo3kgg==
   dependencies:
-    "@vitest/utils" "1.6.0"
+    "@vitest/utils" "1.6.1"
     fast-glob "^3.3.2"
     fflate "^0.8.1"
     flatted "^3.2.9"
     pathe "^1.1.1"
     picocolors "^1.0.0"
     sirv "^2.0.4"
-
-"@vitest/utils@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@vitest/utils/-/utils-1.6.0.tgz#5c5675ca7d6f546a7b4337de9ae882e6c57896a1"
-  integrity sha512-21cPiuGMoMZwiOHa2i4LXkMkMkCGzA+MVFV70jRwHo95dL4x/ts5GZhML1QWuy7yfp3WzK3lRvZi3JnXTYqrBw==
-  dependencies:
-    diff-sequences "^29.6.3"
-    estree-walker "^3.0.3"
-    loupe "^2.3.7"
-    pretty-format "^29.7.0"
 
 "@vitest/utils@1.6.1":
   version "1.6.1"
