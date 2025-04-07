@@ -155,9 +155,10 @@ test.describe('Content Visibility', async () => {
         test.beforeEach(async () => {
             await initialize({page, uri: '/#/?content=false&labs=contentVisibility'});
         });
-        // We need to ensure that when we used the visibility indicator to toggle the visibility settings in the HTML card,
-        // when we then later use the CTA card, the visibility settings are not shown on initial load.
-        test('Visibility state persists when switching to different card types', async function () {
+        // We need to ensure that when we used the visibility indicator to toggle the visibility settings and then
+        // switch to a different card type, the visibility settings state is reset so that you don't have visibility settings
+        // to be visible when it was not explicitly set.
+        test('Visibility Settings Card state are reset when switching between different card types', async function () {
             // Set up HTML card with visibility settings
             const htmlCard = await insertHtmlCard();
             await htmlCard.getByTestId('show-visibility').click();
