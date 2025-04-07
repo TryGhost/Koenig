@@ -151,5 +151,18 @@ test.describe('Content Visibility', async () => {
             await page.getByTestId('visibility-indicator').click();
             await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
         });
+
+        test('visibility tooltip is shown when indicator hovered', async function () {
+            const card = await insertHtmlCard();
+
+            await card.getByTestId('show-visibility').click();
+            await card.getByTestId('tab-visibility').click();
+
+            await card.getByTestId('visibility-toggle-web-nonMembers').click();
+
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+
+            await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
+        });
     });
 });

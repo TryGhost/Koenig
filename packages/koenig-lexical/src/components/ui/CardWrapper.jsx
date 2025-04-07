@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import VisibilityIndicator from '../../assets/icons/kg-indicator-visibility.svg?react';
+import {VisibilityTooltipPortal} from './VisibilityTooltipPortal';
 
 const CARD_WIDTH_CLASSES = {
     wide: [
@@ -61,16 +62,19 @@ export const CardWrapper = React.forwardRef(({
     if (isVisibilityActive) {
         indicatorIcon = (
             <div className="sticky top-0 lg:top-8">
-                <VisibilityIndicator
-                    aria-label="Card is hidden for select audiences"
-                    className="absolute left-[-6rem] size-5 cursor-pointer text-grey"
-                    data-testid="visibility-indicator"
-                    style={{
+                <VisibilityTooltipPortal label="Card is hidden for select audiences">
+                    <div className="absolute left-[-6rem]" data-testid="visibility-indicator-wrapper" style={{
                         left: position.left,
                         top: position.top
-                    }}
-                    onClick={onIndicatorClick}
-                />
+                    }} data-kg-card-visibility-indicator-wrapper>
+                        <VisibilityIndicator
+                            aria-label="Card is hidden for select audiences"
+                            className="size-5 cursor-pointer text-grey"
+                            data-testid="visibility-indicator"
+                            onClick={onIndicatorClick}
+                        />
+                    </div>
+                </VisibilityTooltipPortal>
             </div>
         );
     } else if (IndicatorIcon) {
