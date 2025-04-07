@@ -565,7 +565,7 @@ test.describe('Call To Action Card', async () => {
         });
     });
 
-    test('can toggle settings from visibility icon', async function () {
+    test('can toggle visibility settings from visibility icon', async function () {
         await focusEditor(page);
         const card = await insertCard(page, {cardName: 'call-to-action'});
 
@@ -579,6 +579,7 @@ test.describe('Call To Action Card', async () => {
 
         await page.getByTestId('visibility-indicator').click();
         await expect(page.getByTestId('settings-panel')).toBeVisible();
+        await expect(page.getByTestId('tab-contents-visibility')).toBeVisible();
     });
 
     test('can import serialized visibility settings', async function () {
