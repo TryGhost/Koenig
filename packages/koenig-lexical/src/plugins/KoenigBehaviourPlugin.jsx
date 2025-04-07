@@ -1423,10 +1423,12 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         setShowVisibilitySettings(false);
                     }
 
-                    const node = $getNodeByKey(cardKey);
+                    // we need to make sure the card is in selection mode before we toggle visibility settings
                     $selectCard(editor, cardKey);
-
                     setSelectedCardKey(cardKey);
+
+                    // for most card type, we want to activate edit mode, except for HTML
+                    const node = $getNodeByKey(cardKey);
                     if (!$isHtmlNode(node)) {
                         setIsEditingCard(true);
                     }
