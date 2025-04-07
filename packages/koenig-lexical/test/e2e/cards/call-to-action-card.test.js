@@ -119,7 +119,6 @@ test.describe('Call To Action Card', async () => {
             <p><br /></p>
         `, {ignoreCardContents: true});
     });
-
     test('button and button settings are visible by default', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'call-to-action'});

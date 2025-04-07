@@ -49,6 +49,7 @@ import {
     $selectDecoratorNode,
     getTopLevelNativeElement
 } from '../utils/';
+import {$isHtmlNode} from '../nodes/HtmlNode';
 import {$isKoenigCard} from '@tryghost/kg-default-nodes';
 import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND} from '@lexical/list';
 import {$setBlocksType} from '@lexical/selection';
@@ -1417,13 +1418,21 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             editor.registerCommand(
                 TOGGLE_CARD_VISIBILITY_COMMAND,
                 ({cardKey}) => {
+                    // Deselect any previously selected card if it's different
                     if (selectedCardKey && selectedCardKey !== cardKey) {
                         $deselectCard(editor, selectedCardKey);
+                        setShowVisibilitySettings(false);
                     }
+
+                    const node = $getNodeByKey(cardKey);
                     $selectCard(editor, cardKey);
 
                     setSelectedCardKey(cardKey);
-                    setShowVisibilitySettings(!showVisibilitySettings);
+                    if (!$isHtmlNode(node)) {
+                        setIsEditingCard(true);
+                    }
+                    // Always show visibility settings when toggling via the indicator
+                    setShowVisibilitySettings(true);
                     return true;
                 },
                 COMMAND_PRIORITY_LOW
