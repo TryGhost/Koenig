@@ -123,7 +123,6 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
         setSelectedCardKey,
         isEditingCard,
         setIsEditingCard,
-        showVisibilitySettings,
         setShowVisibilitySettings
     } = useKoenigSelectedCardContext();
 
