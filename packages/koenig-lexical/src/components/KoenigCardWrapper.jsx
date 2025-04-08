@@ -3,7 +3,7 @@ import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import {$getNodeByKey, CLICK_COMMAND, COMMAND_PRIORITY_LOW} from 'lexical';
 import {CardWrapper} from './ui/CardWrapper';
-import {EDIT_CARD_COMMAND, SELECT_CARD_COMMAND, TOGGLE_CARD_VISIBILITY_COMMAND} from '../plugins/KoenigBehaviourPlugin';
+import {EDIT_CARD_COMMAND, SELECT_CARD_COMMAND, SHOW_CARD_VISIBILITY_SETTINGS_COMMAND} from '../plugins/KoenigBehaviourPlugin';
 import {mergeRegister} from '@lexical/utils';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -25,7 +25,7 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
     const handleVisibilityToggle = React.useCallback((event) => {
         event.preventDefault();
         event.stopPropagation();
-        editor.dispatchCommand(TOGGLE_CARD_VISIBILITY_COMMAND, {cardKey: nodeKey});
+        editor.dispatchCommand(SHOW_CARD_VISIBILITY_SETTINGS_COMMAND, {cardKey: nodeKey});
     }, [editor, nodeKey]);
 
     React.useLayoutEffect(() => {

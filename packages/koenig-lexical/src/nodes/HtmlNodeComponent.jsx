@@ -3,7 +3,7 @@ import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
-import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND, TOGGLE_CARD_VISIBILITY_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
+import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND, SHOW_CARD_VISIBILITY_SETTINGS_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
 import {HtmlCard} from '../components/ui/cards/HtmlCard';
 import {SettingsPanel} from '../components/ui/SettingsPanel.jsx';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
@@ -59,7 +59,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
     const handleVisibilityToggle = React.useCallback((event) => {
         event.preventDefault();
         event.stopPropagation();
-        editor.dispatchCommand(TOGGLE_CARD_VISIBILITY_COMMAND, {cardKey: nodeKey});
+        editor.dispatchCommand(SHOW_CARD_VISIBILITY_SETTINGS_COMMAND, {cardKey: nodeKey});
     }, [editor, nodeKey]);
 
     return (

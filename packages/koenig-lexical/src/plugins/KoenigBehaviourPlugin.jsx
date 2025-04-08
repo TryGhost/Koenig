@@ -66,8 +66,8 @@ export const DESELECT_CARD_COMMAND = createCommand('DESELECT_CARD_COMMAND');
 export const EDIT_CARD_COMMAND = createCommand('EDIT_CARD_COMMAND');
 export const DELETE_CARD_COMMAND = createCommand('DELETE_CARD_COMMAND');
 export const PASTE_LINK_COMMAND = createCommand('PASTE_LINK_COMMAND');
-export const TOGGLE_CARD_VISIBILITY_COMMAND = createCommand('TOGGLE_CARD_VISIBILITY_COMMAND');
-
+export const SHOW_CARD_VISIBILITY_SETTINGS_COMMAND = createCommand('SHOW_CARD_VISIBILITY_SETTINGS_COMMAND');
+export const HIDE_CARD_VISIBILITY_SETTINGS_COMMAND = createCommand('HIDE_CARD_VISIBILITY_SETTINGS_COMMAND');
 const RANGE_TO_ELEMENT_BOUNDARY_THRESHOLD_PX = 10;
 const SPECIAL_MARKUPS = {
     code: '`',
@@ -287,7 +287,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     if (selectedCardKey && selectedCardKey !== cardKey) {
                         $deselectCard(editor, selectedCardKey);
                         // Hide visibility settings when switching to a different card
-                        setShowVisibilitySettings(false);
+                        editor.dispatchCommand(HIDE_CARD_VISIBILITY_SETTINGS_COMMAND, {cardKey: selectedCardKey});
                     }
 
                     $selectCard(editor, cardKey);
@@ -1415,25 +1415,38 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                 COMMAND_PRIORITY_LOW
             ),
             editor.registerCommand(
-                TOGGLE_CARD_VISIBILITY_COMMAND,
+                SHOW_CARD_VISIBILITY_SETTINGS_COMMAND,
                 ({cardKey}) => {
-                    // Deselect any previously selected card if it's different
-                    if (selectedCardKey && selectedCardKey !== cardKey) {
-                        $deselectCard(editor, selectedCardKey);
-                        setShowVisibilitySettings(false);
-                    }
+                    editor.update(() => {
+                        const cardNode = $getNodeByKey(cardKey);
 
-                    // we need to make sure the card is in selection mode before we toggle visibility settings
-                    $selectCard(editor, cardKey);
-                    setSelectedCardKey(cardKey);
-
-                    // for most card type, we want to activate edit mode, except for HTML
-                    const node = $getNodeByKey(cardKey);
-                    if (!$isHtmlNode(node)) {
-                        setIsEditingCard(true);
-                    }
-                    // Always show visibility settings when toggling via the indicator
-                    setShowVisibilitySettings(true);
+                        // If the card is an html card, we toggle the visibility settings differently
+                        // because we want to show the visibility settings panel while in selected mode
+                        // instead of entering edit mode
+                        if ($isHtmlNode(cardNode)) {
+                            setShowVisibilitySettings(true);
+                            if (!selectedCardKey) {
+                                editor.dispatchCommand(SELECT_CARD_COMMAND, {cardKey, focusEditor: true});
+                            }
+                        } else {
+                            if (cardNode?.hasEditMode?.() && !isEditingCard) {
+                                setShowVisibilitySettings(true);
+                                editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey, focusEditor: true});
+                            } else if (isEditingCard) {
+                                editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey, focusEditor: true});
+                            }
+                        }
+                    });
+                    return true;
+                },
+                COMMAND_PRIORITY_LOW
+            ),
+            editor.registerCommand(
+                HIDE_CARD_VISIBILITY_SETTINGS_COMMAND,
+                ({cardKey}) => {
+                    setShowVisibilitySettings(false);
+                    editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey});
+                    setIsEditingCard(false);
                     return true;
                 },
                 COMMAND_PRIORITY_LOW
