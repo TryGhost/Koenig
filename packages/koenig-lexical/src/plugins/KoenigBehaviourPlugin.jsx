@@ -287,7 +287,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     if (selectedCardKey && selectedCardKey !== cardKey) {
                         $deselectCard(editor, selectedCardKey);
                         // Hide visibility settings when switching to a different card
-                        editor.dispatchCommand(HIDE_CARD_VISIBILITY_SETTINGS_COMMAND, {cardKey: selectedCardKey});
+                        setShowVisibilitySettings(false);
                     }
 
                     $selectCard(editor, cardKey);
@@ -1433,7 +1433,7 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                                 setShowVisibilitySettings(true);
                                 editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey, focusEditor: true});
                             } else if (isEditingCard) {
-                                editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey, focusEditor: true});
+                                $deselectCard(editor, cardKey);
                             }
                         }
                     });
@@ -1444,9 +1444,10 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
             editor.registerCommand(
                 HIDE_CARD_VISIBILITY_SETTINGS_COMMAND,
                 ({cardKey}) => {
-                    setShowVisibilitySettings(false);
-                    editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey});
-                    setIsEditingCard(false);
+                    editor.update(() => {
+                        setShowVisibilitySettings(false);
+                        editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey});
+                    });
                     return true;
                 },
                 COMMAND_PRIORITY_LOW
