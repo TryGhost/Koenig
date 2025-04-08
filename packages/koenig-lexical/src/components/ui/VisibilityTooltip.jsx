@@ -37,7 +37,7 @@ export function VisibilityTooltip({children, label}) {
             {isVisible && (
                 <Portal>
                     <div
-                        className="fixed z-[1000] flex items-center gap-1 whitespace-nowrap rounded-md bg-black px-3 py-1 font-sans text-2xs font-medium text-white dark:bg-grey-900"
+                        className="fixed z-[1000] flex items-center gap-1 whitespace-nowrap rounded-md bg-black px-[1rem] py-1 font-sans text-2xs font-medium text-white dark:bg-grey-900"
                         data-testid="visibility-tooltip"
                         style={{
                             top: getTooltipPosition().top,
