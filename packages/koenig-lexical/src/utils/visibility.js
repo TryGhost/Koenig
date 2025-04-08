@@ -105,3 +105,24 @@ export function serializeOptionsToVisibility(options) {
         }
     };
 }
+
+export function getVisibilityLabel(visibility, {isStripeEnabled = true} = {}) {
+    // Check if content is completely hidden from web (all viewers)
+    const completelyHiddenOnWeb = !visibility.web.nonMembers && !visibility.web.freeMembers && !visibility.web.paidMembers;
+
+    if (completelyHiddenOnWeb) {
+        return 'Hidden on web';
+    }
+
+    // Check if content is hidden from specific people
+    const hiddenFromSpecificPeople = !visibility.web.nonMembers || 
+        (!visibility.web.freeMembers && !isStripeEnabled) || 
+        // If Stripe is disabled, paidMembers is always true
+        (!isStripeEnabled ? false : !visibility.web.paidMembers);
+
+    if (hiddenFromSpecificPeople) {
+        return 'Hidden from specific people';
+    }
+
+    return 'Visible to all';
+}

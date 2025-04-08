@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import VisibilityIndicator from '../../assets/icons/kg-indicator-visibility.svg?react';
-import {VisibilityTooltipPortal} from './VisibilityTooltipPortal';
+import {VisibilityTooltip} from './VisibilityTooltip';
+import {getVisibilityLabel, parseVisibilityToToggles} from '../../utils/visibility';
 
 const CARD_WIDTH_CLASSES = {
     wide: [
@@ -29,6 +30,8 @@ export const CardWrapper = React.forwardRef(({
     onIndicatorClick,
     wrapperStyle,
     children,
+    nodeKey,
+    visibilitySegment,
     ...props
 }, ref) => {
     const wrapperClass = () => {
@@ -58,12 +61,18 @@ export const CardWrapper = React.forwardRef(({
         ...(cardType === 'call-to-action' && {top: '1.4rem'})
     };
 
+    let visibilityLabel = false;
+    if (isVisibilityActive) {
+        const toggles = parseVisibilityToToggles(visibilitySegment);
+        visibilityLabel = getVisibilityLabel(toggles);
+    }
+
     let indicatorIcon;
     if (isVisibilityActive) {
         indicatorIcon = (
             <div className="sticky top-0 lg:top-8">
-                <VisibilityTooltipPortal label="Card is hidden for select audiences">
-                    <div className="absolute left-[-6rem]" data-testid="visibility-indicator-wrapper" style={{
+                <VisibilityTooltip label={visibilityLabel}>
+                    <div className="absolute left-[-6rem]" data-kg-visibility-text={visibilitySegment} data-testid="visibility-indicator-wrapper" style={{
                         left: position.left,
                         top: position.top
                     }} data-kg-card-visibility-indicator-wrapper>
@@ -74,7 +83,7 @@ export const CardWrapper = React.forwardRef(({
                             onClick={onIndicatorClick}
                         />
                     </div>
-                </VisibilityTooltipPortal>
+                </VisibilityTooltip>
             </div>
         );
     } else if (IndicatorIcon) {
@@ -119,5 +128,6 @@ CardWrapper.propTypes = {
     indicatorPosition: PropTypes.shape({
         left: PropTypes.string,
         top: PropTypes.string
-    })
+    }),
+    visibility: PropTypes.func
 };

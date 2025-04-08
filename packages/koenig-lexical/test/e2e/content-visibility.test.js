@@ -164,5 +164,16 @@ test.describe('Content Visibility', async () => {
 
             await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
         });
+
+        test('visibility tooltip has text based on visibility settings', async function () {
+            const card = await insertHtmlCard();
+
+            await card.getByTestId('show-visibility').click();
+            await card.getByTestId('tab-visibility').click();
+
+            await card.getByTestId('visibility-toggle-web-nonMembers').click();
+
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Card is hidden for select audiences');
+        });
     });
 });

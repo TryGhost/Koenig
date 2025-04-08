@@ -1,5 +1,6 @@
-import {expect} from 'vitest';
+import {beforeEach, expect} from 'vitest';
 import {
+    getVisibilityLabel,
     getVisibilityOptions,
     parseVisibilityToToggles
 } from '../../../src/utils/visibility';
@@ -164,4 +165,124 @@ describe('getVisibilityOptions', function () {
             }
         ]);
     });
+});
+
+describe('getVisibilityLabel', function () {
+    let defaultVisibility;
+
+    beforeEach(() => {
+        defaultVisibility = {
+            web: {
+                nonMembers: true,
+                freeMembers: true,
+                paidMembers: true
+            },
+            email: {
+                freeMembers: true,
+                paidMembers: true
+            }
+        };
+    });
+
+    it('returns correct visibility label', function () {
+        // This will actually never be visible because we hide the indicator when its visible everywhere
+        const label = getVisibilityLabel(defaultVisibility);
+
+        expect(label).toEqual('Visible to all');
+    });
+
+    it('returns correct visibility label when hidden on web (stripe enabled)', function () {
+        defaultVisibility.web.nonMembers = false;
+        defaultVisibility.web.freeMembers = false;
+        defaultVisibility.web.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+
+        expect(label).toEqual('Hidden on web');
+    });
+
+    it('returns correct visibility label when hidden on web (stripe disabled)', function () {
+        defaultVisibility.web.nonMembers = false;
+        const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
+
+        expect(label).toEqual('Hidden on web');
+    });
+
+    it('return correct visibility label when hidden from specific people', function () {
+        defaultVisibility.web.freeMembers = true;
+        defaultVisibility.web.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('return correct visibility label when hidden from free members', function () {
+        defaultVisibility.web.freeMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('return correct visibility label when hidden from specific people', function () {
+        defaultVisibility.web.nonMembers = false;
+        const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    describe('Web visibility combinations (Stripe enabled)', () => {
+        it('returns "Hidden from specific people" when only public visitors can see', function () {
+            defaultVisibility.web.nonMembers = true;
+            defaultVisibility.web.freeMembers = false;
+            defaultVisibility.web.paidMembers = false;
+            const label = getVisibilityLabel(defaultVisibility);
+            expect(label).toEqual('Hidden from specific people');
+        });
+
+        it('returns "Hidden from specific people" when only free members can see', function () {
+            defaultVisibility.web.nonMembers = false;
+            defaultVisibility.web.freeMembers = true;
+            defaultVisibility.web.paidMembers = false;
+            const label = getVisibilityLabel(defaultVisibility);
+            expect(label).toEqual('Hidden from specific people');
+        });
+
+        it('returns "Hidden from specific people" when only paid members can see', function () {
+            defaultVisibility.web.nonMembers = false;
+            defaultVisibility.web.freeMembers = false;
+            defaultVisibility.web.paidMembers = true;
+            const label = getVisibilityLabel(defaultVisibility);
+            expect(label).toEqual('Hidden from specific people');
+        });
+    });
+
+    describe('Web visibility combinations (Stripe disabled)', () => {
+        it('returns "Hidden from specific people" when only public visitors can see (Stripe disabled)', function () {
+            defaultVisibility.web.nonMembers = true;
+            defaultVisibility.web.freeMembers = false;
+            defaultVisibility.web.paidMembers = false;
+            const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
+            expect(label).toEqual('Hidden from specific people');
+        });
+
+        it('returns "Hidden from specific people" when only free members can see (Stripe disabled)', function () {
+            defaultVisibility.web.nonMembers = false;
+            defaultVisibility.web.freeMembers = true;
+            defaultVisibility.web.paidMembers = false;
+            const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
+            expect(label).toEqual('Hidden from specific people');
+        });
+
+        it('returns "Visible to all" when paid members setting is false but Stripe is disabled', function () {
+            defaultVisibility.web.nonMembers = true;
+            defaultVisibility.web.freeMembers = true;
+            defaultVisibility.web.paidMembers = false;
+            const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
+            expect(label).toEqual('Visible to all');
+        });
+    });
+
+    // it('returns correct visibility label when hidden in email', function () {
+    //     defaultVisibility.email.freeMembers = false;
+    //     defaultVisibility.email.paidMembers = false;
+    //     const label = getVisibilityLabel(defaultVisibility);
+
+    //     expect(label).toEqual('Hidden in email newsletter');
+    // });
 });

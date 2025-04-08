@@ -1,7 +1,7 @@
 import Portal from './Portal';
 import React, {useRef, useState} from 'react';
 
-export function VisibilityTooltipPortal({children, label}) {
+export function VisibilityTooltip({children, label}) {
     const [isVisible, setIsVisible] = useState(false);
     const triggerRef = useRef(null);
 
