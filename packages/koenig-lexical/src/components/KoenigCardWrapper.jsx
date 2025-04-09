@@ -141,13 +141,16 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
     }, [editor, isSelected, isEditing, nodeKey, containerRef]);
 
     let isVisibilityActive = false;
+    let visibilitySegment = false;
     if (cardConfig?.feature?.contentVisibility) {
         editor.getEditorState().read(() => {
             const cardNode = $getNodeByKey(nodeKey);
             isVisibilityActive = cardNode?.getIsVisibilityActive?.();
+            if (isVisibilityActive) {
+                visibilitySegment = cardNode?.__visibility;
+            }
         });
     }
-
     return (
         <CardContext.Provider value={{
             isSelected,
@@ -170,6 +173,7 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
                 isEditing={isEditing}
                 isSelected={isSelected}
                 isVisibilityActive={isVisibilityActive}
+                visibilitySegment={visibilitySegment}
                 wrapperStyle={wrapperStyle}
                 onIndicatorClick={toggleVisibilitySettings}
             >

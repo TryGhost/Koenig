@@ -105,3 +105,29 @@ export function serializeOptionsToVisibility(options) {
         }
     };
 }
+
+export function getVisibilityLabel(visibility = {}, cardType) {
+    if (cardType === 'signup') {
+        return 'Hidden in email and for members on web';
+    }
+
+    if (cardType === 'email') {
+        return 'Hidden on web';
+    }
+
+    // Check if content is completely hidden from web (all viewers)
+    const completelyHiddenOnWeb = !visibility.web.nonMembers && !visibility.web.freeMembers && !visibility.web.paidMembers;
+    const completelyHiddenOnEmail = !visibility.email.freeMembers && !visibility.email.paidMembers;
+    const completelyVisibleOnWeb = visibility.web.nonMembers && visibility.web.freeMembers && visibility.web.paidMembers;
+    const completelyVisibleOnEmail = visibility.email.freeMembers && visibility.email.paidMembers;
+
+    if (completelyHiddenOnWeb && completelyVisibleOnEmail) {
+        return 'Hidden on web';
+    } else if (completelyHiddenOnEmail && completelyVisibleOnWeb) {
+        return 'Hidden in email newsletters';
+    } else if (!completelyVisibleOnWeb || !completelyVisibleOnEmail) {
+        return 'Hidden from specific people';
+    }
+
+    return '';
+}

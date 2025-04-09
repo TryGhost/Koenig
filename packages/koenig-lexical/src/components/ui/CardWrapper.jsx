@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import VisibilityIndicator from '../../assets/icons/kg-indicator-visibility.svg?react';
+import {VisibilityTooltip} from './VisibilityTooltip';
+import {getVisibilityLabel, parseVisibilityToToggles} from '../../utils/visibility';
 
 const CARD_WIDTH_CLASSES = {
     wide: [
@@ -28,6 +30,8 @@ export const CardWrapper = React.forwardRef(({
     onIndicatorClick,
     wrapperStyle,
     children,
+    nodeKey,
+    visibilitySegment,
     ...props
 }, ref) => {
     const wrapperClass = () => {
@@ -57,20 +61,29 @@ export const CardWrapper = React.forwardRef(({
         ...(cardType === 'call-to-action' && {top: '1.4rem'})
     };
 
+    let visibilityLabel = false;
+    if (isVisibilityActive) {
+        const toggles = parseVisibilityToToggles(visibilitySegment);
+        visibilityLabel = getVisibilityLabel(toggles, cardType);
+    }
+
     let indicatorIcon;
     if (isVisibilityActive) {
         indicatorIcon = (
             <div className="sticky top-0 lg:top-8">
-                <VisibilityIndicator
-                    aria-label="Card is hidden for select audiences"
-                    className="absolute left-[-6rem] size-5 cursor-pointer text-grey"
-                    data-testid="visibility-indicator"
-                    style={{
+                <VisibilityTooltip label={visibilityLabel}>
+                    <div className="absolute left-[-6rem]" data-kg-visibility-text={visibilitySegment} data-testid="visibility-indicator-wrapper" style={{
                         left: position.left,
                         top: position.top
-                    }}
-                    onClick={onIndicatorClick}
-                />
+                    }} data-kg-card-visibility-indicator-wrapper>
+                        <VisibilityIndicator
+                            aria-label="Card is hidden for select audiences"
+                            className="size-5 cursor-pointer text-grey"
+                            data-testid="visibility-indicator"
+                            onClick={onIndicatorClick}
+                        />
+                    </div>
+                </VisibilityTooltip>
             </div>
         );
     } else if (IndicatorIcon) {
@@ -115,5 +128,6 @@ CardWrapper.propTypes = {
     indicatorPosition: PropTypes.shape({
         left: PropTypes.string,
         top: PropTypes.string
-    })
+    }),
+    visibility: PropTypes.func
 };
