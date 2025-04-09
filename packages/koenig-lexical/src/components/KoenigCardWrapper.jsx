@@ -151,6 +151,7 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
             }
         });
     }
+
     return (
         <CardContext.Provider value={{
             isSelected,

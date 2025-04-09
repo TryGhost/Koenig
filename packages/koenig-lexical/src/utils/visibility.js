@@ -114,7 +114,6 @@ export function getVisibilityLabel(visibility = {}, cardType) {
     if (cardType === 'email') {
         return 'Hidden on web';
     }
-
     // Check if content is completely hidden from web (all viewers)
     const completelyHiddenOnWeb = !visibility.web.nonMembers && !visibility.web.freeMembers && !visibility.web.paidMembers;
     const completelyHiddenOnEmail = !visibility.email.freeMembers && !visibility.email.paidMembers;
