@@ -1,6 +1,19 @@
 import {utils} from '@tryghost/kg-default-nodes';
 
 export function parseVisibilityToToggles(visibility) {
+    if (!visibility) {
+        return {
+            web: {
+                nonMembers: true,
+                freeMembers: true,
+                paidMembers: true
+            },
+            email: {
+                freeMembers: true,
+                paidMembers: true
+            }
+        };
+    }
     return {
         web: {
             nonMembers: visibility.web.nonMember,

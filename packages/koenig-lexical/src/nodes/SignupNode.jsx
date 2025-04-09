@@ -47,6 +47,10 @@ export class SignupNode extends BaseSignupNode {
         return 'signup';
     }
 
+    getIsVisibilityActive() {
+        return true;
+    }
+
     constructor(dataset = {}, key) {
         super(dataset, key);
 

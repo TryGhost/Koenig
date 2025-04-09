@@ -76,7 +76,7 @@ export const CardWrapper = React.forwardRef(({
     };
 
     let visibilityLabel = false;
-    if (isVisibilityActive || cardType === 'signup') {
+    if (isVisibilityActive) {
         const toggles = parseVisibilityToToggles(visibilitySegment);
         visibilityLabel = getVisibilityLabel(toggles, cardType);
     }
