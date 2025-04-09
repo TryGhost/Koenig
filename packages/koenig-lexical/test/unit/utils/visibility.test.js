@@ -184,11 +184,21 @@ describe('getVisibilityLabel', function () {
         };
     });
 
-    it('returns correct visibility label', function () {
-        // This will actually never be visible because we hide the indicator when its visible everywhere
+    it('returns "Visible to all" only when everything is visible', function () {
+        // When everything is true, it should be "Visible to all"
         const label = getVisibilityLabel(defaultVisibility);
-
         expect(label).toEqual('Visible to all');
+
+        // If any toggle is false, it should be "Hidden from specific people"
+        defaultVisibility.web.paidMembers = false;
+        const labelWithOneFalse = getVisibilityLabel(defaultVisibility);
+        expect(labelWithOneFalse).toEqual('Hidden from specific people');
+    });
+
+    it('returns "Hidden from specific people" when any toggle is false', function () {
+        defaultVisibility.web.nonMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
     });
 
     it('returns correct visibility label when hidden on web (stripe enabled)', function () {
@@ -267,14 +277,6 @@ describe('getVisibilityLabel', function () {
             defaultVisibility.web.paidMembers = false;
             const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
             expect(label).toEqual('Hidden from specific people');
-        });
-
-        it('returns "Visible to all" when paid members setting is false but Stripe is disabled', function () {
-            defaultVisibility.web.nonMembers = true;
-            defaultVisibility.web.freeMembers = true;
-            defaultVisibility.web.paidMembers = false;
-            const label = getVisibilityLabel(defaultVisibility, {isStripeEnabled: false});
-            expect(label).toEqual('Visible to all');
         });
     });
 
