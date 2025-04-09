@@ -106,23 +106,28 @@ export function serializeOptionsToVisibility(options) {
     };
 }
 
-export function getVisibilityLabel(visibility, {isStripeEnabled = true} = {}) {
-    // Check if content is completely hidden from web (all viewers)
-    const completelyHiddenOnWeb = !visibility.web.nonMembers && !visibility.web.freeMembers && !visibility.web.paidMembers;
+export function getVisibilityLabel(visibility = {}, cardType) {
+    if (cardType === 'signup') {
+        return 'Hidden in email and for members on web';
+    }
 
-    if (completelyHiddenOnWeb) {
+    if (cardType === 'email') {
         return 'Hidden on web';
     }
 
-    // Check if content is hidden from specific people
-    const hiddenFromSpecificPeople = !visibility.web.nonMembers || 
-        (!visibility.web.freeMembers && !isStripeEnabled) || 
-        // If Stripe is disabled, paidMembers is always true
-        (!isStripeEnabled ? false : !visibility.web.paidMembers);
+    // Check if content is completely hidden from web (all viewers)
+    const completelyHiddenOnWeb = !visibility.web.nonMembers && !visibility.web.freeMembers && !visibility.web.paidMembers;
+    const completelyHiddenOnEmail = !visibility.email.freeMembers && !visibility.email.paidMembers;
+    const completelyVisibleOnWeb = visibility.web.nonMembers && visibility.web.freeMembers && visibility.web.paidMembers;
+    const completelyVisibleOnEmail = visibility.email.freeMembers && visibility.email.paidMembers;
 
-    if (hiddenFromSpecificPeople) {
+    if (completelyHiddenOnWeb && completelyVisibleOnEmail) {
+        return 'Hidden on web';
+    } else if (completelyHiddenOnEmail && completelyVisibleOnWeb) {
+        return 'Hidden in email newsletters';
+    } else if (!completelyVisibleOnWeb || !completelyVisibleOnEmail) {
         return 'Hidden from specific people';
     }
 
-    return 'Visible to all';
+    return '';
 }

@@ -23,6 +23,10 @@ export class HtmlNode extends BaseHtmlNode {
         return HtmlCardIcon;
     }
 
+    static getType() {
+        return 'html';
+    }
+
     constructor(dataset = {}, key) {
         super(dataset, key);
     }

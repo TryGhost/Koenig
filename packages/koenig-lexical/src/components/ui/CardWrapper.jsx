@@ -64,7 +64,7 @@ export const CardWrapper = React.forwardRef(({
     let visibilityLabel = false;
     if (isVisibilityActive) {
         const toggles = parseVisibilityToToggles(visibilitySegment);
-        visibilityLabel = getVisibilityLabel(toggles);
+        visibilityLabel = getVisibilityLabel(toggles, cardType);
     }
 
     let indicatorIcon;

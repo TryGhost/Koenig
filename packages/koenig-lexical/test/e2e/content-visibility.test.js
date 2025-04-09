@@ -165,7 +165,7 @@ test.describe('Content Visibility', async () => {
             await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
         });
 
-        test('visibility tooltip has text based on visibility settings', async function () {
+        test('visibility tooltip has "Hidden from specific people" when indicator hovered', async function () {
             const card = await insertHtmlCard();
 
             await card.getByTestId('show-visibility').click();
@@ -173,7 +173,38 @@ test.describe('Content Visibility', async () => {
 
             await card.getByTestId('visibility-toggle-web-nonMembers').click();
 
-            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Card is hidden for select audiences');
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden from specific people');
+        });
+
+        test('visibility tooltip has "Hidden on web" when indicator hovered', async function () {
+            const card = await insertHtmlCard();
+
+            await card.getByTestId('show-visibility').click();
+            await card.getByTestId('tab-visibility').click();
+
+            await card.getByTestId('visibility-toggle-web-nonMembers').click();
+            await card.getByTestId('visibility-toggle-web-freeMembers').click();
+            await card.getByTestId('visibility-toggle-web-paidMembers').click();
+
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden on web');
+        });
+
+        test('visibility tooltip has "Hidden in email newsletter" when indicator hovered', async function () {
+            const card = await insertHtmlCard();
+
+            await card.getByTestId('show-visibility').click();
+            await card.getByTestId('tab-visibility').click();
+
+            await card.getByTestId('visibility-toggle-email-freeMembers').click();
+            await card.getByTestId('visibility-toggle-email-paidMembers').click();
+
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden in email newsletters');
         });
     });
 });
