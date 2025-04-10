@@ -19,7 +19,8 @@ const DEFAULT_INDICATOR_POSITION = {
 
 const CARD_TYPE_TOP_POSITIONS = {
     'call-to-action': '1.6rem',
-    html: '0.5rem'
+    html: '0.5rem',
+    email: '0.5rem'
 };
 
 const CARD_TYPE_LEFT_POSITIONS = {

@@ -209,6 +209,23 @@ test.describe('Content Visibility', async () => {
             await focusEditor(page);
             await insertCard(page, {cardName: 'signup', cardWidth: 'wide'});
             await expect(page.getByTestId('visibility-indicator')).toBeVisible();
+            // hover over the indicator
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+            await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('');
+        });
+
+        test('Visibility indicator is visible on email cards', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/email');
+            await page.keyboard.press('ArrowDown');
+            await page.keyboard.press('ArrowDown');
+            await page.keyboard.press('Enter');
+            await expect(page.getByTestId('visibility-indicator')).toBeVisible();
+            // hover over the indicator
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+            await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden on web');
         });
     });
 
