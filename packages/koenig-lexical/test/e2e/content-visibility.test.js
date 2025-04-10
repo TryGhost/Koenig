@@ -214,10 +214,27 @@ test.describe('Content Visibility', async () => {
         test('Visibility indicator is visible on wide signup cards', async function () {
             // TODO: This is a hack to ensure the viewport is wide enough to see the visibility indicator
             // TODO: Responsiveness of the visibility indicator needs to be fixed
-            await page.setViewportSize({width: 1920, height: 1080});
+            await page.setViewportSize({width: 1800, height: 1169});
             await focusEditor(page);
             await insertCard(page, {cardName: 'signup', cardWidth: 'wide'});
             await expect(page.getByTestId('visibility-indicator')).toBeVisible();
+            // hover over the indicator
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+            await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden in email and for members on web');
+        });
+
+        test('Visibility indicator is visible on email cards', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/email');
+            await page.keyboard.press('ArrowDown');
+            await page.keyboard.press('ArrowDown');
+            await page.keyboard.press('Enter');
+            await expect(page.getByTestId('visibility-indicator')).toBeVisible();
+            // hover over the indicator
+            await page.getByTestId('visibility-indicator-wrapper').hover();
+            await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden on web');
         });
     });
 

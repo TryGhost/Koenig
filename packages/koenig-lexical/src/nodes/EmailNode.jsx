@@ -35,6 +35,10 @@ export class EmailNode extends BaseEmailNode {
         return 'email';
     }
 
+    getIsVisibilityActive() {
+        return true;
+    }
+
     constructor(dataset = {}, key) {
         super(dataset, key);
 

@@ -49,6 +49,7 @@ import {
     $selectDecoratorNode,
     getTopLevelNativeElement
 } from '../utils/';
+import {$isEmailNode} from '../nodes/EmailNode';
 import {$isHtmlNode} from '../nodes/HtmlNode';
 import {$isKoenigCard} from '@tryghost/kg-default-nodes';
 import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND} from '@lexical/list';
@@ -1426,7 +1427,8 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                         ];
 
                         const nodesToIgnoreToggleVisibility = [
-                            $isSignupNode(cardNode)
+                            $isSignupNode(cardNode),
+                            $isEmailNode(cardNode)
                         ];
 
                         if (nodesToIgnoreToggleVisibility.some(node => node)) {
