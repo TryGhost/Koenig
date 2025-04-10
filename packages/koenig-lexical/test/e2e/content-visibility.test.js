@@ -204,6 +204,12 @@ test.describe('Content Visibility', async () => {
 
             await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden in email newsletters');
         });
+
+        test('Visibility indicator is visible on wide cards', async function () {
+            await focusEditor(page);
+            await insertCard(page, {cardName: 'signup', cardWidth: 'wide'});
+            await expect(page.getByTestId('visibility-indicator')).toBeVisible();
+        });
     });
 
     test.describe('Edge cases', async function () {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import VisibilityIndicator from '../../assets/icons/kg-indicator-visibility.svg?react';
 import {VisibilityTooltip} from './VisibilityTooltip';
 import {getVisibilityLabel, parseVisibilityToToggles} from '../../utils/visibility';
@@ -14,7 +14,16 @@ const CARD_WIDTH_CLASSES = {
 };
 
 const DEFAULT_INDICATOR_POSITION = {
-    top: '.6rem'
+    top: '1.6rem'
+};
+
+const CARD_TYPE_TOP_POSITIONS = {
+    'call-to-action': '1.6rem',
+    html: '0.5rem'
+};
+
+const CARD_TYPE_LEFT_POSITIONS = {
+    signup: '-36rem'
 };
 
 export const CardWrapper = React.forwardRef(({
@@ -34,6 +43,67 @@ export const CardWrapper = React.forwardRef(({
     visibilitySegment,
     ...props
 }, ref) => {
+    const [indicatorLeft, setIndicatorLeft] = useState('-6rem');
+    const [indicatorTop, setIndicatorTop] = useState(CARD_TYPE_TOP_POSITIONS[cardType] || indicatorPosition.top);
+
+    useEffect(() => {
+        if (!ref?.current) {
+            return;
+        }
+
+        const updatePosition = () => {
+            const card = ref.current;
+            if (!card) {
+                return;
+            }
+
+            if (cardWidth === 'full') {
+                setIndicatorLeft('0');
+                setIndicatorTop('0.2rem');
+                return;
+            }
+
+            if (cardWidth === 'wide') {
+                setIndicatorLeft(CARD_TYPE_LEFT_POSITIONS[cardType] || '-36rem');
+                return;
+            }
+
+            if (cardWidth === 'regular') {
+                setIndicatorLeft('-6rem');
+                setIndicatorTop(CARD_TYPE_TOP_POSITIONS[cardType] || indicatorPosition.top);
+                return;
+            }
+
+            const cardRect = card.getBoundingClientRect();
+            const container = card.closest('[data-lexical-editor]');
+            const containerRect = container?.getBoundingClientRect();
+
+            if (containerRect) {
+                const left = cardRect.left - containerRect.left - 96; // 6rem in pixels
+                setIndicatorLeft(`${left}px`);
+                setIndicatorTop(CARD_TYPE_TOP_POSITIONS[cardType] || indicatorPosition.top);
+            }
+        };
+
+        const card = ref.current;
+        const container = card.closest('[data-lexical-editor]');
+
+        if (!container) {
+            return;
+        }
+
+        const observer = new ResizeObserver(updatePosition);
+        observer.observe(card);
+        observer.observe(container);
+
+        // Initial position update
+        updatePosition();
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [ref, cardWidth, indicatorPosition.top, cardType]);
+
     const wrapperClass = () => {
         if ((wrapperStyle === 'wide') && (isEditing || isSelected)) {
             return '!-mx-3 !px-3';
@@ -55,12 +125,6 @@ export const CardWrapper = React.forwardRef(({
         wrapperClass()
     ].join(' ');
 
-    const position = {
-        ...DEFAULT_INDICATOR_POSITION,
-        ...(indicatorPosition || {}),
-        ...(cardType === 'call-to-action' && {top: '1.4rem'})
-    };
-
     let visibilityLabel = false;
     if (isVisibilityActive) {
         const toggles = parseVisibilityToToggles(visibilitySegment);
@@ -70,11 +134,11 @@ export const CardWrapper = React.forwardRef(({
     let indicatorIcon;
     if (isVisibilityActive) {
         indicatorIcon = (
-            <div className="sticky top-0 lg:top-8">
+            <div className="relative">
                 <VisibilityTooltip label={visibilityLabel}>
-                    <div className="absolute left-[-6rem]" data-kg-visibility-text={visibilitySegment} data-testid="visibility-indicator-wrapper" style={{
-                        left: position.left,
-                        top: position.top
+                    <div className="absolute" data-kg-visibility-text={visibilitySegment} data-testid="visibility-indicator-wrapper" style={{
+                        left: indicatorLeft,
+                        top: indicatorTop
                     }} data-kg-card-visibility-indicator-wrapper>
                         <VisibilityIndicator
                             aria-label="Card is hidden for select audiences"
@@ -88,13 +152,13 @@ export const CardWrapper = React.forwardRef(({
         );
     } else if (IndicatorIcon) {
         indicatorIcon = (
-            <div className="sticky top-0 lg:top-8">
+            <div className="relative">
                 <IndicatorIcon
                     aria-label={`${cardType} indicator`}
-                    className="absolute left-[-6rem] size-5 text-grey"
+                    className="absolute size-5 text-grey"
                     style={{
-                        left: position.left,
-                        top: position.top
+                        left: indicatorLeft,
+                        top: indicatorTop
                     }}
                 />
             </div>
