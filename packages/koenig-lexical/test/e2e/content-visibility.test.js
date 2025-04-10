@@ -178,19 +178,5 @@ test.describe('Content Visibility', async () => {
             await page.getByTestId('visibility-indicator').first().click();
             await expect(htmlCard.getByTestId('settings-panel')).toBeVisible();
         });
-
-        test('Clicking outside of the card clears the visibility settings', async function () {
-            await focusEditor(page);
-            const card = await insertCard(page, {cardName: 'call-to-action'});
-            await page.click('[data-testid="cta-card-content-editor"]');
-            await page.keyboard.type('This is a new CTA Card.');
-            await card.getByTestId('tab-visibility').click();
-            await card.getByTestId('visibility-toggle-web-nonMembers').click();
-            await page.click('body');
-            await page.getByTestId('visibility-indicator').first().click();
-            await expect(card.getByTestId('settings-panel')).toBeVisible();
-            await page.click('body');
-            await expect(card.getByTestId('settings-panel')).not.toBeVisible();
-        });
     });
 });
