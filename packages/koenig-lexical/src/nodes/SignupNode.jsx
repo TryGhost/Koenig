@@ -43,6 +43,14 @@ export class SignupNode extends BaseSignupNode {
         return SignupCardIcon;
     }
 
+    static getType() {
+        return 'signup';
+    }
+
+    getIsVisibilityActive() {
+        return true;
+    }
+
     constructor(dataset = {}, key) {
         super(dataset, key);
 

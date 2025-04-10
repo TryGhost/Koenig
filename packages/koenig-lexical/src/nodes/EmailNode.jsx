@@ -31,6 +31,10 @@ export class EmailNode extends BaseEmailNode {
         return EmailCardIcon;
     }
 
+    static getType() {
+        return 'email';
+    }
+
     constructor(dataset = {}, key) {
         super(dataset, key);
 
