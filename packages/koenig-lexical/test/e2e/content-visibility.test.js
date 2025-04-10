@@ -221,7 +221,7 @@ test.describe('Content Visibility', async () => {
             // hover over the indicator
             await page.getByTestId('visibility-indicator-wrapper').hover();
             await expect(page.getByTestId('visibility-tooltip')).toBeVisible();
-            await expect(page.getByTestId('visibility-tooltip')).toHaveText('');
+            await expect(page.getByTestId('visibility-tooltip')).toHaveText('Hidden in email and for members on web');
         });
 
         test('Visibility indicator is visible on email cards', async function () {
