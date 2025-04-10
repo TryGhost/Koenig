@@ -214,7 +214,7 @@ test.describe('Content Visibility', async () => {
         test('Visibility indicator is visible on wide signup cards', async function () {
             // TODO: This is a hack to ensure the viewport is wide enough to see the visibility indicator
             // TODO: Responsiveness of the visibility indicator needs to be fixed
-            await page.setViewportSize({width: 1920, height: 1080});
+            await page.setViewportSize({width: 1800, height: 1169});
             await focusEditor(page);
             await insertCard(page, {cardName: 'signup', cardWidth: 'wide'});
             await expect(page.getByTestId('visibility-indicator')).toBeVisible();
