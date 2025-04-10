@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import VisibilityIndicator from '../../assets/icons/kg-indicator-visibility.svg?react';
 import {VisibilityTooltip} from './VisibilityTooltip';
 import {getVisibilityLabel, parseVisibilityToToggles} from '../../utils/visibility';
@@ -34,20 +34,6 @@ export const CardWrapper = React.forwardRef(({
     visibilitySegment,
     ...props
 }, ref) => {
-    const [currentCardWidth, setCurrentCardWidth] = useState(0);
-
-    useEffect(() => {
-        if (ref?.current) {
-            const resizeObserver = new ResizeObserver((entries) => {
-                for (const entry of entries) {
-                    setCurrentCardWidth(entry.contentRect.width);
-                }
-            });
-            resizeObserver.observe(ref.current);
-            return () => resizeObserver.disconnect();
-        }
-    }, [ref]);
-
     const wrapperClass = () => {
         if ((wrapperStyle === 'wide') && (isEditing || isSelected)) {
             return '!-mx-3 !px-3';
@@ -86,16 +72,10 @@ export const CardWrapper = React.forwardRef(({
         indicatorIcon = (
             <div className="sticky top-0 lg:top-8">
                 <VisibilityTooltip label={visibilityLabel}>
-                    <div 
-                        className="absolute" 
-                        data-kg-visibility-text={visibilitySegment} 
-                        data-testid="visibility-indicator-wrapper" 
-                        style={{
-                            left: currentCardWidth > 800 ? '-8rem' : '-6rem',
-                            top: position.top
-                        }} 
-                        data-kg-card-visibility-indicator-wrapper
-                    >
+                    <div className="absolute left-[-6rem]" data-kg-visibility-text={visibilitySegment} data-testid="visibility-indicator-wrapper" style={{
+                        left: position.left,
+                        top: position.top
+                    }} data-kg-card-visibility-indicator-wrapper>
                         <VisibilityIndicator
                             aria-label="Card is hidden for select audiences"
                             className="size-5 cursor-pointer text-grey"
@@ -111,9 +91,9 @@ export const CardWrapper = React.forwardRef(({
             <div className="sticky top-0 lg:top-8">
                 <IndicatorIcon
                     aria-label={`${cardType} indicator`}
-                    className="absolute size-5 text-grey"
+                    className="absolute left-[-6rem] size-5 text-grey"
                     style={{
-                        left: currentCardWidth > 800 ? '-8rem' : '-6rem',
+                        left: position.left,
                         top: position.top
                     }}
                 />

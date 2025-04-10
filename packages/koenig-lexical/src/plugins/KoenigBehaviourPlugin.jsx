@@ -52,6 +52,7 @@ import {
 import {$isHtmlNode} from '../nodes/HtmlNode';
 import {$isKoenigCard} from '@tryghost/kg-default-nodes';
 import {$isListItemNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND} from '@lexical/list';
+import {$isSignupNode} from '../nodes/SignupNode';
 import {$setBlocksType} from '@lexical/selection';
 import {MIME_TEXT_HTML, MIME_TEXT_PLAIN, PASTE_MARKDOWN_COMMAND} from './MarkdownPastePlugin.jsx';
 import {mergeRegister} from '@lexical/utils';
@@ -1420,10 +1421,22 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     editor.update(() => {
                         const cardNode = $getNodeByKey(cardKey);
 
+                        const nodesToNotUseEditMode = [
+                            $isHtmlNode(cardNode)
+                        ];
+
+                        const nodesToIgnoreToggleVisibility = [
+                            $isSignupNode(cardNode)
+                        ];
+
+                        if (nodesToIgnoreToggleVisibility.some(node => node)) {
+                            return true;
+                        }
+
                         // If the card is an html card, we toggle the visibility settings differently
                         // because we want to show the visibility settings panel while in selected mode
                         // instead of entering edit mode
-                        if ($isHtmlNode(cardNode)) {
+                        if (nodesToNotUseEditMode.some(node => node)) {
                             setShowVisibilitySettings(true);
                             if (!selectedCardKey) {
                                 editor.dispatchCommand(SELECT_CARD_COMMAND, {cardKey, focusEditor: true});
