@@ -9059,10 +9059,10 @@ fancy-log@^1.3.2, fancy-log@^1.3.3:
     parse-node-version "^1.0.0"
     time-stamp "^1.0.0"
 
-fast-average-color@^9.3.0:
-  version "9.4.0"
-  resolved "https://registry.yarnpkg.com/fast-average-color/-/fast-average-color-9.4.0.tgz#eea0182fa8818ea0c70dcc7a85b945f3c716b11b"
-  integrity sha512-bvM8vV6YwK07dPbzFz77zJaBcfF6ABVfgNwaxVgXc2G+o0e/tzLCF9WU8Ryp1r0Nkk6JuJNsWCzbb4cLOMlB+Q==
+fast-average-color@^9.4.0:
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/fast-average-color/-/fast-average-color-9.5.0.tgz#deade6bd998c0ea399a519ed1e2cd67ef673f112"
+  integrity sha512-nC6x2YIlJ9xxgkMFMd1BNoM1ctMjNoRKfRliPmiEWW3S6rLTHiQcy9g3pt/xiKv/D0NAAkhb9VyV+WJFvTqMGg==
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
