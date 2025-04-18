@@ -19459,10 +19459,10 @@ yargs@^7.1.0:
     y18n "^3.2.1"
     yargs-parser "^5.0.1"
 
-yjs@^13.6.15:
-  version "13.6.24"
-  resolved "https://registry.yarnpkg.com/yjs/-/yjs-13.6.24.tgz#056f40c7ccfd16a6487f507bb21e12ede994b2b3"
-  integrity sha512-xn/pYLTZa3uD1uDG8lpxfLRo5SR/rp0frdASOl2a71aYNvUXdWcLtVL91s2y7j+Q8ppmjZ9H3jsGVgoFMbT2VA==
+yjs@^13.6.24:
+  version "13.6.25"
+  resolved "https://registry.yarnpkg.com/yjs/-/yjs-13.6.25.tgz#79a72d772e420e6f6f3f0114daeed0af6b284708"
+  integrity sha512-bojrx9xmwh14yqaubNMyZ3/3CoTiRdpxaMo8wbJNsbHP8q/1Tdg+krggEaeek/Kh+325wthbWGseI4r72IKF+g==
   dependencies:
     lib0 "^0.2.99"
 
