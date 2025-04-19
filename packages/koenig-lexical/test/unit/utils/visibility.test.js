@@ -1,5 +1,6 @@
-import {expect} from 'vitest';
+import {beforeEach, expect} from 'vitest';
 import {
+    getVisibilityLabel,
     getVisibilityOptions,
     parseVisibilityToToggles
 } from '../../../src/utils/visibility';
@@ -163,5 +164,92 @@ describe('getVisibilityOptions', function () {
                 ]
             }
         ]);
+    });
+});
+
+describe('getVisibilityLabel', function () {
+    let defaultVisibility;
+
+    beforeEach(() => {
+        defaultVisibility = {
+            web: {
+                nonMembers: true,
+                freeMembers: true,
+                paidMembers: true
+            },
+            email: {
+                freeMembers: true,
+                paidMembers: true
+            }
+        };
+    });
+
+    it('returns "Hidden from specific people" when any single toggle is false', function () {
+        defaultVisibility.web.nonMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('returns "Hidden on email" when email toggle is false', function () {
+        defaultVisibility.email.freeMembers = false;
+        defaultVisibility.email.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden in email newsletters');
+    });
+
+    it('returns "Hidden on web" when all web toggles are false', function () {
+        defaultVisibility.web.nonMembers = false;
+        defaultVisibility.web.freeMembers = false;
+        defaultVisibility.web.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden on web');
+    });
+
+    it('returns undefined when everything is visible', function () {
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual(''); // No "hidden" state
+    });
+
+    it('returns "Hidden from specific people" when only one email toggle is false', function () {
+        defaultVisibility.email.freeMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('returns "Hidden from specific people" when mixed partial visibility on web and email', function () {
+        defaultVisibility.web.freeMembers = false;
+        defaultVisibility.email.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('returns "Hidden from specific people" when everything is hidden except one group', function () {
+        defaultVisibility.web.nonMembers = false;
+        defaultVisibility.web.freeMembers = false;
+        defaultVisibility.web.paidMembers = true; // One visible
+        defaultVisibility.email.freeMembers = false;
+        defaultVisibility.email.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('returns "Hidden from specific people" when everything is hidden', function () {
+        defaultVisibility.web.nonMembers = false;
+        defaultVisibility.web.freeMembers = false;
+        defaultVisibility.web.paidMembers = false;
+        defaultVisibility.email.freeMembers = false;
+        defaultVisibility.email.paidMembers = false;
+        const label = getVisibilityLabel(defaultVisibility);
+        expect(label).toEqual('Hidden from specific people');
+    });
+
+    it('returns "Hidden in email and for members on web" when card is a signup card', function () {
+        const label = getVisibilityLabel({}, 'signup');
+        expect(label).toEqual('Hidden in email and for members on web');
+    });
+
+    it('returns "Hidden on web" when card is an email card', function () {
+        const label = getVisibilityLabel({}, 'email');
+        expect(label).toEqual('Hidden on web');
     });
 });
