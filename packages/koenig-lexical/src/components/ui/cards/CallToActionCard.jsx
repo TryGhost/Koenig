@@ -308,7 +308,7 @@ export function CallToActionCard({
                     {
                         'py-3': color === 'none' && !hasSponsorLabel,
                         'pb-3': color === 'none' && hasSponsorLabel,
-                        'pt-1': color === 'none' && !hasSponsorLabel && !showDividers
+                        'pt-1': color === 'none' && !hasSponsorLabel && !showDividers && !imageSrc
                     }
                 )} 
                 data-cta-layout={layout}
@@ -345,11 +345,11 @@ export function CallToActionCard({
 
                 <div className={clsx(
                     'flex gap-6',
-                    hasSponsorLabel && color !== 'none' && (imageSrc && layout === 'immersive') ? '' : (color === 'none' && !showDividers && !hasSponsorLabel) ? '' : 'pt-6',
-                    imageSrc && !showButton ? 'pb-8' : (color === 'none' && !showDividers) ? '' : 'pb-7',
+                    hasSponsorLabel && color !== 'none' && (imageSrc && layout === 'immersive') ? '' : (color === 'none' && !showDividers) ? '' : 'pt-6',
+                    (color === 'none' && !showDividers) ? '' : imageSrc && !showButton ? 'pb-8' : 'pb-7',
                     layout === 'immersive' ? 'flex-col' : 'flex-row',
-                    (color === 'none' && showDividers) || (hasSponsorLabel && !(imageSrc && layout === 'immersive')) ? 'border-t border-grey-900/15 dark:border-grey-100/20' : '',
-                    (color === 'none' && showDividers) ? 'border-b border-grey-900/15 dark:border-grey-100/20' : color !== 'none' ? 'mx-6' : ''
+                    (hasSponsorLabel && !(imageSrc && layout === 'immersive') && !(color === 'none' && !showDividers)) && 'border-t border-grey-900/15 dark:border-grey-100/20',
+                    (color === 'none' && showDividers) ? 'border-y border-grey-900/15 dark:border-grey-100/20' : color !== 'none' ? 'mx-6' : ''
                 )}>
                     {imageSrc && (
                         <div className={clsx(
