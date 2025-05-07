@@ -25,7 +25,7 @@ function ctaCardTemplate(dataset) {
         : `style="background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};"`;
 
     return `
-        <div class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout} ${dataset.showDividers ? 'kg-cta-has-dividers' : ''} ${dataset.imageUrl ? 'kg-cta-has-img' : ''} ${dataset.linkColor === 'accent' ? 'kg-cta-link-accent' : ''} ${dataset.alignment === 'center' ? 'kg-cta-centered' : ''}" data-layout="${dataset.layout}">
+        <div class="kg-card kg-cta-card kg-cta-bg-${dataset.backgroundColor} kg-cta-${dataset.layout} ${dataset.showDividers ? '' : 'kg-cta-no-dividers'} ${dataset.imageUrl ? 'kg-cta-has-img' : ''} ${dataset.linkColor === 'accent' ? 'kg-cta-link-accent' : ''} ${dataset.alignment === 'center' ? 'kg-cta-centered' : ''}" data-layout="${dataset.layout}">
             ${dataset.hasSponsorLabel ? `
                 <div class="kg-cta-sponsor-label-wrapper">
                     <div class="kg-cta-sponsor-label">
