@@ -1,4 +1,5 @@
 import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+import {html} from '../../utils/tagged-template-fns.mjs';
 
 function cardTemplate({node}) {
     return (
@@ -21,18 +22,20 @@ function cardTemplate({node}) {
 function emailCardTemplate({node}, options = {}) {
     if (options.feature?.emailCustomizationAlpha) {
         return (
-            `
+            html`
             <table cellspacing="0" cellpadding="0" border="0" width="100%" class="kg-toggle-card">
-                <tr>
-                    <td class="kg-toggle-heading">
-                        <h4>${node.heading}</h4>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="kg-toggle-content">
-                        ${node.content}
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td class="kg-toggle-heading">
+                            <h4>${node.heading}</h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="kg-toggle-content">
+                            ${node.content}
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             `
         );
