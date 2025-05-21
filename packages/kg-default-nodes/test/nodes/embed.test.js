@@ -341,6 +341,31 @@ describe('EmbedNode', function () {
             element.outerHTML.should.containEql('<v:group xmlns');
         }));
 
+        it('renders video in email with rounded corners when emailCustomizationAlpha is enabled and imageCorners is rounded', editorTest(function () {
+            const options = {
+                target: 'email',
+                feature: {emailCustomizationAlpha: true},
+                design: {imageCorners: 'rounded'}
+            };
+            const embedNode = $createEmbedNode(youtubeEmbed);
+            const {element} = embedNode.exportDOM({...exportOptions, ...options});
+
+            // Should contain VML roundrect with correct attributes
+            element.outerHTML.should.containEql('<!--[if gte mso 9]>');
+            element.outerHTML.should.containEql('<v:roundrect');
+            element.outerHTML.should.containEql('arcsize="2%"');
+            element.outerHTML.should.containEql('margin-top:20px');
+            element.outerHTML.should.containEql(`src="${youtubeEmbed.metadata.thumbnail_url}"`);
+
+            // Should contain non-Outlook version
+            element.outerHTML.should.containEql('<!--[if !mso]><!-->');
+            element.outerHTML.should.containEql('<a class="kg-video-preview"');
+            element.outerHTML.should.containEql('<!--<![endif]-->');
+
+            // Should not contain the old VML group
+            element.outerHTML.should.not.containEql('<v:group');
+        }));
+
         it('renders empty span with missing data', editorTest(function () {
             const embedNode = $createEmbedNode();
             const {element} = embedNode.exportDOM(exportOptions);
