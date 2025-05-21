@@ -86,15 +86,54 @@ export function renderImageNode(node, options = {}) {
     // so we add that at the expected size in emails (600px) and use a higher
     // resolution image to keep images looking good on retina screens
     if (options.target === 'email' && node.width && node.height) {
+        // Calculate email dimensions first so they're consistent
         let imageDimensions = {
             width: node.width,
             height: node.height
         };
+
         if (node.width >= 600) {
             imageDimensions = getResizedImageDimensions(imageDimensions, {width: 600});
         }
-        img.setAttribute('width', imageDimensions.width);
-        img.setAttribute('height', imageDimensions.height);
+
+        if (options?.feature?.emailCustomizationAlpha &&
+            options?.design?.imageCorners === 'rounded') {
+            // Create VML wrapper element
+            const vmlWrapper = document.createElement('div');
+            vmlWrapper.innerHTML = `<!--[if gte mso 9]>
+            <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="none" arcsize="2%" style="v-text-anchor:middle; width:${imageDimensions.width}px; height:${imageDimensions.height}px; margin-top:20px;" stroked="f">
+                <v:fill type="frame" src="${node.src}" />
+            </v:roundrect>
+            <![endif]-->
+            <!--[if !mso]><!-->`;
+
+            // Add the VML wrapper first
+            figure.appendChild(vmlWrapper);
+            
+            // Then add the image with email dimensions
+            img.setAttribute('width', imageDimensions.width);
+            img.setAttribute('height', imageDimensions.height);
+            figure.appendChild(img);
+
+            // Add closing conditional comment
+            const closingComment = document.createElement('div');
+            closingComment.innerHTML = '<!--<![endif]-->';
+            figure.appendChild(closingComment);
+
+            // Skip the normal image append since we've already done it
+            if (!node.href) {
+                if (node.caption) {
+                    const caption = document.createElement('figcaption');
+                    caption.innerHTML = node.caption;
+                    figure.appendChild(caption);
+                }
+                return {element: figure};
+            }
+        } else {
+            // Set email dimensions when VML is not used
+            img.setAttribute('width', imageDimensions.width);
+            img.setAttribute('height', imageDimensions.height);
+        }
 
         if (isLocalContentImage(node.src, options.siteUrl) && options.canTransformImage?.(node.src)) {
             // find available image size next up from 2x600 so we can use it for the "retina" src

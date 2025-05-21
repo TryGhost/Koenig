@@ -48,7 +48,9 @@ describe('ImageNode', function () {
                 }
             },
             canTransformImage: () => true,
-            dom
+            dom,
+            feature: {},
+            design: {}
         };
     });
 
@@ -301,6 +303,61 @@ describe('ImageNode', function () {
             it('skips width/height and resize if payload is missing dimensions');
             it('resizes Unsplash images even if width/height data is missing');
             it('omits srcset attribute');
+
+            it('adds VML for rounded corners when emailCustomizationAlpha is enabled', editorTest(function () {
+                exportOptions.target = 'email';
+                exportOptions.feature = {emailCustomizationAlpha: true};
+                exportOptions.design = {imageCorners: 'rounded'};
+
+                dataset.width = 1200;
+                dataset.height = 800;
+
+                const imageNode = $createImageNode(dataset);
+                const {element} = imageNode.exportDOM(exportOptions);
+                const output = element.outerHTML;
+
+                // Check for proper structure and order of elements
+                const expectedElements = [
+                    '<!--[if gte mso 9]>',
+                    '<v:roundrect',
+                    'arcsize="2%"',
+                    'width:600px',
+                    'height:400px',
+                    'margin-top:20px',
+                    `src="${dataset.src}"`,
+                    '</v:roundrect>',
+                    '<![endif]-->',
+                    '<!--[if !mso]><!-->'
+                ];
+
+                // Verify all expected elements are present and in order
+                let lastIndex = -1;
+                expectedElements.forEach((expectedElement) => {
+                    const currentIndex = output.indexOf(expectedElement);
+                    currentIndex.should.be.above(-1, `Expected to find ${expectedElement}`);
+                    currentIndex.should.be.above(lastIndex, `Expected ${expectedElement} to come after previous element`);
+                    lastIndex = currentIndex;
+                });
+
+                // Verify the image element is present with correct attributes
+                output.should.containEql('<img');
+                output.should.containEql('class="kg-image"');
+                output.should.match(/width="600"/);
+                output.should.match(/height="400"/);
+
+                // Verify closing conditional comment is after the image
+                const imgIndex = output.indexOf('</img>');
+                const closingCommentIndex = output.indexOf('<!--<![endif]-->');
+                closingCommentIndex.should.be.above(imgIndex);
+
+                // Verify caption is present and after the VML/image
+                if (dataset.caption) {
+                    output.should.containEql('<figcaption>');
+                    output.should.containEql(dataset.caption);
+                    const captionIndex = output.indexOf('<figcaption>');
+                    captionIndex.should.be.above(closingCommentIndex);
+                }
+            }));
         });
     });
 
