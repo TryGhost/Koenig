@@ -320,6 +320,104 @@ describe('VideoNode', function () {
             output.should.containEql('background="/content/images/2022/11/koenig-lexical.jpg"');
         }));
 
+        it('renders VML rounded corners in email when feature is enabled', editorTest(function () {
+            const payload = {
+                src: '/content/images/2022/11/koenig-lexical.mp4',
+                width: 200,
+                height: 100,
+                duration: 60,
+                thumbnailSrc: '/content/images/2022/11/koenig-lexical.jpg'
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post',
+                feature: {
+                    emailCustomizationAlpha: true
+                },
+                design: {
+                    imageCorners: 'rounded'
+                }
+            };
+            const videoNode = $createVideoNode(payload);
+            const {element} = videoNode.exportDOM({...exportOptions, ...options});
+            const output = element.outerHTML;
+
+            // Should contain VML roundrect
+            output.should.containEql('<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"');
+            output.should.containEql('arcsize="2%"');
+            output.should.containEql('margin-bottom: 20px');
+
+            // Should contain play button elements
+            output.should.containEql('<v:oval fill="t" strokecolor="white"');
+            output.should.containEql('<v:shape coordsize="24,32" path="m,l,32,24,16,xe"');
+
+            // Should not contain the original VML group when rounded corners are enabled
+            output.should.not.containEql('<v:group');
+        }));
+
+        it('skips VML rounded corners in email when feature is disabled', editorTest(function () {
+            const payload = {
+                src: '/content/images/2022/11/koenig-lexical.mp4',
+                width: 200,
+                height: 100,
+                duration: 60,
+                thumbnailSrc: '/content/images/2022/11/koenig-lexical.jpg'
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post',
+                feature: {
+                    emailCustomizationAlpha: false
+                },
+                design: {
+                    imageCorners: 'rounded'
+                }
+            };
+            const videoNode = $createVideoNode(payload);
+            const {element} = videoNode.exportDOM({...exportOptions, ...options});
+            const output = element.outerHTML;
+
+            // Should not contain VML roundrect
+            output.should.not.containEql('<v:roundrect');
+            output.should.not.containEql('arcsize="2%"');
+
+            // Should contain the original VML group
+            output.should.containEql('<v:group');
+        }));
+
+        it('skips VML rounded corners in email when imageCorners is not rounded', editorTest(function () {
+            const payload = {
+                src: '/content/images/2022/11/koenig-lexical.mp4',
+                width: 200,
+                height: 100,
+                duration: 60,
+                thumbnailSrc: '/content/images/2022/11/koenig-lexical.jpg'
+            };
+
+            const options = {
+                target: 'email',
+                postUrl: 'https://example.com/my-post',
+                feature: {
+                    emailCustomizationAlpha: true
+                },
+                design: {
+                    imageCorners: 'square'
+                }
+            };
+            const videoNode = $createVideoNode(payload);
+            const {element} = videoNode.exportDOM({...exportOptions, ...options});
+            const output = element.outerHTML;
+
+            // Should not contain VML roundrect
+            output.should.not.containEql('<v:roundrect');
+            output.should.not.containEql('arcsize="2%"');
+
+            // Should contain the original VML group
+            output.should.containEql('<v:group');
+        }));
+
         it('renders card width', editorTest(function () {
             const payload = {
                 src: '/content/images/2022/11/koenig-lexical.mp4',
