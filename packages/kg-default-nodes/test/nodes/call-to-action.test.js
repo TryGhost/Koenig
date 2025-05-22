@@ -510,6 +510,71 @@ describe('CallToActionNode', function () {
             });
         }));
 
+        it('renders VML for minimal layout with rounded corners in email', editorTest(function () {
+            exportOptions.target = 'email';
+            exportOptions.feature.emailCustomizationAlpha = true;
+            exportOptions.design = {imageCorners: 'rounded'};
+            dataset.layout = 'minimal';
+            dataset.imageUrl = '/content/images/2023/06/test.jpg';
+
+            testRender(({html}) => {
+                // Check for VML roundrect tag
+                html.should.match(/v:roundrect/);
+                html.should.match(/arcsize="10%"/);
+                html.should.match(/width:64px; height:64px;/);
+
+                // Check for fallback image for non-Outlook clients
+                html.should.match(/<!--\[if !mso\]><!-->/);
+                html.should.match(/<img.*?width="64".*?height="64"/);
+            });
+        }));
+
+        it('renders VML for immersive layout with rounded corners in email', editorTest(function () {
+            exportOptions.target = 'email';
+            exportOptions.feature.emailCustomizationAlpha = true;
+            exportOptions.design = {imageCorners: 'rounded'};
+            dataset.layout = 'immersive';
+            dataset.imageUrl = '/content/images/2023/06/test.jpg';
+            dataset.imageWidth = 560;
+            dataset.imageHeight = 320;
+
+            testRender(({html}) => {
+                html.should.match(/v:roundrect/);
+                html.should.match(/arcsize="2%"/);
+                html.should.match(/width:560px; height:320px;/);
+                html.should.match(/<!--\[if !mso\]><!-->/);
+                html.should.match(/<img.*?width="560".*?height="320"/);
+                html.should.match(/text-align: center;/);
+                html.should.match(/margin: 0 auto; display: block;/);
+            });
+        }));
+
+        it('skips VML when imageCorners is not rounded', editorTest(function () {
+            exportOptions.target = 'email';
+            exportOptions.feature.emailCustomizationAlpha = true;
+            dataset.layout = 'minimal';
+            dataset.imageUrl = '/content/images/2023/06/test.jpg';
+
+            testRender(({html}) => {
+                html.should.not.match(/v:roundrect/);
+                html.should.not.match(/<!--\[if gte mso 9\]>/);
+                html.should.match(/<img.*?class="kg-cta-image"/);
+            });
+        }));
+
+        it('skips VML when emailCustomizationAlpha is disabled', editorTest(function () {
+            exportOptions.target = 'email';
+            exportOptions.design = {imageCorners: 'rounded'};
+            dataset.layout = 'minimal';
+            dataset.imageUrl = '/content/images/2023/06/test.jpg';
+
+            testRender(({html}) => {
+                html.should.not.match(/v:roundrect/);
+                html.should.not.match(/<!--\[if gte mso 9\]>/);
+                html.should.match(/<img.*?class="kg-cta-image"/);
+            });
+        }));
+
         it('can render outline accent buttons (emailCustomizationAlpha)', editorTest(function () {
             exportOptions.target = 'email';
             exportOptions.feature.emailCustomizationAlpha = true;
