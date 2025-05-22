@@ -115,6 +115,19 @@ function emailCTATemplate(dataset, options = {}) {
         const imageHeight = dataset.layout === 'minimal' ? 64 : (imageDimensions?.height || 560);
 
         if (options?.feature?.emailCustomizationAlpha && options?.design?.imageCorners === 'rounded') {
+            if (dataset.layout === 'minimal') {
+                return `
+                    <!--[if gte mso 9]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="none" arcsize="10%" style="v-text-anchor:middle; width:64px; height:64px;" stroked="f">
+                        <v:fill type="frame" src="${dataset.imageUrl}" />
+                    </v:roundrect>
+                    <![endif]-->
+                    <!--[if !mso]><!-->
+                    ${wrapWithLink(dataset, `<img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="64" height="64">`)}
+                    <!--<![endif]-->
+                `;
+            }
+
             return `
                 <div style="${dataset.layout !== 'minimal' ? 'text-align: center;' : ''}">
                     <!--[if gte mso 9]>
@@ -137,7 +150,7 @@ function emailCTATemplate(dataset, options = {}) {
             if (dataset.layout === 'minimal') {
                 return `
                     <tr>
-                        <td class="kg-cta-content" style="padding-bottom: 32px;">
+                        <td class="kg-cta-content">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" class="kg-cta-content-wrapper">
                                 <tr>
                                     ${dataset.imageUrl ? `
@@ -183,7 +196,7 @@ function emailCTATemplate(dataset, options = {}) {
 
             return `
                 <tr>
-                    <td class="kg-cta-content" style="padding-bottom: 32px;">
+                    <td class="kg-cta-content">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="kg-cta-content-wrapper">
                             ${dataset.imageUrl ? `
                                 <tr>
