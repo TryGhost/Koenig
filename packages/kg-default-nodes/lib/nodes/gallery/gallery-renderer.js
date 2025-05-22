@@ -35,6 +35,56 @@ function buildStructure(images) {
     return rows;
 }
 
+function renderEmailImage(img, image, options) {
+    // only resize if needed, width/height always exists for gallery image unlike image cards
+    if (image.width > 600) {
+        const newImageDimensions = getResizedImageDimensions(image, {width: 600});
+        img.setAttribute('width', newImageDimensions.width);
+        img.setAttribute('height', newImageDimensions.height);
+    }
+
+    if (isLocalContentImage(image.src, options.siteUrl) && options.canTransformImage && options.canTransformImage(image.src)) {
+        // find available image size next up from 2x600 so we can use it for the "retina" src
+        const availableImageWidths = getAvailableImageWidths(image, options.imageOptimization.contentImageSizes);
+        const srcWidth = availableImageWidths.find(width => width >= 1200);
+
+        if (!srcWidth || srcWidth === image.width) {
+            // do nothing, width is smaller than retina or matches the original payload src
+        } else {
+            const [, imagesPath, filename] = image.src.match(/(.*\/content\/images)\/(.*)/);
+            img.setAttribute('src', `${imagesPath}/size/w${srcWidth}/${filename}`);
+        }
+    }
+
+    if (isUnsplashImage(image.src)) {
+        const unsplashUrl = new URL(image.src);
+        unsplashUrl.searchParams.set('w', 1200);
+        img.setAttribute('src', unsplashUrl.href);
+    }
+
+    // If rounded corners are enabled and we're in email, wrap the image in VML
+    if (options?.feature?.emailCustomizationAlpha && options?.design?.imageCorners === 'rounded') {
+        const width = img.getAttribute('width');
+        const height = img.getAttribute('height');
+        const src = img.getAttribute('src');
+
+        return `
+            <!--[if gte mso 9]>
+            <div style="margin-bottom: 20px;">
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="none" arcsize="5%" style="width:${width}px; height:${height}px;" stroked="f">
+                    <v:fill type="frame" src="${src}" />
+                </v:roundrect>
+            </div>
+            <![endif]-->
+            <!--[if !mso]><!-->
+            ${img.outerHTML}
+            <!--<![endif]-->
+        `;
+    }
+
+    return img.outerHTML;
+}
+
 export function renderGalleryNode(node, options = {}) {
     addCreateDocumentOption(options);
     const document = options.createDocument();
@@ -101,44 +151,26 @@ export function renderGalleryNode(node, options = {}) {
                 }
             }
 
-            // Outlook is unable to properly resize images without a width/height
-            // so we modify those to fit max width (600px) and use appropriately
-            // resized images if available
+            // Handle email-specific image rendering
             if (options.target === 'email') {
-                // only resize if needed, width/height always exists for gallery image unline image cards
-                if (image.width > 600) {
-                    const newImageDimensions = getResizedImageDimensions(image, {width: 600});
-                    img.setAttribute('width', newImageDimensions.width);
-                    img.setAttribute('height', newImageDimensions.height);
+                const imageHtml = renderEmailImage(img, image, options);
+                if (image.href) {
+                    const a = document.createElement('a');
+                    a.setAttribute('href', image.href);
+                    a.innerHTML = imageHtml;
+                    imgDiv.appendChild(a);
+                } else {
+                    imgDiv.innerHTML = imageHtml;
                 }
-
-                if (isLocalContentImage(image.src, options.siteUrl) && options.canTransformImage && options.canTransformImage(image.src)) {
-                    // find available image size next up from 2x600 so we can use it for the "retina" src
-                    const availableImageWidths = getAvailableImageWidths(image, options.imageOptimization.contentImageSizes);
-                    const srcWidth = availableImageWidths.find(width => width >= 1200);
-
-                    if (!srcWidth || srcWidth === image.width) {
-                        // do nothing, width is smaller than retina or matches the original payload src
-                    } else {
-                        const [, imagesPath, filename] = image.src.match(/(.*\/content\/images)\/(.*)/);
-                        img.setAttribute('src', `${imagesPath}/size/w${srcWidth}/${filename}`);
-                    }
-                }
-
-                if (isUnsplashImage(image.src)) {
-                    const unsplashUrl = new URL(image.src);
-                    unsplashUrl.searchParams.set('w', 1200);
-                    img.setAttribute('src', unsplashUrl.href);
-                }
-            }
-
-            if (image.href) {
-                const a = document.createElement('a');
-                a.setAttribute('href', image.href);
-                a.appendChild(img);
-                imgDiv.appendChild(a);
             } else {
-                imgDiv.appendChild(img);
+                if (image.href) {
+                    const a = document.createElement('a');
+                    a.setAttribute('href', image.href);
+                    a.appendChild(img);
+                    imgDiv.appendChild(a);
+                } else {
+                    imgDiv.appendChild(img);
+                }
             }
             rowDiv.appendChild(imgDiv);
         });
