@@ -59,19 +59,38 @@ function ctaCardTemplate(dataset) {
 }
 
 function emailCTATemplate(dataset, options = {}) {
+    // Calculate image dimensions if image exists
+    let imageDimensions;
+    if (dataset.imageUrl && dataset.imageWidth && dataset.imageHeight) {
+        imageDimensions = {
+            width: dataset.imageWidth,
+            height: dataset.imageHeight
+        };
+
+        if (dataset.imageWidth >= 560) {
+            imageDimensions = getResizedImageDimensions(imageDimensions, {width: 560});
+        }
+    }
+
+    // Handle minimal layout image optimization
+    if (dataset.layout === 'minimal' && dataset.imageUrl) {
+        if (isLocalContentImage(dataset.imageUrl, options.siteUrl) && options.canTransformImage?.(dataset.imageUrl)) {
+            const [, imagesPath, filename] = dataset.imageUrl.match(/(.*\/content\/images)\/(.*)/);
+            const iconSize = options?.imageOptimization?.internalImageSizes?.['email-cta-minimal-image'] || {width: 256, height: 256}; // default to 256 since we know the image is a square
+            dataset.imageUrl = `${imagesPath}/size/w${iconSize.width}h${iconSize.height}/${filename}`;
+        }
+    }
+
     // accent button color backgrounds are set in main template styles,
     // for other button colors we need to set the background color explicitly
     let buttonStyle = dataset.buttonColor === 'accent'
         ? `color: ${dataset.buttonTextColor};`
         : `background-color: ${dataset.buttonColor}; color: ${dataset.buttonTextColor};`;
-    // by default we duplicate style across the <td> and <a> tags, but
-    // we separate the variables to allow <a> tag style overrides for outline buttons
     let buttonLinkStyle = buttonStyle;
 
     if (
         options?.feature?.emailCustomizationAlpha &&
         options?.design?.buttonStyle === 'outline' &&
-        // accent buttons are fully handled by main template CSS
         dataset.buttonColor !== 'accent'
     ) {
         buttonStyle = `
@@ -85,38 +104,45 @@ function emailCTATemplate(dataset, options = {}) {
         `;
     }
 
-    let imageDimensions;
-
-    if (dataset.imageUrl && dataset.imageWidth && dataset.imageHeight) {
-        imageDimensions = {
-            width: dataset.imageWidth,
-            height: dataset.imageHeight
-        };
-
-        if (dataset.imageWidth >= 560) {
-            imageDimensions = getResizedImageDimensions(imageDimensions, {width: 560});
+    // Handle image rendering with VML for rounded corners in Outlook when enabled
+    const renderImage = () => {
+        if (!dataset.imageUrl) {
+            return '';
         }
-    }
 
-    if (dataset.layout === 'minimal' && dataset.imageUrl) {
-        if (isLocalContentImage(dataset.imageUrl, options.siteUrl) && options.canTransformImage?.(dataset.imageUrl)) {
-            const [, imagesPath, filename] = dataset.imageUrl.match(/(.*\/content\/images)\/(.*)/);
-            const iconSize = options?.imageOptimization?.internalImageSizes?.['email-cta-minimal-image'] || {width: 256, height: 256}; // default to 256 since we know the image is a square
-            dataset.imageUrl = `${imagesPath}/size/w${iconSize.width}h${iconSize.height}/${filename}`;
+        // For minimal layout, use smaller image size
+        const imageSize = dataset.layout === 'minimal' ? 64 : (imageDimensions?.width || 560);
+        const imageHeight = dataset.layout === 'minimal' ? 64 : (imageDimensions?.height || 560);
+
+        if (options?.feature?.emailCustomizationAlpha && options?.design?.imageCorners === 'rounded') {
+            return `
+                <div style="${dataset.layout !== 'minimal' ? 'text-align: center;' : ''}">
+                    <!--[if gte mso 9]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="none" arcsize="2%" style="v-text-anchor:middle; width:${imageSize}px; height:${imageHeight}px; margin: 0 auto;" stroked="f">
+                        <v:fill type="frame" src="${dataset.imageUrl}" />
+                    </v:roundrect>
+                    <![endif]-->
+                    <!--[if !mso]><!-->
+                    ${wrapWithLink(dataset, `<img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="${imageSize}" height="${imageHeight}" ${dataset.layout !== 'minimal' ? 'style="margin: 0 auto; display: block;"' : ''}>`)}
+                    <!--<![endif]-->
+                </div>
+            `;
         }
-    }
+
+        return wrapWithLink(dataset, `<img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="${imageSize}" height="${imageHeight}" ${dataset.layout !== 'minimal' ? 'style="margin: 0 auto; display: block;"' : ''}>`);
+    };
 
     if (options.feature?.emailCustomization || options.feature?.emailCustomizationAlpha) {
         const renderContent = () => {
             if (dataset.layout === 'minimal') {
                 return `
                     <tr>
-                        <td class="kg-cta-content">
+                        <td class="kg-cta-content" style="padding-bottom: 32px;">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" class="kg-cta-content-wrapper">
                                 <tr>
                                     ${dataset.imageUrl ? `
-                                        <td class="kg-cta-image-container" width="64">
-                                            ${wrapWithLink(dataset, `<img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" width="64" height="64">`)}
+                                        <td class="kg-cta-image-container" width="64" style="vertical-align: top;">
+                                            ${renderImage()}
                                         </td>
                                     ` : ''}
                                     <td class="kg-cta-content-inner">
@@ -157,7 +183,7 @@ function emailCTATemplate(dataset, options = {}) {
 
             return `
                 <tr>
-                    <td class="kg-cta-content">
+                    <td class="kg-cta-content" style="padding-bottom: 32px;">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="kg-cta-content-wrapper">
                             ${dataset.imageUrl ? `
                                 <tr>
@@ -165,7 +191,7 @@ function emailCTATemplate(dataset, options = {}) {
                                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                             <tr>
                                                 <td>
-                                                    ${wrapWithLink(dataset, `<img src="${dataset.imageUrl}" alt="CTA Image" class="kg-cta-image" ${imageDimensions ? `width="${imageDimensions.width}"` : ''} ${imageDimensions ? `height="${imageDimensions.height}"` : ''}>`)}
+                                                    ${renderImage()}
                                                 </td>
                                             </tr>
                                         </table>
