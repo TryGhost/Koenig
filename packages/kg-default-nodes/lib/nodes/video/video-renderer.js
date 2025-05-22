@@ -102,10 +102,13 @@ export function emailCardTemplate({node, options, cardClasses}) {
     const outlookPlayLeft = Math.round((emailTemplateMaxWidth / 2) - 11);
     const outlookPlayTop = Math.round((emailSpacerHeight / 2) - 17);
 
+    // Check if rounded corners are enabled
+    const useRoundedCorners = options?.feature?.emailCustomizationAlpha && options?.design?.imageCorners === 'rounded';
+
     return (
         `
          <figure class="${cardClasses}">
-            <!--[if !mso !vml]-->
+            <!--[if !mso]><!-->
             <a class="kg-video-preview" href="${options.postUrl}" aria-label="Play video" style="mso-hide: all">
                 <table
                     cellpadding="0"
@@ -127,15 +130,25 @@ export function emailCardTemplate({node, options, cardClasses}) {
                     </tr>
                 </table>
             </a>
-            <!--[endif]-->
+            <!--<![endif]-->
 
+            ${useRoundedCorners ? `
+            <!--[if gte mso 9]>
+            <div style="margin-bottom: 20px;">
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="none" arcsize="2%" style="width:${emailTemplateMaxWidth}px; height:${emailSpacerHeight}px;" stroked="f">
+                    <v:fill type="frame" src="${thumbnailSrc}" />
+                </v:roundrect>
+                <v:oval fill="t" strokecolor="white" strokeweight="4px" style="position:absolute;left:${outlookCircleLeft};top:${outlookCircleTop};width:78;height:78"><v:fill color="black" opacity="30%" /></v:oval>
+                <v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="white" stroked="f" style="position:absolute;left:${outlookPlayLeft};top:${outlookPlayTop};width:30;height:34;" />
+            </div>
+            <![endif]-->` : `
             <!--[if vml]>
             <v:group xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" coordsize="${emailTemplateMaxWidth},${emailSpacerHeight}" coordorigin="0,0" href="${options.postUrl}" style="width:${emailTemplateMaxWidth}px;height:${emailSpacerHeight}px;">
                 <v:rect fill="t" stroked="f" style="position:absolute;width:${emailTemplateMaxWidth};height:${emailSpacerHeight};"><v:fill src="${thumbnailSrc}" type="frame"/></v:rect>
                 <v:oval fill="t" strokecolor="white" strokeweight="4px" style="position:absolute;left:${outlookCircleLeft};top:${outlookCircleTop};width:78;height:78"><v:fill color="black" opacity="30%" /></v:oval>
                 <v:shape coordsize="24,32" path="m,l,32,24,16,xe" fillcolor="white" stroked="f" style="position:absolute;left:${outlookPlayLeft};top:${outlookPlayTop};width:30;height:34;" />
             </v:group>
-            <![endif]-->
+            <![endif]-->`}
 
             ${node.caption ? `<figcaption>${node.caption}</figcaption>` : ''}
         </figure>
