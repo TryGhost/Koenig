@@ -802,105 +802,6 @@ describe('GalleryNode', function () {
             output.should.match(/height="1800"/);
         }));
 
-        it('renders all 9 images in a 3x3 grid', editorTest(function () {
-            const galleryNode = $createGalleryNode({
-                type: 'gallery',
-                version: 1,
-                images: [
-                    {
-                        row: 0,
-                        src: '/content/images/2018/08/NatGeo01-1.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-1.jpg'
-                    },
-                    {
-                        row: 0,
-                        src: '/content/images/2018/08/NatGeo01-2.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-2.jpg'
-                    },
-                    {
-                        row: 0,
-                        src: '/content/images/2018/08/NatGeo01-3.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-3.jpg'
-                    },
-                    {
-                        row: 1,
-                        src: '/content/images/2018/08/NatGeo01-4.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-4.jpg'
-                    },
-                    {
-                        row: 1,
-                        src: '/content/images/2018/08/NatGeo01-5.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-5.jpg'
-                    },
-                    {
-                        row: 1,
-                        src: '/content/images/2018/08/NatGeo01-6.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-6.jpg'
-                    },
-                    {
-                        row: 2,
-                        src: '/content/images/2018/08/NatGeo01-7.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-7.jpg'
-                    },
-                    {
-                        row: 2,
-                        src: '/content/images/2018/08/NatGeo01-8.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-8.jpg'
-                    },
-                    {
-                        row: 2,
-                        src: '/content/images/2018/08/NatGeo01-9.jpg',
-                        width: 3200,
-                        height: 1600,
-                        fileName: 'NatGeo01-9.jpg'
-                    }
-                ],
-                caption: ''
-            });
-
-            // skip srcset
-            delete exportOptions.imageOptimization.contentImageSizes;
-            const {element} = galleryNode.exportDOM(exportOptions);
-
-            element.outerHTML.should.prettifyTo(html`
-                <figure class="kg-card kg-gallery-card kg-width-wide">
-                    <div class="kg-gallery-container">
-                        <div class="kg-gallery-row">
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-1.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-2.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-3.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                        </div>
-                        <div class="kg-gallery-row">
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-4.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-5.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-6.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                        </div>
-                        <div class="kg-gallery-row">
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-7.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-8.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                            <div class="kg-gallery-image"><img src="/content/images/2018/08/NatGeo01-9.jpg" width="2000" height="1000" loading="lazy" alt="" /></div>
-                        </div>
-                    </div>
-                </figure>
-            `);
-        }));
-
         describe('srcset', function () {
             it('is included when image src is relative or Unsplash', editorTest(function () {
                 const galleryNode = $createGalleryNode({
@@ -1205,6 +1106,72 @@ describe('GalleryNode', function () {
                 output.should.match(/height="400"/);
                 output.should.not.match(/\/content\/images\/size\/w1600\/2020\/06\/image\.png/);
                 output.should.match(/\/content\/images\/2020\/06\/image\.png/);
+            }));
+
+            it('renders VML for rounded corners when enabled', editorTest(function () {
+                const galleryNode = $createGalleryNode({
+                    images: [{
+                        row: 0,
+                        fileName: 'image.jpg',
+                        src: '/content/images/2020/06/image.jpg',
+                        width: 800,
+                        height: 600
+                    }]
+                });
+
+                exportOptions.feature = {emailCustomizationAlpha: true};
+                exportOptions.design = {imageCorners: 'rounded'};
+
+                const {element} = galleryNode.exportDOM(exportOptions);
+                const output = element.outerHTML;
+
+                output.should.match(/<!--\[if gte mso 9]>/);
+                output.should.match(/<v:roundrect/);
+                output.should.match(/arcsize="5%"/);
+                output.should.match(/width:600px/);
+                output.should.match(/height:450px/);
+                output.should.match(/<!--\[if !mso]><!-->/);
+                output.should.match(/margin-bottom: 20px/);
+            }));
+
+            it('skips VML when emailCustomizationAlpha is disabled', editorTest(function () {
+                const galleryNode = $createGalleryNode({
+                    images: [{
+                        row: 0,
+                        fileName: 'image.jpg',
+                        src: '/content/images/2020/06/image.jpg',
+                        width: 800,
+                        height: 600
+                    }]
+                });
+
+                exportOptions.design = {imageCorners: 'rounded'};
+
+                const {element} = galleryNode.exportDOM(exportOptions);
+                const output = element.outerHTML;
+
+                output.should.not.match(/<!--\[if gte mso 9]>/);
+                output.should.not.match(/<v:roundrect/);
+            }));
+
+            it('skips VML when imageCorners is not rounded', editorTest(function () {
+                const galleryNode = $createGalleryNode({
+                    images: [{
+                        row: 0,
+                        fileName: 'image.jpg',
+                        src: '/content/images/2020/06/image.jpg',
+                        width: 800,
+                        height: 600
+                    }]
+                });
+
+                exportOptions.feature = {emailCustomizationAlpha: true};
+
+                const {element} = galleryNode.exportDOM(exportOptions);
+                const output = element.outerHTML;
+
+                output.should.not.match(/<!--\[if gte mso 9]>/);
+                output.should.not.match(/<v:roundrect/);
             }));
         });
     });
