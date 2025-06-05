@@ -3745,10 +3745,10 @@
     "@types/color" "3.0.6"
     color "^3.2.1"
 
-"@tryghost/helpers@1.1.94":
-  version "1.1.94"
-  resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.94.tgz#c57a525d19fd303e939c8de9e72bc7aa4463766b"
-  integrity sha512-Cwo5Ev8JVCb3cYQawtXTMAroBMPblcj6K2wSv30o/lVRhiDitJSe4kR7YgThR04T1YZxxkYEAXWxjv2IWxGUSA==
+"@tryghost/helpers@1.1.95":
+  version "1.1.95"
+  resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.95.tgz#6acbea62d4e140b6d6a107f789667975e0a505b0"
+  integrity sha512-nCKAea1fR9d9x7QHijzgWlfndk/JxeQQdt99Dqf3dsMxa+ied5tXv+2lVL9PhmHKYw9q+bCK/KHs25NGjfBhmw==
   dependencies:
     lodash-es "^4.17.11"
 
@@ -3775,10 +3775,10 @@
   dependencies:
     unidecode "^0.1.8"
 
-"@tryghost/url-utils@4.4.12":
-  version "4.4.12"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.12.tgz#a02a279ba0837863bcca05faef5111352afd71db"
-  integrity sha512-11tlNFymPNoUi3ds2PCuDxgMnHVLw4R6lkeF8vC6EYtYPpjuLaXMCG0PakCj7hTBISatOTvWy0ldm38KUfyaWg==
+"@tryghost/url-utils@4.4.13":
+  version "4.4.13"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.4.13.tgz#763a3ab391680e490e04c47cc5543d58418bf4cf"
+  integrity sha512-OOR1Tkg5ixS1vXfHcohtBvm/JMf3yJa/wi8NoMrlLj4oxf2OZNsXtswtCljF+FsvNC6PduccM3OI900ULoTsDg==
   dependencies:
     cheerio "^0.22.0"
     lodash "^4.17.21"
