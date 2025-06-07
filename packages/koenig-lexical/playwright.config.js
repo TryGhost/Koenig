@@ -12,6 +12,7 @@ export const E2E_PORT = 5174;
 export default defineConfig({
     outputDir: path.resolve(__dirname, '..', '..', 'playwright-report'),
     testDir: './test/e2e',
+    maxFailures: 1,
     /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: !!process.env.CI,
     retries: process.env.CI ? 2 : 0,
