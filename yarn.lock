@@ -2825,10 +2825,12 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.24.tgz#58601079e11784d20f82d0585865bb42305c4df3"
   integrity sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==
 
-"@prettier/sync@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@prettier/sync/-/sync-0.3.0.tgz#91f2cfc23490a21586d1cf89c6f72157c000ca1e"
-  integrity sha512-3dcmCyAxIcxy036h1I7MQU/uEEBq8oLwf1CE3xeze+MPlgkdlb/+w6rGR/1dhp6Hqi17fRS6nvwnOzkESxEkOw==
+"@prettier/sync@^0.6.0":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@prettier/sync/-/sync-0.6.1.tgz#d868fe826610b689acd79c5520f357c0e0be0eda"
+  integrity sha512-yF9G8vK/LYUTF3Cijd7VC9La3b20F20/J/fgoR4H0B8JGOWnZVZX6+I6+vODPosjmMcpdlUV+gUqJQZp3kLOcw==
+  dependencies:
+    make-synchronized "^0.8.0"
 
 "@remix-run/router@1.23.0":
   version "1.23.0"
@@ -12812,6 +12814,11 @@ make-iterator@^1.0.0:
   integrity sha512-pxiuXh0iVEq7VM7KMIhs5gxsfxCux2URptUQaXo4iZZJxBAzTPOLE2BumO5dbfVYq/hBJFBR/a1mFDmOx5AGmw==
   dependencies:
     kind-of "^6.0.2"
+
+make-synchronized@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/make-synchronized/-/make-synchronized-0.8.0.tgz#19cb3745cebd1f0916b04fffa432c3671e834407"
+  integrity sha512-DZu4lwc0ffoFz581BSQa/BJl+1ZqIkoRQ+VejMlH0VrP4E86StAODnZujZ4sepumQj8rcP7wUnUBGM8Gu+zKUA==
 
 makeerror@1.0.12:
   version "1.0.12"
