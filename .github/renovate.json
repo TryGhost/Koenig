@@ -1,6 +1,6 @@
 {
   "extends": [
-    "github>tryghost/renovate-config:quiet"
+    "github>tryghost/renovate-config"
   ],
   "ignoreDeps": [
     "codecov/codecov-action"
