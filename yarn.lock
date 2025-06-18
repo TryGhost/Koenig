@@ -1666,10 +1666,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
-"@etchteam/storybook-addon-status@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@etchteam/storybook-addon-status/-/storybook-addon-status-5.0.0.tgz#05866ecb88af214c22f0902e51127d9634fc1a28"
-  integrity sha512-0Dg94xQ3T+rYTi6ekFkaH0XU9k0IQOqidiSmwN47Oqw4u1qjxK6m7wV3j7C0deLEuf4U4PrAcsDfDjyehKne2A==
+"@etchteam/storybook-addon-status@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@etchteam/storybook-addon-status/-/storybook-addon-status-6.0.0.tgz#481f418699dcd26af76ed3c1e0c31dbb6ae39b4d"
+  integrity sha512-Tt1r+DXgpxvBZLwlCybFniUjEDZecB1X091PVyteIvCDd431gpusmEIrwds9AQkq+ALvF/7Mph5ew53hAb9Cxw==
   dependencies:
     lodash "^4.17.21"
 
