@@ -90,7 +90,7 @@
     "@uiw/react-codemirror": "^4.23.0",
     "@vitejs/plugin-react": "4.6.0",
     "@vitest/coverage-c8": "0.33.0",
-    "@vitest/ui": "1.6.1",
+    "@vitest/ui": "3.2.4",
     "autoprefixer": "10.4.21",
     "babel-loader": "10.0.0",
     "clsx": "^2.0.0",
@@ -125,7 +125,7 @@
     "typescript": "5.8.3",
     "vite": "4.5.14",
     "vite-plugin-svgr": "4.3.0",
-    "vitest": "1.6.1",
+    "vitest": "3.2.4",
     "y-websocket": "^3.0.0",
     "yjs": "^13.6.26"
   }
