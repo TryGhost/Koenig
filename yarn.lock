@@ -3736,10 +3736,10 @@
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"
   integrity sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==
 
-"@tryghost/color-utils@0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.8.tgz#43b518326a7fdbaaad6f4ce2a86a50d4ae48ad8f"
-  integrity sha512-4IyzAvGmpMVJ3aXdyhJLHRz5Ymo26GOGdEOC3LMyQ4t4htiaMbigqR0136KoRIlyXBptmH8Plp+u1aGGdh2tBw==
+"@tryghost/color-utils@0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.9.tgz#fc4865153384af932a1c558ef73e1fbdfcc0d175"
+  integrity sha512-y1XLPvTOwistoqgmVJul0fPZKM8jmP8vjn1YW6WkTBOE2403GiP2MFiROm3F9JjJlccqU7b5YM6J5m0ACokXTg==
   dependencies:
     "@types/color" "3.0.6"
     color "^3.2.1"
