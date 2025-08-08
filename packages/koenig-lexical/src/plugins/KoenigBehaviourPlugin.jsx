@@ -1296,10 +1296,26 @@ function useKoenigBehaviour({editor, containerElem, cursorDidExitAtTop, isNested
                     // TODO: replace with better regex to include more protocols like mailto, ftp, etc
                     const linkMatch = text?.match(/^(https?:\/\/[^\s]+)$/);
                     if (linkMatch) {
-                        // avoid any conversion if we're pasting onto a card shortcut
                         const node = $getSelection()?.anchor.getNode();
-                        if (node && node.getTextContent().startsWith('/')) {
+
+                        // avoid any conversion if we're pasting onto a card shortcut
+                        const isNodeCardShortcut = node && node.getTextContent().startsWith('/');
+
+                        if (isNodeCardShortcut) {
                             return false;
+                        }
+
+                        // avoid converting to an embed/bookmark if we're pasting onto a list item
+                        const isNodeListItem = node && $isListItemNode(node);
+
+                        if (isNodeListItem) {
+                            const linkNode = $createLinkNode(text);
+                            const textNode = $createTextNode(text);
+
+                            linkNode.append(textNode);
+                            node.append(linkNode);
+
+                            return true;
                         }
 
                         // we're pasting a URL, convert it to an embed/bookmark/link
