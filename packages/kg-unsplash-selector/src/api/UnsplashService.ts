@@ -12,12 +12,14 @@ export interface IUnsplashService {
     triggerDownload(photo: Photo): void;
     photos: Photo[];
     searchIsRunning(): boolean;
+    getLastSearchTerm(): string;
 }
 
 export class UnsplashService implements IUnsplashService {
     private photoUseCases: PhotoUseCases;
     private masonryService: MasonryService;
     public photos: Photo[] = [];
+    public hasUpdatedResults: boolean = false;
 
     constructor(photoUseCases: PhotoUseCases, masonryService: MasonryService) {
         this.photoUseCases = photoUseCases;
@@ -47,11 +49,13 @@ export class UnsplashService implements IUnsplashService {
 
     async updateSearch(term: string) {
         let results = await this.photoUseCases.searchPhotos(term);
-        if (this.photoUseCases.getLastSearchTerm() !== term) {
+        if (this.getLastSearchTerm() !== term) {
+            this.hasUpdatedResults = false;
             return;
         }
         this.photos = results;
         this.layoutPhotos();
+        this.hasUpdatedResults = true;
     }
 
     async loadNextPage() {
@@ -70,5 +74,9 @@ export class UnsplashService implements IUnsplashService {
 
     searchIsRunning() {
         return this.photoUseCases.searchIsRunning();
+    }
+
+    getLastSearchTerm(): string {
+        return this.photoUseCases.getLastSearchTerm();
     }
 }

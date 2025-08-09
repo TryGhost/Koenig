@@ -106,6 +106,9 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
             setDataset([]);
             UnsplashLib.clearPhotos();
             await UnsplashLib.updateSearch(searchTerm);
+            if (!UnsplashLib.hasUpdatedResults) {
+                return;
+            }
             const columns = UnsplashLib.getColumns();
             if (columns) {
                 setDataset(columns);
@@ -124,7 +127,7 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
             } else {
                 await loadInitPhotos();
             }
-        }, 600);
+        }, 10);
         return () => {
             initLoadRef.current = true;
             clearTimeout(timeoutId);
