@@ -124,7 +124,7 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
             } else {
                 await loadInitPhotos();
             }
-        }, 300);
+        }, 600);
         return () => {
             initLoadRef.current = true;
             clearTimeout(timeoutId);

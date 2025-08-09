@@ -9,6 +9,7 @@ export class UnsplashProvider implements IUnsplashProvider {
     REQUEST_IS_RUNNING: boolean = false;
     SEARCH_IS_RUNNING: boolean = false;
     LAST_REQUEST_URL: string = '';
+    LAST_SEARCH_TERM: string = '';
     IS_LOADING: boolean = false;
 
     constructor(HEADERS: DefaultHeaderTypes) {
@@ -16,10 +17,6 @@ export class UnsplashProvider implements IUnsplashProvider {
     }
 
     private async makeRequest(url: string): Promise<Photo[] | {results: Photo[]} | null> {
-        if (this.REQUEST_IS_RUNNING) {
-            return null;
-        }
-    
         this.LAST_REQUEST_URL = url;
         const options = {
             method: 'GET',
@@ -35,7 +32,7 @@ export class UnsplashProvider implements IUnsplashProvider {
             this.extractPagination(checkedResponse);
     
             const jsonResponse = await checkedResponse.json();
-            
+
             if ('results' in jsonResponse) {
                 return jsonResponse.results;
             } else {
@@ -106,6 +103,7 @@ export class UnsplashProvider implements IUnsplashProvider {
     }
 
     public async searchPhotos(term: string): Promise<Photo[]> {
+        this.LAST_SEARCH_TERM = term;
         const url = `${this.API_URL}/search/photos?query=${term}&per_page=30`;
 
         const request = await this.makeRequest(url);
@@ -158,5 +156,9 @@ export class UnsplashProvider implements IUnsplashProvider {
 
     searchIsRunning(): boolean {
         return this.SEARCH_IS_RUNNING;
+    }
+
+    getLastSearchTerm(): string {
+        return this.LAST_SEARCH_TERM;
     }
 }

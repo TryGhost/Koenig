@@ -47,6 +47,9 @@ export class UnsplashService implements IUnsplashService {
 
     async updateSearch(term: string) {
         let results = await this.photoUseCases.searchPhotos(term);
+        if (this.photoUseCases.getLastSearchTerm() !== term) {
+            return;
+        }
         this.photos = results;
         this.layoutPhotos();
     }
