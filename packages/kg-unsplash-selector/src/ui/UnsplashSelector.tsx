@@ -28,7 +28,7 @@ const UnsplashSelector: FunctionComponent<UnsplashSelectorProps> = ({closeModal,
                             <UnsplashIcon className="size-6 mb-1" />
                             Unsplash
                         </h1>
-                        <div className="relative w-full max-w-sm">
+                        <div className="relative w-full lg:max-w-sm">
                             <SearchIcon className="text-grey-700 absolute left-4 top-1/2 size-4 -translate-y-2" />
                             <input className="border-grey-300 focus:border-grey-400 h-10 w-full rounded-full border border-solid pl-10 pr-8 font-sans text-md font-normal text-black focus-visible:outline-none" placeholder="Search free high-resolution photos" autoFocus data-kg-unsplash-search onChange={handleSearch} />
                         </div>
