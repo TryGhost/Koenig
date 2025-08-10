@@ -5,11 +5,12 @@ import {ChangeEvent, FunctionComponent, ReactNode} from 'react';
 
 interface UnsplashSelectorProps {
     closeModal: () => void;
+    columnCount: number;
     handleSearch: (e: ChangeEvent<HTMLInputElement>) => void;
     children: ReactNode;
 }
 
-const UnsplashSelector: FunctionComponent<UnsplashSelectorProps> = ({closeModal, handleSearch, children}) => {
+const UnsplashSelector: FunctionComponent<UnsplashSelectorProps> = ({closeModal, columnCount, handleSearch, children}) => {
     return (
         <>
             <div className="fixed inset-0 z-40 h-[100vh] bg-black opacity-60"></div>
@@ -22,9 +23,9 @@ const UnsplashSelector: FunctionComponent<UnsplashSelectorProps> = ({closeModal,
                     />
                 </button>
                 <div className="flex h-full flex-col">
-                    <header className="flex shrink-0 items-center justify-between px-20 py-10">
+                    <header className={`flex shrink-0 items-center justify-between px-20 py-10 flex-row ${columnCount < 3 ? 'flex-col gap-3 px-5' : ''}`}>
                         <h1 className="flex items-center gap-2 font-sans text-3xl font-bold text-black">
-                            <UnsplashIcon className="mb-1" />
+                            <UnsplashIcon className="size-6 mb-1" />
                             Unsplash
                         </h1>
                         <div className="relative w-full max-w-sm">

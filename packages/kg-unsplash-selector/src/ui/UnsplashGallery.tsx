@@ -16,12 +16,14 @@ interface UnsplashGalleryColumnsProps {
 
 interface GalleryLayoutProps {
     children?: ReactNode;
+    columnCount?: number;
     galleryRef: RefObject<HTMLDivElement>;
     isLoading?: boolean;
     zoomed?: Photo | null;
 }
 
 interface UnsplashGalleryProps extends GalleryLayoutProps {
+    columnCount?: number;
     error?: string | null;
     dataset?: Photo[][] | [];
     selectImg?: any;
@@ -78,9 +80,17 @@ const UnsplashGalleryColumns: React.FC<UnsplashGalleryColumnsProps> = (props) =>
 };
 
 const GalleryLayout: React.FC<GalleryLayoutProps> = (props) => {
+    const classNames = [
+        'flex',
+        'size-full',
+        'justify-center',
+        'overflow-auto',
+        props?.zoomed ? 'pb-10' : '',
+        !props?.zoomed && (props?.columnCount ?? 0) < 3 ? 'px-5' : 'px-20'
+    ].filter(Boolean).join(' ');
     return (
         <div className="relative h-full overflow-hidden" data-kg-unsplash-gallery>
-            <div ref={props.galleryRef} className={`flex size-full justify-center overflow-auto px-20 ${props?.zoomed ? 'pb-10' : ''}`} data-kg-unsplash-gallery-scrollref>
+            <div ref={props.galleryRef} className={classNames} data-kg-unsplash-gallery-scrollref>
                 {props.children}
                 {props?.isLoading && <UnsplashGalleryLoading />}
             </div>
@@ -89,6 +99,7 @@ const GalleryLayout: React.FC<GalleryLayoutProps> = (props) => {
 };
 
 const UnsplashGallery: React.FC<UnsplashGalleryProps> = ({zoomed,
+    columnCount,
     error,
     galleryRef,
     isLoading,
@@ -133,6 +144,7 @@ const UnsplashGallery: React.FC<UnsplashGalleryProps> = ({zoomed,
 
     return (
         <GalleryLayout
+            columnCount={columnCount}
             galleryRef={galleryRef}
             isLoading={isLoading}
             zoomed={zoomed}>

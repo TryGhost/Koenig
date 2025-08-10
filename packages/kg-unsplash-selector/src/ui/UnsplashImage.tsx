@@ -27,7 +27,7 @@ export interface UnsplashImageProps {
 const UnsplashImage: FC<UnsplashImageProps> = ({payload, srcUrl, links, likes, user, alt, urls, height, width, zoomed, insertImage, selectImg}) => {
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        selectImg(zoomed ? null : payload);
+        // selectImg(zoomed ? null : payload);
     };
 
     return (
@@ -61,10 +61,10 @@ const UnsplashImage: FC<UnsplashImageProps> = ({payload, srcUrl, links, likes, u
                         icon="download"
                     />
                 </div>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                        <img alt="author" className="mr-2 size-8 rounded-full" src={user.profile_image.medium} />
-                        <div className="mr-2 truncate font-sans text-sm font-medium text-white">{user.name}</div>
+                <div className="flex items-center justify-between truncate">
+                    <div className="flex w-0 flex-1 items-center">
+                        <img alt="author" className="mr-2 size-8 shrink-0 rounded-full" src={user.profile_image.medium} />
+                        <div className="truncate font-sans text-sm font-medium text-white">{user.name}</div>
                     </div>
                     <UnsplashButton label="Insert image" data-kg-unsplash-insert-button onClick={(e) => {
                         e.stopPropagation();
