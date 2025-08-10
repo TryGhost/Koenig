@@ -80,16 +80,17 @@ const UnsplashGalleryColumns: React.FC<UnsplashGalleryColumnsProps> = (props) =>
 };
 
 const GalleryLayout: React.FC<GalleryLayoutProps> = (props) => {
+    const columnCount = props?.columnCount ?? 0;
     const classNames = [
         'flex',
         'size-full',
         'justify-center',
         'overflow-auto',
         props?.zoomed ? 'pb-10' : '',
-        !props?.zoomed && (props?.columnCount ?? 0) < 3 ? 'px-5' : 'px-20'
+        columnCount < 3 ? 'px-5' : 'px-20'
     ].filter(Boolean).join(' ');
     return (
-        <div className="relative h-full overflow-hidden" data-kg-unsplash-gallery>
+        <div className={`relative h-full overflow-hidden ${columnCount === 1 ? 'px-5' : ''}`} data-kg-unsplash-gallery>
             <div ref={props.galleryRef} className={classNames} data-kg-unsplash-gallery-scrollref>
                 {props.children}
                 {props?.isLoading && <UnsplashGalleryLoading />}

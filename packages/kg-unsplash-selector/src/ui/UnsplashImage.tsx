@@ -27,12 +27,12 @@ export interface UnsplashImageProps {
 const UnsplashImage: FC<UnsplashImageProps> = ({payload, srcUrl, links, likes, user, alt, urls, height, width, zoomed, insertImage, selectImg}) => {
     const handleClick = (e: MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        // selectImg(zoomed ? null : payload);
+        selectImg(zoomed ? null : payload);
     };
 
     return (
         <div
-            className={`relative mb-6 block ${zoomed ? 'h-full w-[max-content] cursor-zoom-out' : 'w-full cursor-zoom-in'}`}
+            className={`relative mb-6 block ${zoomed ? 'h-full w-[max-content] cursor-zoom-out' : 'w-full [@media(min-width:540px)]:cursor-zoom-in'}`}
             style={{backgroundColor: payload.color || 'transparent'}}
             data-kg-unsplash-gallery-item
             onClick={handleClick}>

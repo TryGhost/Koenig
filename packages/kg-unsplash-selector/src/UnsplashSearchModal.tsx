@@ -77,13 +77,11 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
     }, [galleryRef, zoomedImg]);
 
     const calculateColumnCountForViewport = () => {
-        const width = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-        
-        if (width < ONE_COLUMN_WIDTH) {
+        if (window.matchMedia(`(max-width: ${ONE_COLUMN_WIDTH}px)`).matches) {
             return 1;
         }
 
-        if (width < TWO_COLUMN_WIDTH) {
+        if (window.matchMedia(`(max-width: ${TWO_COLUMN_WIDTH}px)`).matches) {
             return 2;
         }
 
@@ -191,13 +189,14 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
     }, [galleryRef, loadMorePhotos, zoomedImg]);
 
     const selectImg = (payload:Photo) => {
-        // if (UnsplashLib.getColumnCount() < 3) {
-        //     setZoomedImg(null);
-        //     if (galleryRef.current) {
-        //         galleryRef.current.scrollTop = lastScrollPos;
-        //     }
-        //     return;
-        // }
+        const isMobileViewport = window.matchMedia('(max-width: 540px)').matches;
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+        const shouldNotZoom = isMobileViewport || isTouchDevice;
+
+        if (shouldNotZoom) {
+            setZoomedImg(null);
+            return;
+        }
         
         if (payload) {
             setZoomedImg(payload);
