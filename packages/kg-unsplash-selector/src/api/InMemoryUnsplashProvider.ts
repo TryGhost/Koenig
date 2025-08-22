@@ -9,6 +9,7 @@ export class InMemoryUnsplashProvider implements IUnsplashProvider {
     REQUEST_IS_RUNNING: boolean = false;
     SEARCH_IS_RUNNING: boolean = false;
     LAST_REQUEST_URL: string = '';
+    LAST_SEARCH_TERM: string = '';
     ERROR: string | null = null;
     IS_LOADING: boolean = false;
     currentPage: number = 1;
@@ -36,6 +37,7 @@ export class InMemoryUnsplashProvider implements IUnsplashProvider {
 
     public async searchPhotos(term: string): Promise<Photo[]> {
         this.SEARCH_IS_RUNNING = true;
+        this.LAST_SEARCH_TERM = term;
         const filteredPhotos = this.photos.filter(photo => (photo.description && photo.description.toLowerCase().includes(term.toLowerCase())) || 
             (photo.alt_description && photo.alt_description.toLowerCase().includes(term.toLowerCase()))
         );
@@ -45,6 +47,10 @@ export class InMemoryUnsplashProvider implements IUnsplashProvider {
 
     searchIsRunning(): boolean {
         return this.SEARCH_IS_RUNNING;
+    }
+
+    getLastSearchTerm(): string {
+        return this.LAST_SEARCH_TERM;
     }
 
     triggerDownload(photo: Photo): void {
