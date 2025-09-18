@@ -11,6 +11,32 @@ import {useTKContext} from '../context/TKContext';
 const REGEX = new RegExp(/(^|.)([^\p{L}\p{N}\s]*(TK|Tk|tk)+[^\p{L}\p{N}\s]*)(.)?/u);
 const WORD_CHAR_REGEX = new RegExp(/\p{L}|\p{N}/u);
 
+// Helper function to get effective top-level element, treating list items as containers
+function getEffectiveTopLevelElement(node) {
+    const topLevel = node.getTopLevelElement();
+
+    if (!topLevel) {
+        return null;
+    }
+
+    // Get the DOM element to check if it's a list
+    const domElement = topLevel.getDOMNode?.() || topLevel.__domNode;
+
+    if (domElement && (domElement.nodeName === 'UL' || domElement.nodeName === 'OL')) {
+        // For lists, find the containing list item instead
+        let currentNode = node;
+        while (currentNode && !currentNode.isRoot()) {
+            const domNode = currentNode.getDOMNode?.() || currentNode.__domNode;
+            if (domNode && domNode.nodeName === 'LI') {
+                return currentNode;
+            }
+            currentNode = currentNode.getParent();
+        }
+    }
+
+    return topLevel;
+}
+
 function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
     const tkClasses = editor._config.theme.tk?.split(' ') || [];
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
@@ -24,7 +50,13 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
         const rootElementRect = rootElement.getBoundingClientRect();
 
-        const positioningElement = containingElement.querySelector('[data-kg-card]') || containingElement;
+        let positioningElement = containingElement.querySelector('[data-kg-card]') || containingElement;
+
+        // For list items, use more precise positioning
+        if (containingElement.nodeName === 'LI') {
+            positioningElement = containingElement;
+        }
+
         const positioningElementRect = positioningElement.getBoundingClientRect();
 
         top = positioningElementRect.top - rootElementRect.top + 4;
@@ -157,7 +189,8 @@ export default function TKPlugin() {
                     if (mutation === 'destroyed') {
                         removeEditorTkNode(editor.getKey(), tkNodeKey);
                     } else {
-                        const parentNodeKey = $getNodeByKey(tkNodeKey).getTopLevelElement()?.getKey();
+                        const effectiveTopLevel = getEffectiveTopLevelElement($getNodeByKey(tkNodeKey));
+                        const parentNodeKey = effectiveTopLevel?.getKey();
                         const topLevelNodeKey = parentEditorNodeKey || parentNodeKey;
                         addEditorTkNode(editor.getKey(), topLevelNodeKey, tkNodeKey);
                     }
