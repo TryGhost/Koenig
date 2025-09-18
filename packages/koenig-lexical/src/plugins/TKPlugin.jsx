@@ -12,6 +12,15 @@ import {useTKContext} from '../context/TKContext';
 const REGEX = new RegExp(/(^|.)([^\p{L}\p{N}\s]*(TK|Tk|tk)+[^\p{L}\p{N}\s]*)(.)?/u);
 const WORD_CHAR_REGEX = new RegExp(/\p{L}|\p{N}/u);
 
+// TK Indicator positioning constants
+const INDICATOR_OFFSET_RIGHT = -56;
+const INDICATOR_OFFSET_TOP = 4;
+
+// Node type constants
+const NODE_TYPES = {
+    LIST_ITEM: 'LI'
+};
+
 // Helper function to get effective top-level element, treating list items as containers
 function getEffectiveTopLevelElement(node) {
     const topLevel = node.getTopLevelElement();
@@ -43,7 +52,7 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
     // position element relative to the TK Node containing element
     const calculatePosition = useCallback(() => {
         let top = 0;
-        let right = -56;
+        let right = INDICATOR_OFFSET_RIGHT;
 
         const rootElementRect = rootElement.getBoundingClientRect();
 
@@ -56,7 +65,7 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
         const positioningElementRect = positioningElement.getBoundingClientRect();
 
-        top = positioningElementRect.top - rootElementRect.top + 4;
+        top = positioningElementRect.top - rootElementRect.top + INDICATOR_OFFSET_TOP;
 
         if (positioningElementRect.right > rootElementRect.right) {
             right = right - (positioningElementRect.right - rootElementRect.right);
