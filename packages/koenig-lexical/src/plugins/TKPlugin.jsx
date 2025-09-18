@@ -21,6 +21,21 @@ const NODE_TYPES = {
     LIST_ITEM: 'LI'
 };
 
+// Positioning helper functions
+function getPositioningElement(containingElement) {
+    return containingElement.nodeName === NODE_TYPES.LIST_ITEM
+        ? containingElement
+        : containingElement.querySelector('[data-kg-card]') || containingElement;
+}
+
+function calculateRightOffset(elementRect, rootRect) {
+    let right = INDICATOR_OFFSET_RIGHT;
+    if (elementRect.right > rootRect.right) {
+        right = right - (elementRect.right - rootRect.right);
+    }
+    return right;
+}
+
 // Helper function to get effective top-level element, treating list items as containers
 function getEffectiveTopLevelElement(node) {
     const topLevel = node.getTopLevelElement();
@@ -53,25 +68,14 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
     const containingElement = editor.getElementByKey(parentKey);
 
-    // position element relative to the TK Node containing element
+    // Calculate indicator position relative to the root element
     const calculatePosition = useCallback(() => {
-        let top = 0;
-        let right = INDICATOR_OFFSET_RIGHT;
+        const rootRect = rootElement.getBoundingClientRect();
+        const positioningElement = getPositioningElement(containingElement);
+        const elementRect = positioningElement.getBoundingClientRect();
 
-        const rootElementRect = rootElement.getBoundingClientRect();
-
-        // Determine positioning element based on container type
-        const positioningElement = containingElement.nodeName === NODE_TYPES.LIST_ITEM
-            ? containingElement
-            : containingElement.querySelector('[data-kg-card]') || containingElement;
-
-        const positioningElementRect = positioningElement.getBoundingClientRect();
-
-        top = positioningElementRect.top - rootElementRect.top + INDICATOR_OFFSET_TOP;
-
-        if (positioningElementRect.right > rootElementRect.right) {
-            right = right - (positioningElementRect.right - rootElementRect.right);
-        }
+        const top = elementRect.top - rootRect.top + INDICATOR_OFFSET_TOP;
+        const right = calculateRightOffset(elementRect, rootRect);
 
         return {top, right};
     }, [rootElement, containingElement]);
