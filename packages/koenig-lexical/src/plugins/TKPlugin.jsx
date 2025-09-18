@@ -29,17 +29,21 @@ function getEffectiveTopLevelElement(node) {
         return null;
     }
 
-    // If the top-level element is a list, find the containing list item instead
-    if ($isListNode(topLevel)) {
-        let currentNode = node;
-        while (currentNode && currentNode.getParent() !== null) {
-            if ($isListItemNode(currentNode)) {
-                return currentNode;
-            }
-            currentNode = currentNode.getParent();
-        }
+    // If the top-level element is not a list, return it directly
+    if (!$isListNode(topLevel)) {
+        return topLevel;
     }
 
+    // Find the containing list item for list nodes
+    let currentNode = node;
+    while (currentNode?.getParent()) {
+        if ($isListItemNode(currentNode)) {
+            return currentNode;
+        }
+        currentNode = currentNode.getParent();
+    }
+
+    // Fallback to top-level element if no list item found
     return topLevel;
 }
 
