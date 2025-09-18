@@ -53,6 +53,11 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
     const containingElement = editor.getElementByKey(parentKey);
 
+    // Early return if containing element is not available
+    if (!containingElement) {
+        return null;
+    }
+
     // position element relative to the TK Node containing element
     const calculatePosition = useCallback(() => {
         let top = 0;
@@ -123,12 +128,15 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
         }
 
         nodeKeys.forEach((key) => {
+            const element = editor.getElementByKey(key);
+            if (!element) return;
+
             if (isHighlighted) {
-                editor.getElementByKey(key).classList.remove(...tkClasses);
-                editor.getElementByKey(key).classList.add(...tkHighlightClasses);
+                element.classList.remove(...tkClasses);
+                element.classList.add(...tkHighlightClasses);
             } else {
-                editor.getElementByKey(key).classList.add(...tkClasses);
-                editor.getElementByKey(key).classList.remove(...tkHighlightClasses);
+                element.classList.add(...tkClasses);
+                element.classList.remove(...tkHighlightClasses);
             }
         });
     };
@@ -288,7 +296,7 @@ export default function TKPlugin() {
         const parentContainer = editor.getElementByKey(parentKey);
 
         if (!parentContainer) {
-            return false;
+            return null;
         }
 
         return (
