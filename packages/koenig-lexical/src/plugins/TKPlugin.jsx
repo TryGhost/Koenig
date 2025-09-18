@@ -1,6 +1,7 @@
 import CardContext from '../context/CardContext';
 import {$createTKNode, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
 import {$getNodeByKey, $getSelection, $isDecoratorNode, $isRangeSelection, TextNode} from 'lexical';
+import {$isListItemNode, $isListNode} from '@lexical/list';
 import {SELECT_CARD_COMMAND} from './KoenigBehaviourPlugin';
 import {createPortal} from 'react-dom';
 import {useCallback, useContext, useEffect, useState} from 'react';
@@ -19,15 +20,11 @@ function getEffectiveTopLevelElement(node) {
         return null;
     }
 
-    // Get the DOM element to check if it's a list
-    const domElement = topLevel.getDOMNode?.() || topLevel.__domNode;
-
-    if (domElement && (domElement.nodeName === 'UL' || domElement.nodeName === 'OL')) {
-        // For lists, find the containing list item instead
+    // If the top-level element is a list, find the containing list item instead
+    if ($isListNode(topLevel)) {
         let currentNode = node;
-        while (currentNode && !currentNode.isRoot()) {
-            const domNode = currentNode.getDOMNode?.() || currentNode.__domNode;
-            if (domNode && domNode.nodeName === 'LI') {
+        while (currentNode && currentNode.getParent() !== null) {
+            if ($isListItemNode(currentNode)) {
                 return currentNode;
             }
             currentNode = currentNode.getParent();
