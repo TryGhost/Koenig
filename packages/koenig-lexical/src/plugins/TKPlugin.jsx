@@ -60,12 +60,10 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
         const rootElementRect = rootElement.getBoundingClientRect();
 
-        let positioningElement = containingElement.querySelector('[data-kg-card]') || containingElement;
-
-        // For list items, use more precise positioning
-        if (containingElement.nodeName === 'LI') {
-            positioningElement = containingElement;
-        }
+        // Determine positioning element based on container type
+        const positioningElement = containingElement.nodeName === NODE_TYPES.LIST_ITEM
+            ? containingElement
+            : containingElement.querySelector('[data-kg-card]') || containingElement;
 
         const positioningElementRect = positioningElement.getBoundingClientRect();
 
