@@ -53,11 +53,6 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
     const containingElement = editor.getElementByKey(parentKey);
 
-    // Early return if containing element is not available
-    if (!containingElement) {
-        return null;
-    }
-
     // position element relative to the TK Node containing element
     const calculatePosition = useCallback(() => {
         let top = 0;
@@ -129,7 +124,9 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
 
         nodeKeys.forEach((key) => {
             const element = editor.getElementByKey(key);
-            if (!element) return;
+            if (!element) {
+                return;
+            }
 
             if (isHighlighted) {
                 element.classList.remove(...tkClasses);
@@ -162,6 +159,11 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
             observer.disconnect();
         };
     }, [rootElement, containingElement, calculatePosition]);
+
+    // Early return if containing element is not available (after all hooks)
+    if (!containingElement) {
+        return null;
+    }
 
     const style = {
         top: `${position.top}px`,
