@@ -16,6 +16,9 @@ interface UnsplashModalProps {
   }
 
 export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onImageInsert, unsplashProviderConfig}) => {
+    const ONE_COLUMN_WIDTH = 540;
+    const TWO_COLUMN_WIDTH = 1024;
+
     const unsplashProvider = useMemo(() => {
         if (!unsplashProviderConfig) {
             return new InMemoryUnsplashProvider();
@@ -72,6 +75,37 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
             };
         }
     }, [galleryRef, zoomedImg]);
+
+    const calculateColumnCountForViewport = () => {
+        if (window.matchMedia(`(max-width: ${ONE_COLUMN_WIDTH}px)`).matches) {
+            return 1;
+        }
+
+        if (window.matchMedia(`(max-width: ${TWO_COLUMN_WIDTH}px)`).matches) {
+            return 2;
+        }
+
+        return 3;
+    };
+
+    React.useEffect(() => {
+        const handleResize = () => {
+            const newColumnCount = calculateColumnCountForViewport();
+            masonryService.changeColumnCount(newColumnCount);
+            UnsplashLib.layoutPhotos();
+            const columns = UnsplashLib.getColumns();
+            setDataset(columns || []);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        // Call once to make sure state is in sync on mount
+        handleResize();
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [UnsplashLib, masonryService]);
 
     const loadInitPhotos = React.useCallback(async () => {
         if (initLoadRef.current === false || searchTerm.length === 0) {
@@ -155,6 +189,15 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
     }, [galleryRef, loadMorePhotos, zoomedImg]);
 
     const selectImg = (payload:Photo) => {
+        const isMobileViewport = window.matchMedia('(max-width: 540px)').matches;
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+        const shouldNotZoom = isMobileViewport || isTouchDevice;
+
+        if (shouldNotZoom) {
+            setZoomedImg(null);
+            return;
+        }
+        
         if (payload) {
             setZoomedImg(payload);
             setLastScrollPos(scrollPos);
@@ -176,10 +219,12 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
     }
     return (
         <UnsplashSelector
-            closeModal={onClose}
+            closeModal={onClose}    
+            columnCount={UnsplashLib.getColumnCount()}
             handleSearch={handleSearch}
         >
             <UnsplashGallery
+                columnCount={UnsplashLib.getColumnCount()}
                 dataset={dataset}
                 error={null}
                 galleryRef={galleryRef}
