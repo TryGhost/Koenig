@@ -3733,18 +3733,18 @@
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.5.2.tgz#db7257d727c891905947bd1c1a99da20e03c2ebd"
   integrity sha512-YAh82Wh4TIrxYLmfGcixwD18oIjyC1pFQC2Y01F2lzV2HTMiYrI0nze0FD0ocB//CKS/7jIUgae+adPqxK5yCQ==
 
-"@tryghost/color-utils@0.2.10":
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.10.tgz#91e5185a04275b2462720080868bf69b7aa651c5"
-  integrity sha512-7m1ylcy+k5CMHG7oAAKVwxkhetzYPW0jFGmx3ryZZk1mJgaKVAg552EJ/kWQ5pBOX2Nkbdq1CVAgXmlFLLQ+oA==
+"@tryghost/color-utils@0.2.12":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.12.tgz#08920159a4b09e778f6a4bfcf41c184a09dccfae"
+  integrity sha512-UKmKFv7LwT0dfqStR73djhFBrUo4Ninjih8R9dYzx7EodlNHsEqEWyeqVFBW17OgWqj3cWiOxXK+jij8FpCXTw==
   dependencies:
     "@types/color" "3.0.6"
     color "^3.2.1"
 
-"@tryghost/helpers@1.1.97":
-  version "1.1.97"
-  resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.97.tgz#f8c004850de10cee25fb396680debfb70e28b5e8"
-  integrity sha512-kuFO46X1cy4ezrI19qK0ZjUvbtPAMZjc4pFcLhe6IPVtziajBd9+4/7qrGaBIzbK5FV+v+WN1POU4vMx7hIPbw==
+"@tryghost/helpers@1.1.99":
+  version "1.1.99"
+  resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.99.tgz#1db57cc423e23e82bbe68ab1150a017f166aa98f"
+  integrity sha512-+sZf7uT5YvdSoLqppQ+QqDl2Y6SX/NSc0/rjHwlWIY+u1UjMRbitCZv1qB5/mrrNxfWNEC1nISAmAZ3yuQVMYA==
   dependencies:
     lodash-es "^4.17.11"
 
@@ -3786,10 +3786,10 @@
     mobiledoc-dom-renderer "0.7.0"
     mobiledoc-text-renderer "0.4.0"
 
-"@tryghost/string@0.2.17":
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.17.tgz#c5c548865100a4a0ff7cfe854eb49f1bd90e268f"
-  integrity sha512-c7/uco8GpUw+tohWtFr0R/zlHHvyXLX3g6+HX3Y52GLTjKsspc0N5GF7l5Y9I0+rwMBcBz9DCWMsTGeLgQBPtQ==
+"@tryghost/string@0.2.20":
+  version "0.2.20"
+  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.20.tgz#edf17bcdc84ade451c81c9e693e4fb64254b8932"
+  integrity sha512-igBnbvwsn+WSpWETuVN0aklqaaVz0S5DGJEkL/CrXkUwBw6VOkjmz5RI56q1yRw/tU/zHBQObbncJPr/KcBQxA==
   dependencies:
     unidecode "^0.1.8"
 
