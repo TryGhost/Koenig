@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "eslint": "8.57.1",
-    "eslint-plugin-ghost": "3.4.3",
+    "eslint-plugin-ghost": "3.4.4",
     "husky": "9.1.7",
     "lerna": "8.2.4",
     "lint-staged": "15.5.2"
