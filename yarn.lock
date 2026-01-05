@@ -3780,17 +3780,17 @@
   dependencies:
     unidecode "^0.1.8"
 
-"@tryghost/url-utils@4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-4.5.0.tgz#b4b95303b003f5a6ffe1bc17c037f91b1cb61033"
-  integrity sha512-U5uXE26GWLJwZdE9LxonADDfG4+Dw5gzOSJ0Y4x0SdufA7sbIdVrQoPFUeupp4kDNBf0BiTABogx1ZmTEnBlyw==
+"@tryghost/url-utils@5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/url-utils/-/url-utils-5.1.0.tgz#61d4275a0071d196bc6daaab100221aa0a2a65e1"
+  integrity sha512-BnHRS3oZwCzkTK0ncaRi0+69EAWjvx6AnJRMas6/oisfu2Rv4ahbne0bI8LmJ4ym7eNLn9M9lA5Cmb4Yjed6xw==
   dependencies:
     cheerio "^0.22.0"
     lodash "^4.17.21"
     moment "^2.27.0"
     moment-timezone "^0.5.31"
-    remark "^11.0.2"
-    remark-footnotes "^1.0.0"
+    remark "11.0.2"
+    remark-footnotes "1.0.0"
     unist-util-visit "^2.0.0"
 
 "@tsconfig/node10@^1.0.7":
@@ -15425,7 +15425,7 @@ release-zalgo@^1.0.0:
   dependencies:
     es6-error "^4.0.1"
 
-remark-footnotes@^1.0.0:
+remark-footnotes@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/remark-footnotes/-/remark-footnotes-1.0.0.tgz#9c7a97f9a89397858a50033373020b1ea2aad011"
   integrity sha512-X9Ncj4cj3/CIvLI2Z9IobHtVi8FVdUrdJkCNaL9kdX8ohfsi18DXHsCVd/A7ssARBdccdDb5ODnt62WuEWaM/g==
@@ -15521,7 +15521,7 @@ remark-stringify@^7.0.0:
     unherit "^1.0.4"
     xtend "^4.0.1"
 
-remark@^11.0.2:
+remark@11.0.2:
   version "11.0.2"
   resolved "https://registry.yarnpkg.com/remark/-/remark-11.0.2.tgz#12b90ea100ac3362b1976fa87a6e4e0ab5968202"
   integrity sha512-bh+eJgn8wgmbHmIBOuwJFdTVRVpl3fcVP6HxmpPWO0ULGP9Qkh6INJh0N5Uy7GqlV7DQYGoqaKiEIpM5LLvJ8w==
