@@ -36,15 +36,15 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "@lexical/clipboard": "0.13.1",
-    "@lexical/headless": "0.13.1",
-    "@lexical/html": "0.13.1",
-    "@lexical/link": "0.13.1",
-    "@lexical/list": "0.13.1",
-    "@lexical/rich-text": "0.13.1",
+    "@lexical/clipboard": "0.39.0",
+    "@lexical/headless": "0.39.0",
+    "@lexical/html": "0.39.0",
+    "@lexical/link": "0.39.0",
+    "@lexical/list": "0.39.0",
+    "@lexical/rich-text": "0.39.0",
     "@tryghost/kg-default-nodes": "2.0.4",
     "@tryghost/kg-default-transforms": "1.2.27",
     "jsdom": "^24.1.1",
-    "lexical": "0.13.1"
+    "lexical": "0.39.0"
   }
 }
