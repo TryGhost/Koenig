@@ -34,6 +34,7 @@ import TKCountPlugin from './plugins/TKCountPlugin';
 import TogglePlugin from './plugins/TogglePlugin';
 import VideoPlugin from './plugins/VideoPlugin';
 import WordCountPlugin from './plugins/WordCountPlugin';
+import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 
 import AllDefaultPlugins from './plugins/AllDefaultPlugins';
 
@@ -93,6 +94,7 @@ export {
     TogglePlugin,
     VideoPlugin,
     WordCountPlugin,
+    ListPlugin,
 
     AllDefaultPlugins,
 
