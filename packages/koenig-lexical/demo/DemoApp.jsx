@@ -1,5 +1,6 @@
 import DarkModeToggle from './components/DarkModeToggle';
 import DollarIcon from './assets/icons/kg-dollar.svg?react';
+import EmailEditorWrapper from './components/EmailEditorWrapper';
 import FloatingButton from './components/FloatingButton';
 import InitialContentToggle from './components/InitialContentToggle';
 import LockIcon from './assets/icons/kg-lock.svg?react';
@@ -162,6 +163,7 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
                 markdownTransformers={EMAIL_TRANSFORMERS}
+                placeholderText="Begin writing your email..."
                 registerAPI={registerAPI}
             >
                 <ListPlugin />
@@ -366,14 +368,27 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
                             ? <TitleTextBox ref={titleRef} editorAPI={editorAPI} setTitle={setTitle} title={title} />
                             : null
                         }
-                        <DemoEditor
-                            cursorDidExitAtTop={focusTitle}
-                            darkMode={darkMode}
-                            editorType={editorType}
-                            registerAPI={setEditorAPI}
-                            setTKCount={setTKCount}
-                            setWordCount={setWordCount}
-                        />
+                        {editorType === 'email' ? (
+                            <EmailEditorWrapper>
+                                <DemoEditor
+                                    cursorDidExitAtTop={focusTitle}
+                                    darkMode={darkMode}
+                                    editorType={editorType}
+                                    registerAPI={setEditorAPI}
+                                    setTKCount={setTKCount}
+                                    setWordCount={setWordCount}
+                                />
+                            </EmailEditorWrapper>
+                        ) : (
+                            <DemoEditor
+                                cursorDidExitAtTop={focusTitle}
+                                darkMode={darkMode}
+                                editorType={editorType}
+                                registerAPI={setEditorAPI}
+                                setTKCount={setTKCount}
+                                setWordCount={setWordCount}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
