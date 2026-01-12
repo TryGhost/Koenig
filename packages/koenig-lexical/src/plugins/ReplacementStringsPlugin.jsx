@@ -1,3 +1,4 @@
+import {ExtendedTextNode} from '@tryghost/kg-default-nodes';
 import {TextNode} from 'lexical';
 import {useEffect} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
@@ -30,9 +31,11 @@ function replacementStringTransform(node) {
 
 function useReplacementStrings(editor) {
     useEffect(() => {
-        const removeTransform = editor.registerNodeTransform(TextNode, replacementStringTransform);
+        const removeTextTransform = editor.registerNodeTransform(TextNode, replacementStringTransform);
+        const removeExtendedTextTransform = editor.registerNodeTransform(ExtendedTextNode, replacementStringTransform);
         return () => {
-            removeTransform();
+            removeTextTransform();
+            removeExtendedTextTransform();
         };
     }, [editor]);
 }
