@@ -26,6 +26,7 @@ import KoenigBehaviourPlugin from './plugins/KoenigBehaviourPlugin';
 import MarkdownPlugin from './plugins/MarkdownPlugin';
 import MarkdownShortcutPlugin from './plugins/MarkdownShortcutPlugin';
 import PlusCardMenuPlugin from './plugins/PlusCardMenuPlugin';
+import ReplacementStringsPlugin from './plugins/ReplacementStringsPlugin';
 import RestrictContentPlugin from './plugins/RestrictContentPlugin';
 import SignupPlugin from './plugins/SignupPlugin';
 import SlashCardMenuPlugin from './plugins/SlashCardMenuPlugin';
@@ -39,6 +40,7 @@ import AllDefaultPlugins from './plugins/AllDefaultPlugins';
 /* Nodes */
 import BASIC_NODES from './nodes/BasicNodes';
 import DEFAULT_NODES from './nodes/DefaultNodes';
+import EMAIL_TEMPLATE_NODES from './nodes/EmailTemplateNodes';
 import MINIMAL_NODES from './nodes/MinimalNodes';
 
 /* Transformers */
@@ -82,6 +84,7 @@ export {
     MarkdownPlugin,
     MarkdownShortcutPlugin,
     PlusCardMenuPlugin,
+    ReplacementStringsPlugin,
     RestrictContentPlugin,
     SignupPlugin,
     SlashCardMenuPlugin,
@@ -94,6 +97,7 @@ export {
 
     DEFAULT_NODES,
     BASIC_NODES,
+    EMAIL_TEMPLATE_NODES,
     MINIMAL_NODES,
 
     ELEMENT_TRANSFORMERS,
