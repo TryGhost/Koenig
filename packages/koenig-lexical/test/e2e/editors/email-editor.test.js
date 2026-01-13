@@ -93,7 +93,7 @@ test.describe('Koenig Editor with email template nodes', async function () {
 
         test('can create horizontal rules with --- shortcut', async function () {
             await focusEditor(page);
-            await page.keyboard.type('--- ');
+            await page.keyboard.type('---');
 
             await assertHTML(page, html`
                 <div data-lexical-decorator="true" contenteditable="false">
@@ -127,6 +127,75 @@ test.describe('Koenig Editor with email template nodes', async function () {
         });
     });
 
+    test.describe('Slash menu', function () {
+        test('opens on / keystroke', async function () {
+            await focusEditor(page);
+            await expect(page.locator('[data-kg-slash-menu]')).toHaveCount(0);
+            await page.keyboard.type('/');
+            await expect(page.locator('[data-kg-slash-menu]')).toBeVisible();
+        });
+
+        test('shows button card option', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/button');
+            await expect(page.locator('[data-kg-slash-menu]')).toBeVisible();
+            await expect(page.locator('[data-kg-cardmenu-idx]', {hasText: 'Button'})).toBeVisible();
+        });
+
+        test('shows divider option', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/hr');
+            await expect(page.locator('[data-kg-slash-menu]')).toBeVisible();
+            await expect(page.locator('[data-kg-cardmenu-idx]', {hasText: 'Divider'})).toBeVisible();
+        });
+
+        test('shows image option', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/image');
+            await expect(page.locator('[data-kg-slash-menu]')).toBeVisible();
+            await expect(page.locator('[data-kg-cardmenu-idx]', {hasText: 'Image'})).toBeVisible();
+        });
+
+        test('shows callout option', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/callout');
+            await expect(page.locator('[data-kg-slash-menu]')).toBeVisible();
+            await expect(page.locator('[data-kg-cardmenu-idx]', {hasText: 'Callout'})).toBeVisible();
+        });
+
+        test('can insert button card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/button');
+            await page.keyboard.press('Enter');
+
+            await expect(page.locator('[data-kg-card="button"]')).toBeVisible();
+        });
+
+        test('can insert divider card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/hr');
+            await page.keyboard.press('Enter');
+
+            await expect(page.locator('[data-kg-card="horizontalrule"]')).toBeVisible();
+        });
+
+        test('can insert image card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/image');
+            await page.keyboard.press('Enter');
+
+            await expect(page.locator('[data-kg-card="image"]')).toBeVisible();
+        });
+
+        test('can insert callout card', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/callout');
+            await page.keyboard.press('Enter');
+
+            await expect(page.locator('[data-kg-card="callout"]')).toBeVisible();
+        });
+    });
+
     test.describe('Unsupported features', function () {
         test('code block shortcut does NOT create code block', async function () {
             await focusEditor(page);
@@ -136,13 +205,6 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await assertHTML(page, html`
                 <p dir="ltr"><span data-lexical-text="true">\`\`\`javascript </span></p>
             `);
-        });
-
-        test('slash menu is not available', async function () {
-            await focusEditor(page);
-            await expect(page.locator('[data-kg-slash-menu]')).toHaveCount(0);
-            await page.keyboard.type('/');
-            await expect(page.locator('[data-kg-slash-menu]')).toHaveCount(0);
         });
 
         test('plus button is not shown', async function () {
