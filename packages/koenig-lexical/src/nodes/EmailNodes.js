@@ -10,7 +10,6 @@ import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 
 import {AsideNode} from './AsideNode';
-import {ButtonNode} from './ButtonNode';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
 
 const EMAIL_NODES = [
@@ -24,7 +23,6 @@ const EMAIL_NODES = [
     ListNode,
     ListItemNode,
     LinkNode,
-    ButtonNode,
     HorizontalRuleNode
 ];
 
