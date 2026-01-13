@@ -162,6 +162,7 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
         return (
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
+                isSnippetsEnabled={false}
                 markdownTransformers={EMAIL_TRANSFORMERS}
                 placeholderText="Begin writing your email..."
                 registerAPI={registerAPI}
