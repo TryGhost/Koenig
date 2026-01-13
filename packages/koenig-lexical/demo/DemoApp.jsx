@@ -15,17 +15,11 @@ import emailContent from './content/email-content.json';
 import minimalContent from './content/minimal-content.json';
 import {$getRoot, $isDecoratorNode} from 'lexical';
 import {
-    BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_NODES, EMAIL_TRANSFORMERS,
-    KoenigComposableEditor, KoenigComposer, KoenigEditor, ListPlugin, MINIMAL_NODES,
-    MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
+    BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_NODES,
+    KoenigComposableEditor, KoenigComposer, KoenigEditor, KoenigEmailEditor,
+    MINIMAL_NODES, MINIMAL_TRANSFORMERS, RestrictContentPlugin,
+    TKCountPlugin, WordCountPlugin
 } from '../src';
-// These plugins must be imported AFTER '../src' to avoid circular dependency issues
-import CalloutPlugin from '../src/plugins/CalloutPlugin';
-import HorizontalRulePlugin from '../src/plugins/HorizontalRulePlugin';
-import ImagePlugin from '../src/plugins/ImagePlugin';
-import ReplacementStringsPlugin from '../src/plugins/ReplacementStringsPlugin';
-import SlashCardMenuPlugin from '../src/plugins/SlashCardMenuPlugin';
-import {ButtonPlugin} from '../src/plugins/ButtonPlugin';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
@@ -165,22 +159,13 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
         );
     } else if (editorType === 'email') {
         return (
-            <KoenigComposableEditor
+            <KoenigEmailEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
-                isSnippetsEnabled={false}
-                markdownTransformers={EMAIL_TRANSFORMERS}
                 placeholderText="Begin writing your email..."
                 registerAPI={registerAPI}
             >
-                <ListPlugin />
-                <ReplacementStringsPlugin />
                 <WordCountPlugin onChange={setWordCount} />
-                <SlashCardMenuPlugin />
-                <ButtonPlugin />
-                <CalloutPlugin />
-                <HorizontalRulePlugin />
-                <ImagePlugin />
-            </KoenigComposableEditor>
+            </KoenigEmailEditor>
         );
     }
 
