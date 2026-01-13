@@ -32,10 +32,19 @@ function replacementStringTransform(node) {
 function useReplacementStrings(editor) {
     useEffect(() => {
         const removeTextTransform = editor.registerNodeTransform(TextNode, replacementStringTransform);
-        const removeExtendedTextTransform = editor.registerNodeTransform(ExtendedTextNode, replacementStringTransform);
+        
+        // Only register ExtendedTextNode transform if the editor has it registered
+        // (nested editors may not have ExtendedTextNode in their node list)
+        let removeExtendedTextTransform;
+        if (editor.hasNode(ExtendedTextNode)) {
+            removeExtendedTextTransform = editor.registerNodeTransform(ExtendedTextNode, replacementStringTransform);
+        }
+        
         return () => {
             removeTextTransform();
-            removeExtendedTextTransform();
+            if (removeExtendedTextTransform) {
+                removeExtendedTextTransform();
+            }
         };
     }, [editor]);
 }
