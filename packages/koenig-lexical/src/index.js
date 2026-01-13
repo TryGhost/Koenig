@@ -41,7 +41,7 @@ import AllDefaultPlugins from './plugins/AllDefaultPlugins';
 /* Nodes */
 import BASIC_NODES from './nodes/BasicNodes';
 import DEFAULT_NODES from './nodes/DefaultNodes';
-import EMAIL_TEMPLATE_NODES from './nodes/EmailTemplateNodes';
+import EMAIL_NODES from './nodes/EmailNodes';
 import MINIMAL_NODES from './nodes/MinimalNodes';
 
 /* Transformers */
@@ -100,7 +100,7 @@ export {
 
     DEFAULT_NODES,
     BASIC_NODES,
-    EMAIL_TEMPLATE_NODES,
+    EMAIL_NODES,
     MINIMAL_NODES,
 
     ELEMENT_TRANSFORMERS,

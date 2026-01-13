@@ -13,7 +13,7 @@ import {AsideNode} from './AsideNode';
 import {ButtonNode} from './ButtonNode';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
 
-const EMAIL_TEMPLATE_NODES = [
+const EMAIL_NODES = [
     ExtendedTextNode,
     extendedTextNodeReplacement,
     HeadingNode,
@@ -28,4 +28,4 @@ const EMAIL_TEMPLATE_NODES = [
     HorizontalRuleNode
 ];
 
-export default EMAIL_TEMPLATE_NODES;
+export default EMAIL_NODES;

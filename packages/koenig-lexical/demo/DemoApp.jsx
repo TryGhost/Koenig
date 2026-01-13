@@ -16,7 +16,7 @@ import emailContent from './content/email-content.json';
 import minimalContent from './content/minimal-content.json';
 import {$getRoot, $isDecoratorNode} from 'lexical';
 import {
-    BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_TEMPLATE_NODES, EMAIL_TRANSFORMERS,
+    BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_NODES, EMAIL_TRANSFORMERS,
     KoenigComposableEditor, KoenigComposer, KoenigEditor, ListPlugin, MINIMAL_NODES,
     MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
 } from '../src';
@@ -129,7 +129,7 @@ function getAllowedNodes({editorType}) {
     } else if (editorType === 'minimal') {
         return MINIMAL_NODES;
     } else if (editorType === 'email') {
-        return EMAIL_TEMPLATE_NODES;
+        return EMAIL_NODES;
     }
     return undefined;
 }
