@@ -17,10 +17,9 @@ import minimalContent from './content/minimal-content.json';
 import {$getRoot, $isDecoratorNode} from 'lexical';
 import {
     BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_TEMPLATE_NODES, EMAIL_TRANSFORMERS,
-    KoenigComposableEditor, KoenigComposer, KoenigEditor, MINIMAL_NODES,
+    KoenigComposableEditor, KoenigComposer, KoenigEditor, ListPlugin, MINIMAL_NODES,
     MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
 } from '../src';
-import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
