@@ -5,7 +5,6 @@ import FloatingButton from './components/FloatingButton';
 import InitialContentToggle from './components/InitialContentToggle';
 import LockIcon from './assets/icons/kg-lock.svg?react';
 import React, {useState} from 'react';
-import ReplacementStringsPlugin from '../src/plugins/ReplacementStringsPlugin';
 import Sidebar from './components/Sidebar';
 import TitleTextBox from './components/TitleTextBox';
 import Watermark from './components/Watermark';
@@ -20,6 +19,13 @@ import {
     KoenigComposableEditor, KoenigComposer, KoenigEditor, ListPlugin, MINIMAL_NODES,
     MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
 } from '../src';
+// These plugins must be imported AFTER '../src' to avoid circular dependency issues
+import CalloutPlugin from '../src/plugins/CalloutPlugin';
+import HorizontalRulePlugin from '../src/plugins/HorizontalRulePlugin';
+import ImagePlugin from '../src/plugins/ImagePlugin';
+import ReplacementStringsPlugin from '../src/plugins/ReplacementStringsPlugin';
+import SlashCardMenuPlugin from '../src/plugins/SlashCardMenuPlugin';
+import {ButtonPlugin} from '../src/plugins/ButtonPlugin';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
@@ -169,6 +175,11 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
                 <ListPlugin />
                 <ReplacementStringsPlugin />
                 <WordCountPlugin onChange={setWordCount} />
+                <SlashCardMenuPlugin />
+                <ButtonPlugin />
+                <CalloutPlugin />
+                <HorizontalRulePlugin />
+                <ImagePlugin />
             </KoenigComposableEditor>
         );
     }

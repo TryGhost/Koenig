@@ -10,7 +10,10 @@ import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 
 import {AsideNode} from './AsideNode';
+import {ButtonNode} from './ButtonNode';
+import {CalloutNode} from './CalloutNode';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
+import {ImageNode} from './ImageNode';
 
 const EMAIL_NODES = [
     ExtendedTextNode,
@@ -23,7 +26,10 @@ const EMAIL_NODES = [
     ListNode,
     ListItemNode,
     LinkNode,
-    HorizontalRuleNode
+    ButtonNode,
+    CalloutNode,
+    HorizontalRuleNode,
+    ImageNode
 ];
 
 export default EMAIL_NODES;
