@@ -13,7 +13,6 @@ import {AsideNode} from './AsideNode';
 import {ButtonNode} from './ButtonNode';
 import {CalloutNode} from './CalloutNode';
 import {HorizontalRuleNode} from './HorizontalRuleNode';
-import {ImageNode} from './ImageNode';
 
 const EMAIL_NODES = [
     ExtendedTextNode,
@@ -28,8 +27,7 @@ const EMAIL_NODES = [
     LinkNode,
     ButtonNode,
     CalloutNode,
-    HorizontalRuleNode,
-    ImageNode
+    HorizontalRuleNode
 ];
 
 export default EMAIL_NODES;
