@@ -37,8 +37,6 @@ Ghost core team only.
 Create an `.env` file in `packages/koenig-lexical`, with environment variables for Sentry, so that we can track errors in the editor. There is a copy of this file in [1password](https://start.1password.com/open/i?a=FTXJSFO4TFAIVNFNGLK6UWNFTQ&v=2zqurhc5fmj5thjoob4oxwfllq&i=gcx3n7g2y5dibdn6n4zsgtm64y&h=ghost.1password.com).
 
 ```
-VITE_SENTRY_ORG=""
-VITE_SENTRY_PROJECT=""
 VITE_SENTRY_AUTH_TOKEN=""
 ```
 
