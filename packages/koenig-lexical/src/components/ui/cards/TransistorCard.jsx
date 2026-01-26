@@ -5,9 +5,6 @@ import {ColorPickerSetting, SettingsPanel} from '../SettingsPanel.jsx';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay.jsx';
 import {VisibilitySettings} from '../VisibilitySettings.jsx';
 
-// Hardcoded UUID for preview testing
-const TEST_MEMBER_UUID = '40a42d50-32b7-46c9-9875-ad6ceb27dba6';
-
 export function TransistorCard({
     accentColor = '',
     backgroundColor = '',
@@ -20,7 +17,6 @@ export function TransistorCard({
 }) {
     const [accentColorPickerExpanded, setAccentColorPickerExpanded] = useState(false);
     const [backgroundColorPickerExpanded, setBackgroundColorPickerExpanded] = useState(false);
-    const [showPreview, setShowPreview] = useState(false);
 
     const tabs = [
         {id: 'design', label: 'Design'},
@@ -90,26 +86,11 @@ export function TransistorCard({
 
     return (
         <>
-            <div className="relative w-full rounded-lg border border-grey-300 bg-grey-100 dark:border-grey-900 dark:bg-grey-950">
-                {showPreview ? (
-                    <TransistorPreview
-                        accentColor={accentColor}
-                        backgroundColor={backgroundColor}
-                    />
-                ) : (
-                    <TransistorPlaceholder
-                        accentColor={accentColor}
-                        backgroundColor={backgroundColor}
-                    />
-                )}
-                {/* Preview toggle button */}
-                <button
-                    className="absolute right-2 top-2 rounded bg-black/50 px-2 py-1 text-xs font-medium text-white hover:bg-black/70"
-                    type="button"
-                    onClick={() => setShowPreview(!showPreview)}
-                >
-                    {showPreview ? 'Hide Preview' : 'Preview'}
-                </button>
+            <div className="w-full rounded-lg border border-grey-300 bg-grey-100 dark:border-grey-900 dark:bg-grey-950">
+                <TransistorPlaceholder
+                    accentColor={accentColor}
+                    backgroundColor={backgroundColor}
+                />
                 {!isEditing && <ReadOnlyOverlay />}
             </div>
 
@@ -126,35 +107,6 @@ export function TransistorCard({
                 </SettingsPanel>
             )}
         </>
-    );
-}
-
-function TransistorPreview({accentColor, backgroundColor}) {
-    // Build the embed URL with color parameters for live preview
-    let embedUrl = `https://partner.transistor.fm/ghost/embed/${TEST_MEMBER_UUID}`;
-    const params = [];
-
-    if (accentColor) {
-        params.push(`color=${accentColor.replace('#', '')}`);
-    }
-    if (backgroundColor) {
-        params.push(`background=${backgroundColor.replace('#', '')}`);
-    }
-
-    if (params.length > 0) {
-        embedUrl += '?' + params.join('&');
-    }
-
-    return (
-        <div className="min-h-[180px]" data-testid="transistor-preview">
-            <iframe
-                height="180"
-                src={embedUrl}
-                style={{border: 'none'}}
-                title="Transistor Podcast Player Preview"
-                width="100%"
-            />
-        </div>
     );
 }
 
@@ -198,11 +150,6 @@ TransistorCard.propTypes = {
     handleBackgroundColorChange: PropTypes.func,
     toggleVisibility: PropTypes.func,
     showVisibilitySettings: PropTypes.bool
-};
-
-TransistorPreview.propTypes = {
-    accentColor: PropTypes.string,
-    backgroundColor: PropTypes.string
 };
 
 TransistorPlaceholder.propTypes = {
