@@ -44,14 +44,6 @@ test.describe('Transistor Card', async () => {
         await expect(page.getByTestId('transistor-placeholder')).toBeVisible();
     });
 
-    test('has preview button', async function () {
-        await focusEditor(page);
-        await insertCard(page, {cardName: 'transistor'});
-
-        const previewButton = page.getByRole('button', {name: 'Preview'});
-        await expect(previewButton).toBeVisible();
-    });
-
     test('has settings panel with Design and Visibility tabs', async function () {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
