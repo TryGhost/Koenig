@@ -1,0 +1,60 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/*/package.json'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Preview what would be published without actually publishing'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    # Run for lerna version commits or manual dispatch
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.head_commit.message, 'Published new versions')
+
+    permissions:
+      id-token: write    # OIDC token for npm trusted publishers
+      contents: read
+
+    env:
+      FORCE_COLOR: 1
+      NODE_OPTIONS: '--max_old_space_size=8192'
+      CI: true
+      IS_SHIPPING: true
+      VITE_SENTRY_AUTH_TOKEN: ${{ secrets.VITE_SENTRY_AUTH_TOKEN }}
+      NPM_CONFIG_PROVENANCE: true
+
+    steps:
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn --prefer-offline
+
+      - name: Build all packages
+        run: lerna run build
+
+      - name: Publish to npm
+        run: yarn ship:ci ${{ (github.event.inputs['dry-run'] == 'true' && '--dry-run') || '' }}
+
+      - uses: tryghost/actions/actions/slack-build@main
+        if: failure()
+        with:
+          status: ${{ job.status }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -18,7 +18,8 @@
     "lint": "lerna run lint",
     "preship": "lerna run preversion && yarn test",
     "fix": "yarn cache clean && rm -rf node_modules && yarn",
-    "ship": "IS_SHIPPING=true lerna publish --git-remote ${GHOST_UPSTREAM:-origin}",
+    "ship": "lerna version --git-remote ${GHOST_UPSTREAM:-origin}",
+    "ship:ci": "IS_SHIPPING=true lerna publish from-package --yes --no-private",
     "main": "git checkout main && git pull ${GHOST_UPSTREAM:-origin} main && yarn"
   },
   "devDependencies": {
