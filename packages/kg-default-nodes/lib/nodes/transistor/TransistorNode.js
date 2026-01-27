@@ -26,7 +26,6 @@ export class TransistorNode extends generateDecoratorNode({
 }) {
     constructor(data = {}, key) {
         super(data, key);
-        // Override default visibility if not explicitly set
         if (!data.visibility) {
             this.__visibility = JSON.parse(JSON.stringify(TRANSISTOR_DEFAULT_VISIBILITY));
         }
@@ -34,7 +33,6 @@ export class TransistorNode extends generateDecoratorNode({
 
     static getPropertyDefaults() {
         const defaults = super.getPropertyDefaults();
-        // Override the visibility default
         defaults.visibility = JSON.parse(JSON.stringify(TRANSISTOR_DEFAULT_VISIBILITY));
         return defaults;
     }
