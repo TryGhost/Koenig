@@ -1,3 +1,4 @@
+const assert = require('node:assert/strict');
 const {createHeadlessEditor} = require('@lexical/headless');
 const {$getRoot} = require('lexical');
 const {dom} = require('../test-utils');
@@ -35,31 +36,31 @@ describe('TransistorNode', function () {
 
     it('matches node with $isTransistorNode', editorTest(function () {
         const transistorNode = new TransistorNode(dataset);
-        $isTransistorNode(transistorNode).should.be.true();
+        assert.strictEqual($isTransistorNode(transistorNode), true);
     }));
 
     describe('data access', function () {
         it('has getters for all properties', editorTest(function () {
             const transistorNode = new TransistorNode(dataset);
 
-            transistorNode.accentColor.should.equal(dataset.accentColor);
-            transistorNode.backgroundColor.should.equal(dataset.backgroundColor);
+            assert.strictEqual(transistorNode.accentColor, dataset.accentColor);
+            assert.strictEqual(transistorNode.backgroundColor, dataset.backgroundColor);
             // Default visibility should be members-only (nonMember: false)
-            transistorNode.visibility.web.nonMember.should.be.false();
-            transistorNode.visibility.web.memberSegment.should.equal('status:free,status:-free');
-            transistorNode.visibility.email.memberSegment.should.equal('status:free,status:-free');
+            assert.strictEqual(transistorNode.visibility.web.nonMember, false);
+            assert.strictEqual(transistorNode.visibility.web.memberSegment, 'status:free,status:-free');
+            assert.strictEqual(transistorNode.visibility.email.memberSegment, 'status:free,status:-free');
         }));
 
         it('has setters for all properties', editorTest(function () {
             const transistorNode = new TransistorNode();
 
-            transistorNode.accentColor.should.equal('');
+            assert.strictEqual(transistorNode.accentColor, '');
             transistorNode.accentColor = '#FF0000';
-            transistorNode.accentColor.should.equal('#FF0000');
+            assert.strictEqual(transistorNode.accentColor, '#FF0000');
 
-            transistorNode.backgroundColor.should.equal('');
+            assert.strictEqual(transistorNode.backgroundColor, '');
             transistorNode.backgroundColor = '#000000';
-            transistorNode.backgroundColor.should.equal('#000000');
+            assert.strictEqual(transistorNode.backgroundColor, '#000000');
 
             transistorNode.visibility = {
                 web: {
@@ -70,7 +71,7 @@ describe('TransistorNode', function () {
                     memberSegment: 'status:free'
                 }
             };
-            transistorNode.visibility.should.deepEqual({
+            assert.deepStrictEqual(transistorNode.visibility, {
                 web: {
                     nonMember: false,
                     memberSegment: 'status:free'
@@ -85,15 +86,15 @@ describe('TransistorNode', function () {
             const transistorNode = new TransistorNode(dataset);
             const transistorNodeDataset = transistorNode.getDataset();
 
-            transistorNodeDataset.accentColor.should.equal(dataset.accentColor);
-            transistorNodeDataset.backgroundColor.should.equal(dataset.backgroundColor);
-            transistorNodeDataset.visibility.web.nonMember.should.be.false();
+            assert.strictEqual(transistorNodeDataset.accentColor, dataset.accentColor);
+            assert.strictEqual(transistorNodeDataset.backgroundColor, dataset.backgroundColor);
+            assert.strictEqual(transistorNodeDataset.visibility.web.nonMember, false);
         }));
     });
 
     describe('getType', function () {
         it('returns the correct node type', editorTest(function () {
-            TransistorNode.getType().should.equal('transistor');
+            assert.strictEqual(TransistorNode.getType(), 'transistor');
         }));
     });
 
@@ -104,30 +105,30 @@ describe('TransistorNode', function () {
             const clone = TransistorNode.clone(transistorNode);
             const cloneDataset = clone.getDataset();
 
-            cloneDataset.should.deepEqual({...transistorNodeDataset});
+            assert.deepStrictEqual(cloneDataset, {...transistorNodeDataset});
         }));
     });
 
     describe('hasEditMode', function () {
         it('returns true', editorTest(function () {
             const transistorNode = new TransistorNode(dataset);
-            transistorNode.hasEditMode().should.be.true();
+            assert.strictEqual(transistorNode.hasEditMode(), true);
         }));
     });
 
     describe('isEmpty', function () {
         it('returns false', editorTest(function () {
             const transistorNode = new TransistorNode(dataset);
-            transistorNode.isEmpty().should.be.false();
+            assert.strictEqual(transistorNode.isEmpty(), false);
         }));
     });
 
     describe('default visibility', function () {
         it('defaults to members-only (nonMember: false)', editorTest(function () {
             const transistorNode = new TransistorNode();
-            transistorNode.visibility.web.nonMember.should.be.false();
-            transistorNode.visibility.web.memberSegment.should.equal('status:free,status:-free');
-            transistorNode.visibility.email.memberSegment.should.equal('status:free,status:-free');
+            assert.strictEqual(transistorNode.visibility.web.nonMember, false);
+            assert.strictEqual(transistorNode.visibility.web.memberSegment, 'status:free,status:-free');
+            assert.strictEqual(transistorNode.visibility.email.memberSegment, 'status:free,status:-free');
         }));
 
         it('preserves custom visibility when provided', editorTest(function () {
@@ -141,7 +142,7 @@ describe('TransistorNode', function () {
                 }
             };
             const transistorNode = new TransistorNode({visibility: customVisibility});
-            transistorNode.visibility.should.deepEqual(customVisibility);
+            assert.deepStrictEqual(transistorNode.visibility, customVisibility);
         }));
     });
 
@@ -161,18 +162,18 @@ describe('TransistorNode', function () {
             const transistorNode = new TransistorNode({visibility: publicVisibility});
             const {element} = transistorNode.exportDOM(exportOptions);
 
-            element.tagName.should.equal('FIGURE');
-            element.classList.contains('kg-card').should.be.true();
-            element.classList.contains('kg-transistor-card').should.be.true();
+            assert.strictEqual(element.tagName, 'FIGURE');
+            assert.strictEqual(element.classList.contains('kg-card'), true);
+            assert.strictEqual(element.classList.contains('kg-transistor-card'), true);
 
             const iframe = element.querySelector('iframe');
-            iframe.should.exist;
-            iframe.getAttribute('src').should.equal('https://partner.transistor.fm/ghost/embed/{uuid}');
-            iframe.getAttribute('width').should.equal('100%');
-            iframe.getAttribute('height').should.equal('180');
-            iframe.getAttribute('frameborder').should.equal('no');
-            iframe.getAttribute('scrolling').should.equal('no');
-            iframe.hasAttribute('seamless').should.be.true();
+            assert.ok(iframe);
+            assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}');
+            assert.strictEqual(iframe.getAttribute('width'), '100%');
+            assert.strictEqual(iframe.getAttribute('height'), '180');
+            assert.strictEqual(iframe.getAttribute('frameborder'), 'no');
+            assert.strictEqual(iframe.getAttribute('scrolling'), 'no');
+            assert.strictEqual(iframe.hasAttribute('seamless'), true);
         }));
 
         it('includes color param when accentColor is set', editorTest(function () {
@@ -180,7 +181,7 @@ describe('TransistorNode', function () {
             const {element} = transistorNode.exportDOM(exportOptions);
 
             const iframe = element.querySelector('iframe');
-            iframe.getAttribute('src').should.equal('https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6');
+            assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6');
         }));
 
         it('includes background param when backgroundColor is set', editorTest(function () {
@@ -188,7 +189,7 @@ describe('TransistorNode', function () {
             const {element} = transistorNode.exportDOM(exportOptions);
 
             const iframe = element.querySelector('iframe');
-            iframe.getAttribute('src').should.equal('https://partner.transistor.fm/ghost/embed/{uuid}?background=FFFFFF');
+            assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?background=FFFFFF');
         }));
 
         it('includes both color params when both are set', editorTest(function () {
@@ -200,7 +201,7 @@ describe('TransistorNode', function () {
             const {element} = transistorNode.exportDOM(exportOptions);
 
             const iframe = element.querySelector('iframe');
-            iframe.getAttribute('src').should.equal('https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6&background=1F2937');
+            assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6&background=1F2937');
         }));
 
         it('strips # from color values', editorTest(function () {
@@ -213,9 +214,9 @@ describe('TransistorNode', function () {
 
             const iframe = element.querySelector('iframe');
             const src = iframe.getAttribute('src');
-            src.should.not.containEql('#');
-            src.should.containEql('color=FF0000');
-            src.should.containEql('background=00FF00');
+            assert.ok(!src.includes('#'));
+            assert.ok(src.includes('color=FF0000'));
+            assert.ok(src.includes('background=00FF00'));
         }));
 
         it('renders with web visibility gating', editorTest(function () {
@@ -225,8 +226,8 @@ describe('TransistorNode', function () {
             const {element} = transistorNode.exportDOM(exportOptions);
 
             // Should be wrapped in visibility gating
-            element.tagName.should.equal('TEXTAREA');
-            element.value.should.match(/<!--kg-gated-block:begin nonMember:false memberSegment:"status:free,status:-free" -->/);
+            assert.strictEqual(element.tagName, 'TEXTAREA');
+            assert.match(element.value, /<!--kg-gated-block:begin nonMember:false memberSegment:"status:free,status:-free" -->/);
         }));
 
         it('renders with email visibility when segment is restricted', editorTest(function () {
@@ -239,9 +240,9 @@ describe('TransistorNode', function () {
             });
             const {element, type} = transistorNode.exportDOM(exportOptions);
 
-            type.should.equal('html');
-            element.tagName.should.equal('DIV');
-            element.dataset.ghSegment.should.equal('status:-free');
+            assert.strictEqual(type, 'html');
+            assert.strictEqual(element.tagName, 'DIV');
+            assert.strictEqual(element.dataset.ghSegment, 'status:-free');
         }));
     });
 
@@ -250,7 +251,7 @@ describe('TransistorNode', function () {
             const transistorNode = new TransistorNode(dataset);
             const json = transistorNode.exportJSON();
 
-            json.should.deepEqual({
+            assert.deepStrictEqual(json, {
                 type: 'transistor',
                 version: 1,
                 accentColor: '#8B5CF6',
@@ -271,8 +272,8 @@ describe('TransistorNode', function () {
             const transistorNode = new TransistorNode({});
             const json = transistorNode.exportJSON();
 
-            json.accentColor.should.equal('');
-            json.backgroundColor.should.equal('');
+            assert.strictEqual(json.accentColor, '');
+            assert.strictEqual(json.backgroundColor, '');
         }));
     });
 
@@ -309,11 +310,11 @@ describe('TransistorNode', function () {
             editor.getEditorState().read(() => {
                 try {
                     const [transistorNode] = $getRoot().getChildren();
-                    $isTransistorNode(transistorNode).should.be.true();
-                    transistorNode.accentColor.should.equal('#FF5500');
-                    transistorNode.backgroundColor.should.equal('#000000');
-                    transistorNode.visibility.web.nonMember.should.be.false();
-                    transistorNode.visibility.web.memberSegment.should.equal('status:-free');
+                    assert.strictEqual($isTransistorNode(transistorNode), true);
+                    assert.strictEqual(transistorNode.accentColor, '#FF5500');
+                    assert.strictEqual(transistorNode.backgroundColor, '#000000');
+                    assert.strictEqual(transistorNode.visibility.web.nonMember, false);
+                    assert.strictEqual(transistorNode.visibility.web.memberSegment, 'status:-free');
 
                     done();
                 } catch (e) {
@@ -326,7 +327,7 @@ describe('TransistorNode', function () {
     describe('getTextContent', function () {
         it('returns empty string', editorTest(function () {
             const transistorNode = new TransistorNode(dataset);
-            transistorNode.getTextContent().should.equal('');
+            assert.strictEqual(transistorNode.getTextContent(), '');
         }));
     });
 });
