@@ -20,7 +20,6 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card enters edit mode automatically when inserted
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
                 <div data-kg-card-editing="true" data-kg-card-selected="true" data-kg-card="transistor">
@@ -49,8 +48,6 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card is already in edit mode after insert
-        // Verify the preview button exists
         const previewButton = page.getByRole('button', {name: 'Preview'});
         await expect(previewButton).toBeVisible();
     });
@@ -59,8 +56,6 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card is already in edit mode after insert
-        // Check for Design and Visibility tabs using data-testid
         await expect(page.getByTestId('tab-design')).toBeVisible();
         await expect(page.getByTestId('tab-visibility')).toBeVisible();
     });
@@ -69,8 +64,6 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card is already in edit mode after insert
-        // Find the player color setting
         const playerColorSetting = page.getByTestId('transistor-accent-color');
         await expect(playerColorSetting).toBeVisible();
     });
@@ -79,8 +72,6 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card is already in edit mode after insert
-        // Find the background color setting
         const backgroundColorSetting = page.getByTestId('transistor-background-color');
         await expect(backgroundColorSetting).toBeVisible();
     });
@@ -89,11 +80,8 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card is already in edit mode after insert
-        // Click Visibility tab using data-testid
         await page.getByTestId('tab-visibility').click();
 
-        // Should show visibility options - use first() since there may be duplicates for web/email
         await expect(page.getByText('Free members').first()).toBeVisible();
         await expect(page.getByText('Paid members').first()).toBeVisible();
     });
@@ -102,11 +90,8 @@ test.describe('Transistor Card', async () => {
         await focusEditor(page);
         await insertCard(page, {cardName: 'transistor'});
 
-        // Card is already in edit mode after insert
-        // Click Visibility tab using data-testid
         await page.getByTestId('tab-visibility').click();
 
-        // Public visitors toggle should NOT be present
         await expect(page.getByText('Public visitors')).not.toBeVisible();
     });
 
