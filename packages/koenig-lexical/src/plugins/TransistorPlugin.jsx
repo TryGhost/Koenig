@@ -10,8 +10,7 @@ export const TransistorPlugin = () => {
 
     React.useEffect(() => {
         if (!editor.hasNodes([TransistorNode])) {
-            console.error('TransistorPlugin: TransistorNode not registered'); // eslint-disable-line no-console
-            return;
+            throw new Error('TransistorPlugin: TransistorNode not registered');
         }
         return mergeRegister(
             editor.registerCommand(
