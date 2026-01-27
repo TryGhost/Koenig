@@ -1,5 +1,9 @@
+import {addCreateDocumentOption} from '../../utils/add-create-document-option';
+import {renderWithVisibility} from '../../utils/visibility';
+
 export function renderTransistorNode(node, options) {
-    const document = options.dom;
+    addCreateDocumentOption(options);
+    const document = options.createDocument();
     const accentColor = node.accentColor;
     const backgroundColor = node.backgroundColor;
 
@@ -33,8 +37,5 @@ export function renderTransistorNode(node, options) {
     figure.setAttribute('class', 'kg-card kg-transistor-card');
     figure.appendChild(iframe);
 
-    return {
-        element: figure,
-        type: 'inner'
-    };
+    return renderWithVisibility({element: figure, type: 'inner'}, node.visibility, options);
 }
