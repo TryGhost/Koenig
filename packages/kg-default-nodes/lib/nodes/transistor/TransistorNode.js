@@ -1,4 +1,5 @@
 // eslint-disable-next-line ghost/filenames/match-exported-class
+import cloneDeep from 'lodash/cloneDeep';
 import {generateDecoratorNode} from '../../generate-decorator-node';
 import {renderTransistorNode} from './transistor-renderer';
 import {ALL_MEMBERS_SEGMENT} from '../../utils/visibility';
@@ -27,13 +28,13 @@ export class TransistorNode extends generateDecoratorNode({
     constructor(data = {}, key) {
         super(data, key);
         if (!data.visibility) {
-            this.__visibility = JSON.parse(JSON.stringify(TRANSISTOR_DEFAULT_VISIBILITY));
+            this.__visibility = cloneDeep(TRANSISTOR_DEFAULT_VISIBILITY);
         }
     }
 
     static getPropertyDefaults() {
         const defaults = super.getPropertyDefaults();
-        defaults.visibility = JSON.parse(JSON.stringify(TRANSISTOR_DEFAULT_VISIBILITY));
+        defaults.visibility = cloneDeep(TRANSISTOR_DEFAULT_VISIBILITY);
         return defaults;
     }
 
