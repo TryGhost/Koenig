@@ -9,21 +9,18 @@ export function renderTransistorNode(node, options) {
 
     // Build the embed URL with optional color parameters
     // {uuid} placeholder will be replaced server-side with the member's UUID
-    let embedUrl = 'https://partner.transistor.fm/ghost/embed/{uuid}';
-    const params = [];
+    const baseUrl = 'https://partner.transistor.fm/ghost/embed/{uuid}';
+    const params = new URLSearchParams();
 
     if (accentColor) {
-        // Remove # prefix if present for URL parameter
-        params.push(`color=${accentColor.replace('#', '')}`);
+        params.set('color', accentColor.replace(/^#/, ''));
     }
     if (backgroundColor) {
-        // Remove # prefix if present for URL parameter
-        params.push(`background=${backgroundColor.replace('#', '')}`);
+        params.set('background', backgroundColor.replace(/^#/, ''));
     }
 
-    if (params.length > 0) {
-        embedUrl += '?' + params.join('&');
-    }
+    const queryString = params.toString();
+    const embedUrl = queryString ? `${baseUrl}?${queryString}` : baseUrl;
 
     const iframe = document.createElement('iframe');
     iframe.setAttribute('width', '100%');
