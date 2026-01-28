@@ -32,18 +32,11 @@ To add a new package to the repo:
 
 Ghost core team only.
 
-### Prerequisites
-
-Create an `.env` file in `packages/koenig-lexical`, with environment variables for Sentry, so that we can track errors in the editor. There is a copy of this file in [1password](https://start.1password.com/open/i?a=FTXJSFO4TFAIVNFNGLK6UWNFTQ&v=2zqurhc5fmj5thjoob4oxwfllq&i=gcx3n7g2y5dibdn6n4zsgtm64y&h=ghost.1password.com).
-
-```
-VITE_SENTRY_AUTH_TOKEN=""
-```
-
 ### Deploy a new version
 
-1. run `yarn ship` in the top-level Koenig directory to publish to npm
-2. bump the Koenig dependencies in Ghost. Either:
+1. run `yarn ship` in the top-level Koenig directory — this runs tests, prompts for version bumps, and pushes the version commit to `main`
+2. CI automatically publishes the updated packages to npm via the `publish.yml` workflow
+3. bump the Koenig dependencies in Ghost. Either:
    - wait for Renovate to create a bump PR ([example](https://github.com/TryGhost/Ghost/pull/21606)) and merge it (recommended option)
    - or, do it manually, by adding the new Koenig package versions to the `package.json` files in `Ghost/core` and `Ghost/admin`
 

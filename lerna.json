@@ -4,11 +4,12 @@
     "packages": ["packages/*"],
     "command": {
         "version": {
-          "exact": true
-        },
-        "publish": {
+            "exact": true,
             "allowBranch": "main",
             "message": "Published new versions"
+        },
+        "publish": {
+            "allowBranch": "main"
         }
     },
     "local": {
