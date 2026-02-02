@@ -3955,20 +3955,20 @@
   resolved "https://registry.yarnpkg.com/@testing-library/user-event/-/user-event-14.6.1.tgz#13e09a32d7a8b7060fe38304788ebf4197cd2149"
   integrity sha512-vq7fv0rnt+QTXgPxr5Hjc210p6YKq2kmdziLgnsZGgLJ9e6VAShx1pACLuRjd/AS/sr7phAR58OIIpf0LlmQNw==
 
-"@tryghost/color-utils@0.2.10":
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.10.tgz#91e5185a04275b2462720080868bf69b7aa651c5"
-  integrity sha512-7m1ylcy+k5CMHG7oAAKVwxkhetzYPW0jFGmx3ryZZk1mJgaKVAg552EJ/kWQ5pBOX2Nkbdq1CVAgXmlFLLQ+oA==
+"@tryghost/color-utils@0.2.13":
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/@tryghost/color-utils/-/color-utils-0.2.13.tgz#13d88476b5d5b579abba090fe4c55aaa74a581ac"
+  integrity sha512-+cDTmtJl6ANMOwq48aIHGenU1pVMhBe0Jmjv38CMW0qQuvUGHbhiQVhv/IatR5sOOJO+XMkdHdC+dYAKRibCsw==
   dependencies:
     "@types/color" "3.0.6"
     color "^3.2.1"
 
-"@tryghost/helpers@1.1.97":
-  version "1.1.97"
-  resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.97.tgz#f8c004850de10cee25fb396680debfb70e28b5e8"
-  integrity sha512-kuFO46X1cy4ezrI19qK0ZjUvbtPAMZjc4pFcLhe6IPVtziajBd9+4/7qrGaBIzbK5FV+v+WN1POU4vMx7hIPbw==
+"@tryghost/helpers@1.1.100":
+  version "1.1.100"
+  resolved "https://registry.yarnpkg.com/@tryghost/helpers/-/helpers-1.1.100.tgz#530a64e403d041a1dc60364d5b1da95dc5b6c98c"
+  integrity sha512-fNWFrPOiAxJo3tIYrCLCTG2iHM4MDxhbgsuYEb/q9BWME0J0xsswgYLgMRQGTghf5P5O2dhzskaYPbabRHXE6w==
   dependencies:
-    lodash-es "^4.17.11"
+    lodash-es "^4.17.21"
 
 "@tryghost/kg-markdown-html-renderer@7.1.2":
   version "7.1.2"
@@ -4008,10 +4008,10 @@
     mobiledoc-dom-renderer "0.7.0"
     mobiledoc-text-renderer "0.4.0"
 
-"@tryghost/string@0.2.17":
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.17.tgz#c5c548865100a4a0ff7cfe854eb49f1bd90e268f"
-  integrity sha512-c7/uco8GpUw+tohWtFr0R/zlHHvyXLX3g6+HX3Y52GLTjKsspc0N5GF7l5Y9I0+rwMBcBz9DCWMsTGeLgQBPtQ==
+"@tryghost/string@0.2.21":
+  version "0.2.21"
+  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.21.tgz#7294e3fb9dad595b6e180f8bbe75c33845dc45de"
+  integrity sha512-ILG3h+I432rlgD46tHrugkxEnJ8mh73JxKco4B/uIlBDv5evZjq9psIXt595ZA0Q8DuKMQKZUeVZYV9GBLA1eQ==
   dependencies:
     unidecode "^0.1.8"
 
@@ -12388,10 +12388,10 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.11:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+lodash-es@^4.17.21:
+  version "4.17.23"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.23.tgz#58c4360fd1b5d33afc6c0bbd3d1149349b1138e0"
+  integrity sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==
 
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
