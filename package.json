@@ -23,7 +23,7 @@
     "main": "git checkout main && git pull ${GHOST_UPSTREAM:-origin} main && yarn"
   },
   "devDependencies": {
-    "eslint": "8.57.1",
+    "eslint": "9.26.0",
     "eslint-plugin-ghost": "3.4.4",
     "husky": "9.1.7",
     "lerna": "9.0.3",
