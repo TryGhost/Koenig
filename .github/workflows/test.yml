@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     strategy:
       matrix:
         node: ['22.13.1']
@@ -39,7 +39,7 @@ jobs:
           sudo dpkg-reconfigure man-db
           sudo apt-get install msttcorefonts -qq
 
-      - run: yarn --prefer-offline
+      - run: yarn --frozen-lockfile
 
       - name: Get installed Playwright version
         id: playwright-version

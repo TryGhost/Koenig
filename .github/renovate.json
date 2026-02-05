@@ -11,7 +11,7 @@
         "devDependencies"
       ],
       "automerge": true,
-      "automergeType": "branch"
+      "automergeType": "pr"
     },
     {
       "groupName": "rollup + plugins",
