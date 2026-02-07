@@ -24,6 +24,14 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useSharedHistoryContext} from '../context/SharedHistoryContext';
 import {useSharedOnChangeContext} from '../context/SharedOnChangeContext';
 
+function isMobileViewport() {
+    if (typeof window === 'undefined') {
+        return false;
+    }
+
+    return window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+}
+
 const KoenigComposableEditor = ({
     onChange,
     onBlur,
@@ -52,6 +60,37 @@ const KoenigComposableEditor = ({
 
     const isNested = !!editor._parentEditor;
     const isDragReorderEnabled = isDragEnabled && !readOnly && !isNested;
+    const [showMobileSlashHint, setShowMobileSlashHint] = React.useState(false);
+
+    React.useEffect(() => {
+        if (isNested) {
+            setShowMobileSlashHint(false);
+            return;
+        }
+
+        const updateViewportState = () => {
+            setShowMobileSlashHint(isMobileViewport());
+        };
+
+        updateViewportState();
+        window.addEventListener('resize', updateViewportState);
+
+        return () => {
+            window.removeEventListener('resize', updateViewportState);
+        };
+    }, [isNested]);
+
+    const resolvedPlaceholderText = React.useMemo(() => {
+        if (typeof placeholderText === 'string') {
+            return placeholderText;
+        }
+
+        if (showMobileSlashHint) {
+            return 'Begin writing your post... Type / to open the card menu.';
+        }
+
+        return undefined;
+    }, [placeholderText, showMobileSlashHint]);
 
     const {onChange: sharedOnChange} = useSharedOnChangeContext();
     const _onChange = React.useCallback((editorState) => {
@@ -101,7 +140,7 @@ const KoenigComposableEditor = ({
                     </div>
                 }
                 ErrorBoundary={KoenigErrorBoundary}
-                placeholder={placeholder || <EditorPlaceholder className={placeholderClassName} text={placeholderText} />}
+                placeholder={placeholder || <EditorPlaceholder className={placeholderClassName} text={resolvedPlaceholderText} />}
             />
             <LinkPlugin />
             <OnChangePlugin ignoreHistoryMergeTagChange={false} ignoreSelectionChange={true} onChange={_onChange} />
