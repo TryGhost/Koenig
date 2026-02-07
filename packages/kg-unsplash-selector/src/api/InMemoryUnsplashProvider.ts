@@ -47,9 +47,8 @@ export class InMemoryUnsplashProvider implements IUnsplashProvider {
         return this.SEARCH_IS_RUNNING;
     }
 
-    triggerDownload(photo: Photo): void {
-        () => {
-            photo;
-        };
+    triggerDownload(_photo: Photo): void {
+        // Intentionally a no-op in the in-memory test provider.
+        void _photo;
     }
 }
