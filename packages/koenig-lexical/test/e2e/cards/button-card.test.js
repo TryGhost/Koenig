@@ -1,5 +1,6 @@
 import {assertHTML, createSnippet, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import {selectCustomColor} from '../../utils/color-select-helper';
 
 test.describe('Button Card', async () => {
     let page;
@@ -124,6 +125,27 @@ test.describe('Button Card', async () => {
         await expect(buttonTextInput).toHaveValue('https://someblog.com/somepost');
         const buttonLink = await page.getByTestId('button-card-btn');
         await expect(buttonLink).toHaveAttribute('href','https://someblog.com/somepost');
+    });
+
+    test('button color picker works', async function () {
+        await focusEditor(page);
+        await insertCard(page, {cardName: 'button'});
+
+        await page.click('[data-testid="button-color"] [data-testid="color-selector-button"]');
+
+        await selectCustomColor(page, '#ff0000', 'color-picker-toggle');
+        await page.click('[data-testid="settings-panel"]');
+
+        await expect(page.locator('[data-testid="button-card-btn"]')).toHaveCSS('background-color', 'rgb(255, 0, 0)');
+        await expect(page.locator('[data-testid="button-card-btn"]')).toHaveCSS('color', 'rgb(255, 255, 255)');
+
+        await page.click('[data-testid="button-color"] [data-testid="color-selector-button"]');
+
+        await selectCustomColor(page, '#f7f7f7', null);
+        await page.click('[data-testid="settings-panel"]');
+
+        await expect(page.locator('[data-testid="button-card-btn"]')).toHaveCSS('background-color', 'rgb(247, 247, 247)');
+        await expect(page.locator('[data-testid="button-card-btn"]')).toHaveCSS('color', 'rgb(0, 0, 0)');
     });
 
     // NOTE: an improvement would be to pass in suggested url options, but the construction now doesn't make that straightforward

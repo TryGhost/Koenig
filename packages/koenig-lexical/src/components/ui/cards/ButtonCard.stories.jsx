@@ -53,7 +53,9 @@ export const Empty = Template.bind({});
 Empty.args = {
     display: 'Editing',
     alignment: 'center',
+    buttonColor: 'accent',
     buttonText: '',
+    buttonTextColor: '#FFFFFF',
     buttonPlaceholder: 'Add button text',
     buttonUrl: ''
 };
@@ -62,7 +64,9 @@ export const Populated = Template.bind({});
 Populated.args = {
     display: 'Editing',
     alignment: 'center',
+    buttonColor: 'accent',
     buttonText: 'Subscribe',
+    buttonTextColor: '#FFFFFF',
     buttonPlaceholder: 'Add button text',
     buttonUrl: 'https://ghost.org/'
 };

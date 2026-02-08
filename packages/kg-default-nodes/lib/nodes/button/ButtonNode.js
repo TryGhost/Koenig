@@ -8,7 +8,9 @@ export class ButtonNode extends generateDecoratorNode({
     properties: [
         {name: 'buttonText', default: ''},
         {name: 'alignment', default: 'center'},
-        {name: 'buttonUrl', default: '', urlType: 'url'}
+        {name: 'buttonUrl', default: '', urlType: 'url'},
+        {name: 'buttonColor', default: 'accent'},
+        {name: 'buttonTextColor', default: '#ffffff'}
     ],
     defaultRenderFn: renderButtonNode
 }) {
