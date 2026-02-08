@@ -1,3 +1,5 @@
+import {rgbToHex} from '../../utils/rgb-to-hex';
+
 export function parseButtonNode(ButtonNode) {
     return {
         div: (nodeElem) => {
@@ -13,13 +15,18 @@ export function parseButtonNode(ButtonNode) {
                         }
 
                         const buttonNode = domNode?.querySelector('.kg-btn');
-                        const buttonUrl = buttonNode.getAttribute('href');
-                        const buttonText = buttonNode.textContent;
+                        const buttonUrl = buttonNode?.getAttribute('href');
+                        const buttonText = buttonNode?.textContent;
+                        const isAccentButton = buttonNode?.classList?.contains('kg-btn-accent') ?? false;
+                        const buttonColor = isAccentButton ? 'accent' : (rgbToHex(buttonNode?.style?.backgroundColor) || 'accent');
+                        const buttonTextColor = rgbToHex(buttonNode?.style?.color) || '#ffffff';
 
                         const payload = {
                             buttonText: buttonText,
                             alignment: alignment,
-                            buttonUrl: buttonUrl
+                            buttonUrl: buttonUrl,
+                            buttonColor: buttonColor,
+                            buttonTextColor: buttonTextColor
                         };
 
                         const node = new ButtonNode(payload);
