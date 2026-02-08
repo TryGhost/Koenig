@@ -23,14 +23,7 @@ import {useCollaborationContext} from '@lexical/react/LexicalCollaborationContex
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useSharedHistoryContext} from '../context/SharedHistoryContext';
 import {useSharedOnChangeContext} from '../context/SharedOnChangeContext';
-
-function isMobileViewport() {
-    if (typeof window === 'undefined') {
-        return false;
-    }
-
-    return window.innerWidth < 768 && window.innerHeight > window.innerWidth;
-}
+import {isMobileViewport} from '../utils/isMobileViewport';
 
 const KoenigComposableEditor = ({
     onChange,

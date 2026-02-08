@@ -1,14 +1,7 @@
 import PlusCardMenuPlugin from '../plugins/PlusCardMenuPlugin';
 import React from 'react';
 import SlashCardMenuPlugin from '../plugins/SlashCardMenuPlugin';
-
-function isMobileViewport() {
-    if (typeof window === 'undefined') {
-        return false;
-    }
-
-    return window.innerWidth < 768 && window.innerHeight > window.innerWidth;
-}
+import {isMobileViewport} from '../utils/isMobileViewport';
 
 export const CardMenuPlugin = () => {
     const [hidePlusMenu, setHidePlusMenu] = React.useState(false);
