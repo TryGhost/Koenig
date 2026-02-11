@@ -93,7 +93,7 @@ function TransistorPlaceholder() {
             className="relative flex items-center gap-5 p-5"
             data-testid="transistor-placeholder"
         >
-            <div className="flex size-24 shrink-0 items-center justify-center rounded-xl bg-[#B4389A]">
+            <div className="flex size-24 shrink-0 items-center justify-center rounded-xl bg-accent">
                 <TransistorIcon className="size-14 text-white" />
             </div>
             <div className="flex min-h-20 max-w-[480px] flex-col justify-center">
