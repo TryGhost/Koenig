@@ -90,11 +90,11 @@ export function TransistorCard({
 function TransistorPlaceholder() {
     return (
         <div
-            className="relative flex items-center gap-5 p-5"
+            className="relative flex items-center gap-5 p-2"
             data-testid="transistor-placeholder"
         >
-            <div className="flex size-24 shrink-0 items-center justify-center rounded-xl bg-accent">
-                <TransistorIcon className="size-14 text-white" />
+            <div className="flex size-20 shrink-0 items-center justify-center rounded-md bg-accent">
+                <TransistorIcon className="size-10 text-white" />
             </div>
             <div className="flex min-h-20 max-w-[480px] flex-col justify-center">
                 <div className="text-[1.6rem] font-semibold leading-tight text-black dark:text-white">
