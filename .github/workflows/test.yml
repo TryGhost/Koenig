@@ -39,7 +39,7 @@ jobs:
           sudo dpkg-reconfigure man-db
           sudo apt-get install msttcorefonts -qq
 
-      - run: yarn --prefer-offline
+      - run: yarn --frozen-lockfile --prefer-offline
 
       - name: Get installed Playwright version
         id: playwright-version
