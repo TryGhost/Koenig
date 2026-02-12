@@ -101,7 +101,7 @@ function TransistorPlaceholder() {
                     Members-only podcasts
                 </div>
                 <div className="mt-1 text-[1.4rem] leading-snug text-grey-700 dark:text-grey-500">
-                Your members will see their private podcast feed here, with links to listen in any podcast app.
+                    Your members will see their private podcast feed here, with links to listen in any podcast app.
                 </div>
             </div>
             <div className="absolute bottom-4 right-5 flex items-center gap-1.5 text-grey-500 dark:text-grey-600">
