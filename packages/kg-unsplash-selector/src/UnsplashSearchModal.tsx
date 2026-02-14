@@ -56,19 +56,15 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
 
     React.useEffect(() => {
         const ref = galleryRef.current;
-        if (!zoomedImg) {
-            if (ref) {
-                ref.addEventListener('scroll', () => {
-                    setScrollPos(ref.scrollTop);
-                });
-            }
-            // unmount
+        if (!zoomedImg && ref) {
+            const handleScrollPosition = () => {
+                setScrollPos(ref.scrollTop);
+            };
+
+            ref.addEventListener('scroll', handleScrollPosition);
+
             return () => {
-                if (ref) {
-                    ref.removeEventListener('scroll', () => {
-                        setScrollPos(ref.scrollTop);
-                    });
-                }
+                ref.removeEventListener('scroll', handleScrollPosition);
             };
         }
     }, [galleryRef, zoomedImg]);
@@ -154,7 +150,7 @@ export const UnsplashSearchModal : React.FC<UnsplashModalProps> = ({onClose, onI
         }
     }, [galleryRef, loadMorePhotos, zoomedImg]);
 
-    const selectImg = (payload:Photo) => {
+    const selectImg = (payload: Photo | null) => {
         if (payload) {
             setZoomedImg(payload);
             setLastScrollPos(scrollPos);
