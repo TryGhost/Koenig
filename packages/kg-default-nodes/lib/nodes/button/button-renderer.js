@@ -20,13 +20,18 @@ export function renderButtonNode(node, options = {}) {
 
 function frontendTemplate(node, document) {
     const cardClasses = getCardClasses(node);
+    const buttonClasses = getButtonClasses(node);
+    const buttonStyle = getButtonStyle(node);
 
     const cardDiv = document.createElement('div');
     cardDiv.setAttribute('class', cardClasses);
 
     const button = document.createElement('a');
     button.setAttribute('href', node.buttonUrl);
-    button.setAttribute('class', 'kg-btn kg-btn-accent');
+    button.setAttribute('class', buttonClasses);
+    if (buttonStyle) {
+        button.setAttribute('style', buttonStyle);
+    }
     button.textContent = node.buttonText || 'Button Title';
 
     cardDiv.appendChild(button);
@@ -34,7 +39,10 @@ function frontendTemplate(node, document) {
 }
 
 function emailTemplate(node, options, document) {
-    const {buttonUrl, buttonText} = node;
+    const {buttonUrl, buttonText, buttonColor = 'accent', buttonTextColor = '#ffffff'} = node;
+    const buttonClasses = buttonColor === 'accent' ? 'btn btn-accent' : 'btn';
+    const buttonStyle = buttonColor !== 'accent' ? `style="background-color: ${buttonColor};"` : '';
+    const textStyle = (buttonTextColor && (buttonColor !== 'accent' || buttonTextColor !== '#ffffff')) ? `style="color: ${buttonTextColor};"` : '';
 
     let cardHtml;
     if (options.feature?.emailCustomization) {
@@ -42,10 +50,10 @@ function emailTemplate(node, options, document) {
         <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td>
-                    <table class="btn btn-accent" border="0" cellspacing="0" cellpadding="0" align="${node.alignment}">
+                    <table class="${buttonClasses}" border="0" cellspacing="0" cellpadding="0" align="${node.alignment}">
                         <tr>
-                            <td align="center">
-                                <a href="${buttonUrl}">${buttonText}</a>
+                            <td align="center" ${buttonStyle}>
+                                <a href="${buttonUrl}" ${textStyle}>${buttonText}</a>
                             </td>
                         </tr>
                     </table>
@@ -59,9 +67,10 @@ function emailTemplate(node, options, document) {
     } else if (options.feature?.emailCustomizationAlpha) {
         const buttonHtml = renderEmailButton({
             alignment: node.alignment,
-            color: 'accent',
+            color: buttonColor,
             url: buttonUrl,
-            text: buttonText
+            text: buttonText,
+            textColor: buttonTextColor
         });
 
         cardHtml = html`
@@ -80,12 +89,14 @@ function emailTemplate(node, options, document) {
         element.innerHTML = cardHtml;
         return {element, type: 'inner'};
     } else {
+        const wrapperStyle = buttonColor !== 'accent' ? `style="background-color: ${buttonColor};"` : '';
+        const wrapperClass = buttonColor === 'accent' ? 'btn btn-accent' : 'btn';
         cardHtml = html`
-        <div class="btn btn-accent">
+        <div class="${wrapperClass}" ${wrapperStyle}>
             <table border="0" cellspacing="0" cellpadding="0" align="${node.alignment}">
                 <tr>
                     <td align="center">
-                        <a href="${buttonUrl}">${buttonText}</a>
+                        <a href="${buttonUrl}" ${textStyle}>${buttonText}</a>
                     </td>
                 </tr>
             </table>
@@ -106,4 +117,28 @@ function getCardClasses(node) {
     }
 
     return cardClasses.join(' ');
+}
+
+function getButtonClasses(node) {
+    const buttonClasses = ['kg-btn'];
+
+    if (node.buttonColor === 'accent' || !node.buttonColor) {
+        buttonClasses.push('kg-btn-accent');
+    }
+
+    return buttonClasses.join(' ');
+}
+
+function getButtonStyle(node) {
+    const styles = [];
+
+    if (node.buttonColor && node.buttonColor !== 'accent') {
+        styles.push(`background-color: ${node.buttonColor}`);
+    }
+
+    if (node.buttonTextColor && (node.buttonColor !== 'accent' || node.buttonTextColor !== '#ffffff')) {
+        styles.push(`color: ${node.buttonTextColor}`);
+    }
+
+    return styles.join('; ');
 }
