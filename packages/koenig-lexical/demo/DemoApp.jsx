@@ -165,24 +165,22 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
                 markdownTransformers={EMAIL_TRANSFORMERS}
                 registerAPI={registerAPI}
             >
-                <WordCountPlugin onChange={setWordCount} />
-                <KoenigSnippetPlugin />
-                
-                <ReplacementStringsPlugin />
-                <ListPlugin />
-                <EmEnDashPlugin />
-                <HorizontalRulePlugin />
-                <EmojiPickerPlugin />
-
+                <BookmarkPlugin />
+                <ButtonPlugin />
+                <CalloutPlugin />
                 <CardMenuPlugin />
                 <EmailCtaPlugin />
-                <CalloutPlugin />
-                <HtmlPlugin />
+                <EmEnDashPlugin />
+                <EmojiPickerPlugin />
                 <FilePlugin />
-                <ButtonPlugin />
-                <BookmarkPlugin />
+                <HorizontalRulePlugin />
+                <HtmlPlugin />
                 <ImagePlugin /> 
                 <KoenigSelectorPlugin />
+                <KoenigSnippetPlugin />
+                <ListPlugin />
+                <ReplacementStringsPlugin />
+                <WordCountPlugin onChange={setWordCount} />
             </KoenigComposableEditor>
         );
     }
