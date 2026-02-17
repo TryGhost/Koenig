@@ -163,6 +163,7 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
             <KoenigComposableEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
                 markdownTransformers={EMAIL_TRANSFORMERS}
+                placeholderText="Begin writing your email..."
                 registerAPI={registerAPI}
             >
                 <BookmarkPlugin />
