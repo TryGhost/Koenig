@@ -43,6 +43,7 @@ import AllDefaultPlugins from './plugins/AllDefaultPlugins';
 /* Nodes */
 import BASIC_NODES from './nodes/BasicNodes';
 import DEFAULT_NODES from './nodes/DefaultNodes';
+import EMAIL_EDITOR_NODES from './nodes/EmailEditorNodes';
 import EMAIL_NODES from './nodes/EmailNodes';
 import MINIMAL_NODES from './nodes/MinimalNodes';
 
@@ -104,6 +105,7 @@ export {
 
     DEFAULT_NODES,
     BASIC_NODES,
+    EMAIL_EDITOR_NODES,
     EMAIL_NODES,
     MINIMAL_NODES,
 
