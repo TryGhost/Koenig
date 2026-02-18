@@ -7,7 +7,6 @@ import {
     ExtendedHeadingNode,
     ExtendedQuoteNode,
     ExtendedTextNode,
-    TKNode,
     extendedHeadingNodeReplacement,
     extendedQuoteNodeReplacement,
     extendedTextNodeReplacement
@@ -21,14 +20,7 @@ import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 
 /**
- * Node set for the email editor.
- * Includes cards appropriate for email content:
- * - Image, Button, Callout, Bookmark, Horizontal Rule, File, HTML, Email CTA
- *
- * Excludes cards that don't work in email:
- * - Video, Audio, Embeds (require JS), Toggle (interactive), Code Block (rendering issues),
- *   Gallery (complex layouts), Signup (already subscribed), Paywall (web-only),
- *   Markdown (internal), Header (complex), GIF (file size), Product
+ * Node set for the email editor. Slimmed down version of the default nodes exempting those that aren't meant for email.
  */
 const EMAIL_EDITOR_NODES = [
     // Base text nodes
@@ -44,7 +36,6 @@ const EMAIL_EDITOR_NODES = [
     ListItemNode,
     AsideNode,
     LinkNode,
-    TKNode,
 
     // Cards for email
     HorizontalRuleNode,
