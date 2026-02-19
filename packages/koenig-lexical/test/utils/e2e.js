@@ -165,7 +165,8 @@ export function prettifyHTML(string, options = {}) {
             attributeSort: 'ASC',
             bracketSameLine: true,
             htmlWhitespaceSensitivity: 'ignore',
-            parser: 'html'
+            parser: 'html',
+            plugins: ['prettier-plugin-organize-attributes']
         })
         .trim();
 }
