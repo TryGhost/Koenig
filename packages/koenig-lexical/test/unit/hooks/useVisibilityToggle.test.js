@@ -51,6 +51,7 @@ describe('useVisibilityToggle', () => {
     function callHook(visibility = DEFAULT_VISIBILITY, {stripeEnabled = true} = {}) {
         node.visibility = visibility;
         cardConfig.stripeEnabled = stripeEnabled;
+        cardConfig.visibilitySettings = undefined;
 
         return renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
     }
@@ -59,7 +60,7 @@ describe('useVisibilityToggle', () => {
         vi.spyOn(visibilityUtils, 'getVisibilityOptions');
         const visibility = {web: {nonMember: false, memberSegment: ''}, email: {memberSegment: 'status:free,status:-free'}};
         callHook(visibility);
-        expect(visibilityUtils.getVisibilityOptions).toHaveBeenCalledWith(visibility, {isStripeEnabled: true});
+        expect(visibilityUtils.getVisibilityOptions).toHaveBeenCalledWith(visibility, {isStripeEnabled: true, showWeb: true, showEmail: true});
     });
 
     it('returns correct visibilityOptions', () => {
@@ -96,5 +97,48 @@ describe('useVisibilityToggle', () => {
 
         act(() => toggleVisibility('web', 'paidMembers', false));
         expect(node.visibility.web.memberSegment).toBe('status:free');
+    });
+
+    it('returns only web options when email visibility is disabled in cardConfig', () => {
+        cardConfig.visibilitySettings = {showEmail: false};
+        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+
+        expect(result.current.visibilityOptions).toEqual([
+            {
+                label: 'Web',
+                key: 'web',
+                toggles: [
+                    {key: 'nonMembers', label: 'Public visitors', checked: true},
+                    {key: 'freeMembers', label: 'Free members', checked: true},
+                    {key: 'paidMembers', label: 'Paid members', checked: true}
+                ]
+            }
+        ]);
+    });
+
+    it('returns only email options when web visibility is disabled in cardConfig', () => {
+        cardConfig.visibilitySettings = {showWeb: false};
+        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+
+        expect(result.current.visibilityOptions).toEqual([
+            {
+                label: 'Email',
+                key: 'email',
+                toggles: [
+                    {key: 'freeMembers', label: 'Free members', checked: true},
+                    {key: 'paidMembers', label: 'Paid members', checked: true}
+                ]
+            }
+        ]);
+    });
+
+    it('safely no-ops when toggling a hidden visibility group', () => {
+        cardConfig.visibilitySettings = {showEmail: false};
+        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+        const beforeVisibility = structuredClone(node.visibility);
+
+        act(() => result.current.toggleVisibility('email', 'freeMembers', false));
+
+        expect(node.visibility).toEqual(beforeVisibility);
     });
 });

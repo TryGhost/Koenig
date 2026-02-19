@@ -3,6 +3,8 @@ import {getVisibilityOptions, parseVisibilityToToggles, serializeOptionsToVisibi
 
 export const useVisibilityToggle = (editor, nodeKey, cardConfig) => {
     const isStripeEnabled = cardConfig?.stripeEnabled;
+    const showWeb = cardConfig?.visibilitySettings?.showWeb ?? true;
+    const showEmail = cardConfig?.visibilitySettings?.showEmail ?? true;
 
     let currentVisibility;
 
@@ -12,20 +14,25 @@ export const useVisibilityToggle = (editor, nodeKey, cardConfig) => {
     });
 
     const visibilityData = parseVisibilityToToggles(currentVisibility);
-    const visibilityOptions = getVisibilityOptions(currentVisibility, {isStripeEnabled});
+    const visibilityOptions = getVisibilityOptions(currentVisibility, {isStripeEnabled, showWeb, showEmail});
 
     return {
         visibilityData,
         visibilityOptions,
         toggleVisibility: (type, key, value) => {
             editor.update(() => {
-                const newVisibilityOptions = structuredClone(visibilityOptions);
-                const group = newVisibilityOptions.find(g => g.key === type);
-                const toggle = group.toggles.find(t => t.key === key);
-                toggle.checked = value;
-
                 const node = $getNodeByKey(nodeKey);
-                node.visibility = serializeOptionsToVisibility(newVisibilityOptions);
+                if (!node) {
+                    return;
+                }
+                const newVisibilityOptions = structuredClone(getVisibilityOptions(node.visibility, {isStripeEnabled, showWeb, showEmail}));
+                const toggle = newVisibilityOptions.find(g => g.key === type)?.toggles.find(t => t.key === key);
+                if (!toggle) {
+                    return;
+                }
+
+                toggle.checked = value;
+                node.visibility = serializeOptionsToVisibility(newVisibilityOptions, node.visibility);
             });
         }
     };

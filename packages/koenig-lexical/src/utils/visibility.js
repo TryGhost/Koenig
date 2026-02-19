@@ -43,7 +43,7 @@ export function serializeTogglesToVisibility(toggles) {
 }
 
 // used for building UI
-export function getVisibilityOptions(visibility, {isStripeEnabled = true} = {}) {
+export function getVisibilityOptions(visibility, {isStripeEnabled = true, showWeb = true, showEmail = true} = {}) {
     visibility = visibility || utils.visibility.buildDefaultVisibility();
     const toggles = parseVisibilityToToggles(visibility);
 
@@ -73,31 +73,44 @@ export function getVisibilityOptions(visibility, {isStripeEnabled = true} = {}) 
         options[1].toggles = options[1].toggles.filter(t => t.key !== 'paidMembers');
     }
 
-    return options;
+    return options.filter((option) => {
+        if (option.key === 'web') {
+            return showWeb;
+        }
+
+        if (option.key === 'email') {
+            return showEmail;
+        }
+
+        return true;
+    });
 }
 
-export function serializeOptionsToVisibility(options) {
-    const webToggles = options.find(group => group.key === 'web').toggles;
+export function serializeOptionsToVisibility(options, existingVisibility = utils.visibility.buildDefaultVisibility()) {
+    const existingToggles = parseVisibilityToToggles(existingVisibility);
+    const webToggles = options.find(group => group.key === 'web')?.toggles ?? [];
+    const emailToggles = options.find(group => group.key === 'email')?.toggles ?? [];
+    const isChecked = (toggles, key, fallback) => toggles.find(t => t.key === key)?.checked ?? fallback;
+
     const webSegments = [];
-    if (webToggles.find(t => t.key === 'freeMembers')?.checked) {
+    if (isChecked(webToggles, 'freeMembers', existingToggles.web.freeMembers)) {
         webSegments.push('status:free');
     }
-    if (webToggles.find(t => t.key === 'paidMembers')?.checked) {
+    if (isChecked(webToggles, 'paidMembers', existingToggles.web.paidMembers)) {
         webSegments.push('status:-free');
     }
 
-    const emailToggles = options.find(group => group.key === 'email').toggles;
     const emailSegments = [];
-    if (emailToggles.find(t => t.key === 'freeMembers')?.checked) {
+    if (isChecked(emailToggles, 'freeMembers', existingToggles.email.freeMembers)) {
         emailSegments.push('status:free');
     }
-    if (emailToggles.find(t => t.key === 'paidMembers')?.checked) {
+    if (isChecked(emailToggles, 'paidMembers', existingToggles.email.paidMembers)) {
         emailSegments.push('status:-free');
     }
 
     return {
         web: {
-            nonMember: webToggles.find(t => t.key === 'nonMembers')?.checked || false,
+            nonMember: isChecked(webToggles, 'nonMembers', existingToggles.web.nonMembers),
             memberSegment: webSegments.join(',')
         },
         email: {
