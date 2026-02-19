@@ -1,4 +1,4 @@
-import {assertHTML, focusEditor, html, initialize} from '../../utils/e2e';
+import {assertHTML, focusEditor, html, initialize, selectBackwards} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
 
 test.describe('Koenig Editor with email template nodes', async function () {
@@ -161,11 +161,7 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await expect(page.locator('[data-kg-floating-toolbar]')).toHaveCount(0);
 
             // Select text
-            await page.keyboard.down('Shift');
-            for (let i = 0; i < 'for selection'.length; i++) {
-                await page.keyboard.press('ArrowLeft');
-            }
-            await page.keyboard.up('Shift');
+            await selectBackwards(page, 'for selection'.length);
 
             await expect(page.locator('[data-kg-floating-toolbar]')).toBeVisible();
         });
@@ -175,11 +171,7 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await page.keyboard.type('text for selection');
 
             // Select text
-            await page.keyboard.down('Shift');
-            for (let i = 0; i < 'for selection'.length; i++) {
-                await page.keyboard.press('ArrowLeft');
-            }
-            await page.keyboard.up('Shift');
+            await selectBackwards(page, 'for selection'.length);
 
             await expect(page.locator('[data-kg-floating-toolbar]')).toBeVisible();
 
@@ -193,11 +185,7 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await page.keyboard.type('text for selection');
 
             // Select text
-            await page.keyboard.down('Shift');
-            for (let i = 0; i < 'for selection'.length; i++) {
-                await page.keyboard.press('ArrowLeft');
-            }
-            await page.keyboard.up('Shift');
+            await selectBackwards(page, 'for selection'.length);
 
             await expect(page.locator('[data-kg-floating-toolbar]')).toBeVisible();
 
@@ -210,11 +198,7 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await page.keyboard.type('text for selection');
 
             // Select text
-            await page.keyboard.down('Shift');
-            for (let i = 0; i < 'for selection'.length; i++) {
-                await page.keyboard.press('ArrowLeft');
-            }
-            await page.keyboard.up('Shift');
+            await selectBackwards(page, 'for selection'.length);
 
             await expect(page.locator('[data-kg-floating-toolbar]')).toBeVisible();
 
@@ -227,11 +211,7 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await page.keyboard.type('text for selection');
 
             // Select text
-            await page.keyboard.down('Shift');
-            for (let i = 0; i < 'for selection'.length; i++) {
-                await page.keyboard.press('ArrowLeft');
-            }
-            await page.keyboard.up('Shift');
+            await selectBackwards(page, 'for selection'.length);
 
             await expect(page.locator('[data-kg-floating-toolbar]')).toBeVisible();
 
