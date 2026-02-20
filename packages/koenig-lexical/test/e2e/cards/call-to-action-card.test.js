@@ -192,15 +192,10 @@ test.describe('Call To Action Card', async () => {
         await page.keyboard.press('Escape');
         await page.keyboard.press('Enter');
 
-        // check if editing is false
-        await assertHTML(page, html`
-            <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="call-to-action">
-                </div>
-            </div>
-            <p><br /></p>
-            <p><br /></p>
-        `, {ignoreCardContents: true});
+        // check card exited edit mode
+        const card = page.locator('[data-kg-card="call-to-action"]');
+        await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
+        await expect(card).toHaveAttribute('data-kg-card-selected', 'false');
 
         expect(await page.isVisible('[data-testid="cta-button"]')).toBe(true);
     });

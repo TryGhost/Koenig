@@ -219,7 +219,7 @@ test.describe('Floating format toolbar', async () => {
             await page.click(buttonSelector);
             await expect(page.getByTestId('link-input')).toBeVisible();
             await expect(page.getByTestId('link-input')).toBeFocused();
-            await page.keyboard.type('https://ghost.org/');
+            await page.keyboard.type('https://ghost.org/', {delay: 10});
             await page.keyboard.press('Enter');
             await expect(page.locator('[data-kg-floating-toolbar]')).not.toBeVisible();
 

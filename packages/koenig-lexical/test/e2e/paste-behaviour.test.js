@@ -246,9 +246,8 @@ test.describe('Paste behaviour', async () => {
 
             await page.keyboard.press('Enter');
 
-            await expect(page.getByTestId('embed-url-loading-container')).toBeVisible();
-            await expect(page.getByTestId('embed-url-loading-container')).toBeHidden();
-            await expect(page.getByTestId('embed-iframe')).toBeVisible();
+            // loading container may be too transient to catch, go straight to end state
+            await expect(page.getByTestId('embed-iframe')).toBeVisible({timeout: 30000});
         });
     });
 

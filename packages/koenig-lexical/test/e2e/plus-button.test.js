@@ -38,6 +38,8 @@ test.describe('Plus button', async () => {
             await assertPosition(page, '[data-kg-plus-button]', {y: secondParaRect.y}, {threshold: 5});
 
             await page.keyboard.press('ArrowUp');
+            // wait for selection change to be processed and plus button position to update
+            await page.waitForTimeout(50);
 
             // expect button to be positioned for first paragraph
             await assertPosition(page, '[data-kg-plus-button]', {y: firstParaRect.y}, {threshold: 5});

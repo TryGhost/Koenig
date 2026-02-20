@@ -63,7 +63,8 @@ test.describe('Editor keyboard shortcuts', async () => {
 
             await page.keyboard.press(`${ctrlOrCmdKey}+K`);
 
-            await page.keyboard.type('https://example.com');
+            await page.waitForSelector('[data-testid="link-input"]');
+            await page.getByTestId('link-input').fill('https://example.com');
             await page.keyboard.press('Enter');
 
             await assertHTML(page, html`
