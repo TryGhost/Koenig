@@ -38,10 +38,8 @@ jobs:
           DEBCONF_NONINTERACTIVE_SEEN: "true"
         run: |
           apt-get update -yq
-          sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections"
-          echo 'set man-db/auto-update false' | debconf-communicate >/dev/null
-          dpkg-reconfigure man-db
-          apt-get install msttcorefonts -qq
+          echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
+          apt-get install -y ttf-mscorefonts-installer
 
       - run: yarn --frozen-lockfile --prefer-offline
 
