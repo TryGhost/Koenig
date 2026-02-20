@@ -8,6 +8,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.50.1-noble
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     strategy:
       matrix:
@@ -17,6 +19,8 @@ jobs:
       # https://github.com/vitejs/vite/issues/2433
       NODE_OPTIONS: '--max_old_space_size=8192'
       CI: true
+      # Playwright looks here for browsers in the container
+      HOME: /root
     name: Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -33,33 +37,13 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
           DEBCONF_NONINTERACTIVE_SEEN: "true"
         run: |
-          sudo apt-get update -yq
-          sudo sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections"
-          echo 'set man-db/auto-update false' | sudo debconf-communicate >/dev/null
-          sudo dpkg-reconfigure man-db
-          sudo apt-get install msttcorefonts -qq
+          apt-get update -yq
+          sh -c "echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections"
+          echo 'set man-db/auto-update false' | debconf-communicate >/dev/null
+          dpkg-reconfigure man-db
+          apt-get install msttcorefonts -qq
 
       - run: yarn --frozen-lockfile --prefer-offline
-
-      - name: Get installed Playwright version
-        id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(grep -A1 '^"@playwright/test@' yarn.lock | awk -F'"' '/version/ {print $2}')" >> $GITHUB_ENV
-
-      - name: Cache playwright binaries
-        uses: actions/cache@v5
-        id: playwright-cache
-        with:
-          path: |
-            ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-
-      - name: Install Playwright
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
-
-      - name: Install Playwright OS dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps
 
       - run: yarn test
       - uses: codecov/codecov-action@v3
