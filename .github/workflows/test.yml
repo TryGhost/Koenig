@@ -36,8 +36,8 @@ jobs:
         id: node-modules-cache
         with:
           path: |
-            ${{ github.workspace }}/node_modules
-            ${{ github.workspace }}/packages/*/node_modules
+            /__w/Koenig/Koenig/node_modules
+            /__w/Koenig/Koenig/packages/*/node_modules
           key: node-modules-${{ hashFiles('yarn.lock') }}
 
       - name: Install dependencies
