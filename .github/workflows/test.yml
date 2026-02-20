@@ -30,7 +30,19 @@ jobs:
           FORCE_COLOR: 0
         with:
           node-version: ${{ matrix.node }}
-          cache: yarn
+
+      - name: Cache node_modules
+        uses: actions/cache@v5
+        id: node-modules-cache
+        with:
+          path: |
+            node_modules
+            packages/*/node_modules
+          key: node-modules-${{ hashFiles('yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
 
       - name: Install required fonts for consistent tests
         env:
@@ -40,8 +52,6 @@ jobs:
           apt-get update -yq
           echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections
           apt-get install -y ttf-mscorefonts-installer
-
-      - run: yarn --frozen-lockfile --prefer-offline
 
       - run: yarn test
       - uses: codecov/codecov-action@v3
