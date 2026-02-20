@@ -11,7 +11,7 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !startsWith(github.head_ref, 'renovate/'))
     strategy:
       matrix:
-        node: ['22.13.1']
+        node: ['22.13.1', '24']
     env:
       FORCE_COLOR: 1
       # https://github.com/vitejs/vite/issues/2433
@@ -39,7 +39,8 @@ jobs:
           sudo dpkg-reconfigure man-db
           sudo apt-get install msttcorefonts -qq
 
-      - run: yarn --frozen-lockfile --prefer-offline
+      - run: yarn config set ignore-engines true
+      - run: yarn --prefer-offline
 
       - name: Get installed Playwright version
         id: playwright-version

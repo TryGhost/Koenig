@@ -7,7 +7,8 @@ import {
     html,
     initialize,
     insertCard,
-    isMac
+    isMac,
+    selectBackwards
 } from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
@@ -261,12 +262,7 @@ test.describe('Markdown card', async () => {
         await page.click('[data-kg-card="markdown"]');
         await page.keyboard.type('bold');
         // select the text
-        await page.keyboard.down('Shift');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.up('Shift');
+        await selectBackwards(page, 4);
         // make it bold
         await page.keyboard.press(`${ctrlOrCmd}+B`);
 
@@ -321,14 +317,7 @@ test.describe('Markdown card', async () => {
         await page.click('[data-kg-card="markdown"]');
         await page.keyboard.type('italic');
         // select the text
-        await page.keyboard.down('Shift');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.up('Shift');
+        await selectBackwards(page, 6);
         // make it italic
         await page.keyboard.press(`${ctrlOrCmd}+I`);
 
@@ -383,13 +372,8 @@ test.describe('Markdown card', async () => {
         await page.click('[data-kg-card="markdown"]');
         await page.keyboard.type('text');
         // select the text
-        await page.keyboard.down('Shift');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.up('Shift');
-        // make it italic
+        await selectBackwards(page, 4);
+        // make it strikethrough
         await page.keyboard.press(`${ctrlOrCmd}+Alt+U`);
 
         await assertRootChildren(page, JSON.stringify([
@@ -650,12 +634,7 @@ test.describe('Markdown card', async () => {
         await page.click('[data-kg-card="markdown"]');
         await page.keyboard.type('link');
         // select the text
-        await page.keyboard.down('Shift');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.press('ArrowLeft');
-        await page.keyboard.up('Shift');
+        await selectBackwards(page, 4);
         // convert to link
         await page.keyboard.press(`${ctrlOrCmd}+K`);
 
