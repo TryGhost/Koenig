@@ -1,5 +1,6 @@
 import * as visibilityUtils from '../../../src/utils/visibility';
 import {$getNodeByKey} from 'lexical';
+import {VISIBILITY_SETTINGS} from '../../../src/utils/visibility';
 import {act, renderHook} from '@testing-library/react';
 import {expect, vi} from 'vitest';
 import {useVisibilityToggle} from '../../../src/hooks/useVisibilityToggle';
@@ -51,7 +52,7 @@ describe('useVisibilityToggle', () => {
     function callHook(visibility = DEFAULT_VISIBILITY, {stripeEnabled = true} = {}) {
         node.visibility = visibility;
         cardConfig.stripeEnabled = stripeEnabled;
-        cardConfig.visibilitySettings = undefined;
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.WEB_AND_EMAIL;
 
         return renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
     }
@@ -61,6 +62,15 @@ describe('useVisibilityToggle', () => {
         const visibility = {web: {nonMember: false, memberSegment: ''}, email: {memberSegment: 'status:free,status:-free'}};
         callHook(visibility);
         expect(visibilityUtils.getVisibilityOptions).toHaveBeenCalledWith(visibility, {isStripeEnabled: true, showWeb: true, showEmail: true});
+    });
+
+    it('calls getVisibilityOptions with showWeb only when visibilitySettings is "web only"', () => {
+        vi.spyOn(visibilityUtils, 'getVisibilityOptions');
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.WEB_ONLY;
+        const visibility = {web: {nonMember: false, memberSegment: ''}, email: {memberSegment: 'status:free,status:-free'}};
+        node.visibility = visibility;
+        renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+        expect(visibilityUtils.getVisibilityOptions).toHaveBeenCalledWith(visibility, {isStripeEnabled: true, showWeb: true, showEmail: false});
     });
 
     it('returns correct visibilityOptions', () => {
@@ -100,7 +110,7 @@ describe('useVisibilityToggle', () => {
     });
 
     it('returns only web options when email visibility is disabled in cardConfig', () => {
-        cardConfig.visibilitySettings = {showEmail: false};
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.WEB_ONLY;
         const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
 
         expect(result.current.visibilityOptions).toEqual([
@@ -117,7 +127,7 @@ describe('useVisibilityToggle', () => {
     });
 
     it('returns only email options when web visibility is disabled in cardConfig', () => {
-        cardConfig.visibilitySettings = {showWeb: false};
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.EMAIL_ONLY;
         const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
 
         expect(result.current.visibilityOptions).toEqual([
@@ -133,7 +143,7 @@ describe('useVisibilityToggle', () => {
     });
 
     it('safely no-ops when toggling a hidden visibility group', () => {
-        cardConfig.visibilitySettings = {showEmail: false};
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.WEB_ONLY;
         const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
         const beforeVisibility = structuredClone(node.visibility);
 

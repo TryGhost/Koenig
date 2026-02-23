@@ -1,5 +1,12 @@
 import {utils} from '@tryghost/kg-default-nodes';
 
+export const VISIBILITY_SETTINGS = {
+    WEB_AND_EMAIL: 'web and email',
+    WEB_ONLY: 'web only',
+    EMAIL_ONLY: 'email only',
+    NONE: 'none'
+};
+
 export function parseVisibilityToToggles(visibility) {
     return {
         web: {
@@ -14,32 +21,8 @@ export function parseVisibilityToToggles(visibility) {
     };
 }
 
-export function serializeTogglesToVisibility(toggles) {
-    const webSegments = [];
-    if (toggles.web.freeMembers) {
-        webSegments.push('status:free');
-    }
-    if (toggles.web.paidMembers) {
-        webSegments.push('status:-free');
-    }
-
-    const emailSegments = [];
-    if (toggles.email.freeMembers) {
-        emailSegments.push('status:free');
-    }
-    if (toggles.email.paidMembers) {
-        emailSegments.push('status:-free');
-    }
-
-    return {
-        web: {
-            nonMember: toggles.web.nonMembers,
-            memberSegment: webSegments.join(',')
-        },
-        email: {
-            memberSegment: emailSegments.join(',')
-        }
-    };
+function isToggleChecked(toggles, key, fallback) {
+    return toggles.find(t => t.key === key)?.checked ?? fallback;
 }
 
 // used for building UI
@@ -86,31 +69,31 @@ export function getVisibilityOptions(visibility, {isStripeEnabled = true, showWe
     });
 }
 
-export function serializeOptionsToVisibility(options, existingVisibility = utils.visibility.buildDefaultVisibility()) {
+export function serializeOptionsToVisibility(options, existingVisibility) {
+    existingVisibility = existingVisibility || utils.visibility.buildDefaultVisibility();
     const existingToggles = parseVisibilityToToggles(existingVisibility);
     const webToggles = options.find(group => group.key === 'web')?.toggles ?? [];
     const emailToggles = options.find(group => group.key === 'email')?.toggles ?? [];
-    const isChecked = (toggles, key, fallback) => toggles.find(t => t.key === key)?.checked ?? fallback;
 
     const webSegments = [];
-    if (isChecked(webToggles, 'freeMembers', existingToggles.web.freeMembers)) {
+    if (isToggleChecked(webToggles, 'freeMembers', existingToggles.web.freeMembers)) {
         webSegments.push('status:free');
     }
-    if (isChecked(webToggles, 'paidMembers', existingToggles.web.paidMembers)) {
+    if (isToggleChecked(webToggles, 'paidMembers', existingToggles.web.paidMembers)) {
         webSegments.push('status:-free');
     }
 
     const emailSegments = [];
-    if (isChecked(emailToggles, 'freeMembers', existingToggles.email.freeMembers)) {
+    if (isToggleChecked(emailToggles, 'freeMembers', existingToggles.email.freeMembers)) {
         emailSegments.push('status:free');
     }
-    if (isChecked(emailToggles, 'paidMembers', existingToggles.email.paidMembers)) {
+    if (isToggleChecked(emailToggles, 'paidMembers', existingToggles.email.paidMembers)) {
         emailSegments.push('status:-free');
     }
 
     return {
         web: {
-            nonMember: isChecked(webToggles, 'nonMembers', existingToggles.web.nonMembers),
+            nonMember: isToggleChecked(webToggles, 'nonMembers', existingToggles.web.nonMembers),
             memberSegment: webSegments.join(',')
         },
         email: {

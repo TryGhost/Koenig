@@ -232,4 +232,36 @@ describe('serializeOptionsToVisibility', function () {
             }
         });
     });
+
+    it('serializes all groups when both are present in options', function () {
+        const visibility = serializeOptionsToVisibility([
+            {
+                key: 'web',
+                label: 'Web',
+                toggles: [
+                    {key: 'nonMembers', checked: true},
+                    {key: 'freeMembers', checked: true},
+                    {key: 'paidMembers', checked: false}
+                ]
+            },
+            {
+                key: 'email',
+                label: 'Email',
+                toggles: [
+                    {key: 'freeMembers', checked: false},
+                    {key: 'paidMembers', checked: true}
+                ]
+            }
+        ]);
+
+        expect(visibility).toEqual({
+            web: {
+                nonMember: true,
+                memberSegment: 'status:free'
+            },
+            email: {
+                memberSegment: 'status:-free'
+            }
+        });
+    });
 });
