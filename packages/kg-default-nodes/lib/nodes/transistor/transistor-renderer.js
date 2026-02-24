@@ -21,6 +21,9 @@ export function renderTransistorNode(node, options) {
     if (options.siteUuid) {
         params.set('ctx', options.siteUuid);
     }
+    if (options.accentColor) {
+        params.set('background', options.accentColor.replace(/^#/, ''));
+    }
 
     const queryString = params.toString();
     const embedUrl = queryString ? `${baseUrl}?${queryString}` : baseUrl;
