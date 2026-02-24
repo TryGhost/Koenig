@@ -204,6 +204,34 @@ describe('TransistorNode', function () {
             assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6&background=1F2937');
         }));
 
+        it('includes ctx param when siteUuid is in options', editorTest(function () {
+            const transistorNode = new TransistorNode({visibility: publicVisibility});
+            const {element} = transistorNode.exportDOM({...exportOptions, siteUuid: 'abc123'});
+
+            const iframe = element.querySelector('iframe');
+            assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?ctx=abc123');
+        }));
+
+        it('includes ctx param alongside color params', editorTest(function () {
+            const transistorNode = new TransistorNode({
+                accentColor: '#8B5CF6',
+                backgroundColor: '#1F2937',
+                visibility: publicVisibility
+            });
+            const {element} = transistorNode.exportDOM({...exportOptions, siteUuid: 'abc123'});
+
+            const iframe = element.querySelector('iframe');
+            assert.strictEqual(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6&background=1F2937&ctx=abc123');
+        }));
+
+        it('does not include ctx param when siteUuid is not provided', editorTest(function () {
+            const transistorNode = new TransistorNode({visibility: publicVisibility});
+            const {element} = transistorNode.exportDOM(exportOptions);
+
+            const iframe = element.querySelector('iframe');
+            assert.ok(!iframe.getAttribute('src').includes('ctx='));
+        }));
+
         it('strips # from color values', editorTest(function () {
             const transistorNode = new TransistorNode({
                 accentColor: '#FF0000',

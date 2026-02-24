@@ -18,6 +18,9 @@ export function renderTransistorNode(node, options) {
     if (backgroundColor) {
         params.set('background', backgroundColor.replace(/^#/, ''));
     }
+    if (options.siteUuid) {
+        params.set('ctx', options.siteUuid);
+    }
 
     const queryString = params.toString();
     const embedUrl = queryString ? `${baseUrl}?${queryString}` : baseUrl;
