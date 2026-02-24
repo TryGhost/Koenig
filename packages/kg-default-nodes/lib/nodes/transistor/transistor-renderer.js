@@ -11,7 +11,7 @@ export function renderTransistorNode(node, options) {
     const params = new URLSearchParams();
 
     if (options.siteUuid) {
-        params.set('ctx', 'df073bef-de8f-428f-8469-2efaf7fb2403');
+        params.set('ctx', options.siteUuid);
     }
     if (options.backgroundColor) {
         params.set('background', options.backgroundColor.replace(/^#/, ''));
