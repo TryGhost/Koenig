@@ -4,25 +4,17 @@ import {renderWithVisibility} from '../../utils/visibility';
 export function renderTransistorNode(node, options) {
     addCreateDocumentOption(options);
     const document = options.createDocument();
-    const accentColor = node.accentColor;
-    const backgroundColor = node.backgroundColor;
 
     // Build the embed URL with optional color parameters
     // {uuid} placeholder will be replaced server-side with the member's UUID
     const baseUrl = 'https://partner.transistor.fm/ghost/embed/{uuid}';
     const params = new URLSearchParams();
 
-    if (accentColor) {
-        params.set('color', accentColor.replace(/^#/, ''));
-    }
-    if (backgroundColor) {
-        params.set('background', backgroundColor.replace(/^#/, ''));
-    }
     if (options.siteUuid) {
-        params.set('ctx', options.siteUuid);
+        params.set('ctx', 'df073bef-de8f-428f-8469-2efaf7fb2403');
     }
-    if (options.accentColor) {
-        params.set('background', options.accentColor.replace(/^#/, ''));
+    if (options.backgroundColor) {
+        params.set('background', options.backgroundColor.replace(/^#/, ''));
     }
 
     const queryString = params.toString();
