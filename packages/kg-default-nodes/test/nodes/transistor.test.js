@@ -176,52 +176,12 @@ describe('TransistorNode', function () {
             assert.equal(iframe.hasAttribute('seamless'), true);
         }));
 
-        it('includes color param when accentColor is set', editorTest(function () {
-            const transistorNode = new TransistorNode({accentColor: '#8B5CF6', visibility: publicVisibility});
-            const {element} = transistorNode.exportDOM(exportOptions);
-
-            const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6');
-        }));
-
-        it('includes background param when backgroundColor is set', editorTest(function () {
-            const transistorNode = new TransistorNode({backgroundColor: '#FFFFFF', visibility: publicVisibility});
-            const {element} = transistorNode.exportDOM(exportOptions);
-
-            const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?background=FFFFFF');
-        }));
-
-        it('includes both color params when both are set', editorTest(function () {
-            const transistorNode = new TransistorNode({
-                accentColor: '#8B5CF6',
-                backgroundColor: '#1F2937',
-                visibility: publicVisibility
-            });
-            const {element} = transistorNode.exportDOM(exportOptions);
-
-            const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6&background=1F2937');
-        }));
-
         it('includes ctx param when siteUuid is in options', editorTest(function () {
             const transistorNode = new TransistorNode({visibility: publicVisibility});
             const {element} = transistorNode.exportDOM({...exportOptions, siteUuid: 'abc123'});
 
             const iframe = element.querySelector('iframe');
             assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?ctx=abc123');
-        }));
-
-        it('includes ctx param alongside color params', editorTest(function () {
-            const transistorNode = new TransistorNode({
-                accentColor: '#8B5CF6',
-                backgroundColor: '#1F2937',
-                visibility: publicVisibility
-            });
-            const {element} = transistorNode.exportDOM({...exportOptions, siteUuid: 'abc123'});
-
-            const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?color=8B5CF6&background=1F2937&ctx=abc123');
         }));
 
         it('does not include ctx param when siteUuid is not provided', editorTest(function () {
@@ -232,43 +192,14 @@ describe('TransistorNode', function () {
             assert.ok(!iframe.getAttribute('src').includes('ctx='));
         }));
 
-        it('includes background param when accentColor is in options', editorTest(function () {
-            const transistorNode = new TransistorNode({visibility: publicVisibility});
-            const {element} = transistorNode.exportDOM({...exportOptions, accentColor: '#074144'});
-
-            const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?background=074144');
-        }));
-
-        it('includes background param from options alongside ctx param', editorTest(function () {
-            const transistorNode = new TransistorNode({visibility: publicVisibility});
-            const {element} = transistorNode.exportDOM({...exportOptions, siteUuid: 'abc123', accentColor: '#074144'});
-
-            const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?ctx=abc123&background=074144');
-        }));
-
-        it('does not include background param from options when accentColor is not provided', editorTest(function () {
+        it('includes background detection script', editorTest(function () {
             const transistorNode = new TransistorNode({visibility: publicVisibility});
             const {element} = transistorNode.exportDOM(exportOptions);
 
-            const iframe = element.querySelector('iframe');
-            assert.ok(!iframe.getAttribute('src').includes('background='));
-        }));
-
-        it('strips # from color values', editorTest(function () {
-            const transistorNode = new TransistorNode({
-                accentColor: '#FF0000',
-                backgroundColor: '#00FF00',
-                visibility: publicVisibility
-            });
-            const {element} = transistorNode.exportDOM(exportOptions);
-
-            const iframe = element.querySelector('iframe');
-            const src = iframe.getAttribute('src');
-            assert.ok(!src.includes('#'));
-            assert.ok(src.includes('color=FF0000'));
-            assert.ok(src.includes('background=00FF00'));
+            const script = element.querySelector('script');
+            assert.ok(script);
+            assert.ok(script.textContent.includes('currentScript'));
+            assert.ok(script.textContent.includes('background'));
         }));
 
         it('renders with web visibility gating', editorTest(function () {
