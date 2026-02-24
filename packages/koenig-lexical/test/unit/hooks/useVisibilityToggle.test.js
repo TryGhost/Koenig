@@ -142,6 +142,21 @@ describe('useVisibilityToggle', () => {
         ]);
     });
 
+    it('returns isVisibilityEnabled as false when visibilitySettings is "none"', () => {
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.NONE;
+        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+
+        expect(result.current.isVisibilityEnabled).toBe(false);
+        expect(result.current.visibilityOptions).toEqual([]);
+    });
+
+    it('returns isVisibilityEnabled as true when visibilitySettings is "web and email"', () => {
+        cardConfig.visibilitySettings = VISIBILITY_SETTINGS.WEB_AND_EMAIL;
+        const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
+
+        expect(result.current.isVisibilityEnabled).toBe(true);
+    });
+
     it('safely no-ops when toggling a hidden visibility group', () => {
         cardConfig.visibilitySettings = VISIBILITY_SETTINGS.WEB_ONLY;
         const {result} = renderHook(() => useVisibilityToggle(editor, 'testKey', cardConfig));
