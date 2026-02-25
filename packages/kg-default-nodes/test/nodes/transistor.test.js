@@ -168,7 +168,7 @@ describe('TransistorNode', function () {
 
             const iframe = element.querySelector('iframe');
             assert.ok(iframe);
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}');
+            assert.equal(iframe.getAttribute('data-src'), 'https://partner.transistor.fm/ghost/embed/{uuid}');
             assert.equal(iframe.getAttribute('width'), '100%');
             assert.equal(iframe.getAttribute('height'), '180');
             assert.equal(iframe.getAttribute('frameborder'), 'no');
@@ -181,7 +181,7 @@ describe('TransistorNode', function () {
             const {element} = transistorNode.exportDOM({...exportOptions, siteUuid: 'abc123'});
 
             const iframe = element.querySelector('iframe');
-            assert.equal(iframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?ctx=abc123');
+            assert.equal(iframe.getAttribute('data-src'), 'https://partner.transistor.fm/ghost/embed/{uuid}?ctx=abc123');
         }));
 
         it('does not include ctx param when siteUuid is not provided', editorTest(function () {
@@ -189,17 +189,29 @@ describe('TransistorNode', function () {
             const {element} = transistorNode.exportDOM(exportOptions);
 
             const iframe = element.querySelector('iframe');
-            assert.ok(!iframe.getAttribute('src').includes('ctx='));
+            assert.ok(!iframe.getAttribute('data-src').includes('ctx='));
         }));
 
-        it('includes background detection script', editorTest(function () {
+        it('includes background detection script that reads data-src', editorTest(function () {
             const transistorNode = new TransistorNode({visibility: publicVisibility});
             const {element} = transistorNode.exportDOM(exportOptions);
 
             const script = element.querySelector('script');
             assert.ok(script);
             assert.ok(script.textContent.includes('currentScript'));
+            assert.ok(script.textContent.includes('data-src'));
             assert.ok(script.textContent.includes('background'));
+        }));
+
+        it('includes noscript fallback with src', editorTest(function () {
+            const transistorNode = new TransistorNode({visibility: publicVisibility});
+            const {element} = transistorNode.exportDOM(exportOptions);
+
+            const noscript = element.querySelector('noscript');
+            assert.ok(noscript);
+            const fallbackIframe = noscript.querySelector('iframe');
+            assert.ok(fallbackIframe);
+            assert.equal(fallbackIframe.getAttribute('src'), 'https://partner.transistor.fm/ghost/embed/{uuid}');
         }));
 
         it('renders with web visibility gating', editorTest(function () {

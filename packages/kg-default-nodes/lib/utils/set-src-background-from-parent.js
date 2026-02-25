@@ -1,7 +1,8 @@
 /**
- * Builds an inline script tag that detects the nearest non-transparent ancestor
- * background color and sets it as a `background` query param on the first
- * iframe within the script's parent element.
+ * Builds an inline script tag that reads `data-src` from the first iframe
+ * in the script's parent element, detects the nearest non-transparent ancestor
+ * background color, appends it as a `background` query param, and sets `src`
+ * to trigger a single load with the correct background.
  *
  * Uses `document.currentScript` to scope to the containing card, so multiple
  * instances on the same page each target their own iframe.
@@ -16,10 +17,12 @@ export function buildSrcBackgroundScript(document) {
             return;
         }
 
-        const el = script.parentElement.querySelector('iframe');
+        const el = script.parentElement.querySelector('iframe[data-src]');
         if (!el) {
             return;
         }
+
+        const baseSrc = el.getAttribute('data-src');
 
         function isTransparent(bg) {
             if (!bg || bg === 'transparent') {
@@ -40,15 +43,18 @@ export function buildSrcBackgroundScript(document) {
         }
 
         if (!node || isTransparent(bg)) {
+            el.src = baseSrc;
             return;
         }
 
         const m = bg.match(/\d+/g);
         if (m && m.length >= 3) {
             const hex = m.slice(0, 3).map(c => parseInt(c).toString(16).padStart(2, '0')).join('');
-            const u = new URL(el.src);
+            const u = new URL(baseSrc);
             u.searchParams.set('background', hex);
             el.src = u.toString();
+        } else {
+            el.src = baseSrc;
         }
     }
 
