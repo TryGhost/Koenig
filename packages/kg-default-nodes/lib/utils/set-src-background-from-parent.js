@@ -6,9 +6,10 @@
  * Uses `document.currentScript` to scope to the containing card, so multiple
  * instances on the same page each target their own iframe.
  *
- * @returns {string} An HTML script tag string
+ * @param {Document} document
+ * @returns {HTMLScriptElement} A script element
  */
-export function buildSrcBackgroundScript() {
+export function buildSrcBackgroundScript(document) {
     function setSrcBackgroundFromParent() {
         const script = document.currentScript;
         if (!script) {
@@ -51,5 +52,7 @@ export function buildSrcBackgroundScript() {
         }
     }
 
-    return `<script>(${setSrcBackgroundFromParent.toString()})()</script>`;
+    const script = document.createElement('script');
+    script.innerHTML = `(${setSrcBackgroundFromParent.toString()})()`;
+    return script;
 }

@@ -27,9 +27,7 @@ export function renderTransistorNode(node, options) {
     const figure = document.createElement('figure');
     figure.setAttribute('class', 'kg-card kg-transistor-card');
     figure.appendChild(iframe);
-
-    // Inject script to detect parent background color and pass it to the embed
-    figure.insertAdjacentHTML('beforeend', buildSrcBackgroundScript());
+    figure.insertAdjacentElement('beforeend', buildSrcBackgroundScript(document));
 
     return renderWithVisibility({element: figure, type: 'inner'}, node.visibility, options);
 }
