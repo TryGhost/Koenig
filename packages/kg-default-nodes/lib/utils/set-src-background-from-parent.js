@@ -42,7 +42,10 @@ export function buildSrcBackgroundScript(document) {
             node = node.parentElement;
         }
 
-        if (!node || isTransparent(bg)) {
+        // TODO: handle non-rgb color spaces (lab(), oklch(), etc.) that
+        // getComputedStyle may return from modern CSS. For now we only parse
+        // rgb/rgba and fall back gracefully to no background param.
+        if (!node || isTransparent(bg) || !bg.startsWith('rgb')) {
             el.src = baseSrc;
             return;
         }
