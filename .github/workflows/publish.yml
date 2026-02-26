@@ -41,7 +41,6 @@ jobs:
         with:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
-          cache: yarn
 
       - name: Install dependencies
         run: yarn --prefer-offline
@@ -49,8 +48,15 @@ jobs:
       - name: Build all packages
         run: lerna run build
 
+      - name: Publish to npm (dry run)
+        if: github.event.inputs['dry-run'] == 'true'
+        run: yarn ship:ci
+        env:
+          NPM_CONFIG_DRY_RUN: true
+
       - name: Publish to npm
-        run: yarn ship:ci ${{ (github.event.inputs['dry-run'] == 'true' && '--dry-run') || '' }}
+        if: github.event.inputs['dry-run'] != 'true'
+        run: yarn ship:ci
 
       - uses: tryghost/actions/actions/slack-build@main
         if: failure()
