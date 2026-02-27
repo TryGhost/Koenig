@@ -3574,18 +3574,18 @@
     "@storybook/icons" "^1.2.12"
     ts-dedent "^2.0.0"
 
-"@storybook/builder-vite@10.2.11":
-  version "10.2.11"
-  resolved "https://registry.yarnpkg.com/@storybook/builder-vite/-/builder-vite-10.2.11.tgz#6fc70b493f82ec8ce072091ea016f6d8e7740ef1"
-  integrity sha512-am7/kfMUSSwQt+9Cwzwe9cUUk9vFGJktr6Lgh3LDuLs35mHzpIpV+DgLqGlGsvWioriha9tNC57q1QwRop2KHA==
+"@storybook/builder-vite@10.2.12":
+  version "10.2.12"
+  resolved "https://registry.yarnpkg.com/@storybook/builder-vite/-/builder-vite-10.2.12.tgz#6c9edf21201d4d5ed988fd2eb6172cc2dd9fd67c"
+  integrity sha512-QaOwhNpoBs4Af8xYG1NOoyOvbapcN7EpwYq53ERpMz2uU+yOeApqy4XeJ5xM7doCvkJKZqidwLMXZQeN/j/mUw==
   dependencies:
-    "@storybook/csf-plugin" "10.2.11"
+    "@storybook/csf-plugin" "10.2.12"
     ts-dedent "^2.0.0"
 
-"@storybook/csf-plugin@10.2.11":
-  version "10.2.11"
-  resolved "https://registry.yarnpkg.com/@storybook/csf-plugin/-/csf-plugin-10.2.11.tgz#db15293c34ac623c8de37472591a82c5149ea8aa"
-  integrity sha512-sHPc5SaTpee+WsTI7N8DUFYo/DJj3BxZNuzmRkPXN3vf/aHOPdGKLZiglIRQvXBucKF2JDSpbYHoz9+702O/cQ==
+"@storybook/csf-plugin@10.2.12":
+  version "10.2.12"
+  resolved "https://registry.yarnpkg.com/@storybook/csf-plugin/-/csf-plugin-10.2.12.tgz#eb73335ff229a9d52c88231b1c65927b1bc6cc4a"
+  integrity sha512-+6nv7oX21K+BRmMUCfeaFeS3UFgDu5/2M4YsLYzXnx/YmAP3yg0bb09falzvCKTCncHCJUWaO8GDvavj32anaA==
   dependencies:
     unplugin "^2.3.5"
 
@@ -3626,10 +3626,10 @@
     "@storybook/global" "^5.0.0"
     "@vitest/utils" "^2.1.1"
 
-"@storybook/react-dom-shim@10.2.11":
-  version "10.2.11"
-  resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-10.2.11.tgz#8c429c31175f41cc1aad783320c6902031886fc1"
-  integrity sha512-29kqYYLvASuxFdagwMUX0xmPgDKbRYdm4uzYGEFWiKVZvJHarbTThzSaCDNhvoQk4qPp783duO29uHkztEHc8Q==
+"@storybook/react-dom-shim@10.2.12":
+  version "10.2.12"
+  resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-10.2.12.tgz#a3ac18cea002e906ec242ba5036b805adc01d9dd"
+  integrity sha512-T4uHPAgtEbroRazubGDIByopvNw1WKAp1kOlNqKWR8LZPDaVyEr8X7J6zaJo1y+vE8j6fUXvk6jZVMwhi/Jeig==
 
 "@storybook/react-dom-shim@10.2.13":
   version "10.2.13"
@@ -3641,28 +3641,28 @@
   resolved "https://registry.yarnpkg.com/@storybook/react-dom-shim/-/react-dom-shim-8.5.0.tgz#ada85ed027113b0e05debfd5c5e6ffa44843b069"
   integrity sha512-7P8xg4FiuFpM6kQOzZynno+0zyLVs8NgsmRK58t3JRZXbda1tzlxTXzvqx4hUevvbPJGjmrB0F3xTFH+8Otnvw==
 
-"@storybook/react-vite@10.2.11":
-  version "10.2.11"
-  resolved "https://registry.yarnpkg.com/@storybook/react-vite/-/react-vite-10.2.11.tgz#993fb2d3b94079e4060d5a2b47a60b58934fac90"
-  integrity sha512-NcxejnemYUbqBNHHIgq/jryc5kUr89Eph0gV4GLa33rvqHStTY8pHj8lfg5N8aGlhTPnDk+vXRu6KdCmiLAMzQ==
+"@storybook/react-vite@10.2.12":
+  version "10.2.12"
+  resolved "https://registry.yarnpkg.com/@storybook/react-vite/-/react-vite-10.2.12.tgz#6617bdefe23dcb8e7b05624c5745616c0adfdae0"
+  integrity sha512-y5326n/fJBSUzBtSmVigu1W/NKAqvEQ23DEBNO3sK29TAxQyTM5oaYket9zHqPT3Eb3M1t9+TNCFUZSQ6yOTvQ==
   dependencies:
     "@joshwooding/vite-plugin-react-docgen-typescript" "^0.6.4"
     "@rollup/pluginutils" "^5.0.2"
-    "@storybook/builder-vite" "10.2.11"
-    "@storybook/react" "10.2.11"
+    "@storybook/builder-vite" "10.2.12"
+    "@storybook/react" "10.2.12"
     empathic "^2.0.0"
     magic-string "^0.30.0"
     react-docgen "^8.0.0"
     resolve "^1.22.8"
     tsconfig-paths "^4.2.0"
 
-"@storybook/react@10.2.11":
-  version "10.2.11"
-  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-10.2.11.tgz#f98908c41c7d049aa4c8651caa9d48849fca7116"
-  integrity sha512-JGfmA8AE5/hZFkHsXJ2tT+Q4hoTOZZUSfKKG9u/Dn0lh/lSAYm1gpH+5ZFFGScZZ1p+ByFVxJnSRUBn/taaZgw==
+"@storybook/react@10.2.12":
+  version "10.2.12"
+  resolved "https://registry.yarnpkg.com/@storybook/react/-/react-10.2.12.tgz#92e8f61fde462253478a4f9d3ecb91f2f3fcc493"
+  integrity sha512-7HV/qwEmrDK27FzVHt0/yr8Wu3UTVR9jez3p07M+l/+deIpYrlPiSWm/aoD60gN6kUKzxbeLJFJruS/OM9xnPA==
   dependencies:
     "@storybook/global" "^5.0.0"
-    "@storybook/react-dom-shim" "10.2.11"
+    "@storybook/react-dom-shim" "10.2.12"
     react-docgen "^8.0.2"
 
 "@storybook/react@^10.2.10":
