@@ -45,6 +45,10 @@ export class UnsplashService implements IUnsplashService {
         return this.masonryService.getColumns();
     }
 
+    getColumnCount(): number {
+        return this.masonryService.columnCount;
+    }
+
     async updateSearch(term: string) {
         let results = await this.photoUseCases.searchPhotos(term);
         this.photos = results;

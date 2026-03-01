@@ -9,7 +9,7 @@ interface UnsplashZoomedProps extends Omit<UnsplashImageProps, 'zoomed'> {
 
 const UnsplashZoomed: FC<UnsplashZoomedProps> = ({payload, insertImage, selectImg, zoomed}) => {
     return (
-        <div className="flex h-full grow basis-0 justify-center" data-kg-unsplash-zoomed onClick={() => selectImg(null)}>
+        <div className="flex size-full grow basis-0 justify-center" data-kg-unsplash-zoomed onClick={() => selectImg(null)}>
             <UnsplashImage 
                 alt={payload.alt_description}
                 height={payload.height}
