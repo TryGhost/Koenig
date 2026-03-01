@@ -1,6 +1,7 @@
 import CardContext from '../context/CardContext';
 import {$createTKNode, $isTKNode, ExtendedTextNode, TKNode} from '@tryghost/kg-default-nodes';
 import {$getNodeByKey, $getSelection, $isDecoratorNode, $isRangeSelection, TextNode} from 'lexical';
+import {$isListItemNode, $isListNode} from '@lexical/list';
 import {SELECT_CARD_COMMAND} from './KoenigBehaviourPlugin';
 import {createPortal} from 'react-dom';
 import {useCallback, useContext, useEffect, useState} from 'react';
@@ -11,27 +12,70 @@ import {useTKContext} from '../context/TKContext';
 const REGEX = new RegExp(/(^|.)([^\p{L}\p{N}\s]*(TK|Tk|tk)+[^\p{L}\p{N}\s]*)(.)?/u);
 const WORD_CHAR_REGEX = new RegExp(/\p{L}|\p{N}/u);
 
+// TK Indicator positioning constants
+const INDICATOR_OFFSET_RIGHT = -56;
+const INDICATOR_OFFSET_TOP = 4;
+
+// Node type constants
+const NODE_TYPES = {
+    LIST_ITEM: 'LI'
+};
+
+// Positioning helper functions
+function getPositioningElement(containingElement) {
+    return containingElement.nodeName === NODE_TYPES.LIST_ITEM
+        ? containingElement
+        : containingElement.querySelector('[data-kg-card]') || containingElement;
+}
+
+function calculateRightOffset(elementRect, rootRect) {
+    let right = INDICATOR_OFFSET_RIGHT;
+    if (elementRect.right > rootRect.right) {
+        right = right - (elementRect.right - rootRect.right);
+    }
+    return right;
+}
+
+// Helper function to get effective top-level element, treating list items as containers
+function getEffectiveTopLevelElement(node) {
+    const topLevel = node.getTopLevelElement();
+
+    if (!topLevel) {
+        return null;
+    }
+
+    // If the top-level element is not a list, return it directly
+    if (!$isListNode(topLevel)) {
+        return topLevel;
+    }
+
+    // Find the containing list item for list nodes
+    let currentNode = node;
+    while (currentNode?.getParent()) {
+        if ($isListItemNode(currentNode)) {
+            return currentNode;
+        }
+        currentNode = currentNode.getParent();
+    }
+
+    // Fallback to top-level element if no list item found
+    return topLevel;
+}
+
 function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
     const tkClasses = editor._config.theme.tk?.split(' ') || [];
     const tkHighlightClasses = editor._config.theme.tkHighlighted?.split(' ') || [];
 
     const containingElement = editor.getElementByKey(parentKey);
 
-    // position element relative to the TK Node containing element
+    // Calculate indicator position relative to the root element
     const calculatePosition = useCallback(() => {
-        let top = 0;
-        let right = -56;
+        const rootRect = rootElement.getBoundingClientRect();
+        const positioningElement = getPositioningElement(containingElement);
+        const elementRect = positioningElement.getBoundingClientRect();
 
-        const rootElementRect = rootElement.getBoundingClientRect();
-
-        const positioningElement = containingElement.querySelector('[data-kg-card]') || containingElement;
-        const positioningElementRect = positioningElement.getBoundingClientRect();
-
-        top = positioningElementRect.top - rootElementRect.top + 4;
-
-        if (positioningElementRect.right > rootElementRect.right) {
-            right = right - (positioningElementRect.right - rootElementRect.right);
-        }
+        const top = elementRect.top - rootRect.top + INDICATOR_OFFSET_TOP;
+        const right = calculateRightOffset(elementRect, rootRect);
 
         return {top, right};
     }, [rootElement, containingElement]);
@@ -83,12 +127,17 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
         }
 
         nodeKeys.forEach((key) => {
+            const element = editor.getElementByKey(key);
+            if (!element) {
+                return;
+            }
+
             if (isHighlighted) {
-                editor.getElementByKey(key).classList.remove(...tkClasses);
-                editor.getElementByKey(key).classList.add(...tkHighlightClasses);
+                element.classList.remove(...tkClasses);
+                element.classList.add(...tkHighlightClasses);
             } else {
-                editor.getElementByKey(key).classList.add(...tkClasses);
-                editor.getElementByKey(key).classList.remove(...tkHighlightClasses);
+                element.classList.add(...tkClasses);
+                element.classList.remove(...tkHighlightClasses);
             }
         });
     };
@@ -114,6 +163,11 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
             observer.disconnect();
         };
     }, [rootElement, containingElement, calculatePosition]);
+
+    // Early return if containing element is not available (after all hooks)
+    if (!containingElement) {
+        return null;
+    }
 
     const style = {
         top: `${position.top}px`,
@@ -157,7 +211,8 @@ export default function TKPlugin() {
                     if (mutation === 'destroyed') {
                         removeEditorTkNode(editor.getKey(), tkNodeKey);
                     } else {
-                        const parentNodeKey = $getNodeByKey(tkNodeKey).getTopLevelElement()?.getKey();
+                        const effectiveTopLevel = getEffectiveTopLevelElement($getNodeByKey(tkNodeKey));
+                        const parentNodeKey = effectiveTopLevel?.getKey();
                         const topLevelNodeKey = parentEditorNodeKey || parentNodeKey;
                         addEditorTkNode(editor.getKey(), topLevelNodeKey, tkNodeKey);
                     }
@@ -247,7 +302,7 @@ export default function TKPlugin() {
         const parentContainer = editor.getElementByKey(parentKey);
 
         if (!parentContainer) {
-            return false;
+            return null;
         }
 
         return (

@@ -115,6 +115,42 @@ test.describe('TK Plugin', async function () {
             await expect(page.getByTestId('tk-indicator')).toHaveCount(3);
         });
 
+        test('creates separate TK indicators for each list item containing TK', async function () {
+            await focusEditor(page);
+
+            await page.keyboard.type('- First item with TK');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('Second item with TK');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('Third item without placeholder');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('Fourth item with TK');
+
+            // Should have 3 separate TK indicators, one for each list item containing TK
+            await expect(page.getByTestId('tk-indicator')).toHaveCount(3);
+        });
+
+        test('positions TK indicators correctly for individual list items', async function () {
+            await focusEditor(page);
+
+            await page.keyboard.type('- First TK item');
+            await page.keyboard.press('Enter');
+            await page.keyboard.type('Second TK item');
+
+            const indicators = page.getByTestId('tk-indicator');
+            await expect(indicators).toHaveCount(2);
+
+            // Get positions to verify they're different (one per list item)
+            const firstIndicator = indicators.first();
+            const secondIndicator = indicators.last();
+
+            const firstBox = await firstIndicator.boundingBox();
+            const secondBox = await secondIndicator.boundingBox();
+
+            // The indicators should have different vertical positions
+            expect(Math.abs(firstBox.y - secondBox.y)).toBeGreaterThan(10);
+        });
+
         test('clicking the indicator selects the first TK node in the parent', async function () {
             await focusEditor(page);
             await page.keyboard.type('TK and TK and TK');
