@@ -23,6 +23,27 @@ describe('Markdown HTML renderer', function () {
             const result = renderer.render(markdown, {ghostVersion: '3.0'});
             result.should.containEql('loading="lazy"');
         });
+
+        it('outputs `line-numbers` class on fenced code blocks when specified', function () {
+            const markdown = `
+\`\`\`javascript line-numbers
+const foo = 'bar';
+\`\`\`
+`;
+            const result = renderer.render(markdown, {ghostVersion: '4.0'});
+            result.should.containEql('class="line-numbers language-javascript"');
+        });
+
+        it('does not output `line-numbers` class on fenced code blocks when not specified', function () {
+            const markdown = `
+\`\`\`javascript
+const foo = 'bar';
+\`\`\`
+`;
+            const result = renderer.render(markdown, {ghostVersion: '4.0'});
+            result.should.containEql('class="language-javascript"');
+            result.should.not.containEql('line-numbers');
+        });
     });
 
     describe('<4.x', function () {
@@ -42,6 +63,17 @@ describe('Markdown HTML renderer', function () {
             const result = renderer.render(markdown, {ghostVersion: '3.0'});
             result.should.match(/<h1 id="headerone">/);
             result.should.match(/<h2 id="hadertwo">/);
+        });
+
+        it('does not output `line-numbers` class on fenced code blocks when specified', function () {
+            const markdown = `
+\`\`\`javascript line-numbers
+const foo = 'bar';
+\`\`\`
+`;
+            const result = renderer.render(markdown, {ghostVersion: '3.0'});
+            result.should.containEql('class="language-javascript"');
+            result.should.not.containEql('line-numbers');
         });
     });
 });
