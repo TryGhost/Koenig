@@ -27,6 +27,6 @@
     "eslint-plugin-ghost": "3.4.4",
     "husky": "9.1.7",
     "lerna": "9.0.4",
-    "lint-staged": "15.5.2"
+    "lint-staged": "16.2.7"
   }
 }
