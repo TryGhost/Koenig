@@ -34,7 +34,9 @@ export class ButtonNode extends BaseButtonNode {
             >
                 <ButtonNodeComponent
                     alignment={this.alignment}
+                    buttonColor={this.buttonColor}
                     buttonText={this.buttonText}
+                    buttonTextColor={this.buttonTextColor}
                     buttonUrl={this.buttonUrl}
                     nodeKey={this.getKey()}
                 />

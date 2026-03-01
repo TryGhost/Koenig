@@ -31,7 +31,9 @@ describe('ButtonNode', function () {
         dataset = {
             buttonText: 'click me',
             buttonUrl: 'http://blog.com/post1',
-            alignment: 'center'
+            alignment: 'center',
+            buttonColor: 'accent',
+            buttonTextColor: '#ffffff'
         };
         exportOptions = {
             dom
@@ -50,6 +52,8 @@ describe('ButtonNode', function () {
             buttonNode.buttonUrl.should.equal(dataset.buttonUrl);
             buttonNode.buttonText.should.equal(dataset.buttonText);
             buttonNode.alignment.should.equal(dataset.alignment);
+            buttonNode.buttonColor.should.equal(dataset.buttonColor);
+            buttonNode.buttonTextColor.should.equal(dataset.buttonTextColor);
         }));
 
         it('has setters for all properties', editorTest(function () {
@@ -66,6 +70,14 @@ describe('ButtonNode', function () {
             buttonNode.alignment.should.equal('center');
             buttonNode.alignment = 'left';
             buttonNode.alignment.should.equal('left');
+
+            buttonNode.buttonColor.should.equal('accent');
+            buttonNode.buttonColor = '#ff0000';
+            buttonNode.buttonColor.should.equal('#ff0000');
+
+            buttonNode.buttonTextColor.should.equal('#ffffff');
+            buttonNode.buttonTextColor = '#000000';
+            buttonNode.buttonTextColor.should.equal('#000000');
         }));
 
         it('has getDataset() convenience method', editorTest(function () {
@@ -132,6 +144,18 @@ describe('ButtonNode', function () {
             output.should.containEql('<td align="center">');
         }));
 
+        it('renders custom button colors', editorTest(function () {
+            const customDataset = {
+                ...dataset,
+                buttonColor: '#ff0000',
+                buttonTextColor: '#000000'
+            };
+            const buttonNode = $createButtonNode(customDataset);
+            const {element} = buttonNode.exportDOM(exportOptions);
+
+            element.outerHTML.should.prettifyTo(html`<div class="kg-card kg-button-card kg-align-center"><a href="http://blog.com/post1" class="kg-btn" style="background-color: #ff0000; color: #000000">click me</a></div>`);
+        }));
+
         it('renders for email target (emailCustomization)', editorTest(function () {
             const buttonNode = $createButtonNode(dataset);
             const options = {
@@ -196,6 +220,43 @@ describe('ButtonNode', function () {
             `);
         }));
 
+        it('renders custom colors for email targets', editorTest(function () {
+            const customDataset = {
+                ...dataset,
+                buttonColor: '#ff0000',
+                buttonTextColor: '#000000'
+            };
+            const buttonNode = $createButtonNode(customDataset);
+            const options = {
+                target: 'email',
+                feature: {
+                    emailCustomization: true
+                }
+            };
+            const {element} = buttonNode.exportDOM({...exportOptions, ...options});
+            const output = element.innerHTML;
+
+            output.should.prettifyTo(html`
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table class="btn" border="0" cellspacing="0" cellpadding="0" align="center">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" style="background-color: #ff0000;">
+                                                <a href="http://blog.com/post1" style="color: #000000;">click me</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            `);
+        }));
+
         it('renders an empty span with a missing buttonUrl', editorTest(function () {
             const buttonNode = $createButtonNode();
             const {element} = buttonNode.exportDOM(exportOptions);
@@ -214,7 +275,9 @@ describe('ButtonNode', function () {
                 version: 1,
                 buttonUrl: dataset.buttonUrl,
                 buttonText: dataset.buttonText,
-                alignment: dataset.alignment
+                alignment: dataset.alignment,
+                buttonColor: dataset.buttonColor,
+                buttonTextColor: dataset.buttonTextColor
             });
         }));
     });
@@ -245,6 +308,8 @@ describe('ButtonNode', function () {
                     buttonNode.buttonUrl.should.equal(dataset.buttonUrl);
                     buttonNode.buttonText.should.equal(dataset.buttonText);
                     buttonNode.alignment.should.equal(dataset.alignment);
+                    buttonNode.buttonColor.should.equal(dataset.buttonColor);
+                    buttonNode.buttonTextColor.should.equal(dataset.buttonTextColor);
 
                     done();
                 } catch (e) {
@@ -276,6 +341,8 @@ describe('ButtonNode', function () {
             nodes[0].buttonUrl.should.equal('http://someblog.com/somepost');
             nodes[0].buttonText.should.equal('click me');
             nodes[0].alignment.should.equal('center');
+            nodes[0].buttonColor.should.equal('accent');
+            nodes[0].buttonTextColor.should.equal('#ffffff');
         }));
 
         it('preserves relative urls in content', editorTest(function () {
@@ -289,6 +356,23 @@ describe('ButtonNode', function () {
             nodes[0].buttonUrl.should.equal('#/portal/signup');
             nodes[0].buttonText.should.equal('Subscribe 1');
             nodes[0].alignment.should.equal('center');
+            nodes[0].buttonColor.should.equal('accent');
+            nodes[0].buttonTextColor.should.equal('#ffffff');
+        }));
+
+        it('parses custom button colors', editorTest(function () {
+            const document = createDocument(html`
+                <div class="kg-card kg-button-card kg-align-left">
+                    <a href="http://someblog.com/somepost" class="kg-btn" style="background-color: rgb(255, 0, 0); color: rgb(0, 0, 0);">Subscribe 1</a>
+                </div>
+            `);
+            const nodes = $generateNodesFromDOM(editor, document);
+            nodes.length.should.equal(1);
+            nodes[0].buttonUrl.should.equal('http://someblog.com/somepost');
+            nodes[0].buttonText.should.equal('Subscribe 1');
+            nodes[0].alignment.should.equal('left');
+            nodes[0].buttonColor.should.equal('#ff0000');
+            nodes[0].buttonTextColor.should.equal('#000000');
         }));
     });
 
