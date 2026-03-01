@@ -6,4 +6,5 @@ export interface IUnsplashProvider {
     searchPhotos(term: string): Promise<Photo[]>;
     triggerDownload(photo: Photo): Promise<void> | void;
     searchIsRunning(): boolean;
+    getLastSearchTerm(): string;
 }
