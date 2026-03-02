@@ -41,7 +41,7 @@ module.exports = {
 
         let html = `
         <div class="kg-card kg-file-card ${classNames}">
-            <a class="kg-file-card-container" href="${escapeHtml(payload.src)}" title="Download" download>
+            <a class="kg-file-card-container" href="${escapeHtml(payload.src)}?download=true" title="Download" download>
                 <div class="kg-file-card-contents">
                     ${payload.fileTitle ? `<div class="kg-file-card-title">${escapeHtml(payload.fileTitle)}</div>` : ``}
                     ${payload.fileCaption ? `<div class="kg-file-card-caption">${escapeHtml(payload.fileCaption)}</div>` : ``}
