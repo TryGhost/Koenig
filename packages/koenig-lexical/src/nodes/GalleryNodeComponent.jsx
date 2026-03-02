@@ -27,7 +27,7 @@ export function GalleryNodeComponent({nodeKey, captionEditor, captionEditorIniti
         return existingImages;
     });
 
-    const galleryReorder = useGalleryReorder({images, updateImages: reorderImages, isSelected});
+    const galleryReorder = useGalleryReorder({images, updateImages: reorderImages, maxImages: MAX_IMAGES, isSelected});
     const imageUploader = fileUploader.useFileUpload('image');
     const imageFilesDropper = useFileDragAndDrop({handleDrop: handleImageFilesDrop});
 
@@ -57,7 +57,7 @@ export function GalleryNodeComponent({nodeKey, captionEditor, captionEditorIniti
 
         const strippedFiles = Array.prototype.slice.call(files, 0, allowedCount);
         if (strippedFiles.length < files.length) {
-            setErrorMessage('Galleries are limited to 9 images');
+            setErrorMessage(`Galleries are limited to ${MAX_IMAGES} images`);
         }
 
         if (strippedFiles.length === 0) {
