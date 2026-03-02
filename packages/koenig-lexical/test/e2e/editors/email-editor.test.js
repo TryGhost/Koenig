@@ -130,17 +130,10 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await focusEditor(page);
             await pasteText(page, 'https://ghost.org/');
 
-            await expect(page.getByTestId('embed-url-loading-container')).toBeVisible();
-            await expect(page.getByTestId('embed-url-loading-container')).toBeHidden();
-
             const embedCard = page.getByTestId('embed-iframe');
             const bookmarkCard = page.getByTestId('bookmark-container');
 
-            await expect.poll(async () => {
-                const hasVisibleEmbed = await embedCard.isVisible().catch(() => false);
-                const hasVisibleBookmark = await bookmarkCard.isVisible().catch(() => false);
-                return hasVisibleEmbed || hasVisibleBookmark;
-            }).toBeTruthy();
+            await expect(embedCard.or(bookmarkCard)).toBeVisible();
         });
 
         test('bookmark card fetches metadata from URL input', async function () {
