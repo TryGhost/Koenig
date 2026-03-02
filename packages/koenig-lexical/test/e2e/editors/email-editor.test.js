@@ -1,4 +1,4 @@
-import {assertHTML, focusEditor, html, initialize} from '../../utils/e2e';
+import {assertHTML, focusEditor, html, initialize, insertCard, pasteText} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
 
 test.describe('Koenig Editor with email template nodes', async function () {
@@ -124,6 +124,35 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await assertHTML(page, html`
                 <blockquote dir="ltr"><span data-lexical-text="true">This is a quote</span></blockquote>
             `);
+        });
+
+        test('pasting URL on blank paragraph creates an embed or bookmark card', async function () {
+            await focusEditor(page);
+            await pasteText(page, 'https://ghost.org/');
+
+            await expect(page.getByTestId('embed-url-loading-container')).toBeVisible();
+            await expect(page.getByTestId('embed-url-loading-container')).toBeHidden();
+
+            const embedCard = page.getByTestId('embed-iframe');
+            const bookmarkCard = page.getByTestId('bookmark-container');
+
+            await expect.poll(async () => {
+                const hasVisibleEmbed = await embedCard.isVisible().catch(() => false);
+                const hasVisibleBookmark = await bookmarkCard.isVisible().catch(() => false);
+                return hasVisibleEmbed || hasVisibleBookmark;
+            }).toBeTruthy();
+        });
+
+        test('bookmark card fetches metadata from URL input', async function () {
+            await focusEditor(page);
+            await insertCard(page, {cardName: 'bookmark'});
+
+            const urlInput = page.getByTestId('bookmark-url');
+            await expect(urlInput).toBeVisible();
+            await urlInput.fill('https://ghost.org/');
+            await urlInput.press('Enter');
+
+            await expect(page.getByTestId('bookmark-title')).toContainText('Ghost');
         });
     });
 
