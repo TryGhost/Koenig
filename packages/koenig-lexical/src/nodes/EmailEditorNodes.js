@@ -46,7 +46,6 @@ const EMAIL_EDITOR_NODES = [
     ButtonNode,
     BookmarkNode,
     EmailCtaNode,
-    EmbedNode,
     EmailEmbedNode,
     emailEmbedNodeReplacement
 ];
