@@ -8,7 +8,7 @@ import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function ButtonNodeComponent({alignment, buttonText, buttonUrl, nodeKey}) {
+export function ButtonNodeComponent({alignment, buttonColor, buttonText, buttonTextColor, buttonUrl, nodeKey}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -41,14 +41,25 @@ export function ButtonNodeComponent({alignment, buttonText, buttonUrl, nodeKey})
         });
     };
 
+    const handleButtonColorChange = (color, matchingTextColor) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.buttonColor = color;
+            node.buttonTextColor = matchingTextColor;
+        });
+    };
+
     return (
         <>
             <ButtonCard
                 alignment={alignment}
+                buttonColor={buttonColor}
                 buttonPlaceholder={`Add button text`}
                 buttonText={buttonText}
+                buttonTextColor={buttonTextColor}
                 buttonUrl={buttonUrl}
                 handleAlignmentChange={handleAlignmentChange}
+                handleButtonColorChange={handleButtonColorChange}
                 handleButtonTextChange={handleButtonTextChange}
                 handleButtonUrlChange={handleButtonUrlChange}
                 isEditing={isEditing}
