@@ -9,6 +9,7 @@ import {KoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import {TKContext} from '../context/TKContext';
 import {WebsocketProvider} from 'y-websocket';
+import {getEditorTypeDefaults} from '../utils/editorTypeDefaults';
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -68,6 +69,19 @@ const KoenigComposer = ({
         });
     }, [enableMultiplayer, initialEditorState, nodes, onError]);
 
+    const editorTypeDefaults = React.useMemo(() => getEditorTypeDefaults(cardConfig.editorType), [cardConfig.editorType]);
+
+    const resolvedCardConfig = React.useMemo(() => {
+        return {
+            ...editorTypeDefaults,
+            ...cardConfig,
+            // shallow-merge nested objects so explicit sub-keys win over defaults
+            image: {...editorTypeDefaults.image, ...cardConfig.image}
+        };
+    }, [editorTypeDefaults, cardConfig]);
+
+    const resolvedIsTKEnabled = isTKEnabled ?? editorTypeDefaults.isTKEnabled;
+
     const editorContainerRef = React.useRef(null);
     const onWordCountChangeRef = React.useRef(null);
 
@@ -110,10 +124,10 @@ const KoenigComposer = ({
             <KoenigComposerContext.Provider value={{
                 fileUploader,
                 editorContainerRef,
-                cardConfig,
+                cardConfig: resolvedCardConfig,
                 darkMode,
                 enableMultiplayer,
-                isTKEnabled,
+                isTKEnabled: resolvedIsTKEnabled,
                 multiplayerEndpoint,
                 multiplayerDocId,
                 multiplayerUsername,

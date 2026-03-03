@@ -22,7 +22,6 @@ import {
     KoenigComposableEditor, KoenigComposer, KoenigEditor, KoenigSelectorPlugin, KoenigSnippetPlugin, ListPlugin, MINIMAL_NODES,
     MINIMAL_TRANSFORMERS, ReplacementStringsPlugin, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
 } from '../src';
-import {VISIBILITY_SETTINGS} from '../src/utils/visibility';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
@@ -338,7 +337,6 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
     }, [editorAPI]);
 
     const showTitle = !isMultiplayer && !['basic', 'minimal', 'email'].includes(editorType);
-    const isEmailEditor = editorType === 'email';
 
     const cardConfig = {
         ...defaultCardConfig,
@@ -355,14 +353,7 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
         deprecated: {
             headerV1: hideDeprecatedCardInMenu(searchParams),
             emailCta: hideDeprecatedCardInMenu(searchParams)
-        },
-        ...(isEmailEditor ? {
-            image: {
-                ...(defaultCardConfig.image || {}),
-                allowedWidths: ['regular']
-            },
-            visibilitySettings: VISIBILITY_SETTINGS.EMAIL_ONLY
-        } : {})
+        }
     };
 
     return (
@@ -372,7 +363,6 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
             enableMultiplayer={isMultiplayer}
             fileUploader={{useFileUpload: useFileUpload({isMultiplayer}), fileTypes}}
             initialEditorState={initialContent}
-            isTKEnabled={editorType !== 'email'}
             multiplayerDocId={`demo/${WEBSOCKET_ID}`}
             multiplayerEndpoint={WEBSOCKET_ENDPOINT}
             nodes={getAllowedNodes({editorType})}
