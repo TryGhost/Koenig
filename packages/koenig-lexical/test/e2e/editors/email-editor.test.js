@@ -186,6 +186,15 @@ test.describe('Koenig Editor with email template nodes', async function () {
             await expect(page.locator('[data-kg-card-menu-item="X (formerly Twitter)"]')).toHaveCount(0);
         });
 
+        test('can insert YouTube embed via slash menu', async function () {
+            await focusEditor(page);
+            await page.keyboard.type('/youtube');
+            await expect(page.locator('[data-kg-card-menu-item="YouTube"][data-kg-cardmenu-selected="true"]')).toBeVisible();
+            await page.keyboard.press('Enter');
+
+            await expect(page.locator('[data-kg-card="embed"]')).toBeVisible();
+        });
+
         test('plus button is shown', async function () {
             await focusEditor(page);
             await expect(page.locator('[data-kg-plus-button]')).toBeVisible();

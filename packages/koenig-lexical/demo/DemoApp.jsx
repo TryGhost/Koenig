@@ -340,6 +340,7 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
 
     const cardConfig = {
         ...defaultCardConfig,
+        editorType,
         snippets,
         createSnippet,
         deleteSnippet,
