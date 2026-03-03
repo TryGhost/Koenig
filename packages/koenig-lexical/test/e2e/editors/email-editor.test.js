@@ -1,6 +1,10 @@
 import path from 'path';
 import {assertHTML, focusEditor, html, initialize, insertCard, pasteText} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import {fileURLToPath} from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test.describe('Koenig Editor with email template nodes', async function () {
     let page;
