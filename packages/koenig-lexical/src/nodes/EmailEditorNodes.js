@@ -3,6 +3,7 @@ import {BookmarkNode} from '../nodes/BookmarkNode';
 import {ButtonNode} from '../nodes/ButtonNode';
 import {CalloutNode} from '../nodes/CalloutNode';
 import {EmailCtaNode} from '../nodes/EmailCtaNode';
+import {EmailEmbedNode, emailEmbedNodeReplacement} from '../nodes/EmailEmbedNode';
 import {EmbedNode} from '../nodes/EmbedNode';
 import {
     ExtendedHeadingNode,
@@ -45,7 +46,9 @@ const EMAIL_EDITOR_NODES = [
     ButtonNode,
     BookmarkNode,
     EmailCtaNode,
-    EmbedNode
+    EmbedNode,
+    EmailEmbedNode,
+    emailEmbedNodeReplacement
 ];
 
 export default EMAIL_EDITOR_NODES;
