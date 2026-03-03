@@ -9,8 +9,7 @@ describe('getEditorTypeDefaults', () => {
             visibilitySettings: VISIBILITY_SETTINGS.EMAIL_ONLY,
             image: {
                 allowedWidths: ['regular']
-            },
-            isTKEnabled: false
+            }
         });
     });
 

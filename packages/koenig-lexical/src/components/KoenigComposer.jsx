@@ -80,8 +80,6 @@ const KoenigComposer = ({
         };
     }, [editorTypeDefaults, cardConfig]);
 
-    const resolvedIsTKEnabled = isTKEnabled ?? editorTypeDefaults.isTKEnabled;
-
     const editorContainerRef = React.useRef(null);
     const onWordCountChangeRef = React.useRef(null);
 
@@ -127,7 +125,7 @@ const KoenigComposer = ({
                 cardConfig: resolvedCardConfig,
                 darkMode,
                 enableMultiplayer,
-                isTKEnabled: resolvedIsTKEnabled,
+                isTKEnabled,
                 multiplayerEndpoint,
                 multiplayerDocId,
                 multiplayerUsername,

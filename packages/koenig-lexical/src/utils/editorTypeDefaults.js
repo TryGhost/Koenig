@@ -14,7 +14,6 @@ import {VISIBILITY_SETTINGS} from './visibility';
  * @typedef {Object} EditorTypeDefaults
  * @property {string} [visibilitySettings] - Controls which visibility panels (web/email) are shown
  * @property {ImageConfig} [image] - Image card configuration
- * @property {boolean} [isTKEnabled] - Whether TK highlighting is enabled
  */
 
 /** @type {Partial<Record<EditorType, EditorTypeDefaults>>} */
@@ -23,8 +22,7 @@ const EDITOR_TYPE_DEFAULTS = {
         visibilitySettings: VISIBILITY_SETTINGS.EMAIL_ONLY,
         image: {
             allowedWidths: ['regular']
-        },
-        isTKEnabled: false
+        }
     }
 };
 
