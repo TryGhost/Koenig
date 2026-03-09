@@ -68,6 +68,13 @@ const L_FORMAT_MAP = new Map<number, string>([
 const HEADING_TYPES = ['heading', 'extended-heading'];
 const TEXT_TYPES = ['text', 'extended-text'];
 
+// TODO: Feels a little too explicit as it will need updating every time we add a new card.
+//
+// One alternative is to use a list of all built-in Lexical types and assume that anything
+// not listed is a card but that feels more dangerous.
+//
+// Another alternative is to grab the list of cards from kg-default-nodes but that's creating
+// more inter-dependencies that makes development setup tricky.
 const KNOWN_CARDS = [
     'audio',
     'bookmark',
