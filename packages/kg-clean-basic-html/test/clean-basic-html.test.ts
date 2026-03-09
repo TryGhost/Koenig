@@ -1,16 +1,16 @@
 // Switch these lines once there are useful utils
-// const testUtils = require('./utils');
-require('./utils');
+// import testUtils from './utils/index.js';
+import './utils/index.js';
 
-const {JSDOM} = require('jsdom');
-const cleanBasicHtml = require('../');
+import {JSDOM} from 'jsdom';
+import cleanBasicHtml from '../src/clean-basic-html.js';
 
 describe('cleanBasicHtml', function () {
-    let options = {};
+    let options: {createDocument: (html: string) => Document};
 
     before(function () {
         options = {
-            createDocument(html) {
+            createDocument(html: string) {
                 return (new JSDOM(html)).window.document;
             }
         };
@@ -26,42 +26,42 @@ describe('cleanBasicHtml', function () {
         const html = '  <br>&nbsp;&nbsp; &nbsp;';
         const result = cleanBasicHtml(html, options);
 
-        result.should.equal('');
+        (result as string).should.equal('');
     });
 
     it('keeps whitespace between text', function () {
         const html = '&nbsp; <br>Testing &nbsp;Significant Whitespace<br />&nbsp;';
         const result = cleanBasicHtml(html, options);
 
-        result.should.equal('Testing Significant Whitespace');
+        (result as string).should.equal('Testing Significant Whitespace');
     });
 
     it('removes DOM elements with blank text content', function () {
         const html = '&nbsp; <p> &nbsp;&nbsp;<br></p>';
         const result = cleanBasicHtml(html, options);
 
-        result.should.equal('');
+        (result as string).should.equal('');
     });
 
     it('keeps elements with text content', function () {
         const html = ' &nbsp;<strong> Test&nbsp;</strong> ';
         const result = cleanBasicHtml(html, options);
 
-        result.should.equal('<strong> Test&nbsp;</strong>');
+        (result as string).should.equal('<strong> Test&nbsp;</strong>');
     });
 
     it('can extract first element content', function () {
         const html = '<p><span>Headline</span> <em>italic</em></p>';
         const result = cleanBasicHtml(html, {...options, firstChildInnerContent: true});
 
-        result.should.equal('<span>Headline</span> <em>italic</em>');
+        (result as string).should.equal('<span>Headline</span> <em>italic</em>');
     });
 
     it('return empty string if firstChildInnerContent option enabled and there is no first child element ', function () {
         const html = '';
         const result = cleanBasicHtml(html, {...options, firstChildInnerContent: true});
 
-        result.should.equal('');
+        (result as string).should.equal('');
     });
 
     describe('options.removeCodeWrappers', function () {
@@ -69,21 +69,21 @@ describe('cleanBasicHtml', function () {
             const html = '<code><span>{foo}</span></code>';
             const result = cleanBasicHtml(html, {...options, removeCodeWrappers: true});
 
-            result.should.equal('<span>{foo}</span>');
+            (result as string).should.equal('<span>{foo}</span>');
         });
 
         it('removes any <code> wrappers around replacement strings <span>{foo}</span>', function () {
             const html = '<code><span>{foo}</span></code>';
             const result = cleanBasicHtml(html, {...options, removeCodeWrappers: true});
 
-            result.should.equal('<span>{foo}</span>');
+            (result as string).should.equal('<span>{foo}</span>');
         });
 
         it('removes any <code> wrappers around replacement strings {foo, "default"}', function () {
             const html = '<p>Hey <code>{first_name, "there"}</code>,</p>';
             const result = cleanBasicHtml(html, {...options, removeCodeWrappers: true});
 
-            result.should.equal('<p>Hey {first_name, "there"},</p>');
+            (result as string).should.equal('<p>Hey {first_name, "there"},</p>');
         });
     });
 });
