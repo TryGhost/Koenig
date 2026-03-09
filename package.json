@@ -20,7 +20,7 @@
     "main": "git checkout main && git pull ${GHOST_UPSTREAM:-origin} main && yarn"
   },
   "devDependencies": {
-    "@eslint/compat": "2.0.2",
+    "@eslint/compat": "2.0.3",
     "@eslint/js": "9.39.3",
     "eslint": "9.39.3",
     "eslint-plugin-ghost": "3.5.0",
