@@ -25,7 +25,7 @@
     "eslint": "9.37.0",
     "eslint-plugin-ghost": "3.4.4",
     "globals": "14.0.0",
-    "typescript-eslint": "8.33.1",
+    "typescript-eslint": "8.56.1",
     "husky": "9.1.7",
     "lerna": "9.0.5",
     "lint-staged": "15.5.2"
