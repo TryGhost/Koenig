@@ -42,6 +42,35 @@ const namedHeaders = function ({ghostVersion} = {}) {
     };
 };
 
+const fenceLineNumbers = function (md) {
+    const proxy = (tokens, idx, options, env, self) => self.renderToken(tokens, idx, options);
+    const defaultFence = md.renderer.rules.fence || proxy;
+
+    // Originally from https://github.com/coreyasmith/markdown-it-fence-line-numbers
+    md.renderer.rules.fence = function (tokens, idx, options, env, self) {
+        const token = tokens[idx];
+        const info = token.info;
+        const attribute = 'line-numbers';
+
+        if (!info) {
+            return defaultFence(tokens, idx, options, env, self);
+        }
+
+        // line-numbers must come after the first word in the info string to be rendered.
+        // Example: ```ruby line-numbers
+        // If line-numbers is specified as the first word, fallback to the default behavior
+        // (i.e., treat line-numbers as the language).
+        const langAttrs = info.split(/(\s+)/g).slice(2).join('');
+        const attributeRegex = new RegExp(`\\b${attribute}\\b`);
+        if (!langAttrs || !attributeRegex.test(langAttrs)) {
+            return defaultFence(tokens, idx, options, env, self);
+        }
+
+        token.attrJoin('class', attribute);
+        return defaultFence(tokens, idx, options, env, self);
+    };
+};
+
 const selectRenderer = function (options) {
     const version = semver.coerce(options.ghostVersion || '4.0');
 
@@ -77,7 +106,8 @@ const selectRenderer = function (options) {
             .use(require('markdown-it-image-lazy-loading'))
             .use(namedHeaders(options))
             .use(require('markdown-it-sub'))
-            .use(require('markdown-it-sup'));
+            .use(require('markdown-it-sup'))
+            .use(fenceLineNumbers);
 
         markdownIt.linkify.set({
             fuzzyLink: false
