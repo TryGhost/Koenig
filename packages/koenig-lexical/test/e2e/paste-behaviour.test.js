@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {assertHTML, ctrlOrCmd, focusEditor,html, initialize, insertCard, paste, pasteFiles, pasteFilesWithText, pasteHtml, pasteText} from '../utils/e2e';
+import {assertHTML, ctrlOrCmd, focusEditor,html, initialize, insertCard, paste, pasteFiles, pasteFilesWithText, pasteHtml, pasteLexical, pasteText} from '../utils/e2e';
 import {expect, test} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -621,6 +621,52 @@ test.describe('Paste behaviour', async () => {
 
             // Check that the image src is not coming from the text/html content
             expect(imgSrc).not.toContain('https://files.slack.com/foo-bar');
+        });
+    });
+
+    test.describe('Links', function () {
+        test('avoids converting links to embed/bookmarks when pasting it into a list item', async function () {
+            await focusEditor(page);
+            await pasteLexical(page, JSON.stringify({
+                namespace: 'KoenigEditor',
+                nodes: [{
+                    children: [{
+                        children: [{
+                            detail: 0,
+                            format: 0,
+                            mode: 'normal',
+                            style: '',
+                            text: '',
+                            type: 'text',
+                            version: 1
+                        }],
+                        format: '',
+                        indent: 0,
+                        type: 'listitem',
+                        version: 1
+                    }],
+                    format: '',
+                    indent: 0,
+                    type: 'list',
+                    version: 1,
+                    listType: 'bullet',
+                    start: 1,
+                    tag: 'ul'
+                }]
+            }));
+
+            await paste(page, {
+                'text/plain': 'https://ghost.org/',
+                'text/html': '<p><a href="https://ghost.org/">Link</a></p>'
+            });
+
+            await assertHTML(page, html`<ul>
+                    <li value="1">
+                        <a href="https://ghost.org/" dir="ltr">
+                            <span data-lexical-text="true">https://ghost.org/</span>
+                        </a>
+                    </li>
+                </ul>`);
         });
     });
 });
