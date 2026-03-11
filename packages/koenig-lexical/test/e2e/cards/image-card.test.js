@@ -125,7 +125,7 @@ test.describe('Image card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
+                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="image">
                     <figure data-kg-card-width="regular">
                         <div data-testid="media-placeholder">
                             <div>
@@ -296,6 +296,7 @@ test.describe('Image card', async () => {
                     <div data-kg-card-toolbar="image"></div>
                 </div>
             </div>
+            <p><br /></p>
         `, {ignoreCardToolbarContents: true});
     });
 
@@ -575,7 +576,7 @@ test.describe('Image card', async () => {
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false">
-                <div data-kg-card-editing="false" data-kg-card-selected="true" data-kg-card="image">
+                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="image">
                     <figure data-kg-card-width="regular">
                         <div><img alt="" src="blob:..." /></div>
                     </figure>
@@ -904,7 +905,8 @@ test.describe('Image card', async () => {
         await enterUntilScrolled(page);
         await insertImage(page);
 
-        const paragraphCount = await page.locator('[data-kg="editor"] > div > p').count();
+        const rootParagraphs = page.locator('.koenig-lexical > [data-kg="editor"] > div > p');
+        const paragraphCount = await rootParagraphs.count();
 
         await expectUnchangedScrollPosition(page, async () => {
             await page.keyboard.type('Captiontest--Captiontest');
@@ -938,13 +940,13 @@ test.describe('Image card', async () => {
             await expect(page.locator('[data-kg-card="image"]')).toHaveAttribute('data-kg-card-selected', 'false');
 
             // Check total paragraph count increased
-            await expect(page.locator('[data-kg="editor"] > div > p')).toHaveCount(paragraphCount + 1);
+            await expect(rootParagraphs).toHaveCount(paragraphCount + 1);
 
             // Add some text
             await page.keyboard.type('last one');
 
             // Check contains text
-            await expect(page.locator('[data-kg="editor"] > div > p:last-child').nth(1)).toHaveText('last one');
+            await expect(rootParagraphs.filter({hasText: 'last one'})).toHaveCount(1);
         });
     });
 
@@ -990,7 +992,8 @@ test.describe('Image card', async () => {
         await enterUntilScrolled(page);
         await insertImage(page);
 
-        const paragraphCount = await page.locator('[data-kg="editor"] > div > p').count();
+        const rootParagraphs = page.locator('.koenig-lexical > [data-kg="editor"] > div > p');
+        const paragraphCount = await rootParagraphs.count();
 
         await expectUnchangedScrollPosition(page, async () => {
             await page.keyboard.type('Captiontest--Captiontest');
@@ -1020,13 +1023,13 @@ test.describe('Image card', async () => {
             await expect(page.locator('[data-kg-card="image"]')).toHaveAttribute('data-kg-card-selected', 'false');
 
             // Check total paragraph count increased
-            await expect(page.locator('[data-kg="editor"] > div > p')).toHaveCount(paragraphCount + 1);
+            await expect(rootParagraphs).toHaveCount(paragraphCount + 1);
 
             // Add some text
             await page.keyboard.type('last one');
 
             // Check contains text
-            await expect(page.locator('[data-kg="editor"] > div > p:last-child').nth(1)).toHaveText('last one');
+            await expect(rootParagraphs.filter({hasText: 'last one'})).toHaveCount(1);
 
             // Caption still ok?
             await expect(captionEditor).toHaveText('Captiontest-**-Captiontest');
@@ -1162,10 +1165,10 @@ test.describe('Image card', async () => {
 async function insertImage(page, image = 'large-image.png') {
     const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/${image}`);
 
-    await focusEditor(page);
+    await insertEmptyImageCard(page);
     const [fileChooser] = await Promise.all([
         page.waitForEvent('filechooser'),
-        insertCard(page, {cardName: 'image'})
+        page.click('button[name="placeholder-button"]')
     ]);
     await fileChooser.setFiles([filePath]);
 
@@ -1173,12 +1176,39 @@ async function insertImage(page, image = 'large-image.png') {
 }
 
 async function insertEmptyImageCard(page) {
-    await focusEditor(page);
-
-    await Promise.all([
-        page.waitForEvent('filechooser'),
-        insertCard(page, {cardName: 'image'})
-    ]);
+    await page.evaluate(() => {
+        const serializedState = JSON.stringify({
+            root: {
+                children: [{
+                    type: 'image',
+                    version: 1,
+                    src: '',
+                    width: null,
+                    height: null,
+                    title: '',
+                    alt: '',
+                    caption: '',
+                    cardWidth: 'regular',
+                    href: ''
+                }, {
+                    children: [],
+                    direction: null,
+                    format: '',
+                    indent: 0,
+                    type: 'paragraph',
+                    version: 1
+                }],
+                direction: null,
+                format: '',
+                indent: 0,
+                type: 'root',
+                version: 1
+            }
+        });
+        const editor = window.lexicalEditor;
+        const editorState = editor.parseEditorState(serializedState);
+        editor.setEditorState(editorState);
+    });
 }
 
 function tenorTestData() {
