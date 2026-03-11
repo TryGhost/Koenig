@@ -15,14 +15,10 @@ import emailContent from './content/email-content.json';
 import minimalContent from './content/minimal-content.json';
 import {$getRoot, $isDecoratorNode} from 'lexical';
 import {
-    BASIC_NODES, BASIC_TRANSFORMERS, BookmarkPlugin,
-    ButtonPlugin, CallToActionPlugin, CalloutPlugin, CardMenuPlugin, EMAIL_EDITOR_NODES,
-    EMAIL_TRANSFORMERS, EmEnDashPlugin, EmailCtaPlugin, EmbedPlugin, EmojiPickerPlugin,
-    HorizontalRulePlugin, HtmlPlugin, ImagePlugin,
-    KoenigComposableEditor, KoenigComposer, KoenigEditor, KoenigSelectorPlugin, KoenigSnippetPlugin, ListPlugin, MINIMAL_NODES,
-    MINIMAL_TRANSFORMERS, ProductPlugin, ReplacementStringsPlugin, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
+    BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_EDITOR_NODES, EmailEditor,
+    KoenigComposableEditor, KoenigComposer, KoenigEditor, MINIMAL_NODES,
+    MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin, getEmailEditorCardConfig
 } from '../src';
-import {VISIBILITY_SETTINGS} from '../src/utils/visibility';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
 import {fileTypes, useFileUpload} from './utils/useFileUpload';
@@ -161,31 +157,12 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
         );
     } else if (editorType === 'email') {
         return (
-            <KoenigComposableEditor
+            <EmailEditor
                 cursorDidExitAtTop={cursorDidExitAtTop}
-                markdownTransformers={EMAIL_TRANSFORMERS}
-                placeholderText="Begin writing your email..."
                 registerAPI={registerAPI}
             >
-                <BookmarkPlugin />
-                <ButtonPlugin />
-                <CalloutPlugin />
-                <CallToActionPlugin />
-                <CardMenuPlugin />
-                <EmbedPlugin />
-                <EmailCtaPlugin />
-                <EmEnDashPlugin />
-                <EmojiPickerPlugin />
-                <HorizontalRulePlugin />
-                <HtmlPlugin />
-                <ImagePlugin /> 
-                <KoenigSelectorPlugin />
-                <KoenigSnippetPlugin />
-                <ListPlugin />
-                <ProductPlugin />
-                <ReplacementStringsPlugin />
                 <WordCountPlugin onChange={setWordCount} />
-            </KoenigComposableEditor>
+            </EmailEditor>
         );
     }
 
@@ -342,7 +319,7 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
     const showTitle = !isMultiplayer && !['basic', 'minimal', 'email'].includes(editorType);
     const isEmailEditor = editorType === 'email';
 
-    const cardConfig = {
+    const baseCardConfig = {
         ...defaultCardConfig,
         editorType,
         snippets,
@@ -357,15 +334,9 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
         deprecated: {
             headerV1: hideDeprecatedCardInMenu(searchParams),
             emailCta: hideDeprecatedCardInMenu(searchParams)
-        },
-        ...(isEmailEditor ? {
-            image: {
-                ...(defaultCardConfig.image || {}),
-                allowedWidths: ['regular']
-            },
-            visibilitySettings: VISIBILITY_SETTINGS.EMAIL_ONLY
-        } : {})
+        }
     };
+    const cardConfig = isEmailEditor ? getEmailEditorCardConfig(baseCardConfig) : baseCardConfig;
 
     return (
         <KoenigComposer
