@@ -2,10 +2,9 @@ import CodeMirror from '@uiw/react-codemirror';
 import React from 'react';
 import {closeBrackets, closeBracketsKeymap} from '@codemirror/autocomplete';
 import {darkBaseExtensions, lightBaseExtensions} from '../../../../utils/codemirror-config';
-import {html as langHtml} from '@codemirror/lang-html';
 import {keymap} from '@codemirror/view';
+import {html as langHtml} from '@codemirror/lang-html';
 
-// HtmlEditor-specific extensions: closeBrackets + HTML language
 const htmlExtras = [
     keymap.of(closeBracketsKeymap),
     langHtml(),

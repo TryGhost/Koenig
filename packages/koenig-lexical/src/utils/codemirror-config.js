@@ -125,7 +125,6 @@ export const darkHighlightStyle = HighlightStyle.define([
     {tag: [t.className, t.propertyName], color: 'rgb(72, 110, 225)'}
 ]);
 
-// Shared base extensions used by both HtmlEditor and CodeBlockCard
 const sharedExtensions = [
     EditorView.lineWrapping,
     lineNumbers(),

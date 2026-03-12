@@ -41,7 +41,6 @@ export function CodeEditor({code, language, updateCode, updateLanguage}) {
         updateLanguage(event.target.value);
     }, [updateLanguage]);
 
-    // Build extensions from stable base + dynamic language
     const extensions = React.useMemo(() => {
         const base = darkMode ? darkBaseExtensions : lightBaseExtensions;
         const highlighter = languageMap[language?.toLowerCase().trim()] || null;
