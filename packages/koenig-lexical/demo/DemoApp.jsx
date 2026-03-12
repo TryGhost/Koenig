@@ -346,7 +346,7 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
     const demoLayout = (children) => (
         <div className={`koenig-demo relative h-full grow ${darkMode ? 'dark' : ''}`} style={isSidebarOpen ? {'--kg-breakout-adjustment': '440px'} : {}}>
             {
-                !isMultiplayer && !isEmailEditor && searchParams !== 'false'
+                !isMultiplayer && !isEmailEditor && contentParam !== 'false'
                     ? <InitialContentToggle defaultContent={defaultContent} searchParams={searchParams} setSearchParams={setSearchParams} setTitle={setTitle} />
                     : null
             }
