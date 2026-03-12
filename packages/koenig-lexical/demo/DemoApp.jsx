@@ -15,9 +15,9 @@ import emailContent from './content/email-content.json';
 import minimalContent from './content/minimal-content.json';
 import {$getRoot, $isDecoratorNode} from 'lexical';
 import {
-    BASIC_NODES, BASIC_TRANSFORMERS, EMAIL_EDITOR_NODES, EmailEditor,
+    BASIC_NODES, BASIC_TRANSFORMERS, EmailEditor,
     KoenigComposableEditor, KoenigComposer, KoenigEditor, MINIMAL_NODES,
-    MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin, getEmailEditorCardConfig
+    MINIMAL_TRANSFORMERS, RestrictContentPlugin, TKCountPlugin, WordCountPlugin
 } from '../src';
 import {defaultHeaders as defaultUnsplashHeaders} from './utils/unsplashConfig';
 import {fetchEmbed} from './utils/fetchEmbed';
@@ -126,8 +126,6 @@ function getAllowedNodes({editorType}) {
         return BASIC_NODES;
     } else if (editorType === 'minimal') {
         return MINIMAL_NODES;
-    } else if (editorType === 'email') {
-        return EMAIL_EDITOR_NODES;
     }
     return undefined;
 }
@@ -154,15 +152,6 @@ function DemoEditor({editorType, registerAPI, cursorDidExitAtTop, darkMode, setW
                 <RestrictContentPlugin paragraphs={1} />
                 <WordCountPlugin onChange={setWordCount} />
             </KoenigComposableEditor>
-        );
-    } else if (editorType === 'email') {
-        return (
-            <EmailEditor
-                cursorDidExitAtTop={cursorDidExitAtTop}
-                registerAPI={registerAPI}
-            >
-                <WordCountPlugin onChange={setWordCount} />
-            </EmailEditor>
         );
     }
 
@@ -319,7 +308,7 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
     const showTitle = !isMultiplayer && !['basic', 'minimal', 'email'].includes(editorType);
     const isEmailEditor = editorType === 'email';
 
-    const baseCardConfig = {
+    const cardConfig = {
         ...defaultCardConfig,
         editorType,
         snippets,
@@ -336,64 +325,90 @@ function DemoComposer({editorType, isMultiplayer, setWordCount, setTKCount}) {
             emailCta: hideDeprecatedCardInMenu(searchParams)
         }
     };
-    const cardConfig = isEmailEditor ? getEmailEditorCardConfig(baseCardConfig) : baseCardConfig;
+
+    const fileUploader = {useFileUpload: useFileUpload({isMultiplayer}), fileTypes};
+
+    // Sidebar uses useLexicalComposerContext so it must be inside a KoenigComposer.
+    // The email editor manages its own composer, so the sidebar is only available
+    // for non-email editor types.
+    const demoChrome = (
+        <>
+            <Watermark editorType={editorType || 'full'} />
+            {!isEmailEditor && (
+                <div className="absolute z-20 flex h-full flex-col items-end sm:relative">
+                    <Sidebar isOpen={isSidebarOpen} saveContent={saveContent} view={sidebarView} />
+                    <FloatingButton isOpen={isSidebarOpen} onClick={openSidebar} />
+                </div>
+            )}
+        </>
+    );
+
+    const demoLayout = (children) => (
+        <div className={`koenig-demo relative h-full grow ${darkMode ? 'dark' : ''}`} style={isSidebarOpen ? {'--kg-breakout-adjustment': '440px'} : {}}>
+            {
+                !isMultiplayer && !isEmailEditor && searchParams !== 'false'
+                    ? <InitialContentToggle defaultContent={defaultContent} searchParams={searchParams} setSearchParams={setSearchParams} setTitle={setTitle} />
+                    : null
+            }
+            <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+            <div ref={containerRef} className="h-full overflow-auto overflow-x-hidden" onClick={focusEditor} onMouseDown={maybeSkipFocusEditor}>
+                <div className="mx-auto max-w-[740px] px-6 py-[15vmin] lg:px-0">
+                    {showTitle
+                        ? <TitleTextBox ref={titleRef} editorAPI={editorAPI} setTitle={setTitle} title={title} />
+                        : null
+                    }
+                    {children}
+                </div>
+            </div>
+        </div>
+    );
+
+    // Email editor includes its own KoenigComposer, so it renders outside the shared one
+    if (isEmailEditor) {
+        return (
+            <>
+                {demoLayout(
+                    <EmailEditorWrapper>
+                        <EmailEditor
+                            cardConfig={cardConfig}
+                            cursorDidExitAtTop={focusTitle}
+                            darkMode={darkMode}
+                            fileUploader={fileUploader}
+                            initialEditorState={initialContent}
+                            registerAPI={setEditorAPI}
+                        >
+                            <WordCountPlugin onChange={setWordCount} />
+                        </EmailEditor>
+                    </EmailEditorWrapper>
+                )}
+                {demoChrome}
+            </>
+        );
+    }
 
     return (
         <KoenigComposer
             cardConfig={cardConfig}
             darkMode={darkMode}
             enableMultiplayer={isMultiplayer}
-            fileUploader={{useFileUpload: useFileUpload({isMultiplayer}), fileTypes}}
+            fileUploader={fileUploader}
             initialEditorState={initialContent}
-            isTKEnabled={editorType !== 'email'}
+            isTKEnabled={true}
             multiplayerDocId={`demo/${WEBSOCKET_ID}`}
             multiplayerEndpoint={WEBSOCKET_ENDPOINT}
             nodes={getAllowedNodes({editorType})}
         >
-            <div className={`koenig-demo relative h-full grow ${darkMode ? 'dark' : ''}`} style={isSidebarOpen ? {'--kg-breakout-adjustment': '440px'} : {}}>
-                {
-                    !isMultiplayer && searchParams !== 'false'
-                        ? <InitialContentToggle defaultContent={defaultContent} searchParams={searchParams} setSearchParams={setSearchParams} setTitle={setTitle} />
-                        : null
-                }
-                <DarkModeToggle darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-                <div ref={containerRef} className="h-full overflow-auto overflow-x-hidden" onClick={focusEditor} onMouseDown={maybeSkipFocusEditor}>
-                    <div className="mx-auto max-w-[740px] px-6 py-[15vmin] lg:px-0">
-                        {showTitle
-                            ? <TitleTextBox ref={titleRef} editorAPI={editorAPI} setTitle={setTitle} title={title} />
-                            : null
-                        }
-                        {editorType === 'email' ? (
-                            <EmailEditorWrapper>
-                                <DemoEditor
-                                    cursorDidExitAtTop={focusTitle}
-                                    darkMode={darkMode}
-                                    editorType={editorType}
-                                    registerAPI={setEditorAPI}
-                                    setTKCount={setTKCount}
-                                    setWordCount={setWordCount}
-                                />
-                            </EmailEditorWrapper>
-                        ) : (
-                            <DemoEditor
-                                cursorDidExitAtTop={focusTitle}
-                                darkMode={darkMode}
-                                editorType={editorType}
-                                registerAPI={setEditorAPI}
-                                setTKCount={setTKCount}
-                                setWordCount={setWordCount}
-                            />
-                        )}
-                    </div>
-                </div>
-            </div>
-            <Watermark
-                editorType={editorType || 'full'}
-            />
-            <div className="absolute z-20 flex h-full flex-col items-end sm:relative">
-                <Sidebar isOpen={isSidebarOpen} saveContent={saveContent} view={sidebarView} />
-                <FloatingButton isOpen={isSidebarOpen} onClick={openSidebar} />
-            </div>
+            {demoLayout(
+                <DemoEditor
+                    cursorDidExitAtTop={focusTitle}
+                    darkMode={darkMode}
+                    editorType={editorType}
+                    registerAPI={setEditorAPI}
+                    setTKCount={setTKCount}
+                    setWordCount={setWordCount}
+                />
+            )}
+            {demoChrome}
         </KoenigComposer>
     );
 }

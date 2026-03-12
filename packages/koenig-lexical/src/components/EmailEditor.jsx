@@ -4,6 +4,7 @@ import ButtonPlugin from '../plugins/ButtonPlugin';
 import CallToActionPlugin from '../plugins/CallToActionPlugin';
 import CalloutPlugin from '../plugins/CalloutPlugin';
 import CardMenuPlugin from '../plugins/CardMenuPlugin';
+import EMAIL_EDITOR_NODES from '../nodes/EmailEditorNodes';
 import EmEnDashPlugin from '../plugins/EmEnDashPlugin';
 import EmailCtaPlugin from '../plugins/EmailCtaPlugin';
 import EmbedPlugin from '../plugins/EmbedPlugin';
@@ -12,6 +13,7 @@ import HorizontalRulePlugin from '../plugins/HorizontalRulePlugin';
 import HtmlPlugin from '../plugins/HtmlPlugin';
 import ImagePlugin from '../plugins/ImagePlugin';
 import KoenigComposableEditor from './KoenigComposableEditor';
+import KoenigComposer from './KoenigComposer';
 import KoenigSelectorPlugin from '../plugins/KoenigSelectorPlugin';
 import KoenigSnippetPlugin from '../plugins/KoenigSnippetPlugin';
 import ProductPlugin from '../plugins/ProductPlugin';
@@ -41,41 +43,57 @@ export function getEmailEditorCardConfig(cardConfig = {}) {
 }
 
 const EmailEditor = ({
+    cardConfig = {},
+    darkMode = false,
+    fileUploader,
+    initialEditorState,
     onChange,
+    onError,
     children,
     markdownTransformers = EMAIL_TRANSFORMERS,
     placeholderText = 'Begin writing your email...',
     ...props
 }) => {
+    const mergedCardConfig = getEmailEditorCardConfig(cardConfig);
+
     return (
-        <SharedHistoryContext>
-            <SharedOnChangeContext onChange={onChange}>
-                <KoenigComposableEditor
-                    {...props}
-                    markdownTransformers={markdownTransformers}
-                    placeholderText={placeholderText}
-                >
-                    <BookmarkPlugin />
-                    <ButtonPlugin />
-                    <CalloutPlugin />
-                    <CallToActionPlugin />
-                    <CardMenuPlugin />
-                    <EmbedPlugin />
-                    <EmailCtaPlugin />
-                    <EmEnDashPlugin />
-                    <EmojiPickerPlugin />
-                    <HorizontalRulePlugin />
-                    <HtmlPlugin />
-                    <ImagePlugin />
-                    <KoenigSelectorPlugin />
-                    <KoenigSnippetPlugin />
-                    <ListPlugin />
-                    <ProductPlugin />
-                    <ReplacementStringsPlugin />
-                    {children}
-                </KoenigComposableEditor>
-            </SharedOnChangeContext>
-        </SharedHistoryContext>
+        <KoenigComposer
+            cardConfig={mergedCardConfig}
+            darkMode={darkMode}
+            fileUploader={fileUploader}
+            initialEditorState={initialEditorState}
+            nodes={EMAIL_EDITOR_NODES}
+            onError={onError}
+        >
+            <SharedHistoryContext>
+                <SharedOnChangeContext onChange={onChange}>
+                    <KoenigComposableEditor
+                        {...props}
+                        markdownTransformers={markdownTransformers}
+                        placeholderText={placeholderText}
+                    >
+                        <BookmarkPlugin />
+                        <ButtonPlugin />
+                        <CalloutPlugin />
+                        <CallToActionPlugin />
+                        <CardMenuPlugin />
+                        <EmbedPlugin />
+                        <EmailCtaPlugin />
+                        <EmEnDashPlugin />
+                        <EmojiPickerPlugin />
+                        <HorizontalRulePlugin />
+                        <HtmlPlugin />
+                        <ImagePlugin />
+                        <KoenigSelectorPlugin />
+                        <KoenigSnippetPlugin />
+                        <ListPlugin />
+                        <ProductPlugin />
+                        <ReplacementStringsPlugin />
+                        {children}
+                    </KoenigComposableEditor>
+                </SharedOnChangeContext>
+            </SharedHistoryContext>
+        </KoenigComposer>
     );
 };
 
