@@ -16,7 +16,7 @@ export const ProductPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_PRODUCT_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createProductNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode, openInEditMode: true});
 

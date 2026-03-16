@@ -1,6 +1,6 @@
-export async function fetchEmbed(url, {type}) {
+export async function fetchEmbed(url: string, {type}: {type: string}) {
     console.log('fetchEmbed', {url, type});
-    let urlObject = new URL(url);
+    const urlObject = new URL(url);
     if (!urlObject) {
         throw new Error('No URL specified.');
     }
@@ -8,7 +8,7 @@ export async function fetchEmbed(url, {type}) {
     // let html = await (await fetch(url)).text();
     try {
         if (type === 'bookmark') {
-            let returnData = {
+            const returnData = {
                 url: 'https://www.ghost.org/',
                 metadata: {
                     icon: 'https://www.ghost.org/favicon.ico',
@@ -291,7 +291,7 @@ export async function fetchEmbed(url, {type}) {
             //         }
             //     }
             // };
-            let returnData = {
+            const returnData = {
                 html: '<iframe width="200" height="113" src="https://www.youtube.com/embed/b52pBaObiY0?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="" title="BOM at the Historic Rally Festival 2021" style="width: 100%; height: 418.1px; max-width: 100%;"></iframe>',
                 author_url: 'https://www.youtube.com/user/gorillaz',
                 provider_name: 'YouTube',
@@ -308,12 +308,12 @@ export async function fetchEmbed(url, {type}) {
             }
             return returnData;
         }
-    } catch (e) {
-        // console.log(e);
+    } catch {
+        // console.log error
     }
 }
 
-function delay(time) {
+function delay(time: number) {
     return new Promise((resolve) => {
         setTimeout(resolve, time);
     });

@@ -12,8 +12,14 @@ import {VisibilitySettings} from '../components/ui/VisibilitySettings.jsx';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
+import type {HtmlNode} from '@tryghost/kg-default-nodes';
 
-export function HtmlNodeComponent({nodeKey, html}) {
+interface HtmlNodeComponentProps {
+    nodeKey: string;
+    html: string;
+}
+
+export function HtmlNodeComponent({nodeKey, html}: HtmlNodeComponentProps) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
@@ -27,22 +33,23 @@ export function HtmlNodeComponent({nodeKey, html}) {
         {id: 'visibility', label: 'Visibility'}
     ];
 
-    const updateHtml = (value) => {
+    const updateHtml = (value: string) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as HtmlNode | null;
+            if (!node) {return;}
             node.html = value;
         });
     };
 
-    const handleToolbarEdit = (event) => {
+    const handleToolbarEdit = (event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: false});
     };
 
     // TODO: this isn't used? <HtmlCard> does not have a prop for `onBlur`
-    const onBlur = (event) => {
-        if (event?.relatedTarget?.className !== 'kg-prose') {
+    const _onBlur = (event: React.FocusEvent) => {
+        if ((event?.relatedTarget as HTMLElement)?.className !== 'kg-prose') {
             editor.dispatchCommand(DESELECT_CARD_COMMAND, {cardKey: nodeKey});
         }
     };
@@ -54,7 +61,7 @@ export function HtmlNodeComponent({nodeKey, html}) {
         />
     );
 
-    const handleVisibilityToggle = React.useCallback((event) => {
+    const handleVisibilityToggle = React.useCallback((event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         editor.dispatchCommand(SHOW_CARD_VISIBILITY_SETTINGS_COMMAND, {cardKey: nodeKey});
@@ -67,7 +74,6 @@ export function HtmlNodeComponent({nodeKey, html}) {
                 html={html}
                 isEditing={cardContext.isEditing}
                 updateHtml={updateHtml}
-                onBlur={onBlur}
             />
 
             <ActionToolbar
@@ -118,10 +124,6 @@ export function HtmlNodeComponent({nodeKey, html}) {
                     darkMode={darkMode}
                     defaultTab="visibility"
                     tabs={settingsTabs}
-                    onMouseDown={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }}
                 >
                     {{
                         visibility: visibilitySettings

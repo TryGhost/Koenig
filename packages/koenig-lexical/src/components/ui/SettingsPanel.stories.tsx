@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-key */
-
+// @ts-nocheck
 import CenterAlignIcon from '../../assets/icons/kg-align-center.svg?react';
 import ImgFullIcon from '../../assets/icons/kg-img-full.svg?react';
 import ImgRegularIcon from '../../assets/icons/kg-img-regular.svg?react';
@@ -77,28 +76,30 @@ export const EmailCtaCard = Template.bind({});
 EmailCtaCard.args = {
     children: [
         <DropdownSetting
+            key='visibility'
             description='Visible for this audience when delivered by email. This card is not published on your site.'
             label='Visibility'
             menu={[{label: 'Free members', name: 'status:free'}, {label: 'Paid members', name: 'status:-free'}]}
             value='status:free'
         />,
-        <ButtonGroupSetting buttons={alignmentButtonGroup} label='Content alignment' />,
-        <ToggleSetting label='Separators' />,
-        <ToggleSetting label='Button' />,
-        <InputSetting label='Button text' placeholder='Add button text' />,
-        <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+        <ButtonGroupSetting key='alignment' buttons={alignmentButtonGroup} label='Content alignment' />,
+        <ToggleSetting key='separators' label='Separators' />,
+        <ToggleSetting key='button' label='Button' />,
+        <InputSetting key='button-text' label='Button text' placeholder='Add button text' />,
+        <InputSetting key='button-url' label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
     ]
 };
 
 export const SignupCard = Template.bind({});
 SignupCard.args = {
     children: [
-        <ColorPickerSetting label='Background color' swatches={[
+        <ColorPickerSetting key='background-color' label='Background color' swatches={[
             {title: 'Brand color', accent: true},
             {title: 'Black', hex: '#000000'},
             {title: 'Transparent', transparent: true}
         ]} value='#777777' />,
         <MultiSelectDropdownSetting
+            key='labels'
             availableItems={[{id: '1', name: 'Free members'}, {id: '2', name: 'Paid members'}]}
             description='These labels will be applied to members who sign up via this form.'
             items={['1']}
@@ -110,9 +111,9 @@ SignupCard.args = {
 export const ButtonCard = Template.bind({});
 ButtonCard.args = {
     children: [
-        <ButtonGroupSetting buttons={alignmentButtonGroup} label='Content alignment' />,
-        <InputSetting label='Button text' placeholder='Add button text' />,
-        <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+        <ButtonGroupSetting key='alignment' buttons={alignmentButtonGroup} label='Content alignment' />,
+        <InputSetting key='button-text' label='Button text' placeholder='Add button text' />,
+        <InputSetting key='button-url' label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
     ]
 };
 
@@ -167,8 +168,8 @@ const calloutColorPicker = [
 export const CalloutCard = Template.bind({});
 CalloutCard.args = {
     children: [
-        <ColorOptionSetting buttons={calloutColorPicker} label='Background color' layout='stacked' />,
-        <ToggleSetting label='Emoji' />
+        <ColorOptionSetting key='background-color' buttons={calloutColorPicker} label='Background color' layout='stacked' />,
+        <ToggleSetting key='emoji' label='Emoji' />
     ]
 };
 
@@ -176,14 +177,17 @@ export const VideoCard = Template.bind({});
 VideoCard.args = {
     children: [
         <ButtonGroupSetting
+            key='video-width'
             buttons={widthButtonGroup}
             label='Video width'
         />,
         <ToggleSetting
+            key='loop'
             description='Autoplay your video on a loop without sound.'
             label='Loop'
         />,
         <MediaUploadSetting
+            key='custom-thumbnail'
             borderStyle='rounded'
             desc=''
             icon='file'
@@ -196,10 +200,10 @@ VideoCard.args = {
 export const ProductCard = Template.bind({});
 ProductCard.args = {
     children: [
-        <ToggleSetting label='Rating' />,
-        <ToggleSetting label='Button' />,
-        <InputSetting label='Button text' placeholder='Add button text' />,
-        <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+        <ToggleSetting key='rating' label='Rating' />,
+        <ToggleSetting key='button' label='Button' />,
+        <InputSetting key='button-text' label='Button text' placeholder='Add button text' />,
+        <InputSetting key='button-url' label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
     ]
 };
 
@@ -221,10 +225,10 @@ const headerColorPicker = [
 export const HeaderCard = Template.bind({});
 HeaderCard.args = {
     children: [
-        <ButtonGroupSetting buttons={sizeButtonGroup} label='Size' />,
-        <ColorOptionSetting buttons={headerColorPicker} label='Style' />,
-        <ToggleSetting label='Button' />,
-        <InputSetting label='Button text' placeholder='Add button text' />,
-        <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+        <ButtonGroupSetting key='size' buttons={sizeButtonGroup} label='Size' />,
+        <ColorOptionSetting key='style' buttons={headerColorPicker} label='Style' />,
+        <ToggleSetting key='button' label='Button' />,
+        <InputSetting key='button-text' label='Button text' placeholder='Add button text' />,
+        <InputSetting key='button-url' label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
     ]
 };

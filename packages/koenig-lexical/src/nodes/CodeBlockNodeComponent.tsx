@@ -7,28 +7,40 @@ import {CodeBlockCard} from '../components/ui/cards/CodeBlockCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import type {CodeBlockNode} from '@tryghost/kg-default-nodes';
+import type {LexicalEditor} from 'lexical';
 
-export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorInitialState, code, language}) {
+interface CodeBlockNodeComponentProps {
+    nodeKey: string;
+    captionEditor: LexicalEditor;
+    captionEditorInitialState: unknown;
+    code: string;
+    language: string;
+}
+
+export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorInitialState, code, language}: CodeBlockNodeComponentProps) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, setEditing, isSelected} = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
-    const updateCode = (value) => {
+    const updateCode = (value: string) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as CodeBlockNode | null;
+            if (!node) {return;}
             node.code = value;
         });
     };
 
-    const updateLanguage = (value) => {
+    const updateLanguage = (value: string) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as CodeBlockNode | null;
+            if (!node) {return;}
             node.language = value;
         });
     };
 
-    const handleToolbarEdit = (event) => {
+    const handleToolbarEdit = (event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         setEditing(true);
@@ -38,14 +50,12 @@ export function CodeBlockNodeComponent({nodeKey, captionEditor, captionEditorIni
         <>
             <CodeBlockCard
                 captionEditor={captionEditor}
-                captionEditorInitialState={captionEditorInitialState}
+                captionEditorInitialState={captionEditorInitialState as string | undefined}
                 code={code}
                 darkMode={darkMode}
-                handleToolbarEdit={handleToolbarEdit}
                 isEditing={isEditing}
                 isSelected={isSelected}
                 language={language}
-                nodeKey={nodeKey}
                 updateCode={updateCode}
                 updateLanguage={updateLanguage}
             />

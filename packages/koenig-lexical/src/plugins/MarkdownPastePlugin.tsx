@@ -14,7 +14,7 @@ export const MarkdownPastePlugin = () => {
     const [isShiftDown, setShiftDown] = React.useState(false);
 
     React.useEffect(() => {
-        const handleKeyUp = (e) => {
+        const handleKeyUp = (e: KeyboardEvent) => {
             if (e.key === 'Shift') {
                 setShiftDown(false);
             }
@@ -26,7 +26,7 @@ export const MarkdownPastePlugin = () => {
     }, [setShiftDown]);
 
     React.useEffect(() => {
-        const handleKeyDown = (e) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Shift') {
                 setShiftDown(true);
             }
@@ -41,7 +41,7 @@ export const MarkdownPastePlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 PASTE_MARKDOWN_COMMAND,
-                ({text, allowBr}) => {
+                ({text, allowBr}: {text: string; allowBr: boolean}) => {
                     const selection = $getSelection();
                     if (!$isRangeSelection(selection)) {
                         return false;

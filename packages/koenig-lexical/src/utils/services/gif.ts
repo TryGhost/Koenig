@@ -16,9 +16,36 @@ export const ERROR_TYPE = {
     INVALID_API_KEY: 'invalid_key'
 };
 
+interface GifItem {
+    media_formats: {tinygif: {dims: [number, number]}};
+    ratio: number;
+    columnIndex: number;
+    columnRowIndex: number;
+    index: number;
+    [key: string]: unknown;
+}
+
+interface GifCardConfig {
+    klipy?: {apiKey?: string; contentFilter?: string} | null;
+    tenor?: {googleApiKey?: string; contentFilter?: string} | null;
+    [key: string]: unknown;
+}
+
+interface GifProviderConfig {
+    provider: string;
+    apiUrl: string;
+    apiKey: string;
+    contentFilter: string;
+}
+
+interface MakeRequestOptions {
+    params: Record<string, string>;
+    ignoreErrors?: boolean;
+}
+
 // Resolve which GIF provider to use from the editor's cardConfig. Klipy takes
 // precedence when both are configured; returns null when neither is set.
-export function getGifProviderConfig(cardConfig) {
+export function getGifProviderConfig(cardConfig: GifCardConfig | null | undefined): GifProviderConfig | null {
     if (cardConfig?.klipy?.apiKey) {
         return {
             provider: 'klipy',
@@ -39,10 +66,9 @@ export function getGifProviderConfig(cardConfig) {
 }
 
 // Tenor returns {error: {message}}; Klipy returns {result: false, errors: {message: [...]}}.
-export function extractErrorMessage(json) {
+export function extractErrorMessage(json: {error?: {message?: string} | string; errors?: {message?: string | string[]}; [key: string]: unknown}): string {
     const klipyMessage = json?.errors?.message;
-    return json?.error?.message
-        || json?.error
+    return (typeof json?.error === 'object' ? json?.error?.message : json?.error)
         || (Array.isArray(klipyMessage) ? klipyMessage[0] : klipyMessage)
         || 'Unknown error';
 }
@@ -50,44 +76,43 @@ export function extractErrorMessage(json) {
 // Detect an invalid-API-key error from the provider's message. Tenor and Klipy
 // word these differently (Tenor: "API key not valid"; Klipy: "The provided API
 // key is invalid"), so match the phrasing they share.
-export function isInvalidKeyError(message) {
+export function isInvalidKeyError(message?: string): boolean {
     const text = message || '';
     return /api key/i.test(text) && /(invalid|not valid)/i.test(text);
 }
 
-export function useGif({config}) {
-    const [columns, setColumns] = useState([]);
-    const [error, setError] = useState(null);
+export function useGif({config}: {config: GifProviderConfig}) {
+    const [columns, setColumns] = useState<GifItem[][]>([]);
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [isLazyLoading, setLazyLoading] = useState(false);
-    const [gifs, setGifs] = useState([]);
+    const [gifs, setGifs] = useState<GifItem[]>([]);
 
     // useRef const for internal calculations
-    const nextPos = useRef(null);
+    const nextPos = useRef<string | null>(null);
     const loadedType = useRef('');
-    const columnHeights = useRef([]);
-    const lastRequestArgs = useRef(null);
+    const columnHeights = useRef<number[]>([]);
     const searchTerm = useRef('');
     const columnCount = useRef(4);
     // There are a lot of calculations for columns/gifs, and there is no need to update the state every time.
     // Use this const for computations; once everything is ready, update columns/gifs state for external usage.
-    const internalStateColumns = useRef([]);
-    const internalStateGifs = useRef([]);
+    const internalStateColumns = useRef<GifItem[][]>([]);
+    const internalStateGifs = useRef<GifItem[]>([]);
 
-    function search(term) {
+    function search(term: string) {
         searchTerm.current = term;
         reset();
 
         if (term) {
             return searchTask(term);
         } else {
-            return loadTrendingGifs(term);
+            return loadTrendingGifs();
         }
     }
 
     const updateSearch = debounce((term = '') => search(term), DEBOUNCE_MS);
 
-    async function searchTask(term) {
+    async function searchTask(term: string) {
         loadedType.current = 'search';
 
         await makeRequest(loadedType.current, {params: {
@@ -112,8 +137,8 @@ export function useGif({config}) {
     }
 
     function resetColumns() {
-        let newColumns = [];
-        let newColumnHeights = [];
+        const newColumns: GifItem[][] = [];
+        const newColumnHeights: number[] = [];
 
         // pre-fill column arrays based on columnCount
         for (let i = 0; i < columnCount.current; i += 1) {
@@ -135,7 +160,7 @@ export function useGif({config}) {
         });
     }
 
-    function addGifToColumns(gif) {
+    function addGifToColumns(gif: GifItem) {
         const min = Math.min(...columnHeights.current);
         const columnIndex = columnHeights.current.indexOf(min);
 
@@ -148,7 +173,7 @@ export function useGif({config}) {
         gif.columnRowIndex = internalStateColumns.current[columnIndex].length - 1;
     }
 
-    function addGif(gif, gifIndex) {
+    function addGif(gif: GifItem, gifIndex: number) {
         // re-calculate ratio for later use
         const [width, height] = gif.media_formats.tinygif.dims;
         gif.ratio = height / width;
@@ -163,7 +188,7 @@ export function useGif({config}) {
         addGifToColumns(gif);
     }
 
-    async function makeRequest(path, options) {
+    async function makeRequest(path: string, options: MakeRequestOptions) {
         const versionedPath = `${API_VERSION}/${path}`.replace(/\/+/, '/');
         const url = new URL(versionedPath, config.apiUrl);
 
@@ -173,9 +198,6 @@ export function useGif({config}) {
         params.set('contentfilter', getContentFilter());
 
         url.search = params.toString();
-
-        // store the url so it can be retried if needed
-        lastRequestArgs.current = arguments;
 
         setError(null);
         setLoading(true);
@@ -203,33 +225,34 @@ export function useGif({config}) {
             });
     }
 
-    async function checkStatus(response) {
+    async function checkStatus(response: Response): Promise<Response> {
         // successful request
         if (response.status >= 200 && response.status < 300) {
             return response;
         }
 
-        let responseText;
+        let responseText: string | undefined;
 
-        if (response.headers.map['content-type'].startsWith('application/json')) {
+        const contentType = response.headers.get('content-type');
+        if (contentType?.startsWith('application/json')) {
             responseText = await response.json().then(json => extractErrorMessage(json));
-        } else if (response.headers.map['content-type'] === 'text/xml') {
+        } else if (contentType === 'text/xml') {
             responseText = await response.text();
         }
 
-        setError(responseText);
+        setError(responseText || null);
 
-        const responseError = new Error(responseText);
+        const responseError = new Error(responseText) as Error & {response: Response};
         responseError.response = response;
         throw responseError;
     }
 
-    async function extractPagination(response) {
-        nextPos.current = response.next;
+    async function extractPagination(response: {next?: string; results: GifItem[]}) {
+        nextPos.current = response.next || null;
         return response;
     }
 
-    async function addGifsFromResponse(response) {
+    async function addGifsFromResponse(response: {results: GifItem[]}) {
         const newGifs = response.results;
         newGifs.forEach((gif, index) => addGif(gif, index));
 
@@ -247,7 +270,7 @@ export function useGif({config}) {
         }
 
         if (nextPos.current !== null) {
-            const params = {
+            const params: Record<string, string> = {
                 pos: nextPos.current,
                 media_filter: 'tinygif,gif'
             };
@@ -266,7 +289,7 @@ export function useGif({config}) {
         return config.contentFilter || 'off';
     }
 
-    function changeColumnCount(count) {
+    function changeColumnCount(count: number) {
         columnCount.current = count;
         resetColumns();
         setColumns(internalStateColumns.current);

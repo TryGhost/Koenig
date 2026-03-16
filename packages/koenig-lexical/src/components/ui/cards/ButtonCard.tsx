@@ -1,9 +1,20 @@
 import CenterAlignIcon from '../../../assets/icons/kg-align-center.svg?react';
 import LeftAlignIcon from '../../../assets/icons/kg-align-left.svg?react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {Button} from '../Button';
 import {ButtonGroupSetting, InputSetting, InputUrlSetting, SettingsPanel} from '../SettingsPanel';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+
+interface ButtonCardProps {
+    alignment?: string;
+    buttonText?: string;
+    buttonPlaceholder?: string;
+    buttonUrl?: string;
+    handleAlignmentChange?: (name: string) => void;
+    handleButtonTextChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleButtonUrlChange?: (value: string) => void;
+    isEditing?: boolean;
+}
 
 export function ButtonCard({
     alignment,
@@ -14,7 +25,7 @@ export function ButtonCard({
     handleButtonTextChange,
     handleButtonUrlChange,
     isEditing
-}) {
+}: ButtonCardProps) {
     const buttonGroupChildren = [
         {
             label: 'Left',
@@ -43,8 +54,8 @@ export function ButtonCard({
                     <ButtonGroupSetting
                         buttons={buttonGroupChildren}
                         label="Content alignment"
-                        selectedName={alignment}
-                        onClick={handleAlignmentChange}
+                        selectedName={alignment || ''}
+                        onClick={handleAlignmentChange!}
                     />
                     <InputSetting
                         dataTestId="button-input-text"
@@ -56,26 +67,11 @@ export function ButtonCard({
                     <InputUrlSetting
                         dataTestId="button-input-url"
                         label='Button URL'
-                        value={buttonUrl}
-                        onChange={handleButtonUrlChange}
+                        value={buttonUrl || ''}
+                        onChange={handleButtonUrlChange!}
                     />
                 </SettingsPanel>
             )}
         </>
     );
 }
-
-ButtonCard.propTypes = {
-    alignment: PropTypes.string,
-    buttonText: PropTypes.string,
-    buttonPlaceholder: PropTypes.string,
-    buttonUrl: PropTypes.string,
-    handleAlignmentChange: PropTypes.func,
-    handleButtonTextChange: PropTypes.func,
-    handleButtonUrlChange: PropTypes.func,
-    handleButtonUrlFocus: PropTypes.func,
-    handleOptionClick: PropTypes.func,
-    isEditing: PropTypes.bool,
-    suggestedUrls: PropTypes.array,
-    suggestedUrlVisibility: PropTypes.bool
-};

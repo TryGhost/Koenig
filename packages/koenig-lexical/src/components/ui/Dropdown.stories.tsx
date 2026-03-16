@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Dropdown} from './Dropdown';
 
 const story = {

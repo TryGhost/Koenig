@@ -6,7 +6,11 @@ import {KeyboardSelection} from './KeyboardSelection';
 import {KeyboardSelectionWithGroups} from './KeyboardSelectionWithGroups';
 import {Spinner} from './Spinner';
 
-export function InputListLoadingItem({dataTestId}) {
+interface InputListLoadingItemProps {
+    dataTestId?: string;
+}
+
+export function InputListLoadingItem({dataTestId}: InputListLoadingItemProps) {
     return (
         <Delayed>
             <li className={`mb-0 px-4 py-2 text-left`} data-testid={`${dataTestId}-loading`}>
@@ -16,21 +20,33 @@ export function InputListLoadingItem({dataTestId}) {
     );
 }
 
-export function InputListItem({dataTestId, item, selected, onClick, onMouseOver, scrollIntoView, className, selectedClassName, children}) {
-    const itemRef = React.useRef(null);
+interface InputListItemProps {
+    dataTestId?: string;
+    item: {value?: string; [key: string]: unknown};
+    selected?: boolean;
+    onClick?: (item: unknown) => void;
+    onMouseOver?: () => void;
+    scrollIntoView?: boolean;
+    className?: string;
+    selectedClassName?: string;
+    children?: React.ReactNode;
+}
+
+export function InputListItem({dataTestId, item, selected, onClick, onMouseOver, scrollIntoView, className, selectedClassName, children}: InputListItemProps) {
+    const itemRef = React.useRef<HTMLLIElement>(null);
 
     React.useEffect(() => {
         if (selected && scrollIntoView) {
-            itemRef.current.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
+            itemRef.current?.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'nearest'});
         }
     }, [selected, scrollIntoView]);
 
     // We use the capture phase of the mouse down event, otherwise the list option will be removed when blurring the input
     // before calling the click event
-    const handleMouseDown = (event) => {
+    const handleMouseDown = (event: React.MouseEvent) => {
         // Prevent losing focus when clicking an option
         event.preventDefault();
-        onClick(item);
+        onClick?.(item);
     };
 
     const pointerClassName = !item.value ? 'pointer-events-none' : '';
@@ -42,7 +58,13 @@ export function InputListItem({dataTestId, item, selected, onClick, onMouseOver,
     );
 }
 
-export function InputListGroup({dataTestId, group, showSpinner}) {
+interface InputListGroupProps {
+    dataTestId?: string;
+    group: {label: string; [key: string]: unknown};
+    showSpinner?: boolean;
+}
+
+export function InputListGroup({dataTestId, group, showSpinner}: InputListGroupProps) {
     return (
         <li className="mb-0 mt-2 flex items-center justify-between border-t border-grey-200 px-4 pb-2 pt-3 text-[1.1rem] font-semibold uppercase tracking-wide text-grey-600 first-of-type:mt-0 first-of-type:border-t-0 dark:border-grey-900" data-testid={`${dataTestId}-listGroup`}>
             <div className="flex items-center gap-1.5">
@@ -53,19 +75,28 @@ export function InputListGroup({dataTestId, group, showSpinner}) {
     );
 }
 
-function defaultGetItem(/*item, selected, onMouseOver, scrollIntoView*/) {
+function defaultGetItem(): never {
     throw new Error('<InputList> getItem function prop must be provided');
 }
 
-/**
- * Little warning here: this has an onChange handler that doesn't have an event as parameter, but just the value.
- *
- * @param {object} options
- * @param {{value: string, label: string}[]} [options.listOptions]
- * @param {string} [options.list]
- * @returns
- */
-export function InputList({autoFocus, className, inputClassName, dropdownClassName, dropdownPlacementBottomClass, dropdownPlacementTopClass, dataTestId, listOptions, isLoading, value, placeholder, onChange, onSelect, getItem = defaultGetItem}) {
+interface InputListProps {
+    autoFocus?: boolean;
+    className?: string;
+    inputClassName?: string;
+    dropdownClassName?: string;
+    dropdownPlacementBottomClass?: string;
+    dropdownPlacementTopClass?: string;
+    dataTestId?: string;
+    listOptions?: unknown[];
+    isLoading?: boolean;
+    value?: string;
+    placeholder?: string;
+    onChange: (value: string) => void;
+    onSelect?: (value: string, type?: string) => void;
+    getItem?: (item: unknown, selected: boolean, onMouseOver: () => void, scrollIntoView: boolean) => React.ReactNode;
+}
+
+export function InputList({autoFocus, className, inputClassName, dropdownClassName, dropdownPlacementBottomClass, dropdownPlacementTopClass, dataTestId, listOptions, isLoading, value, placeholder, onChange, onSelect, getItem = defaultGetItem}: InputListProps) {
     const [inputFocused, setInputFocused] = React.useState(false);
 
     const onFocus = () => {
@@ -76,21 +107,22 @@ export function InputList({autoFocus, className, inputClassName, dropdownClassNa
         setInputFocused(false);
     };
 
-    const getGroup = (group, {showSpinner} = {}) => {
+    const getGroup = (group: unknown, {showSpinner}: {showSpinner?: boolean} = {}) => {
         return (
-            <InputListGroup key={group.label} dataTestId={dataTestId} group={group} showSpinner={showSpinner} />
+            <InputListGroup key={(group as {label: string}).label} dataTestId={dataTestId} group={group as {label: string}} showSpinner={showSpinner} />
         );
     };
 
-    const onChangeEvent = (event) => {
+    const onChangeEvent = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };
 
-    const onSelectEvent = (item) => {
-        (onSelect || onChange)(item.value, item.type);
+    const onSelectEvent = (item: unknown) => {
+        const typedItem = item as {value: string; type?: string};
+        (onSelect || onChange)(typedItem.value, typedItem.type);
     };
 
-    const hasGroups = listOptions && listOptions[0]?.items;
+    const hasGroups = listOptions && (listOptions[0] as {items?: unknown})?.items;
     const showSuggestions = (isLoading || (listOptions && !!listOptions.length)) && inputFocused;
 
     const Suggestions = () => {
@@ -106,14 +138,14 @@ export function InputList({autoFocus, className, inputClassName, dropdownClassNa
                     <KeyboardSelectionWithGroups
                         getGroup={getGroup}
                         getItem={getItem}
-                        groups={listOptions}
+                        groups={listOptions as {label: string; items: Array<{value?: string}>}[]}
                         isLoading={isLoading}
                         onSelect={onSelectEvent}
                     />
                 ) : (
                     <KeyboardSelection
-                        getItem={getItem}
-                        items={listOptions}
+                        getItem={getItem as (item: unknown, selected: boolean) => React.ReactNode}
+                        items={listOptions || []}
                         onSelect={onSelectEvent}
                     />
                 )}

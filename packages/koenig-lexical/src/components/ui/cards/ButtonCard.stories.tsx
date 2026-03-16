@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {ButtonCard} from './ButtonCard';
 import {CardWrapper} from './../CardWrapper';
 

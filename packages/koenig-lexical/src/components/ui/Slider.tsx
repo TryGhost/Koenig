@@ -1,7 +1,14 @@
-import PropTypes from 'prop-types';
 import ReactSlider from 'react-slider';
 
-export function Slider({dataTestId, max, min, value, onChange}) {
+interface SliderProps {
+    dataTestId?: string;
+    max?: number;
+    min?: number;
+    value?: number;
+    onChange?: (value: number) => void;
+}
+
+export function Slider({dataTestId, max, min, value, onChange}: SliderProps) {
     return (
         // docs at https://zillow.github.io/react-slider/
         <ReactSlider
@@ -17,10 +24,3 @@ export function Slider({dataTestId, max, min, value, onChange}) {
             onChange={onChange} />
     );
 }
-
-Slider.propTypes = {
-    max: PropTypes.number,
-    min: PropTypes.number,
-    value: PropTypes.number,
-    onChange: PropTypes.func
-};

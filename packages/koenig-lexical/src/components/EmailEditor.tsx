@@ -24,6 +24,18 @@ import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {SharedHistoryContext} from '../context/SharedHistoryContext';
 import {SharedOnChangeContext} from '../context/SharedOnChangeContext';
 import {VISIBILITY_SETTINGS} from '../utils/visibility';
+import type {ReactNode} from 'react';
+import type {Transformer} from '@lexical/markdown';
+
+export interface EmailEditorCardConfig {
+    editorType?: string;
+    image?: {
+        allowedWidths?: string[];
+        [key: string]: unknown;
+    };
+    visibilitySettings?: string;
+    [key: string]: unknown;
+}
 
 export const EMAIL_EDITOR_CARD_CONFIG = {
     editorType: 'email',
@@ -33,13 +45,13 @@ export const EMAIL_EDITOR_CARD_CONFIG = {
     visibilitySettings: VISIBILITY_SETTINGS.EMAIL_ONLY
 };
 
-const ALLOWED_EMAIL_EDITOR_VISIBILITY = [
+const ALLOWED_EMAIL_EDITOR_VISIBILITY: string[] = [
     VISIBILITY_SETTINGS.EMAIL_ONLY,
     VISIBILITY_SETTINGS.NONE
 ];
 
-export function getEmailEditorCardConfig(cardConfig = {}) {
-    const visibilitySettings = ALLOWED_EMAIL_EDITOR_VISIBILITY.includes(cardConfig.visibilitySettings)
+export function getEmailEditorCardConfig(cardConfig: EmailEditorCardConfig = {}): EmailEditorCardConfig {
+    const visibilitySettings = cardConfig.visibilitySettings && ALLOWED_EMAIL_EDITOR_VISIBILITY.includes(cardConfig.visibilitySettings)
         ? cardConfig.visibilitySettings
         : EMAIL_EDITOR_CARD_CONFIG.visibilitySettings;
 
@@ -54,6 +66,19 @@ export function getEmailEditorCardConfig(cardConfig = {}) {
     };
 }
 
+interface EmailEditorProps {
+    cardConfig?: EmailEditorCardConfig;
+    darkMode?: boolean;
+    fileUploader?: Record<string, unknown>;
+    initialEditorState?: string | Record<string, unknown>;
+    onChange?: (json: unknown) => void;
+    onError?: (error: Error) => void;
+    children?: ReactNode;
+    markdownTransformers?: Transformer[];
+    placeholderText?: string;
+    [key: string]: unknown;
+}
+
 const EmailEditor = ({
     cardConfig = {},
     darkMode = false,
@@ -65,7 +90,7 @@ const EmailEditor = ({
     markdownTransformers = EMAIL_TRANSFORMERS,
     placeholderText = 'Begin writing your email...',
     ...props
-}) => {
+}: EmailEditorProps) => {
     const mergedCardConfig = getEmailEditorCardConfig(cardConfig);
 
     return (

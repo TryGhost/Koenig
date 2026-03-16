@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-key */
-
+// @ts-nocheck
 import {ToolbarMenu} from './ToolbarMenu';
 import {ToolbarMenuSeparator} from './ToolbarMenu';
 
@@ -40,53 +39,53 @@ const Template = (args) => {
 export const Text = Template.bind({});
 Text.args = {
     children: [
-        <Bold {...Bold.args} />,
-        <Italic {...Italic.args} />,
-        <HeadingTwo {...HeadingTwo.args} />,
-        <HeadingThree {...HeadingThree.args} />,
-        <ToolbarMenuSeparator />,
-        <Quote {...Quote.args} />,
-        <Link {...Link.args} />,
-        <ToolbarMenuSeparator />,
-        <Snippet {...Snippet.args} />
+        <Bold key='bold' {...Bold.args} />,
+        <Italic key='italic' {...Italic.args} />,
+        <HeadingTwo key='heading-two' {...HeadingTwo.args} />,
+        <HeadingThree key='heading-three' {...HeadingThree.args} />,
+        <ToolbarMenuSeparator key='sep-1' />,
+        <Quote key='quote' {...Quote.args} />,
+        <Link key='link' {...Link.args} />,
+        <ToolbarMenuSeparator key='sep-2' />,
+        <Snippet key='snippet' {...Snippet.args} />
     ]
 };
 
 export const Image = Template.bind({});
 Image.args = {
     children: [
-        <ImgRegular {...ImgRegular.args} />,
-        <ImgWide {...ImgWide.args} />,
-        <ImgFull {...ImgFull.args} />,
-        <ToolbarMenuSeparator />,
-        <Link {...Link.args} />,
-        <ImgReplace {...ImgReplace.args} />,
-        <ToolbarMenuSeparator />,
-        <Snippet {...Snippet.args} />
+        <ImgRegular key='img-regular' {...ImgRegular.args} />,
+        <ImgWide key='img-wide' {...ImgWide.args} />,
+        <ImgFull key='img-full' {...ImgFull.args} />,
+        <ToolbarMenuSeparator key='sep-1' />,
+        <Link key='link' {...Link.args} />,
+        <ImgReplace key='img-replace' {...ImgReplace.args} />,
+        <ToolbarMenuSeparator key='sep-2' />,
+        <Snippet key='snippet' {...Snippet.args} />
     ]
 };
 
 export const Gallery = Template.bind({});
 Gallery.args = {
     children: [
-        <Add {...Add.args} />,
-        <ToolbarMenuSeparator />,
-        <Snippet {...Snippet.args} />
+        <Add key='add' {...Add.args} />,
+        <ToolbarMenuSeparator key='sep-1' />,
+        <Snippet key='snippet' {...Snippet.args} />
     ]
 };
 
 export const EditableCards = Template.bind({});
 EditableCards.args = {
     children: [
-        <Edit {...Edit.args} />,
-        <ToolbarMenuSeparator />,
-        <Snippet {...Snippet.args} />
+        <Edit key='edit' {...Edit.args} />,
+        <ToolbarMenuSeparator key='sep-1' />,
+        <Snippet key='snippet' {...Snippet.args} />
     ]
 };
 
 export const NonEditableCards = Template.bind({});
 NonEditableCards.args = {
     children: [
-        <Snippet {...Snippet.args} />
+        <Snippet key='snippet' {...Snippet.args} />
     ]
 };

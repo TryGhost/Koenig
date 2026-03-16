@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {CardWrapper} from './../CardWrapper';
 import {PaywallCard} from './PaywallCard';
 

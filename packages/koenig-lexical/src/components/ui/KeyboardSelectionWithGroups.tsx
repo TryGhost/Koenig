@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Group = ({children}) => {
+const Group = ({children}: {children: React.ReactNode}) => {
     return (
         <>
             {children}
@@ -8,35 +8,38 @@ const Group = ({children}) => {
     );
 };
 
-/**
- * Renders a list of options, which are selectable by using the up and down arrow keys.
- * You pass in the template for each option via the getItem function, which is called for each option and also passes in whether the item is selected or not.
- *
- * @param {object} options
- * @param {T[]} [options.items]
- * @param {(T, selected) => import('react').ReactElement} [options.getItem]
- */
-export function KeyboardSelectionWithGroups({groups, getItem, getGroup, onSelect, defaultSelected, isLoading}) {
+export interface GroupData {
+    label: string;
+    items: Array<{value?: string | null; [key: string]: unknown}>;
+}
+
+interface KeyboardSelectionWithGroupsProps {
+    groups: GroupData[];
+    getItem: (item: unknown, selected: boolean, onMouseOver: () => void, scrollIntoView: boolean) => React.ReactNode;
+    getGroup: (group: GroupData, opts: {showSpinner?: boolean}) => React.ReactNode;
+    onSelect: (item: unknown) => void;
+    defaultSelected?: unknown;
+    isLoading?: boolean;
+}
+
+export function KeyboardSelectionWithGroups({groups, getItem, getGroup, onSelect, defaultSelected, isLoading}: KeyboardSelectionWithGroupsProps) {
     const items = groups.flatMap(group => group.items);
     const defaultIndex = Math.max(0, items.findIndex(item => item === defaultSelected));
     const [selectedIndex, setSelectedIndex] = React.useState(defaultIndex);
     const [scrollSelectedIntoView, setScrollSelectedIntoView] = React.useState(false);
 
-    // If items change, check if the selectedIndex is still valid, and if not, reset it to 0
     React.useEffect(() => {
         if (selectedIndex >= items.length) {
             setSelectedIndex(defaultIndex);
         }
     }, [items, selectedIndex, defaultIndex]);
 
-    // If the default index changes, select it again
     React.useEffect(() => {
         setSelectedIndex(defaultIndex);
     }, [defaultIndex]);
 
-    const handleKeydown = React.useCallback((event) => {
+    const handleKeydown = React.useCallback((event: KeyboardEvent) => {
         if (event.key === 'ArrowDown') {
-            // The stop propagation is required for Safari
             event.preventDefault();
             event.stopPropagation();
             setSelectedIndex((i) => {
@@ -45,7 +48,6 @@ export function KeyboardSelectionWithGroups({groups, getItem, getGroup, onSelect
             setScrollSelectedIntoView(true);
         }
         if (event.key === 'ArrowUp') {
-            // The stop propagation is required for Safari
             event.preventDefault();
             event.stopPropagation();
             setSelectedIndex((i) => {
@@ -54,7 +56,6 @@ export function KeyboardSelectionWithGroups({groups, getItem, getGroup, onSelect
             setScrollSelectedIntoView(true);
         }
         if (event.key === 'Enter') {
-            // The stop propagation is required for Safari
             event.preventDefault();
             event.stopPropagation();
             onSelect(items[selectedIndex]);
@@ -62,7 +63,6 @@ export function KeyboardSelectionWithGroups({groups, getItem, getGroup, onSelect
     }, [items, selectedIndex, onSelect]);
 
     React.useEffect(() => {
-        // The capture phase is required for Safari
         window.addEventListener('keydown', handleKeydown, {capture: true});
         return () => {
             window.removeEventListener('keydown', handleKeydown, {capture: true});
@@ -79,7 +79,9 @@ export function KeyboardSelectionWithGroups({groups, getItem, getGroup, onSelect
                         const absoluteIndex = itemsBefore + index;
                         const isSelected = absoluteIndex === selectedIndex && !!item.value;
                         const onMouseOver = () => {
-                            !!item.value && setSelectedIndex(absoluteIndex);
+                            if (item.value) {
+                                setSelectedIndex(absoluteIndex);
+                            }
                             setScrollSelectedIntoView(false);
                         };
                         return getItem(item, isSelected, onMouseOver, scrollSelectedIntoView);

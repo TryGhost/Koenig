@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {MediaPlaceholder} from './MediaPlaceholder';
 
 const story = {

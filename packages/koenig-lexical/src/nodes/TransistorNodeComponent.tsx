@@ -12,11 +12,19 @@ import {VisibilitySettings} from '../components/ui/VisibilitySettings.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
 
+interface TransistorNodeComponentProps {
+    nodeKey: string;
+    accentColor: string;
+    backgroundColor: string;
+}
+
 export const TransistorNodeComponent = ({
+
     nodeKey,
     accentColor,
     backgroundColor
-}) => {
+
+}: TransistorNodeComponentProps) => {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
@@ -36,7 +44,7 @@ export const TransistorNodeComponent = ({
         {id: 'visibility', label: 'Visibility'}
     ];
 
-    const handleToolbarEdit = (event) => {
+    const handleToolbarEdit = (event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         setEditing(true);
@@ -107,10 +115,6 @@ export const TransistorNodeComponent = ({
                     darkMode={darkMode}
                     defaultTab="visibility"
                     tabs={settingsTabs}
-                    onMouseDown={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }}
                 >
                     {{
                         visibility: visibilitySettings

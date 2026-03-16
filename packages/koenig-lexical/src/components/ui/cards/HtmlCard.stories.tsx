@@ -1,3 +1,4 @@
+// @ts-nocheck
 import HtmlIndicatorIcon from '../../../assets/icons/kg-indicator-html.svg?react';
 import {CardWrapper} from '../CardWrapper';
 import {HtmlCard} from './HtmlCard.jsx';

@@ -5,8 +5,22 @@ import {InputList} from './InputList';
 import {LinkInputSearchItem} from './LinkInputSearchItem';
 import {useSearchLinks} from '../../hooks/useSearchLinks';
 
-export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange, handleUrlSubmit, hasError, handlePasteAsLink, handleRetry, handleClose, isLoading, searchLinks}) {
-    const {isSearching, listOptions} = useSearchLinks(value, searchLinks);
+interface UrlSearchInputProps {
+    dataTestId?: string;
+    value?: string;
+    placeholder?: string;
+    handleUrlChange: (value: string) => void;
+    handleUrlSubmit: (url: string, type?: string) => void;
+    hasError?: boolean;
+    handlePasteAsLink?: (value?: string) => void;
+    handleRetry?: () => void;
+    handleClose?: () => void;
+    isLoading?: boolean;
+    searchLinks: (term?: string) => Promise<unknown>;
+}
+
+export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange, handleUrlSubmit, hasError, handlePasteAsLink, handleRetry, handleClose, isLoading, searchLinks}: UrlSearchInputProps) {
+    const {isSearching, listOptions} = useSearchLinks(value || '', searchLinks as Parameters<typeof useSearchLinks>[1]);
 
     React.useEffect(() => {
         if (!value) {
@@ -16,9 +30,9 @@ export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange,
     }, []);
 
     React.useEffect(() => {
-        const handleKeyDown = (e) => {
+        const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
-                handleClose();
+                handleClose?.();
             }
         };
         window.addEventListener('keydown', handleKeyDown);
@@ -40,7 +54,7 @@ export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange,
                 <div>
                     <span className="mr-3" data-testid={`${dataTestId}-error-message`}>Oops, that link didn&apos;t work.</span>
                     <button className="mr-3 cursor-pointer" data-testid={`${dataTestId}-error-retry`} type="button"><span className="font-semibold underline" onClick={handleRetry}>Retry</span></button>
-                    <button className="mr-3 cursor-pointer" data-testid={`${dataTestId}-error-pasteAsLink`} type="button"><span className="font-semibold underline" onClick={() => handlePasteAsLink(value)}>Paste URL as link</span></button>
+                    <button className="mr-3 cursor-pointer" data-testid={`${dataTestId}-error-pasteAsLink`} type="button"><span className="font-semibold underline" onClick={() => handlePasteAsLink?.(value)}>Paste URL as link</span></button>
                 </div>
                 <button className="cursor-pointer p-1" data-testid={`${dataTestId}-error-close`} type="button" onClick={handleClose}>
                     <CloseIcon className="size-4 stroke-2 text-grey-400"/>
@@ -49,27 +63,27 @@ export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange,
         );
     }
 
-    const onChangeEvent = async (inputValue) => {
+    const onChangeEvent = async (inputValue: string) => {
         handleUrlChange(inputValue);
     };
 
-    const onSelectEvent = (selectedItemOrValue, type) => {
+    const onSelectEvent = (selectedItemOrValue: string | {value: string} | null, type?: string) => {
         if (selectedItemOrValue === null) {
             return;
         }
 
-        const url = selectedItemOrValue && typeof selectedItemOrValue === 'string' ? selectedItemOrValue : selectedItemOrValue.value;
+        const url = typeof selectedItemOrValue === 'string' ? selectedItemOrValue : selectedItemOrValue.value;
         handleUrlSubmit(url, type);
     };
 
-    const handleKeyDown = (event) => {
-        if (!event.isComposing && event.key === 'Enter') {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!event.nativeEvent.isComposing && event.key === 'Enter') {
             event.preventDefault();
-            handleUrlSubmit(event.target.value);
+            handleUrlSubmit((event.target as HTMLInputElement).value);
         }
     };
 
-    const getItem = (item, selected, onMouseOver, scrollIntoView) => {
+    const getItem = (item: {value: string; label: string; [key: string]: unknown}, selected: boolean, onMouseOver: () => void, scrollIntoView: boolean) => {
         return (
             <LinkInputSearchItem
                 key={item.value}
@@ -78,7 +92,7 @@ export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange,
                 item={item}
                 scrollIntoView={scrollIntoView}
                 selected={selected}
-                onClick={onSelectEvent}
+                onClick={onSelectEvent as () => void}
                 onMouseOver={onMouseOver}
             />
         );
@@ -92,14 +106,14 @@ export function UrlSearchInput({dataTestId, value, placeholder, handleUrlChange,
                 dropdownClassName='z-[-1] max-h-[30vh] w-full overflow-y-auto bg-white px-2 py-1 shadow-md dark:bg-grey-950'
                 dropdownPlacementBottomClass='mt-[.6rem] rounded-md'
                 dropdownPlacementTopClass='top-[-.6rem] -translate-y-full rounded-md'
-                getItem={getItem}
+                getItem={getItem as (item: unknown, selected: boolean, onMouseOver: () => void, scrollIntoView: boolean) => React.ReactNode}
                 inputClassName={`w-full rounded-md border border-grey-300 p-2 font-sans text-sm font-normal leading-snug text-grey-900 placeholder:text-grey-500 focus-visible:outline-none dark:border-grey-800 dark:bg-grey-950 dark:text-grey-100 dark:placeholder:text-grey-800`}
                 isLoading={isSearching}
                 listOptions={listOptions}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChangeEvent}
-                onSelect={onSelectEvent}
+                onSelect={onSelectEvent as () => void}
             />
         </div>
     );

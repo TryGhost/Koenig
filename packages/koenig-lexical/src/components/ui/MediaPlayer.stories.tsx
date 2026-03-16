@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {MediaPlayer} from './MediaPlayer';
 
 const story = {

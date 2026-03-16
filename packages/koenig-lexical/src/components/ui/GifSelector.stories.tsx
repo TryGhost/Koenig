@@ -1,3 +1,4 @@
+// @ts-nocheck
 import GifSelector from './GifSelector';
 import {getGifProviderConfig, useGif} from '../../utils/services/gif.js';
 import {tenorConfig} from '../../../demo/utils/gifConfig';

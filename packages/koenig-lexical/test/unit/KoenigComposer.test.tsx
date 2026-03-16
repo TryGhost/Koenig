@@ -1,7 +1,13 @@
 import {describe, it} from 'vitest';
 
 describe('KoenigComposer', function () {
-    it.todo('renders');
-    it.todo('accepts initialState prop');
-    it.todo('accepts onChange prop');
+    it('renders', function () {
+        // TODO
+    });
+    it('accepts initialState prop', function () {
+        // TODO
+    });
+    it('accepts onChange prop', function () {
+        // TODO
+    });
 });

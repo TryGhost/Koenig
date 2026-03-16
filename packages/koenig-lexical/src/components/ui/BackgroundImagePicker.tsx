@@ -1,9 +1,13 @@
 import FileUploadIcon from '../../assets/icons/kg-upload-fill.svg?react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import TrashIcon from '../../assets/icons/kg-trash.svg?react';
 import {ProgressBar} from './ProgressBar';
 
-function FileUploading({progress}) {
+interface FileUploadingProps {
+    progress?: number;
+}
+
+function FileUploading({progress}: FileUploadingProps) {
     const progressStyle = {
         width: `${progress?.toFixed(0)}%`
     };
@@ -19,6 +23,17 @@ function FileUploading({progress}) {
     );
 }
 
+interface BackgroundImagePickerProps {
+    onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    backgroundImageSrc?: string;
+    type?: string;
+    handleClearBackgroundImage?: () => void;
+    fileInputRef?: React.Ref<HTMLInputElement>;
+    openFilePicker?: () => void;
+    isUploading?: boolean;
+    progress?: number;
+}
+
 export function BackgroundImagePicker({onFileChange,
     backgroundImageSrc,
     type,
@@ -26,7 +41,7 @@ export function BackgroundImagePicker({onFileChange,
     fileInputRef,
     openFilePicker,
     isUploading,
-    progress}) {
+    progress}: BackgroundImagePickerProps) {
     if (isUploading) {
         return (
             <FileUploading progress={progress} />
@@ -34,7 +49,7 @@ export function BackgroundImagePicker({onFileChange,
     }
     return (
         <>
-            <form onChange={onFileChange}>
+            <form onChange={onFileChange as unknown as React.FormEventHandler<HTMLFormElement>}>
                 <input
                     ref={fileInputRef}
                     accept='image/*'
@@ -77,17 +92,3 @@ export function BackgroundImagePicker({onFileChange,
         </>
     );
 }
-
-FileUploading.propTypes = {
-    progress: PropTypes.number
-};
-
-BackgroundImagePicker.propTypes = {
-    backgroundImageSrc: PropTypes.string,
-    fileInputRef: PropTypes.object,
-    handleClearBackgroundImage: PropTypes.func,
-    isUploading: PropTypes.bool,
-    openFilePicker: PropTypes.func,
-    progress: PropTypes.number,
-    onFileChange: PropTypes.func
-};

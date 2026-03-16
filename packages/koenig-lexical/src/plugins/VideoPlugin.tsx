@@ -17,7 +17,7 @@ export const VideoPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_VIDEO_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createVideoNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
 
@@ -27,7 +27,7 @@ export const VideoPlugin = () => {
             ),
             editor.registerCommand(
                 INSERT_MEDIA_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     if (dataset.type === 'video') {
                         editor.dispatchCommand(INSERT_VIDEO_COMMAND, {initialFile: dataset.file});
                         return true;

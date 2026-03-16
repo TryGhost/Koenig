@@ -1,17 +1,37 @@
 import React, {useEffect, useRef, useState} from 'react';
 import SearchIcon from '../../assets/icons/kg-search.svg?react';
 import {Error} from './file-selectors/Gif/Error';
-import {Gif} from './file-selectors/Gif/Gif';
+import {Gif, type GifData} from './file-selectors/Gif/Gif';
 import {Loader} from './file-selectors/Gif/Loader';
 
 // number of columns based on selector container width
 const TWO_COLUMN_WIDTH = 540;
 const THREE_COLUMN_WIDTH = 940;
 
-const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoading, isLazyLoading, error, changeColumnCount, loadNextPage, gifs, provider}) => {
-    const selectorRef = useRef(null);
-    const searchRef = useRef(null);
-    const [highlightedGif, setHighlightedGif] = useState(undefined);
+interface GifItem extends GifData {
+    columnIndex: number;
+    columnRowIndex: number;
+    media_formats: {gif: {url: string; dims: number[]}; tinygif: {url: string; dims: number[]; content_description?: string}; [key: string]: unknown};
+}
+
+export interface GifSelectorProps {
+    onGifInsert: (data: {src: string; width: number; height: number}) => void;
+    onClickOutside: () => void;
+    updateSearch: (term?: string) => void;
+    columns: GifItem[][];
+    isLoading?: boolean;
+    isLazyLoading?: boolean;
+    error?: unknown;
+    changeColumnCount: (count: number) => void;
+    loadNextPage: () => void;
+    gifs: GifItem[];
+    provider?: string;
+}
+
+const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoading, isLazyLoading, error, changeColumnCount, loadNextPage, gifs, provider}: GifSelectorProps) => {
+    const selectorRef = useRef<HTMLDivElement>(null);
+    const searchRef = useRef<HTMLInputElement>(null);
+    const [highlightedGif, setHighlightedGif] = useState<GifItem | undefined>(undefined);
 
     useEffect(() => {
         updateSearch();
@@ -51,6 +71,7 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
     useEffect(() => {
         document.addEventListener('keydown', handleGifHighlight);
 
@@ -60,8 +81,8 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
     }, [handleGifHighlight]);
 
     React.useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (selectorRef.current && !selectorRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (selectorRef.current && !selectorRef.current.contains(event.target as Node)) {
                 onClickOutside();
             }
         };
@@ -71,7 +92,7 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         };
     }, [onClickOutside]);
 
-    function handleGifSelect(selectedGif) {
+    function handleGifSelect(selectedGif: GifItem) {
         const gif = selectedGif.media_formats.gif;
         const data = {
             src: gif.url,
@@ -81,12 +102,12 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         onGifInsert(data);
     }
 
-    const handleSearch = (e) => {
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         updateSearch(e.target.value);
     };
 
-    const handleScroll = (e) => {
-        const container = e.target;
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const container = e.target as HTMLDivElement;
         if (container.scrollTop + container.clientHeight >= container.scrollHeight - 1000) {
             loadNextPage();
         }
@@ -106,20 +127,20 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
             return;
         }
 
-        setHighlightedGif(gifs[highlightedGif.index + 1]);
+        setHighlightedGif(gifs[highlightedGif!.index + 1]);
     }
 
     function highlightPrev() {
-        if (highlightedGif.index === 0) {
+        if (highlightedGif!.index === 0) {
             // reached the beginning, focus the search bar
             focusSearch();
         }
 
-        setHighlightedGif(gifs[highlightedGif.index - 1]);
+        setHighlightedGif(gifs[highlightedGif!.index - 1]);
     }
 
     function moveHighlightDown() {
-        const nextGif = columns[highlightedGif.columnIndex][highlightedGif.columnRowIndex + 1];
+        const nextGif = columns[highlightedGif!.columnIndex][highlightedGif!.columnRowIndex + 1];
 
         if (nextGif) {
             setHighlightedGif(nextGif);
@@ -127,7 +148,7 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
     }
 
     function moveHighlightUp() {
-        const nextGif = columns[highlightedGif.columnIndex][highlightedGif.columnRowIndex - 1];
+        const nextGif = columns[highlightedGif!.columnIndex][highlightedGif!.columnRowIndex - 1];
 
         if (nextGif) {
             setHighlightedGif(nextGif);
@@ -137,8 +158,11 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         }
     }
 
-    function moveToNextHorizontalGif(direction) {
-        const highlightedElem = document.querySelector(`[data-gif-index="${highlightedGif.index}"]`);
+    function moveToNextHorizontalGif(direction: 'left' | 'right') {
+        const highlightedElem = document.querySelector(`[data-gif-index="${highlightedGif!.index}"]`);
+        if (!highlightedElem) {
+            return;
+        }
         const highlightedElemRect = highlightedElem.getBoundingClientRect();
 
         let x;
@@ -155,9 +179,9 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
 
         // we might hit spacing between gifs, keep moving up 5 px until we get a match
         while (!foundGifElem) {
-            let possibleMatch = document.elementFromPoint(x, y)?.closest('[data-gif-index]');
+            const possibleMatch = document.elementFromPoint(x, y)?.closest('[data-gif-index]') as HTMLElement | null;
 
-            if (possibleMatch?.dataset.gifIndex !== undefined) {
+            if (possibleMatch?.dataset?.gifIndex !== undefined) {
                 foundGifElem = possibleMatch;
                 break;
             }
@@ -172,12 +196,12 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         }
 
         if (foundGifElem) {
-            setHighlightedGif(gifs[foundGifElem.dataset.gifIndex]);
+            setHighlightedGif(gifs[Number(foundGifElem.dataset.gifIndex)]);
         }
     }
 
     function moveHighlightRight() {
-        if (highlightedGif.columnIndex === columns.length - 1) {
+        if (highlightedGif!.columnIndex === columns.length - 1) {
             // we don't wrap and we're on the last column, do nothing
             return;
         }
@@ -186,12 +210,12 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
     }
 
     function moveHighlightLeft() {
-        if (highlightedGif.index === 0) {
+        if (highlightedGif!.index === 0) {
             // on the first Gif, focus the search bar
             return focusSearch();
         }
 
-        if (highlightedGif.columnIndex === 0) {
+        if (highlightedGif!.columnIndex === 0) {
             // we don't wrap and we're on the first column, do nothing
             return;
         }
@@ -199,7 +223,7 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         moveToNextHorizontalGif('left');
     }
 
-    function handleGifHighlight(event) {
+    function handleGifHighlight(event: KeyboardEvent) {
         switch (event.key) {
         case 'Tab':
             return handleTab(event);
@@ -218,9 +242,11 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         }
     }
 
-    function handleTab(event) {
+    function handleTab(event: KeyboardEvent) {
         // event.stopPropagation();
         // event.preventDefault();
+
+        const target = event.target as HTMLElement | null;
 
         if (event.shiftKey) {
             if (highlightedGif) {
@@ -228,9 +254,9 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
                 return highlightPrev();
             }
         } else {
-            if (event?.target.tagName === 'INPUT') {
+            if (target?.tagName === 'INPUT') {
                 event.preventDefault();
-                event.target.blur();
+                (target as HTMLInputElement).blur();
                 return highlightFirst();
             }
 
@@ -241,31 +267,32 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         }
     }
 
-    function handleLeft(event) {
+    function handleLeft(event: KeyboardEvent) {
         if (highlightedGif) {
             event.preventDefault();
             moveHighlightLeft();
         }
     }
 
-    function handleRight(event) {
+    function handleRight(event: KeyboardEvent) {
         if (highlightedGif) {
             event.preventDefault();
             moveHighlightRight();
         }
     }
 
-    function handleUp(event) {
+    function handleUp(event: KeyboardEvent) {
         if (highlightedGif) {
             event.preventDefault();
             moveHighlightUp();
         }
     }
 
-    function handleDown(event) {
-        if (event.target.tagName === 'INPUT') {
+    function handleDown(event: KeyboardEvent) {
+        const target = event.target as HTMLElement | null;
+        if (target?.tagName === 'INPUT') {
             event.preventDefault();
-            event.target.blur();
+            (target as HTMLInputElement).blur();
             return highlightFirst();
         }
 
@@ -275,11 +302,12 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
         }
     }
 
-    function handleEnter(event) {
+    function handleEnter(event: KeyboardEvent) {
         event.preventDefault();
 
-        if (event.target.tagName === 'INPUT') {
-            event.target.blur();
+        const target = event.target as HTMLElement | null;
+        if (target?.tagName === 'INPUT') {
+            (target as HTMLInputElement).blur();
             return highlightFirst();
         }
 
@@ -316,11 +344,10 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
                     {
                         !error && !isSearchInProgress && (
                             <div className="flex gap-4">
-                                {columns.map((column, i) => (
-                                    // eslint-disable-next-line react/no-array-index-key
-                                    <section key={i} className="flex grow basis-0 flex-col justify-start gap-4">
+                                {columns.map(column => (
+                                    <section key={column[0]?.id} className="flex grow basis-0 flex-col justify-start gap-4">
                                         {column.map(gif => (
-                                            <Gif key={gif.id} gif={gif} highlightedGif={highlightedGif} onClick={handleGifSelect} />
+                                            <Gif key={gif.id} gif={gif} highlightedGif={highlightedGif} onClick={handleGifSelect as (gif: GifData) => void} />
                                         ))}
                                     </section>
                                 ))}
@@ -330,7 +357,7 @@ const GifSelector = ({onGifInsert, onClickOutside, updateSearch, columns, isLoad
 
                     {!!isLoading && !error && <Loader isLazyLoading={isLazyLoading} />}
 
-                    {!!error && <div data-testid="gif-selector-error"><Error error={error} /></div>}
+                    {!!error && <div data-testid="gif-selector-error"><Error error={error as string} /></div>}
                 </div>
             </div>
         </div>

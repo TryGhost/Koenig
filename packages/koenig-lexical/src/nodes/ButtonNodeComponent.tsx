@@ -7,36 +7,47 @@ import {ButtonCard} from '../components/ui/cards/ButtonCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import type {ButtonNode} from '@tryghost/kg-default-nodes';
 
-export function ButtonNodeComponent({alignment, buttonText, buttonUrl, nodeKey}) {
+interface ButtonNodeComponentProps {
+    alignment: string;
+    buttonText: string;
+    buttonUrl: string;
+    nodeKey: string;
+}
+
+export function ButtonNodeComponent({alignment, buttonText, buttonUrl, nodeKey}: ButtonNodeComponentProps) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected, setEditing} = React.useContext(CardContext);
     const {cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
-    const handleToolbarEdit = (event) => {
+    const handleToolbarEdit = (event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         setEditing(true);
     };
 
-    const handleButtonTextChange = (event) => {
+    const handleButtonTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as ButtonNode | null;
+            if (!node) {return;}
             node.buttonText = event.target.value;
         });
     };
 
-    const handleButtonUrlChange = (val) => {
+    const handleButtonUrlChange = (val: string) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as ButtonNode | null;
+            if (!node) {return;}
             node.buttonUrl = val;
         });
     };
 
-    const handleAlignmentChange = (value) => {
+    const handleAlignmentChange = (value: string) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as ButtonNode | null;
+            if (!node) {return;}
             node.alignment = value;
         });
     };

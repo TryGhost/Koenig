@@ -16,7 +16,7 @@ export const CallToActionPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_CALL_TO_ACTION_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createCallToActionNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode, openInEditMode: true});
 
