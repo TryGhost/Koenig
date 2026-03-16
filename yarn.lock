@@ -3597,14 +3597,15 @@
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.6.tgz#7739c232a1fee9b4d3ce8985f314c0c6d33549d7"
   integrity sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==
 
-"@types/jsdom@21.1.7":
-  version "21.1.7"
-  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-21.1.7.tgz#9edcb09e0b07ce876e7833922d3274149c898cfa"
-  integrity sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==
+"@types/jsdom@28.0.0":
+  version "28.0.0"
+  resolved "https://registry.yarnpkg.com/@types/jsdom/-/jsdom-28.0.0.tgz#387bcb5fe60c753ae0c58584b659a598319938f2"
+  integrity sha512-A8TBQQC/xAOojy9kM8E46cqT00sF0h7dWjV8t8BJhUi2rG6JRh7XXQo/oLoENuZIQEpXsxLccLCnknyQd7qssQ==
   dependencies:
     "@types/node" "*"
     "@types/tough-cookie" "*"
     parse5 "^7.0.0"
+    undici-types "^7.21.0"
 
 "@types/json-schema@^7.0.15":
   version "7.0.15"
@@ -15687,6 +15688,11 @@ undertaker@^1.2.1:
     object.defaults "^1.0.0"
     object.reduce "^1.0.0"
     undertaker-registry "^1.0.0"
+
+undici-types@^7.21.0:
+  version "7.24.4"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.24.4.tgz#642dac0cb65a2ae389f8c228fda927308c65543b"
+  integrity sha512-cRaY9PagdEZoRmcwzk3tUV3SVGrVQkR6bcSilav/A0vXsfpW4Lvd0BvgRMwTEDTLLGN+QdyBTG+nnvTgJhdt6w==
 
 undici-types@~5.26.4:
   version "5.26.5"
