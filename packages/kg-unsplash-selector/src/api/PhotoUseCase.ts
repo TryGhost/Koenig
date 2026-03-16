@@ -33,4 +33,8 @@ export class PhotoUseCases {
     searchIsRunning(): boolean {
         return this._provider.searchIsRunning();
     }
+
+    getLastSearchTerm(): string {
+        return this._provider.getLastSearchTerm();
+    }
 }
