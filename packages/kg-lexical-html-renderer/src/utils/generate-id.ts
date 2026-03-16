@@ -1,5 +1,5 @@
-import type {RendererOptions} from '@tryghost/kg-default-nodes';
 import {slugify} from '@tryghost/kg-utils';
+import type {RendererOptions} from '@tryghost/kg-default-nodes';
 
 function generateId(text: string, options: RendererOptions) {
     if (!options.usedIdAttributes) {

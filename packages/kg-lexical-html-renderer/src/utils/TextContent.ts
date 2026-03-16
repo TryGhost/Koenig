@@ -1,5 +1,6 @@
-import {$isLinkNode, LinkNode} from '@lexical/link';
+import {$isLinkNode} from '@lexical/link';
 import {$isTextNode, $isLineBreakNode, TextNode} from 'lexical';
+import type {LinkNode} from '@lexical/link';
 import type {ElementNode, LexicalNode, TextFormatType} from 'lexical';
 import type {RendererOptions} from '@tryghost/kg-default-nodes';
 

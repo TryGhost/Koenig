@@ -1,9 +1,10 @@
-import {ElementNode, LexicalNode} from 'lexical';
 import {$getRoot, $isElementNode, $isLineBreakNode, $isParagraphNode, $isTextNode} from 'lexical';
 import {$isLinkNode} from '@lexical/link';
-import {$isKoenigCard, RendererOptions} from '@tryghost/kg-default-nodes';
-import TextContent from './utils/TextContent';
-import elementTransformers from './transformers';
+import {$isKoenigCard} from '@tryghost/kg-default-nodes';
+import TextContent from './utils/TextContent.js';
+import elementTransformers from './transformers/index.js';
+import type {ElementNode, LexicalNode} from 'lexical';
+import type {RendererOptions} from '@tryghost/kg-default-nodes';
 
 export default function $convertToHtmlString(options: RendererOptions = {}): string {
     const output: string[] = [];

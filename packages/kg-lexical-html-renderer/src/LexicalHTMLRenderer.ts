@@ -1,14 +1,12 @@
-import {SerializedEditorState, LexicalEditor, LexicalNode, Klass} from 'lexical';
 import {createHeadlessEditor} from '@lexical/headless';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {HeadingNode, QuoteNode} from '@lexical/rich-text';
 import {LinkNode} from '@lexical/link';
-import $convertToHtmlString from './convert-to-html-string';
-import getDynamicDataNodes from './get-dynamic-data-nodes';
-
-// TODO: Using import causes circular definitions for kg-default-nodes
-
-const {registerRemoveAtLinkNodesTransform} = require('@tryghost/kg-default-transforms');
+import {JSDOM} from 'jsdom';
+import $convertToHtmlString from './convert-to-html-string.js';
+import getDynamicDataNodes from './get-dynamic-data-nodes.js';
+import {registerRemoveAtLinkNodesTransform} from '@tryghost/kg-default-transforms';
+import type {SerializedEditorState, LexicalEditor, LexicalNode, Klass} from 'lexical';
 
 interface RenderOptions {
     target?: 'html' | 'email' | 'plaintext';
@@ -29,9 +27,6 @@ export default class LexicalHTMLRenderer {
 
     constructor({dom, nodes, onError}: {dom?: import('jsdom').JSDOM, nodes?: Klass<LexicalNode>[], onError?: () => void} = {}) {
         if (!dom) {
-            const jsdom = require('jsdom');
-            const {JSDOM} = jsdom;
-
             this.dom = new JSDOM();
         } else {
             this.dom = dom;

@@ -1,6 +1,6 @@
 import {$getRoot} from 'lexical';
-import {$isKoenigCard, KoenigDecoratorNode} from '@tryghost/kg-default-nodes';
-
+import {$isKoenigCard} from '@tryghost/kg-default-nodes';
+import type {KoenigDecoratorNode} from '@tryghost/kg-default-nodes';
 import type {EditorState} from 'lexical';
 
 export default function getDynamicDataNodes(editorState: EditorState): KoenigDecoratorNode[] {

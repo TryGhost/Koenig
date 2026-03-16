@@ -1,7 +1,7 @@
-const {shouldRender} = require('./utils');
-const {AtLinkNode, AtLinkSearchNode, ZWNJNode} = require('@tryghost/kg-default-nodes');
+import {shouldRender} from './utils/index.js';
+import {AtLinkNode, AtLinkSearchNode, ZWNJNode} from '@tryghost/kg-default-nodes';
 
-const Renderer = require('../build/LexicalHTMLRenderer').default;
+import Renderer from '../build/cjs/index.js';
 
 describe('render()', function () {
     it('works with no options', async function () {
