@@ -1,8 +1,8 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {$getRoot} = require('lexical');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {ImageNode, $createImageNode, $isImageNode} = require('../../');
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {$getRoot} from 'lexical';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {ImageNode, $createImageNode, $isImageNode} from '../../build/cjs/index.js';
 
 const editorNodes = [ImageNode];
 

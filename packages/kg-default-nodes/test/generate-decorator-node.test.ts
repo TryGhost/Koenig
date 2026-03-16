@@ -1,5 +1,5 @@
-const {createHeadlessEditor} = require('@lexical/headless');
-const {utils} = require('../');
+import {createHeadlessEditor} from '@lexical/headless';
+import {utils} from '../build/cjs/index.js';
 
 const defaultVisibility = utils.visibility.buildDefaultVisibility();
 
@@ -135,7 +135,6 @@ describe('Utils: generateDecoratorNode', function () {
             (() => node.exportDOM()).should.throw('[generateDecoratorNode] versioned-render-test: "defaultRenderFn" for version 2 is required');
         }));
 
-        // eslint-disable-next-line ghost/mocha/no-setup-in-describe
         ['emailCustomizationAlpha', 'emailCustomization'].forEach((feature) => {
             it(`uses custom renderer if passed in (${feature})`, editorTest(function () {
                 const node = $createNodeWithRender();

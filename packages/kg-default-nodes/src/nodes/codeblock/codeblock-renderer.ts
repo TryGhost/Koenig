@@ -1,9 +1,22 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
 
-export function renderCodeBlockNode(node, options = {}) {
+interface CodeBlockNodeData {
+    code: string;
+    language: string;
+    caption: string;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    [key: string]: unknown;
+}
+
+export function renderCodeBlockNode(node: CodeBlockNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     if (!node.code || node.code.trim() === '') {
         return renderEmptyContainer(document);
@@ -20,11 +33,11 @@ export function renderCodeBlockNode(node, options = {}) {
     pre.appendChild(code);
 
     if (node.caption) {
-        let figure = document.createElement('figure');
+        const figure = document.createElement('figure');
         figure.setAttribute('class', 'kg-card kg-code-card');
         figure.appendChild(pre);
 
-        let figcaption = document.createElement('figcaption');
+        const figcaption = document.createElement('figcaption');
         figcaption.innerHTML = node.caption;
         figure.appendChild(figcaption);
 

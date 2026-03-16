@@ -1,6 +1,12 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseCodeBlockNode} from './codeblock-parser';
-import {renderCodeBlockNode} from './codeblock-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseCodeBlockNode} from './codeblock-parser.js';
+import {renderCodeBlockNode} from './codeblock-renderer.js';
+
+export interface CodeBlockNode {
+    code: string;
+    language: string;
+    caption: string;
+}
 
 export class CodeBlockNode extends generateDecoratorNode({
     nodeType: 'codeblock',
@@ -20,10 +26,10 @@ export class CodeBlockNode extends generateDecoratorNode({
     }
 }
 
-export function $createCodeBlockNode(dataset) {
+export function $createCodeBlockNode(dataset: Record<string, unknown>) {
     return new CodeBlockNode(dataset);
 }
 
-export function $isCodeBlockNode(node) {
+export function $isCodeBlockNode(node: unknown): node is CodeBlockNode {
     return node instanceof CodeBlockNode;
 }

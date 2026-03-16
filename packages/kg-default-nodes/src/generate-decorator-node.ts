@@ -1,27 +1,29 @@
-import {KoenigDecoratorNode} from './KoenigDecoratorNode';
-import readTextContent from './utils/read-text-content';
-import {buildDefaultVisibility, isVisibilityRestricted, migrateOldVisibilityFormat} from './utils/visibility';
+import {KoenigDecoratorNode} from './KoenigDecoratorNode.js';
+import readTextContent from './utils/read-text-content.js';
+import {buildDefaultVisibility, isVisibilityRestricted, migrateOldVisibilityFormat} from './utils/visibility.js';
+import type {Visibility} from './utils/visibility.js';
+
+type RenderFn = (node: unknown, options: Record<string, unknown>) => { element: Element | null; type?: string };
 /**
  * Validates the required arguments passed to `generateDecoratorNode`
 */
-function validateArguments(nodeType, properties) {
-    /* eslint-disable ghost/ghost-custom/no-native-error */
+function validateArguments(nodeType: string, properties: DecoratorNodeProperty[]) {
     /* c8 ignore start */
     if (!nodeType) {
-        throw new Error({message: '[generateDecoratorNode] A unique "nodeType" should be provided'});
+        throw new Error('[generateDecoratorNode] A unique "nodeType" should be provided');
     }
 
-    properties.forEach((prop) => {
+    properties.forEach((prop: DecoratorNodeProperty) => {
         if (!('name' in prop) || !('default' in prop)){
-            throw new Error({message: '[generateDecoratorNode] Properties should have both "name" and "default" attributes.'});
+            throw new Error('[generateDecoratorNode] Properties should have both "name" and "default" attributes.');
         }
 
         if (prop.urlType && !['url', 'html', 'markdown'].includes(prop.urlType)) {
-            throw new Error({message: '[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"'});
+            throw new Error('[generateDecoratorNode] "urlType" should be either "url", "html" or "markdown"');
         }
 
         if ('wordCount' in prop && typeof prop.wordCount !== 'boolean') {
-            throw new Error({message: '[generateDecoratorNode] "wordCount" should be of boolean type.'});
+            throw new Error('[generateDecoratorNode] "wordCount" should be of boolean type.');
         }
     });
     /* c8 ignore stop */
@@ -40,19 +42,72 @@ function validateArguments(nodeType, properties) {
  * @param {Function} defaultRenderFn - A function that returns a @tryghost/kg-lexical-html-renderer compatible object, e.g. {element: Div, type: 'inner}
  * @returns {Object} - The generated class.
  */
-export function generateDecoratorNode({nodeType, properties = [], defaultRenderFn, version = 1, hasVisibility = false}) {
+interface DecoratorNodeProperty {
+    name: string;
+    default: unknown;
+    urlType?: string;
+    urlPath?: string;
+    wordCount?: boolean;
+    privateName?: string;
+}
+
+// Type-only base class used as the return type of generateDecoratorNode.
+// This ensures TypeScript recognizes generated nodes as LexicalNode subclasses
+// while preserving the dynamic property index signature.
+export class GeneratedDecoratorNodeBase extends KoenigDecoratorNode {
+    [key: string]: unknown;
+
+    constructor(data?: Record<string, unknown>, key?: string) {
+        super(key);
+    }
+
+    getDataset(): Record<string, unknown> {
+        return {};
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    exportJSON(): any {
+        return {};
+    }
+
+    static getPropertyDefaults(): Record<string, unknown> {
+        return {};
+    }
+
+    static get urlTransformMap(): Record<string, string | Record<string, string>> {
+        return {};
+    }
+
+    static importJSON(_serializedNode: Record<string, unknown>): GeneratedDecoratorNodeBase {
+        return new GeneratedDecoratorNodeBase();
+    }
+
+    hasDynamicData(): boolean {
+        return false;
+    }
+
+    hasEditMode(): boolean {
+        return true;
+    }
+
+    getIsVisibilityActive(): boolean {
+        return false;
+    }
+}
+
+export function generateDecoratorNode({nodeType, properties = [] as DecoratorNodeProperty[], defaultRenderFn, version = 1, hasVisibility = false}: {nodeType: string; properties?: DecoratorNodeProperty[]; defaultRenderFn?: unknown; version?: number; hasVisibility?: boolean}): typeof GeneratedDecoratorNodeBase {
     validateArguments(nodeType, properties);
 
     // Adds a `privateName` field to the properties for convenience (e.g. `__name`):
     // properties: [{name: 'name', privateName: '__name', type: 'string', default: 'hello'}, {...}]
-    properties = properties.map((prop) => {
+    const internalProps = properties.map((prop) => {
         return {...prop, privateName: `__${prop.name}`};
     });
 
     // Adds `visibility` property to the properties array if `hasVisibility` is true
     // uses a getter for `default` to avoid problems with mutation of nested objects
     if (hasVisibility) {
-        properties.push({
+        internalProps.push({
             name: 'visibility',
             get default() {
                 return buildDefaultVisibility();
@@ -62,9 +117,11 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
     }
 
     class GeneratedDecoratorNode extends KoenigDecoratorNode {
-        constructor(data = {}, key) {
+        [key: string]: unknown;
+
+        constructor(data: Record<string, unknown> = {}, key?: string) {
             super(key);
-            properties.forEach((prop) => {
+            internalProps.forEach((prop) => {
                 if (typeof prop.default === 'boolean') {
                     this[prop.privateName] = data[prop.name] ?? prop.default;
                 } else {
@@ -88,7 +145,7 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
          * @extends DecoratorNode
          * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
          */
-        static clone(node) {
+        static clone(node: GeneratedDecoratorNode) {
             return new this(node.getDataset(), node.__key);
         }
 
@@ -97,7 +154,7 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
          * to detect when a property has been changed
          */
         static getPropertyDefaults() {
-            return properties.reduce((obj, prop) => {
+            return internalProps.reduce((obj: Record<string, unknown>, prop) => {
                 obj[prop.name] = prop.default;
                 return obj;
             }, {});
@@ -109,9 +166,9 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
          * @see https://github.com/TryGhost/SDK/tree/main/packages/url-utils
          */
         static get urlTransformMap() {
-            let map = {};
+            const map: Record<string, string> = {};
 
-            properties.forEach((prop) => {
+            internalProps.forEach((prop) => {
                 if (prop.urlType) {
                     if (prop.urlPath) {
                         map[prop.urlPath] = prop.urlType;
@@ -131,8 +188,8 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
         getDataset() {
             const self = this.getLatest();
 
-            let dataset = {};
-            properties.forEach((prop) => {
+            const dataset: Record<string, unknown> = {};
+            internalProps.forEach((prop) => {
                 dataset[prop.name] = self[prop.privateName];
             });
 
@@ -145,13 +202,13 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
          * @extends DecoratorNode
          * @param {Object} serializedNode - Lexical's representation of the node, in JSON format
          */
-        static importJSON(serializedNode) {
-            const data = {};
+        static importJSON(serializedNode: Record<string, unknown>) {
+            const data: Record<string, unknown> = {};
 
             // migrate older nodes that were saved with an earlier version of the visibility format
-            serializedNode.visibility = migrateOldVisibilityFormat(serializedNode.visibility);
+            serializedNode.visibility = migrateOldVisibilityFormat(serializedNode.visibility as Visibility);
 
-            properties.forEach((prop) => {
+            internalProps.forEach((prop) => {
                 data[prop.name] = serializedNode[prop.name];
             });
 
@@ -163,11 +220,12 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
          * @extends DecoratorNode
          * @see https://lexical.dev/docs/concepts/serialization#lexicalnodeexportjson
          */
+        // @ts-expect-error -- strict mode migration
         exportJSON() {
-            const dataset = {
+            const dataset: Record<string, unknown> = {
                 type: nodeType,
                 version: version,
-                ...properties.reduce((obj, prop) => {
+                ...internalProps.reduce((obj: Record<string, unknown>, prop) => {
                     obj[prop.name] = this[prop.name];
                     return obj;
                 }, {})
@@ -175,27 +233,29 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
             return dataset;
         }
 
-        exportDOM(options = {}) {
+        // @ts-expect-error - custom exportDOM signature for Ghost rendering
+        exportDOM(options: Record<string, unknown> = {}) {
             // this.__version is used when a node has a version property which
             // means it's set from the serialized version data at runtime
             const nodeVersion = this.__version || version;
 
-            if (options.nodeRenderers?.[nodeType]) {
-                const render = options.nodeRenderers[nodeType];
+            const nodeRenderers = options.nodeRenderers as Record<string, RenderFn | Record<string | number, RenderFn>> | undefined;
+            if (nodeRenderers?.[nodeType]) {
+                const render = nodeRenderers[nodeType];
 
                 if (typeof render === 'object') {
-                    const versionRenderer = render[nodeVersion];
+                    const versionRenderer = (render as Record<string | number, RenderFn>)[nodeVersion as number];
                     if (!versionRenderer) {
                         throw new Error(`[generateDecoratorNode] ${nodeType}: options.nodeRenderers['${nodeType}'] for version ${nodeVersion} is required`);
                     }
                     return versionRenderer(this, options);
                 } else {
-                    return render(this, options);
+                    return (render as RenderFn)(this, options);
                 }
             }
 
             if (typeof defaultRenderFn === 'object') {
-                const render = defaultRenderFn[nodeVersion];
+                const render = (defaultRenderFn as Record<string | number, RenderFn>)[nodeVersion as number];
                 if (!render) {
                     throw new Error(`[generateDecoratorNode] ${nodeType}: "defaultRenderFn" for version ${nodeVersion} is required`);
                 }
@@ -206,7 +266,7 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
                 throw new Error(`[generateDecoratorNode] ${nodeType}: "defaultRenderFn" is required`);
             }
 
-            const render = defaultRenderFn;
+            const render = defaultRenderFn as RenderFn;
 
             return render(this, options);
         }
@@ -276,14 +336,14 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
          * @returns {boolean}
          */
         getIsVisibilityActive() {
-            if (!properties.some(prop => prop.name === 'visibility')) {
+            if (!internalProps.some(prop => prop.name === 'visibility')) {
                 return false;
             }
 
             const self = this.getLatest();
             const visibility = self.__visibility;
 
-            return isVisibilityRestricted(visibility);
+            return isVisibilityRestricted(visibility as Visibility);
         }
     }
 
@@ -305,7 +365,7 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
      *
      * They can be used as `node.content` (getter) and `node.content = 'new value'` (setter)
      */
-    properties.forEach((prop) => {
+    internalProps.forEach((prop) => {
         Object.defineProperty(GeneratedDecoratorNode.prototype, prop.name, {
             get: function () {
                 const self = this.getLatest();
@@ -318,5 +378,5 @@ export function generateDecoratorNode({nodeType, properties = [], defaultRenderF
         });
     });
 
-    return GeneratedDecoratorNode;
+    return GeneratedDecoratorNode as unknown as typeof GeneratedDecoratorNodeBase;
 }

@@ -1,8 +1,8 @@
-const {dom, createDocument} = require('../test-utils');
-const {$getRoot} = require('lexical');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {FileNode, $createFileNode, $isFileNode} = require('../../');
+import {dom, createDocument} from '../test-utils/index.js';
+import {$getRoot} from 'lexical';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {FileNode, $createFileNode, $isFileNode} from '../../build/cjs/index.js';
 
 const editorNodes = [FileNode];
 
@@ -280,6 +280,7 @@ describe('FileNode', function () {
             const json = fileNode.exportJSON();
             json.should.deepEqual({
                 type: 'file',
+                version: 1,
                 ...dataset
             });
         }));

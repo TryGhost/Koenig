@@ -1,7 +1,7 @@
-const {dom, html} = require('../test-utils');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$getRoot} = require('lexical');
-const {MarkdownNode, $createMarkdownNode, $isMarkdownNode} = require('../../');
+import {dom, html} from '../test-utils/index.js';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$getRoot} from 'lexical';
+import {MarkdownNode, $createMarkdownNode, $isMarkdownNode} from '../../build/cjs/index.js';
 
 const editorNodes = [MarkdownNode];
 

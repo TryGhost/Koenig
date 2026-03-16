@@ -1,5 +1,5 @@
-const {JSDOM} = require('jsdom');
-const {utils} = require('../../');
+import {JSDOM} from 'jsdom';
+import {utils} from '../../build/cjs/index.js';
 const {isOldVisibilityFormat, isVisibilityRestricted, migrateOldVisibilityFormat, renderWithVisibility, buildDefaultVisibility} = utils.visibility;
 
 describe('Utils: visibility', function () {

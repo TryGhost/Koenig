@@ -1,6 +1,10 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderHtmlNode} from './html-renderer';
-import {parseHtmlNode} from './html-parser';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderHtmlNode} from './html-renderer.js';
+import {parseHtmlNode} from './html-parser.js';
+
+export interface HtmlNode {
+    html: string;
+}
 
 export class HtmlNode extends generateDecoratorNode({
     nodeType: 'html',
@@ -19,10 +23,10 @@ export class HtmlNode extends generateDecoratorNode({
     }
 }
 
-export function $createHtmlNode(dataset) {
+export function $createHtmlNode(dataset: Record<string, unknown>) {
     return new HtmlNode(dataset);
 }
 
-export function $isHtmlNode(node) {
+export function $isHtmlNode(node: unknown): node is HtmlNode {
     return node instanceof HtmlNode;
 }

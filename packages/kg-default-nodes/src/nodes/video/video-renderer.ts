@@ -1,10 +1,30 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
 
-export function renderVideoNode(node, options = {}) {
+interface VideoNodeData {
+    src: string;
+    width: number;
+    height: number;
+    caption: string;
+    loop: boolean;
+    thumbnailSrc: string;
+    customThumbnailSrc: string;
+    formattedDuration: string;
+    cardWidth: string;
+}
+
+interface VideoRenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    postUrl?: string;
+    [key: string]: unknown;
+}
+
+export function renderVideoNode(node: VideoNodeData, options: VideoRenderOptions = {}) {
     addCreateDocumentOption(options);
 
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     if (!node.src || node.src.trim() === '') {
         return renderEmptyContainer(document);
@@ -22,7 +42,7 @@ export function renderVideoNode(node, options = {}) {
     return {element: element.firstElementChild};
 }
 
-export function cardTemplate({node, cardClasses}) {
+export function cardTemplate({node, cardClasses}: {node: VideoNodeData, cardClasses: string}) {
     const width = node.width;
     const height = node.height;
     const posterSpacerSrc = `https://img.spacergif.org/v1/${width}x${height}/0a/spacer.png`;
@@ -90,7 +110,7 @@ export function cardTemplate({node, cardClasses}) {
     );
 }
 
-export function emailCardTemplate({node, options, cardClasses}) {
+export function emailCardTemplate({node, options, cardClasses}: {node: VideoNodeData, options: VideoRenderOptions, cardClasses: string}) {
     const thumbnailSrc = node.customThumbnailSrc || node.thumbnailSrc;
     const emailTemplateMaxWidth = 600;
     const aspectRatio = node.width / node.height;
@@ -143,8 +163,8 @@ export function emailCardTemplate({node, options, cardClasses}) {
     );
 }
 
-export function getCardClasses(node) {
-    let cardClasses = ['kg-card kg-video-card'];
+export function getCardClasses(node: VideoNodeData) {
+    const cardClasses = ['kg-card kg-video-card'];
 
     if (node.cardWidth) {
         cardClasses.push(`kg-width-${node.cardWidth}`);

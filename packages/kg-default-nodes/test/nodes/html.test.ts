@@ -1,8 +1,8 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$getRoot} = require('lexical');
-const {HtmlNode, $createHtmlNode, $isHtmlNode, utils} = require('../../');
-const {$generateNodesFromDOM} = require('@lexical/html');
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$getRoot} from 'lexical';
+import {HtmlNode, $createHtmlNode, $isHtmlNode, utils} from '../../build/cjs/index.js';
+import {$generateNodesFromDOM} from '@lexical/html';
 
 const editorNodes = [HtmlNode];
 const {ALL_MEMBERS_SEGMENT, NO_MEMBERS_SEGMENT} = utils.visibility;

@@ -1,6 +1,6 @@
-require('../test-utils');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {ZWNJNode, $createZWNJNode, $isZWNJNode} = require('../../');
+import '../test-utils/index.js';
+import {createHeadlessEditor} from '@lexical/headless';
+import {ZWNJNode, $createZWNJNode, $isZWNJNode} from '../../build/cjs/index.js';
 
 const editorNodes = [ZWNJNode];
 

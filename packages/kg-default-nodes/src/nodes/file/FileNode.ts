@@ -1,7 +1,15 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderFileNode} from './file-renderer';
-import {parseFileNode} from './file-parser';
-import {bytesToSize} from '../../utils/size-byte-converter';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderFileNode} from './file-renderer.js';
+import {parseFileNode} from './file-parser.js';
+import {bytesToSize} from '../../utils/size-byte-converter.js';
+
+export interface FileNode {
+    src: string;
+    fileTitle: string;
+    fileCaption: string;
+    fileName: string;
+    fileSize: string;
+}
 
 export class FileNode extends generateDecoratorNode({
     nodeType: 'file',
@@ -20,7 +28,8 @@ export class FileNode extends generateDecoratorNode({
         const isBlob = src && src.startsWith('data:');
 
         return {
-            type: 'file',
+            type: 'file' as const,
+            version: 1,
             src: isBlob ? '<base64String>' : src,
             fileTitle,
             fileCaption,
@@ -34,14 +43,14 @@ export class FileNode extends generateDecoratorNode({
     }
 
     get formattedFileSize() {
-        return bytesToSize(this.fileSize);
+        return bytesToSize(Number(this.fileSize));
     }
 }
 
-export function $isFileNode(node) {
+export function $isFileNode(node: unknown): node is FileNode {
     return node instanceof FileNode;
 }
 
-export const $createFileNode = (dataset) => {
+export const $createFileNode = (dataset: Record<string, unknown>) => {
     return new FileNode(dataset);
 };

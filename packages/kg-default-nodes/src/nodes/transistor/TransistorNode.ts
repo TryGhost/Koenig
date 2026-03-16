@@ -1,7 +1,7 @@
-import cloneDeep from 'lodash/cloneDeep';
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderTransistorNode} from './transistor-renderer';
-import {ALL_MEMBERS_SEGMENT} from '../../utils/visibility';
+import {cloneDeep} from 'lodash';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderTransistorNode} from './transistor-renderer.js';
+import {ALL_MEMBERS_SEGMENT} from '../../utils/visibility.js';
 
 // Default visibility for Transistor: members only (no public visitors)
 // since the embed requires a member UUID to function
@@ -15,6 +15,11 @@ const TRANSISTOR_DEFAULT_VISIBILITY = {
     }
 };
 
+export interface TransistorNode {
+    accentColor: string;
+    backgroundColor: string;
+}
+
 export class TransistorNode extends generateDecoratorNode({
     nodeType: 'transistor',
     hasVisibility: true,
@@ -24,7 +29,7 @@ export class TransistorNode extends generateDecoratorNode({
     ],
     defaultRenderFn: renderTransistorNode
 }) {
-    constructor(data = {}, key) {
+    constructor(data: Record<string, unknown> = {}, key?: string) {
         super(data, key);
         if (!data.visibility) {
             this.__visibility = cloneDeep(TRANSISTOR_DEFAULT_VISIBILITY);
@@ -46,10 +51,10 @@ export class TransistorNode extends generateDecoratorNode({
     }
 }
 
-export const $createTransistorNode = (dataset) => {
+export const $createTransistorNode = (dataset: Record<string, unknown>) => {
     return new TransistorNode(dataset);
 };
 
-export const $isTransistorNode = (node) => {
+export const $isTransistorNode = (node: unknown) => {
     return node instanceof TransistorNode;
 };

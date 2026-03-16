@@ -1,11 +1,28 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
-import {escapeHtml} from '../../utils/escape-html';
-import {bytesToSize} from '../../utils/size-byte-converter';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
+import {escapeHtml} from '../../utils/escape-html.js';
+import {bytesToSize} from '../../utils/size-byte-converter.js';
 
-export function renderFileNode(node, options = {}) {
+interface FileNodeData {
+    src: string;
+    fileTitle: string;
+    fileCaption: string;
+    fileName: string;
+    fileSize: number;
+    formattedFileSize: string;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    postUrl?: string;
+    [key: string]: unknown;
+}
+
+export function renderFileNode(node: FileNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     if (!node.src || node.src.trim() === '') {
         return renderEmptyContainer(document);
@@ -18,7 +35,7 @@ export function renderFileNode(node, options = {}) {
     }
 }
 
-function emailTemplate(node, document, options) {
+function emailTemplate(node: FileNodeData, document: Document, options: RenderOptions) {
     let iconCls;
     if (!node.fileTitle && !node.fileCaption) {
         iconCls = 'margin-top: 6px; height: 20px; width: 20px; max-width: 20px; padding-top: 4px; padding-bottom: 4px;';
@@ -35,20 +52,20 @@ function emailTemplate(node, document, options) {
                             <td valign="middle" style="vertical-align: middle;">
                                 ${node.fileTitle ? `
                                 <table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
-                                    <a href="${escapeHtml(options.postUrl)}" class="kg-file-title">${escapeHtml(node.fileTitle)}</a>
+                                    <a href="${escapeHtml(options.postUrl || '')}" class="kg-file-title">${escapeHtml(node.fileTitle)}</a>
                                 </td></tr></table>
                                 ` : ``}
                                 ${node.fileCaption ? `
                                 <table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
-                                    <a href="${escapeHtml(options.postUrl)}" class="kg-file-description">${escapeHtml(node.fileCaption)}</a>
+                                    <a href="${escapeHtml(options.postUrl || '')}" class="kg-file-description">${escapeHtml(node.fileCaption)}</a>
                                 </td></tr></table>
                                 ` : ``}
                                 <table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
-                                    <a href="${escapeHtml(options.postUrl)}" class="kg-file-meta"><span class="kg-file-name">${escapeHtml(node.fileName)}</span> &bull; ${bytesToSize(node.fileSize)}</a>
+                                    <a href="${escapeHtml(options.postUrl || '')}" class="kg-file-meta"><span class="kg-file-name">${escapeHtml(node.fileName)}</span> &bull; ${bytesToSize(node.fileSize)}</a>
                                 </td></tr></table>
                             </td>
                             <td width="80" valign="middle" class="kg-file-thumbnail">
-                                <a href="${escapeHtml(options.postUrl)}" style="display: block; top: 0; right: 0; bottom: 0; left: 0;">
+                                <a href="${escapeHtml(options.postUrl || '')}" style="display: block; top: 0; right: 0; bottom: 0; left: 0;">
                                     <img src="https://static.ghost.org/v4.0.0/images/download-icon-darkmode.png" style="${escapeHtml(iconCls)}">
                                 </a>
                             </td>
@@ -65,7 +82,7 @@ function emailTemplate(node, document, options) {
     return {element: container.firstElementChild};
 }
 
-function cardTemplate(node, document) {
+function cardTemplate(node: FileNodeData, document: Document) {
     const card = document.createElement('div');
     card.setAttribute('class', 'kg-card kg-file-card');
 

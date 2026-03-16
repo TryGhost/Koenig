@@ -1,8 +1,8 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {CodeBlockNode, $createCodeBlockNode, $isCodeBlockNode} = require('../../');
-const {$getRoot} = require('lexical');
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {CodeBlockNode, $createCodeBlockNode, $isCodeBlockNode} from '../../build/cjs/index.js';
+import {$getRoot} from 'lexical';
 
 const editorNodes = [CodeBlockNode];
 

@@ -1,6 +1,12 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseButtonNode} from './button-parser';
-import {renderButtonNode} from './button-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseButtonNode} from './button-parser.js';
+import {renderButtonNode} from './button-renderer.js';
+
+export interface ButtonNode {
+    buttonText: string;
+    alignment: string;
+    buttonUrl: string;
+}
 
 export class ButtonNode extends generateDecoratorNode({
     nodeType: 'button',
@@ -16,10 +22,10 @@ export class ButtonNode extends generateDecoratorNode({
     }
 }
 
-export const $createButtonNode = (dataset) => {
+export const $createButtonNode = (dataset: Record<string, unknown>) => {
     return new ButtonNode(dataset);
 };
 
-export function $isButtonNode(node) {
+export function $isButtonNode(node: unknown): node is ButtonNode {
     return node instanceof ButtonNode;
 }

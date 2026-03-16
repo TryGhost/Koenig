@@ -1,8 +1,8 @@
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$getRoot} = require('lexical');
-const {createDocument, dom, html} = require('../test-utils');
-const {ToggleNode, $createToggleNode, $isToggleNode} = require('../../');
-const {$generateNodesFromDOM} = require('@lexical/html');
+import {createHeadlessEditor} from '@lexical/headless';
+import {$getRoot} from 'lexical';
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {ToggleNode, $createToggleNode, $isToggleNode} from '../../build/cjs/index.js';
+import {$generateNodesFromDOM} from '@lexical/html';
 
 const editorNodes = [ToggleNode];
 

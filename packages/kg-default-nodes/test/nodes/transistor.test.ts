@@ -1,8 +1,8 @@
-const assert = require('node:assert/strict');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$getRoot} = require('lexical');
-const {dom} = require('../test-utils');
-const {TransistorNode, $isTransistorNode} = require('../../');
+import assert from 'node:assert/strict';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$getRoot} from 'lexical';
+import {dom} from '../test-utils/index.js';
+import {TransistorNode, $isTransistorNode} from '../../build/cjs/index.js';
 
 const editorNodes = [TransistorNode];
 

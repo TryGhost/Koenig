@@ -1,6 +1,6 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parsePaywallNode} from './paywall-parser';
-import {renderPaywallNode} from './paywall-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parsePaywallNode} from './paywall-parser.js';
+import {renderPaywallNode} from './paywall-renderer.js';
 
 export class PaywallNode extends generateDecoratorNode({
     nodeType: 'paywall',
@@ -11,10 +11,10 @@ export class PaywallNode extends generateDecoratorNode({
     }
 }
 
-export const $createPaywallNode = (dataset) => {
+export const $createPaywallNode = (dataset: Record<string, unknown>) => {
     return new PaywallNode(dataset);
 };
 
-export function $isPaywallNode(node) {
+export function $isPaywallNode(node: unknown): node is PaywallNode {
     return node instanceof PaywallNode;
 }

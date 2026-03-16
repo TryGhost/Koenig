@@ -1,11 +1,20 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {buildSrcBackgroundScript} from '../../utils/set-src-background-from-parent';
-import {renderWithVisibility} from '../../utils/visibility';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {buildSrcBackgroundScript} from '../../utils/set-src-background-from-parent.js';
+import {renderWithVisibility, type Visibility} from '../../utils/visibility.js';
 
-/**
- * @param {HTMLIFrameElement} iframe
- */
-function setIframeAttributes(iframe) {
+interface TransistorNodeData {
+    visibility?: Record<string, unknown>;
+}
+
+interface TransistorRenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    siteUuid?: string;
+    [key: string]: unknown;
+}
+
+function setIframeAttributes(iframe: Element) {
     iframe.setAttribute('width', '100%');
     iframe.setAttribute('height', '180');
     iframe.setAttribute('frameborder', 'no');
@@ -13,9 +22,9 @@ function setIframeAttributes(iframe) {
     iframe.setAttribute('seamless', '');
 }
 
-export function renderTransistorNode(node, options) {
+export function renderTransistorNode(node: TransistorNodeData, options: TransistorRenderOptions) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     // {uuid} placeholder will be replaced server-side with the member's UUID
     const baseUrl = 'https://partner.transistor.fm/ghost/embed/{uuid}';
@@ -44,5 +53,5 @@ export function renderTransistorNode(node, options) {
     noscript.appendChild(fallbackIframe);
     figure.appendChild(noscript);
 
-    return renderWithVisibility({element: figure, type: 'inner'}, node.visibility, options);
+    return renderWithVisibility({element: figure, type: 'inner'}, node.visibility as Visibility, options);
 }

@@ -1,10 +1,21 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {removeSpaces, removeCodeWrappersFromHelpers, wrapReplacementStrings} from '../../utils/replacement-strings';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {removeSpaces, removeCodeWrappersFromHelpers, wrapReplacementStrings} from '../../utils/replacement-strings.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
 
-export function renderEmailNode(node, options = {}) {
+interface EmailNodeData {
+    html: string;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    [key: string]: unknown;
+}
+
+export function renderEmailNode(node: EmailNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     const html = node.html;
 

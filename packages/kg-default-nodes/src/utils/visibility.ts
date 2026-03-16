@@ -1,4 +1,4 @@
-import {renderEmptyContainer} from './render-empty-container';
+import {renderEmptyContainer} from './render-empty-container.js';
 
 export const ALL_MEMBERS_SEGMENT = 'status:free,status:-free';
 export const PAID_MEMBERS_SEGMENT = 'status:-free'; // paid + comped
@@ -15,7 +15,7 @@ const DEFAULT_VISIBILITY = {
     }
 };
 
-function isNullish(value) {
+function isNullish(value: unknown) {
     return value === null || value === undefined;
 }
 
@@ -24,7 +24,16 @@ export function buildDefaultVisibility() {
     return JSON.parse(JSON.stringify(DEFAULT_VISIBILITY));
 }
 
-export function isOldVisibilityFormat(visibility) {
+// Visibility can be in old or new format - use Record to handle both
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- visibility is a loosely-typed JSON object that may be in old or new format
+export type Visibility = Record<string, any>;
+
+export interface RenderOutput {
+    element: Element & {innerHTML: string; outerHTML: string; value?: string};
+    type?: string;
+}
+
+export function isOldVisibilityFormat(visibility: Visibility) {
     return !Object.prototype.hasOwnProperty.call(visibility, 'web')
         || !Object.prototype.hasOwnProperty.call(visibility, 'email')
         || !Object.prototype.hasOwnProperty.call(visibility.web, 'nonMember')
@@ -32,7 +41,7 @@ export function isOldVisibilityFormat(visibility) {
         || isNullish(visibility.email.memberSegment);
 }
 
-export function isVisibilityRestricted(visibility) {
+export function isVisibilityRestricted(visibility: Visibility) {
     if (isOldVisibilityFormat(visibility)) {
         return visibility.showOnEmail === false
             || visibility.showOnWeb === false
@@ -73,7 +82,7 @@ export function isVisibilityRestricted(visibility) {
 // memberSegment: 'status:free,status:-free' = everyone
 // memberSegment: 'status:free' = free members
 // memberSegment: 'status:-free' = paid + comped members
-export function migrateOldVisibilityFormat(visibility) {
+export function migrateOldVisibilityFormat(visibility: Visibility) {
     if (!visibility || !isOldVisibilityFormat(visibility)) {
         return visibility;
     }
@@ -114,7 +123,7 @@ export function migrateOldVisibilityFormat(visibility) {
     return newVisibility;
 }
 
-export function renderWithVisibility(originalRenderOutput, visibility, options) {
+export function renderWithVisibility(originalRenderOutput: RenderOutput, visibility: Visibility, options: {target?: string}) {
     const document = originalRenderOutput.element.ownerDocument;
     const content = _getRenderContent(originalRenderOutput);
 
@@ -153,12 +162,12 @@ export function renderWithVisibility(originalRenderOutput, visibility, options) 
 
 /* Private functions -------------------------------------------------------- */
 
-function _getRenderContent({element, type}) {
+function _getRenderContent({element, type}: RenderOutput) {
     if (type === 'inner') {
         return element.innerHTML;
     } else if (type === 'value') {
         if ('value' in element) {
-            return element.value;
+            return element.value as string;
         }
         return '';
     } else {
@@ -166,7 +175,7 @@ function _getRenderContent({element, type}) {
     }
 }
 
-function _renderWithEmailVisibility(document, content, emailVisibility) {
+function _renderWithEmailVisibility(document: Document, content: string, emailVisibility: {memberSegment: string}) {
     const {memberSegment} = emailVisibility;
     const container = document.createElement('div');
     container.innerHTML = content;
@@ -175,7 +184,7 @@ function _renderWithEmailVisibility(document, content, emailVisibility) {
     return {element: container, type: 'html'};
 }
 
-function _renderWithWebVisibility(document, content, webVisibility) {
+function _renderWithWebVisibility(document: Document, content: string, webVisibility: {nonMember: boolean; memberSegment: string}) {
     const {nonMember, memberSegment} = webVisibility;
     const wrappedContent = `\n<!--kg-gated-block:begin nonMember:${nonMember} memberSegment:"${memberSegment}" -->${content}<!--kg-gated-block:end-->\n`;
     const textarea = document.createElement('textarea');

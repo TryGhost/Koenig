@@ -1,8 +1,31 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderHeaderNodeV1} from './renderers/v1/header-renderer';
-import {parseHeaderNode} from './parsers/header-parser';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderHeaderNodeV1} from './renderers/v1/header-renderer.js';
+import {parseHeaderNode} from './parsers/header-parser.js';
 // V2 imports below
-import {renderHeaderNodeV2} from './renderers/v2/header-renderer';
+import {renderHeaderNodeV2} from './renderers/v2/header-renderer.js';
+
+export interface HeaderNode {
+    size: string;
+    style: string;
+    buttonEnabled: boolean;
+    buttonUrl: string;
+    buttonText: string;
+    header: string;
+    subheader: string;
+    backgroundImageSrc: string;
+    version: number;
+    accentColor: string;
+    alignment: string;
+    backgroundColor: string;
+    backgroundImageWidth: number | null;
+    backgroundImageHeight: number | null;
+    backgroundSize: string;
+    textColor: string;
+    buttonColor: string;
+    buttonTextColor: string;
+    layout: string;
+    swapped: boolean;
+}
 
 // This is our first node that has a custom version property
 export class HeaderNode extends generateDecoratorNode({
@@ -43,10 +66,10 @@ export class HeaderNode extends generateDecoratorNode({
     }
 }
 
-export const $createHeaderNode = (dataset) => {
+export const $createHeaderNode = (dataset: Record<string, unknown>) => {
     return new HeaderNode(dataset);
 };
 
-export function $isHeaderNode(node) {
+export function $isHeaderNode(node: unknown): node is HeaderNode {
     return node instanceof HeaderNode;
 }

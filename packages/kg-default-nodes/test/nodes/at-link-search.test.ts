@@ -1,7 +1,7 @@
-require('../test-utils');
-const {JSDOM} = require('jsdom');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {AtLinkSearchNode, $createAtLinkSearchNode, $isAtLinkSearchNode} = require('../../');
+import '../test-utils/index.js';
+import {JSDOM} from 'jsdom';
+import {createHeadlessEditor} from '@lexical/headless';
+import {AtLinkSearchNode, $createAtLinkSearchNode, $isAtLinkSearchNode} from '../../build/cjs/index.js';
 
 const editorNodes = [AtLinkSearchNode];
 
@@ -127,9 +127,9 @@ describe('AtLinkSearchNode', function () {
         dom.dataset.placeholder.should.equal('custom');
     }));
 
-    it('returns null for exportDOM()', editorTest(function () {
+    it('returns null element for exportDOM()', editorTest(function () {
         const atLinkSearchNode = $createAtLinkSearchNode('test');
-        should.equal(atLinkSearchNode.exportDOM(), null);
+        should.equal(atLinkSearchNode.exportDOM().element, null);
     }));
 
     it('cannot have format', editorTest(function () {

@@ -1,9 +1,24 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
 
-export function renderAudioNode(node, options = {}) {
+interface AudioNodeData {
+    src: string;
+    title: string;
+    thumbnailSrc: string;
+    duration: number;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    postUrl?: string;
+    [key: string]: unknown;
+}
+
+export function renderAudioNode(node: AudioNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     if (!node.src || node.src.trim() === '') {
         return renderEmptyContainer(document);
@@ -19,7 +34,7 @@ export function renderAudioNode(node, options = {}) {
     }
 }
 
-function frontendTemplate(node, document, thumbnailCls, emptyThumbnailCls) {
+function frontendTemplate(node: AudioNodeData, document: Document, thumbnailCls: string, emptyThumbnailCls: string) {
     const element = document.createElement('div');
     element.setAttribute('class', 'kg-card kg-audio-card');
     const img = document.createElement('img');
@@ -113,7 +128,7 @@ function frontendTemplate(node, document, thumbnailCls, emptyThumbnailCls) {
     audioDurationTotal.textContent = '/';
     const audioDUrationNode = document.createElement('span');
     audioDUrationNode.setAttribute('class', 'kg-audio-duration');
-    audioDUrationNode.textContent = node.duration;
+    audioDUrationNode.textContent = String(node.duration);
     audioDurationTotal.appendChild(audioDUrationNode);
     audioPlayer.appendChild(audioDurationTotal);
 
@@ -166,7 +181,7 @@ function frontendTemplate(node, document, thumbnailCls, emptyThumbnailCls) {
     return {element};
 }
 
-function emailTemplate(node, document, options, thumbnailCls, emptyThumbnailCls) {
+function emailTemplate(node: AudioNodeData, document: Document, options: RenderOptions, thumbnailCls: string, emptyThumbnailCls: string) {
     const html = (`
         <table cellspacing="0" cellpadding="0" border="0" class="kg-audio-card">
                 <tr>
@@ -219,7 +234,7 @@ function emailTemplate(node, document, options, thumbnailCls, emptyThumbnailCls)
     return {element: container.firstElementChild};
 }
 
-function getThumbnailCls(node) {
+function getThumbnailCls(node: AudioNodeData) {
     let thumbnailCls = 'kg-audio-thumbnail';
 
     if (!node.thumbnailSrc) {
@@ -229,7 +244,7 @@ function getThumbnailCls(node) {
     return thumbnailCls;
 }
 
-function getEmptyThumbnailCls(node) {
+function getEmptyThumbnailCls(node: AudioNodeData) {
     let emptyThumbnailCls = 'kg-audio-thumbnail placeholder';
 
     if (node.thumbnailSrc) {

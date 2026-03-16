@@ -1,16 +1,17 @@
-import {readCaptionFromElement} from '../../utils/read-caption-from-element';
+import type {LexicalNode} from 'lexical';
+import {readCaptionFromElement} from '../../utils/read-caption-from-element.js';
 
-export function parseProductNode(ProductNode) {
+export function parseProductNode(ProductNode: new (data: Record<string, unknown>) => unknown) {
     return {
-        div: (nodeElem) => {
+        div: (nodeElem: HTMLElement) => {
             const isKgProductCard = nodeElem.classList?.contains('kg-product-card');
             if (nodeElem.tagName === 'DIV' && isKgProductCard) {
                 return {
-                    conversion(domNode) {
+                    conversion(domNode: HTMLElement) {
                         const title = readCaptionFromElement(domNode, {selector: '.kg-product-card-title'});
                         const description = readCaptionFromElement(domNode, {selector: '.kg-product-card-description'});
 
-                        const payload = {
+                        const payload: Record<string, unknown> = {
                             productButtonEnabled: false,
                             productRatingEnabled: false,
                             productTitle: title,
@@ -54,9 +55,9 @@ export function parseProductNode(ProductNode) {
                         }
 
                         const node = new ProductNode(payload);
-                        return {node};
+                        return {node: node as LexicalNode};
                     },
-                    priority: 1
+                    priority: 1 as const
                 };
             }
             return null;
@@ -64,7 +65,7 @@ export function parseProductNode(ProductNode) {
     };
 }
 
-function getButtonText(node) {
+function getButtonText(node: HTMLElement) {
     let buttonText = node.textContent;
     if (buttonText) {
         buttonText = buttonText.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();

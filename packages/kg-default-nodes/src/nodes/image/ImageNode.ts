@@ -1,6 +1,17 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseImageNode} from './image-parser';
-import {renderImageNode} from './image-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseImageNode} from './image-parser.js';
+import {renderImageNode} from './image-renderer.js';
+export interface ImageNode {
+    src: string;
+    caption: string;
+    title: string;
+    alt: string;
+    cardWidth: string;
+    width: number | null;
+    height: number | null;
+    href: string;
+}
+
 export class ImageNode extends generateDecoratorNode({
     nodeType: 'image',
     properties: [
@@ -45,10 +56,10 @@ export class ImageNode extends generateDecoratorNode({
     }
 }
 
-export const $createImageNode = (dataset) => {
+export const $createImageNode = (dataset: Record<string, unknown>) => {
     return new ImageNode(dataset);
 };
 
-export function $isImageNode(node) {
+export function $isImageNode(node: unknown): node is ImageNode {
     return node instanceof ImageNode;
 }

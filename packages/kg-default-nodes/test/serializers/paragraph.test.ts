@@ -1,7 +1,7 @@
-const {createDocument} = require('../test-utils');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {DEFAULT_CONFIG, DEFAULT_NODES} = require('../../cjs/kg-default-nodes');
+import {createDocument} from '../test-utils/index.js';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {DEFAULT_CONFIG, DEFAULT_NODES} from '../../build/cjs/index.js';
 
 describe('Serializers: linebreak', function () {
     let editor;

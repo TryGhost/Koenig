@@ -1,10 +1,19 @@
-import {isLocalContentImage} from './is-local-content-image';
-import {getAvailableImageWidths} from './get-available-image-widths';
-import {isUnsplashImage} from './is-unsplash-image';
+import {isLocalContentImage} from './is-local-content-image.js';
+import {getAvailableImageWidths} from './get-available-image-widths.js';
+import {isUnsplashImage} from './is-unsplash-image.js';
 
 // default content sizes: [600, 1000, 1600, 2400]
 
-export const getSrcsetAttribute = function ({src, width, options}) {
+interface ImageRenderOptions {
+    siteUrl?: string;
+    canTransformImage?: (src: string) => boolean;
+    imageOptimization?: {
+        srcsets?: boolean;
+        contentImageSizes?: Record<string, {width: number}>;
+    };
+}
+
+export const getSrcsetAttribute = function ({src, width, options}: {src: string; width: number; options: ImageRenderOptions}) {
     if (!options.imageOptimization || options.imageOptimization.srcsets === false || !width || !options.imageOptimization.contentImageSizes) {
         return;
     }
@@ -17,8 +26,8 @@ export const getSrcsetAttribute = function ({src, width, options}) {
 
     // apply srcset if this is a relative image that matches Ghost's image url structure
     if (isLocalContentImage(src, options.siteUrl)) {
-        const [, imagesPath, filename] = src.match(/(.*\/content\/images)\/(.*)/);
-        const srcs = [];
+        const [, imagesPath, filename] = src.match(/(.*\/content\/images)\/(.*)/)!;
+        const srcs: string[] = [];
 
         srcsetWidths.forEach((srcsetWidth) => {
             if (srcsetWidth === width) {
@@ -38,10 +47,10 @@ export const getSrcsetAttribute = function ({src, width, options}) {
     // apply srcset if this is an Unsplash image
     if (isUnsplashImage(src)) {
         const unsplashUrl = new URL(src);
-        const srcs = [];
+        const srcs: string[] = [];
 
         srcsetWidths.forEach((srcsetWidth) => {
-            unsplashUrl.searchParams.set('w', srcsetWidth);
+            unsplashUrl.searchParams.set('w', String(srcsetWidth));
             srcs.push(`${unsplashUrl.href} ${srcsetWidth}w`);
         });
 
@@ -49,7 +58,7 @@ export const getSrcsetAttribute = function ({src, width, options}) {
     }
 };
 
-export const setSrcsetAttribute = function (elem, image, options) {
+export const setSrcsetAttribute = function (elem: Element | null, image: {src: string; width: number}, options: ImageRenderOptions) {
     if (!elem || !['IMG', 'SOURCE'].includes(elem.tagName) || !elem.getAttribute('src') || !image) {
         return;
     }

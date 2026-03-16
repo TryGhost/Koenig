@@ -1,7 +1,20 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {html} from '../../utils/tagged-template-fns.mjs';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {html} from '../../utils/tagged-template-fns.js';
 
-function cardTemplate({node}) {
+interface ToggleNodeData {
+    heading: string;
+    content: string;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    feature?: { emailCustomization?: boolean; emailCustomizationAlpha?: boolean };
+    [key: string]: unknown;
+}
+
+function cardTemplate({node}: {node: ToggleNodeData}) {
     return (
         `
         <div class="kg-card kg-toggle-card" data-kg-toggle-state="close">
@@ -19,7 +32,7 @@ function cardTemplate({node}) {
     );
 }
 
-function emailCardTemplate({node}, options = {}) {
+function emailCardTemplate({node}: {node: ToggleNodeData}, options: RenderOptions = {}) {
     if (options.feature?.emailCustomization || options.feature?.emailCustomizationAlpha) {
         return (
             html`
@@ -52,10 +65,10 @@ function emailCardTemplate({node}, options = {}) {
     );
 }
 
-export function renderToggleNode(node, options = {}) {
+export function renderToggleNode(node: ToggleNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
 
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     const htmlString = options.target === 'email'
         ? emailCardTemplate({node}, options)

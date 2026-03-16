@@ -1,9 +1,9 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {$getRoot} = require('lexical');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {GalleryNode, $createGalleryNode, $isGalleryNode} = require('../../');
-const {ImageNode} = require('../../');
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {$getRoot} from 'lexical';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {GalleryNode, $createGalleryNode, $isGalleryNode} from '../../build/cjs/index.js';
+import {ImageNode} from '../../build/cjs/index.js';
 
 // include ImageNode so we can make sure imported sibling nodes do not get
 // processed by other lower priority nodes when skipped with dataset.hasBeenProcessed

@@ -1,8 +1,57 @@
-import {addCreateDocumentOption} from '../../../../utils/add-create-document-option';
-import {slugify} from '../../../../utils/slugify';
-import {getSrcsetAttribute} from '../../../../utils/srcset-attribute';
+import {addCreateDocumentOption} from '../../../../utils/add-create-document-option.js';
+import {slugify} from '../../../../utils/slugify.js';
+import {getSrcsetAttribute} from '../../../../utils/srcset-attribute.js';
 
-function cardTemplate(nodeData, options = {}) {
+interface HeaderV2NodeData {
+    alignment: string;
+    buttonText: string;
+    buttonEnabled: boolean;
+    buttonUrl: string;
+    header: string;
+    subheader: string;
+    backgroundImageSrc: string;
+    backgroundImageWidth: number;
+    backgroundImageHeight: number;
+    backgroundSize: string;
+    backgroundColor: string;
+    buttonColor: string;
+    layout: string;
+    textColor: string;
+    buttonTextColor: string;
+    swapped: boolean;
+    accentColor: string;
+}
+
+interface HeaderV2DatasetNode {
+    __alignment: string;
+    __buttonText: string;
+    __buttonEnabled: boolean;
+    __buttonUrl: string;
+    __header: string;
+    __subheader: string;
+    __backgroundImageSrc: string;
+    __backgroundImageWidth: number;
+    __backgroundImageHeight: number;
+    __backgroundSize: string;
+    __backgroundColor: string;
+    __buttonColor: string;
+    __layout: string;
+    __textColor: string;
+    __buttonTextColor: string;
+    __swapped: boolean;
+    __accentColor: string;
+}
+
+interface HeaderV2RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    feature?: { emailCustomization?: boolean; emailCustomizationAlpha?: boolean };
+    design?: { buttonStyle?: string };
+    [key: string]: unknown;
+}
+
+function cardTemplate(nodeData: HeaderV2NodeData, options: HeaderV2RenderOptions = {}) {
     const cardClasses = getCardClasses(nodeData).join(' ');
 
     const backgroundAccent = nodeData.backgroundColor === 'accent' ? 'kg-style-accent' : '';
@@ -19,7 +68,7 @@ function cardTemplate(nodeData, options = {}) {
             height: nodeData.backgroundImageHeight
         };
 
-        const srcsetValue = getSrcsetAttribute({...bgImage, options});
+        const srcsetValue = getSrcsetAttribute({...bgImage, options: options as Parameters<typeof getSrcsetAttribute>[0]['options']});
         const srcset = srcsetValue ? `srcset="${srcsetValue}"` : '';
 
         imgTemplate = `
@@ -65,7 +114,7 @@ function cardTemplate(nodeData, options = {}) {
         `;
 }
 
-function emailTemplate(nodeData, options) {
+function emailTemplate(nodeData: HeaderV2NodeData, options: HeaderV2RenderOptions) {
     const backgroundAccent = nodeData.backgroundColor === 'accent' ? `background-color: ${nodeData.accentColor};` : '';
     let buttonAccent = nodeData.buttonColor === 'accent' ? `background-color: ${nodeData.accentColor};` : nodeData.buttonColor;
     let buttonStyle = nodeData.buttonColor !== 'accent' ? `background-color: ${nodeData.buttonColor};` : '';
@@ -161,9 +210,9 @@ function emailTemplate(nodeData, options) {
     );
 }
 
-export function renderHeaderNodeV2(dataset, options = {}) {
+export function renderHeaderNodeV2(dataset: HeaderV2DatasetNode, options: HeaderV2RenderOptions = {}) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     const node = {
         alignment: dataset.__alignment,
@@ -186,7 +235,7 @@ export function renderHeaderNodeV2(dataset, options = {}) {
     };
 
     if (options.target === 'email') {
-        const emailDoc = options.createDocument();
+        const emailDoc = options.createDocument!();
         const emailDiv = emailDoc.createElement('div');
 
         emailDiv.innerHTML = emailTemplate(node, options)?.trim();
@@ -216,8 +265,8 @@ export function renderHeaderNodeV2(dataset, options = {}) {
     return {element: element.firstElementChild};
 }
 
-export function getCardClasses(nodeData) {
-    let cardClasses = ['kg-card kg-header-card kg-v2'];
+export function getCardClasses(nodeData: HeaderV2NodeData) {
+    const cardClasses = ['kg-card kg-header-card kg-v2'];
 
     if (nodeData.layout && nodeData.layout !== 'split') {
         cardClasses.push(`kg-width-${nodeData.layout}`);

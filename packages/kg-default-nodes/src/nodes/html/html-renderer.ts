@@ -1,10 +1,22 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
-import {renderWithVisibility} from '../../utils/visibility';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
+import {renderWithVisibility} from '../../utils/visibility.js';
 
-export function renderHtmlNode(node, options = {}) {
+interface HtmlNodeData {
+    html: string;
+    visibility?: Record<string, unknown>;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    [key: string]: unknown;
+}
+
+export function renderHtmlNode(node: HtmlNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
-    const document = options.createDocument();
+    const document = options.createDocument!();
 
     const html = node.html;
 

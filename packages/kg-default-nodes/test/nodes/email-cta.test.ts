@@ -1,7 +1,7 @@
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$getRoot} = require('lexical');
-const {dom, html} = require('../test-utils');
-const {EmailCtaNode, $createEmailCtaNode, $isEmailCtaNode} = require('../../');
+import {createHeadlessEditor} from '@lexical/headless';
+import {$getRoot} from 'lexical';
+import {dom, html} from '../test-utils/index.js';
+import {EmailCtaNode, $createEmailCtaNode, $isEmailCtaNode} from '../../build/cjs/index.js';
 
 const editorNodes = [EmailCtaNode];
 

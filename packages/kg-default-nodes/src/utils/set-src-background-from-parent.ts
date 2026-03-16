@@ -7,10 +7,11 @@
  * Uses `document.currentScript` to scope to the containing card, so multiple
  * instances on the same page each target their own iframe.
  *
- * @param {Document} document
- * @returns {HTMLScriptElement} A script element
+ * Note: the inner function is serialized to a string and embedded in a <script>
+ * tag, so TypeScript checking of the inner function body is not meaningful.
  */
-export function buildSrcBackgroundScript(document) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- function body is serialized to a script tag, not executed at compile time
+export function buildSrcBackgroundScript(document: any) {
     function setSrcBackgroundFromParent() {
         const script = document.currentScript;
         if (!script) {
@@ -24,7 +25,8 @@ export function buildSrcBackgroundScript(document) {
 
         const baseSrc = el.getAttribute('data-src');
 
-        function colorToRgb(color) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- runs in browser context
+        function colorToRgb(color: any) {
             const canvas = document.createElement('canvas');
             canvas.width = 1;
             canvas.height = 1;

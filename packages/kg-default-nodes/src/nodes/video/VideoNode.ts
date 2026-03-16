@@ -1,6 +1,22 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseVideoNode} from './video-parser';
-import {renderVideoNode} from './video-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseVideoNode} from './video-parser.js';
+import {renderVideoNode} from './video-renderer.js';
+export interface VideoNode {
+    src: string;
+    caption: string;
+    fileName: string;
+    mimeType: string;
+    width: number | null;
+    height: number | null;
+    duration: number;
+    thumbnailSrc: string;
+    customThumbnailSrc: string;
+    thumbnailWidth: number | null;
+    thumbnailHeight: number | null;
+    cardWidth: string;
+    loop: boolean;
+}
+
 export class VideoNode extends generateDecoratorNode({
     nodeType: 'video',
     properties: [
@@ -59,10 +75,10 @@ export class VideoNode extends generateDecoratorNode({
     }
 }
 
-export const $createVideoNode = (dataset) => {
+export const $createVideoNode = (dataset: Record<string, unknown>) => {
     return new VideoNode(dataset);
 };
 
-export function $isVideoNode(node) {
+export function $isVideoNode(node: unknown): node is VideoNode {
     return node instanceof VideoNode;
 }

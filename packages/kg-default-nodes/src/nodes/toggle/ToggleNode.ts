@@ -1,6 +1,11 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseToggleNode} from './toggle-parser';
-import {renderToggleNode} from './toggle-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseToggleNode} from './toggle-parser.js';
+import {renderToggleNode} from './toggle-renderer.js';
+
+export interface ToggleNode {
+    heading: string;
+    content: string;
+}
 
 export class ToggleNode extends generateDecoratorNode({
     nodeType: 'toggle',
@@ -15,10 +20,10 @@ export class ToggleNode extends generateDecoratorNode({
     }
 }
 
-export const $createToggleNode = (dataset) => {
+export const $createToggleNode = (dataset: Record<string, unknown>) => {
     return new ToggleNode(dataset);
 };
 
-export function $isToggleNode(node) {
+export function $isToggleNode(node: unknown): node is ToggleNode {
     return node instanceof ToggleNode;
 }

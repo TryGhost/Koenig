@@ -1,8 +1,8 @@
-const {createDocument, html} = require('../test-utils');
-const {$getRoot, $createParagraphNode, $createTextNode} = require('lexical');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {AsideNode, $createAsideNode, $isAsideNode} = require('../../');
+import {createDocument, html} from '../test-utils/index.js';
+import {$getRoot, $createParagraphNode, $createTextNode} from 'lexical';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {AsideNode, $createAsideNode, $isAsideNode} from '../../build/cjs/index.js';
 
 const editorNodes = [AsideNode];
 

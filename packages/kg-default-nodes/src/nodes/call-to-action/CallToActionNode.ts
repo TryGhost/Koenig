@@ -1,6 +1,25 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderCallToActionNode} from './calltoaction-renderer';
-import {parseCallToActionNode} from './calltoaction-parser';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderCallToActionNode} from './calltoaction-renderer.js';
+import {parseCallToActionNode} from './calltoaction-parser.js';
+
+export interface CallToActionNode {
+    layout: string;
+    alignment: string;
+    textValue: string;
+    showButton: boolean;
+    showDividers: boolean;
+    buttonText: string;
+    buttonUrl: string;
+    buttonColor: string;
+    buttonTextColor: string;
+    hasSponsorLabel: boolean;
+    sponsorLabel: string;
+    backgroundColor: string;
+    linkColor: string;
+    imageUrl: string | null;
+    imageWidth: number | null;
+    imageHeight: number | null;
+}
 
 export class CallToActionNode extends generateDecoratorNode({
     nodeType: 'call-to-action',
@@ -30,10 +49,10 @@ export class CallToActionNode extends generateDecoratorNode({
     }
 }
 
-export const $createCallToActionNode = (dataset) => {
+export const $createCallToActionNode = (dataset: Record<string, unknown>) => {
     return new CallToActionNode(dataset);
 };
 
-export const $isCallToActionNode = (node) => {
+export const $isCallToActionNode = (node: unknown) => {
     return node instanceof CallToActionNode;
 };

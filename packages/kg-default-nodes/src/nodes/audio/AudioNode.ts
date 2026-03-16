@@ -1,6 +1,14 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseAudioNode} from './audio-parser';
-import {renderAudioNode} from './audio-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseAudioNode} from './audio-parser.js';
+import {renderAudioNode} from './audio-renderer.js';
+
+export interface AudioNode {
+    duration: number;
+    mimeType: string;
+    src: string;
+    title: string;
+    thumbnailSrc: string;
+}
 
 export class AudioNode extends generateDecoratorNode({
     nodeType: 'audio',
@@ -18,10 +26,10 @@ export class AudioNode extends generateDecoratorNode({
     }
 }
 
-export const $createAudioNode = (dataset) => {
+export const $createAudioNode = (dataset: Record<string, unknown>) => {
     return new AudioNode(dataset);
 };
 
-export function $isAudioNode(node) {
+export function $isAudioNode(node: unknown): node is AudioNode {
     return node instanceof AudioNode;
 }

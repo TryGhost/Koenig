@@ -1,12 +1,29 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {removeCodeWrappersFromHelpers, removeSpaces, wrapReplacementStrings} from '../../utils/replacement-strings';
-import {escapeHtml} from '../../utils/escape-html';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {removeCodeWrappersFromHelpers, removeSpaces, wrapReplacementStrings} from '../../utils/replacement-strings.js';
+import {escapeHtml} from '../../utils/escape-html.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
 
-export function renderEmailCtaNode(node, options = {}) {
+interface EmailCtaNodeData {
+    html: string;
+    buttonText: string;
+    buttonUrl: string;
+    showButton: boolean;
+    alignment: string;
+    segment: string;
+    showDividers: boolean;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    [key: string]: unknown;
+}
+
+export function renderEmailCtaNode(node: EmailCtaNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
 
-    const document = options.createDocument();
+    const document = options.createDocument!();
     const {html, buttonText, buttonUrl, showButton, alignment, segment, showDividers} = node;
     const hasButton = showButton && !!buttonText && !!buttonUrl;
 

@@ -1,7 +1,63 @@
 import {DateTime} from 'luxon';
-import toArray from 'lodash/toArray';
 
-export default function render(node, document, options) {
+interface TweetPublicMetrics {
+    retweet_count: number;
+    like_count: number;
+}
+
+interface TweetEntities {
+    mentions?: TwitterEntity[];
+    urls?: TwitterEntity[];
+    hashtags?: TwitterEntity[];
+}
+
+interface TweetAttachments {
+    media_keys?: string[];
+    poll_ids?: string[];
+}
+
+interface TweetIncludes {
+    media: Array<{ preview_image_url?: string; url?: string }>;
+}
+
+interface TweetData {
+    id?: string;
+    text?: string;
+    created_at?: string;
+    author_id?: string;
+    public_metrics?: TweetPublicMetrics;
+    users?: TwitterUser[];
+    entities?: TweetEntities;
+    attachments?: TweetAttachments;
+    includes?: TweetIncludes;
+    [key: string]: unknown;
+}
+
+interface TwitterNode {
+    html: string;
+    caption?: string;
+    metadata?: {
+        tweet_data?: TweetData;
+    };
+}
+
+interface TwitterUser {
+    id: string;
+    name?: string;
+    username?: string;
+    profile_image_url?: string;
+}
+
+interface TwitterEntity {
+    start: number;
+    end: number;
+    url?: string;
+    display_url?: string;
+    username?: string;
+    tag?: string;
+}
+
+export default function render(node: TwitterNode, document: Document, options: Record<string, unknown>) {
     const metadata = node.metadata;
 
     const figure = document.createElement('figure');
@@ -20,29 +76,29 @@ export default function render(node, document, options) {
             unitDisplay: 'narrow',
             maximumFractionDigits: 1
         });
-        const retweetCount = numberFormatter.format(tweetData.public_metrics.retweet_count);
-        const likeCount = numberFormatter.format(tweetData.public_metrics.like_count);
-        const authorUser = tweetData.users && tweetData.users.find(user => user.id === tweetData.author_id);
-        const tweetTime = DateTime.fromISO(tweetData.created_at).toLocaleString(DateTime.TIME_SIMPLE);
-        const tweetDate = DateTime.fromISO(tweetData.created_at).toLocaleString(DateTime.DATE_MED);
+        const retweetCount = numberFormatter.format(tweetData.public_metrics!.retweet_count);
+        const likeCount = numberFormatter.format(tweetData.public_metrics!.like_count);
+        const authorUser = tweetData.users && tweetData.users.find((user: TwitterUser) => user.id === tweetData.author_id);
+        const tweetTime = DateTime.fromISO(tweetData.created_at!).toLocaleString(DateTime.TIME_SIMPLE);
+        const tweetDate = DateTime.fromISO(tweetData.created_at!).toLocaleString(DateTime.DATE_MED);
 
         const mentions = tweetData.entities && tweetData.entities.mentions || [];
         const urls = tweetData.entities && tweetData.entities.urls || [];
         const hashtags = tweetData.entities && tweetData.entities.hashtags || [];
-        const entities = mentions.concat(urls).concat(hashtags).sort((a, b) => a.start - b.start);
+        const entities = mentions.concat(urls).concat(hashtags).sort((a: TwitterEntity, b: TwitterEntity) => a.start - b.start);
         let tweetContent = tweetData.text;
 
         let tweetImageUrl = null;
         const hasImageOrVideo = tweetData.attachments && tweetData.attachments && tweetData.attachments.media_keys;
         if (hasImageOrVideo) {
-            tweetImageUrl = tweetData.includes.media[0].preview_image_url || tweetData.includes.media[0].url;
+            tweetImageUrl = tweetData.includes!.media[0].preview_image_url || tweetData.includes!.media[0].url;
         }
         const hasPoll = tweetData.attachments && tweetData.attachments && tweetData.attachments.poll_ids;
 
         if (mentions) {
             let last = 0;
-            let parts = [];
-            let content = toArray(tweetContent);
+            const parts = [];
+            const content = Array.from(tweetContent ?? '');
             for (const entity of entities) {
                 let type = 'text';
                 let data = content.slice(entity.start, entity.end + 1).join('').replace(/\n/g, '<br>');

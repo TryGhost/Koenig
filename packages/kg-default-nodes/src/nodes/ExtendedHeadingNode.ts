@@ -1,4 +1,6 @@
 import {HeadingNode} from '@lexical/rich-text';
+import type {HeadingTagType, SerializedHeadingNode} from '@lexical/rich-text';
+import type {DOMConversion} from 'lexical';
 
 // Since the HeadingNode is foundational to Lexical rich-text, only using a
 // custom HeadingNode is undesirable as it means every package would need to
@@ -8,10 +10,10 @@ import {HeadingNode} from '@lexical/rich-text';
 //
 // https://lexical.dev/docs/concepts/serialization#handling-extended-html-styling
 
-export const extendedHeadingNodeReplacement = {replace: HeadingNode, with: node => new ExtendedHeadingNode(node.__tag)};
+export const extendedHeadingNodeReplacement = {replace: HeadingNode, with: (node: HeadingNode) => new ExtendedHeadingNode(node.__tag)};
 
 export class ExtendedHeadingNode extends HeadingNode {
-    constructor(tag, key) {
+    constructor(tag: HeadingTagType, key?: string) {
         super(tag, key);
     }
 
@@ -19,7 +21,7 @@ export class ExtendedHeadingNode extends HeadingNode {
         return 'extended-heading';
     }
 
-    static clone(node) {
+    static clone(node: ExtendedHeadingNode) {
         return new ExtendedHeadingNode(node.__tag, node.__key);
     }
 
@@ -31,7 +33,7 @@ export class ExtendedHeadingNode extends HeadingNode {
         };
     }
 
-    static importJSON(serializedNode) {
+    static importJSON(serializedNode: SerializedHeadingNode) {
         return HeadingNode.importJSON(serializedNode);
     }
 
@@ -42,8 +44,10 @@ export class ExtendedHeadingNode extends HeadingNode {
     }
 }
 
-function patchParagraphConversion(originalDOMConverter) {
-    return (node) => {
+type DOMConverterFn = ((node: HTMLElement) => DOMConversion | null) | undefined;
+
+function patchParagraphConversion(originalDOMConverter: DOMConverterFn) {
+    return (node: HTMLElement) => {
         // Original matches Google Docs p node to a null conversion so it's
         // child span is parsed as a heading. Don't prevent that here
         const original = originalDOMConverter?.(node);
@@ -64,10 +68,10 @@ function patchParagraphConversion(originalDOMConverter) {
                 return {
                     conversion: () => {
                         return {
-                            node: new ExtendedHeadingNode(`h${level}`)
+                            node: new ExtendedHeadingNode(`h${level}` as HeadingTagType)
                         };
                     },
-                    priority: 1
+                    priority: 1 as const
                 };
             }
         }

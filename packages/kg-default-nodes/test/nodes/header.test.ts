@@ -1,8 +1,8 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {HeaderNode, $createHeaderNode, $isHeaderNode} = require('../../');
-const {_} = require('lodash');
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {HeaderNode, $createHeaderNode, $isHeaderNode} from '../../build/cjs/index.js';
+import {_} from 'lodash';
 
 const editorNodes = [HeaderNode];
 
@@ -152,11 +152,11 @@ describe('HeaderNode', function () {
                 node.subheader = null;
                 node.buttonEnabled = false;
                 const {element} = node.exportDOM(exportOptions);
-                element.should.be.null;
+                element.should.be.null; // eslint-disable-line @typescript-eslint/no-unused-expressions
             }));
 
             it('renders a minimal header card', editorTest(function () {
-                let payload = {
+                const payload = {
                     version: 1,
                     backgroundImageSrc: '',
                     buttonEnabled: false,
@@ -175,7 +175,7 @@ describe('HeaderNode', function () {
             }));
 
             it('renders without subheader', editorTest(function () {
-                let payload = {
+                const payload = {
                     version: 1,
                     backgroundImageSrc: '',
                     buttonEnabled: false,
@@ -466,11 +466,11 @@ describe('HeaderNode', function () {
                 node.subheader = null;
                 node.buttonEnabled = false;
                 const {element} = node.exportDOM(exportOptions);
-                element.should.be.null;
+                element.should.be.null; // eslint-disable-line @typescript-eslint/no-unused-expressions
             }));
 
             it('renders without subheader', editorTest(function () {
-                let payload = {
+                const payload = {
                     version: 2,
                     backgroundImageSrc: '',
                     buttonEnabled: false,
@@ -500,7 +500,7 @@ describe('HeaderNode', function () {
             }));
 
             it('renders with srcset', editorTest(function () {
-                let payload = {
+                const payload = {
                     version: 2,
                     backgroundImageSrc: '/content/images/2022/11/koenig-lexical.jpg',
                     backgroundImageWidth: 3840,

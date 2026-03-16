@@ -1,6 +1,6 @@
-const {createHeadlessEditor} = require('@lexical/headless');
-const {TKNode, $createTKNode, $isTKNode} = require('../../');
-const {$getRoot} = require('lexical');
+import {createHeadlessEditor} from '@lexical/headless';
+import {TKNode, $createTKNode, $isTKNode} from '../../build/cjs/index.js';
+import {$getRoot} from 'lexical';
 
 const editorNodes = [TKNode];
 

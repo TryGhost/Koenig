@@ -1,10 +1,10 @@
-const {createDocument, dom, html} = require('../test-utils');
-const {$getRoot} = require('lexical');
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const Prettier = require('@prettier/sync');
+import {createDocument, dom, html} from '../test-utils/index.js';
+import {$getRoot} from 'lexical';
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import Prettier from '@prettier/sync';
 
-const {BookmarkNode, $createBookmarkNode, $isBookmarkNode} = require('../../');
+import {BookmarkNode, $createBookmarkNode, $isBookmarkNode} from '../../build/cjs/index.js';
 
 const editorNodes = [BookmarkNode];
 

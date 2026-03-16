@@ -1,6 +1,11 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseGalleryNode} from './gallery-parser';
-import {renderGalleryNode} from './gallery-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseGalleryNode} from './gallery-parser.js';
+import {renderGalleryNode} from './gallery-renderer.js';
+export interface GalleryNode {
+    images: unknown[];
+    caption: string;
+}
+
 export class GalleryNode extends generateDecoratorNode({
     nodeType: 'gallery',
     properties: [
@@ -29,10 +34,10 @@ export class GalleryNode extends generateDecoratorNode({
     }
 }
 
-export const $createGalleryNode = (dataset) => {
+export const $createGalleryNode = (dataset: Record<string, unknown>) => {
     return new GalleryNode(dataset);
 };
 
-export function $isGalleryNode(node) {
+export function $isGalleryNode(node: unknown): node is GalleryNode {
     return node instanceof GalleryNode;
 }

@@ -1,5 +1,9 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderEmailNode} from './email-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderEmailNode} from './email-renderer.js';
+
+export interface EmailNode {
+    html: string;
+}
 
 export class EmailNode extends generateDecoratorNode({
     nodeType: 'email',
@@ -10,10 +14,10 @@ export class EmailNode extends generateDecoratorNode({
 }) {
 }
 
-export const $createEmailNode = (dataset) => {
+export const $createEmailNode = (dataset: Record<string, unknown>) => {
     return new EmailNode(dataset);
 };
 
-export function $isEmailNode(node) {
+export function $isEmailNode(node: unknown): node is EmailNode {
     return node instanceof EmailNode;
 }

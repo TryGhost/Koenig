@@ -1,6 +1,42 @@
-import {signupParser} from './signup-parser';
-import {renderSignupCardToDOM} from './signup-renderer';
-import {generateDecoratorNode} from '../../generate-decorator-node';
+import {signupParser} from './signup-parser.js';
+import {renderSignupCardToDOM} from './signup-renderer.js';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+
+interface SignupData {
+    alignment?: string;
+    backgroundColor?: string;
+    backgroundImageSrc?: string;
+    backgroundSize?: string;
+    textColor?: string;
+    buttonColor?: string;
+    buttonTextColor?: string;
+    buttonText?: string;
+    disclaimer?: string;
+    header?: string;
+    labels?: string[];
+    layout?: string;
+    subheader?: string;
+    successMessage?: string;
+    swapped?: boolean;
+}
+
+export interface SignupNode {
+    alignment: string;
+    backgroundColor: string;
+    backgroundImageSrc: string;
+    backgroundSize: string;
+    textColor: string;
+    buttonColor: string;
+    buttonTextColor: string;
+    buttonText: string;
+    disclaimer: string;
+    header: string;
+    labels: string[];
+    layout: string;
+    subheader: string;
+    successMessage: string;
+    swapped: boolean;
+}
 
 export class SignupNode extends generateDecoratorNode({
     nodeType: 'signup',
@@ -24,8 +60,8 @@ export class SignupNode extends generateDecoratorNode({
     defaultRenderFn: renderSignupCardToDOM
 }) {
     /* override */
-    constructor({alignment, backgroundColor, backgroundImageSrc, backgroundSize, textColor, buttonColor, buttonTextColor, buttonText, disclaimer, header, labels, layout, subheader, successMessage, swapped} = {}, key) {
-        super(key);
+    constructor({alignment, backgroundColor, backgroundImageSrc, backgroundSize, textColor, buttonColor, buttonTextColor, buttonText, disclaimer, header, labels, layout, subheader, successMessage, swapped} : SignupData = {}, key?: string) {
+        super({}, key);
         this.__alignment = alignment || 'left';
         this.__backgroundColor = backgroundColor || '#F0F0F0';
         this.__backgroundImageSrc = backgroundImageSrc || '';
@@ -49,30 +85,30 @@ export class SignupNode extends generateDecoratorNode({
 
     // keeping some custom methods for labels as it requires some special handling
 
-    setLabels(labels) {
+    setLabels(labels: string[]) {
         if (!Array.isArray(labels) || !labels.every(item => typeof item === 'string')) {
-            throw new Error('Invalid argument: Expected an array of strings.'); // eslint-disable-line
+            throw new Error('Invalid argument: Expected an array of strings.');
         }
 
         const writable = this.getWritable();
         writable.__labels = labels;
     }
 
-    addLabel(label) {
+    addLabel(label: string) {
         const writable = this.getWritable();
-        writable.__labels.push(label);
+        (writable.__labels as string[]).push(label);
     }
 
-    removeLabel(label) {
+    removeLabel(label: string) {
         const writable = this.getWritable();
-        writable.__labels = writable.__labels.filter(l => l !== label);
+        writable.__labels = (writable.__labels as string[]).filter((l: string) => l !== label);
     }
 }
 
-export const $createSignupNode = (dataset) => {
+export const $createSignupNode = (dataset: Record<string, unknown>) => {
     return new SignupNode(dataset);
 };
 
-export function $isSignupNode(node) {
+export function $isSignupNode(node: unknown): node is SignupNode {
     return node instanceof SignupNode;
 }

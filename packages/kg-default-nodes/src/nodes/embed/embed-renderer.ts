@@ -1,11 +1,33 @@
-import {addCreateDocumentOption} from '../../utils/add-create-document-option';
-import {renderEmptyContainer} from '../../utils/render-empty-container';
-import twitterRenderer from './types/twitter';
+import {addCreateDocumentOption} from '../../utils/add-create-document-option.js';
+import {renderEmptyContainer} from '../../utils/render-empty-container.js';
+import twitterRenderer from './types/twitter.js';
 
-export function renderEmbedNode(node, options = {}) {
+interface EmbedNodeData {
+    embedType: string;
+    html: string;
+    url: string;
+    caption: string;
+    metadata: {
+        thumbnail_url?: string;
+        thumbnail_width?: number;
+        thumbnail_height?: number;
+        tweet_data?: Record<string, unknown>;
+        [key: string]: unknown;
+    };
+    isEmpty: () => boolean;
+}
+
+interface RenderOptions {
+    createDocument?: () => Document;
+    dom?: { window: { document: Document } };
+    target?: string;
+    [key: string]: unknown;
+}
+
+export function renderEmbedNode(node: EmbedNodeData, options: RenderOptions = {}) {
     addCreateDocumentOption(options);
 
-    const document = options.createDocument();
+    const document = options.createDocument!();
     const embedType = node.embedType;
 
     if (embedType === 'twitter') {
@@ -15,7 +37,7 @@ export function renderEmbedNode(node, options = {}) {
     return renderTemplate(node, document, options);
 }
 
-function renderTemplate(node, document, options) {
+function renderTemplate(node: EmbedNodeData, document: Document, options: RenderOptions) {
     if (node.isEmpty()) {
         return renderEmptyContainer(document);
     }
@@ -28,7 +50,7 @@ function renderTemplate(node, document, options) {
 
     if (isEmail && isVideoWithThumbnail) {
         const emailTemplateMaxWidth = 600;
-        const thumbnailAspectRatio = metadata.thumbnail_width / metadata.thumbnail_height;
+        const thumbnailAspectRatio = metadata.thumbnail_width! / metadata.thumbnail_height!;
         const spacerWidth = Math.round(emailTemplateMaxWidth / 4);
         const spacerHeight = Math.round(emailTemplateMaxWidth / thumbnailAspectRatio);
         const html = `

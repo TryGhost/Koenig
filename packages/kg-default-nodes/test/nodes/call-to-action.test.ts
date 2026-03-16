@@ -1,8 +1,8 @@
-const {createHeadlessEditor} = require('@lexical/headless');
-const {$generateNodesFromDOM} = require('@lexical/html');
-const {$getRoot} = require('lexical');
-const {dom, createDocument, html: htmlTemplate} = require('../test-utils');
-const {CallToActionNode, $isCallToActionNode, utils} = require('../../');
+import {createHeadlessEditor} from '@lexical/headless';
+import {$generateNodesFromDOM} from '@lexical/html';
+import {$getRoot} from 'lexical';
+import {dom, createDocument, html as htmlTemplate} from '../test-utils/index.js';
+import {CallToActionNode, $isCallToActionNode, utils} from '../../build/cjs/index.js';
 const editorNodes = [CallToActionNode];
 
 const {taggedTemplateFns: {oneline}} = utils;
@@ -408,7 +408,7 @@ describe('CallToActionNode', function () {
         it('removes <p> first child tag from sponsorLabel', editorTest(function () {
             testRender(({element}) => {
                 const sponsorLabel = element.querySelector('.kg-cta-sponsor-label');
-                sponsorLabel.should.exist;
+                sponsorLabel.should.exist; // eslint-disable-line @typescript-eslint/no-unused-expressions
                 sponsorLabel.firstElementChild.tagName.should.equal('SPAN');
                 sponsorLabel.firstElementChild.outerHTML.should.equal('<span style="white-space: pre-wrap;">SPONSORED</span>');
             });
@@ -510,7 +510,6 @@ describe('CallToActionNode', function () {
             });
         }));
 
-        // eslint-disable-next-line ghost/mocha/no-setup-in-describe
         ['emailCustomization', 'emailCustomizationAlpha'].forEach((flag) => {
             it(`can render outline accent buttons (${flag})`, editorTest(function () {
                 exportOptions.target = 'email';
@@ -583,7 +582,7 @@ describe('CallToActionNode', function () {
 
             testRender(({element}) => {
                 const img = element.querySelector('.kg-cta-image');
-                img.should.exist;
+                img.should.exist; // eslint-disable-line @typescript-eslint/no-unused-expressions
                 img.getAttribute('width').should.equal('64');
                 img.getAttribute('height').should.equal('64');
             });

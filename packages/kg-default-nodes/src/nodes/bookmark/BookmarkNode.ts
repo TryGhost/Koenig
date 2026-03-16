@@ -1,6 +1,32 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {parseBookmarkNode} from './bookmark-parser';
-import {renderBookmarkNode} from './bookmark-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {parseBookmarkNode} from './bookmark-parser.js';
+import {renderBookmarkNode} from './bookmark-renderer.js';
+
+interface BookmarkMetadata {
+    icon?: string;
+    title?: string;
+    description?: string;
+    author?: string;
+    publisher?: string;
+    thumbnail?: string;
+}
+
+interface BookmarkData {
+    url?: string;
+    metadata?: BookmarkMetadata;
+    caption?: string;
+}
+
+export interface BookmarkNode {
+    title: string;
+    description: string;
+    url: string;
+    caption: string;
+    author: string;
+    publisher: string;
+    icon: string;
+    thumbnail: string;
+}
 
 export class BookmarkNode extends generateDecoratorNode({
     nodeType: 'bookmark',
@@ -21,8 +47,8 @@ export class BookmarkNode extends generateDecoratorNode({
     }
 
     /* override */
-    constructor({url, metadata, caption} = {}, key) {
-        super(key);
+    constructor({url, metadata, caption}: BookmarkData = {}, key?: string) {
+        super({}, key);
         this.__url = url || '';
         this.__icon = metadata?.icon || '';
         this.__title = metadata?.title || '';
@@ -34,7 +60,7 @@ export class BookmarkNode extends generateDecoratorNode({
     }
 
     /* @override */
-    getDataset() {
+    getDataset(): Record<string, unknown> {
         const self = this.getLatest();
         return {
             url: self.__url,
@@ -51,8 +77,8 @@ export class BookmarkNode extends generateDecoratorNode({
     }
 
     /* @override */
-    static importJSON(serializedNode) {
-        const {url, metadata, caption} = serializedNode;
+    static importJSON(serializedNode: Record<string, unknown>) {
+        const {url, metadata, caption} = serializedNode as BookmarkData;
         const node = new this({
             url,
             metadata,
@@ -85,10 +111,10 @@ export class BookmarkNode extends generateDecoratorNode({
     }
 }
 
-export const $createBookmarkNode = (dataset) => {
+export const $createBookmarkNode = (dataset: Record<string, unknown>) => {
     return new BookmarkNode(dataset);
 };
 
-export function $isBookmarkNode(node) {
+export function $isBookmarkNode(node: unknown): node is BookmarkNode {
     return node instanceof BookmarkNode;
 }

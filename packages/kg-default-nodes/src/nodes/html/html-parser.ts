@@ -1,39 +1,41 @@
-export function parseHtmlNode(HtmlNode) {
+import type {LexicalNode} from 'lexical';
+
+export function parseHtmlNode(HtmlNode: new (data: Record<string, unknown>) => unknown) {
     return {
-        '#comment': (nodeElem) => {
-            if (nodeElem.nodeType === 8 && nodeElem.nodeValue.trim().match(/^kg-card-begin:\s?html$/)) {
+        '#comment': (nodeElem: Node) => {
+            if (nodeElem.nodeType === 8 && nodeElem.nodeValue?.trim().match(/^kg-card-begin:\s?html$/)) {
                 return {
-                    conversion(domNode) {
-                        let html = [];
+                    conversion(domNode: Node) {
+                        const html = [];
                         let nextNode = domNode.nextSibling;
 
                         while (nextNode && !isHtmlEndComment(nextNode)) {
-                            let currentNode = nextNode;
-                            html.push(currentNode.outerHTML);
+                            const currentNode = nextNode;
+                            html.push((currentNode as Element).outerHTML);
                             nextNode = currentNode.nextSibling;
                             // remove nodes as we go so that they don't go through the parser
                             currentNode.remove();
                         }
 
-                        let payload = {html: html.join('\n').trim()};
+                        const payload: Record<string, unknown> = {html: html.join('\n').trim()};
                         const node = new HtmlNode(payload);
-                        return {node};
+                        return {node: node as LexicalNode};
                     },
-                    priority: 0
+                    priority: 0 as const
                 };
             }
 
             return null;
         },
-        table: (nodeElem) => {
-            if (nodeElem.nodeType === 1 && nodeElem.tagName === 'TABLE' && nodeElem.parentNode.tagName !== 'TABLE') {
+        table: (nodeElem: HTMLElement) => {
+            if (nodeElem.nodeType === 1 && nodeElem.tagName === 'TABLE' && (nodeElem.parentNode as HTMLElement)?.tagName !== 'TABLE') {
                 return {
-                    conversion(domNode) {
-                        const payload = {html: domNode.outerHTML};
+                    conversion(domNode: HTMLElement) {
+                        const payload: Record<string, unknown> = {html: domNode.outerHTML};
                         const node = new HtmlNode(payload);
-                        return {node};
+                        return {node: node as LexicalNode};
                     },
-                    priority: 0
+                    priority: 0 as const
                 };
             }
 
@@ -42,6 +44,6 @@ export function parseHtmlNode(HtmlNode) {
     };
 }
 
-function isHtmlEndComment(node) {
-    return node && node.nodeType === 8 && node.nodeValue.trim().match(/^kg-card-end:\s?html$/);
+function isHtmlEndComment(node: Node) {
+    return node && node.nodeType === 8 && node.nodeValue?.trim().match(/^kg-card-end:\s?html$/);
 }

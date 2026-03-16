@@ -1,5 +1,15 @@
-import {generateDecoratorNode} from '../../generate-decorator-node';
-import {renderEmailCtaNode} from './email-cta-renderer';
+import {generateDecoratorNode} from '../../generate-decorator-node.js';
+import {renderEmailCtaNode} from './email-cta-renderer.js';
+
+export interface EmailCtaNode {
+    alignment: string;
+    buttonText: string;
+    buttonUrl: string;
+    html: string;
+    segment: string;
+    showButton: boolean;
+    showDividers: boolean;
+}
 
 export class EmailCtaNode extends generateDecoratorNode({
     nodeType: 'email-cta',
@@ -16,10 +26,10 @@ export class EmailCtaNode extends generateDecoratorNode({
 }) {
 }
 
-export const $createEmailCtaNode = (dataset) => {
+export const $createEmailCtaNode = (dataset: Record<string, unknown>) => {
     return new EmailCtaNode(dataset);
 };
 
-export function $isEmailCtaNode(node) {
+export function $isEmailCtaNode(node: unknown): node is EmailCtaNode {
     return node instanceof EmailCtaNode;
 }
