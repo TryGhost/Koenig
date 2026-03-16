@@ -1,3 +1,4 @@
+// @ts-nocheck
 import MarkdownIndicatorIcon from '../../../assets/icons/kg-indicator-markdown.svg?react';
 import {CardWrapper} from './../CardWrapper';
 import {MarkdownCard} from './MarkdownCard.jsx';

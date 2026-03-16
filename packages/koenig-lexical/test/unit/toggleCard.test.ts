@@ -1,14 +1,17 @@
 import {$createToggleNode, ToggleNode} from '../../src/nodes/ToggleNode';
-const {createHeadlessEditor} = require('@lexical/headless');
+import {createHeadlessEditor} from '@lexical/headless';
 
-const editorNodes = [ToggleNode];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Lexical node type mismatch
+const editorNodes = [ToggleNode] as any;
 
 describe('ToggleNode', function () {
-    let editor;
-    let dataset;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- headless editor type
+    let editor: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic dataset
+    let dataset: any;
 
-    const editorTest = testFn => function () {
-        let resolve, reject;
+    const editorTest = (testFn: () => void) => function () {
+        let resolve: (value?: unknown) => void, reject: (reason?: unknown) => void;
         const promise = new Promise((resolve_, reject_) => {
             resolve = resolve_;
             reject = reject_;
@@ -36,7 +39,7 @@ describe('ToggleNode', function () {
         };
     });
 
-    describe('Content load and export testing', function () {  
+    describe('Content load and export testing', function () {
         it('handles "normal" content', editorTest(function () {
             const toggleNode = $createToggleNode(dataset);
             const json = toggleNode.exportJSON();

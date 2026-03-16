@@ -1,14 +1,17 @@
 import {$createSignupNode, SignupNode} from '../../src/nodes/SignupNode';
-const {createHeadlessEditor} = require('@lexical/headless');
+import {createHeadlessEditor} from '@lexical/headless';
 
-const editorNodes = [SignupNode];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Lexical node type mismatch
+const editorNodes = [SignupNode] as any;
 
 describe('SignupNode', function () {
-    let editor;
-    let dataset;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- headless editor type
+    let editor: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic dataset
+    let dataset: any;
 
-    const editorTest = testFn => function () {
-        let resolve, reject;
+    const editorTest = (testFn: () => void) => function () {
+        let resolve: (value?: unknown) => void, reject: (reason?: unknown) => void;
         const promise = new Promise((resolve_, reject_) => {
             resolve = resolve_;
             reject = reject_;
@@ -49,14 +52,14 @@ describe('SignupNode', function () {
         };
     });
 
-    describe('Content load and export testing', function () {  
+    describe('Content load and export testing', function () {
         it('handles "normal" content', editorTest(function () {
             const signupNode = $createSignupNode(dataset);
             const json = signupNode.exportJSON();
             expect(json.header).toEqual('<span style="white-space: pre-wrap;">Sign up for Koenig Lexical</span>');
             expect(json.subheader).toEqual('<span style="white-space: pre-wrap;">There\'s a whole lot to discover in this editor. Let us help you settle in.</span>');
             expect(json.disclaimer).toEqual('<span style="white-space: pre-wrap;">No spam. Unsubscribe anytime.</span>');
-        }));  
+        }));
         it('handles headers with extra br', editorTest(function () {
             dataset.header = '<span style="white-space: pre-wrap;">Sign up for </span><br><span style="white-space: pre-wrap;">Koenig Lexical</span>';
             const signupNode = $createSignupNode(dataset);

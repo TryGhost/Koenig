@@ -1,12 +1,13 @@
 import path from 'path';
 import {assertHTML, createDataTransfer, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('File card', async () => {
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();
@@ -39,7 +40,8 @@ test.describe('File card', async () => {
                     version: 1
                 }
             });
-            const editor = window.lexicalEditor;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- browser context
+            const editor = (window as any).lexicalEditor;
             const editorState = editor.parseEditorState(serializedState);
             editor.setEditorState(editorState);
         });
@@ -148,7 +150,7 @@ test.describe('File card', async () => {
     });
 });
 
-async function uploadFile(page, fileName = 'print-img.pdf') {
+async function uploadFile(page: Page, fileName = 'print-img.pdf') {
     const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/${fileName}`);
 
     const fileChooserPromise = page.waitForEvent('filechooser');

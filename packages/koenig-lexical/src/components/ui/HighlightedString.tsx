@@ -1,6 +1,12 @@
 import escapeRegExp from 'lodash/escapeRegExp';
 
-export function HighlightedString({string, highlightString, shouldHighlight = true}) {
+interface HighlightedStringProps {
+    string: string;
+    highlightString?: string;
+    shouldHighlight?: boolean;
+}
+
+export function HighlightedString({string, highlightString, shouldHighlight = true}: HighlightedStringProps) {
     if (!highlightString || shouldHighlight === false) {
         return string;
     }
@@ -11,7 +17,6 @@ export function HighlightedString({string, highlightString, shouldHighlight = tr
         <>
             {parts.map((part, index) => {
                 if (part.toLowerCase() === highlightString.toLowerCase()) {
-                    // eslint-disable-next-line react/no-array-index-key
                     return <span key={index} className="font-bold">{part}</span>;
                 }
 

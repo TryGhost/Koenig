@@ -1,20 +1,29 @@
 import VideoCardIcon from '../assets/icons/kg-card-type-video.svg?react';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {VideoNode as BaseVideoNode} from '@tryghost/kg-default-nodes';
 import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
 import {VideoNodeComponent} from './VideoNodeComponent';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_VIDEO_COMMAND = createCommand();
 
+interface VideoNodeProperties {
+    cardWidth: string;
+    customThumbnailSrc: string;
+    loop: boolean;
+    thumbnailSrc: string;
+    formattedDuration: string;
+}
+
 export class VideoNode extends BaseVideoNode {
     // transient properties used to control node behaviour
-    __triggerFileDialog = false;
-    __initialFile = null;
-    __captionEditor;
-    __captionEditorInitialState;
+    __triggerFileDialog: boolean = false;
+    __initialFile: File | null = null;
+    __captionEditor!: LexicalEditor;
+    __captionEditorInitialState: unknown;
 
     static kgMenu = [{
         label: 'Video',
@@ -35,24 +44,24 @@ export class VideoNode extends BaseVideoNode {
         return VideoCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         const {triggerFileDialog, initialFile} = dataset;
 
         // don't trigger the file dialog when rendering if we've already been given a url
-        this.__triggerFileDialog = !dataset.src && triggerFileDialog;
+        this.__triggerFileDialog = !dataset.src && !!triggerFileDialog;
 
-        this.__initialFile = initialFile || null;
+        this.__initialFile = (initialFile as File | null) || null;
 
-        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
         // populate nested editors on initial construction
         if (!dataset.captionEditor && dataset.caption) {
             populateNestedEditor(this, '__captionEditor', `${dataset.caption}`);
         }
     }
 
-    set triggerFileDialog(shouldTrigger) {
+    set triggerFileDialog(shouldTrigger: boolean) {
         const writable = this.getWritable();
         writable.__triggerFileDialog = shouldTrigger;
     }
@@ -77,7 +86,7 @@ export class VideoNode extends BaseVideoNode {
             this.__captionEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__captionEditor, null);
                 const cleanedHtml = cleanBasicHtml(html);
-                json.caption = cleanedHtml;
+                json.caption = cleanedHtml ?? "";
             });
         }
 
@@ -85,18 +94,19 @@ export class VideoNode extends BaseVideoNode {
     }
 
     decorate() {
+        const props = this as unknown as VideoNodeProperties;
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()} width={this.cardWidth}>
+            <KoenigCardWrapper nodeKey={this.getKey()} width={props.cardWidth}>
                 <VideoNodeComponent
                     captionEditor={this.__captionEditor}
-                    captionEditorInitialState={this.__captionEditorInitialState}
-                    cardWidth={this.cardWidth}
-                    customThumbnail={this.customThumbnailSrc}
+                    captionEditorInitialState={this.__captionEditorInitialState as string | undefined}
+                    cardWidth={props.cardWidth}
+                    customThumbnail={props.customThumbnailSrc}
                     initialFile={this.__initialFile}
-                    isLoopChecked={this.loop}
+                    isLoopChecked={props.loop}
                     nodeKey={this.getKey()}
-                    thumbnail={this.thumbnailSrc}
-                    totalDuration={this.formattedDuration}
+                    thumbnail={props.thumbnailSrc}
+                    totalDuration={props.formattedDuration}
                     triggerFileDialog={this.__triggerFileDialog}
                 />
             </KoenigCardWrapper>
@@ -104,10 +114,10 @@ export class VideoNode extends BaseVideoNode {
     }
 }
 
-export const $createVideoNode = (dataset) => {
+export const $createVideoNode = (dataset: Record<string, unknown>) => {
     return new VideoNode(dataset);
 };
 
-export function $isVideoNode(node) {
+export function $isVideoNode(node: unknown): node is VideoNode {
     return node instanceof VideoNode;
 }

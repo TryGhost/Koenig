@@ -1,6 +1,10 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 
-export function Spinner({size}) {
+interface SpinnerProps {
+    size?: 'mini' | string;
+}
+
+export function Spinner({size}: SpinnerProps) {
     let sizeClasses = '';
     switch (size) {
     case 'mini':
@@ -22,8 +26,3 @@ export function Spinner({size}) {
         </div>
     );
 }
-
-Spinner.propTypes = {
-    colorClass: PropTypes.string,
-    size: PropTypes.string
-};

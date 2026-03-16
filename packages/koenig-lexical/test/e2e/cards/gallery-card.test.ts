@@ -1,12 +1,13 @@
 import path from 'path';
 import {assertHTML, createDataTransfer, ctrlOrCmd, dragMouse, focusEditor, getEditorState, html, initialize, insertCard} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('Gallery card', async () => {
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();
@@ -436,7 +437,7 @@ test.describe('Gallery card', async () => {
         const imageBBox = await page.locator('[data-kg-card="image"]').nth(0).boundingBox();
         const galleryBBox = await page.locator('[data-kg-card="gallery"]').nth(0).boundingBox();
 
-        await dragMouse(page, imageBBox, galleryBBox, 'middle', 'middle', true, 100, 100);
+        await dragMouse(page, imageBBox!, galleryBBox!, 'middle', 'middle', true, 100, 100);
 
         await assertHTML(page, html`
             <div data-lexical-decorator="true" contenteditable="false" data-kg-card-width="wide">

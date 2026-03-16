@@ -1,12 +1,13 @@
 import path from 'path';
 import {assertHTML, createDataTransfer, createSnippet, focusEditor, html, initialize, insertCard} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test.describe('Audio card', async () => {
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();
@@ -39,7 +40,8 @@ test.describe('Audio card', async () => {
                     version: 1
                 }
             });
-            const editor = window.lexicalEditor;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- browser context
+            const editor = (window as any).lexicalEditor;
             const editorState = editor.parseEditorState(serializedState);
             editor.setEditorState(editorState);
         });
@@ -364,7 +366,7 @@ test.describe('Audio card', async () => {
     });
 });
 
-async function uploadAudio(page, fileName = 'audio-sample.mp3') {
+async function uploadAudio(page: Page, fileName = 'audio-sample.mp3') {
     const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/${fileName}`);
 
     const fileChooserPromise = page.waitForEvent('filechooser');

@@ -1,44 +1,54 @@
+import type {LexicalEditor, NodeKey} from 'lexical';
+import type {Visibility} from '../utils/visibility';
 import {$getNodeByKey} from 'lexical';
+import {GeneratedDecoratorNodeBase} from '@tryghost/kg-default-nodes';
 import {VISIBILITY_SETTINGS, getVisibilityOptions, parseVisibilityToToggles, serializeOptionsToVisibility} from '../utils/visibility';
 
-export const useVisibilityToggle = (editor, nodeKey, cardConfig) => {
+interface CardConfig {
+    stripeEnabled?: boolean;
+    visibilitySettings?: string;
+    [key: string]: unknown;
+}
+
+export const useVisibilityToggle = (editor: LexicalEditor, nodeKey: NodeKey, cardConfig: CardConfig | undefined) => {
     const isStripeEnabled = cardConfig?.stripeEnabled;
     const visibilitySetting = cardConfig?.visibilitySettings ?? VISIBILITY_SETTINGS.WEB_AND_EMAIL;
     const isVisibilityEnabled = visibilitySetting !== VISIBILITY_SETTINGS.NONE;
     const showWeb = visibilitySetting === VISIBILITY_SETTINGS.WEB_AND_EMAIL || visibilitySetting === VISIBILITY_SETTINGS.WEB_ONLY;
     const showEmail = visibilitySetting === VISIBILITY_SETTINGS.WEB_AND_EMAIL || visibilitySetting === VISIBILITY_SETTINGS.EMAIL_ONLY;
 
-    let currentVisibility;
+    let currentVisibility: Visibility | undefined;
 
     editor.getEditorState().read(() => {
-        const htmlNode = $getNodeByKey(nodeKey);
-        if (!htmlNode) {
+        const node = $getNodeByKey(nodeKey) as GeneratedDecoratorNodeBase | null;
+        if (!node) {
             return;
         }
-        currentVisibility = htmlNode.visibility;
+        currentVisibility = node.visibility as Visibility | undefined;
     });
 
-    const visibilityData = parseVisibilityToToggles(currentVisibility);
+    const visibilityData = currentVisibility ? parseVisibilityToToggles(currentVisibility) : undefined;
     const visibilityOptions = getVisibilityOptions(currentVisibility, {isStripeEnabled, showWeb, showEmail});
 
     return {
         isVisibilityEnabled,
         visibilityData,
         visibilityOptions,
-        toggleVisibility: (type, key, value) => {
+        toggleVisibility: (type: string, key: string, value: boolean) => {
             editor.update(() => {
-                const node = $getNodeByKey(nodeKey);
+                const node = $getNodeByKey(nodeKey) as GeneratedDecoratorNodeBase | null;
                 if (!node) {
                     return;
                 }
-                const newVisibilityOptions = structuredClone(getVisibilityOptions(node.visibility, {isStripeEnabled, showWeb, showEmail}));
+                const nodeVisibility = node.visibility as Visibility | undefined;
+                const newVisibilityOptions = structuredClone(getVisibilityOptions(nodeVisibility, {isStripeEnabled, showWeb, showEmail}));
                 const toggle = newVisibilityOptions.find(g => g.key === type)?.toggles?.find(t => t.key === key);
                 if (!toggle) {
                     return;
                 }
 
                 toggle.checked = value;
-                node.visibility = serializeOptionsToVisibility(newVisibilityOptions, node.visibility);
+                node.visibility = serializeOptionsToVisibility(newVisibilityOptions, nodeVisibility);
             });
         }
     };

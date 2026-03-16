@@ -1,6 +1,11 @@
+import React from 'react';
 import PlusIcon from '../../assets/icons/plus.svg?react';
 
-export function PlusButton({onClick}) {
+interface PlusButtonProps {
+    onClick?: () => void;
+}
+
+export function PlusButton({onClick}: PlusButtonProps) {
     return (
         <div className="absolute left-[-32px] top-[-2px] xs:left-[-66px]" data-kg-plus-button>
             <button
@@ -15,7 +20,11 @@ export function PlusButton({onClick}) {
     );
 }
 
-export function PlusMenu({children}) {
+interface PlusMenuProps {
+    children?: React.ReactNode;
+}
+
+export function PlusMenu({children}: PlusMenuProps) {
     return (
         <div className="absolute left-[-16px]" data-kg-plus-menu>
             {children}

@@ -1,3 +1,6 @@
+// @ts-nocheck
+import React from 'react';
+
 import {InputList} from './InputList';
 
 const story = {

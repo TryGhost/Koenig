@@ -1,8 +1,9 @@
+import type {GeneratedDecoratorNodeBase} from '@tryghost/kg-default-nodes';
 import prettifyFileName from './prettifyFileName';
-import {$getNodeByKey} from 'lexical';
+import {$getNodeByKey, LexicalEditor} from 'lexical';
 import {getAudioMetadata} from './getAudioMetadata';
 
-export const audioUploadHandler = async (files, nodeKey, editor, upload) => {
+export const audioUploadHandler = async (files: File[], nodeKey: string, editor: LexicalEditor, upload: (files: File[]) => Promise<{url: string}[] | null>) => {
     if (!files) {
         return;
     }
@@ -25,11 +26,13 @@ export const audioUploadHandler = async (files, nodeKey, editor, upload) => {
     const {duration} = await getAudioMetadata(objectURL);
 
     await editor.update(() => {
-        const node = $getNodeByKey(nodeKey);
-        node.duration = duration;
-        node.src = fileSrc;
-        node.mimeType = mimeType;
-        node.title = title;
+        const node = $getNodeByKey(nodeKey) as GeneratedDecoratorNodeBase | null;
+        if (node) {
+            node.duration = duration;
+            node.src = fileSrc;
+            node.mimeType = mimeType;
+            node.title = title;
+        }
     });
 
     return;

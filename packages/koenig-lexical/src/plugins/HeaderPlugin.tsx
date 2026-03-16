@@ -16,7 +16,7 @@ export const HeaderPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_HEADER_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createHeaderNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode, openInEditMode: true});
 

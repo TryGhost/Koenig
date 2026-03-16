@@ -1,3 +1,6 @@
+// @ts-nocheck
+import React from 'react';
+
 import {LinkToolbar} from './LinkToolbar';
 
 const story = {

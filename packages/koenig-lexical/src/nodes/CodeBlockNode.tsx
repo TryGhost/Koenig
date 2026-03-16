@@ -1,9 +1,10 @@
 import CodeBlockIcon from '../assets/icons/kg-card-type-gen-embed.svg?react';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {CodeBlockNode as BaseCodeBlockNode} from '@tryghost/kg-default-nodes';
 import {CodeBlockNodeComponent} from './CodeBlockNodeComponent';
 import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
@@ -12,16 +13,16 @@ export const INSERT_CODE_BLOCK_COMMAND = createCommand();
 export class CodeBlockNode extends BaseCodeBlockNode {
     // transient properties used to control node behaviour
     __openInEditMode = false;
-    __captionEditor;
-    __captionEditorInitialState;
+    __captionEditor!: LexicalEditor;
+    __captionEditorInitialState: unknown;
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         const {_openInEditMode} = dataset;
-        this.__openInEditMode = _openInEditMode || false;
+        this.__openInEditMode = !!_openInEditMode;
 
-        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.captionEditor && dataset.caption) {
@@ -71,8 +72,8 @@ export class CodeBlockNode extends BaseCodeBlockNode {
                 <CodeBlockNodeComponent
                     captionEditor={this.__captionEditor}
                     captionEditorInitialState={this.__captionEditorInitialState}
-                    code={this.code}
-                    language={this.language}
+                    code={this.code as string}
+                    language={this.language as string}
                     nodeKey={this.getKey()}
                 />
             </KoenigCardWrapper>
@@ -80,10 +81,10 @@ export class CodeBlockNode extends BaseCodeBlockNode {
     }
 }
 
-export function $createCodeBlockNode(dataset) {
+export function $createCodeBlockNode(dataset: Record<string, unknown>) {
     return new CodeBlockNode(dataset);
 }
 
-export function $isCodeBlockNode(node) {
+export function $isCodeBlockNode(node: unknown): node is CodeBlockNode {
     return node instanceof CodeBlockNode;
 }

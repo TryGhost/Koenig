@@ -4,7 +4,8 @@ import {createEditor} from 'lexical';
 import {describe, expect, test} from 'vitest';
 
 describe('Utils: generateEditorState', () => {
-    function runGenerateEditorState(html, {nodes = DEFAULT_NODES} = {}) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Lexical node type mismatch
+    function runGenerateEditorState(html: string, {nodes = DEFAULT_NODES as any} = {}) {
         const editor = createEditor({
             // lexical swallows errors inside updates by default,
             // so we need to throw them to fail the test
@@ -115,7 +116,8 @@ describe('Utils: generateEditorState', () => {
         const editorState = runGenerateEditorState(html);
 
         expect(editorState.root.children).toHaveLength(1);
-        expect(editorState.root.children[0].children).toHaveLength(2);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- accessing serialized children
+        expect((editorState.root as any).children[0].children).toHaveLength(2);
         expect(editorState.root.children[0]).toMatchObject({
             type: 'list',
             children: [
@@ -126,7 +128,8 @@ describe('Utils: generateEditorState', () => {
     });
 
     describe('_$generateNodesFromHTML', () => {
-        function testGenerateNodesFromHTML(html, callback) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Lexical node types
+        function testGenerateNodesFromHTML(html: string, callback: (nodes: any) => void) {
             const editor = createEditor({
                 // lexical swallows errors inside updates by default,
                 // so we need to throw them to fail the test

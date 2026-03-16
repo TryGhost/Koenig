@@ -1,14 +1,17 @@
 import {$createHeaderNode, HeaderNode} from '../../src/nodes/HeaderNode';
-const {createHeadlessEditor} = require('@lexical/headless');
+import {createHeadlessEditor} from '@lexical/headless';
 
-const editorNodes = [HeaderNode];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Lexical node type mismatch
+const editorNodes = [HeaderNode] as any;
 
 describe('HeaderNode v2', function () {
-    let editor;
-    let dataset;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- headless editor type
+    let editor: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic dataset
+    let dataset: any;
 
-    const editorTest = testFn => function () {
-        let resolve, reject;
+    const editorTest = (testFn: () => void) => function () {
+        let resolve: (value?: unknown) => void, reject: (reason?: unknown) => void;
         const promise = new Promise((resolve_, reject_) => {
             resolve = resolve_;
             reject = reject_;
@@ -54,7 +57,7 @@ describe('HeaderNode v2', function () {
         };
     });
 
-    describe('Content load and export testing', function () {     
+    describe('Content load and export testing', function () {
         it('handles titles with extra br', editorTest(function () {
             dataset.header = '<span>Product title!</span> <br><span>Hello part 2</span>';
             const headerNode = $createHeaderNode(dataset);

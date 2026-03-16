@@ -1,12 +1,13 @@
 import GIFIcon from '../assets/icons/kg-card-type-gif.svg?react';
 import ImageCardIcon from '../assets/icons/kg-card-type-image.svg?react';
 import UnsplashIcon from '../assets/icons/kg-card-type-unsplash.svg?react';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {ImageNode as BaseImageNode} from '@tryghost/kg-default-nodes';
 import {ImageNodeComponent} from './ImageNodeComponent';
 import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
 import {OPEN_TENOR_SELECTOR_COMMAND, OPEN_UNSPLASH_SELECTOR_COMMAND} from '../plugins/KoenigSelectorPlugin.jsx';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
@@ -14,10 +15,10 @@ export const INSERT_IMAGE_COMMAND = createCommand();
 
 export class ImageNode extends BaseImageNode {
     // transient properties used to control node behaviour
-    __triggerFileDialog = false;
-    __previewSrc = null;
-    __captionEditor;
-    __captionEditorInitialState;
+    __triggerFileDialog: boolean = false;
+    __previewSrc: string = '';
+    __captionEditor!: LexicalEditor;
+    __captionEditorInitialState: unknown;
 
     static kgMenu = [{
         label: 'Image',
@@ -41,7 +42,7 @@ export class ImageNode extends BaseImageNode {
         insertParams: {
             triggerFileDialog: false
         },
-        isHidden: ({config}) => !config?.unsplash,
+        isHidden: ({config}: {config?: Record<string, unknown>}) => !config?.unsplash,
         matches: ['unsplash', 'uns'],
         queryParams: ['src'],
         priority: 3,
@@ -58,20 +59,20 @@ export class ImageNode extends BaseImageNode {
         matches: ['gif', 'giphy', 'tenor'],
         priority: 17,
         queryParams: ['src'],
-        isHidden: ({config}) => !config?.tenor,
+        isHidden: ({config}: {config?: Record<string, unknown>}) => !config?.tenor,
         shortcut: '/gif'
     }];
 
     static uploadType = 'image';
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         const {previewSrc, triggerFileDialog, initialFile, selector, isImageHidden} = dataset;
 
-        this.__previewSrc = previewSrc || '';
+        this.__previewSrc = (previewSrc as string) || '';
         // don't trigger the file dialog when rendering if we've already been given a url
-        this.__triggerFileDialog = (!dataset.src && triggerFileDialog) || false;
+        this.__triggerFileDialog = !!(!dataset.src && triggerFileDialog);
 
         // passed via INSERT_MEDIA_COMMAND on drag+drop or paste
         this.__initialFile = initialFile || null;
@@ -79,7 +80,7 @@ export class ImageNode extends BaseImageNode {
         this.__selector = selector;
         this.__isImageHidden = isImageHidden;
 
-        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.captionEditor && dataset.caption) {
@@ -115,7 +116,7 @@ export class ImageNode extends BaseImageNode {
         writable.__previewSrc = previewSrc;
     }
 
-    set triggerFileDialog(shouldTrigger) {
+    set triggerFileDialog(shouldTrigger: boolean) {
         const writable = this.getWritable();
         writable.__triggerFileDialog = shouldTrigger;
     }
@@ -133,7 +134,7 @@ export class ImageNode extends BaseImageNode {
             this.__captionEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__captionEditor, null);
                 const cleanedHtml = cleanBasicHtml(html, {firstChildInnerContent: true});
-                json.caption = cleanedHtml;
+                json.caption = cleanedHtml ?? "";
             });
         }
 
@@ -141,23 +142,23 @@ export class ImageNode extends BaseImageNode {
     }
 
     decorate() {
-        const Selector = this.__selector;
+        const Selector = this.__selector as React.ComponentType<{nodeKey: string}>;
 
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()} width={this.__cardWidth}>
-                {this.__selector && <Selector nodeKey={this.getKey()} />}
+            <KoenigCardWrapper nodeKey={this.getKey()} width={this.__cardWidth as string | undefined}>
+                {Selector && <Selector nodeKey={this.getKey()} />}
 
                 {
                     !this.__isImageHidden && (
                         <ImageNodeComponent
-                            altText={this.__alt}
+                            altText={this.__alt as string}
                             captionEditor={this.__captionEditor}
-                            captionEditorInitialState={this.__captionEditorInitialState}
-                            href={this.href}
+                            captionEditorInitialState={this.__captionEditorInitialState as string | undefined}
+                            href={this.href as string}
                             initialFile={this.__initialFile}
                             nodeKey={this.getKey()}
                             previewSrc={this.previewSrc}
-                            src={this.src}
+                            src={this.src as string}
                             triggerFileDialog={this.__triggerFileDialog}
                         />
                     )
@@ -167,10 +168,10 @@ export class ImageNode extends BaseImageNode {
     }
 }
 
-export const $createImageNode = (dataset) => {
+export const $createImageNode = (dataset: Record<string, unknown>) => {
     return new ImageNode(dataset);
 };
 
-export function $isImageNode(node) {
+export function $isImageNode(node: unknown): node is ImageNode {
     return node instanceof ImageNode;
 }

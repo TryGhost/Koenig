@@ -1,3 +1,6 @@
+// @ts-nocheck
+import React from 'react';
+
 import {MediaPlaceholder} from './MediaPlaceholder';
 
 const story = {

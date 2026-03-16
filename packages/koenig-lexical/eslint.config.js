@@ -1,94 +1,47 @@
-import {fixupPluginRules} from '@eslint/compat';
-import eslint from '@eslint/js';
+import js from '@eslint/js';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
 import ghostPlugin from 'eslint-plugin-ghost';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import storybookPlugin from 'eslint-plugin-storybook';
-import tailwindcssPlugin from 'eslint-plugin-tailwindcss';
-import globals from 'globals';
 
-const ghost = fixupPluginRules(ghostPlugin);
-
-export default [
+export default tseslint.config([
     {ignores: ['dist/**', 'build/**', '.storybook/**']},
-    eslint.configs.recommended,
-    reactPlugin.configs.flat.recommended,
-    reactPlugin.configs.flat['jsx-runtime'],
-    ...storybookPlugin.configs['flat/recommended'],
     {
-        files: ['demo/**/*.{js,jsx}', 'src/**/*.{js,jsx}', 'test/**/*.{js,jsx}'],
+        files: ['**/*.{ts,tsx}'],
+        extends: [
+            js.configs.recommended,
+            tseslint.configs.recommended,
+            reactHooks.configs['recommended-latest']
+        ],
         plugins: {
-            ghost,
-            'react-hooks': reactHooksPlugin,
-            tailwindcss: tailwindcssPlugin
-        },
-        settings: {
-            react: {
-                version: 'detect'
-            }
+            'react-refresh': reactRefresh,
+            ghost: ghostPlugin
         },
         languageOptions: {
-            globals: {
-                ...globals.browser,
-                ...globals.node
-            },
-            parserOptions: {
-                ecmaFeatures: {jsx: true}
-            }
+            parserOptions: {projectService: true, tsconfigRootDir: import.meta.dirname}
         },
         rules: {
-            ...ghostPlugin.configs.browser.rules,
-
-            // match eslint-config-react-app behavior
-            'no-unused-vars': ['warn', {args: 'none', caughtErrors: 'none', ignoreRestSiblings: true}],
-
-            // react-hooks
-            'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
-
-            // sort multiple import lines into alphabetical groups
-            'ghost/sort-imports-es6-autofix/sort-imports-es6': ['error', {
-                memberSyntaxSortOrder: ['none', 'all', 'single', 'multiple']
-            }],
-
-            // suppress errors for missing 'import React' in JSX files, as we don't need it
-            'react/react-in-jsx-scope': 'off',
-            // ignore prop-types for now
-            'react/prop-types': 'off',
-
-            // custom react rules
-            'react/jsx-sort-props': ['error', {
-                reservedFirst: true,
-                callbacksLast: true,
-                shorthandLast: true,
-                locale: 'en'
-            }],
-            'react/button-has-type': 'error',
-            'react/no-array-index-key': 'error',
-
-            'tailwindcss/classnames-order': ['error', {config: 'tailwind.config.cjs'}],
-            'tailwindcss/enforces-negative-arbitrary-values': ['warn', {config: 'tailwind.config.cjs'}],
-            'tailwindcss/enforces-shorthand': ['warn', {config: 'tailwind.config.cjs'}],
-            'tailwindcss/migration-from-tailwind-2': ['warn', {config: 'tailwind.config.cjs'}],
-            'tailwindcss/no-arbitrary-value': 'off',
-            'tailwindcss/no-custom-classname': 'off',
-            'tailwindcss/no-contradicting-classname': ['error', {config: 'tailwind.config.cjs'}]
+            '@typescript-eslint/no-explicit-any': 'error',
+            '@typescript-eslint/no-unused-vars': ['error', {
+                argsIgnorePattern: '^_',
+                varsIgnorePattern: '^_'
+            }]
         }
     },
     {
-        files: ['test/**/*.{js,jsx}'],
-        languageOptions: {
-            globals: {
-                ...globals.jest,
-                ...globals.mocha
-            }
+        files: ['**/*.stories.{ts,tsx}'],
+        rules: {
+            '@typescript-eslint/ban-ts-comment': 'off'
         }
     },
     {
-        files: ['src/components/ui/cards/*.jsx'],
-        ignores: ['src/components/ui/cards/*.stories.jsx'],
+        files: ['test/**/*.ts', 'test/**/*.tsx'],
         rules: {
-            'react/prop-types': 'error'
+            ...ghostPlugin.configs['ts-test'].rules,
+            'ghost/mocha/no-global-tests': 'off',
+            'ghost/mocha/handle-done-callback': 'off',
+            'ghost/mocha/no-mocha-arrows': 'off',
+            'ghost/mocha/max-top-level-suites': 'off'
         }
     }
-];
+]);

@@ -6,9 +6,12 @@ import {expect, vi} from 'vitest';
 import {useVisibilityToggle} from '../../../src/hooks/useVisibilityToggle';
 
 describe('useVisibilityToggle', () => {
-    let editor;
-    let node;
-    let cardConfig;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock editor
+    let editor: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock node
+    let node: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mock config
+    let cardConfig: any;
 
     const DEFAULT_VISIBILITY = {
         web: {
@@ -38,7 +41,8 @@ describe('useVisibilityToggle', () => {
             }))
         };
 
-        $getNodeByKey.mockReturnValue(node);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- vitest mock
+        ($getNodeByKey as any).mockReturnValue(node);
 
         cardConfig = {
             stripeEnabled: true

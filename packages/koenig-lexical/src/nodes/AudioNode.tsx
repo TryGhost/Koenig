@@ -9,7 +9,7 @@ export const INSERT_AUDIO_COMMAND = createCommand();
 
 export class AudioNode extends BaseAudioNode {
     __triggerFileDialog = false;
-    __initialFile = null;
+    __initialFile: File | null = null;
 
     static kgMenu = [{
         label: 'Audio',
@@ -26,21 +26,21 @@ export class AudioNode extends BaseAudioNode {
 
     static uploadType = 'audio';
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         const {triggerFileDialog, initialFile} = dataset;
 
         // don't trigger the file dialog when rendering if we've already been given a url
-        this.__triggerFileDialog = (!dataset.src && triggerFileDialog) || false;
-        this.__initialFile = initialFile || null;
+        this.__triggerFileDialog = (!dataset.src && triggerFileDialog) as boolean || false;
+        this.__initialFile = (initialFile as File) || null;
     }
 
     getIcon() {
         return AudioCardIcon;
     }
 
-    set triggerFileDialog(shouldTrigger) {
+    set triggerFileDialog(shouldTrigger: boolean) {
         const writable = this.getWritable();
         writable.__triggerFileDialog = shouldTrigger;
     }
@@ -49,12 +49,12 @@ export class AudioNode extends BaseAudioNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <AudioNodeComponent
-                    duration={this.duration}
+                    duration={this.duration as number}
                     initialFile={this.__initialFile}
                     nodeKey={this.getKey()}
-                    src={this.src}
+                    src={this.src as string}
                     thumbnailSrc={this.thumbnailSrc}
-                    title={this.title}
+                    title={this.title as string}
                     triggerFileDialog={this.__triggerFileDialog}
                 />
             </KoenigCardWrapper>
@@ -62,10 +62,10 @@ export class AudioNode extends BaseAudioNode {
     }
 }
 
-export const $createAudioNode = (dataset) => {
+export const $createAudioNode = (dataset: Record<string, unknown>) => {
     return new AudioNode(dataset);
 };
 
-export function $isAudioNode(node) {
+export function $isAudioNode(node: unknown): node is AudioNode {
     return node instanceof AudioNode;
 }

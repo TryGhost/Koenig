@@ -1,18 +1,19 @@
 import CalloutCardIcon from '../assets/icons/kg-card-type-callout.svg?react';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import MINIMAL_NODES from './MinimalNodes';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {CalloutNode as BaseCalloutNode} from '@tryghost/kg-default-nodes';
 import {CalloutNodeComponent} from './CalloutNodeComponent';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_CALLOUT_COMMAND = createCommand();
 
 export class CalloutNode extends BaseCalloutNode {
-    __calloutTextEditor;
-    __calloutTextEditorInitialState;
+    __calloutTextEditor!: LexicalEditor;
+    __calloutTextEditorInitialState: unknown;
 
     static kgMenu = [{
         label: 'Callout',
@@ -28,11 +29,11 @@ export class CalloutNode extends BaseCalloutNode {
         return CalloutCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         // set up nested editor instances
-        setupNestedEditor(this, '__calloutTextEditor', {editor: dataset.calloutTextEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__calloutTextEditor', {editor: dataset.calloutTextEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.calloutTextEditor && dataset.calloutText) {
@@ -70,7 +71,7 @@ export class CalloutNode extends BaseCalloutNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <CalloutNodeComponent
-                    backgroundColor={this.backgroundColor}
+                    backgroundColor={this.backgroundColor as string}
                     calloutEmoji={this.calloutEmoji}
                     nodeKey={this.getKey()}
                     textEditor={this.__calloutTextEditor}
@@ -81,10 +82,10 @@ export class CalloutNode extends BaseCalloutNode {
     }
 }
 
-export const $createCalloutNode = (dataset) => {
+export const $createCalloutNode = (dataset: Record<string, unknown>) => {
     return new CalloutNode(dataset);
 };
 
-export function $isCalloutNode(node) {
+export function $isCalloutNode(node: unknown): node is CalloutNode {
     return node instanceof CalloutNode;
 }

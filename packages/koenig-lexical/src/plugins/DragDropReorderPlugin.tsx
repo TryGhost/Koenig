@@ -9,20 +9,29 @@ import {isCardDropAllowed} from '../utils/draggable/draggable-utils.js';
 import {useKoenigSelectedCardContext} from '../context/KoenigSelectedCardContext';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-function preventDefault(event) {
+import type {DraggableInfo} from '../utils/draggable/ScrollHandler';
+import type {LexicalEditor, LexicalNode} from 'lexical';
+
+interface DragDropContainer {
+    refresh(): void;
+    disableDrag(): void;
+    enableDrag(): void;
+}
+
+function preventDefault(event: Event) {
     event.preventDefault();
 }
 
-function useDragDropReorder(editor, isEditable) {
+function useDragDropReorder(editor: LexicalEditor, _isEditable: boolean) {
     const koenig = React.useContext(KoenigComposerContext);
     const {setIsDragging, isEditingCard} = useKoenigSelectedCardContext();
 
-    const cardContainer = React.useRef(null);
+    const cardContainer = React.useRef<DragDropContainer | null>(null);
     const skipOnDropEnd = React.useRef(false);
 
     // useRef because we need stable function references to pass into the drag drop container instance
     const onDragStart = React.useRef(() => {
-        cardContainer.current.refresh();
+        cardContainer.current?.refresh();
         setIsDragging(true);
     });
 
@@ -30,19 +39,20 @@ function useDragDropReorder(editor, isEditable) {
         setIsDragging(false);
     });
 
-    const getDraggableInfo = React.useRef((draggableElement) => {
+    const getDraggableInfo = React.useRef((draggableElement: HTMLElement) => {
         let draggableInfo;
 
         editor.update(() => {
             const cardNode = $getNearestNodeFromDOMNode(draggableElement);
 
             if (cardNode) {
+                const cardWithMethods = cardNode as LexicalNode & {getDataset?: () => Record<string, unknown>; getIcon?: () => React.ComponentType<{className?: string}>};
                 draggableInfo = {
                     type: 'card',
                     nodeKey: cardNode.getKey(),
                     cardName: cardNode.getType(),
-                    dataset: cardNode.getDataset?.(),
-                    Icon: cardNode.getIcon()
+                    dataset: cardWithMethods.getDataset?.(),
+                    Icon: cardWithMethods.getIcon?.()
                 };
             }
         });
@@ -50,10 +60,13 @@ function useDragDropReorder(editor, isEditable) {
         return draggableInfo || false;
     });
 
-    const createCardDragElement = React.useRef((draggableInfo) => {
-        const {cardName, Icon} = draggableInfo;
 
-        if (!cardName || cardName === 'image') {
+    const createCardDragElement = React.useRef((draggableInfo: DraggableInfo) => {
+        const {cardName} = draggableInfo;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const Icon = draggableInfo.Icon as React.FC<any> | undefined;
+
+        if (!cardName || cardName === 'image' || !Icon) {
             return;
         }
 
@@ -82,15 +95,15 @@ function useDragDropReorder(editor, isEditable) {
         });
 
         // Store the React root so DragDropHandler can unmount it on cleanup
-        ghost.__reactRoot = reactRoot;
+        (ghost as HTMLElement & {__reactRoot?: ReturnType<typeof createRoot>}).__reactRoot = reactRoot;
 
         return ghost;
     });
 
-    const getDropIndicatorPosition = React.useRef((draggableInfo, droppableElem, position) => {
-        const droppables = Array.from(editor.getRootElement().querySelectorAll(':scope > *'));
-        const droppableIndex = droppables.indexOf(droppableElem);
-        const draggableIndex = droppables.indexOf(draggableInfo.element);
+    const getDropIndicatorPosition = React.useRef((draggableInfo: DraggableInfo, droppableElem: Element, position: string) => {
+        const droppables = Array.from(editor.getRootElement()?.querySelectorAll<HTMLElement>(':scope > *') ?? []);
+        const droppableIndex = droppables.indexOf(droppableElem as HTMLElement);
+        const draggableIndex = draggableInfo.element ? droppables.indexOf(draggableInfo.element) : -1;
 
         // only allow card and image drops (images can be dragged out of a gallery)
         if (draggableInfo.type !== 'card' && draggableInfo.type !== 'image') {
@@ -113,7 +126,7 @@ function useDragDropReorder(editor, isEditable) {
             }
 
             return {
-                direction: 'vertical',
+                direction: 'vertical' as const,
                 position: position.match(/top/) ? 'top' : 'bottom',
                 beforeElems,
                 afterElems,
@@ -124,29 +137,32 @@ function useDragDropReorder(editor, isEditable) {
         return false;
     });
 
-    const onCardDrop = React.useRef((draggableInfo) => {
+    const onCardDrop = React.useRef((draggableInfo: DraggableInfo) => {
         if (draggableInfo.type !== 'card' && draggableInfo.type !== 'image') {
             return false;
         }
 
-        const droppables = Array.from(editor.getRootElement().querySelectorAll(':scope > *'));
-        const draggableIndex = droppables.indexOf(draggableInfo.element);
+        const droppables = Array.from(editor.getRootElement()?.querySelectorAll(':scope > *') ?? []);
+        const draggableIndex = draggableInfo.element ? droppables.indexOf(draggableInfo.element) : -1;
 
-        if (isCardDropAllowed(draggableIndex, draggableInfo.insertIndex)) {
+        if (isCardDropAllowed(draggableIndex, draggableInfo.insertIndex ?? 0)) {
             let returnValue;
 
             editor.update(() => {
                 // change card order on card drops
                 if (draggableInfo.type === 'card') {
-                    const draggedNode = $getNodeByKey(draggableInfo.nodeKey);
+                    const draggedNode = $getNodeByKey(draggableInfo.nodeKey as string);
+                    if (!draggedNode) {
+                        return;
+                    }
 
-                    if (draggableInfo.insertIndex >= droppables.length) {
+                    if ((draggableInfo.insertIndex ?? 0) >= droppables.length) {
                         // drop at end of document
-                        const targetNode = $getNearestNodeFromDOMNode(droppables[droppables.length - 1]);
-                        targetNode.insertAfter(draggedNode);
+                        const targetNode = $getNearestNodeFromDOMNode(droppables[droppables.length - 1] as Node);
+                        targetNode?.insertAfter(draggedNode);
                     } else {
-                        const targetNode = $getNearestNodeFromDOMNode(droppables[draggableInfo.insertIndex]);
-                        targetNode.insertBefore(draggedNode);
+                        const targetNode = $getNearestNodeFromDOMNode(droppables[draggableInfo.insertIndex ?? 0] as Node);
+                        targetNode?.insertBefore(draggedNode);
                     }
 
                     // clear selection so we don't show any toolbars immediately and the
@@ -162,9 +178,9 @@ function useDragDropReorder(editor, isEditable) {
 
                 // insert new image node on image drops
                 if (draggableInfo.type === 'image') {
-                    const targetNode = $getNearestNodeFromDOMNode(droppables[draggableInfo.insertIndex]);
-                    const imageNode = $createImageNode(draggableInfo.dataset);
-                    targetNode.insertBefore(imageNode);
+                    const targetNode = $getNearestNodeFromDOMNode(droppables[draggableInfo.insertIndex ?? 0] as Node);
+                    const imageNode = $createImageNode((draggableInfo.dataset as Record<string, unknown>) ?? {});
+                    targetNode?.insertBefore(imageNode);
 
                     // select the newly inserted image card
                     const nodeSelection = $createNodeSelection();
@@ -181,7 +197,7 @@ function useDragDropReorder(editor, isEditable) {
     });
 
     // a card can be dropped into another card which means we need to remove the original
-    const onDropEnd = React.useRef((draggableInfo, success) => {
+    const onDropEnd = React.useRef((draggableInfo: DraggableInfo, success: boolean) => {
         // avoid removing the card if it's just a re-order or no move occurred
         if (skipOnDropEnd.current || !success || draggableInfo.type !== 'card') {
             skipOnDropEnd.current = false;
@@ -189,8 +205,8 @@ function useDragDropReorder(editor, isEditable) {
         }
 
         editor.update(() => {
-            const cardNode = $getNodeByKey(draggableInfo.nodeKey);
-            cardNode.remove(false);
+            const cardNode = $getNodeByKey(draggableInfo.nodeKey as string);
+            cardNode?.remove(false);
         });
     });
 
@@ -199,7 +215,7 @@ function useDragDropReorder(editor, isEditable) {
             editorContainerElement: koenig.editorContainerRef.current
         });
 
-        cardContainer.current = koenig.dragDropHandler.registerContainer(editor.getRootElement(), {
+        cardContainer.current = (koenig.dragDropHandler as DragDropHandler).registerContainer(editor.getRootElement()!, {
             draggableSelector: ':scope > div', // cards
             droppableSelector: ':scope > *', // all block elements
             onDragStart: onDragStart.current,
@@ -213,7 +229,7 @@ function useDragDropReorder(editor, isEditable) {
 
         return () => {
             cardContainer.current = null;
-            koenig.dragDropHandler?.destroy();
+            (koenig.dragDropHandler as DragDropHandler)?.destroy();
             delete koenig.dragDropHandler;
         };
     }, [editor, koenig]);
@@ -229,7 +245,7 @@ function useDragDropReorder(editor, isEditable) {
 
     // disable normal drag start events so they don't interfere with our custom drag handling
     React.useEffect(() => {
-        return editor.registerRootListener((rootElement, prevRootElement) => {
+        return editor.registerRootListener((rootElement: HTMLElement | null, prevRootElement: HTMLElement | null) => {
             rootElement?.addEventListener('dragstart', preventDefault);
             prevRootElement?.removeEventListener('dragstart', preventDefault);
         });
@@ -247,5 +263,6 @@ function useDragDropReorder(editor, isEditable) {
 
 export default function DragDropReorderPlugin() {
     const [editor] = useLexicalComposerContext();
-    return useDragDropReorder(editor, editor._editable);
+    useDragDropReorder(editor, editor._editable);
+    return null;
 }

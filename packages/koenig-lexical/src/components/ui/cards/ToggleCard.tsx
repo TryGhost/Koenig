@@ -1,7 +1,18 @@
 import ArrowDownIcon from '../../../assets/icons/kg-toggle-arrow.svg?react';
 import KoenigNestedEditor from '../../KoenigNestedEditor';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+import type {LexicalEditor} from 'lexical';
+
+interface ToggleCardProps {
+    contentEditor?: LexicalEditor;
+    contentEditorInitialState?: string;
+    contentPlaceholder?: string;
+    headingEditor?: LexicalEditor;
+    headingEditorInitialState?: string;
+    headingPlaceholder?: string;
+    isEditing?: boolean;
+}
 
 export function ToggleCard({
     contentEditor,
@@ -11,7 +22,7 @@ export function ToggleCard({
     headingEditorInitialState,
     headingPlaceholder = 'Toggle header',
     isEditing = false
-}) {
+}: ToggleCardProps) {
     return (
         <>
             <div className='rounded-md border border-grey/40 px-6 py-4 dark:border-grey/30'>
@@ -20,7 +31,7 @@ export function ToggleCard({
                         <KoenigNestedEditor
                             autoFocus={true}
                             focusNext={contentEditor}
-                            initialEditor={headingEditor}
+                            initialEditor={headingEditor!}
                             initialEditorState={headingEditorInitialState}
                             nodes='minimal'
                             placeholderClassName={'!font-sans !text-2xl !leading-[1.1] !font-bold !tracking-tight text-black dark:text-grey-50 opacity-40'}
@@ -35,7 +46,7 @@ export function ToggleCard({
                 </div>
                 <div className={'!mt-2 w-full'}>
                     <KoenigNestedEditor
-                        initialEditor={contentEditor}
+                        initialEditor={contentEditor!}
                         initialEditorState={contentEditorInitialState}
                         placeholderClassName={'font-serif text-xl font-normal !leading-[1.6em] text-grey-900 dark:text-grey-100 opacity-40'}
                         placeholderText={contentPlaceholder}
@@ -47,13 +58,3 @@ export function ToggleCard({
         </>
     );
 }
-
-ToggleCard.propTypes = {
-    contentEditor: PropTypes.object,
-    contentPlaceholder: PropTypes.string,
-    headingEditor: PropTypes.object,
-    headingPlaceholder: PropTypes.string,
-    isEditing: PropTypes.bool,
-    contentEditorInitialState: PropTypes.object,
-    headingEditorInitialState: PropTypes.object
-};

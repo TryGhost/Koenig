@@ -1,3 +1,5 @@
+// @ts-nocheck
+import React from 'react';
 import {CardWrapper} from './../CardWrapper';
 import {FileCard} from './FileCard';
 

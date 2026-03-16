@@ -1,9 +1,10 @@
 import {assertHTML, html, initialize} from '../utils/e2e';
 // import {calloutColorPicker} from '../../../src/components/ui/cards/CalloutCardx';
 import {test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 
 test.describe('Node transforms', async () => {
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();
@@ -61,7 +62,8 @@ test.describe('Node transforms', async () => {
                     version: 1
                 }
             });
-            const editor = window.lexicalEditor;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- browser context
+            const editor = (window as any).lexicalEditor;
             const editorState = editor.parseEditorState(serializedState);
             editor.setEditorState(editorState);
         });
@@ -128,7 +130,8 @@ test.describe('Node transforms', async () => {
                     version: 1
                 }
             });
-            const editor = window.lexicalEditor;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- browser context
+            const editor = (window as any).lexicalEditor;
             const editorState = editor.parseEditorState(serializedState);
             editor.setEditorState(editorState);
         });

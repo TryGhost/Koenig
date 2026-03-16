@@ -16,7 +16,7 @@ export const SignupPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_SIGNUP_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createSignupNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode, openInEditMode: true});
 

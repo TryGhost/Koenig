@@ -22,7 +22,7 @@ export class HtmlNode extends BaseHtmlNode {
         return HtmlCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
     }
 
@@ -30,24 +30,22 @@ export class HtmlNode extends BaseHtmlNode {
         return (
             <KoenigCardWrapper
                 IndicatorIcon={HtmlIndicatorIcon}
-                isVisibilityActive={this.getIsVisibilityActive()}
                 nodeKey={this.getKey()}
                 wrapperStyle="wide"
             >
                 <HtmlNodeComponent
-                    html={this.__html}
+                    html={this.__html as string}
                     nodeKey={this.getKey()}
-                    visibility={this.__visibility}
                 />
             </KoenigCardWrapper>
         );
     }
 }
 
-export function $createHtmlNode(dataset) {
+export function $createHtmlNode(dataset: Record<string, unknown>) {
     return new HtmlNode(dataset);
 }
 
-export function $isHtmlNode(node) {
+export function $isHtmlNode(node: unknown): node is HtmlNode {
     return node instanceof HtmlNode;
 }

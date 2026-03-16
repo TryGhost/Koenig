@@ -1,4 +1,5 @@
-/* eslint-disable react/jsx-key */
+// @ts-nocheck
+import React from 'react';
 
 import CenterAlignIcon from '../../assets/icons/kg-align-center.svg?react';
 import ImgFullIcon from '../../assets/icons/kg-img-full.svg?react';

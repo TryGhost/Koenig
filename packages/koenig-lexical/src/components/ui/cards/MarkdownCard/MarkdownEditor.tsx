@@ -7,6 +7,15 @@ import {useLayoutEffect, useRef, useState} from 'react';
 import ctrlOrCmd from '../../../../utils/ctrlOrCmd';
 import useMarkdownImageUploader from './useMarkdownImageUploader';
 
+interface MarkdownEditorProps {
+    markdown?: string;
+    updateMarkdown?: (value: string) => void;
+    imageUploader: (type: string) => unknown;
+    unsplashConf?: unknown;
+    autofocus?: boolean;
+    placeholder?: string;
+}
+
 export default function MarkdownEditor({
     markdown,
     updateMarkdown,
@@ -14,9 +23,10 @@ export default function MarkdownEditor({
     unsplashConf,
     autofocus = true,
     placeholder = ''
-}) {
-    const editorRef = useRef(null);
-    const markdownEditor = useRef(null);
+}: MarkdownEditorProps) {
+    const editorRef = useRef<HTMLTextAreaElement>(null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const markdownEditor = useRef<any>(null);
     const [isHelpDialogOpen, setHelpDialogOpen] = useState(false);
     const [isUnsplashDialogOpen, setUnsplashDialogOpen] = useState(false);
     const {
@@ -28,7 +38,7 @@ export default function MarkdownEditor({
         errors: imageUploadErrors,
         isLoading,
         filesNumber
-    } = useMarkdownImageUploader(markdownEditor, imageUploader);
+    } = useMarkdownImageUploader(markdownEditor as Parameters<typeof useMarkdownImageUploader>[0], imageUploader as Parameters<typeof useMarkdownImageUploader>[1]);
 
     const shortcuts = {
         openImageDialog: `${ctrlOrCmd}-Alt-I`,
@@ -97,11 +107,11 @@ export default function MarkdownEditor({
 
         editorInstance.value(markdown ?? '');
 
-        editorInstance.codemirror.on('change', (instance, changeObj) => {
+        editorInstance.codemirror.on('change', (_instance: unknown, changeObj: {origin?: string}) => {
             // avoid a "modified x twice in a single render" error that occurs
             // when the underlying value is completely swapped out
             if (changeObj.origin !== 'setValue') {
-                updateMarkdown(markdownEditor.current.value());
+                updateMarkdown?.(markdownEditor.current!.value());
             }
         });
 
@@ -114,7 +124,7 @@ export default function MarkdownEditor({
         }
 
         // Prevents the editor from losing focus when double clicking inside
-        editorInstance.codemirror.on('mousedown', (instance, event) => {
+        editorInstance.codemirror.on('mousedown', (_instance: unknown, event: MouseEvent) => {
             event.stopPropagation();
         });
 
@@ -126,7 +136,7 @@ export default function MarkdownEditor({
 
         // remove editor on unmount
         return () => {
-            markdownEditor.current.toTextArea();
+            markdownEditor.current?.toTextArea();
         };
 
         // We only do this for init
@@ -134,9 +144,9 @@ export default function MarkdownEditor({
     }, []);
 
     function addShortcuts() {
-        const codemirror = markdownEditor.current.codemirror;
+        const codemirror = markdownEditor.current!.codemirror;
 
-        const keys = codemirror.getOption('extraKeys');
+        const keys = codemirror.getOption('extraKeys') as Record<string, unknown>;
 
         keys[shortcuts.toggleSpellcheck] = toggleSpellcheck;
         keys[shortcuts.openImageDialog] = openImageUploadDialog;
@@ -149,7 +159,7 @@ export default function MarkdownEditor({
     }
 
     function toggleSpellcheck() {
-        let codemirror = markdownEditor.current.codemirror;
+        const codemirror = markdownEditor.current!.codemirror;
 
         if (codemirror.getOption('mode') === 'spell-checker') {
             codemirror.setOption('mode', 'gfm');
@@ -162,10 +172,10 @@ export default function MarkdownEditor({
     }
 
     function toggleButtonClass() {
-        let spellcheckButton = markdownEditor.current.toolbarElements.spellcheck;
+        const spellcheckButton = (markdownEditor.current as unknown as {toolbarElements: Record<string, HTMLElement>}).toolbarElements.spellcheck;
 
         if (spellcheckButton) {
-            if (markdownEditor.current.codemirror.getOption('mode') === 'spell-checker') {
+            if (markdownEditor.current!.codemirror.getOption('mode') === 'spell-checker') {
                 spellcheckButton.classList.add('active');
             } else {
                 spellcheckButton.classList.remove('active');
@@ -179,11 +189,11 @@ export default function MarkdownEditor({
 
     function closeHelpDialog() {
         setHelpDialogOpen(false);
-        markdownEditor.current.codemirror.focus();
+        markdownEditor.current!.codemirror.focus();
     }
 
     function getListOfHiddenIcons() {
-        let icons = [];
+        const icons: string[] = [];
 
         if (!unsplashConf) {
             icons.push('unsplash');
@@ -197,11 +207,11 @@ export default function MarkdownEditor({
     }
 
     function closeUnsplashDialog() {
-        markdownEditor.current.codemirror.focus();
+        markdownEditor.current!.codemirror.focus();
         setUnsplashDialogOpen(false);
     }
 
-    function onUnsplashInsert(img) {
+    function onUnsplashInsert(img: {src: string; alt?: string; caption: string}) {
         insertUnsplashImage(img);
         setUnsplashDialogOpen(false);
     }
@@ -228,7 +238,7 @@ export default function MarkdownEditor({
                 <UnsplashModal
                     unsplashConf={unsplashConf}
                     onClose={closeUnsplashDialog}
-                    onImageInsert={onUnsplashInsert}
+                    onImageInsert={onUnsplashInsert as (image: unknown) => void}
                 />
             )}
         </div>

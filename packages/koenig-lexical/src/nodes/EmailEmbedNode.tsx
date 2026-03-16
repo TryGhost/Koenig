@@ -7,6 +7,6 @@ export class EmailEmbedNode extends EmbedNode {
     );
 }
 
-export const emailEmbedNodeReplacement = {replace: EmbedNode, with: (node) => {
+export const emailEmbedNodeReplacement = {replace: EmbedNode, with: (node: InstanceType<typeof EmbedNode>) => {
     return new EmailEmbedNode(node.exportJSON());
 }};

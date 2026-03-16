@@ -1,3 +1,6 @@
+// @ts-nocheck
+import React from 'react';
+
 import {LinkInput} from './LinkInput';
 
 const story = {

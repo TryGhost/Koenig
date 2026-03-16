@@ -22,7 +22,7 @@ export const KoenigSelectorPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 OPEN_TENOR_SELECTOR_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createImageNode({...dataset, selector: TenorPlugin, isImageHidden: true});
 
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
@@ -33,14 +33,14 @@ export const KoenigSelectorPlugin = () => {
             ),
             editor.registerCommand(
                 INSERT_FROM_TENOR_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const imageNode = $createImageNode(dataset);
 
                     const selection = $getSelection();
-                    const selectedNode = selection.getNodes()[0];
+                    const selectedNode = selection?.getNodes()?.[0];
 
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode: imageNode});
-                    selectedNode.remove();
+                    selectedNode?.remove();
 
                     return true;
                 },
@@ -48,7 +48,7 @@ export const KoenigSelectorPlugin = () => {
             ),
             editor.registerCommand(
                 OPEN_UNSPLASH_SELECTOR_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createImageNode({...dataset, selector: UnsplashPlugin});
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
 

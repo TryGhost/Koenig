@@ -7,8 +7,8 @@ import {createCommand} from 'lexical';
 export const INSERT_FILE_COMMAND = createCommand();
 
 export class FileNode extends BaseFileNode {
-    __triggerFileDialog = false;
-    __initialFile = null;
+    __triggerFileDialog: boolean = false;
+    __initialFile: File | null = null;
 
     static kgMenu = [{
         label: 'File',
@@ -25,21 +25,21 @@ export class FileNode extends BaseFileNode {
 
     static uploadType = 'file';
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         const {triggerFileDialog, initialFile} = dataset;
 
         // don't trigger the file dialog when rendering if we've already been given a url
-        this.__triggerFileDialog = (!dataset.src && triggerFileDialog) || false;
-        this.__initialFile = initialFile || null;
+        this.__triggerFileDialog = !!(!dataset.src && triggerFileDialog);
+        this.__initialFile = (initialFile as File | null) || null;
     }
 
     getIcon() {
         return FileCardIcon;
     }
 
-    set triggerFileDialog(shouldTrigger) {
+    set triggerFileDialog(shouldTrigger: boolean) {
         const writable = this.getWritable();
         writable.__triggerFileDialog = shouldTrigger;
     }
@@ -50,12 +50,12 @@ export class FileNode extends BaseFileNode {
                 nodeKey={this.getKey()}
             >
                 <FileNodeComponent
-                    fileDesc={this.fileCaption}
+                    fileDesc={this.fileCaption as string}
                     fileDescPlaceholder={'Enter a description'}
-                    fileName={this.fileName}
-                    fileSize={this.formattedFileSize}
-                    fileSrc={this.src}
-                    fileTitle={this.fileTitle}
+                    fileName={this.fileName as string}
+                    fileSize={this.formattedFileSize as string}
+                    fileSrc={this.src as string}
+                    fileTitle={this.fileTitle as string}
                     fileTitlePlaceholder={'Enter a title'}
                     initialFile={this.__initialFile}
                     nodeKey={this.getKey()}
@@ -66,10 +66,10 @@ export class FileNode extends BaseFileNode {
     }
 }
 
-export const $createFileNode = (dataset) => {
+export const $createFileNode = (dataset: Record<string, unknown>) => {
     return new FileNode(dataset);
 };
 
-export function $isFileNode(node) {
+export function $isFileNode(node: unknown): node is FileNode {
     return node instanceof FileNode;
 }

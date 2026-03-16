@@ -1,12 +1,13 @@
 import {TreeView} from '@lexical/react/LexicalTreeView';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-const TreeViewPlugin = () => {
+const TreeViewPlugin = (_props: {isOpen?: boolean}) => {
     const [editor] = useLexicalComposerContext();
 
     return (
         <TreeView
             editor={editor}
+            treeTypeButtonClassName="text-green font-sans text-md font-medium"
             timeTravelButtonClassName="text-green pb-4 cursor-pointer font-sans text-md font-medium absolute bottom-0"
             timeTravelPanelButtonClassName="text-green font-sans text-md font-medium"
             timeTravelPanelClassName="absolute bottom-1 flex w-[400px]"

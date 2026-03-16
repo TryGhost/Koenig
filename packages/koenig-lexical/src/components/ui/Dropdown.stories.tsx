@@ -1,3 +1,6 @@
+// @ts-nocheck
+import React from 'react';
+
 import {Dropdown} from './Dropdown';
 
 const story = {
