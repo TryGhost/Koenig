@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {LinkToolbar} from './LinkToolbar';
 
 const story = {

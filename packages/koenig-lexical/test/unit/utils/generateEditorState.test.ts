@@ -1,10 +1,11 @@
 import generateEditorState, {_$generateNodesFromHTML} from '../../../src/utils/generateEditorState';
 import {DEFAULT_NODES} from '../../../src';
 import {createEditor} from 'lexical';
+import type {CreateEditorArgs, LexicalNode} from 'lexical';
 import {describe, expect, test} from 'vitest';
 
 describe('Utils: generateEditorState', () => {
-    function runGenerateEditorState(html, {nodes = DEFAULT_NODES} = {}) {
+    function runGenerateEditorState(html: string, {nodes = DEFAULT_NODES as unknown as CreateEditorArgs['nodes']} = {}) {
         const editor = createEditor({
             // lexical swallows errors inside updates by default,
             // so we need to throw them to fail the test
@@ -115,7 +116,7 @@ describe('Utils: generateEditorState', () => {
         const editorState = runGenerateEditorState(html);
 
         expect(editorState.root.children).toHaveLength(1);
-        expect(editorState.root.children[0].children).toHaveLength(2);
+        expect((editorState.root.children[0] as {children: unknown[]}).children).toHaveLength(2);
         expect(editorState.root.children[0]).toMatchObject({
             type: 'list',
             children: [
@@ -126,7 +127,7 @@ describe('Utils: generateEditorState', () => {
     });
 
     describe('_$generateNodesFromHTML', () => {
-        function testGenerateNodesFromHTML(html, callback) {
+        function testGenerateNodesFromHTML(html: string, callback: (nodes: LexicalNode[]) => void) {
             const editor = createEditor({
                 // lexical swallows errors inside updates by default,
                 // so we need to throw them to fail the test

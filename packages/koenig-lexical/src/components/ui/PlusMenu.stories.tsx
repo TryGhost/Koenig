@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {PlusButton} from './PlusMenu';
 
 const story = {

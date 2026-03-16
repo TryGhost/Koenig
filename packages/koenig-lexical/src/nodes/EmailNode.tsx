@@ -1,19 +1,20 @@
 import EmailCardIcon from '../assets/icons/kg-card-type-email.svg?react';
 import EmailIndicatorIcon from '../assets/icons/kg-indicator-email.svg?react';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
 import {EmailNode as BaseEmailNode} from '@tryghost/kg-default-nodes';
 import {EmailNodeComponent} from './EmailNodeComponent';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_EMAIL_COMMAND = createCommand();
 
 export class EmailNode extends BaseEmailNode {
-    __htmlEditor;
-    __htmlEditorInitialState;
+    __htmlEditor!: LexicalEditor;
+    __htmlEditorInitialState: unknown;
 
     static kgMenu = [{
         label: 'Email content',
@@ -30,15 +31,15 @@ export class EmailNode extends BaseEmailNode {
         return EmailCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         // set up nested editor instances
-        setupNestedEditor(this, '__htmlEditor', {editor: dataset.htmlEditor, nodes: BASIC_NODES});
+        setupNestedEditor(this, '__htmlEditor', {editor: dataset.htmlEditor as LexicalEditor | undefined, nodes: BASIC_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.htmlEditor) {
-            populateNestedEditor(this, '__htmlEditor', dataset.html || '<p>Hey <code>{first_name, "there"}</code>,</p>');
+            populateNestedEditor(this, '__htmlEditor', (dataset.html as string) || '<p>Hey <code>{first_name, "there"}</code>,</p>');
         }
     }
 
@@ -93,10 +94,10 @@ export class EmailNode extends BaseEmailNode {
     }
 }
 
-export const $createEmailNode = (dataset) => {
+export const $createEmailNode = (dataset: Record<string, unknown>) => {
     return new EmailNode(dataset);
 };
 
-export function $isEmailNode(node) {
+export function $isEmailNode(node: unknown): node is EmailNode {
     return node instanceof EmailNode;
 }

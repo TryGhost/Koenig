@@ -1,3 +1,4 @@
+import type {Klass, LexicalEditor, LexicalNode, LexicalNodeReplacement} from 'lexical';
 import generateEditorState from './generateEditorState';
 import {MINIMAL_NODES} from '../index.js';
 import {createEditor} from 'lexical';
@@ -22,29 +23,35 @@ const BLANK_EDITOR_STATE = JSON.stringify({
     }
 });
 
-export function setupNestedEditor(node, editorProperty, {editor, initialEditorState = BLANK_EDITOR_STATE, nodes = MINIMAL_NODES} = {}) {
+interface SetupNestedEditorOptions {
+    editor?: LexicalEditor;
+    initialEditorState?: string;
+    nodes?: ReadonlyArray<Klass<LexicalNode> | LexicalNodeReplacement>;
+}
+
+export function setupNestedEditor(node: Record<string, unknown>, editorProperty: string, {editor, initialEditorState = BLANK_EDITOR_STATE, nodes = MINIMAL_NODES}: SetupNestedEditorOptions = {}) {
     if (editor) {
         node[editorProperty] = editor;
     } else {
         node[editorProperty] = createEditor({nodes});
 
         // set up a blank document with a paragraph otherwise the editor won't receive focus
-        const editorState = node[editorProperty].parseEditorState(initialEditorState);
-        node[editorProperty].setEditorState(editorState, {tag: 'history-merge'}); // use history merge to prevent undo clearing the initial state
+        const editorState = (node[editorProperty] as LexicalEditor).parseEditorState(initialEditorState);
+        (node[editorProperty] as LexicalEditor).setEditorState(editorState, {tag: 'history-merge'}); // use history merge to prevent undo clearing the initial state
     }
 }
 
-export function populateNestedEditor(node, editorProperty, html) {
+export function populateNestedEditor(node: Record<string, unknown>, editorProperty: string, html: string | undefined) {
     if (!html) {
         return;
     }
 
-    const nestedEditor = node[editorProperty];
+    const nestedEditor = node[editorProperty] as LexicalEditor;
     const editorState = generateEditorState({
         editor: nestedEditor,
         initialHtml: html
     });
-    
+
     nestedEditor.setEditorState(editorState, {tag: 'history-merge'}); // use history merge to prevent undo clearing the initial state
 
     // store the initial state separately as it's passed in to `<CollaborationPlugin />`

@@ -1,7 +1,8 @@
+import type {BaseSelection, LexicalEditor} from 'lexical';
 import {$isRangeSelection} from 'lexical';
 import {createDOMRange, createRectsFromDOMRange} from '@lexical/selection';
 
-export function $getSelectionRangeRect({selection, editor}) {
+export function $getSelectionRangeRect({selection, editor}: {selection: BaseSelection | null; editor: LexicalEditor}): DOMRect | null {
     if (!selection || !$isRangeSelection(selection)) {
         return null;
     }

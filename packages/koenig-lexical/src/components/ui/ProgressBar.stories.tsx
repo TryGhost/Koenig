@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {ProgressBar} from './ProgressBar';
 
 const story = {

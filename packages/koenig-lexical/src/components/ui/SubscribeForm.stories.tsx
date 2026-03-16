@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {SubscribeForm} from './SubscribeForm';
 
 const story = {

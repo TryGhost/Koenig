@@ -1,7 +1,22 @@
 import {isTestEnv} from '../../test/utils/isTestEnv';
 import {useState} from 'react';
 
-export const fileTypes = {
+interface FileTypeConfig {
+    mimeTypes: string[];
+    extensions: string[];
+}
+
+interface FileError {
+    fileName: string;
+    message: string;
+}
+
+interface UploadResult {
+    url: string | ArrayBuffer | null;
+    fileName: string;
+}
+
+export const fileTypes: Record<string, FileTypeConfig> = {
     image: {
         mimeTypes: ['image/gif', 'image/jpg', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'],
         extensions: ['gif', 'jpg', 'jpeg', 'png', 'svg', 'svgz', 'webp']
@@ -28,38 +43,35 @@ export function useFileUpload({isMultiplayer = false} = {}) {
     return function useFileUploadFn(type = '') {
         const [progress, setProgress] = useState(100);
         const [isLoading, setLoading] = useState(false);
-        const [errors, setErrors] = useState([]);
+        const [errors, setErrors] = useState<FileError[]>([]);
         const [filesNumber, setFilesNumber] = useState(0);
 
-        function defaultValidator(file) {
+        function defaultValidator(file: File): string | true {
             if (type === 'file') {
                 return true;
             }
-            let extensions = fileTypes[type].extensions;
-            let [, extension] = (/(?:\.([^.]+))?$/).exec(file.name);
+            const extensions = fileTypes[type].extensions;
+            const match = (/(?:\.([^.]+))?$/).exec(file.name);
+            const extension = match ? match[1] : undefined;
 
             // if extensions is falsy exit early and accept all files
             if (!extensions) {
                 return true;
             }
 
-            if (!Array.isArray(extensions)) {
-                extensions = extensions.split(',');
-            }
-
             if (!extension || extensions.indexOf(extension.toLowerCase()) === -1) {
-                let validExtensions = `.${extensions.join(', .').toUpperCase()}`;
+                const validExtensions = `.${extensions.join(', .').toUpperCase()}`;
                 return `The file type you uploaded is not supported. Please use ${validExtensions}`;
             }
             return true;
         }
 
-        function validate(files = []) {
-            const validationResult = [];
+        function validate(files: File[] = []): FileError[] {
+            const validationResult: FileError[] = [];
 
             for (let i = 0; i < files.length; i += 1) {
-                let file = files[i];
-                let result = defaultValidator(file);
+                const file = files[i];
+                const result = defaultValidator(file);
                 if (result === true) {
                     continue;
                 }
@@ -70,7 +82,7 @@ export function useFileUpload({isMultiplayer = false} = {}) {
             return validationResult;
         }
 
-        async function upload(files = [], options = {}) {
+        async function upload(files: File[] = [], _options = {}): Promise<UploadResult[] | null> {
             setFilesNumber(files.length);
             // added delay for demo, helps to check progress bar
             setLoading(true);
@@ -115,14 +127,14 @@ export function useFileUpload({isMultiplayer = false} = {}) {
             // file for multi-file uploads such as in gallery cards where we need to replace
             // the correct preview image with the real uploaded image
             // TODO: can we use something more unique than filename?
-            let uploadResult = [];
+            let uploadResult: UploadResult[] = [];
 
             if (isMultiplayer) {
                 // multiplayer needs to store the whole file data inline so it can be transferred
                 // and stored in the shared document, otherwise images etc won't appear across browsers
                 for (const file of Array.from(files)) {
                     const reader = new FileReader();
-                    const url = await new Promise((resolve) => {
+                    const url = await new Promise<string | ArrayBuffer | null>((resolve) => {
                         reader.addEventListener('load', () => {
                             resolve(reader.result);
                         }, false);
@@ -155,7 +167,7 @@ export function useFileUpload({isMultiplayer = false} = {}) {
     };
 }
 
-function delay(time) {
+function delay(time: number): Promise<void> {
     return new Promise((resolve) => {
         setTimeout(resolve, time);
     });

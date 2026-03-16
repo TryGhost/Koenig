@@ -1,3 +1,4 @@
+import type {LexicalNode} from 'lexical';
 import {
     $createNodeSelection,
     $createParagraphNode,
@@ -5,7 +6,7 @@ import {
     $setSelection
 } from 'lexical';
 
-export const $insertAndSelectNode = ({selectedNode, newNode}) => {
+export const $insertAndSelectNode = ({selectedNode, newNode}: {selectedNode: LexicalNode; newNode: LexicalNode}) => {
     const selectedIsParagraph = $isParagraphNode(selectedNode);
     const selectedIsEmpty = selectedNode.getTextContent() === '';
 

@@ -1,9 +1,14 @@
 import React from 'react';
 import {createEmptyHistoryState} from '@lexical/react/LexicalHistoryPlugin';
+import type {HistoryState} from '@lexical/react/LexicalHistoryPlugin';
 
-const Context = React.createContext({});
+interface SharedHistoryContextType {
+    historyState: HistoryState;
+}
 
-export const SharedHistoryContext = ({children}) => {
+const Context = React.createContext<SharedHistoryContextType>({} as SharedHistoryContextType);
+
+export const SharedHistoryContext = ({children}: {children: React.ReactNode}) => {
     const historyContext = React.useMemo(
         () => ({historyState: createEmptyHistoryState()}),
         []

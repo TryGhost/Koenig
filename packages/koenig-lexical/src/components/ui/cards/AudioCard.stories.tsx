@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {AudioCard} from './AudioCard';
 import {CardWrapper} from './../CardWrapper';
 

@@ -1,26 +1,36 @@
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import WordCountPlugin from '../plugins/WordCountPlugin';
+import type {Klass, LexicalEditor, LexicalNode, EditorThemeClasses} from 'lexical';
 import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
 import {LexicalNestedComposer} from '@lexical/react/LexicalNestedComposer';
 import {useCollaborationContext} from '@lexical/react/LexicalCollaborationContext';
 
-const KoenigNestedComposer = ({initialEditor, initialEditorState, initialNodes, initialTheme, skipCollabChecks, children} = {}) => {
+interface KoenigNestedComposerProps {
+    initialEditor?: LexicalEditor;
+    initialEditorState?: string;
+    initialNodes?: ReadonlyArray<Klass<LexicalNode>>;
+    initialTheme?: EditorThemeClasses;
+    skipCollabChecks?: boolean;
+    children?: React.ReactNode;
+}
+
+const KoenigNestedComposer = ({initialEditor, initialEditorState, initialNodes, initialTheme, skipCollabChecks, children}: KoenigNestedComposerProps = {}) => {
     const {isCollabActive} = useCollaborationContext();
     const {createWebsocketProvider, onWordCountChangeRef} = React.useContext(KoenigComposerContext);
 
     return (
         <LexicalNestedComposer
-            initialEditor={initialEditor}
+            initialEditor={initialEditor as LexicalEditor}
             initialNodes={initialNodes}
             initialTheme={initialTheme}
-            skipCollabChecks={skipCollabChecks}
+            skipCollabChecks={skipCollabChecks as true | undefined}
         >
             {isCollabActive ? (
                 <CollaborationPlugin
-                    id={initialEditor.getKey()}
+                    id={initialEditor!.getKey()}
                     initialEditorState={initialEditorState}
-                    providerFactory={createWebsocketProvider}
+                    providerFactory={createWebsocketProvider as Parameters<typeof CollaborationPlugin>[0]['providerFactory']}
                     shouldBootstrap={true}
                 />
             ) : null }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import populateEditor from '../../../../../utils/storybook/populate-storybook-editor';
 import {CardWrapper} from '../../../CardWrapper';
 import {HeaderCard} from './HeaderCard';

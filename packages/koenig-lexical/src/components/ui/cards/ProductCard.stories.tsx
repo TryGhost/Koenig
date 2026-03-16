@@ -1,3 +1,4 @@
+// @ts-nocheck
 import populateEditor from '../../../utils/storybook/populate-storybook-editor.js';
 import {BASIC_NODES, MINIMAL_NODES} from '../../../index.js';
 import {CardWrapper} from './../CardWrapper';

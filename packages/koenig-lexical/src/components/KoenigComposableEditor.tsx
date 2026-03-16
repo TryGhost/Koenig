@@ -9,6 +9,8 @@ import MarkdownPastePlugin from '../plugins/MarkdownPastePlugin.jsx';
 import MarkdownShortcutPlugin from '../plugins/MarkdownShortcutPlugin';
 import React from 'react';
 import TKPlugin from '../plugins/TKPlugin.jsx';
+import type {EditorState} from 'lexical';
+import type {Transformer} from '@lexical/markdown';
 import {ContentEditable} from '@lexical/react/LexicalContentEditable';
 import {EditorPlaceholder} from './ui/EditorPlaceholder';
 import {ExternalControlPlugin} from '../plugins/ExternalControlPlugin';
@@ -23,6 +25,28 @@ import {useCollaborationContext} from '@lexical/react/LexicalCollaborationContex
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {useSharedHistoryContext} from '../context/SharedHistoryContext';
 import {useSharedOnChangeContext} from '../context/SharedOnChangeContext';
+
+interface KoenigComposableEditorProps {
+    onChange?: (json: unknown) => void;
+    onBlur?: () => void;
+    onFocus?: () => void;
+    markdownTransformers?: Transformer[];
+    registerAPI?: (api: unknown) => void;
+    cursorDidExitAtTop?: () => void;
+    children?: React.ReactNode;
+    placeholder?: React.ReactNode;
+    singleParagraph?: boolean;
+    placeholderText?: string;
+    placeholderClassName?: string;
+    className?: string;
+    readOnly?: boolean;
+    isDragEnabled?: boolean;
+    inheritStyles?: boolean;
+    isSnippetsEnabled?: boolean;
+    hiddenFormats?: string[];
+    useDefaultClasses?: boolean;
+    dataTestId?: string;
+}
 
 const KoenigComposableEditor = ({
     onChange,
@@ -44,7 +68,7 @@ const KoenigComposableEditor = ({
     hiddenFormats = [],
     useDefaultClasses = true,
     dataTestId
-}) => {
+}: KoenigComposableEditorProps) => {
     const {historyState} = useSharedHistoryContext();
     const [editor] = useLexicalComposerContext();
     const {isCollabActive} = useCollaborationContext();
@@ -54,14 +78,14 @@ const KoenigComposableEditor = ({
     const isDragReorderEnabled = isDragEnabled && !readOnly && !isNested;
 
     const {onChange: sharedOnChange} = useSharedOnChangeContext();
-    const _onChange = React.useCallback((editorState) => {
+    const _onChange = React.useCallback((editorState: EditorState) => {
         if (sharedOnChange) {
             // sharedOnChange is called for the main editor and nested editors, we want to
             // make sure we don't accidentally serialize only the contents of the nested
             // editor so we need to use the parent editor when it exists
             const primaryEditorState = (editor._parentEditor || editor).getEditorState();
             const json = primaryEditorState.toJSON();
-            sharedOnChange(json);
+            sharedOnChange(json as unknown as import('lexical').EditorState, editor, new Set<string>());
         }
 
         if (onChange) {
@@ -72,16 +96,16 @@ const KoenigComposableEditor = ({
         }
     }, [onChange, sharedOnChange, editor]);
 
-    const onWrapperRef = (wrapperElem) => {
+    const onWrapperRef = (wrapperElem: HTMLDivElement | null) => {
         if (!isNested) {
-            editorContainerRef.current = wrapperElem;
+            (editorContainerRef as React.MutableRefObject<HTMLElement | null>).current = wrapperElem;
         }
     };
 
     // we need an element reference for the container element that
     // any floating elements in plugins will be rendered inside
-    const [floatingAnchorElem, setFloatingAnchorElem] = React.useState(null);
-    const onContentEditableRef = (_floatingAnchorElem) => {
+    const [floatingAnchorElem, setFloatingAnchorElem] = React.useState<HTMLDivElement | null>(null);
+    const onContentEditableRef = (_floatingAnchorElem: HTMLDivElement | null) => {
         if (_floatingAnchorElem !== null) {
             setFloatingAnchorElem(_floatingAnchorElem);
         }
@@ -101,18 +125,19 @@ const KoenigComposableEditor = ({
                     </div>
                 }
                 ErrorBoundary={KoenigErrorBoundary}
-                placeholder={placeholder || <EditorPlaceholder className={placeholderClassName} text={placeholderText} />}
+                placeholder={placeholder as React.JSX.Element || <EditorPlaceholder className={placeholderClassName} text={placeholderText} />}
             />
             <LinkPlugin />
             <OnChangePlugin ignoreHistoryMergeTagChange={false} ignoreSelectionChange={true} onChange={_onChange} />
             {!isCollabActive && <HistoryPlugin externalHistoryState={historyState} />} {/* adds undo/redo, in multiplayer that's handled by yjs */}
             <KoenigBehaviourPlugin containerElem={editorContainerRef} cursorDidExitAtTop={cursorDidExitAtTop} isNested={isNested} />
             <MarkdownShortcutPlugin transformers={markdownTransformers} />
+            { }
             {floatingAnchorElem && (<FloatingToolbarPlugin anchorElem={floatingAnchorElem} hiddenFormats={hiddenFormats} isSnippetsEnabled={isSnippetsEnabled} />)}
             <DragDropPastePlugin />
             {registerAPI ? <ExternalControlPlugin registerAPI={registerAPI} /> : null}
-            {isDragReorderEnabled && <DragDropReorderPlugin containerElem={editorContainerRef} />}
-            {singleParagraph && <RestrictContentPlugin paragraphs={1} />}
+            {isDragReorderEnabled && <DragDropReorderPlugin />}
+            {singleParagraph && <RestrictContentPlugin allowBr={false} paragraphs={1} />}
             {onBlur && <KoenigBlurPlugin onBlur={onBlur} />}
             {onFocus && <KoenigFocusPlugin onFocus={onFocus} />}
             <MarkdownPastePlugin />

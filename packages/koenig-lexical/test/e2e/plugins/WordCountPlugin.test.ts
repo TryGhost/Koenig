@@ -1,8 +1,9 @@
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {focusEditor, initialize, insertCard} from '../../utils/e2e';
 
 test.describe('Word Count Plugin', async function () {
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();

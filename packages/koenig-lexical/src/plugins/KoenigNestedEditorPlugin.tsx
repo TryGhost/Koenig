@@ -9,6 +9,7 @@ import {
     KEY_ENTER_COMMAND
 } from 'lexical';
 import {mergeRegister} from '@lexical/utils';
+import type {LexicalEditor} from 'lexical';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext.js';
 
 function KoenigNestedEditorPlugin({
@@ -17,6 +18,11 @@ function KoenigNestedEditorPlugin({
     hasSettingsPanel,
     // Enter will focus the next card if this is true
     defaultKoenigEnterBehaviour = false
+}: {
+    autoFocus?: boolean;
+    focusNext?: LexicalEditor;
+    hasSettingsPanel?: boolean;
+    defaultKoenigEnterBehaviour?: boolean;
 }) {
     const [editor] = useLexicalComposerContext();
     const {isEditing: isParentCardEditing, nodeKey: parentCardNodeKey} = React.useContext(CardContext);
@@ -44,7 +50,7 @@ function KoenigNestedEditorPlugin({
 
         if (shouldFocus) {
             editor.focus(() => {
-                editor.getRootElement().focus({preventScroll: true});
+                editor.getRootElement()?.focus({preventScroll: true});
             });
         }
     }, [shouldFocus, editor, isParentCardEditing]);
@@ -67,39 +73,39 @@ function KoenigNestedEditorPlugin({
             }),
             editor.registerCommand(
                 KEY_ENTER_COMMAND,
-                (event) => {
+                (event: KeyboardEvent | null) => {
                     // TODO: wait for new lexical version, see https://github.com/facebook/lexical/commit/df2a50bc88e0778af26e109502cfcfb9cbe245d5
                     if (document.querySelector(`#typeahead-menu`)) {
                         return false;
                     }
 
                     // let the parent editor handle the edit mode product
-                    if (event.metaKey || event.ctrlKey) {
-                        event._fromNested = true;
-                        editor._parentEditor?.dispatchCommand(KEY_ENTER_COMMAND, event);
+                    if (event?.metaKey || event?.ctrlKey) {
+                        (event as KeyboardEvent & {_fromNested?: boolean})._fromNested = true;
+                        (editor as unknown as {_parentEditor?: LexicalEditor})._parentEditor?.dispatchCommand(KEY_ENTER_COMMAND, event);
                         return true;
                     }
 
                     // move focus to the next editor if it exists (e.g. from header to content editor)
-                    if (focusNext && !event.shiftKey) {
-                        event.preventDefault();
+                    if (focusNext && !event?.shiftKey) {
+                        event?.preventDefault();
                         focusNext.focus(() => {
-                            focusNext.getRootElement().focus({preventScroll: true});
+                            focusNext.getRootElement()?.focus({preventScroll: true});
                         });
                         return true;
                     }
 
                     if (defaultKoenigEnterBehaviour) {
                         // allow shift+enter to create a line break
-                        if (event.shiftKey) {
+                        if (event?.shiftKey) {
                             return false;
                         }
 
                         // otherwise, let the parent editor handle the enter key
                         // - with ctrl/cmd+enter toggles edit mode
                         // - or creates paragraph after card and moves cursor
-                        event._fromNested = true;
-                        editor._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
+                        (event as KeyboardEvent & {_fromNested?: boolean})!._fromNested = true;
+                        (editor as unknown as {_parentEditor: LexicalEditor})._parentEditor.dispatchCommand(KEY_ENTER_COMMAND, event);
 
                         // prevent normal/KoenigBehaviourPlugin enter key behaviour
                         return true;
@@ -113,9 +119,10 @@ function KoenigNestedEditorPlugin({
                 () => {
                     // when the nested editor is selected, the parent editor clears its selection so we need to
                     //   return parent editor selection to the card when the nested editor loses focus
-                    if (hasSettingsPanel && editor._parentEditor) {
-                        editor._parentEditor.getEditorState().read(() => {
-                            editor._parentEditor.update(() => {
+                    const parentEditor = (editor as unknown as {_parentEditor: LexicalEditor | null})._parentEditor;
+                    if (hasSettingsPanel && parentEditor) {
+                        parentEditor.getEditorState().read(() => {
+                            parentEditor!.update(() => {
                                 if (!$getSelection()) {
                                     const selection = $createNodeSelection();
                                     selection.add(parentCardNodeKey);

@@ -2,22 +2,44 @@ import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import MINIMAL_NODES from './MinimalNodes';
 import SignupCardIcon from '../assets/icons/kg-card-type-signup.svg?react';
 import SignupNodeComponent from './SignupNodeComponent';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {SignupNode as BaseSignupNode} from '@tryghost/kg-default-nodes';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
-export const {INSERT_SIGNUP_COMMAND} = createCommand();
+export const INSERT_SIGNUP_COMMAND = createCommand();
+
+type Alignment = 'left' | 'center';
+type BackgroundSize = 'cover' | 'contain';
+type Layout = 'regular' | 'wide' | 'full' | 'split';
+
+interface SignupNodeProperties {
+    alignment: Alignment;
+    backgroundColor: string;
+    backgroundImageSrc: string;
+    backgroundSize: BackgroundSize;
+    buttonColor: string;
+    buttonText: string;
+    buttonTextColor: string;
+    disclaimer: string;
+    header: string;
+    subheader: string;
+    swapped: boolean;
+    labels: string[];
+    layout: Layout;
+    textColor: string;
+}
 
 export class SignupNode extends BaseSignupNode {
-    __disclaimerTextEditor;
-    __disclaimerTextEditorInitialState;
-    __headerTextEditor;
-    __headerTextEditorInitialState;
-    __subheaderTextEditor;
-    __subheaderTextEditorInitialState;
+    __disclaimerTextEditor!: LexicalEditor;
+    __disclaimerTextEditorInitialState: unknown;
+    __headerTextEditor!: LexicalEditor;
+    __headerTextEditorInitialState: unknown;
+    __subheaderTextEditor!: LexicalEditor;
+    __subheaderTextEditorInitialState: unknown;
 
     static kgMenu = {
         label: 'Signup',
@@ -26,11 +48,11 @@ export class SignupNode extends BaseSignupNode {
         insertCommand: INSERT_SIGNUP_COMMAND,
         matches: ['signup', 'subscribe'],
         priority: 10,
-        isHidden: ({config}) => {
+        isHidden: ({config}: {config?: Record<string, unknown>}) => {
             const isMembersEnabled = config?.membersEnabled;
             return !(isMembersEnabled);
         },
-        insertParams: ({config}) => ({
+        insertParams: ({config}: {config?: Record<string, unknown>}) => ({
             header: config?.siteTitle ? `Sign up for ${config.siteTitle}` : '',
             subheader: config?.siteDescription || '',
             disclaimer: 'No spam. Unsubscribe anytime.'
@@ -42,12 +64,12 @@ export class SignupNode extends BaseSignupNode {
         return SignupCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
-        setupNestedEditor(this, '__headerTextEditor', {editor: dataset.headerTextEditor, nodes: MINIMAL_NODES});
-        setupNestedEditor(this, '__subheaderTextEditor', {editor: dataset.subheaderTextEditor, nodes: MINIMAL_NODES});
-        setupNestedEditor(this, '__disclaimerTextEditor', {editor: dataset.disclaimerTextEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__headerTextEditor', {editor: dataset.headerTextEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__subheaderTextEditor', {editor: dataset.subheaderTextEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__disclaimerTextEditor', {editor: dataset.disclaimerTextEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.headerTextEditor && dataset.header) {
@@ -116,30 +138,31 @@ export class SignupNode extends BaseSignupNode {
     }
 
     decorate() {
+        const props = this as unknown as SignupNodeProperties;
         return (
-            <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth()}>
+            <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth() as string | undefined}>
                 <SignupNodeComponent
-                    alignment={this.alignment}
-                    backgroundColor={this.backgroundColor}
-                    backgroundImageSrc={this.backgroundImageSrc}
-                    backgroundSize={this.backgroundSize}
-                    buttonColor={this.buttonColor}
-                    buttonText={this.buttonText}
-                    buttonTextColor={this.buttonTextColor}
-                    disclaimer={this.disclaimer}
+                    alignment={props.alignment}
+                    backgroundColor={props.backgroundColor}
+                    backgroundImageSrc={props.backgroundImageSrc}
+                    backgroundSize={props.backgroundSize}
+                    buttonColor={props.buttonColor}
+                    buttonText={props.buttonText}
+                    buttonTextColor={props.buttonTextColor}
+                    disclaimer={props.disclaimer}
                     disclaimerTextEditor={this.__disclaimerTextEditor}
-                    disclaimerTextEditorInitialState={this.__disclaimerTextEditorInitialState}
-                    header={this.header}
+                    disclaimerTextEditorInitialState={this.__disclaimerTextEditorInitialState as string | undefined}
+                    header={props.header}
                     headerTextEditor={this.__headerTextEditor}
-                    headerTextEditorInitialState={this.__headerTextEditorInitialState}
-                    isSwapped={this.swapped}
-                    labels={this.labels}
-                    layout={this.layout}
+                    headerTextEditorInitialState={this.__headerTextEditorInitialState as string | undefined}
+                    isSwapped={props.swapped}
+                    labels={props.labels}
+                    layout={props.layout}
                     nodeKey={this.getKey()}
-                    subheader={this.subheader}
+                    subheader={props.subheader}
                     subheaderTextEditor={this.__subheaderTextEditor}
-                    subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState}
-                    textColor={this.textColor}
+                    subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState as string | undefined}
+                    textColor={props.textColor}
                 />
             </KoenigCardWrapper>
         );
@@ -158,15 +181,15 @@ export class SignupNode extends BaseSignupNode {
             !this.__buttonText &&
             isDisclaimerEmpty &&
             isHeaderEmpty &&
-            !this.__labels.length &&
+            !(this.__labels as string[]).length &&
             isSubheaderEmpty;
     }
 }
 
-export const $createSignupNode = (dataset) => {
+export const $createSignupNode = (dataset: Record<string, unknown>) => {
     return new SignupNode(dataset);
 };
 
-export function $isSignupNode(node) {
+export function $isSignupNode(node: unknown): node is SignupNode {
     return node instanceof SignupNode;
 }

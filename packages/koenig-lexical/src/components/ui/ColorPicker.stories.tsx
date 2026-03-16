@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {ColorPicker} from './ColorPicker';
 
 const story = {

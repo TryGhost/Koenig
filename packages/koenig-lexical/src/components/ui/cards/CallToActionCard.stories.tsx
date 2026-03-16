@@ -1,3 +1,4 @@
+// @ts-nocheck
 import VisibilityIndicatorIcon from '../../../assets/icons/kg-indicator-visibility.svg?react';
 import populateEditor from '../../../utils/storybook/populate-storybook-editor.js';
 import {BASIC_NODES} from '../../../index.js';

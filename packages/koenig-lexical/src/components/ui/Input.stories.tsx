@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Input} from './Input';
 
 const story = {

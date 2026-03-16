@@ -1,6 +1,6 @@
 import DOMPurify from 'dompurify';
 
-export function sanitizeHtml(html = '', options = {}) {
+export function sanitizeHtml(html = '', options: {replaceJS?: boolean} = {}) {
     options = {
         ...{replaceJS: true},
         ...options

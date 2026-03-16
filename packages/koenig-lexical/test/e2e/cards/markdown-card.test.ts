@@ -11,6 +11,7 @@ import {
     selectBackwards
 } from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,7 +26,7 @@ async function focusMarkdownEditor(page) {
 test.describe('Markdown card', async () => {
     const ctrlOrCmd = isMac() ? 'Meta' : 'Control';
 
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();

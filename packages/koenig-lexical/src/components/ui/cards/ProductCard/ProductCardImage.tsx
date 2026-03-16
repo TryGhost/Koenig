@@ -6,6 +6,18 @@ import {MediaPlaceholder} from '../../MediaPlaceholder.jsx';
 import {ProgressBar} from '../../ProgressBar.jsx';
 import {openFileSelection} from '../../../../utils/openFileSelection.js';
 
+interface ProductCardImageProps {
+    imgSrc?: string;
+    imgUploader?: {isLoading?: boolean; progress?: number; errors?: {message: string}[]};
+    imgDragHandler?: {isDraggedOver?: boolean; setRef?: React.Ref<HTMLDivElement>};
+    onImgChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    imgMimeTypes?: string[];
+    onRemoveImage?: () => void;
+    isPinturaEnabled?: boolean;
+    openImageEditor?: (opts: unknown) => void;
+    isEditing?: boolean;
+}
+
 export function ProductCardImage({
     imgSrc,
     imgUploader = {},
@@ -16,12 +28,12 @@ export function ProductCardImage({
     isPinturaEnabled,
     openImageEditor,
     isEditing
-}) {
-    const fileInputRef = React.useRef(null);
+}: ProductCardImageProps) {
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
 
-    const onRemove = (e) => {
+    const onRemove = (e: React.MouseEvent) => {
         e.stopPropagation(); // prevents card from losing selected state
-        onRemoveImage();
+        onRemoveImage?.();
     };
 
     const showPlaceholder = imgDragHandler.isDraggedOver || !imgSrc;
@@ -45,10 +57,10 @@ export function ProductCardImage({
                                 size='small'
                             />
 
-                            <form onChange={onImgChange}>
+                            <form onChange={onImgChange as unknown as React.FormEventHandler}>
                                 <input
                                     ref={fileInputRef}
-                                    accept={imgMimeTypes.join(',')}
+                                    accept={imgMimeTypes?.join(',')}
                                     hidden={true}
                                     name="image-input"
                                     type='file'
@@ -82,14 +94,14 @@ export function ProductCardImage({
                                 isEditing && isPinturaEnabled && (
                                     <>
                                         <div className="absolute right-16 top-5 flex opacity-0 transition-all group-hover/image:opacity-100">
-                                            <IconButton dataTestId="replace-product-image" Icon={WandIcon} label="Edit" onClick={() => openImageEditor({
+                                            <IconButton dataTestId="replace-product-image" Icon={WandIcon} label="Edit" onClick={() => openImageEditor?.({
                                                 image: imgSrc,
-                                                handleSave: (editedImage) => {
-                                                    onImgChange({
+                                                handleSave: (editedImage: File) => {
+                                                    onImgChange?.({
                                                         target: {
                                                             files: [editedImage]
                                                         }
-                                                    });
+                                                    } as unknown as React.ChangeEvent<HTMLInputElement>);
                                                 }
                                             })} />
                                         </div>

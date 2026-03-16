@@ -1,6 +1,7 @@
 import path from 'path';
 import {assertHTML, ctrlOrCmd, focusEditor, html, initialize, insertCard, selectBackwards} from '../utils/e2e';
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {fileURLToPath} from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -8,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 test.describe('Floating format toolbar', async () => {
     const ctrlOrCmdKey = ctrlOrCmd();
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();

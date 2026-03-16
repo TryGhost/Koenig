@@ -6,9 +6,9 @@ import {expect, vi} from 'vitest';
 import {useVisibilityToggle} from '../../../src/hooks/useVisibilityToggle';
 
 describe('useVisibilityToggle', () => {
-    let editor;
-    let node;
-    let cardConfig;
+    let editor: {update: ReturnType<typeof vi.fn>; getEditorState: ReturnType<typeof vi.fn>};
+    let node: {visibility: typeof DEFAULT_VISIBILITY; getIsVisibilityActive: ReturnType<typeof vi.fn>};
+    let cardConfig: {stripeEnabled: boolean};
 
     const DEFAULT_VISIBILITY = {
         web: {
@@ -38,7 +38,7 @@ describe('useVisibilityToggle', () => {
             }))
         };
 
-        $getNodeByKey.mockReturnValue(node);
+        vi.mocked($getNodeByKey).mockReturnValue(node as unknown as ReturnType<typeof $getNodeByKey>);
 
         cardConfig = {
             stripeEnabled: true

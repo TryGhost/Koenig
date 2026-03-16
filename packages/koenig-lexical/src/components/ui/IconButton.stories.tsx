@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DeleteIcon from '../../assets/icons/kg-trash.svg?react';
 import {IconButton} from './IconButton';
 

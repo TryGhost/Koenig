@@ -8,21 +8,28 @@ import {MarkdownCard} from '../components/ui/cards/MarkdownCard';
 import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
 import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import type {MarkdownNode} from '@tryghost/kg-default-nodes';
 
-export function MarkdownNodeComponent({nodeKey, markdown}) {
+interface MarkdownNodeComponentProps {
+    nodeKey: string;
+    markdown: string;
+}
+
+export function MarkdownNodeComponent({nodeKey, markdown}: MarkdownNodeComponentProps) {
     const [editor] = useLexicalComposerContext();
     const cardContext = React.useContext(CardContext);
     const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
 
-    const updateMarkdown = (value) => {
+    const updateMarkdown = (value: string) => {
         editor.update(() => {
-            const node = $getNodeByKey(nodeKey);
+            const node = $getNodeByKey(nodeKey) as MarkdownNode | null;
+            if (!node) {return;}
             node.markdown = value;
         });
     };
 
-    const handleToolbarEdit = (event) => {
+    const handleToolbarEdit = (event: React.MouseEvent) => {
         event.preventDefault();
         event.stopPropagation();
         editor.dispatchCommand(EDIT_CARD_COMMAND, {cardKey: nodeKey, focusEditor: false});
@@ -34,7 +41,6 @@ export function MarkdownNodeComponent({nodeKey, markdown}) {
                 imageUploader={fileUploader.useFileUpload}
                 isEditing={cardContext.isEditing}
                 markdown={markdown}
-                nodeKey={nodeKey}
                 unsplashConf={cardConfig.unsplash}
                 updateMarkdown={updateMarkdown}
             />
@@ -48,7 +54,7 @@ export function MarkdownNodeComponent({nodeKey, markdown}) {
 
             <ActionToolbar
                 data-kg-card-toolbar="markdown"
-                isVisible={markdown && cardContext.isSelected && !cardContext.isEditing && !showSnippetToolbar}
+                isVisible={!!markdown && cardContext.isSelected && !cardContext.isEditing && !showSnippetToolbar}
             >
                 <ToolbarMenu>
                     <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />

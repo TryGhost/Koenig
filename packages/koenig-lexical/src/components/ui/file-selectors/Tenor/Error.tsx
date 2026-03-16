@@ -1,6 +1,10 @@
 import {ERROR_TYPE} from '../../../../utils/services/tenor.js';
 
-export function Error({error}) {
+interface ErrorProps {
+    error: string;
+}
+
+export function Error({error}: ErrorProps) {
     if (error === ERROR_TYPE.COMMON) {
         return (
             <p>

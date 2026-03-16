@@ -1,8 +1,13 @@
 import React from 'react';
+import type {EditorState, LexicalEditor} from 'lexical';
 
-const Context = React.createContext({});
+interface SharedOnChangeContextType {
+    onChange: (editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => void;
+}
 
-export const SharedOnChangeContext = ({onChange, children}) => {
+const Context = React.createContext<SharedOnChangeContextType>({} as SharedOnChangeContextType);
+
+export const SharedOnChangeContext = ({onChange, children}: {onChange: (editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => void; children: React.ReactNode}) => {
     const onChangeContext = React.useMemo(
         () => ({onChange}),
         [onChange]

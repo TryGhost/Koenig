@@ -1,5 +1,4 @@
 import ImageUploadForm from '../ImageUploadForm';
-import PropTypes from 'prop-types';
 import React from 'react';
 import WandIcon from '../../../assets/icons/kg-wand.svg?react';
 import {CardCaptionEditor} from '../CardCaptionEditor';
@@ -8,17 +7,45 @@ import {IconButton} from '../IconButton';
 import {ProgressBar} from '../ProgressBar';
 import {isGif} from '../../../utils/isGif';
 import {openFileSelection} from '../../../utils/openFileSelection';
+import type {LexicalEditor} from 'lexical';
 
-function PopulatedImageCard({src, alt, previewSrc, imageUploader, imageCardDragHandler, imageFileDragHandler, isPinturaEnabled, openImageEditor, onFileChange}) {
+interface FileUploader {
+    isLoading?: boolean;
+    progress?: number;
+    errors?: {message: string}[];
+}
+
+interface DragHandler {
+    isDraggedOver?: boolean;
+    setRef?: ((el: HTMLElement | null) => void) | React.Ref<HTMLDivElement>;
+}
+
+interface PopulatedImageCardProps {
+    src?: string;
+    alt?: string;
+    previewSrc?: string;
+    imageUploader: FileUploader;
+    imageCardDragHandler?: DragHandler;
+    imageFileDragHandler?: DragHandler;
+    isPinturaEnabled?: boolean;
+    openImageEditor?: (opts: unknown) => void;
+    onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+function PopulatedImageCard({src, alt, previewSrc, imageUploader, imageCardDragHandler, imageFileDragHandler, isPinturaEnabled, openImageEditor, onFileChange}: PopulatedImageCardProps) {
     const progressStyle = {
         width: `${imageUploader.progress?.toFixed(0)}%`
     };
 
-    const progressAlt = imageUploader.progress.toFixed(0) < 100 ? `upload in progress, ${imageUploader.progress}` : '';
+    const progressAlt = (imageUploader.progress || 0) < 100 ? `upload in progress, ${imageUploader.progress}` : '';
 
-    function setRef(element) {
-        imageFileDragHandler?.setRef(element);
-        imageCardDragHandler?.setRef(element);
+    function setRef(element: HTMLDivElement | null) {
+        if (typeof imageFileDragHandler?.setRef === 'function') {
+            imageFileDragHandler.setRef(element);
+        }
+        if (typeof imageCardDragHandler?.setRef === 'function') {
+            imageCardDragHandler.setRef(element);
+        }
     }
 
     return (
@@ -45,17 +72,17 @@ function PopulatedImageCard({src, alt, previewSrc, imageUploader, imageCardDragH
                     <CardText text="Drop to replace image" />
                 </div>
             ) : null}
-            {(isPinturaEnabled && !isGif(src)) &&
+            {(isPinturaEnabled && !isGif(src || '')) &&
                 <div className={`pointer-events-none invisible absolute inset-0 bg-gradient-to-t from-black/0 via-black/5 to-black/30 p-3 opacity-0 transition-all group-hover/image:visible group-hover/image:opacity-100`}>
                     <div className="flex flex-row-reverse">
-                        <IconButton Icon={WandIcon} label="Edit" onClick={() => openImageEditor({
+                        <IconButton Icon={WandIcon} label="Edit" onClick={() => openImageEditor?.({
                             image: src,
-                            handleSave: (editedImage) => {
-                                onFileChange({
+                            handleSave: (editedImage: File) => {
+                                onFileChange?.({
                                     target: {
                                         files: [editedImage]
                                     }
-                                });
+                                } as unknown as React.ChangeEvent<HTMLInputElement>);
                             }
                         })} />
                     </div>
@@ -65,11 +92,18 @@ function PopulatedImageCard({src, alt, previewSrc, imageUploader, imageCardDragH
     );
 }
 
-function EmptyImageCard({onFileChange, setFileInputRef, imageFileDragHandler, errors}) {
-    const fileInputRef = React.useRef(null);
+interface EmptyImageCardProps {
+    onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setFileInputRef: (ref: React.RefObject<HTMLInputElement | null>) => void;
+    imageFileDragHandler?: DragHandler;
+    errors?: {message: string}[];
+}
 
-    const onFileInputRef = (element) => {
-        fileInputRef.current = element;
+function EmptyImageCard({onFileChange, setFileInputRef, imageFileDragHandler, errors}: EmptyImageCardProps) {
+    const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+    const onFileInputRef = (element: HTMLInputElement | null) => {
+        (fileInputRef as React.MutableRefObject<HTMLInputElement | null>).current = element;
         setFileInputRef(fileInputRef);
     };
 
@@ -86,10 +120,23 @@ function EmptyImageCard({onFileChange, setFileInputRef, imageFileDragHandler, er
             <ImageUploadForm
                 fileInputRef={onFileInputRef}
                 filePicker={() => openFileSelection({fileInputRef})}
-                onFileChange={onFileChange}
+                onFileChange={onFileChange!}
             />
         </>
     );
+}
+
+interface ImageHolderProps {
+    src?: string;
+    altText?: string;
+    previewSrc?: string;
+    imageUploader: FileUploader;
+    onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    setFileInputRef: (ref: React.RefObject<HTMLInputElement | null>) => void;
+    imageCardDragHandler?: DragHandler;
+    imageFileDragHandler?: DragHandler;
+    isPinturaEnabled?: boolean;
+    openImageEditor?: (opts: unknown) => void;
 }
 
 const ImageHolder = ({
@@ -103,7 +150,7 @@ const ImageHolder = ({
     imageFileDragHandler,
     isPinturaEnabled,
     openImageEditor
-}) => {
+}: ImageHolderProps) => {
     if (previewSrc || src) {
         return (
             <PopulatedImageCard
@@ -130,6 +177,25 @@ const ImageHolder = ({
     }
 };
 
+interface ImageCardProps {
+    isSelected?: boolean;
+    src?: string;
+    onFileChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    captionEditor?: LexicalEditor;
+    captionEditorInitialState?: string;
+    altText?: string;
+    setAltText?: (value: string) => void;
+    setFigureRef?: (ref: React.RefObject<HTMLElement | null>) => void;
+    fileInputRef?: React.MutableRefObject<HTMLInputElement | null>;
+    cardWidth?: string;
+    previewSrc?: string;
+    imageUploader: FileUploader;
+    imageCardDragHandler?: DragHandler;
+    imageFileDragHandler?: DragHandler;
+    isPinturaEnabled?: boolean;
+    openImageEditor?: (opts: unknown) => void;
+}
+
 export function ImageCard({
     isSelected,
     src,
@@ -147,8 +213,8 @@ export function ImageCard({
     imageFileDragHandler,
     isPinturaEnabled,
     openImageEditor
-}) {
-    const figureRef = React.useRef(null);
+}: ImageCardProps) {
+    const figureRef = React.useRef<HTMLElement>(null);
 
     React.useEffect(() => {
         if (setFigureRef) {
@@ -156,7 +222,7 @@ export function ImageCard({
         }
     }, [figureRef, setFigureRef]);
 
-    const setFileInputRef = (ref) => {
+    const setFileInputRef = (ref: React.RefObject<HTMLInputElement | null>) => {
         if (fileInputRef) {
             fileInputRef.current = ref.current;
         }
@@ -176,69 +242,20 @@ export function ImageCard({
                     src={src}
                     onFileChange={onFileChange}
                 />
-                <CardCaptionEditor
-                    altText={altText || ''}
-                    altTextPlaceholder="Type alt text for image (optional)"
-                    captionEditor={captionEditor}
-                    captionEditorInitialState={captionEditorInitialState}
-                    captionPlaceholder="Type caption for image (optional)"
-                    dataTestId="image-caption-editor"
-                    isSelected={isSelected}
-                    readOnly={!isSelected}
-                    setAltText={setAltText}
-                />
+                {captionEditor && (
+                    <CardCaptionEditor
+                        altText={altText || ''}
+                        altTextPlaceholder="Type alt text for image (optional)"
+                        captionEditor={captionEditor}
+                        captionEditorInitialState={captionEditorInitialState}
+                        captionPlaceholder="Type caption for image (optional)"
+                        dataTestId="image-caption-editor"
+                        isSelected={isSelected}
+                        readOnly={!isSelected}
+                        setAltText={setAltText}
+                    />
+                )}
             </figure>
         </>
     );
 }
-
-ImageHolder.propTypes = {
-    src: PropTypes.string,
-    altText: PropTypes.string,
-    previewSrc: PropTypes.string,
-    imageUploader: PropTypes.object,
-    onFileChange: PropTypes.func,
-    setFileInputRef: PropTypes.func,
-    imageFileDragHandler: PropTypes.object,
-    imageCardDragHandler: PropTypes.object,
-    isPinturaEnabled: PropTypes.bool,
-    openImageEditor: PropTypes.func
-};
-
-PopulatedImageCard.propTypes = {
-    src: PropTypes.string,
-    alt: PropTypes.string,
-    previewSrc: PropTypes.string,
-    imageUploader: PropTypes.object,
-    imageCardDragHandler: PropTypes.object,
-    imageFileDragHandler: PropTypes.object,
-    isPinturaEnabled: PropTypes.bool,
-    openImageEditor: PropTypes.func,
-    onFileChange: PropTypes.func
-};
-
-EmptyImageCard.propTypes = {
-    onFileChange: PropTypes.func,
-    setFileInputRef: PropTypes.func,
-    errors: PropTypes.array,
-    imageFileDragHandler: PropTypes.object
-};
-
-ImageCard.propTypes = {
-    isSelected: PropTypes.bool,
-    src: PropTypes.string,
-    onFileChange: PropTypes.func,
-    captionEditor: PropTypes.object,
-    captionEditorInitialState: PropTypes.object,
-    altText: PropTypes.string,
-    setAltText: PropTypes.func,
-    setFigureRef: PropTypes.func,
-    fileInputRef: PropTypes.object,
-    cardWidth: PropTypes.string,
-    previewSrc: PropTypes.string,
-    imageUploader: PropTypes.object,
-    imageFileDragHandler: PropTypes.object,
-    imageCardDragHandler: PropTypes.object,
-    isPinturaEnabled: PropTypes.bool,
-    openImageEditor: PropTypes.func
-};

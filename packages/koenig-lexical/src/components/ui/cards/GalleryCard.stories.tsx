@@ -1,3 +1,4 @@
+// @ts-nocheck
 import CardContext from '../../../context/CardContext';
 import populateEditor from '../../../utils/storybook/populate-storybook-editor';
 import {CardWrapper} from './../CardWrapper';

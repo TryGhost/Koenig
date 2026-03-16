@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Button} from './Button';
 
 const story = {

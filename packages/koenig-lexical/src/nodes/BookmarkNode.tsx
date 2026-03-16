@@ -1,18 +1,19 @@
 import BookmarkCardIcon from '../assets/icons/kg-card-type-bookmark.svg?react';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {BookmarkNode as BaseBookmarkNode} from '@tryghost/kg-default-nodes';
 import {BookmarkNodeComponent} from './BookmarkNodeComponent';
 import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_BOOKMARK_COMMAND = createCommand();
 
 export class BookmarkNode extends BaseBookmarkNode {
-    __captionEditor;
-    __captionEditorInitialState;
-    __createdWithUrl;
+    __captionEditor!: LexicalEditor;
+    __captionEditorInitialState: unknown;
+    __createdWithUrl: boolean;
 
     static kgMenu = [{
         label: 'Bookmark',
@@ -29,13 +30,13 @@ export class BookmarkNode extends BaseBookmarkNode {
         return BookmarkCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         this.__createdWithUrl = !!dataset.url && !dataset.metadata;
 
         // set up nested editor instances
-        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.captionEditor && dataset.caption) {
@@ -63,7 +64,7 @@ export class BookmarkNode extends BaseBookmarkNode {
             this.__captionEditor.getEditorState().read(() => {
                 const html = $generateHtmlFromNodes(this.__captionEditor, null);
                 const cleanedHtml = cleanBasicHtml(html);
-                json.caption = cleanedHtml;
+                json.caption = cleanedHtml ?? "";
             });
         }
 
@@ -74,27 +75,27 @@ export class BookmarkNode extends BaseBookmarkNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <BookmarkNodeComponent
-                    author={this.author}
+                    author={this.author as string}
                     captionEditor={this.__captionEditor}
-                    captionEditorInitialState={this.__captionEditorInitialState}
+                    captionEditorInitialState={this.__captionEditorInitialState as string | undefined}
                     createdWithUrl={this.__createdWithUrl}
-                    description={this.description}
-                    icon={this.icon}
+                    description={this.description as string}
+                    icon={this.icon as string}
                     nodeKey={this.getKey()}
-                    publisher={this.publisher}
-                    thumbnail={this.thumbnail}
-                    title={this.title}
-                    url={this.url}
+                    publisher={this.publisher as string}
+                    thumbnail={this.thumbnail as string}
+                    title={this.title as string}
+                    url={this.url as string}
                 />
             </KoenigCardWrapper>
         );
     }
 }
 
-export const $createBookmarkNode = (dataset) => {
+export const $createBookmarkNode = (dataset: Record<string, unknown>) => {
     return new BookmarkNode(dataset);
 };
 
-export function $isBookmarkNode(node) {
+export function $isBookmarkNode(node: unknown): node is BookmarkNode {
     return node instanceof BookmarkNode;
 }

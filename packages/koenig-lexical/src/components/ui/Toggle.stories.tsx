@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Toggle} from './Toggle';
 
 const story = {

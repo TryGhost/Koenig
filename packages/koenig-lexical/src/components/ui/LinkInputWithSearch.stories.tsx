@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {LinkInputWithSearch} from './LinkInputWithSearch';
 
 const story = {

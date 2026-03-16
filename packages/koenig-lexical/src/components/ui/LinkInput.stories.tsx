@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {LinkInput} from './LinkInput';
 
 const story = {

@@ -1,6 +1,7 @@
 import path from 'path';
 import {assertHTML, focusEditor, html, initialize, insertCard, pasteText, selectBackwards} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
+import type {Page} from '@playwright/test';
 import {fileURLToPath} from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -51,7 +52,7 @@ async function insertCardFromMenu(page, {shortcut, menuItem, selector}) {
 }
 
 test.describe('Koenig Editor with email template nodes', async function () {
-    let page;
+    let page: Page;
 
     test.beforeAll(async ({browser}) => {
         page = await browser.newPage();

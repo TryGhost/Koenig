@@ -10,39 +10,57 @@ export const ERROR_TYPE = {
     INVALID_API_KEY: 'invalid_key'
 };
 
-export function useTenor({config}) {
-    const [columns, setColumns] = useState([]);
-    const [error, setError] = useState(null);
+interface TenorGif {
+    media_formats: {tinygif: {dims: [number, number]}};
+    ratio: number;
+    columnIndex: number;
+    columnRowIndex: number;
+    index: number;
+    [key: string]: unknown;
+}
+
+interface TenorConfig {
+    googleApiKey: string;
+    contentFilter?: string;
+}
+
+interface MakeRequestOptions {
+    params: Record<string, string>;
+    ignoreErrors?: boolean;
+}
+
+export function useTenor({config}: {config: TenorConfig}) {
+    const [columns, setColumns] = useState<TenorGif[][]>([]);
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setLoading] = useState(false);
     const [isLazyLoading, setLazyLoading] = useState(false);
-    const [gifs, setGifs] = useState([]);
+    const [gifs, setGifs] = useState<TenorGif[]>([]);
 
     // useRef const for internal calculations
-    const nextPos = useRef(null);
+    const nextPos = useRef<string | null>(null);
     const loadedType = useRef('');
-    const columnHeights = useRef([]);
-    const lastRequestArgs = useRef(null);
+    const columnHeights = useRef<number[]>([]);
     const searchTerm = useRef('');
     const columnCount = useRef(4);
     // There are a lot of calculations for columns/gifs, and there is no need to update the state every time.
     // Use this const for computations; once everything is ready, update columns/gifs state for external usage.
-    const internalStateColumns = useRef([]);
-    const internalStateGifs = useRef([]);
+    const internalStateColumns = useRef<TenorGif[][]>([]);
+    const internalStateGifs = useRef<TenorGif[]>([]);
 
-    function search(term) {
+    function search(term: string) {
         searchTerm.current = term;
         reset();
 
         if (term) {
             return searchTask(term);
         } else {
-            return loadTrendingGifs(term);
+            return loadTrendingGifs();
         }
     }
 
     const updateSearch = debounce((term = '') => search(term), DEBOUNCE_MS);
 
-    async function searchTask(term) {
+    async function searchTask(term: string) {
         loadedType.current = 'search';
 
         await makeRequest(loadedType.current, {params: {
@@ -67,8 +85,8 @@ export function useTenor({config}) {
     }
 
     function resetColumns() {
-        let newColumns = [];
-        let newColumnHeights = [];
+        const newColumns: TenorGif[][] = [];
+        const newColumnHeights: number[] = [];
 
         // pre-fill column arrays based on columnCount
         for (let i = 0; i < columnCount.current; i += 1) {
@@ -90,7 +108,7 @@ export function useTenor({config}) {
         });
     }
 
-    function addGifToColumns(gif) {
+    function addGifToColumns(gif: TenorGif) {
         const min = Math.min(...columnHeights.current);
         const columnIndex = columnHeights.current.indexOf(min);
 
@@ -103,7 +121,7 @@ export function useTenor({config}) {
         gif.columnRowIndex = internalStateColumns.current[columnIndex].length - 1;
     }
 
-    function addGif(gif, gifIndex) {
+    function addGif(gif: TenorGif, gifIndex: number) {
         // re-calculate ratio for later use
         const [width, height] = gif.media_formats.tinygif.dims;
         gif.ratio = height / width;
@@ -118,7 +136,7 @@ export function useTenor({config}) {
         addGifToColumns(gif);
     }
 
-    async function makeRequest(path, options) {
+    async function makeRequest(path: string, options: MakeRequestOptions) {
         const versionedPath = `${API_VERSION}/${path}`.replace(/\/+/, '/');
         const url = new URL(versionedPath, API_URL);
 
@@ -128,9 +146,6 @@ export function useTenor({config}) {
         params.set('contentfilter', getContentFilter());
 
         url.search = params.toString();
-
-        // store the url so it can be retried if needed
-        lastRequestArgs.current = arguments;
 
         setError(null);
         setLoading(true);
@@ -161,33 +176,37 @@ export function useTenor({config}) {
             });
     }
 
-    async function checkStatus(response) {
+    async function checkStatus(response: Response): Promise<Response> {
         // successful request
         if (response.status >= 200 && response.status < 300) {
             return response;
         }
 
-        let responseText;
+        let responseText: string | undefined;
 
-        if (response.headers.map['content-type'].startsWith('application/json')) {
-            responseText = await response.json().then(json => json.error.message || json.error);
-        } else if (response.headers.map['content-type'] === 'text/xml') {
+        const contentType = response.headers.get('content-type');
+        if (contentType?.startsWith('application/json')) {
+            responseText = await response.json().then((json: {error: {message?: string} | string}) => {
+                const err = json.error;
+                return typeof err === 'string' ? err : err.message || String(err);
+            });
+        } else if (contentType === 'text/xml') {
             responseText = await response.text();
         }
 
-        setError(responseText);
+        setError(responseText || null);
 
-        const responseError = new Error(responseText);
+        const responseError = new Error(responseText) as Error & {response: Response};
         responseError.response = response;
         throw responseError;
     }
 
-    async function extractPagination(response) {
-        nextPos.current = response.next;
+    async function extractPagination(response: {next?: string; results: TenorGif[]}) {
+        nextPos.current = response.next || null;
         return response;
     }
 
-    async function addGifsFromResponse(response) {
+    async function addGifsFromResponse(response: {results: TenorGif[]}) {
         const newGifs = response.results;
         newGifs.forEach((gif, index) => addGif(gif, index));
 
@@ -205,13 +224,13 @@ export function useTenor({config}) {
         }
 
         if (nextPos.current !== null) {
-            const params = {
+            const params: Record<string, string> = {
                 pos: nextPos.current,
                 media_filter: 'minimal'
             };
 
             if (loadedType.current === 'search') {
-                params.q = searchTerm;
+                params.q = searchTerm.current;
             }
 
             setLazyLoading(true);
@@ -224,7 +243,7 @@ export function useTenor({config}) {
         return config.contentFilter || 'off';
     }
 
-    function changeColumnCount(count) {
+    function changeColumnCount(count: number) {
         columnCount.current = count;
         resetColumns();
         setColumns(internalStateColumns.current);

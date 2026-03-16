@@ -32,9 +32,9 @@ export class ButtonNode extends BaseButtonNode {
                 wrapperStyle="wide"
             >
                 <ButtonNodeComponent
-                    alignment={this.alignment}
-                    buttonText={this.buttonText}
-                    buttonUrl={this.buttonUrl}
+                    alignment={this.alignment as string}
+                    buttonText={this.buttonText as string}
+                    buttonUrl={this.buttonUrl as string}
                     nodeKey={this.getKey()}
                 />
             </KoenigCardWrapper>
@@ -42,10 +42,10 @@ export class ButtonNode extends BaseButtonNode {
     }
 }
 
-export function $createButtonNode(dataset) {
+export function $createButtonNode(dataset: Record<string, unknown>) {
     return new ButtonNode(dataset);
 }
 
-export function $isButtonNode(node) {
+export function $isButtonNode(node: unknown): node is ButtonNode {
     return node instanceof ButtonNode;
 }

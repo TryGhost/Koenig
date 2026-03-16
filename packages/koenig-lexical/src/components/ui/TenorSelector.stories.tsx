@@ -1,3 +1,4 @@
+// @ts-nocheck
 import TenorSelector from './TenorSelector';
 import {tenorConfig} from '../../../demo/utils/tenorConfig';
 import {useTenor} from '../../utils/services/tenor.js';

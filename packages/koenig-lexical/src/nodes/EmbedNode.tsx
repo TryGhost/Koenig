@@ -5,20 +5,21 @@ import SpotifyIcon from '../assets/icons/kg-card-type-spotify.svg?react';
 import VimeoIcon from '../assets/icons/kg-card-type-vimeo.svg?react';
 import XIcon from '../assets/icons/kg-card-type-x.svg?react';
 import YouTubeIcon from '../assets/icons/kg-card-type-youtube.svg?react';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {EmbedNode as BaseEmbedNode} from '@tryghost/kg-default-nodes';
 import {EmbedNodeComponent} from './EmbedNodeComponent';
 import {KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
 
 export const INSERT_EMBED_COMMAND = createCommand();
 
 export class EmbedNode extends BaseEmbedNode {
-    __captionEditor;
-    __captionEditorInitialState;
-    __createdWithUrl;
+    __captionEditor!: LexicalEditor;
+    __captionEditorInitialState: unknown;
+    __createdWithUrl: unknown;
 
     static kgMenu = [{
         section: 'Embeds',
@@ -53,7 +54,7 @@ export class EmbedNode extends BaseEmbedNode {
         matches: ['twitter', 'x'],
         priority: 3,
         shortcut: '/twitter [url]',
-        isHidden: ({config}) => config?.editorType === 'email'
+        isHidden: ({config}: {config?: Record<string, unknown>}) => config?.editorType === 'email'
     },
     {
         section: 'Embeds',
@@ -65,7 +66,7 @@ export class EmbedNode extends BaseEmbedNode {
         matches: ['vimeo'],
         priority: 4,
         shortcut: '/vimeo [url]',
-        isHidden: ({config}) => config?.editorType === 'email'
+        isHidden: ({config}: {config?: Record<string, unknown>}) => config?.editorType === 'email'
     },
     {
         section: 'Embeds',
@@ -77,7 +78,7 @@ export class EmbedNode extends BaseEmbedNode {
         matches: ['codepen'],
         priority: 5,
         shortcut: '/codepen [url]',
-        isHidden: ({config}) => config?.editorType === 'email'
+        isHidden: ({config}: {config?: Record<string, unknown>}) => config?.editorType === 'email'
     },
     {
         section: 'Embeds',
@@ -89,7 +90,7 @@ export class EmbedNode extends BaseEmbedNode {
         matches: ['spotify'],
         priority: 6,
         shortcut: '/spotify [url]',
-        isHidden: ({config}) => config?.editorType === 'email'
+        isHidden: ({config}: {config?: Record<string, unknown>}) => config?.editorType === 'email'
     },
     {
         section: 'Embeds',
@@ -101,19 +102,19 @@ export class EmbedNode extends BaseEmbedNode {
         matches: ['soundcloud'],
         priority: 7,
         shortcut: '/soundcloud [url]',
-        isHidden: ({config}) => config?.editorType === 'email'
+        isHidden: ({config}: {config?: Record<string, unknown>}) => config?.editorType === 'email'
     }];
 
     getIcon() {
         return EmbedCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         this.__createdWithUrl = !!dataset.url && !dataset.html;
 
-        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__captionEditor', {editor: dataset.captionEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.captionEditor && dataset.caption) {
@@ -155,21 +156,21 @@ export class EmbedNode extends BaseEmbedNode {
                     captionEditor={this.__captionEditor}
                     captionEditorInitialState={this.__captionEditorInitialState}
                     createdWithUrl={this.__createdWithUrl}
-                    embedType={this.embedType}
-                    html={this.html}
+                    embedType={this.embedType as string}
+                    html={this.html as string}
                     metadata={this.metadata}
                     nodeKey={this.getKey()}
-                    url={this.url}
+                    url={this.url as string}
                 />
             </KoenigCardWrapper>
         );
     }
 }
 
-export const $createEmbedNode = (dataset) => {
+export const $createEmbedNode = (dataset: Record<string, unknown>) => {
     return new EmbedNode(dataset);
 };
 
-export function $isEmbedNode(node) {
+export function $isEmbedNode(node: unknown): node is EmbedNode {
     return node instanceof EmbedNode;
 }

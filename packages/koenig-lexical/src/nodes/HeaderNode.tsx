@@ -3,20 +3,48 @@ import HeaderNodeComponent from './header/v2/HeaderNodeComponent';
 import HeaderNodeComponentV1 from './header/v1/HeaderNodeComponent';
 import KoenigCardWrapper from '../components/KoenigCardWrapper';
 import MINIMAL_NODES from './MinimalNodes';
+import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
 import {HeaderNode as BaseHeaderNode} from '@tryghost/kg-default-nodes';
-import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
+import type {LexicalEditor} from 'lexical';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+
+type Alignment = 'left' | 'center';
+type BackgroundSize = 'cover' | 'contain';
+type Layout = 'regular' | 'wide' | 'full' | 'split';
+
+interface HeaderNodeProperties {
+    size: string;
+    style: string;
+    buttonEnabled: boolean;
+    buttonUrl: string;
+    buttonText: string;
+    header: string;
+    subheader: string;
+    backgroundImageSrc: string;
+    version: number;
+    accentColor: string;
+    alignment: Alignment;
+    backgroundColor: string;
+    backgroundImageWidth: number;
+    backgroundImageHeight: number;
+    backgroundSize: BackgroundSize;
+    textColor: string;
+    buttonColor: string;
+    buttonTextColor: string;
+    layout: Layout;
+    swapped: boolean;
+}
 
 export const INSERT_HEADER_COMMAND = createCommand();
 
 export class HeaderNode extends BaseHeaderNode {
-    __headerTextEditor;
-    __subheaderTextEditor;
-    __headerTextEditorInitialState;
-    __subheaderTextEditorInitialState;
+    __headerTextEditor!: LexicalEditor;
+    __subheaderTextEditor!: LexicalEditor;
+    __headerTextEditorInitialState: unknown;
+    __subheaderTextEditorInitialState: unknown;
 
     // We keep Header v1 here for testing and backwards compatibility
     // we keep it hidden in the Menu in Ghost but visible in the Demo to ensure it remains tested till we full deprecate it in the future
@@ -31,8 +59,8 @@ export class HeaderNode extends BaseHeaderNode {
             insertParams: () => ({
                 version: 1
             }),
-            isHidden: ({config}) => {
-                return config?.deprecated?.headerV1 ?? true;
+            isHidden: ({config}: {config?: Record<string, unknown>}) => {
+                return (config?.deprecated as Record<string, unknown> | undefined)?.headerV1 ?? true;
             },
             shortcut: '/header'
         },
@@ -54,11 +82,11 @@ export class HeaderNode extends BaseHeaderNode {
         return HeaderCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
-        setupNestedEditor(this, '__headerTextEditor', {editor: dataset.headerTextEditor, nodes: MINIMAL_NODES});
-        setupNestedEditor(this, '__subheaderTextEditor', {editor: dataset.subheaderTextEditor, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__headerTextEditor', {editor: dataset.headerTextEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
+        setupNestedEditor(this, '__subheaderTextEditor', {editor: dataset.subheaderTextEditor as LexicalEditor | undefined, nodes: MINIMAL_NODES});
 
         // populate nested editors on initial construction
         if (!dataset.headerTextEditor && dataset.header) {
@@ -115,56 +143,56 @@ export class HeaderNode extends BaseHeaderNode {
     }
 
     decorate() {
+        const props = this as unknown as HeaderNodeProperties;
         // for backwards compatibility with v1 cards
-        if (this.version === 1) {
+        if (props.version === 1) {
             return (
-                <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth()}>
+                <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth() as string | undefined}>
                     <HeaderNodeComponentV1
-                        backgroundImageSrc={this.backgroundImageSrc}
-                        button={this.buttonEnabled}
-                        buttonText={this.buttonText}
-                        buttonUrl={this.buttonUrl}
-                        header={this.header}
+                        backgroundImageSrc={props.backgroundImageSrc}
+                        button={props.buttonEnabled}
+                        buttonText={props.buttonText}
+                        buttonUrl={props.buttonUrl}
+                        header={props.header}
                         headerTextEditor={this.__headerTextEditor}
-                        headerTextEditorInitialState={this.__headerTextEditorInitialState}
+                        headerTextEditorInitialState={this.__headerTextEditorInitialState as string | undefined}
                         nodeKey={this.getKey()}
-                        size={this.size}
-                        subheader={this.subheader}
+                        size={props.size as 'small' | 'medium' | 'large'}
+                        subheader={props.subheader}
                         subheaderTextEditor={this.__subheaderTextEditor}
-                        subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState}
-                        type={this.style}
+                        subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState as string | undefined}
+                        type={props.style as 'dark' | 'light' | 'accent' | 'image'}
                     />
                 </KoenigCardWrapper>
             );
         }
 
-        if (this.version === 2) {
+        if (props.version === 2) {
             return (
-                <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth()}>
+                <KoenigCardWrapper nodeKey={this.getKey()} width={this.getCardWidth() as string | undefined}>
                     <HeaderNodeComponent
-                        accentColor={this.accentColor}
-                        alignment={this.alignment}
-                        backgroundColor={this.backgroundColor}
-                        backgroundImageHeight={this.backgroundImageHeight}
-                        backgroundImageSrc={this.backgroundImageSrc}
-                        backgroundImageWidth={this.backgroundImageWidth}
-                        backgroundSize={this.backgroundSize}
-                        buttonColor={this.buttonColor}
-                        buttonEnabled={this.buttonEnabled}
-                        buttonText={this.buttonText}
-                        buttonTextColor={this.buttonTextColor}
-                        buttonUrl={this.buttonUrl}
-                        header={this.header}
+                        accentColor={props.accentColor}
+                        alignment={props.alignment}
+                        backgroundColor={props.backgroundColor}
+                        backgroundImageHeight={props.backgroundImageHeight}
+                        backgroundImageSrc={props.backgroundImageSrc}
+                        backgroundImageWidth={props.backgroundImageWidth}
+                        backgroundSize={props.backgroundSize}
+                        buttonColor={props.buttonColor}
+                        buttonEnabled={props.buttonEnabled}
+                        buttonText={props.buttonText}
+                        buttonTextColor={props.buttonTextColor}
+                        buttonUrl={props.buttonUrl}
+                        header={props.header}
                         headerTextEditor={this.__headerTextEditor}
-                        headerTextEditorState={this.__headerTextEditorInitialState}
-                        isSwapped={this.swapped}
-                        layout={this.layout}
+                        headerTextEditorInitialState={this.__headerTextEditorInitialState as string | undefined}
+                        layout={props.layout}
                         nodeKey={this.getKey()}
-                        subheader={this.subheader}
+                        subheader={props.subheader}
                         subheaderTextEditor={this.__subheaderTextEditor}
-                        subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState}
-                        subheaderTextEditorState={this.__subheaderTextEditorInitialState}
-                        textColor={this.textColor}
+                        subheaderTextEditorInitialState={this.__subheaderTextEditorInitialState as string | undefined}
+                        isSwapped={props.swapped}
+                        textColor={props.textColor}
                     />
                 </KoenigCardWrapper>
             );
@@ -180,10 +208,10 @@ export class HeaderNode extends BaseHeaderNode {
     }
 }
 
-export const $createHeaderNode = (dataset) => {
+export const $createHeaderNode = (dataset: Record<string, unknown>) => {
     return new HeaderNode(dataset);
 };
 
-export function $isHeaderNode(node) {
+export function $isHeaderNode(node: unknown): node is HeaderNode {
     return node instanceof HeaderNode;
 }

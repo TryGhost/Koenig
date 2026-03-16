@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-key */
-
+// @ts-nocheck
 import {ToolbarMenu} from './ToolbarMenu';
 import {ToolbarMenuSeparator} from './ToolbarMenu';
 

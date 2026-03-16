@@ -1,3 +1,5 @@
+// @ts-nocheck
+import React, {useState} from 'react';
 import {Modal} from './Modal';
 import {useState} from 'react';
 
@@ -12,7 +14,7 @@ const story = {
 };
 export default story;
 
-const Template = (args) => {
+const Template = (_args) => {
     const [isOpen, setOpen] = useState(false);
 
     const openModal = () => setOpen(true);
