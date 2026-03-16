@@ -1,6 +1,7 @@
 import {LinkToolbar} from './LinkToolbar';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof LinkToolbar> = {
     title: 'Toolbar/LinkToolbar',
     component: LinkToolbar,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = (args) => {
+const Template: StoryFn<typeof LinkToolbar> = (args) => {
     return (
         <div className="flex">
             <LinkToolbar {...args} />

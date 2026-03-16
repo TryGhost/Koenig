@@ -1,5 +1,7 @@
 import {ButtonCard} from './ButtonCard';
 import {CardWrapper} from './../CardWrapper';
+import type {ComponentProps} from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
 const displayOptions = {
     Default: {isSelected: false, isEditing: false},
@@ -7,14 +9,15 @@ const displayOptions = {
     Editing: {isSelected: true, isEditing: true}
 };
 
-const story = {
+type StoryArgs = ComponentProps<typeof ButtonCard> & {display: keyof typeof displayOptions};
+
+const story: Meta<StoryArgs> = {
     title: 'Primary cards/Button card',
     component: ButtonCard,
-    subcomponent: {CardWrapper},
+    subcomponents: {CardWrapper},
     argTypes: {
         display: {
             options: Object.keys(displayOptions),
-            mapping: displayOptions,
             control: {
                 type: 'radio',
                 labels: {
@@ -38,11 +41,11 @@ const story = {
 };
 export default story;
 
-const Template = ({display, ...args}) => (
+const Template: StoryFn<StoryArgs> = ({display, ...args}) => (
     <div className="kg-prose">
         <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
-            <CardWrapper wrapperStyle='wide' {...display} {...args}>
-                <ButtonCard {...display} {...args} />
+            <CardWrapper wrapperStyle='wide' {...displayOptions[display]} {...args}>
+                <ButtonCard {...displayOptions[display]} {...args} />
             </CardWrapper>
         </div>
     </div>

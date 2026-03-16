@@ -36,18 +36,18 @@ describe('Utils: getGifProviderConfig', () => {
             klipy: {apiKey: 'klipy-key'}
         });
 
-        expect(config.provider).toEqual('klipy');
-        expect(config.apiKey).toEqual('klipy-key');
+        expect(config!.provider).toEqual('klipy');
+        expect(config!.apiKey).toEqual('klipy-key');
     });
 
     test('passes through a configured content filter', () => {
-        expect(getGifProviderConfig({tenor: {googleApiKey: 'k', contentFilter: 'high'}}).contentFilter).toEqual('high');
-        expect(getGifProviderConfig({klipy: {apiKey: 'k', contentFilter: 'low'}}).contentFilter).toEqual('low');
+        expect(getGifProviderConfig({tenor: {googleApiKey: 'k', contentFilter: 'high'}})!.contentFilter).toEqual('high');
+        expect(getGifProviderConfig({klipy: {apiKey: 'k', contentFilter: 'low'}})!.contentFilter).toEqual('low');
     });
 
     test('falls back to Tenor when the Klipy config is present but has no key', () => {
-        expect(getGifProviderConfig({klipy: {}, tenor: {googleApiKey: 'tenor-key'}}).provider).toEqual('tenor');
-        expect(getGifProviderConfig({klipy: {apiKey: ''}, tenor: {googleApiKey: 'tenor-key'}}).provider).toEqual('tenor');
+        expect(getGifProviderConfig({klipy: {}, tenor: {googleApiKey: 'tenor-key'}})!.provider).toEqual('tenor');
+        expect(getGifProviderConfig({klipy: {apiKey: ''}, tenor: {googleApiKey: 'tenor-key'}})!.provider).toEqual('tenor');
     });
 });
 

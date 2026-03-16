@@ -1,8 +1,10 @@
-import populateEditor from '../../../utils/storybook/populate-storybook-editor.js';
-import {BASIC_NODES, MINIMAL_NODES} from '../../../index.js';
+import populateEditor from '../../../utils/storybook/populate-storybook-editor';
+import {BASIC_NODES, MINIMAL_NODES} from '../../../index';
 import {CardWrapper} from './../CardWrapper';
 import {ProductCard} from './ProductCard';
 import {createEditor} from 'lexical';
+import type {ComponentProps} from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
 const displayOptions = {
     Default: {isSelected: false, isEditing: false},
@@ -10,14 +12,15 @@ const displayOptions = {
     Editing: {isSelected: true, isEditing: true}
 };
 
-const story = {
+type StoryArgs = ComponentProps<typeof ProductCard> & {display: keyof typeof displayOptions; title?: string; description?: string};
+
+const story: Meta<StoryArgs> = {
     title: 'Primary cards/Product card',
     component: ProductCard,
-    subcomponent: {CardWrapper},
+    subcomponents: {CardWrapper},
     argTypes: {
         display: {
             options: Object.keys(displayOptions),
-            mapping: displayOptions,
             control: {
                 type: 'radio',
                 labels: {
@@ -37,7 +40,7 @@ const story = {
 };
 export default story;
 
-const Template = ({display, title, description, ...args}) => {
+const Template: StoryFn<StoryArgs> = ({display, title, description, ...args}) => {
     const titleEditor = createEditor({nodes: MINIMAL_NODES});
     populateEditor({editor: titleEditor, initialHtml: `${title}`});
 
@@ -47,14 +50,12 @@ const Template = ({display, title, description, ...args}) => {
     return (
         <div className="kg-prose">
             <div className="not-kg-prose mx-auto my-8 min-w-[initial] max-w-[740px]">
-                <CardWrapper {...display} {...args}>
+                <CardWrapper {...displayOptions[display]} {...args}>
                     <div className="flex justify-center p-3">
                         <ProductCard
-                            {...display}
                             {...args}
-                            description={description}
                             descriptionEditor={descriptionEditor}
-                            title={title}
+                            isEditing={displayOptions[display].isEditing}
                             titleEditor={titleEditor}
                         />
                     </div>
@@ -67,7 +68,6 @@ const Template = ({display, title, description, ...args}) => {
 export const Empty = Template.bind({});
 Empty.args = {
     display: 'Editing',
-    image: false,
     title: '',
     description: '',
     isRatingEnabled: false,
@@ -80,7 +80,6 @@ Empty.args = {
 export const Uploading = Template.bind({});
 Uploading.args = {
     display: 'Editing',
-    image: true,
     title: 'Fujifilm X100V',
     description: 'Simple actions that lead to making everyday moments remarkable. Rediscover photography in a new and exciting way with FUJIFILM X100V mirrorless digital camera.',
     isRatingEnabled: false,
@@ -98,7 +97,6 @@ Uploading.args = {
 export const DraggedOver = Template.bind({});
 DraggedOver.args = {
     display: 'Editing',
-    image: true,
     title: 'Fujifilm X100V',
     description: 'Simple actions that lead to making everyday moments remarkable. Rediscover photography in a new and exciting way with FUJIFILM X100V mirrorless digital camera.',
     isRatingEnabled: false,
@@ -116,7 +114,6 @@ DraggedOver.args = {
 export const Error = Template.bind({});
 Error.args = {
     display: 'Editing',
-    image: true,
     title: 'Fujifilm X100V',
     description: 'Simple actions that lead to making everyday moments remarkable. Rediscover photography in a new and exciting way with FUJIFILM X100V mirrorless digital camera.',
     isRatingEnabled: false,
@@ -134,7 +131,6 @@ Error.args = {
 export const Populated = Template.bind({});
 Populated.args = {
     display: 'Editing',
-    image: true,
     title: 'Fujifilm X100V',
     description: 'Simple actions that lead to making everyday moments remarkable. Rediscover photography in a new and exciting way with FUJIFILM X100V mirrorless digital camera.',
     isRatingEnabled: true,

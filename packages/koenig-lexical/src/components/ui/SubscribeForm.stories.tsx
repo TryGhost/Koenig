@@ -1,6 +1,7 @@
 import {SubscribeForm} from './SubscribeForm';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof SubscribeForm> = {
     title: 'Generic/Subscribe form',
     component: SubscribeForm,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = args => (
+const Template: StoryFn<typeof SubscribeForm> = args => (
     <div className="w-[560px]">
         <SubscribeForm {...args} />
     </div>

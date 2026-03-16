@@ -1,22 +1,25 @@
 import populateEditor from '../../../utils/storybook/populate-storybook-editor';
 import {CardWrapper} from './../CardWrapper';
 import {ImageCard} from './ImageCard';
-import {MINIMAL_NODES} from '../../../index.js';
+import {MINIMAL_NODES} from '../../../index';
 import {createEditor} from 'lexical';
+import type {ComponentProps} from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
 const displayOptions = {
     Default: {isSelected: false, isEditing: false},
     Selected: {isSelected: true, isEditing: false}
 };
 
-const story = {
+type StoryArgs = ComponentProps<typeof ImageCard> & {display: keyof typeof displayOptions; caption?: string};
+
+const story: Meta<StoryArgs> = {
     title: 'Primary cards/Image card',
     component: ImageCard,
-    subcomponent: {CardWrapper},
+    subcomponents: {CardWrapper},
     argTypes: {
         display: {
             options: Object.keys(displayOptions),
-            mapping: displayOptions,
             control: {
                 type: 'radio',
                 labels: {
@@ -39,15 +42,15 @@ const story = {
 };
 export default story;
 
-const Template = ({display, caption, ...args}) => {
+const Template: StoryFn<StoryArgs> = ({display, caption, ...args}) => {
     const captionEditor = createEditor({nodes: MINIMAL_NODES});
     populateEditor({editor: captionEditor, initialHtml: `${caption}`});
 
     return (
         <div className="kg-prose">
             <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
-                <CardWrapper {...display} {...args}>
-                    <ImageCard {...display} {...args} captionEditor={captionEditor} />
+                <CardWrapper {...displayOptions[display]} {...args}>
+                    <ImageCard {...displayOptions[display]} {...args} captionEditor={captionEditor} />
                 </CardWrapper>
             </div>
         </div>
@@ -57,7 +60,6 @@ const Template = ({display, caption, ...args}) => {
 export const Empty = Template.bind({});
 Empty.args = {
     display: 'Selected',
-    setAltText: true,
     caption: '',
     altText: '',
     imageUploader: {
@@ -73,10 +75,8 @@ export const Uploading = Template.bind({});
 Uploading.args = {
     display: 'Selected',
     cardWidth: 'regular',
-    setAltText: true,
     caption: '',
     altText: '',
-    isDraggedOver: false,
     previewSrc: 'https://static.ghost.org/v4.0.0/images/feature-image.jpg',
     imageUploader: {
         progress: 50,
@@ -92,7 +92,6 @@ Populated.args = {
     display: 'Selected',
     cardWidth: 'regular',
     src: 'https://static.ghost.org/v4.0.0/images/feature-image.jpg',
-    setAltText: true,
     caption: 'Welcome to your new Ghost publication',
     altText: 'Feature image',
     imageUploader: {
@@ -108,7 +107,6 @@ export const Errors = Template.bind({});
 Errors.args = {
     display: 'Selected',
     cardWidth: 'regular',
-    setAltText: true,
     caption: '',
     altText: '',
     imageUploader: {
@@ -123,7 +121,6 @@ export const DraggedOver = Template.bind({});
 DraggedOver.args = {
     display: 'Selected',
     cardWidth: 'regular',
-    setAltText: true,
     caption: '',
     altText: '',
     imageUploader: {

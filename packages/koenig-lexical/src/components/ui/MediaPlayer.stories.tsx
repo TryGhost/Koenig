@@ -1,6 +1,7 @@
 import {MediaPlayer} from './MediaPlayer';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof MediaPlayer> = {
     title: 'Generic/Media player',
     component: MediaPlayer,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = args => (
+const Template: StoryFn<typeof MediaPlayer> = args => (
     <MediaPlayer {...args} />
 );
 

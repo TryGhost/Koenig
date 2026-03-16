@@ -1,8 +1,10 @@
 import MarkdownIndicatorIcon from '../../../assets/icons/kg-indicator-markdown.svg?react';
 import {CardWrapper} from './../CardWrapper';
-import {MarkdownCard} from './MarkdownCard.jsx';
+import {MarkdownCard} from './MarkdownCard';
 import {defaultHeaders} from '../../../../demo/utils/unsplashConfig';
 import {useFileUpload} from '../../../../demo/utils/useFileUpload';
+import type {ComponentProps} from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
 const unsplashConfig = {
     defaultHeaders
@@ -28,14 +30,15 @@ function imageErrors() {
     return {errors};
 }
 
-const story = {
+type StoryArgs = ComponentProps<typeof MarkdownCard> & {display: keyof typeof displayOptions};
+
+const story: Meta<StoryArgs> = {
     title: 'Primary cards/Markdown card',
     component: MarkdownCard,
-    subcomponent: {CardWrapper},
+    subcomponents: {CardWrapper},
     argTypes: {
         display: {
             options: Object.keys(displayOptions),
-            mapping: displayOptions,
             control: {
                 type: 'radio',
                 labels: {
@@ -55,28 +58,30 @@ const story = {
 };
 export default story;
 
-const Template = ({display, ...args}) => (
-    <div className="kg-prose">
-        <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
-            <CardWrapper IndicatorIcon={MarkdownIndicatorIcon} wrapperStyle='wide' {...display} {...args}>
-                <MarkdownCard {...display} {...args} unsplashConf={unsplashConfig} />
-            </CardWrapper>
+const Template: StoryFn<StoryArgs> = ({display, imageUploader, ...args}) => {
+    const defaultImageUploader = useFileUpload();
+
+    return (
+        <div className="kg-prose">
+            <div className="mx-auto my-8 min-w-[initial] max-w-[740px]">
+                <CardWrapper IndicatorIcon={MarkdownIndicatorIcon} wrapperStyle='wide' {...displayOptions[display]} {...args}>
+                    <MarkdownCard imageUploader={imageUploader ?? defaultImageUploader} {...displayOptions[display]} {...args} unsplashConf={unsplashConfig} />
+                </CardWrapper>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export const Empty = Template.bind({});
 Empty.args = {
     markdown: '',
-    display: 'Editing',
-    imageUploader: useFileUpload
+    display: 'Editing'
 };
 
 export const Populated = Template.bind({});
 Populated.args = {
     markdown: '**Bold** and *italic*',
-    display: 'Editing',
-    imageUploader: useFileUpload
+    display: 'Editing'
 };
 
 export const Progress = Template.bind({});

@@ -1,8 +1,9 @@
 import React from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
 import {SnippetInput} from './SnippetInput';
 
-const story = {
+const story: Meta<typeof SnippetInput> = {
     title: 'Toolbar/SnippetInput',
     component: SnippetInput,
     parameters: {
@@ -13,7 +14,7 @@ const story = {
 };
 export default story;
 
-const Template = (args) => {
+const Template: StoryFn<typeof SnippetInput> = (args) => {
     const [value, setValue] = React.useState(args.value || '');
 
     return (

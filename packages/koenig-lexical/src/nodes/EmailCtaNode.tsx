@@ -2,18 +2,19 @@ import EmailCtaCardIcon from '../assets/icons/kg-card-type-email-cta.svg?react';
 import EmailIndicatorIcon from '../assets/icons/kg-indicator-email.svg?react';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
-import {BASIC_NODES, KoenigCardWrapper} from '../index.js';
+import {BASIC_NODES, KoenigCardWrapper} from '../index';
 import {EmailCtaNode as BaseEmailCtaNode} from '@tryghost/kg-default-nodes';
 import {EmailCtaNodeComponent} from './EmailCtaNodeComponent';
 import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+import type {LexicalEditor} from 'lexical';
 
 export const INSERT_EMAIL_CTA_COMMAND = createCommand();
 
 export class EmailCtaNode extends BaseEmailCtaNode {
-    __htmlEditor;
-    __htmlEditorInitialState;
+    __htmlEditor!: LexicalEditor;
+    __htmlEditorInitialState: unknown;
 
     static kgMenu = {
         label: 'Email call to action',
@@ -24,8 +25,8 @@ export class EmailCtaNode extends BaseEmailCtaNode {
         priority: 7,
         postType: 'post',
         shortcut: '/email-cta',
-        isHidden: ({config}) => {
-            return config?.deprecated?.emailCta ?? true;
+        isHidden: ({config}: {config?: Record<string, unknown>}) => {
+            return (config?.deprecated as Record<string, unknown> | undefined)?.emailCta ?? true;
         }
     };
 
@@ -33,7 +34,7 @@ export class EmailCtaNode extends BaseEmailCtaNode {
         return EmailCtaCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         // set up nested editor instances
@@ -41,7 +42,7 @@ export class EmailCtaNode extends BaseEmailCtaNode {
 
         // populate nested editors on initial construction
         if (!dataset.htmlEditor) {
-            populateNestedEditor(this, '__htmlEditor', dataset.html);
+            populateNestedEditor(this, '__htmlEditor', dataset.html as string | undefined);
         }
     }
 
@@ -80,15 +81,15 @@ export class EmailCtaNode extends BaseEmailCtaNode {
                 wrapperStyle="wide"
             >
                 <EmailCtaNodeComponent
-                    alignment={this.alignment}
-                    buttonText={this.buttonText}
-                    buttonUrl={this.buttonUrl}
+                    alignment={this.alignment as string}
+                    buttonText={this.buttonText as string}
+                    buttonUrl={this.buttonUrl as string}
                     htmlEditor={this.__htmlEditor}
-                    htmlEditorInitialState={this.__htmlEditorInitialState}
+                    htmlEditorInitialState={this.__htmlEditorInitialState as string | undefined}
                     nodeKey={this.getKey()}
-                    segment={this.__segment}
-                    showButton={this.showButton}
-                    showDividers={this.showDividers}
+                    segment={this.__segment as string}
+                    showButton={this.showButton as boolean}
+                    showDividers={this.showDividers as boolean}
                 />
             </KoenigCardWrapper>
         );
@@ -106,6 +107,6 @@ export function $createEmailCtaNode() {
     return new EmailCtaNode();
 }
 
-export function $isEmailCtaNode(node) {
+export function $isEmailCtaNode(node: unknown): node is EmailCtaNode {
     return node instanceof EmailCtaNode;
 }

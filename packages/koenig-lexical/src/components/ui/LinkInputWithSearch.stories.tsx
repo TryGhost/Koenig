@@ -1,6 +1,7 @@
 import {LinkInputWithSearch} from './LinkInputWithSearch';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof LinkInputWithSearch> = {
     title: 'Toolbar/LinkInputWithSearch',
     component: LinkInputWithSearch,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = (args) => {
+const Template: StoryFn<typeof LinkInputWithSearch> = (args) => {
     return (
         <div className="flex">
             <LinkInputWithSearch {...args} />

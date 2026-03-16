@@ -16,12 +16,12 @@ export class TransistorNode extends BaseTransistorNode {
         matches: ['transistor', 'podcast'],
         priority: 2,
         shortcut: '/transistor',
-        isHidden: ({config}) => {
-            return !(config?.feature?.transistor === true);
+        isHidden: ({config}: {config?: Record<string, unknown>}) => {
+            return !((config?.feature as Record<string, unknown> | undefined)?.transistor === true);
         }
     }];
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
     }
 
@@ -33,8 +33,8 @@ export class TransistorNode extends BaseTransistorNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()} wrapperStyle="regular">
                 <TransistorNodeComponent
-                    accentColor={this.accentColor}
-                    backgroundColor={this.backgroundColor}
+                    accentColor={this.accentColor as string}
+                    backgroundColor={this.backgroundColor as string}
                     nodeKey={this.getKey()}
                 />
             </KoenigCardWrapper>
@@ -42,10 +42,10 @@ export class TransistorNode extends BaseTransistorNode {
     }
 }
 
-export function $createTransistorNode(dataset) {
+export function $createTransistorNode(dataset: Record<string, unknown>) {
     return new TransistorNode(dataset);
 }
 
-export function $isTransistorNode(node) {
+export function $isTransistorNode(node: unknown): node is TransistorNode {
     return node instanceof TransistorNode;
 }

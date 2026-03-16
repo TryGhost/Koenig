@@ -30,7 +30,7 @@ export class MarkdownNode extends BaseMarkdownNode {
                 wrapperStyle="wide"
             >
                 <MarkdownNodeComponent
-                    markdown={this.__markdown}
+                    markdown={this.__markdown as string}
                     nodeKey={this.getKey()}
                 />
             </KoenigCardWrapper>
@@ -38,10 +38,10 @@ export class MarkdownNode extends BaseMarkdownNode {
     }
 }
 
-export function $createMarkdownNode(dataset) {
+export function $createMarkdownNode(dataset: Record<string, unknown>) {
     return new MarkdownNode(dataset);
 }
 
-export function $isMarkdownNode(node) {
+export function $isMarkdownNode(node: unknown): node is MarkdownNode {
     return node instanceof MarkdownNode;
 }

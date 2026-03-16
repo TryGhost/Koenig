@@ -16,7 +16,7 @@ export const GalleryPlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_GALLERY_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createGalleryNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
 

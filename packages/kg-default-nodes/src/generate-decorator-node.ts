@@ -2,11 +2,13 @@ import {KoenigDecoratorNode} from './KoenigDecoratorNode.js';
 import type {ExportDOMOptions, ExportDOMOutput} from './export-dom.js';
 import readTextContent from './utils/read-text-content.js';
 import {buildDefaultVisibility, isVisibilityRestricted, migrateOldVisibilityFormat} from './utils/visibility.js';
-import type {LexicalEditor} from 'lexical';
+import type {LexicalEditor, SerializedLexicalNode} from 'lexical';
 import type {Visibility} from './utils/visibility.js';
 
-type RenderFn<TOutput extends ExportDOMOutput = ExportDOMOutput> = (node: any, options: ExportDOMOptions) => TOutput;
-type VersionedRenderFn<TOutput extends ExportDOMOutput = ExportDOMOutput> = Record<string | number, RenderFn<TOutput>>;
+type RenderFn<TNode = unknown, TOutput extends ExportDOMOutput = ExportDOMOutput> = {
+    bivarianceHack(node: TNode, options: ExportDOMOptions): TOutput;
+}['bivarianceHack'];
+type VersionedRenderFn<TOutput extends ExportDOMOutput = ExportDOMOutput> = Record<string | number, RenderFn<unknown, TOutput>>;
 type WidenLiteral<T> =
     T extends string ? string :
     T extends number ? number :
@@ -62,13 +64,15 @@ export interface DecoratorNodeProperty<Name extends string = string, Default = u
 
 export type DecoratorNodeValueMap<Props extends readonly DecoratorNodeProperty[], HasVisibility extends boolean = false> = {
     [Prop in Props[number] as Prop['name']]: WidenLiteral<Prop['default']>;
-} & (HasVisibility extends true ? {visibility: Visibility} : {});
+} & (HasVisibility extends true ? {visibility: Visibility} : unknown);
 
 export type DecoratorNodeData<Props extends readonly DecoratorNodeProperty[], HasVisibility extends boolean = false> = Partial<DecoratorNodeValueMap<Props, HasVisibility>>;
 
 type GeneratedDecoratorNodeInstance<TDataset extends Record<string, unknown>, TOutput extends ExportDOMOutput = ExportDOMOutput> = GeneratedDecoratorNodeBase<TDataset> & TDataset & {
     exportDOM(editor: LexicalEditor, options?: ExportDOMOptions): TOutput;
 };
+
+export type SerializedGeneratedDecoratorNode<TDataset extends Record<string, unknown> = Record<string, unknown>> = SerializedLexicalNode & TDataset;
 
 export interface GeneratedDecoratorNodeClass<TDataset extends Record<string, unknown>, TOutput extends ExportDOMOutput = ExportDOMOutput> {
     new (data?: Partial<TDataset>, key?: string): GeneratedDecoratorNodeInstance<TDataset, TOutput>;
@@ -135,19 +139,26 @@ export class GeneratedDecoratorNodeBase<TDataset extends Record<string, unknown>
 export function generateDecoratorNode<
     Props extends readonly DecoratorNodeProperty[] = readonly [],
     HasVisibility extends boolean = false,
-    TOutput extends ExportDOMOutput = ExportDOMOutput
->({nodeType, properties = [] as unknown as Props, defaultRenderFn, version = 1, hasVisibility = false as HasVisibility}: {
+    TOutput extends ExportDOMOutput = ExportDOMOutput,
+    TRenderNode = GeneratedDecoratorNodeInstance<DecoratorNodeValueMap<Props, HasVisibility>, TOutput>
+>({nodeType, properties, defaultRenderFn, version = 1, hasVisibility}: {
     nodeType: string;
     properties?: Props;
-    defaultRenderFn?: RenderFn<TOutput> | VersionedRenderFn<TOutput>;
+    defaultRenderFn?: RenderFn<TRenderNode, TOutput> | VersionedRenderFn<TOutput>;
     version?: number;
     hasVisibility?: HasVisibility;
 }): GeneratedDecoratorNodeClass<DecoratorNodeValueMap<Props, HasVisibility>, TOutput> {
-    validateArguments(nodeType, properties);
+    type GeneratedDataset = DecoratorNodeValueMap<Props, HasVisibility>;
+    type GeneratedRenderFn = RenderFn<TRenderNode, TOutput>;
+    type GeneratedVersionedRenderFn = VersionedRenderFn<TOutput>;
+
+    const nodeProperties = properties ?? [];
+
+    validateArguments(nodeType, nodeProperties);
 
     // Adds a `privateName` field to the properties for convenience (e.g. `__name`):
     // properties: [{name: 'name', privateName: '__name', type: 'string', default: 'hello'}, {...}]
-    const internalProps = properties.map((prop) => {
+    const internalProps = nodeProperties.map((prop) => {
         return Object.defineProperties({}, {
             ...Object.getOwnPropertyDescriptors(prop),
             privateName: {
@@ -174,7 +185,7 @@ export function generateDecoratorNode<
     class GeneratedDecoratorNode extends KoenigDecoratorNode {
         [key: string]: unknown;
 
-        constructor(data: Partial<DecoratorNodeValueMap<Props, HasVisibility>> = {}, key?: string) {
+        constructor(data: Partial<GeneratedDataset> = {}, key?: string) {
             super(key);
             const dataset = data as Record<string, unknown>;
             internalProps.forEach((prop) => {
@@ -206,7 +217,7 @@ export function generateDecoratorNode<
          * @see https://lexical.dev/docs/concepts/nodes#extending-decoratornode
          */
         static clone(node: GeneratedDecoratorNodeInstance<DecoratorNodeValueMap<Props, HasVisibility>, TOutput>) {
-            return new this(node.getDataset() as Partial<DecoratorNodeValueMap<Props, HasVisibility>>, node.__key);
+            return new this(node.getDataset() as Partial<GeneratedDataset>, node.__key);
         }
 
         /**
@@ -217,7 +228,7 @@ export function generateDecoratorNode<
             return internalProps.reduce((obj: Record<string, unknown>, prop) => {
                 obj[prop.name] = prop.default;
                 return obj;
-            }, {}) as DecoratorNodeValueMap<Props, HasVisibility>;
+            }, {}) as GeneratedDataset;
         }
 
         /**
@@ -272,7 +283,7 @@ export function generateDecoratorNode<
                 data[prop.name] = serializedNode[prop.name];
             });
 
-            return new this(data as Partial<DecoratorNodeValueMap<Props, HasVisibility>>);
+            return new this(data as Partial<GeneratedDataset>);
         }
 
         /**
@@ -280,54 +291,52 @@ export function generateDecoratorNode<
          * @extends DecoratorNode
          * @see https://lexical.dev/docs/concepts/serialization#lexicalnodeexportjson
          */
-        // @ts-expect-error -- strict mode migration
-        exportJSON() {
-            const dataset: Record<string, unknown> = {
+        exportJSON(): SerializedGeneratedDecoratorNode<GeneratedDataset> {
+            const dataset = {
                 type: nodeType,
                 version: version,
                 ...internalProps.reduce((obj: Record<string, unknown>, prop) => {
                     obj[prop.name] = this[prop.name];
                     return obj;
                 }, {})
-            };
+            } as SerializedGeneratedDecoratorNode<GeneratedDataset>;
             return dataset;
         }
 
         exportDOM(_editor: LexicalEditor, options: ExportDOMOptions = {}): TOutput {
             // this.__version is used when a node has a version property which
             // means it's set from the serialized version data at runtime
-            const nodeVersion = this.__version || version;
+            const nodeVersion = typeof this.__version === 'string' || typeof this.__version === 'number' ? this.__version : version;
+            const node = this as unknown as TRenderNode;
 
-            const nodeRenderers = options.nodeRenderers as Record<string, RenderFn<TOutput> | VersionedRenderFn<TOutput>> | undefined;
+            const nodeRenderers = options.nodeRenderers as Record<string, GeneratedRenderFn | GeneratedVersionedRenderFn> | undefined;
             if (nodeRenderers?.[nodeType]) {
                 const render = nodeRenderers[nodeType];
 
                 if (typeof render === 'object') {
-                    const versionRenderer = (render as VersionedRenderFn<TOutput>)[nodeVersion as number];
+                    const versionRenderer = render[nodeVersion];
                     if (!versionRenderer) {
                         throw new Error(`[generateDecoratorNode] ${nodeType}: options.nodeRenderers['${nodeType}'] for version ${nodeVersion} is required`);
                     }
-                    return versionRenderer(this, options);
+                    return versionRenderer(node, options);
                 } else {
-                    return (render as RenderFn<TOutput>)(this, options);
+                    return render(node, options);
                 }
             }
 
             if (typeof defaultRenderFn === 'object') {
-                const render = (defaultRenderFn as VersionedRenderFn<TOutput>)[nodeVersion as number];
+                const render = defaultRenderFn[nodeVersion];
                 if (!render) {
                     throw new Error(`[generateDecoratorNode] ${nodeType}: "defaultRenderFn" for version ${nodeVersion} is required`);
                 }
-                return render(this, options);
+                return render(node, options);
             }
 
             if (!defaultRenderFn) {
                 throw new Error(`[generateDecoratorNode] ${nodeType}: "defaultRenderFn" is required`);
             }
 
-            const render = defaultRenderFn as RenderFn<TOutput>;
-
-            return render(this, options);
+            return defaultRenderFn(node, options);
         }
 
         /* c8 ignore start */
@@ -380,7 +389,7 @@ export function generateDecoratorNode<
         */
         getTextContent() {
             const self = this.getLatest();
-            const propertiesWithText = properties.filter(prop => !!prop.wordCount);
+            const propertiesWithText = nodeProperties.filter(prop => !!prop.wordCount);
 
             const text = propertiesWithText.map(
                 prop => readTextContent(self, prop.name)

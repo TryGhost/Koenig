@@ -7,12 +7,13 @@ import {CalloutNodeComponent} from './CalloutNodeComponent';
 import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+import type {LexicalEditor} from 'lexical';
 
 export const INSERT_CALLOUT_COMMAND = createCommand();
 
 export class CalloutNode extends BaseCalloutNode {
-    __calloutTextEditor;
-    __calloutTextEditorInitialState;
+    __calloutTextEditor!: LexicalEditor;
+    __calloutTextEditorInitialState: unknown;
 
     static kgMenu = [{
         label: 'Callout',
@@ -28,7 +29,7 @@ export class CalloutNode extends BaseCalloutNode {
         return CalloutCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         // set up nested editor instances
@@ -70,7 +71,7 @@ export class CalloutNode extends BaseCalloutNode {
         return (
             <KoenigCardWrapper nodeKey={this.getKey()}>
                 <CalloutNodeComponent
-                    backgroundColor={this.backgroundColor}
+                    backgroundColor={this.backgroundColor as string}
                     calloutEmoji={this.calloutEmoji}
                     nodeKey={this.getKey()}
                     textEditor={this.__calloutTextEditor}
@@ -81,10 +82,10 @@ export class CalloutNode extends BaseCalloutNode {
     }
 }
 
-export const $createCalloutNode = (dataset) => {
+export const $createCalloutNode = (dataset: Record<string, unknown>) => {
     return new CalloutNode(dataset);
 };
 
-export function $isCalloutNode(node) {
+export function $isCalloutNode(node: unknown): node is CalloutNode {
     return node instanceof CalloutNode;
 }
