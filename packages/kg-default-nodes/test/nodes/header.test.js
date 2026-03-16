@@ -359,8 +359,8 @@ describe('HeaderNode', function () {
             it('parses a header card V2', editorTest(function () {
                 const htmlstring = `
                     <div class="kg-card kg-header-card kg-v2 kg-style-accent" data-background-color="#abcdef">
-                        <picture><img class="kg-header-card-image" src="https://example.com/image.jpg" alt="" /></picture>
                         <div class="kg-header-card-content">
+                            <picture><img class="kg-header-card-image" src="https://example.com/image.jpg" alt="" /></picture>
                             <div class="kg-header-card-text kg-align-center">
                                 <h2 class="kg-header-card-heading" data-text-color="#abcdef">Header</h2>
                                 <p class="kg-header-card-subheading" data-text-color="#abcdef">Subheader</p>
