@@ -36,6 +36,18 @@
     {
       "matchPackageNames": ["@tryghost/mobiledoc-kit"],
       "enabled": false
+    },
+    {
+      "groupName": "react",
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom",
+        "eslint-plugin-react-hooks"
+      ],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
     }
   ]
 }
