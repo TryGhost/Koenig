@@ -4,6 +4,7 @@ import {VISIBILITY_SETTINGS} from '../../../src/utils/visibility';
 import {act, renderHook} from '@testing-library/react';
 import {expect, vi} from 'vitest';
 import {useVisibilityToggle} from '../../../src/hooks/useVisibilityToggle';
+import type {LexicalEditor} from 'lexical';
 
 const lexicalMocks = vi.hoisted(() => ({
     $getNodeByKey: vi.fn()
@@ -19,9 +20,9 @@ vi.mock(import('lexical'), async (importOriginal) => {
 });
 
 describe('useVisibilityToggle', () => {
-    let editor;
-    let node;
-    let cardConfig;
+    let editor: LexicalEditor;
+    let node: {visibility: typeof DEFAULT_VISIBILITY; getIsVisibilityActive: ReturnType<typeof vi.fn>};
+    let cardConfig: {stripeEnabled: boolean; visibilitySettings?: string};
 
     const DEFAULT_VISIBILITY = {
         web: {
@@ -44,9 +45,9 @@ describe('useVisibilityToggle', () => {
             getEditorState: vi.fn(() => ({
                 read: vi.fn(callback => callback())
             }))
-        };
+        } as unknown as LexicalEditor;
 
-        $getNodeByKey.mockReturnValue(node);
+        vi.mocked($getNodeByKey).mockReturnValue(node as unknown as ReturnType<typeof $getNodeByKey>);
 
         cardConfig = {
             stripeEnabled: true

@@ -16,7 +16,7 @@ export const FilePlugin = () => {
         return mergeRegister(
             editor.registerCommand(
                 INSERT_FILE_COMMAND,
-                async (dataset) => {
+                (dataset: Record<string, unknown>) => {
                     const cardNode = $createFileNode(dataset);
                     editor.dispatchCommand(INSERT_CARD_COMMAND, {cardNode});
 

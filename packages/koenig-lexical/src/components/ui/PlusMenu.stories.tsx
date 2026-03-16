@@ -1,6 +1,7 @@
 import {PlusButton} from './PlusMenu';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof PlusButton> = {
     title: 'Card menu/Plus button',
     component: PlusButton,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = args => (
+const Template: StoryFn<typeof PlusButton> = args => (
     <div className="relative ml-[66px] mt-[2px]">
         <PlusButton {...args} />
     </div>

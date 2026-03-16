@@ -1,6 +1,7 @@
 import {ProgressBar} from './ProgressBar';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof ProgressBar> = {
     title: 'Generic/Progress bar',
     component: ProgressBar,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = args => (
+const Template: StoryFn<typeof ProgressBar> = args => (
     <ProgressBar {...args} />
 );
 

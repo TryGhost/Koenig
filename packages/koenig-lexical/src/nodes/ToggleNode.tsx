@@ -1,20 +1,21 @@
 import ToggleCardIcon from '../assets/icons/kg-card-type-toggle.svg?react';
 import {$canShowPlaceholderCurry} from '@lexical/text';
 import {$generateHtmlFromNodes} from '@lexical/html';
-import {BASIC_NODES, KoenigCardWrapper, MINIMAL_NODES} from '../index.js';
+import {BASIC_NODES, KoenigCardWrapper, MINIMAL_NODES} from '../index';
 import {ToggleNode as BaseToggleNode} from '@tryghost/kg-default-nodes';
 import {ToggleNodeComponent} from './ToggleNodeComponent';
 import {cleanBasicHtml} from '@tryghost/kg-clean-basic-html';
 import {createCommand} from 'lexical';
 import {populateNestedEditor, setupNestedEditor} from '../utils/nested-editors';
+import type {LexicalEditor} from 'lexical';
 
 export const INSERT_TOGGLE_COMMAND = createCommand();
 
 export class ToggleNode extends BaseToggleNode {
-    __headingEditor;
-    __headingEditorInitialState;
-    __contentEditor;
-    __contentEditorInitialState;
+    __headingEditor!: LexicalEditor;
+    __headingEditorInitialState: unknown;
+    __contentEditor!: LexicalEditor;
+    __contentEditorInitialState: unknown;
 
     static kgMenu = [{
         label: 'Toggle',
@@ -30,7 +31,7 @@ export class ToggleNode extends BaseToggleNode {
         return ToggleCardIcon;
     }
 
-    constructor(dataset = {}, key) {
+    constructor(dataset: Record<string, unknown> = {}, key?: string) {
         super(dataset, key);
 
         setupNestedEditor(this, '__headingEditor', {editor: dataset.headingEditor, nodes: MINIMAL_NODES});
@@ -41,7 +42,7 @@ export class ToggleNode extends BaseToggleNode {
             populateNestedEditor(this, '__headingEditor', `${dataset.heading}`);
         }
         if (!dataset.contentEditor && dataset.content) {
-            populateNestedEditor(this, '__contentEditor', dataset.content);
+            populateNestedEditor(this, '__contentEditor', dataset.content as string);
         }
     }
 
@@ -106,10 +107,10 @@ export class ToggleNode extends BaseToggleNode {
     }
 }
 
-export const $createToggleNode = (dataset) => {
+export const $createToggleNode = (dataset: Record<string, unknown>) => {
     return new ToggleNode(dataset);
 };
 
-export function $isToggleNode(node) {
+export function $isToggleNode(node: unknown): node is ToggleNode {
     return node instanceof ToggleNode;
 }

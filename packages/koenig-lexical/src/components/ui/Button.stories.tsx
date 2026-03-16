@@ -1,6 +1,7 @@
 import {Button} from './Button';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof Button> = {
     title: 'Generic/Button',
     component: Button,
     argTypes: {
@@ -25,7 +26,7 @@ const story = {
 };
 export default story;
 
-const Template = (args) => {
+const Template: StoryFn<typeof Button> = (args) => {
     return (
         <Button {...args} />
     );

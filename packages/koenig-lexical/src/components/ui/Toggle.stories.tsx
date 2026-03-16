@@ -1,6 +1,7 @@
 import {Toggle} from './Toggle';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof Toggle> = {
     title: 'Generic/Toggle',
     component: Toggle,
     parameters: {
@@ -11,7 +12,7 @@ const story = {
 };
 export default story;
 
-const Template = args => (
+const Template: StoryFn<typeof Toggle> = args => (
     <Toggle {...args} />
 );
 

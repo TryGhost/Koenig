@@ -1,5 +1,7 @@
 import {AudioCard} from './AudioCard';
 import {CardWrapper} from './../CardWrapper';
+import type {ComponentProps} from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
 const displayOptions = {
     Default: {isSelected: false, isEditing: false},
@@ -7,14 +9,15 @@ const displayOptions = {
     Editing: {isSelected: true, isEditing: true}
 };
 
-const story = {
+type StoryArgs = ComponentProps<typeof AudioCard> & {display: keyof typeof displayOptions};
+
+const story: Meta<StoryArgs> = {
     title: 'Primary cards/Audio card',
     component: AudioCard,
-    subcomponent: {CardWrapper},
+    subcomponents: {CardWrapper},
     argTypes: {
         display: {
             options: Object.keys(displayOptions),
-            mapping: displayOptions,
             control: {
                 type: 'radio',
                 labels: {
@@ -34,11 +37,11 @@ const story = {
 };
 export default story;
 
-const Template = ({display, ...args}) => (
+const Template: StoryFn<StoryArgs> = ({display, ...args}) => (
     <div className="kg-prose">
         <div className="not-kg-prose mx-auto my-8 min-w-[initial] max-w-[740px]">
-            <CardWrapper {...display} {...args}>
-                <AudioCard {...display} {...args} />
+            <CardWrapper {...displayOptions[display]} {...args}>
+                <AudioCard {...displayOptions[display]} {...args} />
             </CardWrapper>
         </div>
     </div>
@@ -48,9 +51,7 @@ export const Empty = Template.bind({});
 Empty.args = {
     display: 'Editing',
     src: '',
-    duration: '',
     title: '',
-    isDraggedOver: false,
     audioUploader: {},
     thumbnailUploader: {}
 };
@@ -59,9 +60,7 @@ export const Uploading = Template.bind({});
 Uploading.args = {
     display: 'Editing',
     src: '',
-    duration: '',
     title: '',
-    titlePlaceholder: 'Add a title...',
     audioUploader: {progress: 50, isLoading: true},
     thumbnailUploader: {}
 };
@@ -70,7 +69,6 @@ export const DraggedOver = Template.bind({});
 DraggedOver.args = {
     display: 'Editing',
     src: '',
-    duration: '',
     title: '',
     audioUploader: {},
     thumbnailUploader: {},
@@ -86,7 +84,6 @@ Populated.args = {
     src: 'audio.mp3',
     duration: 19,
     title: 'The Ghost Podcast',
-    titlePlaceholder: 'Add a title...',
     audioUploader: {},
     thumbnailUploader: {}
 };
@@ -96,7 +93,7 @@ Error.args = {
     display: 'Editing',
     src: '',
     title: '',
-    audioUploader: {errors: [{filename: 'audio.mp3', message: 'The file type you uploaded is not supported. Please use .MP3, .WAV, .OGG, .M4A'}]},
+    audioUploader: {errors: [{message: 'The file type you uploaded is not supported. Please use .MP3, .WAV, .OGG, .M4A'}]},
     thumbnailUploader: {}
 };
 
@@ -106,7 +103,6 @@ ThumbnailUploading.args = {
     src: 'audio.mp3',
     duration: 19,
     title: 'The Ghost Podcast',
-    titlePlaceholder: 'Add a title...',
     thumbnailUploader: {progress: 50, isLoading: true}
 };
 
@@ -116,10 +112,11 @@ ThumbnailDraggedOver.args = {
     src: 'audio.mp3',
     duration: 19,
     title: 'The Ghost Podcast',
-    titlePlaceholder: 'Add a title...',
-    isDraggedOver: true,
     audioUploader: {},
-    thumbnailUploader: {}
+    thumbnailUploader: {},
+    thumbnailDragHandler: {
+        isDraggedOver: true
+    }
 };
 
 export const ThumbnailPopulated = Template.bind({});
@@ -129,8 +126,6 @@ ThumbnailPopulated.args = {
     src: 'audio.mp3',
     duration: 19,
     title: 'The Ghost Podcast',
-    titlePlaceholder: 'Add a title...',
-    isDraggedOver: false,
     audioUploader: {},
     thumbnailUploader: {}
 };
@@ -141,10 +136,9 @@ ThumbnailError.args = {
     src: 'audio.mp3',
     duration: 19,
     title: 'The Ghost Podcast',
-    titlePlaceholder: 'Add a title...',
     thumbnailUploader: {
         progress: 100,
         isLoading: false,
-        errors: [{filename: 'audio.mp3', message: 'File not supported'}]
+        errors: [{message: 'File not supported'}]
     }
 };

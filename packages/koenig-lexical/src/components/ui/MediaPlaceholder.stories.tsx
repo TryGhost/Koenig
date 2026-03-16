@@ -1,6 +1,7 @@
 import {MediaPlaceholder} from './MediaPlaceholder';
+import type {Meta, StoryFn} from '@storybook/react-vite';
 
-const story = {
+const story: Meta<typeof MediaPlaceholder> = {
     title: 'Generic/Media placeholder (beta)',
     component: MediaPlaceholder,
     argTypes: {
@@ -25,7 +26,7 @@ const story = {
 };
 export default story;
 
-const Template = args => (
+const Template: StoryFn<typeof MediaPlaceholder> = args => (
     <div className="flex">
         <MediaPlaceholder {...args} />
     </div>
