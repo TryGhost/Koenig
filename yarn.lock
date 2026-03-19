@@ -1297,6 +1297,11 @@
     minimatch "^3.1.5"
     strip-json-comments "^3.1.1"
 
+"@eslint/js@9.37.0":
+  version "9.37.0"
+  resolved "https://registry.yarnpkg.com/@eslint/js/-/js-9.37.0.tgz#0cfd5aa763fe5d1ee60bedf84cd14f54bcf9e21b"
+  integrity sha512-jaS+NJ+hximswBG6pjNX0uEJZkrT0zwpVi3BA3vX22aFGjJjmgSTSmPpZCRKmoBL5VY/M6p0xsSJx7rk7sy5gg==
+
 "@eslint/js@9.39.4":
   version "9.39.4"
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-9.39.4.tgz#a3f83bfc6fd9bf33a853dfacd0b49b398eb596c1"
@@ -15108,6 +15113,11 @@ vinyl@^3.0.0, vinyl@^3.0.1:
     remove-trailing-separator "^1.1.0"
     replace-ext "^2.0.0"
     teex "^1.0.1"
+
+vite-plugin-css-injected-by-js@3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-3.5.2.tgz#1f75d16ad5c05b6b49bf18018099a189ec2e46ad"
+  integrity sha512-2MpU/Y+SCZyWUB6ua3HbJCrgnF0KACAsmzOQt1UvRVJCGF6S8xdA3ZUhWcWdM9ivG4I5az8PnQmwwrkC2CAQrQ==
 
 vite-plugin-dts@4.5.4:
   version "4.5.4"
