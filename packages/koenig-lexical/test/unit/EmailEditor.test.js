@@ -1,6 +1,6 @@
+import {VISIBILITY_SETTINGS} from '../../src/utils/visibility';
 import {expect} from 'vitest';
 import {getEmailEditorCardConfig} from '../../src/components/EmailEditor';
-import {VISIBILITY_SETTINGS} from '../../src/utils/visibility';
 
 describe('getEmailEditorCardConfig', function () {
     it('defaults to EMAIL_ONLY visibility when no cardConfig is passed', function () {
