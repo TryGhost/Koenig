@@ -1,5 +1,5 @@
 import {expect} from 'vitest';
-import {getEmailEditorCardConfig, EMAIL_EDITOR_CARD_CONFIG} from '../../src/components/EmailEditor';
+import {getEmailEditorCardConfig} from '../../src/components/EmailEditor';
 import {VISIBILITY_SETTINGS} from '../../src/utils/visibility';
 
 describe('getEmailEditorCardConfig', function () {
