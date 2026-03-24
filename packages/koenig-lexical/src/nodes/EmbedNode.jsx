@@ -41,8 +41,7 @@ export class EmbedNode extends BaseEmbedNode {
         queryParams: ['url'],
         matches: ['youtube'],
         priority: 1,
-        shortcut: '/youtube [url]',
-        isHidden: ({config}) => config?.editorType === 'email'
+        shortcut: '/youtube [url]'
     },
     {
         section: 'Embeds',
