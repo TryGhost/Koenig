@@ -7,7 +7,7 @@
   ],
   "packageRules": [
     {
-      "depTypeList": [
+      "matchDepTypes": [
         "devDependencies"
       ],
       "automerge": true,
@@ -15,22 +15,22 @@
     },
     {
       "groupName": "rollup + plugins",
-      "packagePatterns": [
-        "^rollup"
+      "matchPackageNames": [
+        "/^rollup/"
       ]
     },
     {
       "groupName": "lexical",
-      "packagePatterns": [
-        "^lexical",
-        "^@lexical"
+      "matchPackageNames": [
+        "/^lexical/",
+        "/^@lexical/"
       ]
     },
     {
       "groupName": "vitest",
-      "packagePatterns": [
-        "^vitest",
-        "^@vitest"
+      "matchPackageNames": [
+        "/^vitest/",
+        "/^@vitest/"
       ]
     },
     {
