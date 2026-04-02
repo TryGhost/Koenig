@@ -3312,57 +3312,6 @@
   dependencies:
     lodash-es "4.17.23"
 
-"@tryghost/kg-markdown-html-renderer@7.1.2":
-  version "7.1.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/kg-markdown-html-renderer/-/kg-markdown-html-renderer-7.1.2.tgz#f896c70acdc8ab9e25174343dd68646d631a06f3"
-  integrity sha512-7/im5iBkBcGvTy+ju5CKChsix+RBsjimLLnHC6agnhr5NzWhSPNzhV57J0msqihbwboDEFr5UPXb6XfiKJvBHw==
-  dependencies:
-    "@tryghost/kg-utils" "1.0.31"
-    markdown-it "^14.0.0"
-    markdown-it-footnote "^4.0.0"
-    markdown-it-image-lazy-loading "^2.0.0"
-    markdown-it-lazy-headers "^0.1.3"
-    markdown-it-mark "^4.0.0"
-    markdown-it-sub "^2.0.0"
-    markdown-it-sup "^2.0.0"
-    semver "^7.7.0"
-
-"@tryghost/kg-markdown-html-renderer@7.1.9":
-  version "7.1.9"
-  resolved "https://registry.yarnpkg.com/@tryghost/kg-markdown-html-renderer/-/kg-markdown-html-renderer-7.1.9.tgz#38f1a7d51dcc6f72018b8d6cb71d3af4e56773dc"
-  integrity sha512-j+JzQO6OScSSypFrLYqMf/GtibZCSlfq+kizs2QCNhVtgwq+5AWQxA7fctb6Ljqx+rCiEE6uBgOlzZZUbk4xBg==
-  dependencies:
-    "@tryghost/kg-utils" "1.0.37"
-    markdown-it "^14.0.0"
-    markdown-it-footnote "^4.0.0"
-    markdown-it-image-lazy-loading "^2.0.0"
-    markdown-it-lazy-headers "^0.1.3"
-    markdown-it-mark "^4.0.0"
-    markdown-it-sub "^2.0.0"
-    markdown-it-sup "^2.0.0"
-    semver "^7.7.0"
-
-"@tryghost/kg-utils@1.0.31":
-  version "1.0.31"
-  resolved "https://registry.yarnpkg.com/@tryghost/kg-utils/-/kg-utils-1.0.31.tgz#00e29cec01a16c53bc12e9d0d7f2153e58fde5d4"
-  integrity sha512-TJRTu3XCxfqclueDjs8cVi3p9o5lYrIIkA6abNl4EAHvT9FtR6nY0FQgEgDwtDDjpaWq+VKcDyo48abvAG456g==
-  dependencies:
-    semver "^7.7.0"
-
-"@tryghost/kg-utils@1.0.37":
-  version "1.0.37"
-  resolved "https://registry.yarnpkg.com/@tryghost/kg-utils/-/kg-utils-1.0.37.tgz#3b02201eb6c6ba4306f2a06b596866a2238e6092"
-  integrity sha512-oBFNnDLKFPdrAs/mtCLxMZgQdV6owkGuJiYeLq2axGI0jnDtFR/aaEb2+3s+YZ7jUQP88O4JxaheW1ZW3ix/Ag==
-  dependencies:
-    semver "^7.7.0"
-
-"@tryghost/kg-utils@1.0.41":
-  version "1.0.41"
-  resolved "https://registry.yarnpkg.com/@tryghost/kg-utils/-/kg-utils-1.0.41.tgz#6998c82b7ef4b58872a76809c47ecc2571a84eb7"
-  integrity sha512-0ODOY9EQ4PFkc2+tlJcU2e10yj++bq1nprk+WvrF7xUUyos2OT6TebvT0kR8UBhvFUUbEF0Zc7B5DgOQTUCUjQ==
-  dependencies:
-    semver "^7.7.3"
-
 "@tryghost/mobiledoc-kit@0.11.2-ghost.4":
   version "0.11.2-ghost.4"
   resolved "https://registry.yarnpkg.com/@tryghost/mobiledoc-kit/-/mobiledoc-kit-0.11.2-ghost.4.tgz#144189e7e62748b3c56e7b723fa18a5e8c807ccf"
@@ -9871,39 +9820,39 @@ markdown-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/markdown-extensions/-/markdown-extensions-2.0.0.tgz#34bebc83e9938cae16e0e017e4a9814a8330d3c4"
   integrity sha512-o5vL7aDWatOTX8LzaS1WMoaoxIiLRQJuIKKe2wAw6IeULDHaqbiqiggmx+pKvZDb1Sj+pE46Sn1T7lCqfFtg1Q==
 
-markdown-it-footnote@4.0.0, markdown-it-footnote@^4.0.0:
+markdown-it-footnote@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/markdown-it-footnote/-/markdown-it-footnote-4.0.0.tgz#02ede0cb68a42d7e7774c3abdc72d77aaa24c531"
   integrity sha512-WYJ7urf+khJYl3DqofQpYfEYkZKbmXmwxQV8c8mO/hGIhgZ1wOe7R4HLFNwqx7TjILbnC98fuyeSsin19JdFcQ==
 
-markdown-it-image-lazy-loading@2.0.1, markdown-it-image-lazy-loading@^2.0.0:
+markdown-it-image-lazy-loading@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/markdown-it-image-lazy-loading/-/markdown-it-image-lazy-loading-2.0.1.tgz#bfc233281864c43bfa2ea6535c457c88b4b7cafb"
   integrity sha512-IN1DNE2ubw8yn0I7G2conoxSz0R5GgMuOczbxtV+k20MtXeHrDvMQPkQYYGQSd+ejy4eSKQOhqu3gk676Ca//A==
   dependencies:
     image-size "^1.0.0"
 
-markdown-it-lazy-headers@0.1.3, markdown-it-lazy-headers@^0.1.3:
+markdown-it-lazy-headers@0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/markdown-it-lazy-headers/-/markdown-it-lazy-headers-0.1.3.tgz#e70dd4da79c87a9ce82ca4701b8b7c0e2d72297b"
   integrity sha512-65BxqvmYLpVifv6MvTElthY8zvZ/TpZBCdshr/mTpsFkqwcwWtfD3YoSE7RYSn7ugnEAAaj2gywszq+hI/Pxgg==
 
-markdown-it-mark@4.0.0, markdown-it-mark@^4.0.0:
+markdown-it-mark@4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/markdown-it-mark/-/markdown-it-mark-4.0.0.tgz#c19cbc87d9cb9fd1a495e8fe31b740b6d9ebf8c8"
   integrity sha512-YLhzaOsU9THO/cal0lUjfMjrqSMPjjyjChYM7oyj4DnyaXEzA8gnW6cVJeyCrCVeyesrY2PlEdUYJSPFYL4Nkg==
 
-markdown-it-sub@2.0.0, markdown-it-sub@^2.0.0:
+markdown-it-sub@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/markdown-it-sub/-/markdown-it-sub-2.0.0.tgz#10f6c7bbf2faacf71ae1a64c75009c40ef9b2c94"
   integrity sha512-iCBKgwCkfQBRg2vApy9vx1C1Tu6D8XYo8NvevI3OlwzBRmiMtsJ2sXupBgEA7PPxiDwNni3qIUkhZ6j5wofDUA==
 
-markdown-it-sup@2.0.0, markdown-it-sup@^2.0.0:
+markdown-it-sup@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/markdown-it-sup/-/markdown-it-sup-2.0.0.tgz#683b9390929f3024fcd5291799c466ce3d367f44"
   integrity sha512-5VgmdKlkBd8sgXuoDoxMpiU+BiEt3I49GItBzzw7Mxq9CxvnhE/k09HFli09zgfFDRixDQDfDxi0mgBCXtaTvA==
 
-markdown-it@14.1.1, markdown-it@^14.0.0:
+markdown-it@14.1.1:
   version "14.1.1"
   resolved "https://registry.yarnpkg.com/markdown-it/-/markdown-it-14.1.1.tgz#856f90b66fc39ae70affd25c1b18b581d7deee1f"
   integrity sha512-BuU2qnTti9YKgK5N+IeMubp14ZUKUUw7yeJbkjtosvHiP0AZ5c8IAgEMk79D0eC8F23r4Ac/q8cAIFdm2FtyoA==
@@ -12987,7 +12936,7 @@ semver@7.7.2:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.2.tgz#67d99fdcd35cec21e6f8b87a7fd515a33f982b58"
   integrity sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==
 
-semver@7.7.4, semver@^7.0.0, semver@^7.1.1, semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.5.3, semver@^7.5.4, semver@^7.6.3, semver@^7.7.0, semver@^7.7.2, semver@^7.7.3:
+semver@7.7.4, semver@^7.0.0, semver@^7.1.1, semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.5.3, semver@^7.5.4, semver@^7.6.3, semver@^7.7.2, semver@^7.7.3:
   version "7.7.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.7.4.tgz#28464e36060e991fa7a11d0279d2d3f3b57a7e8a"
   integrity sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==
