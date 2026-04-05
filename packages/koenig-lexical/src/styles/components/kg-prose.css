@@ -549,9 +549,16 @@
         /* -------------------------------------------------------------------- */
 
         :where(
-            blockquote p
+            blockquote > *
         ):not(:where(.not-kg-prose, [class~='not-kg-prose'] *)) {
-            margin: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        :where(
+            blockquote > * + *
+        ):not(:where(.not-kg-prose, [class~='not-kg-prose'] *)) {
+            margin-top: 1em;
         }
 
         :where(
