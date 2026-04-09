@@ -7178,10 +7178,10 @@ fancy-log@^1.3.3:
     parse-node-version "^1.0.0"
     time-stamp "^1.0.0"
 
-fast-average-color@9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/fast-average-color/-/fast-average-color-9.5.0.tgz#deade6bd998c0ea399a519ed1e2cd67ef673f112"
-  integrity sha512-nC6x2YIlJ9xxgkMFMd1BNoM1ctMjNoRKfRliPmiEWW3S6rLTHiQcy9g3pt/xiKv/D0NAAkhb9VyV+WJFvTqMGg==
+fast-average-color@9.5.2:
+  version "9.5.2"
+  resolved "https://registry.yarnpkg.com/fast-average-color/-/fast-average-color-9.5.2.tgz#6305ee468c84fae67792de6d2a5ed84936cfe933"
+  integrity sha512-FbaU8iPTPljP7tmnVhXbCyASNw/zxnmaNDf88gn5pTXlNvejl9w4FapeWMh6UNDwIjhJJU28EPfQWwW032YgPA==
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
