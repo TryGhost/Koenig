@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "@eslint/compat": "2.0.5",
-    "@eslint/js": "9.39.4",
-    "eslint": "9.39.4",
+    "@eslint/js": "10.0.1",
+    "eslint": "10.2.0",
     "eslint-plugin-ghost": "3.5.0",
     "globals": "17.4.0",
     "typescript-eslint": "8.58.1",
