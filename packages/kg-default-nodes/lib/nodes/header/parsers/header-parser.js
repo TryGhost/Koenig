@@ -51,7 +51,29 @@ export function parseHeaderNode(HeaderNode) {
                         const buttonElement = div.querySelector('.kg-header-card-button');
                         const alignment = div.classList.contains('kg-align-center') ? 'center' : '';
                         const backgroundImageSrc = div.querySelector('.kg-header-card-image')?.getAttribute('src');
-                        const layout = backgroundImageSrc ? 'split' : '';
+                        
+                        // Determine layout based on classes and DOM structure, not just image presence
+                        let layout = '';
+                        if (backgroundImageSrc) {
+                            // Check for explicit layout class first
+                            const hasSplitClass = div.classList.contains('kg-layout-split');
+                            const hasContentWideClass = div.classList.contains('kg-content-wide');
+                            
+                            // Check DOM structure: picture as direct child = full, picture inside content = split
+                            const picture = div.querySelector('picture');
+                            const content = div.querySelector('.kg-header-card-content');
+                            const isPictureDirectChild = picture && picture.parentElement === div;
+                            const isPictureInContent = picture && content && content.contains(picture);
+                            
+                            if (hasSplitClass || isPictureInContent) {
+                                layout = 'split';
+                            } else if (hasContentWideClass || isPictureDirectChild) {
+                                layout = ''; // full/wide layout (empty string)
+                            } else {
+                                // Fallback to old behavior if structure is ambiguous
+                                layout = 'split';
+                            }
+                        }
                         const backgroundColor = div.classList.contains('kg-style-accent') ? 'accent' : div.getAttribute('data-background-color');
                         const buttonColor = buttonElement?.getAttribute('data-button-color') || '';
                         const textColor = headerElement?.getAttribute('data-text-color') || '';
