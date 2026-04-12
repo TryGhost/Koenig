@@ -73,6 +73,73 @@ test.describe('Markdown card', async () => {
         `);
     });
 
+    test('preserves multi-paragraph and nested blockquote spacing in read-only mode', async function () {
+        await page.evaluate(() => {
+            const markdown = [
+                '> First paragraph',
+                '>',
+                '> Second paragraph',
+                '>',
+                '> > Nested one',
+                '> >',
+                '> > Nested two'
+            ].join('\n');
+
+            const serializedState = JSON.stringify({
+                root: {
+                    children: [{
+                        type: 'markdown',
+                        version: 1,
+                        markdown
+                    }],
+                    direction: null,
+                    format: '',
+                    indent: 0,
+                    type: 'root',
+                    version: 1
+                }
+            });
+            const editor = window.lexicalEditor;
+            const editorState = editor.parseEditorState(serializedState);
+            editor.setEditorState(editorState);
+        });
+
+        await assertHTML(page, html`
+            <div data-lexical-decorator="true" contenteditable="false">
+                <div><svg></svg></div>
+                <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="markdown">
+                    <div>
+                        <div>
+                            <blockquote>
+                                <p>First paragraph</p>
+                                <p>Second paragraph</p>
+                                <blockquote>
+                                    <p>Nested one</p>
+                                    <p>Nested two</p>
+                                </blockquote>
+                            </blockquote>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        const quoteStyles = await page.evaluate(() => {
+            const card = document.querySelector('[data-kg-card="markdown"]');
+            const secondParagraph = card.querySelector('blockquote > p + p');
+            const nestedQuote = card.querySelector('blockquote > blockquote');
+
+            return {
+                secondParagraphMarginTop: getComputedStyle(secondParagraph).marginTop,
+                nestedQuoteBorderLeftWidth: getComputedStyle(nestedQuote).borderLeftWidth
+            };
+        });
+
+        expect(parseFloat(quoteStyles.secondParagraphMarginTop)).toBeGreaterThan(0);
+        expect(parseFloat(quoteStyles.nestedQuoteBorderLeftWidth)).toBeGreaterThan(0);
+    });
+
     test('renders markdown card node', async function () {
         await focusEditor(page);
         await page.keyboard.type('/');
