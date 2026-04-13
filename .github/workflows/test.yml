@@ -47,7 +47,7 @@ jobs:
         run: echo "PLAYWRIGHT_VERSION=$(grep -A1 '^"@playwright/test@' yarn.lock | awk -F'"' '/version/ {print $2}')" >> $GITHUB_ENV
 
       - name: Cache playwright binaries
-        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         id: playwright-cache
         with:
           path: |
