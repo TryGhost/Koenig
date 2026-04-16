@@ -24,7 +24,8 @@
       "packagePatterns": [
         "^lexical",
         "^@lexical"
-      ]
+      ],
+      "enabled": false
     },
     {
       "groupName": "vitest",
