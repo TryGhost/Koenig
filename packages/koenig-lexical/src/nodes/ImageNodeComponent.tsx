@@ -1,0 +1,349 @@
+import type {LexicalEditor} from 'lexical';
+import CardContext from '../context/CardContext';
+import KoenigComposerContext from '../context/KoenigComposerContext';
+import React from 'react';
+import useCardDragAndDrop from '../hooks/useCardDragAndDrop';
+import useFileDragAndDrop from '../hooks/useFileDragAndDrop';
+import usePinturaEditor from '../hooks/usePinturaEditor';
+import {$createGalleryNode} from './GalleryNode';
+import {$createNodeSelection, $getNodeByKey, $setSelection} from 'lexical';
+import type {ImageNode} from './ImageNode';
+import {ActionToolbar} from '../components/ui/ActionToolbar';
+import {ImageCard} from '../components/ui/cards/ImageCard';
+import {ImageUploadForm} from '../components/ui/ImageUploadForm';
+import {LinkInput} from '../components/ui/LinkInput';
+import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar';
+import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';
+import {dataSrcToFile} from '../utils/dataSrcToFile.js';
+import {getAllowedImageCardWidths, getDefaultImageCardWidth} from '../utils/image-card-widths';
+import {getImageDimensions} from '../utils/getImageDimensions.js';
+import {getImageFilenameFromSrc} from '../utils/getImageFilenameFromSrc';
+import {imageUploadHandler} from '../utils/imageUploadHandler';
+import {isGif} from '../utils/isGif';
+import {openFileSelection} from '../utils/openFileSelection';
+import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+import type {DraggableInfo} from '../utils/draggable/ScrollHandler';
+
+function $getImageNodeByKey(nodeKey: string): ImageNode | null {
+    return $getNodeByKey(nodeKey) as ImageNode | null;
+}
+
+interface ImageNodeComponentProps {
+    nodeKey: string;
+    initialFile: unknown;
+    src: string;
+    altText: string;
+    captionEditor: LexicalEditor;
+    captionEditorInitialState: string | undefined;
+    triggerFileDialog: boolean;
+    previewSrc: string | undefined;
+    href: string;
+}
+
+export function ImageNodeComponent({nodeKey, initialFile, src, altText, captionEditor, captionEditorInitialState, triggerFileDialog, previewSrc, href}: ImageNodeComponentProps) {
+    const [editor] = useLexicalComposerContext();
+    const [showLink, setShowLink] = React.useState(false);
+    const {fileUploader, cardConfig} = React.useContext(KoenigComposerContext);
+    const {isSelected, cardWidth, setCardWidth} = React.useContext(CardContext);
+    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const toolbarFileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+
+    const imageUploader = fileUploader.useFileUpload('image');
+    const imageFileDragHandler = useFileDragAndDrop({handleDrop: handleImageDrop});
+
+    // stable fn refs to avoid excessive re-inits of the drag/drop handler effects
+    // which can cause unexpected side-effects with event handling
+    const canDropImageCard = React.useCallback((draggable: DraggableInfo) => {
+        return draggable.type === 'card'
+            && draggable.cardName === 'image'
+            && draggable.nodeKey !== nodeKey;
+    }, [nodeKey]);
+    const onDropImageCard = React.useCallback((draggable: DraggableInfo) => {
+        const {type, cardName, nodeKey: draggedNodeKey, dataset} = draggable as DraggableInfo & {nodeKey?: string; dataset?: Record<string, unknown>};
+
+        if (type === 'card' && cardName === 'image' && draggedNodeKey && dataset) {
+            editor.update(() => {
+                const targetImageNode = $getImageNodeByKey(nodeKey);
+                const droppedImageNode = $getNodeByKey(draggedNodeKey);
+                if (!targetImageNode || !droppedImageNode) {return;}
+                const galleryNode = $createGalleryNode({});
+
+                // images don't contain the filename dataset property so we need to add it
+                dataset.fileName = dataset?.fileName || getImageFilenameFromSrc(dataset.src as string);
+                const targetImageDataset = targetImageNode.getDataset();
+                targetImageDataset.fileName = targetImageDataset?.fileName || getImageFilenameFromSrc(targetImageDataset.src as string);
+
+                galleryNode.addImages([targetImageDataset, dataset]);
+
+                targetImageNode.replace(galleryNode);
+                droppedImageNode.remove();
+            });
+        }
+    }, [editor, nodeKey]);
+    const imageCardDragHandler = useCardDragAndDrop({
+        canDrop: canDropImageCard,
+        onDrop: onDropImageCard,
+        draggableSelector: '[data-kg-card]',
+        droppableSelector: '[data-kg-card]'
+    });
+
+    const {isEnabled: isPinturaEnabled, openEditor: openImageEditor}
+        = usePinturaEditor({config: cardConfig.pinturaConfig});
+
+    const allowedImageCardWidths = React.useMemo(() => {
+        return getAllowedImageCardWidths(cardConfig?.image?.allowedWidths);
+    }, [cardConfig?.image?.allowedWidths]);
+    const defaultImageCardWidth = React.useMemo(() => {
+        return getDefaultImageCardWidth(allowedImageCardWidths);
+    }, [allowedImageCardWidths]);
+    const hasMultipleImageCardWidths = allowedImageCardWidths.length > 1;
+
+    React.useEffect(() => {
+        if (!src?.startsWith('data:') || imageUploader.isLoading) {
+            return;
+        }
+
+        let isMounted = true;
+
+        // When copy/pasting from Google Docs it's possible for images to be transferred with data: URLs.
+        // Convert `data:` URL to File and upload it
+        const uploadFile = async () => {
+            const file = await dataSrcToFile(src);
+            if (isMounted && file) {
+                await imageUploadHandler([file], nodeKey, editor, imageUploader.upload);
+            }
+        };
+
+        uploadFile();
+
+        return () => { isMounted = false; };
+    }, [editor, imageUploader.isLoading, imageUploader.upload, nodeKey, src]);
+
+    React.useEffect(() => {
+        // If an initial file is provided, upload it
+        const uploadInitialFile = async (file: unknown) => {
+            if (file && !src) {
+                await imageUploadHandler([file as File], nodeKey, editor, imageUploader.upload);
+            }
+        };
+
+        uploadInitialFile(initialFile);
+
+        // Populate missing image dimensions, occurs when images are
+        // pasted/dragged/inserted as external or when loaded from serialized
+        // state that has missing images
+        const populateImageDimensions = async () => {
+            if (src && !initialFile && !triggerFileDialog) {
+                const {width, height} = await getImageDimensions(src);
+                editor.update(() => {
+                    const node = $getImageNodeByKey(nodeKey);
+                   if (!node) {return;}
+                    if (!node) {return;}
+                    node.width = width;
+                    node.height = height;
+                });
+            }
+        };
+
+        const hasMissingDimensions = editor.getEditorState().read(() => {
+            const node = $getImageNodeByKey(nodeKey);
+            if (!node) {return;}
+            if (!node.width || !node.height) {
+                return true;
+            }
+            return false;
+        });
+
+        if (hasMissingDimensions) {
+            populateImageDimensions();
+        }
+
+        // We only do this for init
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+
+        // reset original src so it can be replaced with preview and upload progress
+        editor.update(() => {
+            const node = $getImageNodeByKey(nodeKey);
+           if (!node) {return;}
+            if (!node) {return;}
+            node.src = '';
+        });
+
+        return await imageUploadHandler(files!, nodeKey, editor, imageUploader.upload);
+    };
+
+    const setHref = (newHref: string) => {
+        editor.update(() => {
+            const node = $getImageNodeByKey(nodeKey);
+           if (!node) {return;}
+            if (!node) {return;}
+            node.href = newHref;
+        });
+    };
+
+    const setAltText = (newAltText: string) => {
+        editor.update(() => {
+            const node = $getImageNodeByKey(nodeKey);
+           if (!node) {return;}
+            if (!node) {return;}
+            node.alt = newAltText;
+        });
+    };
+
+    // when card is inserted from the card menu or slash command we want to show the file picker immediately
+    // uses a setTimeout to avoid issues with React rendering the component twice in dev mode 🙈
+    React.useEffect(() => {
+        if (!triggerFileDialog) {
+            return;
+        }
+
+        const renderTimeout = setTimeout(() => {
+            // trigger dialog
+            openFileSelection({fileInputRef});
+
+            // clear the property on the node so we don't accidentally trigger anything with a re-render
+            editor.update(() => {
+                const node = $getImageNodeByKey(nodeKey);
+               if (!node) {return;}
+                if (!node) {return;}
+                node.triggerFileDialog = false;
+            });
+        });
+
+        return (() => {
+            clearTimeout(renderTimeout);
+        });
+    });
+
+    const handleImageCardResize = React.useCallback((newWidth: string) => {
+        if (!allowedImageCardWidths.includes(newWidth)) {
+            return;
+        }
+
+        editor.update(() => {
+            const node = $getImageNodeByKey(nodeKey);
+           if (!node) {return;}
+            if (!node) {return;}
+            node.cardWidth = newWidth; // this is a property on the node, not the card
+            setCardWidth(newWidth); // sets the state of the toolbar component
+        });
+    }, [allowedImageCardWidths, editor, nodeKey, setCardWidth]);
+
+    React.useEffect(() => {
+        if (!allowedImageCardWidths.includes(cardWidth)) {
+            handleImageCardResize(defaultImageCardWidth);
+        }
+    }, [allowedImageCardWidths, cardWidth, defaultImageCardWidth, handleImageCardResize]);
+
+    const cancelLinkAndReselect = () => {
+        setShowLink(false);
+        reselectImageCard();
+    };
+
+    const reselectImageCard = () => {
+        editor.update(() => {
+            const nodeSelection = $createNodeSelection();
+            nodeSelection.add(nodeKey);
+            $setSelection(nodeSelection);
+        });
+    };
+
+    async function handleImageDrop(files: File[]) {
+        await imageUploadHandler(files, nodeKey, editor, imageUploader.upload);
+    }
+
+    return (
+        <>
+            <ImageCard
+                altText={altText}
+                captionEditor={captionEditor}
+                captionEditorInitialState={captionEditorInitialState}
+                cardWidth={cardWidth}
+                fileInputRef={fileInputRef}
+                imageCardDragHandler={imageCardDragHandler}
+                imageFileDragHandler={imageFileDragHandler}
+                imageUploader={imageUploader}
+                isPinturaEnabled={isPinturaEnabled}
+                isSelected={isSelected}
+                openImageEditor={openImageEditor as (opts: unknown) => void}
+                previewSrc={previewSrc}
+                setAltText={setAltText}
+                src={src}
+                onFileChange={onFileChange}
+            />
+
+            <ActionToolbar
+                data-kg-card-toolbar="image"
+                isVisible={showLink}
+            >
+                <LinkInput
+                    cancel={cancelLinkAndReselect}
+                    href={href}
+                    update={(_href) => {
+                        setHref(_href);
+                        cancelLinkAndReselect();
+                    }}
+                />
+            </ActionToolbar>
+
+            <ActionToolbar
+                data-kg-card-toolbar="image"
+                isVisible={showSnippetToolbar}
+            >
+                <SnippetActionToolbar onClose={() => setShowSnippetToolbar(false)} />
+            </ActionToolbar>
+
+            <ActionToolbar
+                data-kg-card-toolbar="image"
+                isVisible={!!src && isSelected && !showLink && !showSnippetToolbar}
+            >
+                <ImageUploadForm
+                    fileInputRef={toolbarFileInputRef as React.RefObject<HTMLInputElement>}
+                    mimeTypes={fileUploader.fileTypes.image?.mimeTypes}
+                    onFileChange={onFileChange}
+                />
+                <ToolbarMenu>
+                    <ToolbarMenuItem
+                        hide={isGif(src) || !hasMultipleImageCardWidths || !allowedImageCardWidths.includes('regular')}
+                        icon="imgRegular"
+                        isActive={cardWidth === 'regular'}
+                        label="Regular width"
+                        onClick={() => handleImageCardResize('regular')}
+                    />
+                    <ToolbarMenuItem
+                        hide={isGif(src) || !hasMultipleImageCardWidths || !allowedImageCardWidths.includes('wide')}
+                        icon="imgWide"
+                        isActive={cardWidth === 'wide'}
+                        label="Wide width"
+                        onClick={() => handleImageCardResize('wide')}
+                    />
+                    <ToolbarMenuItem
+                        hide={isGif(src) || !hasMultipleImageCardWidths || !allowedImageCardWidths.includes('full')}
+                        icon="imgFull"
+                        isActive={cardWidth === 'full'}
+                        label="Full width"
+                        onClick={() => handleImageCardResize('full')}
+                    />
+                    <ToolbarMenuSeparator hide={isGif(src) || !hasMultipleImageCardWidths} />
+                    <ToolbarMenuItem icon="link" isActive={!!href} label="Link" onClick = {() => {
+                        setShowLink(true);
+                    }} />
+                    <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
+                    <ToolbarMenuItem
+                        dataTestId="create-snippet"
+                        hide={!cardConfig.createSnippet}
+                        icon="snippet"
+                        isActive={false}
+                        label="Save as snippet"
+                        onClick={() => setShowSnippetToolbar(true)}
+                    />
+                </ToolbarMenu>
+            </ActionToolbar>
+        </>
+    );
+}
