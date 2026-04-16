@@ -44,15 +44,15 @@
     "typescript-eslint": "8.58.1"
   },
   "dependencies": {
-    "@lexical/clipboard": "0.13.1",
-    "@lexical/headless": "0.13.1",
-    "@lexical/html": "0.13.1",
-    "@lexical/link": "0.13.1",
-    "@lexical/list": "0.13.1",
-    "@lexical/rich-text": "0.13.1",
+    "@lexical/clipboard": "0.43.0",
+    "@lexical/headless": "0.43.0",
+    "@lexical/html": "0.43.0",
+    "@lexical/link": "0.43.0",
+    "@lexical/list": "0.43.0",
+    "@lexical/rich-text": "0.43.0",
     "@tryghost/kg-default-nodes": "2.0.21",
     "@tryghost/kg-default-transforms": "1.2.44",
     "jsdom": "29.0.2",
-    "lexical": "0.13.1"
+    "lexical": "0.43.0"
   }
 }
