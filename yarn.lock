@@ -11190,10 +11190,10 @@ prettier-plugin-organize-attributes@1.0.0:
   resolved "https://registry.yarnpkg.com/prettier-plugin-organize-attributes/-/prettier-plugin-organize-attributes-1.0.0.tgz#037870ee3111b3c1d6371f677b64888de353cc63"
   integrity sha512-+NmameaLxbCcylEXsKPmawtzla5EE6ECqvGkpfQz4KM847fXDifB1gFnPQEpoADAq6IXg+cMI8Z0ISJEXa6fhg==
 
-prettier@3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.2.tgz#4f52e502193c9aa5b384c3d00852003e551bbd9f"
-  integrity sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==
+prettier@3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.8.3.tgz#560f2de55bf01b4c0503bc629d5df99b9a1d09b0"
+  integrity sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==
 
 pretty-format@30.3.0:
   version "30.3.0"
@@ -13977,10 +13977,10 @@ vinyl@^3.0.0, vinyl@^3.0.1:
     replace-ext "^2.0.0"
     teex "^1.0.1"
 
-vite-plugin-css-injected-by-js@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-4.0.1.tgz#ed69dd8f04800f9e3c7a17c3a2e3819eede6092e"
-  integrity sha512-WfyRojojQyAO/KzWf+efcXpTPv6zJPXaRmr9EYq5a4v5I3PWCR7kR01hiri2lW6+rHm3a57kpwsf+iahIJi1Qw==
+vite-plugin-css-injected-by-js@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-5.0.0.tgz#5dc4d054921aaa5d1fe09224629d002950456967"
+  integrity sha512-fj1yav+R4WNYP1uA/smg/rSdOxtmqjC1fDQ9qylsZaFIx2VUoDksMbfWUJ/8sCjhkDYEzqWYhpNNCseyM2ygQw==
 
 vite-plugin-dts@4.5.4:
   version "4.5.4"
