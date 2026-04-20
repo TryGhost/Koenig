@@ -40,7 +40,10 @@ jobs:
           sudo apt-get install msttcorefonts -qq
 
       - run: yarn config set ignore-engines true
-      - run: yarn --prefer-offline
+      - run: yarn --frozen-lockfile --prefer-offline
+
+      - name: Verify root lockfile is in sync
+        run: git diff --exit-code -- yarn.lock
 
       - name: Get installed Playwright version
         id: playwright-version
@@ -79,4 +82,3 @@ jobs:
           status: ${{ job.status }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
