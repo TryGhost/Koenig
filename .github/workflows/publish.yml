@@ -43,7 +43,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: yarn --prefer-offline
+        run: yarn --frozen-lockfile --prefer-offline
+
+      - name: Verify root lockfile is in sync
+        run: git diff --exit-code -- yarn.lock
 
       - name: Build all packages
         run: lerna run build

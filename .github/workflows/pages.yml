@@ -25,10 +25,13 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
 
-      - name: Setup monorepo + build packages
-        run: yarn setup
+      - name: Verify root lockfile is in sync
+        run: git diff --exit-code -- yarn.lock
+
+      - name: Build packages
+        run: lerna run build
 
       - name: Copy CNAME to build
         run: cp ./.github/workflows/CNAME ./packages/koenig-lexical/public/CNAME
