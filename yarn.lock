@@ -14005,10 +14005,10 @@ vinyl@^3.0.0, vinyl@^3.0.1:
     replace-ext "^2.0.0"
     teex "^1.0.1"
 
-vite-plugin-css-injected-by-js@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-5.0.0.tgz#5dc4d054921aaa5d1fe09224629d002950456967"
-  integrity sha512-fj1yav+R4WNYP1uA/smg/rSdOxtmqjC1fDQ9qylsZaFIx2VUoDksMbfWUJ/8sCjhkDYEzqWYhpNNCseyM2ygQw==
+vite-plugin-css-injected-by-js@5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-5.0.1.tgz#d123b68e4d15e5a7835d01cd64bf795f8e7d6d5a"
+  integrity sha512-JSB0jjN4VCKqG7XTUdrwiIl5gA+z2yi/tAl9WHo0X4sdyJ1yrmbLOEjf95TDoDIIuKr4GJIc7lMJG0CT88eEUQ==
 
 vite-plugin-dts@4.5.4:
   version "4.5.4"
