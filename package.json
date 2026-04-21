@@ -22,7 +22,7 @@
   "devDependencies": {
     "@eslint/compat": "2.0.5",
     "@eslint/js": "9.39.4",
-    "@types/color-convert": "2.0.4",
+    "@types/color-convert": "3.0.1",
     "eslint": "9.39.4",
     "eslint-plugin-ghost": "3.5.0",
     "globals": "17.5.0",
