@@ -749,10 +749,10 @@
     "@eslint/core" "^0.17.0"
     levn "^0.4.1"
 
-"@etchteam/storybook-addon-status@8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@etchteam/storybook-addon-status/-/storybook-addon-status-8.0.0.tgz#8dd6553fe978827421b1bb8066fd0fe51ad998c7"
-  integrity sha512-PR0qiT5ndB32rfRi3a6QJE66sUuTD2GeJMmQFdaEOLjTWuJ/usdZ6hXXCmWadPLZXcg6wkvHGFQxDSOKNVjU9A==
+"@etchteam/storybook-addon-status@8.1.0":
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/@etchteam/storybook-addon-status/-/storybook-addon-status-8.1.0.tgz#0a67c1fc36b4e472ce2c537fd5a60b15714af7d1"
+  integrity sha512-jKEoBJwGO4uab3L4hNEjxlve1eBvyCf6FmTQYpxbMnEohciSYt3aT2iVtraNQD7E46IrcaR5CF5ykS1MfXNfyw==
   dependencies:
     lodash "^4.17.21"
 
