@@ -11106,10 +11106,10 @@ postcss@8.5.10:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-postcss@^8.4.4, postcss@^8.4.47, postcss@^8.5.10, postcss@^8.5.9:
-  version "8.5.13"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.13.tgz#6cfaf647f2e7ef69850208eccd849e0d3f65d420"
-  integrity sha512-qif0+jGGZoLWdHey3UFHHWP0H7Gbmsk8T5VEqyYFbWqPr1XqvLGBbk/sl8V5exGmcYJklJOhOQq1pV9IcsiFag==
+postcss@^8.4.4, postcss@^8.4.47, postcss@^8.5.10, postcss@^8.5.13:
+  version "8.5.14"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.14.tgz#a66c2d7808fadf69ebb5b84a03f8bafd76c4919c"
+  integrity sha512-SoSL4+OSEtR99LHFZQiJLkT59C5B1amGO1NzTwj7TT1qCUgUO6hxOvzkOYxD+vMrXBM3XJIKzokoERdqQq/Zmg==
   dependencies:
     nanoid "^3.3.11"
     picocolors "^1.1.1"
@@ -12785,10 +12785,10 @@ style-to-object@1.0.14:
   dependencies:
     inline-style-parser "0.2.7"
 
-stylelint@17.9.0:
-  version "17.9.0"
-  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-17.9.0.tgz#f38806264f0222e7ec9f7d0e067b7ad91f75a07b"
-  integrity sha512-xO0jeY6z1/urFL5L/BZLmB1yYlbRiRMQnYH6ArZIDWJ+SZXGssOY7XoYb1JIv/L220+EBnwwJXJS4Mt/F96SvA==
+stylelint@17.10.0:
+  version "17.10.0"
+  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-17.10.0.tgz#de4aebf68474caa5fedf98f350c65c6d812788d0"
+  integrity sha512-cI7I6HHEYOHHVNVci+s92WlA3QfmNhjwFdgCgYV3TLEysilOjk+B3EFxMED1xY9GYB0Kre3OD+mSLj19VLTIvA==
   dependencies:
     "@csstools/css-calc" "^3.2.0"
     "@csstools/css-parser-algorithms" "^4.0.0"
@@ -12817,7 +12817,7 @@ stylelint@17.9.0:
     micromatch "^4.0.8"
     normalize-path "^3.0.0"
     picocolors "^1.1.1"
-    postcss "^8.5.9"
+    postcss "^8.5.13"
     postcss-safe-parser "^7.0.1"
     postcss-selector-parser "^7.1.1"
     postcss-value-parser "^4.2.0"
