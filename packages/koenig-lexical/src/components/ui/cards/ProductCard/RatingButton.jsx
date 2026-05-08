@@ -18,9 +18,14 @@ export function RatingButton({rating, onRatingChange}) {
     };
 
     return (
+        // The rating widget sits above the card's ReadOnlyOverlay (z-10) and
+        // opts out of the wrapper's mousedown preventDefault via
+        // `data-kg-allow-clickthrough`, so clicking a star always reaches the
+        // button regardless of the card's editing state.
         <div
-            className="not-kg-prose ml-auto flex transition-all duration-75"
+            className="not-kg-prose relative z-20 ml-auto flex transition-all duration-75"
             data-testid="product-stars"
+            data-kg-allow-clickthrough
             onMouseLeave={resetHoveredStarIndex}
         >
             {

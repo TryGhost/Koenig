@@ -76,7 +76,7 @@ test.describe('Product card', async () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <div data-kg-allow-clickthrough="true">
                                 <button type="button"><svg></svg></button>
                                 <button type="button"><svg></svg></button>
                                 <button type="button"><svg></svg></button>
@@ -469,7 +469,7 @@ test.describe('Product card', async () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <div data-kg-allow-clickthrough="true">
                                 <button type="button"><svg></svg></button>
                                 <button type="button"><svg></svg></button>
                                 <button type="button"><svg></svg></button>
@@ -562,7 +562,7 @@ test.describe('Product card', async () => {
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <div data-kg-allow-clickthrough="true">
                                 <button type="button"><svg></svg></button>
                                 <button type="button"><svg></svg></button>
                                 <button type="button"><svg></svg></button>

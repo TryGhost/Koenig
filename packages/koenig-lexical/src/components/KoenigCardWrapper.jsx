@@ -111,6 +111,22 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
 
         function handleMousedown(event) {
             if (!isSelected && !isEditing) {
+                const targetTagName = event.target.tagName;
+                const allowedTagNames = ['INPUT', 'TEXTAREA'];
+                const allowClickthrough = !!event.target.closest('[data-kg-allow-clickthrough]');
+
+                // For clickthrough controls (interactive widgets that should
+                // act on first click), skip SELECT_CARD_COMMAND on mousedown
+                // entirely. Dispatching it here causes other cards to lose
+                // their editing state synchronously, and the resulting layout
+                // shift can land mouseup on a different element than mousedown
+                // — the click event then fires on a common ancestor instead
+                // of the intended button. The control's own React onClick is
+                // expected to call setEditing(true) itself.
+                if (allowClickthrough) {
+                    return;
+                }
+
                 editor.dispatchCommand(SELECT_CARD_COMMAND, {cardKey: nodeKey});
 
                 // skip CLICK_COMMAND behaviour otherwise we'll immediately enter edit mode
@@ -120,11 +136,7 @@ const KoenigCardWrapper = ({nodeKey, width, wrapperStyle, IndicatorIcon, childre
                 // can cause an underlying cursor position change but inputs and
                 // textareas are different and we want the focus to move to them
                 // immediately when clicked
-                const targetTagName = event.target.tagName;
-                const allowedTagNames = ['INPUT', 'TEXTAREA'];
-                const allowClickthrough = !!event.target.closest('[data-kg-allow-clickthrough]');
-
-                if (!allowedTagNames.includes(targetTagName) && !allowClickthrough) {
+                if (!allowedTagNames.includes(targetTagName)) {
                     event.preventDefault();
                 }
             }

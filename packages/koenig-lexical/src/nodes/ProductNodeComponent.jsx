@@ -105,6 +105,9 @@ export function ProductNodeComponent({
     };
 
     const handleRatingToggle = (event) => {
+        // Mutating any control on the card should move it into EDITING state —
+        // toggling the rating is an edit, the card should reflect that.
+        setEditing(true);
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.productRatingEnabled = event.target.checked;
@@ -112,6 +115,9 @@ export function ProductNodeComponent({
     };
 
     const handleRatingChange = (rating) => {
+        // Same principle: clicking a star is a real edit. Promote the card
+        // into EDITING so the affordance the user just acted on is honoured.
+        setEditing(true);
         editor.update(() => {
             const node = $getNodeByKey(nodeKey);
             node.productStarRating = rating;
