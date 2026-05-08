@@ -12604,7 +12604,7 @@ string-width@^7.0.0:
     get-east-asian-width "^1.0.0"
     strip-ansi "^7.1.0"
 
-string-width@^8.2.0:
+string-width@^8.2.0, string-width@^8.2.1:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-8.2.1.tgz#165089cfa527cc88fbc23dd73313f5e334af1ea1"
   integrity sha512-IIaP0g3iy9Cyy18w3M9YcaDudujEAVHKt3a3QJg1+sr/oX96TbaGUubG0hJyCjCBThFH+tFpcIyoUHUn1ogaLA==
@@ -12785,10 +12785,10 @@ style-to-object@1.0.14:
   dependencies:
     inline-style-parser "0.2.7"
 
-stylelint@17.10.0:
-  version "17.10.0"
-  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-17.10.0.tgz#de4aebf68474caa5fedf98f350c65c6d812788d0"
-  integrity sha512-cI7I6HHEYOHHVNVci+s92WlA3QfmNhjwFdgCgYV3TLEysilOjk+B3EFxMED1xY9GYB0Kre3OD+mSLj19VLTIvA==
+stylelint@17.11.0:
+  version "17.11.0"
+  resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-17.11.0.tgz#ea09bad247fac60ffd88464586be32603f020845"
+  integrity sha512-/3czzmbF9XdGWvReDF3Ex4R23Ajolo7j8RB2bFNEqk6Ht356nlpVV+G5bG2Qt8AW1ofJzXztBRDnAtd7cgowWA==
   dependencies:
     "@csstools/css-calc" "^3.2.0"
     "@csstools/css-parser-algorithms" "^4.0.0"
@@ -12821,7 +12821,7 @@ stylelint@17.10.0:
     postcss-safe-parser "^7.0.1"
     postcss-selector-parser "^7.1.1"
     postcss-value-parser "^4.2.0"
-    string-width "^8.2.0"
+    string-width "^8.2.1"
     supports-hyperlinks "^4.4.0"
     svg-tags "^1.0.0"
     table "^6.9.0"
