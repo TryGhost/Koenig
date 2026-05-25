@@ -80,7 +80,8 @@ Packages have complex interdependencies. Key relationships:
 ## Special Configuration
 
 ### Environment Variables
-- `VITE_TENOR_API_KEY`: Required for Gif card functionality
+- `VITE_KLIPY_API_KEY`: Required for Gif card functionality (preferred provider)
+- `VITE_TENOR_API_KEY`: Required for Gif card functionality (fallback when Klipy key is not set)
 - `VITE_SENTRY_*`: Error tracking configuration
 
 ### External Dependencies
