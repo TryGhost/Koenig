@@ -3,7 +3,7 @@ import React from 'react';
 import pick from 'lodash/pick';
 import {getImageFilenameFromSrc} from '../utils/getImageFilenameFromSrc';
 
-export default function useGalleryReorder({images, updateImages, isSelected = false, maxImages = 9, disabled = false}) {
+export default function useGalleryReorder({images, updateImages, maxImages, isSelected = false, disabled = false}) {
     const koenig = React.useContext(KoenigComposerContext);
 
     const [containerRef, setContainerRef] = React.useState(null);
@@ -14,8 +14,14 @@ export default function useGalleryReorder({images, updateImages, isSelected = fa
     const onDragStart = (draggableInfo) => {
         // enable dropping when an image is dragged in from outside of this card
         const isImageDrag = draggableInfo.type === 'image' || draggableInfo.cardName === 'image';
-        if (isImageDrag && draggableInfo.dataset.src && images.length !== maxImages) {
+        if (!isImageDrag || !draggableInfo.dataset.src) {
+            return;
+        }
+        const isInternal = containerRef && containerRef.contains(draggableInfo.element);
+        if (images.length < maxImages || isInternal) {
             dragDropContainer.current.enableDrag();
+        } else {
+            dragDropContainer.current.disableDrag();
         }
     };
 
