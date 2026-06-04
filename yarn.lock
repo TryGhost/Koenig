@@ -14101,10 +14101,10 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.1.tgz#168efc2180964e6386d061e094df61afe239b18d"
   integrity sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==
 
-unplugin-dts@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/unplugin-dts/-/unplugin-dts-1.0.1.tgz#9ffd538fad8fe887fe9c93e5920a70042fadcacb"
-  integrity sha512-EdJZxdWP4Tm/xhe58/zAge3Tu0OKDYygm8rucRrcCZ4XzgA31jexUKhaJuEMddOPBDs9ONnq6vwigbjeBqkfuw==
+unplugin-dts@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/unplugin-dts/-/unplugin-dts-1.0.2.tgz#5ae51d53ecc99230e9d54976fe2febe7e73bf199"
+  integrity sha512-VbNiMD0LMl/t6nJueGtrCp79N7ZO1nquxj/FUybJDnKwZGsnW2wjdwBSzA3QEHujoxmxZIptsG43hL7LzXE96w==
   dependencies:
     "@rollup/pluginutils" "^5.1.4"
     "@volar/typescript" "^2.4.26"
@@ -14370,12 +14370,12 @@ vite-plugin-css-injected-by-js@5.0.1:
   resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-5.0.1.tgz#d123b68e4d15e5a7835d01cd64bf795f8e7d6d5a"
   integrity sha512-JSB0jjN4VCKqG7XTUdrwiIl5gA+z2yi/tAl9WHo0X4sdyJ1yrmbLOEjf95TDoDIIuKr4GJIc7lMJG0CT88eEUQ==
 
-vite-plugin-dts@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-5.0.1.tgz#fea9dcc8ad16d782fd6bc352e44dd73fa7a28da2"
-  integrity sha512-1L+x8bVPDhlI4kLzRIIGqO+b1VnvtY6CoHrU+riaipHJUAxayM0i1HObqeBv33Svil9hW64Z2KNiOn6UrKWCbA==
+vite-plugin-dts@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-5.0.2.tgz#685a6f7209cea9fae9e4ec02935a3f43f69f4911"
+  integrity sha512-lNeHS+dwGju6eRmNvZQt8Shwv9j3m98hbHse/lIbLq9q3yE2DcIOBBYQEVUF6tS0kOmv+VA9Z5FqmzFnGe4U8g==
   dependencies:
-    unplugin-dts "1.0.1"
+    unplugin-dts "1.0.2"
 
 vite-plugin-svgr@5.2.0:
   version "5.2.0"
@@ -14386,10 +14386,10 @@ vite-plugin-svgr@5.2.0:
     "@svgr/core" "^8.1.0"
     "@svgr/plugin-jsx" "^8.1.0"
 
-vite@8.0.15, "vite@^6.0.0 || ^7.0.0 || ^8.0.0":
-  version "8.0.15"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-8.0.15.tgz#f2117eb2ac1963160ae5c79c6879f50814e2bdc5"
-  integrity sha512-qpgllRxrLqwsMAGRdLhsEr9bepaOQk1rxH1xT2coBXLaEB/bfkqQj1j7RMxwMfnYrvO1ZnFMiwX+wBVgnsyn0g==
+vite@8.0.16, "vite@^6.0.0 || ^7.0.0 || ^8.0.0":
+  version "8.0.16"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-8.0.16.tgz#ae073866c06563d6634a90169a496e11bd84f1a6"
+  integrity sha512-h9bXPmJichP5fLmVQo3PyaGSDE2n3aPuomeAlVRm0JLmt4rY6zmPKd59HYI4LNW8oTK7tlTsuC7l/m7awx9Jcw==
   dependencies:
     lightningcss "^1.32.0"
     picomatch "^4.0.4"
