@@ -8695,10 +8695,10 @@ jsonparse@^1.2.0, jsonparse@^1.3.1:
     object.assign "^4.1.4"
     object.values "^1.1.6"
 
-juice@12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/juice/-/juice-12.0.0.tgz#346a58d0a2cce3009ddc9f1a0af4cfb62830f3f8"
-  integrity sha512-5CycJX5bFIztfbs1oeZX4sX0pd9/RK5mR/dw6aZGIsxoWC9XnV3kLykMupcdIJmg7oYhlNwverzegJ3QFKDa2g==
+juice@12.1.0:
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/juice/-/juice-12.1.0.tgz#127363b7572e588e13199bed7188f70e7254e81e"
+  integrity sha512-UBBi+XP/2C6z5ImLWlGqJf4D/E44zZzg/rLw2D4xx6FaVjQ0kzZlc+ctRvIkf09l6vfwTTeGsx7ItGP6Xzqy/g==
   dependencies:
     cheerio "1.2.0"
     commander "^14.0.3"
