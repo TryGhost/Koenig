@@ -76,7 +76,7 @@ jobs:
           path: playwright-report
           retention-days: 30
 
-      - uses: tryghost/actions/actions/slack-build@f5d907bc4e3e2193905b7e6e5af8bf3bf706b2ff # main
+      - uses: tryghost/actions/actions/slack-build@5b3f016a2426d87bd67cf4823f2cc0d87b94da63 # main
         if: failure() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           status: ${{ job.status }}
