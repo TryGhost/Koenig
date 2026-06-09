@@ -39,7 +39,7 @@
         font-family: var(--koenig-editor-body-font-family, georgia,Times,serif);
         font-size: var(--koenig-editor-body-font-size, 2.0rem);
         letter-spacing: var(--koenig-editor-body-letter-spacing, normal);
-        line-height: 1.6em;
+        line-height: var(--koenig-editor-body-line-height, 1.6em);
     }
 
     /* Selection highlight color */
