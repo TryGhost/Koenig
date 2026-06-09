@@ -4,9 +4,11 @@ import Portal from './Portal';
 import PropTypes from 'prop-types';
 import React from 'react';
 import defaultData from '@emoji-mart/data';
+import {useClickOutside} from '../../hooks/useClickOutside';
 
 const EmojiPickerPortal = ({
     onEmojiClick,
+    onClickOutside,
     positionRef,
     data = defaultData,
     autoFocus = true,
@@ -30,6 +32,7 @@ const EmojiPickerPortal = ({
     ...props
 }) => {
     const [position, setPosition] = React.useState(null);
+    const pickerRef = React.useRef(null);
     const {darkMode} = React.useContext(KoenigComposerContext);
 
     const shiftPixels = 35; // how many pixels we want to move it up when it's at the bottom of the screen
@@ -58,6 +61,8 @@ const EmojiPickerPortal = ({
             document.removeEventListener('scroll', handleScroll, true);
         };
     }, [handleScroll]);
+
+    useClickOutside(!!onClickOutside, pickerRef, onClickOutside);
 
     if (!position) {
         return null;
@@ -101,7 +106,7 @@ const EmojiPickerPortal = ({
 
     return (
         <Portal>
-            <div className='z-20 mr-9 mt-10 rounded-md bg-white' data-testid="emoji-picker-container" style={style} onClick={handleClick}>
+            <div ref={pickerRef} className='z-20 mr-9 mt-10 rounded-md bg-white' data-testid="emoji-picker-container" style={style} onClick={handleClick}>
                 <div className=''>
                     <Picker // https://github.com/missive/emoji-mart#-picker
                         data={data}
@@ -118,6 +123,7 @@ export default EmojiPickerPortal;
 
 EmojiPickerPortal.propTypes = {
     onEmojiClick: PropTypes.func.isRequired,
+    onClickOutside: PropTypes.func,
     positionRef: PropTypes.object,
     data: PropTypes.array,
     autoFocus: PropTypes.bool,
