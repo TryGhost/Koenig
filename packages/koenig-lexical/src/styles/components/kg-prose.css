@@ -309,10 +309,11 @@
             ul,
             ol
         ):not(:where(.not-kg-prose, [class~='not-kg-prose'] *)) {
-            font-family: georgia,Times,serif;
+            font-family: var(--koenig-editor-body-font-family, georgia,Times,serif);
             font-weight: 400;
             line-height: 1.6em;
-            font-size: 2.0rem;
+            font-size: var(--koenig-editor-body-font-size, 2.0rem);
+            letter-spacing: var(--koenig-editor-body-letter-spacing, normal);
         }
 
         :where(
@@ -385,7 +386,7 @@
                 ul,
                 ol
             ):not(:where(.not-kg-prose, [class~='not-kg-prose'] *)) {
-                font-size: 1.8rem;
+                font-size: var(--koenig-editor-body-font-size-mobile, 1.8rem);
             }
         }
 

@@ -35,9 +35,24 @@
         outline: none;
     }
 
+    .kg-editor-placeholder {
+        font-family: var(--koenig-editor-body-font-family, georgia,Times,serif);
+        font-size: var(--koenig-editor-body-font-size, 2.0rem);
+        letter-spacing: var(--koenig-editor-body-letter-spacing, normal);
+        line-height: 1.6em;
+    }
+
     /* Selection highlight color */
     ::selection {
         background: var(--grey-300);
+    }
+}
+
+@media (max-width: 500px) {
+    .koenig-lexical {
+        .kg-editor-placeholder {
+            font-size: var(--koenig-editor-body-font-size-mobile, 1.8rem);
+        }
     }
 }
 
