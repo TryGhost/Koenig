@@ -70,6 +70,8 @@ const KoenigComposer = ({
 
     const editorContainerRef = React.useRef(null);
     const onWordCountChangeRef = React.useRef(null);
+    const onSelectionWordCountChangeRef = React.useRef(null);
+    const selectionWordCountsRef = React.useRef(new Map());
 
     if (!fileUploader.useFileUpload) {
         fileUploader.useFileUpload = function () {
@@ -118,7 +120,9 @@ const KoenigComposer = ({
                 multiplayerDocId,
                 multiplayerUsername,
                 createWebsocketProvider,
-                onWordCountChangeRef
+                onWordCountChangeRef,
+                onSelectionWordCountChangeRef,
+                selectionWordCountsRef
             }}>
                 <KoenigSelectedCardContext>
                     <TKContext>
