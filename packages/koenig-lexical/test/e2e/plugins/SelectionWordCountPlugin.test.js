@@ -1,5 +1,5 @@
+import {ctrlOrCmd, focusEditor, initialize, insertCard, selectBackwards} from '../../utils/e2e';
 import {expect, test} from '@playwright/test';
-import {focusEditor, initialize, selectBackwards} from '../../utils/e2e';
 
 test.describe('Selection Word Count Plugin', async function () {
     let page;
@@ -30,6 +30,10 @@ test.describe('Selection Word Count Plugin', async function () {
         await expect(page.getByTestId('selection-word-count')).toHaveText('1');
         // total stays visible alongside the selection count
         await expect(page.getByTestId('word-count')).toHaveText('3');
+
+        // extend across a word boundary; selects "beautiful world"
+        await selectBackwards(page, 10);
+        await expect(page.getByTestId('selection-word-count')).toHaveText('2');
     });
 
     test('shows 0 for a whitespace-only selection', async function () {
@@ -40,17 +44,15 @@ test.describe('Selection Word Count Plugin', async function () {
         }
 
         // Chrome for Testing occasionally drops the programmatic selection;
-        // retry until the DOM reports a non-collapsed selection
+        // retry until the whitespace-only selection registers and gets counted
         await expect(async () => {
             if (!(await page.evaluate(() => window.getSelection().isCollapsed))) {
                 // a previous attempt selected; collapse back to just before "world"
                 await page.keyboard.press('ArrowRight');
             }
             await selectBackwards(page, 1); // selects the space between the words
-            expect(await page.evaluate(() => window.getSelection().isCollapsed)).toBe(false);
+            await expect(page.getByTestId('selection-word-count')).toHaveText('0', {timeout: 1000});
         }).toPass();
-
-        await expect(page.getByTestId('selection-word-count')).toHaveText('0');
     });
 
     test('counts partial word fragments as words', async function () {
@@ -68,5 +70,49 @@ test.describe('Selection Word Count Plugin', async function () {
         await page.keyboard.press('ArrowRight'); // collapse the selection
         await expect(page.getByTestId('selection-word-count')).not.toBeVisible();
         await expect(page.getByTestId('word-count')).toHaveText('2');
+    });
+
+    test('counts selection inside a nested editor', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('Hello world');
+        await page.keyboard.press('Enter');
+        await insertCard(page, {cardName: 'callout'});
+        await page.keyboard.type('Nested content here');
+        await expect(page.getByTestId('word-count')).toHaveText('5');
+        await selectBackwards(page, 12); // selects "content here"
+        await expect(page.getByTestId('selection-word-count')).toHaveText('2');
+    });
+
+    test('moving selection from nested editor back to main editor reports main selection', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('Hello world');
+        await page.keyboard.press('Enter');
+        await insertCard(page, {cardName: 'callout'});
+        await page.keyboard.type('Nested content here');
+        await selectBackwards(page, 4); // selects "here" in the nested editor
+        await expect(page.getByTestId('selection-word-count')).toHaveText('1');
+
+        // click into the first paragraph and select "Hello world" there
+        await page.locator('[data-lexical-editor] > p').first().click();
+        await page.keyboard.press('End');
+        await selectBackwards(page, 11);
+        await expect(page.getByTestId('selection-word-count')).toHaveText('2');
+
+        // collapse — counter must revert to total-only, with no stale nested count
+        await page.keyboard.press('ArrowRight');
+        await expect(page.getByTestId('selection-word-count')).not.toBeVisible();
+    });
+
+    test('select-all across a card matches the document total', async function () {
+        await focusEditor(page);
+        await page.keyboard.type('Hello world');
+        await page.keyboard.press('Enter');
+        await insertCard(page, {cardName: 'callout'});
+        await page.keyboard.type('Nested content here');
+        await page.keyboard.press('Escape'); // exit nested editing, card selected
+        await page.keyboard.press('ArrowDown'); // cursor into main editor below card
+        await page.keyboard.press(`${ctrlOrCmd(page)}+KeyA`);
+        await expect(page.getByTestId('word-count')).toHaveText('5');
+        await expect(page.getByTestId('selection-word-count')).toHaveText('5');
     });
 });

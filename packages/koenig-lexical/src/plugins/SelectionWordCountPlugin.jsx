@@ -1,8 +1,7 @@
 import KoenigComposerContext from '../context/KoenigComposerContext';
 import React from 'react';
 import throttle from 'lodash/throttle';
-import {$getSelection, $isRangeSelection, COMMAND_PRIORITY_LOW, SELECTION_CHANGE_COMMAND} from 'lexical';
-import {mergeRegister} from '@lexical/utils';
+import {$getSelection, $isRangeSelection} from 'lexical';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {utils} from '@tryghost/helpers';
 
@@ -12,7 +11,7 @@ const {countWords} = utils;
 // non-collapsed range selection exists, null otherwise.
 export const SelectionWordCountPlugin = ({onChange} = {}) => {
     const [editor] = useLexicalComposerContext();
-    const {onSelectionWordCountChangeRef, selectionWordCountsRef} = React.useContext(KoenigComposerContext);
+    const {onSelectionWordCountChangeRef, selectionWordCountsRef, lastEmittedSelectionWordCountRef} = React.useContext(KoenigComposerContext);
 
     React.useLayoutEffect(() => {
         if (!onChange) {
@@ -31,7 +30,6 @@ export const SelectionWordCountPlugin = ({onChange} = {}) => {
         // map and emits the combined value so that the emission order
         // between editor instances doesn't matter
         const counts = selectionWordCountsRef.current;
-        let lastEmitted;
 
         const emitCombined = () => {
             let combined = null;
@@ -43,8 +41,11 @@ export const SelectionWordCountPlugin = ({onChange} = {}) => {
                 }
             }
 
-            if (combined !== lastEmitted) {
-                lastEmitted = combined;
+            // dedup lives on the composer-level ref rather than in this
+            // closure so that no instance re-emits a value another
+            // instance has already delivered
+            if (combined !== lastEmittedSelectionWordCountRef.current) {
+                lastEmittedSelectionWordCountRef.current = combined;
                 onChange(combined);
             }
         };
@@ -67,26 +68,25 @@ export const SelectionWordCountPlugin = ({onChange} = {}) => {
 
         const throttledUpdate = throttle(updateSelectionCount, 200);
 
-        const cleanupRegister = mergeRegister(
-            editor.registerCommand(SELECTION_CHANGE_COMMAND, () => {
-                throttledUpdate();
-                return false;
-            }, COMMAND_PRIORITY_LOW),
-            editor.registerUpdateListener(() => {
-                throttledUpdate();
-            })
-        );
+        // update listeners fire after every commit, including selection-only
+        // changes, so a SELECTION_CHANGE_COMMAND handler isn't needed
+        const cleanupRegister = editor.registerUpdateListener(() => {
+            throttledUpdate();
+        });
 
         return () => {
             throttledUpdate.cancel();
             cleanupRegister();
             counts.delete(editor.getKey());
+            // an unmounting editor may hold the active selection (e.g. a
+            // card deleted mid-edit) so re-emit to drop its count
+            emitCombined();
 
             if (!editor._parentEditor) {
                 onSelectionWordCountChangeRef.current = null;
             }
         };
-    }, [editor, onChange, onSelectionWordCountChangeRef, selectionWordCountsRef]);
+    }, [editor, onChange, onSelectionWordCountChangeRef, selectionWordCountsRef, lastEmittedSelectionWordCountRef]);
 };
 
 export default SelectionWordCountPlugin;
