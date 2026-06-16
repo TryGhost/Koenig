@@ -23,6 +23,7 @@ import * as gallery from './nodes/gallery/GalleryNode.js';
 import * as emailCta from './nodes/email-cta/EmailCtaNode.js';
 import * as signup from './nodes/signup/SignupNode.js';
 import * as transistor from './nodes/transistor/TransistorNode.js';
+import * as pluginCard from './nodes/plugin-card/PluginCardNode.js';
 import * as textnode from './nodes/ExtendedTextNode.js';
 import * as headingnode from './nodes/ExtendedHeadingNode.js';
 import * as quotenode from './nodes/ExtendedQuoteNode.js';
@@ -57,6 +58,11 @@ export * from './nodes/gallery/GalleryNode.js';
 export * from './nodes/email-cta/EmailCtaNode.js';
 export * from './nodes/signup/SignupNode.js';
 export * from './nodes/transistor/TransistorNode.js';
+export * from './nodes/plugin-card/PluginCardNode.js';
+export {renderTemplate} from './nodes/plugin-card/plugin-card-template.js';
+export type {TemplateData} from './nodes/plugin-card/plugin-card-template.js';
+export {scopeCss} from './nodes/plugin-card/plugin-card-css.js';
+export {createPreprocessor} from './nodes/plugin-card/plugin-card-preprocess.js';
 export * from './nodes/call-to-action/CallToActionNode.js';
 export * from './nodes/ExtendedTextNode.js';
 export * from './nodes/ExtendedHeadingNode.js';
@@ -122,6 +128,7 @@ export const DEFAULT_NODES = [
     emailCta.EmailCtaNode,
     signup.SignupNode,
     transistor.TransistorNode,
+    pluginCard.PluginCardNode,
     tk.TKNode,
     atLink.AtLinkNode,
     atLink.AtLinkSearchNode,

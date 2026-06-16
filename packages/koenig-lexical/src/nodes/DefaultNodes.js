@@ -32,6 +32,7 @@ import {LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {MarkdownNode} from './MarkdownNode';
 import {PaywallNode} from './PaywallNode';
+import {PluginCardNode} from './PluginCardNode';
 import {ProductNode} from './ProductNode';
 import {SignupNode} from './SignupNode';
 import {ToggleNode} from './ToggleNode';
@@ -66,6 +67,7 @@ const DEFAULT_NODES = [
     HeaderNode,
     BookmarkNode,
     PaywallNode,
+    PluginCardNode,
     ProductNode,
     EmailNode,
     EmailCtaNode,

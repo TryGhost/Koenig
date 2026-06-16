@@ -21,6 +21,8 @@ import {HeaderPlugin} from '../plugins/HeaderPlugin';
 import {KoenigSnippetPlugin} from '../plugins/KoenigSnippetPlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {PaywallPlugin} from '../plugins/PaywallPlugin';
+import {PluginCardPlugin} from '../plugins/PluginCardPlugin';
+import {PluginCardProvider} from '../context/PluginCardContext.jsx';
 import {ProductPlugin} from '../plugins/ProductPlugin';
 import {SignupPlugin} from '../plugins/SignupPlugin';
 import {TogglePlugin} from '../plugins/TogglePlugin';
@@ -35,6 +37,7 @@ export const AllDefaultPlugins = () => {
             {/* <TabIndentationPlugin /> tab/shift+tab triggers indent/outdent */}
 
             {/* Koenig Plugins */}
+            <PluginCardProvider>
             <CardMenuPlugin />
             <KoenigSnippetPlugin />
             <KoenigSelectorPlugin /> {/* Gif/Unsplash selectors */}
@@ -57,6 +60,8 @@ export const AllDefaultPlugins = () => {
             <HeaderPlugin />
             <BookmarkPlugin />
             <PaywallPlugin />
+            <PluginCardPlugin />
+            </PluginCardProvider>
             <ProductPlugin />
             <EmailCtaPlugin />
             <EmailPlugin />
