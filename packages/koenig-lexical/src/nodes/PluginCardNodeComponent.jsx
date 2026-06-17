@@ -2,7 +2,6 @@ import React from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {$getNodeByKey} from 'lexical';
 import {createPreprocessor, renderTemplate, scopeCss} from '@tryghost/kg-default-nodes';
-import {usePluginCards} from '../context/PluginCardContext.jsx';
 
 // CSS reset to neutralise Tailwind preflight inside plugin cards.
 // Tailwind's *, ::before, ::after { box-sizing: border-box } and
@@ -72,35 +71,40 @@ export const PluginCardNodeComponent = ({html: initialHtml, cardName, nodeKey, p
     const [cardDef, setCardDef] = React.useState(null);
     const [pluginCss, setPluginCss] = React.useState('');
 
-    const {pluginCards} = usePluginCards();
-
     useInjectStyles(pluginName, pluginCss);
 
     React.useEffect(() => {
-        const found = pluginCards.find(c => c.plugin === pluginName && c.name === cardName);
-        if (found) {
-            setCardDef(found);
-            if (found.css) {
-                setPluginCss(found.css);
-            }
-            // Sync template, CSS and preprocess from plugin loader
-            // so updates take effect without re-inserting the card
-            editor.update(() => {
-                const node = $getNodeByKey(nodeKey);
-                if (node) {
-                    if (found.css !== undefined) {
-                        node.css = found.css;
+        fetch('/ghost/api/admin/plugins/cards/', {credentials: 'include'})
+            .then(r => r.json())
+            .then(data => {
+                const cards = data.plugins?.flat() || [];
+                const found = cards.find(c => c.plugin === pluginName && c.name === cardName);
+                if (found) {
+                    setCardDef(found);
+                    if (found.css) {
+                        setPluginCss(found.css);
                     }
-                    if (found.template !== undefined) {
-                        node.template = found.template;
-                    }
-                    if (found.preprocess !== undefined) {
-                        node.preprocess = found.preprocess;
-                    }
+                    // Sync template, CSS and preprocess from plugin loader
+                    // so updates take effect without re-inserting the card
+                    editor.update(() => {
+                        const node = $getNodeByKey(nodeKey);
+                        if (node) {
+                            if (found.css !== undefined) {
+                                node.css = found.css;
+                            }
+                            if (found.template !== undefined) {
+                                node.template = found.template;
+                            }
+                            if (found.preprocess !== undefined) {
+                                node.preprocess = found.preprocess;
+                            }
+                        }
+                    });
                 }
+            }).catch((err) => {
+                console.warn('[PluginCard] Failed to fetch plugin cards:', err);
             });
-        }
-    }, [pluginCards, pluginName, cardName]);
+    }, [pluginName, cardName]);
 
     const handleSave = (newRawPayload) => {
         editor.update(() => {
