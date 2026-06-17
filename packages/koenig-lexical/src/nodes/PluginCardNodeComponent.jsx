@@ -145,6 +145,15 @@ export const PluginCardNodeComponent = ({html: initialHtml, cardName, nodeKey, p
         }
     }, [template, rawPayload, preprocess]);
 
+    // Focus first field when entering edit mode
+    const firstFieldRef = React.useRef(null);
+
+    React.useEffect(() => {
+        if (isEditing && firstFieldRef.current) {
+            firstFieldRef.current.focus();
+        }
+    }, [isEditing]);
+
     // Edit mode
     if (isEditing) {
         if (!cardDef) {
@@ -154,15 +163,15 @@ export const PluginCardNodeComponent = ({html: initialHtml, cardName, nodeKey, p
             <div className="rounded-lg border border-grey-300 bg-white p-4 dark:border-dark-600 dark:bg-dark-bg">
                 <h3 className="mb-4 text-sm font-semibold">{cardDef.label}</h3>
                 <div className="space-y-3">
-                    {cardDef.fields.map((field) => (
+                    {cardDef.fields.map((field, index) => (
                         <div key={field.key}>
                             <label className="mb-1 block text-xs font-medium text-grey-600 dark:text-grey-400">{field.title}</label>
                             {field.type === 'textarea' ? (
-                                <textarea className="w-full rounded border border-grey-300 px-3 py-2 text-sm dark:border-dark-600 dark:bg-dark-200" rows={3}
+                                <textarea ref={index === 0 ? firstFieldRef : undefined} className="w-full rounded border border-grey-300 px-3 py-2 text-sm dark:border-dark-600 dark:bg-dark-200" rows={3}
                                     value={getFieldValue(field)}
                                     onChange={(e) => setRawPayload(prev => ({...prev, [field.key]: e.target.value}))} />
                             ) : field.type === 'number' ? (
-                                <input className="w-full rounded border border-grey-300 px-3 py-2 text-sm dark:border-dark-600 dark:bg-dark-200"
+                                <input ref={index === 0 ? firstFieldRef : undefined} className="w-full rounded border border-grey-300 px-3 py-2 text-sm dark:border-dark-600 dark:bg-dark-200"
                                     max={field.max} min={field.min} step={field.step} type="number"
                                     value={getFieldValue(field)}
                                     onChange={(e) => {
@@ -170,7 +179,7 @@ export const PluginCardNodeComponent = ({html: initialHtml, cardName, nodeKey, p
                                         setRawPayload(prev => ({...prev, [field.key]: isNaN(v) ? 0 : v}));
                                     }} />
                             ) : (
-                                <input className="w-full rounded border border-grey-300 px-3 py-2 text-sm dark:border-dark-600 dark:bg-dark-200"
+                                <input ref={index === 0 ? firstFieldRef : undefined} className="w-full rounded border border-grey-300 px-3 py-2 text-sm dark:border-dark-600 dark:bg-dark-200"
                                     type="text" value={getFieldValue(field)}
                                     onChange={(e) => setRawPayload(prev => ({...prev, [field.key]: e.target.value}))} />
                             )}
