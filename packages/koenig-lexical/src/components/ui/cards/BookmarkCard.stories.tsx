@@ -1,0 +1,100 @@
+import populateEditor from '../../../utils/storybook/populate-storybook-editor';
+import {BookmarkCard} from './BookmarkCard';
+import {CardWrapper} from './../CardWrapper';
+import {MINIMAL_NODES} from '../../../index';
+import {createEditor} from 'lexical';
+import type {ComponentProps} from 'react';
+import type {Meta, StoryFn} from '@storybook/react-vite';
+
+const displayOptions = {
+    Default: {isSelected: false, isEditing: false},
+    Selected: {isSelected: true, isEditing: false}
+};
+
+type StoryArgs = ComponentProps<typeof BookmarkCard> & {display: keyof typeof displayOptions; caption?: string};
+
+const story: Meta<StoryArgs> = {
+    title: 'Primary cards/Bookmark card',
+    component: BookmarkCard,
+    subcomponents: {CardWrapper},
+    argTypes: {
+        display: {
+            options: Object.keys(displayOptions),
+            control: {
+                type: 'radio',
+                labels: {
+                    Default: 'Default',
+                    Selected: 'Selected'
+                },
+                defaultValue: displayOptions.Default
+            }
+        }
+    },
+    parameters: {
+        status: {
+            type: 'uiReady'
+        }
+    }
+};
+export default story;
+
+const Template: StoryFn<StoryArgs> = ({display, caption, ...args}) => {
+    const captionEditor = createEditor({nodes: MINIMAL_NODES});
+    populateEditor({editor: captionEditor, initialHtml: `${caption}`});
+
+    return (
+        <div className="kg-prose">
+            <div className="not-kg-prose mx-auto my-8 min-w-[initial] max-w-[740px] p-4">
+                <CardWrapper {...displayOptions[display]} {...args}>
+                    <BookmarkCard {...displayOptions[display]} {...args} captionEditor={captionEditor} />
+                </CardWrapper>
+            </div>
+            <div className="not-kg-prose dark mx-auto my-8 min-w-[initial] max-w-[740px] bg-black p-4">
+                <CardWrapper {...displayOptions[display]} {...args}>
+                    <BookmarkCard {...displayOptions[display]} {...args} captionEditor={captionEditor} />
+                </CardWrapper>
+            </div>
+        </div>
+    );
+};
+
+export const Empty = Template.bind({});
+Empty.args = {
+    display: 'Selected',
+    url: '',
+    urlPlaceholder: 'Paste URL to add bookmark content...',
+    title: 'Ghost: The Creator Economy Platform',
+    description: 'The world’s most popular modern publishing platform for creating a new media platform. Used by Apple, SkyNews, Buffer, OpenAI, and thousands more.',
+    icon: 'https://www.ghost.org/favicon.ico',
+    publisher: 'Ghost - The Professional Publishing Platform',
+    author: 'Author McAuthory',
+    thumbnail: 'https://ghost.org/images/meta/ghost.png'
+};
+
+export const Populated = Template.bind({});
+Populated.args = {
+    display: 'Selected',
+    url: 'https://ghost.org/',
+    urlPlaceholder: 'Paste URL to add bookmark content...',
+    title: 'Ghost: The Creator Economy Platform',
+    description: 'The world’s most popular modern publishing platform for creating a new media platform. Used by Apple, SkyNews, Buffer, OpenAI, and thousands more.',
+    icon: 'https://www.ghost.org/favicon.ico',
+    publisher: 'Ghost - The Professional Publishing Platform',
+    author: 'Author McAuthory',
+    thumbnail: 'https://ghost.org/images/meta/ghost.png',
+    caption: ''
+};
+
+export const WithCaption = Template.bind({});
+WithCaption.args = {
+    display: 'Selected',
+    url: 'https://ghost.org/',
+    urlPlaceholder: 'Paste URL to add bookmark content...',
+    title: 'Ghost: The Creator Economy Platform',
+    description: 'The world’s most popular modern publishing platform for creating a new media platform. Used by Apple, SkyNews, Buffer, OpenAI, and thousands more.',
+    icon: 'https://www.ghost.org/favicon.ico',
+    publisher: 'Ghost - The Professional Publishing Platform',
+    author: 'Author McAuthory',
+    thumbnail: 'https://ghost.org/images/meta/ghost.png',
+    caption: 'This is a caption'
+};
