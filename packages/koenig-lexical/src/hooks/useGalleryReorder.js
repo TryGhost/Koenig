@@ -83,6 +83,10 @@ export default function useGalleryReorder({images, updateImages, isSelected = fa
             return;
         }
 
+        if (!containerRef || !containerRef.contains(draggableInfo.element)) {
+            return;
+        }
+
         const image = images.find(i => i.src === draggableInfo.dataset.src);
         if (image) {
             const updatedImages = images.filter(i => i !== image);
