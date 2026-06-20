@@ -79,10 +79,10 @@
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-8.0.0.tgz#e780eb6052d8ceeaeadd3a6cd82dda470a945622"
   integrity sha512-DOjnob/cXOUgDOozCDeq/aK2p5y8dUIVdf6tNhEV1HQRd6I8aQ4f4fbtHRVEvb6lP3BGomrKHiS8ICAASSVQSw==
 
-"@babel/core@8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-8.0.0.tgz#73143813132b08bb74ce31e3d36d3ffcb1e33e4b"
-  integrity sha512-i4r3sKX4MAmOnHMCCNjN0PQ8ZA6V4GobBcMBZrJyKW48S7eV0SlKUlZxw2FXkBbXzWQ8JoQQnpbD9tt1Hc+9Mw==
+"@babel/core@8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-8.0.1.tgz#dcb133d3ddcfb2b5a6558da03bf240319da0b8c8"
+  integrity sha512-5FgxM4dLQpMJHSiVATk8foW263dVHQHBVpXYiimNECVWG01f4nFyEbQixeT6Mwvg7TayREJ2gpKl3o2RoMdnqw==
   dependencies:
     "@babel/code-frame" "^8.0.0"
     "@babel/generator" "^8.0.0"
