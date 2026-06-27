@@ -14108,10 +14108,10 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.1.tgz#168efc2180964e6386d061e094df61afe239b18d"
   integrity sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==
 
-unplugin-dts@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/unplugin-dts/-/unplugin-dts-1.0.2.tgz#5ae51d53ecc99230e9d54976fe2febe7e73bf199"
-  integrity sha512-VbNiMD0LMl/t6nJueGtrCp79N7ZO1nquxj/FUybJDnKwZGsnW2wjdwBSzA3QEHujoxmxZIptsG43hL7LzXE96w==
+unplugin-dts@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/unplugin-dts/-/unplugin-dts-1.0.3.tgz#66ec67e6c33218a95b4cc6d0180389ea494daecb"
+  integrity sha512-/GR887wfG4r1cWyt1UZsLRuMIjsmEbGkS9yJrz+0dsToHAYUD5CTyP3JMGVLv25j9K0mJcwAVvZno/aTuSUvNg==
   dependencies:
     "@rollup/pluginutils" "^5.1.4"
     "@volar/typescript" "^2.4.26"
@@ -14377,12 +14377,12 @@ vite-plugin-css-injected-by-js@5.0.1:
   resolved "https://registry.yarnpkg.com/vite-plugin-css-injected-by-js/-/vite-plugin-css-injected-by-js-5.0.1.tgz#d123b68e4d15e5a7835d01cd64bf795f8e7d6d5a"
   integrity sha512-JSB0jjN4VCKqG7XTUdrwiIl5gA+z2yi/tAl9WHo0X4sdyJ1yrmbLOEjf95TDoDIIuKr4GJIc7lMJG0CT88eEUQ==
 
-vite-plugin-dts@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-5.0.2.tgz#685a6f7209cea9fae9e4ec02935a3f43f69f4911"
-  integrity sha512-lNeHS+dwGju6eRmNvZQt8Shwv9j3m98hbHse/lIbLq9q3yE2DcIOBBYQEVUF6tS0kOmv+VA9Z5FqmzFnGe4U8g==
+vite-plugin-dts@5.0.3:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-5.0.3.tgz#c4ca204d3bdd5c8d9d21420b4ff013c64efb9f0b"
+  integrity sha512-gIth6NdCEHWPiiRMCK3N6C8WjvdsrtEQrmsiG8h6Ov+lFP+b07Y+wcs9H0H7n146l0PDTYK4cQN1vgeG1pMdRQ==
   dependencies:
-    unplugin-dts "1.0.2"
+    unplugin-dts "1.0.3"
 
 vite-plugin-svgr@5.2.0:
   version "5.2.0"
