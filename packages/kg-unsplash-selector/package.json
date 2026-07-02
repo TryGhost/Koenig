@@ -45,7 +45,7 @@
     "eslint": "9.39.4",
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-react-refresh": "0.5.3",
-    "eslint-plugin-tailwindcss": "3.18.3",
+    "eslint-plugin-tailwindcss": "4.0.4",
     "jsdom": "29.1.1",
     "postcss": "8.5.15",
     "postcss-import": "16.1.1",
