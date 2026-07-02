@@ -45,10 +45,7 @@ yarn test:e2e:headed    # E2E tests with browser UI (for debugging)
 - **[kg-converters](packages/kg-converters)**: Format conversion between Lexical/Mobiledoc
 
 ### Legacy Packages
-- **[kg-mobiledoc-html-renderer](packages/kg-mobiledoc-html-renderer)**: Mobiledoc to HTML conversion
-- **[html-to-mobiledoc](packages/html-to-mobiledoc)**: HTML to Mobiledoc conversion
 - **[kg-default-cards](packages/kg-default-cards)**: Mobiledoc card definitions
-- **[kg-parser-plugins](packages/kg-parser-plugins)**: Mobiledoc content parsing plugins
 - **[kg-simplemde](packages/kg-simplemde)**: SimpleMDE markdown editor integration
 
 ### Utility Packages
