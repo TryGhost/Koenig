@@ -28,10 +28,6 @@
       ]
     },
     {
-      "matchPackageNames": ["@tryghost/mobiledoc-kit"],
-      "enabled": false
-    },
-    {
       "groupName": "react",
       "matchPackageNames": [
         "react",
