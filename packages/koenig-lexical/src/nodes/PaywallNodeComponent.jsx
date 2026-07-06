@@ -60,6 +60,7 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
                 offerId={offerId}
                 offers={offers}
                 selectedOfferName={selectedOffer?.name}
+                sitePaywallCopy={cardConfig?.sitePaywallCopy}
                 updateButtonText={updateProperty('buttonText')}
                 updateDescription={updateProperty('description')}
                 updateGate={updateGate}

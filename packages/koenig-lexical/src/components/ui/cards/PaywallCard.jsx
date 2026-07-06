@@ -24,9 +24,33 @@ const GATE_OPTIONS = [
     {label: 'Free members — grow your list', name: 'members'}
 ];
 
+function SettingsLink() {
+    return (
+        <a className="font-medium text-green-600 hover:underline" href="#/settings/paywall" onMouseDown={e => e.stopPropagation()}>Settings &rarr; Membership &rarr; Paywall</a>
+    );
+}
+
+function WebWallPreview({heading, description, buttonText}) {
+    return (
+        <div className="mt-3 rounded border border-grey-200 p-4 text-center dark:border-grey-900" data-testid="paywall-web-preview">
+            <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">Website &mdash; visitors see</div>
+            <div className="text-lg font-bold text-black dark:text-grey-100">{heading}</div>
+            {description && <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description}</div>}
+            <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText}</div>
+        </div>
+    );
+}
+
+WebWallPreview.propTypes = {
+    heading: PropTypes.string,
+    description: PropTypes.string,
+    buttonText: PropTypes.string
+};
+
 export function PaywallCard({
     isEditing,
     gate = 'paid',
+    sitePaywallCopy,
     heading,
     description,
     buttonText,
@@ -60,8 +84,17 @@ export function PaywallCard({
                         />
                     </div>
                     {isMembersGate ? (
-                        <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-members-note">
-                            Everyone on your email list is a member, so newsletters include the full post. On your website, visitors hit your site-wide paywall and can sign up free &mdash; customize it under Settings &rarr; Membership &rarr; Paywall.
+                        <div data-testid="paywall-members-note">
+                            {sitePaywallCopy &&
+                                <WebWallPreview
+                                    buttonText={sitePaywallCopy.buttonText}
+                                    description={sitePaywallCopy.description}
+                                    heading={sitePaywallCopy.membersHeading}
+                                />
+                            }
+                            <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500">
+                                Everyone on your email list is a member, so newsletters include the full post. Visitors on your website see the message above and can sign up free &mdash; customize it in <SettingsLink />.
+                            </div>
                         </div>
                     ) : (
                         <>
@@ -101,7 +134,7 @@ export function PaywallCard({
                                 />
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
-                                On your website, visitors see your site-wide paywall instead &mdash; customize it under Settings &rarr; Membership &rarr; Paywall.
+                                On your website, visitors see your site-wide paywall instead &mdash; customize it in <SettingsLink />.
                             </div>
                         </>
                     )}
@@ -131,6 +164,7 @@ export function PaywallCard({
 PaywallCard.propTypes = {
     isEditing: PropTypes.bool,
     gate: PropTypes.string,
+    sitePaywallCopy: PropTypes.object,
     heading: PropTypes.string,
     description: PropTypes.string,
     buttonText: PropTypes.string,
