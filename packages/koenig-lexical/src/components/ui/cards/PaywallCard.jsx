@@ -178,6 +178,9 @@ export function PaywallCard({
                     {offerId && !isMembersGate &&
                         <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-offer-note">Button links to offer{selectedOfferName ? `: ${selectedOfferName}` : ''}</div>
                     }
+                    {offerId && isMembersGate &&
+                        <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-dormant-offer-note">An attached offer{selectedOfferName ? ` (${selectedOfferName})` : ''} is dormant &mdash; sign-up walls don&rsquo;t use offers; it returns if the gate switches back to paid</div>
+                    }
                     {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ?
                         <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-override-note">Replaces your site-wide paywall message</div> : null
                     }
