@@ -114,6 +114,7 @@ export function PaywallCard({
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500">
                                 Blank fields use your site-wide message &mdash; edit it in <SettingsLink />.
+                                {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide paywall message.</span> : null}
                             </div>
                         </div>
                     ) : (
@@ -154,7 +155,8 @@ export function PaywallCard({
                                 />
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
-                                Blank fields use your site-wide message &mdash; edit it in <SettingsLink />. The offer applies to the email button.
+                                Blank fields use your site-wide message &mdash; edit it in <SettingsLink />. The offer applies wherever this message shows, on your site and in email.
+                                {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide paywall message.</span> : null}
                             </div>
                         </>
                     )}
@@ -174,6 +176,9 @@ export function PaywallCard({
                     <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || (isMembersGate ? (sitePaywallCopy?.buttonText || 'Subscribe now') : 'Upgrade')}</div>
                     {offerId &&
                         <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-offer-note">Button links to offer{selectedOfferName ? `: ${selectedOfferName}` : ''}</div>
+                    }
+                    {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ?
+                        <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-override-note">Replaces your site-wide paywall message</div> : null
                     }
                 </div>
             }
