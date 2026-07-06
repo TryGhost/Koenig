@@ -3,6 +3,7 @@ import {parsePaywallNode} from './paywall-parser.js';
 import {renderPaywallNode} from './paywall-renderer.js';
 
 const paywallProperties = [
+    {name: 'gate', default: 'paid'},
     {name: 'heading', default: ''},
     {name: 'description', default: ''},
     {name: 'buttonText', default: ''},

@@ -8,7 +8,7 @@ import {PaywallCard} from '../components/ui/cards/PaywallCard';
 import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function PaywallNodeComponent({nodeKey, heading, description, buttonText, offerId}) {
+export function PaywallNodeComponent({nodeKey, gate, heading, description, buttonText, offerId}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected} = React.useContext(CardContext);
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -40,6 +40,13 @@ export function PaywallNodeComponent({nodeKey, heading, description, buttonText,
         });
     };
 
+    const updateGate = (value) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.gate = value;
+        });
+    };
+
     const selectedOffer = offers.find(offer => offer.id === offerId);
 
     return (
@@ -47,6 +54,7 @@ export function PaywallNodeComponent({nodeKey, heading, description, buttonText,
             <PaywallCard
                 buttonText={buttonText}
                 description={description}
+                gate={gate}
                 heading={heading}
                 isEditing={isEditing}
                 offerId={offerId}
@@ -54,6 +62,7 @@ export function PaywallNodeComponent({nodeKey, heading, description, buttonText,
                 selectedOfferName={selectedOffer?.name}
                 updateButtonText={updateProperty('buttonText')}
                 updateDescription={updateProperty('description')}
+                updateGate={updateGate}
                 updateHeading={updateProperty('heading')}
                 updateOfferId={updateOfferId}
             />
