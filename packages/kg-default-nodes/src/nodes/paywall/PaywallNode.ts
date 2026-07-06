@@ -5,7 +5,8 @@ import {renderPaywallNode} from './paywall-renderer.js';
 const paywallProperties = [
     {name: 'heading', default: ''},
     {name: 'description', default: ''},
-    {name: 'buttonText', default: ''}
+    {name: 'buttonText', default: ''},
+    {name: 'offerId', default: ''}
 ] as const satisfies readonly DecoratorNodeProperty[];
 
 export type PaywallData = DecoratorNodeData<typeof paywallProperties>;

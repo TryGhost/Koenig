@@ -29,6 +29,7 @@ export class PaywallNode extends BasePaywallNode {
                     description={this.description}
                     heading={this.heading}
                     nodeKey={this.getKey()}
+                    offerId={this.offerId}
                 />
             </KoenigCardWrapper>
         );

@@ -1,4 +1,5 @@
 import CardContext from '../context/CardContext';
+import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import React from 'react';
 import {$getNodeByKey} from 'lexical';
 import {ActionToolbar} from '../components/ui/ActionToolbar';
@@ -7,9 +8,17 @@ import {PaywallCard} from '../components/ui/cards/PaywallCard';
 import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function PaywallNodeComponent({nodeKey, heading, description, buttonText}) {
+export function PaywallNodeComponent({nodeKey, heading, description, buttonText, offerId}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected} = React.useContext(CardContext);
+    const {cardConfig} = React.useContext(KoenigComposerContext);
+    const [offers, setOffers] = React.useState([]);
+
+    React.useEffect(() => {
+        if (isEditing && cardConfig?.fetchOffers) {
+            cardConfig.fetchOffers().then(setOffers).catch(() => setOffers([]));
+        }
+    }, [isEditing, cardConfig]);
 
     const handleToolbarEdit = (event) => {
         event.preventDefault();
@@ -24,6 +33,15 @@ export function PaywallNodeComponent({nodeKey, heading, description, buttonText}
         });
     };
 
+    const updateOfferId = (value) => {
+        editor.update(() => {
+            const node = $getNodeByKey(nodeKey);
+            node.offerId = value;
+        });
+    };
+
+    const selectedOffer = offers.find(offer => offer.id === offerId);
+
     return (
         <>
             <PaywallCard
@@ -31,9 +49,13 @@ export function PaywallNodeComponent({nodeKey, heading, description, buttonText}
                 description={description}
                 heading={heading}
                 isEditing={isEditing}
+                offerId={offerId}
+                offers={offers}
+                selectedOfferName={selectedOffer?.name}
                 updateButtonText={updateProperty('buttonText')}
                 updateDescription={updateProperty('description')}
                 updateHeading={updateProperty('heading')}
+                updateOfferId={updateOfferId}
             />
 
             <ActionToolbar
@@ -41,7 +63,7 @@ export function PaywallNodeComponent({nodeKey, heading, description, buttonText}
                 isVisible={isSelected && !isEditing}
             >
                 <ToolbarMenu>
-                    <ToolbarMenuItem dataTestId="edit-paywall-cta" icon="edit" isActive={false} label="Customize upgrade message" onClick={handleToolbarEdit} />
+                    <ToolbarMenuItem dataTestId="edit-paywall-cta" icon="edit" isActive={false} label="Customize email preview message" onClick={handleToolbarEdit} />
                 </ToolbarMenu>
             </ActionToolbar>
         </>
