@@ -2,7 +2,11 @@ import {generateDecoratorNode, type DecoratorNodeData, type DecoratorNodePropert
 import {parsePaywallNode} from './paywall-parser.js';
 import {renderPaywallNode} from './paywall-renderer.js';
 
-const paywallProperties = [] as const satisfies readonly DecoratorNodeProperty[];
+const paywallProperties = [
+    {name: 'heading', default: ''},
+    {name: 'description', default: ''},
+    {name: 'buttonText', default: ''}
+] as const satisfies readonly DecoratorNodeProperty[];
 
 export type PaywallData = DecoratorNodeData<typeof paywallProperties>;
 
