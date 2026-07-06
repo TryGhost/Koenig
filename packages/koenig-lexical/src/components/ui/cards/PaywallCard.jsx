@@ -55,6 +55,9 @@ export function PaywallCard({
                             onChange={updateButtonText}
                         />
                     </div>
+                    <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
+                        On your website, visitors see your site-wide paywall instead &mdash; customize it under Settings &rarr; Membership &rarr; Paywall.
+                    </div>
                 </div>
             </div>
         );
