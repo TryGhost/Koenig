@@ -64,7 +64,7 @@ export function PaywallCard({
     updateOfferId
 }) {
     const isMembersGate = gate === 'members';
-    const hasCustomCta = !isMembersGate && (heading || description || buttonText || offerId);
+    const hasCustomCta = heading || description || buttonText || offerId;
 
     if (isEditing) {
         const offerOptions = [NO_OFFER_OPTION, ...offers.map(offer => ({label: offer.name, name: offer.id}))];
@@ -85,22 +85,42 @@ export function PaywallCard({
                     </div>
                     {isMembersGate ? (
                         <div data-testid="paywall-members-note">
-                            {sitePaywallCopy &&
-                                <WebWallPreview
-                                    buttonText={sitePaywallCopy.buttonText}
-                                    description={sitePaywallCopy.description}
-                                    heading={sitePaywallCopy.membersHeading}
+                            <div className="mb-3 mt-4 flex items-baseline justify-between">
+                                <span className="text-sm font-semibold text-grey-900 dark:text-grey-300">Sign-up message</span>
+                                <span className="text-xs font-normal text-grey-600 dark:text-grey-500">Shown to visitors on your site &mdash; your email list already has full access</span>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <InputSetting
+                                    dataTestId="paywall-heading-input"
+                                    label="Heading"
+                                    placeholder={sitePaywallCopy?.membersHeading || 'This post is for subscribers only'}
+                                    value={heading}
+                                    onChange={updateHeading}
                                 />
-                            }
+                                <InputSetting
+                                    dataTestId="paywall-description-input"
+                                    label="Description"
+                                    placeholder={sitePaywallCopy?.description || 'Optional supporting line'}
+                                    value={description}
+                                    onChange={updateDescription}
+                                />
+                                <InputSetting
+                                    dataTestId="paywall-button-input"
+                                    label="Button"
+                                    placeholder={sitePaywallCopy?.buttonText || 'Subscribe now'}
+                                    value={buttonText}
+                                    onChange={updateButtonText}
+                                />
+                            </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500">
-                                Everyone on your email list is a member, so newsletters include the full post. Visitors on your website see the message above and can sign up free &mdash; customize it in <SettingsLink />.
+                                Blank fields use your site-wide message &mdash; edit it in <SettingsLink />.
                             </div>
                         </div>
                     ) : (
                         <>
                             <div className="mb-3 mt-4 flex items-baseline justify-between">
-                                <span className="text-sm font-semibold text-grey-900 dark:text-grey-300">Email preview message</span>
-                                <span className="text-xs font-normal text-grey-600 dark:text-grey-500">Shown to free subscribers in place of the paid content</span>
+                                <span className="text-sm font-semibold text-grey-900 dark:text-grey-300">Upgrade message</span>
+                                <span className="text-xs font-normal text-grey-600 dark:text-grey-500">Shown wherever readers hit this paywall &mdash; on your site and in email</span>
                             </div>
                             <div className="flex flex-col gap-3">
                                 <InputSetting
@@ -134,7 +154,7 @@ export function PaywallCard({
                                 />
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
-                                On your website, visitors see your site-wide paywall instead &mdash; customize it in <SettingsLink />.
+                                Blank fields use your site-wide message &mdash; edit it in <SettingsLink />. The offer applies to the email button.
                             </div>
                         </>
                     )}
@@ -148,10 +168,10 @@ export function PaywallCard({
             <Divider gate={gate} />
             {hasCustomCta &&
                 <div className="not-kg-prose mt-3 rounded border border-grey-200 p-4 text-center font-sans dark:border-grey-900" data-testid="paywall-cta-preview">
-                    <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">Email preview &mdash; free subscribers see</div>
-                    <div className="text-lg font-bold text-black dark:text-grey-100">{heading || 'Upgrade to continue reading.'}</div>
-                    <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description || 'Become a paid member to get access to all premium content.'}</div>
-                    <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || 'Upgrade'}</div>
+                    <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">{isMembersGate ? 'Sign-up message — site visitors see' : 'Upgrade message — shown at the paywall (site & email)'}</div>
+                    <div className="text-lg font-bold text-black dark:text-grey-100">{heading || (isMembersGate ? (sitePaywallCopy?.membersHeading || 'This post is for subscribers only') : 'Upgrade to continue reading.')}</div>
+                    <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description || (isMembersGate ? sitePaywallCopy?.description : 'Become a paid member to get access to all premium content.')}</div>
+                    <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || (isMembersGate ? (sitePaywallCopy?.buttonText || 'Subscribe now') : 'Upgrade')}</div>
                     {offerId &&
                         <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-offer-note">Button links to offer{selectedOfferName ? `: ${selectedOfferName}` : ''}</div>
                     }
