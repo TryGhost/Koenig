@@ -114,6 +114,7 @@ export function PaywallCard({
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500">
                                 Blank fields use your site-wide message &mdash; edit it in <SettingsLink />.
+                                {offerId ? <span className="mt-1 block" data-testid="paywall-inactive-offer-note">The attached offer{selectedOfferName ? ` (${selectedOfferName})` : ''} doesn&rsquo;t apply to sign-up walls &mdash; the button is a plain free signup. It returns if you switch back to paid.</span> : null}
                                 {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide paywall message.</span> : null}
                             </div>
                         </div>
@@ -174,7 +175,7 @@ export function PaywallCard({
                     <div className="text-lg font-bold text-black dark:text-grey-100">{heading || (isMembersGate ? (sitePaywallCopy?.membersHeading || 'This post is for subscribers only') : 'Upgrade to continue reading.')}</div>
                     <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description || (isMembersGate ? sitePaywallCopy?.description : 'Become a paid member to get access to all premium content.')}</div>
                     <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || (isMembersGate ? (sitePaywallCopy?.buttonText || 'Subscribe now') : 'Upgrade')}</div>
-                    {offerId &&
+                    {offerId && !isMembersGate &&
                         <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-offer-note">Button links to offer{selectedOfferName ? `: ${selectedOfferName}` : ''}</div>
                     }
                     {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ?
