@@ -127,21 +127,21 @@ export function PaywallCard({
                                 <InputSetting
                                     dataTestId="paywall-heading-input"
                                     label="Heading"
-                                    placeholder="Upgrade to continue reading."
+                                    placeholder={sitePaywallCopy?.paidHeading || 'Upgrade to continue reading.'}
                                     value={heading}
                                     onChange={updateHeading}
                                 />
                                 <InputSetting
                                     dataTestId="paywall-description-input"
                                     label="Description"
-                                    placeholder="Become a paid member to get access to all premium content."
+                                    placeholder={sitePaywallCopy?.description || 'Become a paid member to get access to all premium content.'}
                                     value={description}
                                     onChange={updateDescription}
                                 />
                                 <InputSetting
                                     dataTestId="paywall-button-input"
                                     label="Button"
-                                    placeholder="Upgrade"
+                                    placeholder={sitePaywallCopy?.buttonText || 'Upgrade'}
                                     value={buttonText}
                                     onChange={updateButtonText}
                                 />

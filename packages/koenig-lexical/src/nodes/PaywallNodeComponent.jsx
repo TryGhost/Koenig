@@ -73,7 +73,7 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
                 isVisible={isSelected && !isEditing}
             >
                 <ToolbarMenu>
-                    <ToolbarMenuItem dataTestId="edit-paywall-cta" icon="edit" isActive={false} label="Customize email preview message" onClick={handleToolbarEdit} />
+                    <ToolbarMenuItem dataTestId="edit-paywall-cta" icon="edit" isActive={false} label="Edit paywall" onClick={handleToolbarEdit} />
                 </ToolbarMenu>
             </ActionToolbar>
         </>
