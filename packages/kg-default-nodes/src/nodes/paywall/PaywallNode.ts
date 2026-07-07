@@ -7,6 +7,7 @@ const paywallProperties = [
     {name: 'heading', default: ''},
     {name: 'description', default: ''},
     {name: 'buttonText', default: ''},
+    {name: 'emailButtonText', default: ''},
     {name: 'offerId', default: ''}
 ] as const satisfies readonly DecoratorNodeProperty[];
 
