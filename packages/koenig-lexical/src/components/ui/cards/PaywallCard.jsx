@@ -10,7 +10,7 @@ function Divider({gate, isTiersPost}) {
     }
 
     return (
-        <div className="flex h-3 items-center whitespace-pre text-center font-sans text-2xs font-semibold uppercase text-grey-500 before:mr-2 before:flex-1 before:border-t before:border-grey-300 before:content-[''] after:ml-2 after:flex-1 after:border-t after:border-grey-300 dark:text-grey-800">
+        <div className="flex h-3 items-center whitespace-pre text-center font-sans text-2xs font-semibold uppercase text-grey-500 before:mr-2 before:flex-1 before:border-t before:border-grey-300 before:content-[''] after:ml-2 after:flex-1 after:border-t after:border-grey-300 dark:text-grey-600">
             Free public preview
             <span className="mx-2 text-green">↑</span>
             /
@@ -29,7 +29,7 @@ const NO_OFFER_OPTION = {label: 'None — default signup', name: ''};
 
 const GATE_OPTIONS = [
     {label: 'Paid members', name: 'paid'},
-    {label: 'Free members — grow your list', name: 'members'}
+    {label: 'Free members', name: 'members'}
 ];
 
 function SettingsLink() {
@@ -89,7 +89,7 @@ export function PaywallCard({
                         ) : (
                             <DropdownSetting
                                 dataTestId="paywall-gate-dropdown"
-                                description={isMembersGate ? 'Anyone can sign up for free to keep reading' : 'A paid subscription is required to keep reading'}
+                                description={isMembersGate ? 'Anyone can sign up for free to keep reading — a sign-up wall grows your list' : 'A paid subscription is required to keep reading'}
                                 label="Who can read past this point?"
                                 menu={GATE_OPTIONS}
                                 value={gate || 'paid'}
@@ -101,7 +101,7 @@ export function PaywallCard({
                         <div data-testid="paywall-members-note">
                             <div className="mb-3 mt-4 flex items-baseline justify-between">
                                 <span className="text-sm font-semibold text-grey-900 dark:text-grey-300">Sign-up message</span>
-                                <span className="text-xs font-normal text-grey-600 dark:text-grey-500">Shown to visitors on your site &mdash; your email list already has full access</span>
+                                <span className="text-xs font-normal text-grey-600 dark:text-grey-500">Shown to visitors on your site &mdash; everyone subscribed to your emails already has full access</span>
                             </div>
                             <div className="flex flex-col gap-3">
                                 <InputSetting
@@ -129,7 +129,7 @@ export function PaywallCard({
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500">
                                 Blank fields use your site-wide sign-up wall message &mdash; edit it in <SettingsLink />.
                                 {offerId ? <span className="mt-1 block" data-testid="paywall-inactive-offer-note">The attached offer{selectedOfferName ? ` (${selectedOfferName})` : ''} doesn&rsquo;t apply to sign-up walls &mdash; the button is a plain free signup. It returns if you switch back to paid.</span> : null}
-                                {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide paywall message.</span> : null}
+                                {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide sign-up wall message.</span> : null}
                             </div>
                         </div>
                     ) : (
@@ -198,8 +198,9 @@ export function PaywallCard({
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
                                 Blank fields use your site-wide payment wall message &mdash; edit it in <SettingsLink />. The offer applies wherever this message shows, on your site and in email.
+                                {isTiersPost && offerId ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-tiers-offer-caution">Check the offer unlocks the right tier &mdash; an offer for a different tier won&rsquo;t give buyers access to this post.</span> : null}
                                 {sitePaywallCopy?.campaign && offerId ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-campaign-takeover-warning">Your site-wide campaign offer is currently shown on this wall instead of {selectedOfferName ? `"${selectedOfferName}"` : 'this post\u2019s offer'} &mdash; it returns when the campaign ends.</span> : null}
-                                {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide paywall message.</span> : null}
+                                {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide payment wall message.</span> : null}
                             </div>
                         </>
                     )}
@@ -216,13 +217,13 @@ export function PaywallCard({
                     <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">{isMembersGate ? 'Sign-up message — site visitors see' : (hasEmailVariant ? 'Website — visitors see' : 'Upgrade message — shown at the paywall (site & email)')}</div>
                     <div className="text-lg font-bold text-black dark:text-grey-100">{heading || siteHeading}</div>
                     {(description || siteWall.description) && <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description || siteWall.description}</div>}
-                    <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || siteWall.buttonText}</div>
+                    <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white" style={sitePaywallCopy?.accentColor ? {backgroundColor: sitePaywallCopy.accentColor} : undefined}>{buttonText || siteWall.buttonText}</div>
                     {hasEmailVariant && !isMembersGate &&
                         <div className="mt-3 border-t border-grey-200 pt-3 dark:border-grey-900" data-testid="paywall-email-variant-preview">
                             <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">Email — free subscribers see</div>
                             <div className="text-lg font-bold text-black dark:text-grey-100">{emailHeading || heading || siteHeading}</div>
                             {(emailDescription || description || siteWall.description) && <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{emailDescription || description || siteWall.description}</div>}
-                            <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{emailButtonText || buttonText || siteWall.emailButtonText || siteWall.buttonText}</div>
+                            <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white" style={sitePaywallCopy?.accentColor ? {backgroundColor: sitePaywallCopy.accentColor} : undefined}>{emailButtonText || buttonText || siteWall.emailButtonText || siteWall.buttonText}</div>
                         </div>
                     }
                     {offerId && !isMembersGate && !sitePaywallCopy?.campaign &&
@@ -235,7 +236,7 @@ export function PaywallCard({
                         <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-dormant-offer-note">An attached offer{selectedOfferName ? ` (${selectedOfferName})` : ''} is dormant &mdash; sign-up walls don&rsquo;t use offers; it returns if the gate switches back to paid</div>
                     }
                     {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ?
-                        <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-override-note">Replaces your site-wide paywall message</div> : null
+                        <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-override-note">Replaces your site-wide wall message</div> : null
                     }
                 </div>
             }

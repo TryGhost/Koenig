@@ -1,11 +1,15 @@
+import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
 import {$createParagraphNode, $getSelection, $isParagraphNode, $isRangeSelection, COMMAND_PRIORITY_EDITOR} from 'lexical';
 import {$createPaywallNode, INSERT_PAYWALL_COMMAND} from '../nodes/PaywallNode';
 import {getSelectedNode} from '../utils/getSelectedNode';
-import {useEffect} from 'react';
+import {useContext, useEffect} from 'react';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
 export const PaywallPlugin = () => {
     const [editor] = useLexicalComposerContext();
+    const {cardConfig} = useContext(KoenigComposerContext);
+    // free-membership sites gate for members by default; everyone else paid
+    const defaultGate = cardConfig?.defaultPaywallGate === 'members' ? 'members' : 'paid';
 
     useEffect(() => {
         if (!editor.hasNodes([])) {
@@ -24,7 +28,7 @@ export const PaywallPlugin = () => {
                 const focusNode = selection.focus.getNode();
 
                 if (focusNode !== null) {
-                    const paywallNode = $createPaywallNode();
+                    const paywallNode = $createPaywallNode({gate: defaultGate});
 
                     // insert a paragraph unless we're already on a blank paragraph
                     const selectedNode = selection.focus.getNode();
@@ -44,7 +48,7 @@ export const PaywallPlugin = () => {
             },
             COMMAND_PRIORITY_EDITOR
         );
-    }, [editor]);
+    }, [editor, defaultGate]);
 
     // add markdown shortcut '==='
     useEffect(() => {
@@ -74,7 +78,7 @@ export const PaywallPlugin = () => {
                     return;
                 }
 
-                const line = $createPaywallNode();
+                const line = $createPaywallNode({gate: defaultGate});
                 const parentNode = node.getTopLevelElement();
 
                 if (parentNode.getNextSibling()) {
@@ -87,7 +91,7 @@ export const PaywallPlugin = () => {
                 line.selectNext();
             });
         });
-    }, [editor]);
+    }, [editor, defaultGate]);
 
     return null;
 };

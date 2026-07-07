@@ -15,10 +15,11 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
     const [offers, setOffers] = React.useState([]);
 
     React.useEffect(() => {
-        if (isEditing && cardConfig?.fetchOffers) {
+        // the read view needs offer names too ("Button links to offer: X")
+        if ((isEditing || offerId) && cardConfig?.fetchOffers) {
             cardConfig.fetchOffers().then(setOffers).catch(() => setOffers([]));
         }
-    }, [isEditing, cardConfig]);
+    }, [isEditing, offerId, cardConfig]);
 
     const handleToolbarEdit = (event) => {
         event.preventDefault();

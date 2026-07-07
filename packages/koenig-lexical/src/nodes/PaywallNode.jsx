@@ -9,10 +9,10 @@ export const INSERT_PAYWALL_COMMAND = createCommand();
 export class PaywallNode extends BasePaywallNode {
     static kgMenu = {
         label: 'Paywall',
-        desc: 'Free preview above, paid-only below — free subscribers get the preview by email',
+        desc: 'Free preview above, members or paid-only below — grows your list or sells subscriptions',
         Icon: DividerCardIcon,
         insertCommand: INSERT_PAYWALL_COMMAND,
-        matches: ['paywall', 'public preview', 'preview', 'public intro', 'members only', 'upgrade', 'premium', 'gate', 'paid'],
+        matches: ['paywall', 'wall', 'public preview', 'preview', 'public intro', 'members only', 'upgrade', 'premium', 'gate', 'paid', 'signup', 'sign up', 'free signup'],
         priority: 6,
         shortcut: '/paywall'
     };
@@ -40,8 +40,8 @@ export class PaywallNode extends BasePaywallNode {
     }
 }
 
-export function $createPaywallNode() {
-    return new PaywallNode();
+export function $createPaywallNode(dataset) {
+    return new PaywallNode(dataset);
 }
 
 export function $isPaywallNode(node) {
