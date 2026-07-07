@@ -8,7 +8,7 @@ import {PaywallCard} from '../components/ui/cards/PaywallCard';
 import {ToolbarMenu, ToolbarMenuItem} from '../components/ui/ToolbarMenu';
 import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 
-export function PaywallNodeComponent({nodeKey, gate, heading, description, buttonText, emailButtonText, offerId}) {
+export function PaywallNodeComponent({nodeKey, gate, heading, description, buttonText, emailHeading, emailDescription, emailButtonText, offerId}) {
     const [editor] = useLexicalComposerContext();
     const {isEditing, isSelected} = React.useContext(CardContext);
     const {cardConfig} = React.useContext(KoenigComposerContext);
@@ -56,6 +56,8 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
                 buttonText={buttonText}
                 description={description}
                 emailButtonText={emailButtonText}
+                emailDescription={emailDescription}
+                emailHeading={emailHeading}
                 gate={gate}
                 heading={heading}
                 isEditing={isEditing}
@@ -67,6 +69,8 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
                 updateButtonText={updateProperty('buttonText')}
                 updateDescription={updateProperty('description')}
                 updateEmailButtonText={updateProperty('emailButtonText')}
+                updateEmailDescription={updateProperty('emailDescription')}
+                updateEmailHeading={updateProperty('emailHeading')}
                 updateGate={updateGate}
                 updateHeading={updateProperty('heading')}
                 updateOfferId={updateOfferId}

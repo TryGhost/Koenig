@@ -28,6 +28,8 @@ export class PaywallNode extends BasePaywallNode {
                     buttonText={this.buttonText}
                     description={this.description}
                     emailButtonText={this.emailButtonText}
+                    emailDescription={this.emailDescription}
+                    emailHeading={this.emailHeading}
                     gate={this.gate}
                     heading={this.heading}
                     nodeKey={this.getKey()}

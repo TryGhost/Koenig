@@ -46,6 +46,8 @@ export function PaywallCard({
     heading,
     description,
     buttonText,
+    emailHeading,
+    emailDescription,
     emailButtonText,
     offerId,
     offers = [],
@@ -54,11 +56,14 @@ export function PaywallCard({
     updateHeading,
     updateDescription,
     updateButtonText,
+    updateEmailHeading,
+    updateEmailDescription,
     updateEmailButtonText,
     updateOfferId
 }) {
     const isMembersGate = !isTiersPost && gate === 'members';
-    const hasCustomCta = heading || description || buttonText || offerId;
+    const hasEmailVariant = Boolean(emailHeading || emailDescription || emailButtonText);
+    const hasCustomCta = heading || description || buttonText || offerId || hasEmailVariant;
 
     // Site-wide fallback copy for whichever wall this post renders
     const siteWall = (isMembersGate ? sitePaywallCopy?.signup : sitePaywallCopy?.payment) || {};
@@ -155,14 +160,6 @@ export function PaywallCard({
                                     value={buttonText}
                                     onChange={updateButtonText}
                                 />
-                                <InputSetting
-                                    dataTestId="paywall-email-button-input"
-                                    description="Email readers are already free members — an upgrade-flavoured CTA usually converts better there. Blank uses the button above."
-                                    label="Button — email"
-                                    placeholder={buttonText || siteWall.emailButtonText || siteWall.buttonText || 'Upgrade'}
-                                    value={emailButtonText}
-                                    onChange={updateEmailButtonText}
-                                />
                                 <DropdownSetting
                                     dataTestId="paywall-offer-dropdown"
                                     description="Send readers to an offer instead of the standard signup"
@@ -170,6 +167,33 @@ export function PaywallCard({
                                     menu={offerOptions}
                                     value={offerId || ''}
                                     onChange={updateOfferId}
+                                />
+                            </div>
+                            <div className="mb-3 mt-4 flex items-baseline justify-between border-t border-grey-200 pt-3 dark:border-grey-900">
+                                <span className="text-sm font-semibold text-grey-900 dark:text-grey-300">Email version <span className="font-normal text-grey-600 dark:text-grey-500">(optional)</span></span>
+                                <span className="text-xs font-normal text-grey-600 dark:text-grey-500">Email readers are already free members &mdash; speak to them directly. Blank fields use the message above</span>
+                            </div>
+                            <div className="flex flex-col gap-3">
+                                <InputSetting
+                                    dataTestId="paywall-email-heading-input"
+                                    label="Heading — email"
+                                    placeholder={heading || sitePaywallCopy?.payment?.emailHeading || siteHeading || 'Upgrade to continue reading.'}
+                                    value={emailHeading}
+                                    onChange={updateEmailHeading}
+                                />
+                                <InputSetting
+                                    dataTestId="paywall-email-description-input"
+                                    label="Description — email"
+                                    placeholder={description || sitePaywallCopy?.payment?.emailDescription || siteWall.description || 'Become a paid member to get access to all premium content.'}
+                                    value={emailDescription}
+                                    onChange={updateEmailDescription}
+                                />
+                                <InputSetting
+                                    dataTestId="paywall-email-button-input"
+                                    label="Button — email"
+                                    placeholder={buttonText || siteWall.emailButtonText || siteWall.buttonText || 'Upgrade'}
+                                    value={emailButtonText}
+                                    onChange={updateEmailButtonText}
                                 />
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
@@ -189,12 +213,17 @@ export function PaywallCard({
             <Divider gate={gate} isTiersPost={isTiersPost} />
             {hasCustomCta &&
                 <div className="not-kg-prose mt-3 rounded border border-grey-200 p-4 text-center font-sans dark:border-grey-900" data-testid="paywall-cta-preview">
-                    <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">{isMembersGate ? 'Sign-up message — site visitors see' : 'Upgrade message — shown at the paywall (site & email)'}</div>
+                    <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">{isMembersGate ? 'Sign-up message — site visitors see' : (hasEmailVariant ? 'Website — visitors see' : 'Upgrade message — shown at the paywall (site & email)')}</div>
                     <div className="text-lg font-bold text-black dark:text-grey-100">{heading || siteHeading}</div>
                     {(description || siteWall.description) && <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description || siteWall.description}</div>}
                     <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || siteWall.buttonText}</div>
-                    {emailButtonText && !isMembersGate &&
-                        <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-email-button-note">Email button: &ldquo;{emailButtonText}&rdquo;</div>
+                    {hasEmailVariant && !isMembersGate &&
+                        <div className="mt-3 border-t border-grey-200 pt-3 dark:border-grey-900" data-testid="paywall-email-variant-preview">
+                            <div className="mb-1 text-2xs font-semibold uppercase tracking-wide text-grey-400">Email — free subscribers see</div>
+                            <div className="text-lg font-bold text-black dark:text-grey-100">{emailHeading || heading || siteHeading}</div>
+                            {(emailDescription || description || siteWall.description) && <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{emailDescription || description || siteWall.description}</div>}
+                            <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{emailButtonText || buttonText || siteWall.emailButtonText || siteWall.buttonText}</div>
+                        </div>
                     }
                     {offerId && !isMembersGate && !sitePaywallCopy?.campaign &&
                         <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-offer-note">Button links to offer{selectedOfferName ? `: ${selectedOfferName}` : ''}</div>
@@ -222,6 +251,8 @@ PaywallCard.propTypes = {
     heading: PropTypes.string,
     description: PropTypes.string,
     buttonText: PropTypes.string,
+    emailHeading: PropTypes.string,
+    emailDescription: PropTypes.string,
     emailButtonText: PropTypes.string,
     offerId: PropTypes.string,
     offers: PropTypes.array,
@@ -230,6 +261,8 @@ PaywallCard.propTypes = {
     updateHeading: PropTypes.func,
     updateDescription: PropTypes.func,
     updateButtonText: PropTypes.func,
+    updateEmailHeading: PropTypes.func,
+    updateEmailDescription: PropTypes.func,
     updateEmailButtonText: PropTypes.func,
     updateOfferId: PropTypes.func
 };
