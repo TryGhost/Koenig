@@ -48,6 +48,7 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
     };
 
     const selectedOffer = offers.find(offer => offer.id === offerId);
+    const isTiersPost = cardConfig?.post?.visibility === 'tiers';
 
     return (
         <>
@@ -57,6 +58,7 @@ export function PaywallNodeComponent({nodeKey, gate, heading, description, butto
                 gate={gate}
                 heading={heading}
                 isEditing={isEditing}
+                isTiersPost={isTiersPost}
                 offerId={offerId}
                 offers={offers}
                 selectedOfferName={selectedOffer?.name}
