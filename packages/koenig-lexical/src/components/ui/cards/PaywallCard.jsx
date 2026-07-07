@@ -164,6 +164,7 @@ export function PaywallCard({
                             </div>
                             <div className="mt-3 border-t border-grey-200 pt-3 text-xs font-normal text-grey-600 dark:border-grey-900 dark:text-grey-500" data-testid="paywall-web-note">
                                 Blank fields use your site-wide payment wall message &mdash; edit it in <SettingsLink />. The offer applies wherever this message shows, on your site and in email.
+                                {sitePaywallCopy?.campaign && offerId ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-campaign-takeover-warning">Your site-wide campaign offer is currently shown on this wall instead of {selectedOfferName ? `"${selectedOfferName}"` : 'this post\u2019s offer'} &mdash; it returns when the campaign ends.</span> : null}
                                 {sitePaywallCopy?.isCustomised && (heading || description || buttonText) ? <span className="mt-1 block font-medium text-yellow-600" data-testid="paywall-override-warning">This post&rsquo;s message replaces your site-wide paywall message.</span> : null}
                             </div>
                         </>
@@ -182,8 +183,11 @@ export function PaywallCard({
                     <div className="text-lg font-bold text-black dark:text-grey-100">{heading || siteHeading}</div>
                     {(description || siteWall.description) && <div className="mt-1 text-sm text-grey-700 dark:text-grey-500">{description || siteWall.description}</div>}
                     <div className="mt-3 inline-block rounded bg-green px-4 py-2 text-sm font-semibold text-white">{buttonText || siteWall.buttonText}</div>
-                    {offerId && !isMembersGate &&
+                    {offerId && !isMembersGate && !sitePaywallCopy?.campaign &&
                         <div className="mt-2 text-xs font-normal text-grey-600 dark:text-grey-500" data-testid="paywall-offer-note">Button links to offer{selectedOfferName ? `: ${selectedOfferName}` : ''}</div>
+                    }
+                    {offerId && !isMembersGate && sitePaywallCopy?.campaign &&
+                        <div className="mt-2 text-xs font-normal text-yellow-600" data-testid="paywall-campaign-takeover-note">Site-wide campaign offer showing instead of {selectedOfferName ? `"${selectedOfferName}"` : 'this post\u2019s offer'}</div>
                     }
                     {offerId && isMembersGate &&
                         <div className="mt-2 text-xs font-normal text-grey-500" data-testid="paywall-dormant-offer-note">An attached offer{selectedOfferName ? ` (${selectedOfferName})` : ''} is dormant &mdash; sign-up walls don&rsquo;t use offers; it returns if the gate switches back to paid</div>
