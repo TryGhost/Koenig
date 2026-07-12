@@ -61,7 +61,7 @@ jobs:
         if: github.event.inputs['dry-run'] != 'true'
         run: yarn ship:ci
 
-      - uses: tryghost/actions/actions/slack-build@6ae14ccfb93e7e7db5913d5a7c1707ee11567b99 # main
+      - uses: tryghost/actions/actions/slack-build@f3a1fabc11b93360e557b4981b26c21bd4e81594 # main
         if: failure()
         with:
           status: ${{ job.status }}
